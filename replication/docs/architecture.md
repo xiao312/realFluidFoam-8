@@ -3,7 +3,8 @@
 ```mermaid
 flowchart LR
   U[Upstream source pin] --> R[Fork revision]
-  I[Official OF8 image digest] --> A[Apptainer image]
+  I[Official OF8 image digest] --> S[Pinned SIF]
+  S --> A[Read-only directory container]
   R --> B[Slurm build]
   A --> B
   B --> P[Property tests]

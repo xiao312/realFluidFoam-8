@@ -14,27 +14,23 @@ job="$root/jobs/$SLURM_JOB_ID"
 mkdir -p "$job"/{home,tmp,vartmp,cache,config,apptainer}
 export APPTAINER_TMPDIR="$job/tmp" APPTAINER_CACHEDIR="$root/cache/apptainer"
 export APPTAINER_CONFIGDIR="$job/config" TMPDIR="$job/tmp"
-helper="$root/images/tools/bin/squashfuse_ll"
-test -x "$helper" || { echo 'Stage the pinned SquashFUSE helper before launch' >&2; exit 2; }
-printf '%s  %s\n' ebebb17da1dd45b418e11736c627a492bb93dff919b64a55f665d67d313aa975 "$helper" | sha256sum -c -
-export PATH="$root/images/tools/bin:$PATH"
+[[ -d "$image" && -f "$image.ready" && -f "$image.source.sha256" ]] || {
+    echo 'Stage a complete runtime directory with stage-runtime.sh first' >&2; exit 2;
+}
+sha256sum -c "$image.source.sha256"
 unset APPTAINER_BIND APPTAINER_BINDPATH SINGULARITY_BIND SINGULARITY_BINDPATH
-export APPTAINERENV_HOME="/work/jobs/$SLURM_JOB_ID/home"
 export APPTAINERENV_TMPDIR="/work/jobs/$SLURM_JOB_ID/tmp"
 export APPTAINERENV_XDG_CACHE_HOME="/work/jobs/$SLURM_JOB_ID/cache"
 export APPTAINERENV_XDG_CONFIG_HOME="/work/jobs/$SLURM_JOB_ID/config"
 export APPTAINERENV_RF_JOB_ID="$SLURM_JOB_ID"
 export APPTAINERENV_RF_CPUS="${SLURM_CPUS_PER_TASK:-2}"
-sha256sum "$image" > "$job/image.sha256"
+cp "$image.source.sha256" "$job/image.sha256"
 apptainer --version > "$job/apptainer-version.txt"
-# Prior SCNet qualification observed runtime cleanup of SIF launch copies.
-# Retain the master image and execute a job-local copy.
-cp --reflink=auto "$image" "$job/runtime.sif"
 source_in="/work/${source_dir#"$root/"}"
 cd "$root"
 exec apptainer exec --cleanenv --containall --underlay --no-eval \
     --no-mount cwd,hostfs,bind-paths --home "$job/home:/home/foam" \
     --bind "$root:/work" --bind "$source_dir:$source_in:ro" \
     --bind "$job/tmp:/tmp" --bind "$job/vartmp:/var/tmp" --workdir "$job/apptainer" \
-    --pwd /work "$job/runtime.sif" /bin/bash \
+    --pwd /work "$image" /bin/bash \
     "$source_in/replication/environment/inside.sh" "$mode" "$source_in"

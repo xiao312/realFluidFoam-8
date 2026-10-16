@@ -4,6 +4,22 @@ This module owns the pinned base image, project path setup, and bounded Slurm jo
 It does not launch scientific cases. Inputs are an exact source release and the
 base image in `lock.json`. Outputs are job-local receipts, build logs and binaries.
 
+On SCNet, direct SIF mounts are denied by site policy and user namespaces are
+disabled. Stage a reusable directory container with `stage-runtime.sh` before
+preflight. It extracts the pinned SIF on a compute node, records its hash, and
+publishes a ready marker only after extraction succeeds. The directory is an
+immutable deployment input; never use `--writable` or edit it in place.
+
+```sh
+bash replication/environment/stage-runtime.sh plan ROOT SIF RUNTIME_DIRECTORY PARTITION
+bash replication/environment/stage-runtime.sh apply ROOT SIF RUNTIME_DIRECTORY PARTITION
+```
+
+All three paths are absolute and inside the project; the runtime directory must
+be new and directly under `ROOT/images`. Pass this directory as `IMAGE` below.
+Extraction uses four CPUs and a two-hour limit. The original SIF remains the
+content reference; the live preflight qualifies its extracted deployment.
+
 Dockerfile and Apptainer.def share the official OF8 image digest. The Dockerfile
 adds only metadata and an explicit shell entrypoint. The offline SCNet route imports
 the same base filesystem directly; it does not claim an identical derived-image hash.
@@ -48,10 +64,12 @@ srun --cpu-bind=cores apptainer build images/openfoam8.sif docker-archive:images
 ```
 
 Alternatively, use `convert.sh plan|apply ROOT ARCHIVE ARCHIVE_SHA256 PARTITION`
-to submit conversion with four CPUs and a one-hour limit. The first 30-minute
+to submit conversion with four CPUs and a two-hour limit. The first 30-minute
 allocation timed out during SIF creation on the shared filesystem; incomplete
 temporary files from that attempt must not be used as a runtime baseline.
-The Docker archive path is relative to the project root. Record the resulting SIF
+The one-hour retry spent more than 50 minutes extracting and packaging. The
+two-hour limit leaves headroom for filesystem variability and temporary-file cleanup.
+Pass an absolute archive path under `ROOT/images` to `convert.sh`. Record the resulting SIF
 SHA-256; conversion does not have to produce bit-identical SIF metadata on each run.
 
 ## Preflight and compilation
@@ -78,7 +96,7 @@ acceptance requires the separate property and flame comparisons.
 
 ## Verification and boundary
 
-Run `bash -n replication/environment/*.sh` and
+Run `for script in replication/environment/*.sh; do bash -n "$script" || exit; done` and
 `python3 -B replication/environment/check_lock.py` from the repository root.
 Run `bash replication/environment/check_dispatch.sh /absolute/project/test-output`
 to verify dispatch from a simulated Slurm spool directory. The directory must exist.
@@ -89,13 +107,13 @@ compiling the real-fluid solver or running a scientific case.
 Image conversion and compilation require Slurm; login nodes only stage and submit.
 Apptainer sees a read-only root filesystem and explicit writable project mounts.
 HOME, caches, temporary files, build products, receipts and logs stay within ROOT.
-The source release is mounted read-only. A job-local SIF copy protects the master
-image from the cleanup behavior observed in previous SCNet runtime checks.
-Stage the qualified SquashFUSE 0.6.3 `squashfuse_ll` binary at
-`ROOT/images/tools/bin/squashfuse_ll`. Its hash is pinned in `lock.json` and checked
-at launch. The host supplies libfuse.so.2, libz and liblzma; the live preflight must
-verify that this helper can mount the image. This avoids forced full extraction on
-the shared filesystem. The binary is a deployment artifact, not a Git file.
+The source release is mounted read-only. The reusable directory container is mounted
+without `--writable`; all intended writes use the project binds. Its source SIF hash
+and ready marker are checked before launch. Keep the directory immutable between
+runs; extract a new directory for an image update. A SIF checksum identifies the
+source artifact, not a cryptographic inventory of the extracted directory.
+Direct SIF launch failed under site mount policy even with SquashFUSE available;
+no cluster security settings were changed.
 
 Dependencies: Bash, Git for release staging, Python for offline image preparation,
 Slurm, Apptainer, and the pinned OF8 container. Future case modules depend on these
