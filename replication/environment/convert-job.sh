@@ -2,7 +2,7 @@
 set -eo pipefail
 root=${1:?root}; archive=${2:?archive}; digest=${3:?digest}
 test -n "${SLURM_JOB_ID:-}"
-script_dir=$(cd -- "$(dirname -- "$0")" && pwd)
+script_dir=${4:?absolute source environment directory}
 bash "$script_dir/workspace.sh" plan "$root" >/dev/null
 [[ $(realpath -e -- "$archive") == "$root/images/"* ]] || exit 2
 job="$root/jobs/$SLURM_JOB_ID"

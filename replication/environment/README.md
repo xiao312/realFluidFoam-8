@@ -78,6 +78,8 @@ acceptance requires the separate property and flame comparisons.
 
 Run `bash -n replication/environment/*.sh` and
 `python3 -B replication/environment/check_lock.py` from the repository root.
+Run `bash replication/environment/check_dispatch.sh /absolute/project/test-output`
+to verify dispatch from a simulated Slurm spool directory. The directory must exist.
 Runtime preflight compiles an MPI probe and checks two ranks on one node.
 Image conversion and compilation require Slurm; login nodes only stage and submit.
 Apptainer sees a read-only root filesystem and explicit writable project mounts.
