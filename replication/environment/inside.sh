@@ -44,8 +44,29 @@ mpic++ "$job/tmp/mpi-check.cpp" -o "$job/tmp/mpi-check"
 mpirun --mca btl self,vader,tcp -np 2 "$job/tmp/mpi-check" > "$job/mpi-check.txt" 2>&1
 grep -q 'rank=0 size=2' "$job/mpi-check.txt"
 grep -q 'rank=1 size=2' "$job/mpi-check.txt"
+mkdir -p "$job/wmake-probe/Make"
+cat > "$job/wmake-probe/probe.C" <<'EOF'
+#include "fvCFD.H"
+int main() {
+    Foam::Info << "OpenFOAM environment probe passed" << Foam::nl;
+    return 0;
+}
+EOF
+cat > "$job/wmake-probe/Make/files" <<'EOF'
+probe.C
+EXE = $(FOAM_USER_APPBIN)/rfEnvironmentProbe
+EOF
+cat > "$job/wmake-probe/Make/options" <<'EOF'
+EXE_INC = -I$(LIB_SRC)/finiteVolume/lnInclude -I$(LIB_SRC)/meshTools/lnInclude
+EXE_LIBS = -lfiniteVolume -lmeshTools
+EOF
+wmake "$job/wmake-probe" > "$job/wmake-probe.log" 2>&1
+"$FOAM_USER_APPBIN/rfEnvironmentProbe" > "$job/wmake-probe-result.txt" 2>&1
+grep -q 'OpenFOAM environment probe passed' "$job/wmake-probe-result.txt"
+ldd "$FOAM_USER_APPBIN/rfEnvironmentProbe" > "$job/wmake-probe-ldd.txt"
+if grep -q 'not found' "$job/wmake-probe-ldd.txt"; then exit 1; fi
 if [[ "$mode" == preflight ]]; then
-    echo 'PASS: OF8 compiler, headers, tools and two-rank single-node MPI' | tee "$job/result.txt"
+    echo 'PASS: OF8 wmake compile/link/run and two-rank single-node MPI' | tee "$job/result.txt"
     exit 0
 fi
 [[ "$mode" == build ]] || exit 2

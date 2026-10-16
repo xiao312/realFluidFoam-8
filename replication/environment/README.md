@@ -81,6 +81,9 @@ Run `bash -n replication/environment/*.sh` and
 Run `bash replication/environment/check_dispatch.sh /absolute/project/test-output`
 to verify dispatch from a simulated Slurm spool directory. The directory must exist.
 Runtime preflight compiles an MPI probe and checks two ranks on one node.
+It also uses wmake to compile, link, and run a small application against the installed
+finite-volume and mesh libraries. This tests the OF8 build environment without
+compiling the real-fluid solver or running a scientific case.
 Image conversion and compilation require Slurm; login nodes only stage and submit.
 Apptainer sees a read-only root filesystem and explicit writable project mounts.
 HOME, caches, temporary files, build products, receipts and logs stay within ROOT.
