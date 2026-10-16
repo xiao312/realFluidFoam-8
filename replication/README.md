@@ -27,11 +27,13 @@ Cluster accounting and system audit files remain managed by the cluster.
 1. Inspect `environment/lock.json` and the local site profile.
 2. Run `bash replication/environment/workspace.sh plan /absolute/project/root`.
 3. Run the same command with `prepare` after reviewing its paths.
-4. Stage the pinned image archive and an exact source release under that root.
+4. Stage the pinned image and an exact source release under that root; extract the
+   reusable directory container with `stage-runtime.sh` on SCNet.
 5. Run `submit.sh plan ROOT IMAGE SOURCE PREFLIGHT_OR_BUILD PARTITION`.
 6. Use `submit.sh apply` with the same arguments to submit the bounded job.
 
-`IMAGE` and `SOURCE` are absolute paths inside `ROOT`. `PREFLIGHT_OR_BUILD` is
+`IMAGE` is the staged directory container and `SOURCE` is the exact source release;
+both are absolute paths inside `ROOT`. `PREFLIGHT_OR_BUILD` is
 `preflight` or `build`. The image conversion command is documented in the
 [environment guide](environment/README.md).
 
@@ -42,7 +44,8 @@ original upstream revision for comparisons with publication-era releases.
 
 ## Verification
 
-Run `git diff --check` and `bash -n replication/environment/*.sh`.
+Run `git diff --check` and
+`for script in replication/environment/*.sh; do bash -n "$script" || exit; done`.
 Run `python3 -B replication/environment/check_lock.py` from the repository root.
 Expected result: valid recipe pins and no shell or whitespace errors.
 The Slurm preflight must confirm OF8, compiler, wmake, MPI, and writable output paths.
@@ -50,4 +53,6 @@ The build stage must compile all targets and inspect executable dependencies.
 These checks do not validate thermophysical models or flame predictions.
 
 See [architecture](docs/architecture.md), [writing](docs/writing.md), and
-[validation stages](docs/validation-plan.md).
+[validation stages](docs/validation-plan.md). The
+[2026-10-16 environment record](docs/environment-qualification-20261016.md)
+identifies the tested source, deployed image, scheduler jobs, and limits.

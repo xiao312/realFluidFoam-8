@@ -1,3 +1,5 @@
+This fork maintains the [controlled replication workflow](replication/README.md), including pinned environments and evidence records.
+
 # realFluidFoam-8
 
 ## General Information
