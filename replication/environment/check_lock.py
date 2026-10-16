@@ -10,4 +10,5 @@ assert re.fullmatch(r'sha256:[0-9a-f]{64}', lock['image_digest'])
 for name in ('Dockerfile', 'Apptainer.def'):
     assert lock['image_digest'] in (directory / name).read_text(), name
 assert lock['expected_openfoam_version'] == '8'
+assert lock['squashfuse_ll_sha256'] in (directory / 'run.sh').read_text()
 print('PASS: source pin, OF8 identity, and both image recipes agree')

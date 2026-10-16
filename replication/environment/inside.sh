@@ -2,6 +2,7 @@
 # Container entrypoint. No apt operations and no host MPI libraries are used.
 set -eo pipefail
 mode=${1:?mode}; release=${2:?source release}
+shift 2
 job="/work/jobs/${RF_JOB_ID:?}"
 [[ "$release" == /work/releases/* && -d "$release" ]] || exit 2
 source /opt/openfoam8/etc/bashrc
