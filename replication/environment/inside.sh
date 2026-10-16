@@ -57,6 +57,10 @@ find "$build/src" "$build/applications" -type d \( -name lnInclude -o -path '*/M
 export LIB_rfFoam8_SRC="$build/src"
 cd "$build"
 bash ./Allwmake -j "$WM_NCOMPPROCS" > "$job/build.log" 2>&1
+if grep -E 'fatal error:|undefined reference|make[^:]*: \*\*\*' "$job/build.log"; then
+    echo 'A nested build command failed; inspect build.log' >&2
+    exit 1
+fi
 for name in realFluidFoam realFluidReactingFoam reactingFoam; do
     test -x "$FOAM_USER_APPBIN/$name"
     "$FOAM_USER_APPBIN/$name" -help > "$job/$name-help.txt" 2>&1

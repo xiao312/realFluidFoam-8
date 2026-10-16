@@ -44,7 +44,7 @@ Run image conversion on a compute allocation. Set `APPTAINER_TMPDIR`,
 For an uncompressed Docker archive:
 
 ```sh
-apptainer build --mksquashfs-args '-processors 4' images/openfoam8.sif docker-archive:images/openfoam8-docker.tar
+srun --cpu-bind=cores apptainer build images/openfoam8.sif docker-archive:images/openfoam8-docker.tar
 ```
 
 Alternatively, use `convert.sh plan|apply ROOT ARCHIVE ARCHIVE_SHA256 PARTITION`
