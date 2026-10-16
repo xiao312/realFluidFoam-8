@@ -65,7 +65,9 @@ probe.C
 EXE = $(FOAM_USER_APPBIN)/rfEnvironmentProbe
 EOF
 cat > "$job/wmake-probe/Make/options" <<'EOF'
-EXE_INC = -I$(LIB_SRC)/finiteVolume/lnInclude -I$(LIB_SRC)/meshTools/lnInclude
+EXE_INC = \
+    -I$(LIB_SRC)/finiteVolume/lnInclude \
+    -I$(LIB_SRC)/meshTools/lnInclude
 EXE_LIBS = -lfiniteVolume -lmeshTools
 EOF
 wmake "$job/wmake-probe" > "$job/wmake-probe.log" 2>&1
