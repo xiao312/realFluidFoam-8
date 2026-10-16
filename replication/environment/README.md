@@ -48,7 +48,9 @@ srun --cpu-bind=cores apptainer build images/openfoam8.sif docker-archive:images
 ```
 
 Alternatively, use `convert.sh plan|apply ROOT ARCHIVE ARCHIVE_SHA256 PARTITION`
-to submit conversion with four CPUs and a 30-minute limit.
+to submit conversion with four CPUs and a one-hour limit. The first 30-minute
+allocation timed out during SIF creation on the shared filesystem; incomplete
+temporary files from that attempt must not be used as a runtime baseline.
 The Docker archive path is relative to the project root. Record the resulting SIF
 SHA-256; conversion does not have to produce bit-identical SIF metadata on each run.
 
