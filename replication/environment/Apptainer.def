@@ -1,0 +1,9 @@
+Bootstrap: docker
+From: openfoam/openfoam8-paraview56@sha256:b307565bb6a8f65be82caa9c552e708eb2888e5e35f90f0b620e6f48b8bfa507
+
+%labels
+    purpose realFluidFoam-OF8-replication
+
+%help
+    Run through replication/environment/run.sh with an explicit project root.
+    Do not use the inherited Docker entrypoint to configure the host account.

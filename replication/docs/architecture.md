@@ -1,0 +1,27 @@
+# Replication boundaries
+
+```mermaid
+flowchart LR
+  U[Upstream source pin] --> R[Fork revision]
+  I[Official OF8 image digest] --> A[Apptainer image]
+  R --> B[Slurm build]
+  A --> B
+  B --> P[Property tests]
+  P --> C[Counterflow flames]
+  C --> F[Premixed flame speed]
+  B --> E[Versioned evidence summaries]
+  P --> E
+  C --> E
+  F --> E
+  E --> L[Lark work log]
+```
+
+`environment/` owns recipes, the image lock, contained execution, and job submission.
+`docs/` owns the scientific plan, writing rules, and reviewed result summaries.
+Future case modules own their inputs, reference data provenance, comparisons, and README.
+The solver remains upstream code unless a separate source change is recorded.
+
+The project workspace owns `images`, `releases`, `builds`, `jobs`, `logs`, `cache`,
+`tmp`, `home`, and `results`. Each job has its own temporary and home directories.
+Source releases are immutable inputs. Compilation uses a separate build copy.
+An image hash identifies bytes; a preflight establishes site compatibility.

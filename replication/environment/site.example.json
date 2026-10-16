@@ -1,0 +1,9 @@
+{
+  "ssh_host": "your-scnet-ssh-alias",
+  "project_root": "/absolute/FlamePilot/trials/realfluidfoam",
+  "partition": "your-cpu-partition",
+  "apptainer_module": "apps/apptainer/1.3.4",
+  "build_cpus": 16,
+  "build_time_limit": "01:00:00",
+  "credentials": "Use existing SSH configuration; never copy keys into this project."
+}

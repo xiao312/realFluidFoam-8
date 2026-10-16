@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "upstream_repository": "https://github.com/danhnam11/realFluidFoam-8.git",
+  "upstream_revision": "48506de20ce67f35279c5347b09dcd86865a4c39",
+  "image": "docker.io/openfoam/openfoam8-paraview56",
+  "image_digest": "sha256:b307565bb6a8f65be82caa9c552e708eb2888e5e35f90f0b620e6f48b8bfa507",
+  "image_config_digest": "sha256:ecd36da53e14d40662a88cf5f96a6853c974694746b7c0f6ec88e5e8ecdbb1a6",
+  "platform": "linux/amd64",
+  "openfoam_bashrc": "/opt/openfoam8/etc/bashrc",
+  "expected_openfoam_version": "8",
+  "site_runtime_observed": "Apptainer 1.3.4",
+  "scope": "serial and single-node build/runtime qualification; multi-node MPI pending"
+}

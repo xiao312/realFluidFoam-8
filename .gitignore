@@ -1,0 +1,6 @@
+*.local.json
+replication/.state/
+replication/.cache/
+*.sif
+*.tar.gz
+__pycache__/

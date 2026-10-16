@@ -1,0 +1,6 @@
+replication/**/*.sh text eol=lf
+replication/**/*.py text eol=lf
+replication/**/*.md text eol=lf
+replication/**/*.json text eol=lf
+replication/**/Dockerfile text eol=lf
+replication/**/*.def text eol=lf
