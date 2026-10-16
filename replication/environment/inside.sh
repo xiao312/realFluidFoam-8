@@ -5,7 +5,14 @@ mode=${1:?mode}; release=${2:?source release}
 shift 2
 job="/work/jobs/${RF_JOB_ID:?}"
 [[ "$release" == /work/releases/* && -d "$release" ]] || exit 2
-source /opt/openfoam8/etc/bashrc
+# OF8's interactive setup contains optional probes that return nonzero.
+# Use its normal shell semantics, then validate the resulting build environment.
+set +e +o pipefail
+source /opt/openfoam8/etc/bashrc > "$job/openfoam-init.log" 2>&1
+init_status=$?
+set -Ee -o pipefail
+trap 'echo "Failed at ${BASH_SOURCE[0]}:${LINENO}: $BASH_COMMAND" >&2' ERR
+[[ "$init_status" == 0 ]] || { cat "$job/openfoam-init.log" >&2; exit "$init_status"; }
 [[ "$WM_PROJECT_VERSION" == 8 ]] || { echo 'Expected OpenFOAM Foundation 8' >&2; exit 2; }
 export WM_PROJECT_USER_DIR="$job/openfoam-user"
 export FOAM_USER_APPBIN="$WM_PROJECT_USER_DIR/platforms/$WM_OPTIONS/bin"
