@@ -86,6 +86,11 @@ Apptainer sees a read-only root filesystem and explicit writable project mounts.
 HOME, caches, temporary files, build products, receipts and logs stay within ROOT.
 The source release is mounted read-only. A job-local SIF copy protects the master
 image from the cleanup behavior observed in previous SCNet runtime checks.
+Stage the qualified SquashFUSE 0.6.3 `squashfuse_ll` binary at
+`ROOT/images/tools/bin/squashfuse_ll`. Its hash is pinned in `lock.json` and checked
+at launch. The host supplies libfuse.so.2, libz and liblzma; the live preflight must
+verify that this helper can mount the image. This avoids forced full extraction on
+the shared filesystem. The binary is a deployment artifact, not a Git file.
 
 Dependencies: Bash, Git for release staging, Python for offline image preparation,
 Slurm, Apptainer, and the pinned OF8 container. Future case modules depend on these

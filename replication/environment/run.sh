@@ -14,6 +14,10 @@ job="$root/jobs/$SLURM_JOB_ID"
 mkdir -p "$job"/{home,tmp,vartmp,cache,config,apptainer}
 export APPTAINER_TMPDIR="$job/tmp" APPTAINER_CACHEDIR="$root/cache/apptainer"
 export APPTAINER_CONFIGDIR="$job/config" TMPDIR="$job/tmp"
+helper="$root/images/tools/bin/squashfuse_ll"
+test -x "$helper" || { echo 'Stage the pinned SquashFUSE helper before launch' >&2; exit 2; }
+printf '%s  %s\n' ebebb17da1dd45b418e11736c627a492bb93dff919b64a55f665d67d313aa975 "$helper" | sha256sum -c -
+export PATH="$root/images/tools/bin:$PATH"
 unset APPTAINER_BIND APPTAINER_BINDPATH SINGULARITY_BIND SINGULARITY_BINDPATH
 export APPTAINERENV_HOME="/work/jobs/$SLURM_JOB_ID/home"
 export APPTAINERENV_TMPDIR="/work/jobs/$SLURM_JOB_ID/tmp"
@@ -28,7 +32,7 @@ apptainer --version > "$job/apptainer-version.txt"
 cp --reflink=auto "$image" "$job/runtime.sif"
 source_in="/work/${source_dir#"$root/"}"
 cd "$root"
-exec apptainer exec --cleanenv --containall --underlay --unsquash --no-eval \
+exec apptainer exec --cleanenv --containall --underlay --no-eval \
     --no-mount cwd,hostfs,bind-paths --home "$job/home:/home/foam" \
     --bind "$root:/work" --bind "$source_dir:$source_in:ro" \
     --bind "$job/tmp:/tmp" --bind "$job/vartmp:/var/tmp" --workdir "$job/apptainer" \
