@@ -48,6 +48,7 @@ mkdir -p "$job/wmake-probe/Make"
 cat > "$job/wmake-probe/probe.C" <<'EOF'
 #include "fvCFD.H"
 int main() {
+    Foam::Info << Foam::fvMesh::typeName << Foam::nl;
     Foam::Info << "OpenFOAM environment probe passed" << Foam::nl;
     return 0;
 }
@@ -65,6 +66,7 @@ wmake "$job/wmake-probe" > "$job/wmake-probe.log" 2>&1
 grep -q 'OpenFOAM environment probe passed' "$job/wmake-probe-result.txt"
 ldd "$FOAM_USER_APPBIN/rfEnvironmentProbe" > "$job/wmake-probe-ldd.txt"
 if grep -q 'not found' "$job/wmake-probe-ldd.txt"; then exit 1; fi
+grep -F "$FOAM_LIBBIN/libfiniteVolume.so" "$job/wmake-probe-ldd.txt"
 if [[ "$mode" == preflight ]]; then
     echo 'PASS: OF8 wmake compile/link/run and two-rank single-node MPI' | tee "$job/result.txt"
     exit 0
