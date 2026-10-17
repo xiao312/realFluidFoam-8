@@ -29,7 +29,8 @@ int main(int argc, char *argv[])
     }
     std::ofstream output((runTime.path()/"properties.csv").c_str());
     output << std::setprecision(16)
-        << "p_atm,T_requested_K,T_K,rho_kg_m3,Cp_J_kg_K,mu_Pa_s,kappa_W_m_K,he_J_kg,inversion_relative_error\n";
+        << "p_atm,T_requested_K,T_K,rho_kg_m3,Cp_J_kg_K,mu_Pa_s,kappa_W_m_K,he_J_kg,inversion_relative_error,T_recovered_K\n";
+    label inversionFailures = 0;
     const scalar pressures[] = {1, 50, 100, 200, 300};
     for (const scalar pressure : pressures)
     {
@@ -41,13 +42,22 @@ int main(int argc, char *argv[])
             // Force a nontrivial inversion instead of providing the exact answer.
             thermo.T().primitiveFieldRef() = scalar(temperature + 0.5);
             thermo.correct();
+            const scalar recovered = thermo.T()[0];
+            const scalar error = mag(recovered-temperature)/temperature;
+            if (!std::isfinite(recovered))
+                FatalErrorInFunction << "Nonfinite recovered temperature" << exit(FatalError);
+            if (error > 1e-6) ++inversionFailures;
+            // Keep the property comparison at its exact requested state, while
+            // retaining the independent inversion failure in the same row.
+            thermo.T() = dimensionedScalar("T", dimTemperature, temperature);
+            thermo.he() = thermo.he(thermo.p(), thermo.T());
+            thermo.correct();
             const scalar T = thermo.T()[0];
             const scalar rho = thermo.rho()()[0];
             const scalar cp = thermo.Cp()()[0];
             const scalar mu = thermo.mu()()[0];
             const scalar kappa = thermo.kappa()()[0];
-            const scalar error = mag(T-temperature)/temperature;
-            if (!std::isfinite(rho+cp+mu+kappa+T) || min(rho,min(cp,min(mu,kappa))) <= 0 || error > 1e-6)
+            if (!std::isfinite(rho+cp+mu+kappa+T) || min(rho,min(cp,min(mu,kappa))) <= 0 || mag(T-temperature) > 1e-8)
             {
                 FatalErrorInFunction << "Invalid property/inversion at "
                     << pressure << " atm, " << temperature << " K"
@@ -58,11 +68,12 @@ int main(int argc, char *argv[])
             }
             output << pressure << ',' << temperature << ',' << T << ',' << rho
                 << ',' << cp << ',' << mu << ',' << kappa << ',' << thermo.he()[0]
-                << ',' << error << '\n';
+                << ',' << error << ',' << recovered << '\n';
         }
     }
     output.close();
     if (!output) return 1;
-    Info << "PASS: 225 finite property states and enthalpy inversions" << nl;
-    return 0;
+    Info << "PASS: 225 finite property states at exact requested temperatures" << nl;
+    Info << "Enthalpy inversion criterion failures: " << inversionFailures << "/225" << nl;
+    return inversionFailures ? 3 : 0;
 }

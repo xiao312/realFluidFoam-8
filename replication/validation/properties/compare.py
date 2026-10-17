@@ -41,10 +41,11 @@ def main():
                                   for name, (column, factor) in PROPERTIES.items()}
     if set(reference) != EXPECTED:
         raise ValueError("Reference coverage differs from the declared sweep")
-    errors, summaries, inputs = [], [], {}
+    errors, summaries, inputs, inversion_checks = [], [], {}, {}
     for eos, path in (("SRK", args.srk), ("PR", args.pr)):
         inputs[eos] = {"path": str(path), "sha256": digest(path)}
         seen = set()
+        inversion_errors = []
         with path.open(newline="") as stream:
             for row in csv.DictReader(stream):
                 key = (float(row["p_atm"]), float(row["T_requested_K"]))
@@ -52,8 +53,11 @@ def main():
                     raise ValueError("Unexpected/duplicate solver state: " + str(key))
                 seen.add(key)
                 inversion = float(row["inversion_relative_error"])
-                if not math.isfinite(inversion) or abs(inversion) > 1e-6:
+                if not math.isfinite(inversion) or inversion < 0:
                     raise ValueError("Invalid enthalpy inversion: " + str(key))
+                if abs(float(row["T_K"])-key[1]) > 1e-8:
+                    raise ValueError("Property temperature differs from requested state")
+                inversion_errors.append(inversion)
                 for name in PROPERTIES:
                     value, target = float(row[name]), reference[key][name]
                     if not all(math.isfinite(v) and v > 0 for v in (value, target)):
@@ -63,6 +67,9 @@ def main():
                                        relative_error=(value-target)/target))
         if seen != EXPECTED:
             raise ValueError("Incomplete solver sweep: " + eos)
+        inversion_checks[eos] = {"threshold": 1e-6,
+            "failed_states": sum(value > 1e-6 for value in inversion_errors),
+            "max_relative_error": max(inversion_errors)}
         for pressure in (1, 50, 100, 200, 300):
             for name in PROPERTIES:
                 group = [r for r in errors if r["eos"] == eos
@@ -78,7 +85,7 @@ def main():
             writer = csv.DictWriter(stream, fieldnames=list(rows[0]))
             writer.writeheader()
             writer.writerows(rows)
-    receipt = {"inputs": inputs, "reference": manifest,
+    receipt = {"inputs": inputs, "reference": manifest, "inversion_checks": inversion_checks,
                "qualification": "Comparison only; no universal agreement threshold imposed"}
     (args.output/"provenance.json").write_text(json.dumps(receipt, indent=2)+"\n", encoding="utf-8")
     print("Compared 450 solver states; wrote 40 property/pressure summaries")

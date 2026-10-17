@@ -22,15 +22,23 @@ wmake "$job/property-probe" > "$job/property-probe-build.log" 2>&1
 ldd "$FOAM_USER_APPBIN/rfPropertyProbe" > "$job/property-probe-ldd.txt"
 grep -F "$platform/lib/libspecie.so" "$job/property-probe-ldd.txt"
 if [[ "$stage" == properties ]]; then
+    inversion_failed=0
     for eos in SRK PR; do
         case_dir="$job/properties-$eos"
         python3 -B "$release/replication/validation/properties/generate.py" \
             "$release/replication/validation/inputs" "$case_dir" "$eos"
         blockMesh -case "$case_dir" > "$job/blockMesh-$eos.log" 2>&1
-        rfPropertyProbe -case "$case_dir" > "$job/properties-$eos.log" 2>&1
+        probe_status=0
+        rfPropertyProbe -case "$case_dir" > "$job/properties-$eos.log" 2>&1 || probe_status=$?
+        if [[ "$probe_status" == 3 ]]; then inversion_failed=1
+        elif [[ "$probe_status" != 0 ]]; then exit "$probe_status"; fi
         test "$(wc -l < "$case_dir/properties.csv")" == 226
     done
-    echo 'PASS: SRK and PR property sweeps; reference comparison pending' | tee "$job/result.txt"
+    if [[ "$inversion_failed" == 1 ]]; then
+        echo 'CHECK_FAILED: inversion tolerance; SRK and PR finite property sweeps completed, reference comparison pending' | tee "$job/result.txt"
+        exit 3
+    fi
+    echo 'PASS: SRK and PR property sweeps and inversion criterion; reference comparison pending' | tee "$job/result.txt"
 elif [[ "$stage" == counterflow-pilot-* ]]; then
     case_name=${stage#counterflow-pilot-}
     case_dir="$job/$case_name"
