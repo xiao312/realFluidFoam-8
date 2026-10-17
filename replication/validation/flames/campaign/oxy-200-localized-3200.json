@@ -1,0 +1,17 @@
+{
+  "case": "oxy-200",
+  "radial_cells": 8,
+  "axial_cells": 400,
+  "delta_t_s": 1e-06,
+  "end_time_s": 0.0001,
+  "write_interval_steps": 10,
+  "ranks": 16,
+  "wall_minutes": 60,
+  "initialization": {
+    "mode": "localized",
+    "mixing_width_fraction": 0.05,
+    "ignition_width_fraction": 0.04,
+    "ignition_temperature_K": 1800,
+    "strain_flow": true
+  }
+}

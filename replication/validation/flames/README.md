@@ -107,3 +107,18 @@ cell count, pressure, length, and byte-identical mesh files; it copies the lates
 positive saved time into the fresh case and records source field hashes. Source
 fields are never overwritten. The target end time must exceed the source time.
 Refined-mesh mapping is deliberately not treated as a same-mesh restart.
+
+For refinement, an optional `initialization` object can select a localized ignition
+state instead of the uniform hot pilot. Fields are `mode` (`localized`),
+`mixing_width_fraction`, `ignition_width_fraction`, `ignition_temperature_K`, and
+`strain_flow` (boolean). This is a reconstructed initialization, not specified by
+the paper and not fitted to its output curves. The mixing layer is centred at
+half the inlet separation; ignition is centred at the analytical stoichiometric
+mixture fraction for CH4/O2. Actual library inlet velocities define the optional
+initial strain flow. Initial-state sensitivity remains a validation requirement.
+
+`initialize_counterflow.py CASE` reads OpenFOAM-written cell centres and finalized
+inlet metadata. It changes internal fields only and records bounds and mass-sum
+checks. The runner calls the OF8 `postProcess -func writeCellCentres -time 0`
+function before initialization. See the [OF8 function definition](https://github.com/OpenFOAM/OpenFOAM-8/blob/master/etc/caseDicts/postProcessing/fields/writeCellCentres).
+Localized initialization and a restart are mutually exclusive.

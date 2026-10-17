@@ -10,7 +10,7 @@ from generate_counterflow import header
 
 
 def validate(config):
-    allowed={'case','radial_cells','axial_cells','delta_t_s','end_time_s','write_interval_steps','ranks','wall_minutes','phi','length_m','kernel_width_m','restart_job'}
+    allowed={'case','radial_cells','axial_cells','delta_t_s','end_time_s','write_interval_steps','ranks','wall_minutes','phi','length_m','kernel_width_m','restart_job','initialization'}
     if set(config)-allowed:raise ValueError('Unknown configuration fields: '+str(set(config)-allowed))
     for key in ('axial_cells','ranks','wall_minutes','write_interval_steps'):
         if type(config.get(key)) is not int or config[key]<1:raise ValueError('Positive integer required: '+key)
@@ -27,6 +27,13 @@ def validate(config):
         if type(config.get('radial_cells')) is not int or config['radial_cells']<1:raise ValueError('Positive radial cell count required')
         cells=config['radial_cells']*config['axial_cells']
     if config['axial_cells']%config['ranks']:raise ValueError('Axial cells must divide evenly among ranks')
+    if 'initialization' in config:
+        init=config['initialization']
+        if config['case']=='premixed' or 'restart_job' in config:raise ValueError('Localized counterflow initialization requires a fresh counterflow case')
+        if set(init)!={'mode','mixing_width_fraction','ignition_width_fraction','ignition_temperature_K','strain_flow'} or init['mode']!='localized':raise ValueError('Invalid initialization schema')
+        for name in ['mixing_width_fraction','ignition_width_fraction']:
+            if not 0<init[name]<.25:raise ValueError('Initialization width must be in (0, .25)')
+        if not 1000<init['ignition_temperature_K']<3000 or type(init['strain_flow']) is not bool:raise ValueError('Invalid ignition temperature or flow flag')
     return cells
 
 

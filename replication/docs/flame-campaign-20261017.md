@@ -81,3 +81,15 @@ on two CPUs (0.13056 core-hours). It remains a developing coarse flow.
 High-pressure two-rank cases have much larger chemistry cost per step. Identical
 eight-rank repeats are prepared to measure scaling while preserving the two-rank
 runs for direct comparison. No numerical settings other than rank count change.
+
+A separate localized-ignition refinement branch is prepared with 8 radial by 400
+axial cells (3,200 total), 16 ranks, dt=1e-6 s and endTime=1e-4 s. It uses cold
+streams and a localized 1800 K ignition region around the analytical stoichiometric
+mixture fraction of a tanh mixing layer; the initial strain velocity is based on
+library-derived inlet speeds. No paper output curve is used to initialize fields.
+The paper does not specify this ignition profile. Initial-condition sensitivity
+must therefore be checked before accepting steady results. Uniform-hot runs are
+retained. The localized branch changes initialization and mesh, not solver physics.
+
+Local fixture checks confirm finite bounded temperature and species-sum error
+1.11e-16. Actual OpenFOAM cell centres are used; no cell ordering is assumed.

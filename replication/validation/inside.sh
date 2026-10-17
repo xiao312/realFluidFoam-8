@@ -63,6 +63,10 @@ elif [[ "$stage" == campaign-* ]]; then
         python3 -B "$release/replication/validation/flames/finalize_inlets.py" "$case_dir" > "$job/inlet-settings.json"
     fi
     ranks=$(python3 -c 'import json,sys; print(json.load(open(sys.argv[1]))["ranks"])' "$config")
+    if python3 -c 'import json,sys; sys.exit("initialization" not in json.load(open(sys.argv[1])))' "$config"; then
+        postProcess -case "$case_dir" -func writeCellCentres -time 0 > "$job/cell-centres.log" 2>&1
+        python3 -B "$release/replication/validation/flames/initialize_counterflow.py" "$case_dir" > "$job/initialization.json"
+    fi
     restart=$(python3 -c 'import json,sys; print(json.load(open(sys.argv[1])).get("restart_job",0))' "$config")
     if [[ "$restart" != 0 ]]; then
         [[ "$restart" =~ ^[0-9]+$ ]] || exit 2
