@@ -1,0 +1,407 @@
+[
+  {
+    "id": "2022-fig01",
+    "year": 2022,
+    "figure": 1,
+    "page": 4,
+    "crop": [
+      37,
+      50,
+      561,
+      241
+    ],
+    "title": "Thermophysical model class and application",
+    "status": "diagram",
+    "qualification": "Source schematic retained for implementation context; no numerical replication score applies."
+  },
+  {
+    "id": "2022-fig02",
+    "year": 2022,
+    "figure": 2,
+    "page": 5,
+    "crop": [
+      37,
+      50,
+      561,
+      459
+    ],
+    "title": "Original thermophysical library class diagram",
+    "status": "diagram",
+    "qualification": "Source schematic retained for implementation context; no numerical replication score applies."
+  },
+  {
+    "id": "2022-fig03",
+    "year": 2022,
+    "figure": 3,
+    "page": 6,
+    "crop": [
+      37,
+      50,
+      561,
+      312
+    ],
+    "title": "Original mixture-property evaluation algorithm",
+    "status": "diagram",
+    "qualification": "Source schematic retained for implementation context; no numerical replication score applies."
+  },
+  {
+    "id": "2022-fig04",
+    "year": 2022,
+    "figure": 4,
+    "page": 7,
+    "crop": [
+      37,
+      50,
+      561,
+      363
+    ],
+    "title": "Updated real-fluid mixture algorithm",
+    "status": "diagram",
+    "qualification": "Source schematic retained for implementation context; no numerical replication score applies."
+  },
+  {
+    "id": "2022-fig05",
+    "year": 2022,
+    "figure": 5,
+    "page": 8,
+    "crop": [
+      37,
+      50,
+      561,
+      555
+    ],
+    "title": "Updated real-fluid library class diagram",
+    "status": "diagram",
+    "qualification": "Source schematic retained for implementation context; no numerical replication score applies."
+  },
+  {
+    "id": "2022-fig06",
+    "year": 2022,
+    "figure": 6,
+    "page": 10,
+    "crop": [
+      90,
+      50,
+      510,
+      349
+    ],
+    "title": "Methane density, Cp, viscosity and conductivity",
+    "status": "property",
+    "qualification": "Compare actual library evaluations with the paper layout and independent NIST reference."
+  },
+  {
+    "id": "2022-fig07",
+    "year": 2022,
+    "figure": 7,
+    "page": 10,
+    "crop": [
+      306,
+      379,
+      561,
+      495
+    ],
+    "title": "Counterflow configuration",
+    "status": "diagram",
+    "qualification": "Source schematic retained for implementation context; no numerical replication score applies."
+  },
+  {
+    "id": "2022-fig08",
+    "year": 2022,
+    "figure": 8,
+    "page": 11,
+    "crop": [
+      37,
+      50,
+      292,
+      398
+    ],
+    "title": "Counterflow temperature contours and streamlines",
+    "status": "startup",
+    "qualification": "Only 1 microsecond of a coarse startup run is available. This does not reproduce the published steady flame."
+  },
+  {
+    "id": "2022-fig09",
+    "year": 2022,
+    "figure": 9,
+    "page": 12,
+    "crop": [
+      37,
+      50,
+      561,
+      351
+    ],
+    "title": "1-atm counterflow axial profiles",
+    "status": "startup",
+    "qualification": "Only 1 microsecond of a coarse startup run is available. This does not reproduce the published steady flame."
+  },
+  {
+    "id": "2022-fig10",
+    "year": 2022,
+    "figure": 10,
+    "page": 12,
+    "crop": [
+      37,
+      414,
+      561,
+      716
+    ],
+    "title": "200-atm counterflow axial profiles",
+    "status": "startup",
+    "qualification": "Only 1 microsecond of a coarse startup run is available. This does not reproduce the published steady flame."
+  },
+  {
+    "id": "2022-fig11",
+    "year": 2022,
+    "figure": 11,
+    "page": 13,
+    "crop": [
+      37,
+      50,
+      292,
+      364
+    ],
+    "title": "100-atm methane/air counterflow profiles",
+    "status": "startup",
+    "qualification": "Only 1 microsecond of a coarse startup run is available. This does not reproduce the published steady flame."
+  },
+  {
+    "id": "2022-fig12",
+    "year": 2022,
+    "figure": 12,
+    "page": 13,
+    "crop": [
+      306,
+      50,
+      561,
+      201
+    ],
+    "title": "Premixed flame speed versus equivalence ratio",
+    "status": "missing",
+    "qualification": "No developed flame fronts, density-weighted OH displacement speeds, or equivalence-ratio sweep exist. The startup pilot cannot supply this curve."
+  },
+  {
+    "id": "2025-fig01",
+    "year": 2025,
+    "figure": 1,
+    "page": 3,
+    "crop": [
+      37,
+      50,
+      561,
+      191
+    ],
+    "title": "Nitrogen reduced-pressure/temperature property maps",
+    "status": "context",
+    "qualification": "The original NIST context map is retained. No independent pressure-temperature map was computed."
+  },
+  {
+    "id": "2025-fig02",
+    "year": 2025,
+    "figure": 2,
+    "page": 3,
+    "crop": [
+      37,
+      230,
+      292,
+      556
+    ],
+    "title": "Original PIMPLE algorithm",
+    "status": "diagram",
+    "qualification": "Source schematic retained for implementation context; no numerical replication score applies."
+  },
+  {
+    "id": "2025-fig03",
+    "year": 2025,
+    "figure": 3,
+    "page": 4,
+    "crop": [
+      37,
+      50,
+      292,
+      410
+    ],
+    "title": "Original enthalpy-to-temperature algorithm",
+    "status": "diagram",
+    "qualification": "Source schematic retained for implementation context; no numerical replication score applies."
+  },
+  {
+    "id": "2025-fig04",
+    "year": 2025,
+    "figure": 4,
+    "page": 4,
+    "crop": [
+      306,
+      50,
+      561,
+      384
+    ],
+    "title": "Modified PIMPLE algorithm",
+    "status": "diagram",
+    "qualification": "Source schematic retained for implementation context; no numerical replication score applies."
+  },
+  {
+    "id": "2025-fig05",
+    "year": 2025,
+    "figure": 5,
+    "page": 5,
+    "crop": [
+      37,
+      50,
+      561,
+      417
+    ],
+    "title": "Coupled Newton-bisection algorithm",
+    "status": "diagram",
+    "qualification": "Source schematic retained for implementation context; no numerical replication score applies."
+  },
+  {
+    "id": "2025-fig06",
+    "year": 2025,
+    "figure": 6,
+    "page": 6,
+    "crop": [
+      110,
+      130,
+      500,
+      378
+    ],
+    "title": "Nitrogen density and Cp at 3.98 MPa",
+    "status": "property",
+    "qualification": "Compare actual library evaluations with the paper layout and independent NIST reference."
+  },
+  {
+    "id": "2025-fig07",
+    "year": 2025,
+    "figure": 7,
+    "page": 6,
+    "crop": [
+      37,
+      420,
+      561,
+      532
+    ],
+    "title": "Nitrogen injector configuration and LES mesh",
+    "status": "diagram",
+    "qualification": "Source schematic retained for implementation context; no numerical replication score applies."
+  },
+  {
+    "id": "2025-fig08",
+    "year": 2025,
+    "figure": 8,
+    "page": 7,
+    "crop": [
+      37,
+      50,
+      561,
+      357
+    ],
+    "title": "Case 3/4 instantaneous density, gradients and Cp",
+    "status": "missing",
+    "qualification": "No matching LES simulation or time-averaged dataset has been produced."
+  },
+  {
+    "id": "2025-fig09",
+    "year": 2025,
+    "figure": 9,
+    "page": 8,
+    "crop": [
+      37,
+      50,
+      561,
+      185
+    ],
+    "title": "Case 3/4 mean centerline density",
+    "status": "missing",
+    "qualification": "No matching LES simulation or time-averaged dataset has been produced."
+  },
+  {
+    "id": "2025-fig10",
+    "year": 2025,
+    "figure": 10,
+    "page": 8,
+    "crop": [
+      37,
+      220,
+      292,
+      351
+    ],
+    "title": "Case 3 injection-temperature sensitivity",
+    "status": "missing",
+    "qualification": "No matching LES simulation or time-averaged dataset has been produced."
+  },
+  {
+    "id": "2025-fig11",
+    "year": 2025,
+    "figure": 11,
+    "page": 9,
+    "crop": [
+      37,
+      50,
+      561,
+      317
+    ],
+    "title": "PR/SRK mean density and temperature comparison",
+    "status": "missing",
+    "qualification": "No matching LES simulation or time-averaged dataset has been produced."
+  },
+  {
+    "id": "2025-fig12",
+    "year": 2025,
+    "figure": 12,
+    "page": 9,
+    "crop": [
+      37,
+      360,
+      561,
+      502
+    ],
+    "title": "Coaxial nitrogen/hydrogen configuration and mesh",
+    "status": "diagram",
+    "qualification": "Source schematic retained for implementation context; no numerical replication score applies."
+  },
+  {
+    "id": "2025-fig13",
+    "year": 2025,
+    "figure": 13,
+    "page": 10,
+    "crop": [
+      37,
+      50,
+      561,
+      275
+    ],
+    "title": "Coaxial instantaneous flow and mixing fields",
+    "status": "missing",
+    "qualification": "No matching LES simulation or time-averaged dataset has been produced."
+  },
+  {
+    "id": "2025-fig14",
+    "year": 2025,
+    "figure": 14,
+    "page": 10,
+    "crop": [
+      37,
+      310,
+      561,
+      492
+    ],
+    "title": "Coaxial mean species density profiles",
+    "status": "missing",
+    "qualification": "No matching LES simulation or time-averaged dataset has been produced."
+  },
+  {
+    "id": "2025-fig15",
+    "year": 2025,
+    "figure": 15,
+    "page": 10,
+    "crop": [
+      37,
+      530,
+      561,
+      707
+    ],
+    "title": "Coaxial inlet-temperature sensitivity",
+    "status": "missing",
+    "qualification": "No matching LES simulation or time-averaged dataset has been produced."
+  }
+]

@@ -1,0 +1,4 @@
+-r ../properties/analysis-requirements.txt
+PyMuPDF==1.28.2
+reportlab==5.0.1
+charset-normalizer==3.5.2

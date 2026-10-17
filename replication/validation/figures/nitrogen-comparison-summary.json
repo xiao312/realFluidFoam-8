@@ -1,0 +1,30 @@
+[
+  {
+    "eos": "SRK",
+    "property": "rho_kg_m3",
+    "rms_relative_error": 0.028504345866921986,
+    "max_absolute_relative_error": 0.14235382346701358,
+    "worst_T_K": 128.25
+  },
+  {
+    "eos": "SRK",
+    "property": "Cp_J_kg_K",
+    "rms_relative_error": 0.04925032586469417,
+    "max_absolute_relative_error": 0.26824113182162496,
+    "worst_T_K": 129.75
+  },
+  {
+    "eos": "PR",
+    "property": "rho_kg_m3",
+    "rms_relative_error": 0.032836429020242766,
+    "max_absolute_relative_error": 0.11097165030326617,
+    "worst_T_K": 100.0
+  },
+  {
+    "eos": "PR",
+    "property": "Cp_J_kg_K",
+    "rms_relative_error": 0.04454644112827097,
+    "max_absolute_relative_error": 0.28869667849166075,
+    "worst_T_K": 129.75
+  }
+]

@@ -1,0 +1,143 @@
+[
+  {
+    "property": "rho_kg_m3",
+    "pressure_atm": 1,
+    "matched_states": 45,
+    "rms_relative_to_digitized_curve": null,
+    "max_absolute_relative_to_digitized_curve": null,
+    "qualification": "Not scored: low-density curve is unresolved on the printed 0-400 kg/m3 scale; use numerical NIST comparison."
+  },
+  {
+    "property": "rho_kg_m3",
+    "pressure_atm": 50,
+    "matched_states": 45,
+    "rms_relative_to_digitized_curve": 0.002170101587343707,
+    "max_absolute_relative_to_digitized_curve": 0.0056661597585445905
+  },
+  {
+    "property": "rho_kg_m3",
+    "pressure_atm": 100,
+    "matched_states": 45,
+    "rms_relative_to_digitized_curve": 0.0007960089875177987,
+    "max_absolute_relative_to_digitized_curve": 0.0019479275920342173
+  },
+  {
+    "property": "rho_kg_m3",
+    "pressure_atm": 200,
+    "matched_states": 45,
+    "rms_relative_to_digitized_curve": 0.00032940884022840535,
+    "max_absolute_relative_to_digitized_curve": 0.0009684406497825115
+  },
+  {
+    "property": "rho_kg_m3",
+    "pressure_atm": 300,
+    "matched_states": 45,
+    "rms_relative_to_digitized_curve": 0.0005501879325727956,
+    "max_absolute_relative_to_digitized_curve": 0.0011729108319297316
+  },
+  {
+    "property": "Cp_J_kg_K",
+    "pressure_atm": 1,
+    "matched_states": 45,
+    "rms_relative_to_digitized_curve": 0.0001423083658528403,
+    "max_absolute_relative_to_digitized_curve": 0.00031556204797377054
+  },
+  {
+    "property": "Cp_J_kg_K",
+    "pressure_atm": 50,
+    "matched_states": 44,
+    "rms_relative_to_digitized_curve": 0.003551699064522047,
+    "max_absolute_relative_to_digitized_curve": 0.02318962534505236
+  },
+  {
+    "property": "Cp_J_kg_K",
+    "pressure_atm": 100,
+    "matched_states": 45,
+    "rms_relative_to_digitized_curve": 0.0002475625878578039,
+    "max_absolute_relative_to_digitized_curve": 0.0009486483637048418
+  },
+  {
+    "property": "Cp_J_kg_K",
+    "pressure_atm": 200,
+    "matched_states": 45,
+    "rms_relative_to_digitized_curve": 0.00012769496855576985,
+    "max_absolute_relative_to_digitized_curve": 0.00028944232686751786
+  },
+  {
+    "property": "Cp_J_kg_K",
+    "pressure_atm": 300,
+    "matched_states": 45,
+    "rms_relative_to_digitized_curve": 0.0005155824531877205,
+    "max_absolute_relative_to_digitized_curve": 0.0014259214617233882
+  },
+  {
+    "property": "mu_Pa_s",
+    "pressure_atm": 1,
+    "matched_states": 45,
+    "rms_relative_to_digitized_curve": 0.00047595312662588674,
+    "max_absolute_relative_to_digitized_curve": 0.0012561343926991233
+  },
+  {
+    "property": "mu_Pa_s",
+    "pressure_atm": 50,
+    "matched_states": 45,
+    "rms_relative_to_digitized_curve": 0.0008565811625071895,
+    "max_absolute_relative_to_digitized_curve": 0.004222660658023069
+  },
+  {
+    "property": "mu_Pa_s",
+    "pressure_atm": 100,
+    "matched_states": 45,
+    "rms_relative_to_digitized_curve": 0.0004580907433426409,
+    "max_absolute_relative_to_digitized_curve": 0.001385365255308386
+  },
+  {
+    "property": "mu_Pa_s",
+    "pressure_atm": 200,
+    "matched_states": 45,
+    "rms_relative_to_digitized_curve": 0.0002899658536040308,
+    "max_absolute_relative_to_digitized_curve": 0.0006491321937414655
+  },
+  {
+    "property": "mu_Pa_s",
+    "pressure_atm": 300,
+    "matched_states": 45,
+    "rms_relative_to_digitized_curve": 0.0008003365219288211,
+    "max_absolute_relative_to_digitized_curve": 0.0020385453360030076
+  },
+  {
+    "property": "kappa_W_m_K",
+    "pressure_atm": 1,
+    "matched_states": 45,
+    "rms_relative_to_digitized_curve": 0.0002484356561539084,
+    "max_absolute_relative_to_digitized_curve": 0.0006957453395481926
+  },
+  {
+    "property": "kappa_W_m_K",
+    "pressure_atm": 50,
+    "matched_states": 45,
+    "rms_relative_to_digitized_curve": 0.0007088885318732923,
+    "max_absolute_relative_to_digitized_curve": 0.0036817027812759725
+  },
+  {
+    "property": "kappa_W_m_K",
+    "pressure_atm": 100,
+    "matched_states": 45,
+    "rms_relative_to_digitized_curve": 0.00028991157666633714,
+    "max_absolute_relative_to_digitized_curve": 0.0011270233158029172
+  },
+  {
+    "property": "kappa_W_m_K",
+    "pressure_atm": 200,
+    "matched_states": 45,
+    "rms_relative_to_digitized_curve": 0.00015606317232674563,
+    "max_absolute_relative_to_digitized_curve": 0.00038562124356176326
+  },
+  {
+    "property": "kappa_W_m_K",
+    "pressure_atm": 300,
+    "matched_states": 45,
+    "rms_relative_to_digitized_curve": 0.00023503148779217944,
+    "max_absolute_relative_to_digitized_curve": 0.000433054043500884
+  }
+]
