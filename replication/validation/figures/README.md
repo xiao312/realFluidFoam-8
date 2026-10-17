@@ -75,6 +75,19 @@ the project root and an explicit status label. Numerical status is always printe
 inside the figure. Values outside paper axes are counted, not silently hidden;
 the wider-range diagnostic plots remain available from `plot_flames.py`.
 This renderer does not generate missing flame-speed results or reference curves.
+
+`plot_interim.py PROJECT_ROOT SNAPSHOT_ROOT OUTPUT_DIR` reads the saved 10/20 ms
+processor fields for jobs 124672685, 124674723 and 124674728 using global cell
+addressing and polyhedral mesh centroids. It creates a dated six-page PDF addendum
+and PNG/SVG plots, preserving the earlier atlas. Counterflow Figures 8–11 are
+explicitly one-step initialization, not GRI30 validation. OH is absent from that
+mechanism and is omitted, never replaced by zero. Nonuniform axial mesh geometry
+is retained in contours; streamlines are interpolated onto a regular display grid.
+The premixed page uses the inspected phi=1.10, 10-microsecond CSV as a diagnostic
+beside Figure 12; it does not fabricate a flame-speed curve. Inputs and source
+figure crops remain private. Verify addressing coverage, finite fields, page
+count, actual figure dimensions and rendered layout. This script uses the same
+local analysis dependencies and requires no HPC executable or new allocation.
 Each contour panel states its own time. Plot provenance records case paths,
 times, cell counts and nearest-axis radii. The atlas reads this record to update
 its counterflow captions and summary, avoiding stale one-microsecond descriptions
