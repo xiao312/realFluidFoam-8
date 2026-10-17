@@ -36,8 +36,9 @@ def base(title,page):
     pdf.setFont('Helvetica',10);pdf.drawString(40,22,'realFluidFoam replication | 2026-10-17 | private source comparison')
     pdf.drawRightString(width-40,22,str(page))
 
-def picture(path,x,y,w,h):
+def picture(path,x,y,w,h,max_scale=None):
     img=ImageReader(str(path));iw,ih=img.getSize();scale=min(w/iw,h/ih)
+    if max_scale is not None: scale=min(scale,max_scale)
     pdf.drawImage(img,x+(w-iw*scale)/2,y+(h-ih*scale)/2,width=iw*scale,height=ih*scale,mask='auto')
 
 base('Paper figure comparison: current evidence',1)
@@ -47,6 +48,8 @@ pdf.showPage()
 sections=[]
 for number,item in enumerate(items,2):
     ident=item['id'];original=out/f'originals/{ident}.png';plot=out/f'plots/{ident}.png'
+    caption=out/f'captions/{ident}.png'
+    assert caption.exists()
     assert original.exists()
     if item['status'] in ('startup','property'):assert plot.exists()
     title=f"{item['year']} Figure {item['figure']} | {item['title']}"
@@ -55,19 +58,22 @@ for number,item in enumerate(items,2):
     pdf.setFont('Helvetica-Bold',12);pdf.drawString(45,height-135,'Published figure (source PDF page '+str(item['page'])+')')
     if plot.exists():
         pdf.drawString(width/2+15,height-135,'Our calculations / diagnostics')
-        picture(original,40,80,width/2-60,height-230)
-        picture(plot,width/2+10,80,width/2-50,height-230)
+        picture(original,40,180,width/2-60,height-330)
+        picture(plot,width/2+10,180,width/2-50,height-330)
+        picture(caption,40,60,width/2-60,100,max_scale=.45)
+        para('Our result: '+item['qualification'],width/2+15,145,width/2-65)
     else:
-        picture(original,40,85,width*.68-40,height-235)
+        picture(original,40,190,width*.68-40,height-340)
+        picture(caption,40,55,width*.68-40,115,max_scale=.45)
         para(item['qualification'],width*.71,height-190,width*.25)
         para('No independently reproduced result is claimed for this figure.',width*.71,height-295,width*.25)
     pdf.showPage()
-    images=f'<figure><figcaption>Published figure - source page {item["page"]}</figcaption><a href="originals/{ident}.png"><img src="originals/{ident}.png" alt="Published {ident}"></a></figure>'
-    if plot.exists():images+=f'<figure><figcaption>Our result - <a href="plots/{ident}.svg">SVG</a></figcaption><a href="plots/{ident}.png"><img src="plots/{ident}.png" alt="Our {ident}"></a></figure>'
+    images=f'<figure><figcaption>Published figure - source page {item["page"]}</figcaption><a href="originals/{ident}.png"><img src="originals/{ident}.png" alt="Published {ident}"></a><figcaption><span>Original paper caption (verbatim):</span><a href="captions/{ident}.png"><img class="caption" src="captions/{ident}.png" alt="Original caption for {ident}"></a></figcaption></figure>'
+    if plot.exists():images+=f'<figure><figcaption>Our result - <a href="plots/{ident}.svg">SVG</a></figcaption><a href="plots/{ident}.png"><img src="plots/{ident}.png" alt="Our {ident}"></a><figcaption>Our result: {html.escape(item["qualification"])}</figcaption></figure>'
     sections.append(f'<section id="{ident}" data-status="{item["status"]}"><h2>{html.escape(title)}</h2><p class="status">{labels[item["status"]]}</p><p>{html.escape(item["qualification"])}</p><div class="pair">{images}</div></section>')
 pdf.save()
 nav=' '.join(f'<a href="#{i["id"]}">{i["year"]}/{i["figure"]}</a>' for i in items)
-page='''<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>realFluidFoam figure comparison</title><style>body{font:16px/1.6 system-ui;color:#23313d;background:#f3f5f6;margin:0}main{max-width:1600px;margin:auto;padding:32px}section,header{background:white;padding:28px;margin:20px 0;border:1px solid #d6dde2;border-radius:8px}h1,h2{line-height:1.25}.pair{display:flex;gap:20px;align-items:center}figure{flex:1;min-width:0;margin:0}img{width:100%;height:auto}a{color:#175e96}nav a{display:inline-block;padding:5px}.status{font-weight:bold;color:#98512b}select{padding:8px}@media(max-width:900px){.pair{display:block}figure{margin-bottom:24px}}</style><main><header><h1>All 27 paper figures: comparison atlas</h1>'''
+page='''<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>realFluidFoam figure comparison</title><style>body{font:16px/1.6 system-ui;color:#23313d;background:#f3f5f6;margin:0}main{max-width:1600px;margin:auto;padding:32px}section,header{background:white;padding:28px;margin:20px 0;border:1px solid #d6dde2;border-radius:8px}h1,h2{line-height:1.25}.pair{display:flex;gap:20px;align-items:start}figure{flex:1;min-width:0;margin:0}img{width:100%;height:auto}figcaption{padding:12px 0;font-size:14px}.caption{display:block;margin-top:8px}a{color:#175e96}nav a{display:inline-block;padding:5px}.status{font-weight:bold;color:#98512b}select{padding:8px}@media(max-width:900px){.pair{display:block}figure{margin-bottom:24px}}</style><main><header><h1>All 27 paper figures: comparison atlas</h1>'''
 page+=''.join('<p>'+html.escape(p)+'</p>' for p in summary)
 page+='<p><a href="realfluidfoam-figure-atlas.pdf">Download PDF atlas</a> | <a href="data/methane-paper-curve-errors.json">Methane metrics</a> | <a href="data/nitrogen-nist-errors.json">Nitrogen metrics</a> | <a href="source-provenance.json">Source provenance</a></p><nav>'+nav+'</nav><label>Show: <select id="filter"><option value="all">All figures</option>'+''.join(f'<option value="{k}">{v}</option>' for k,v in labels.items())+'</select></label></header>'
 page+=''.join(sections)+'''</main><script>document.querySelector('#filter').onchange=e=>document.querySelectorAll('section').forEach(s=>s.hidden=e.target.value!=='all'&&s.dataset.status!==e.target.value);</script></html>'''

@@ -58,3 +58,9 @@ The 1-atm methane density series is not numerically scored against the digitized
 paper because the drawing scale cannot resolve it reliably. Use the independent
 numerical NIST comparison for that series. Source data and report assets remain
 private local artifacts; only small computed summaries belong in Git.
+
+Original captions are cropped separately at 4x PDF resolution to preserve math
+and symbols. `render_sources.py` requires exactly one matching figure-caption
+start and handles the inspected multi-block 2022 Figure 12 caption explicitly.
+The atlas displays source captions beneath the original images, opposite our
+plots and qualifications. Inspect all 27 captions when source PDFs change.

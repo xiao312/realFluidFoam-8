@@ -2,6 +2,7 @@
 import argparse
 import hashlib
 import json
+import re
 from pathlib import Path
 import pymupdf
 from PIL import Image, ImageDraw
@@ -15,6 +16,7 @@ root = args.root.resolve(strict=True)
 out = root/"output/figure-comparison-20261017"
 (out/"originals").mkdir(parents=True, exist_ok=True)
 (out/"plots").mkdir(exist_ok=True)
+(out/"captions").mkdir(exist_ok=True)
 inventory = json.loads(Path(__file__).with_name("inventory.json").read_text())
 sources = {2022: args.pdf2022, 2025: args.pdf2025}
 documents = {year: pymupdf.open(path) for year, path in sources.items()}
@@ -22,6 +24,18 @@ for item in inventory:
     page = documents[item["year"]][item["page"]-1]
     page.get_pixmap(matrix=pymupdf.Matrix(2.5, 2.5), clip=pymupdf.Rect(item["crop"])).save(
         out/"originals"/(item["id"]+".png"))
+    matches = [b for b in page.get_text("blocks")
+               if re.match(r"Fig\.\s*"+str(item["figure"])+r"\.", b[4])]
+    if len(matches) != 1:
+        raise ValueError("Caption is missing or ambiguous: "+item["id"])
+    bounds = pymupdf.Rect(matches[0][:4])
+    # This caption's superscript/subscript splits it across three PDF text blocks.
+    if item["id"] == "2022-fig12":
+        bounds = pymupdf.Rect(306.63, 203.97, 560.50, 231.08)
+    bounds = bounds + (-2, -2, 2, 2)
+    page.get_pixmap(matrix=pymupdf.Matrix(4, 4), clip=bounds).save(
+        out/"captions"/(item["id"]+".png"))
+    item["caption_crop"] = list(bounds)
 for year in (2022, 2025):
     items = [item for item in inventory if item["year"] == year]
     sheet = Image.new("RGB", (1200, ((len(items)+2)//3)*340), "#e9edf0")
