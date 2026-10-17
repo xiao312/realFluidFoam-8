@@ -77,6 +77,18 @@ SHA-256; conversion does not have to produce bit-identical SIF metadata on each 
 Stage a full Git archive as `releases/<revision>` and write its exact commit into
 `SOURCE_REVISION`. Upstream contains case-colliding
 paths and tracked build artifacts. Do not use a Windows working-tree ZIP.
+Disable Windows line-ending conversion when creating the archive:
+
+```sh
+git -c core.autocrlf=false archive --format=tar.gz --output=SOURCE_ARCHIVE HEAD
+python3 -B replication/environment/verify_archive.py SOURCE_ARCHIVE HEAD
+```
+
+The first full build failed because `git archive` inherited `core.autocrlf=true`
+and exported CRLF build scripts even though their Git blobs use LF. The environment
+scripts were unaffected because their attributes explicitly pin LF. Verify archive
+build-control bytes before transfer; do not normalize the immutable source release
+or patch the solver to compensate for a staging error.
 The build script copies the release into `builds/<job-id>` and removes generated
 `lnInclude` and `Make/linux*` directories there. It preserves the source release.
 
