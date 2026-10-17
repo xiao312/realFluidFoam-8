@@ -4,6 +4,12 @@ This directory owns environment recipes, replication inputs, and result summarie
 for Nguyen's 2022 library and 2025 solver papers. The first scientific stages are
 properties, counterflow flames, and premixed flame speed. No result is accepted yet.
 
+Current run coverage is recorded in the
+[expanded low-dimensional campaign](docs/low-dimensional-campaign-20261017.md)
+and its [job register](docs/low-dimensional-jobs-20261017.json). These dated
+records identify the original-input counterflow baseline, the adapted remaining
+conditions and the premixed sweep; older pilot plans remain historical evidence.
+
 The [Lark project record](https://qcnwovvb1xop.feishu.cn/docx/KgobdGw8CoIfRCxI2BvcoFYEnCf)
 holds decisions and dated work logs. Git holds executable inputs and reviewed records.
 Large images, build trees, and raw results remain in the configured project workspace.
