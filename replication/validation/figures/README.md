@@ -64,3 +64,14 @@ and symbols. `render_sources.py` requires exactly one matching figure-caption
 start and handles the inspected multi-block 2022 Figure 12 caption explicitly.
 The atlas displays source captions beneath the original images, opposite our
 plots and qualifications. Inspect all 27 captions when source PDFs change.
+
+## Paper-scale 2022 rendering
+
+`plot_paper2022.py PROJECT_ROOT [CASE_MANIFEST]` renders Figures 8-11 at the
+inspected source crop dimensions in PDF points, with Times-family typography,
+paper panel placement, axial windows, colour conventions and limits. It defaults
+to the archived startup runs; a JSON manifest can supply new case paths under
+the project root and an explicit status label. Numerical status is always printed
+inside the figure. Values outside paper axes are counted, not silently hidden;
+the wider-range diagnostic plots remain available from `plot_flames.py`.
+This renderer does not generate missing flame-speed results or reference curves.

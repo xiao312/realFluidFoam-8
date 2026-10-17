@@ -72,3 +72,25 @@ gamma to the library's inlet Cp/Cv before ignition. Temperature and species use
 zeroGradient end conditions; the four transverse faces are empty. Check those
 boundary choices and domain/kernel sensitivity before a flame-speed campaign.
 No OH displacement speed is inferred from the 1-microsecond startup pilot.
+
+## Controlled convergence runs
+
+`campaign.py plan CONFIG INPUTS CASE` validates and prints a configuration without
+writing. `campaign.py apply CONFIG INPUTS CASE` creates a fresh case using the
+same pinned physics as the pilots, then sets explicit resolution, timestep,
+write cadence, duration, MPI decomposition and initialization. Existing cases
+are refused. Configuration fields are `case`, `radial_cells`, `axial_cells`,
+`delta_t_s`, `end_time_s`, `write_interval_steps`, `ranks`, and `wall_minutes`.
+Premixed configurations additionally set `phi`, `length_m`, `kernel_width_m`.
+All cases start fresh; continuation/mapping is a separate operation, not implicit.
+
+The first batch checks 320-cell serial/MPI agreement and timestep growth before
+long or refined runs. A successful job only passes field checks. Temporal drift,
+flame location, mesh sensitivity and premixed front-speed extraction are separate
+acceptance gates. The submitter must reserve CPUs times wall limit against the
+owner-selected campaign budget before submitting; configurations alone do not
+approve compute expenditure. Planned examples are in `campaign/`.
+
+Verify by running the read-only plan, generating a local fixture case, checking
+cell counts and exact control settings, and running shell syntax checks. A live
+MPI job must be reconstructed before field comparison with the serial baseline.

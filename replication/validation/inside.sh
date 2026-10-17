@@ -47,6 +47,32 @@ if [[ "$stage" == properties || "$stage" == properties-nitrogen ]]; then
         exit 3
     fi
     echo 'PASS: SRK and PR property sweeps and inversion criterion; reference comparison pending' | tee "$job/result.txt"
+elif [[ "$stage" == campaign-* ]]; then
+    config="$release/replication/validation/flames/campaign/${stage#campaign-}.json"
+    case_dir="$job/case"
+    python3 -B "$release/replication/validation/flames/campaign.py" apply "$config" \
+        "$release/replication/validation/inputs" "$case_dir" > "$job/campaign-plan.json"
+    blockMesh -case "$case_dir" > "$job/blockMesh.log" 2>&1
+    checkMesh -case "$case_dir" > "$job/checkMesh.log" 2>&1
+    grep -q 'Mesh OK' "$job/checkMesh.log"
+    rfPropertyProbe -case "$case_dir" -initial > "$job/inlet-probe.log" 2>&1
+    if python3 -c 'import json,sys; sys.exit(json.load(open(sys.argv[1]))["case"]!="premixed")' "$config"; then
+        python3 -B "$release/replication/validation/flames/finalize_premixed.py" "$case_dir" > "$job/inlet-settings.json"
+        setFields -case "$case_dir" > "$job/setFields.log" 2>&1
+    else
+        python3 -B "$release/replication/validation/flames/finalize_inlets.py" "$case_dir" > "$job/inlet-settings.json"
+    fi
+    ranks=$(python3 -c 'import json,sys; print(json.load(open(sys.argv[1]))["ranks"])' "$config")
+    if [[ "$ranks" -gt 1 ]]; then
+        decomposePar -case "$case_dir" > "$job/decompose.log" 2>&1
+        mpirun --mca btl self,vader,tcp -np "$ranks" realFluidReactingFoam -case "$case_dir" -parallel > "$job/solver.log" 2>&1
+        reconstructPar -case "$case_dir" > "$job/reconstruct.log" 2>&1
+    else
+        realFluidReactingFoam -case "$case_dir" > "$job/solver.log" 2>&1
+    fi
+    grep -q '^End' "$job/solver.log"
+    python3 -B "$release/replication/validation/flames/summarize.py" "$case_dir" > "$job/field-summary.json"
+    echo 'PASS: configured development run and final field checks; temporal/grid convergence not established' | tee "$job/result.txt"
 elif [[ "$stage" == counterflow-pilot-* || "$stage" == premixed-pilot-phi1 ]]; then
     case_name=${stage#counterflow-pilot-}
     case_dir="$job/$case_name"

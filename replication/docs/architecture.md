@@ -34,3 +34,10 @@ The project workspace owns `images`, `releases`, `builds`, `jobs`, `logs`, `cach
 `tmp`, `home`, and `results`. Each job has its own temporary and home directories.
 Source releases are immutable inputs. Compilation uses a separate build copy.
 An image hash identifies bytes; a preflight establishes site compatibility.
+
+The flame module's `campaign.py` validates explicit development configurations;
+`submit_campaign.sh` reserves worst-case allocated core-hours in a project-local
+ledger before submission. The existing validation runner handles decomposition,
+contained single-node MPI, reconstruction and final field checks. It does not
+infer convergence from a successful run. Figure rendering consumes reconstructed
+case fields through an explicit case manifest, separately from job submission.

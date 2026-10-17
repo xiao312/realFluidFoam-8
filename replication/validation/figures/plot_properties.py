@@ -37,8 +37,11 @@ properties = [("rho_kg_m3", "Density [kg/m³]", (-10, 400)),
               ("Cp_J_kg_K", "Cp [J/(kg K)]", (1800, 8500)),
               ("mu_Pa_s", "Dynamic viscosity [kg/(m s)]", (0, 6.5e-5)),
               ("kappa_W_m_K", "Thermal conductivity [W/(m K)]", (0, .155))]
-fig, axes = plt.subplots(2, 2, figsize=(10, 7.4))
-fig.subplots_adjust(top=.86, bottom=.10, left=.10, right=.97, hspace=.30, wspace=.32)
+fig, axes = plt.subplots(2, 2, figsize=(420/72, 299/72))
+fig.subplots_adjust(top=.94, bottom=.08, left=.10, right=.96, hspace=.35, wspace=.40)
+for axis in axes.flat:
+    axis.tick_params(labelsize=5.5, direction="in", width=.5, length=2)
+    for spine in axis.spines.values(): spine.set_linewidth(.5)
 metrics = []
 for axis, (name, label, ylim), letter in zip(axes.flat, properties, "abcd"):
     for pressure, style in zip((1, 50, 100, 200, 300), styles):
@@ -74,15 +77,16 @@ for axis, (name, label, ylim), letter in zip(axes.flat, properties, "abcd"):
                 max_absolute_relative_to_digitized_curve=None,
                 qualification="Not scored: low-density curve is unresolved on the printed 0-400 kg/m3 scale; use numerical NIST comparison.")
     axis.set(xlim=(180, 625), ylim=ylim, xlabel="Temperature [K]", ylabel=label)
-    axis.set_title(f"({letter})", loc="left", fontweight="bold")
+    axis.set_title(f"{letter})", loc="left", fontweight="bold", fontsize=7)
+    axis.xaxis.label.set_size(6.5); axis.yaxis.label.set_size(6.5)
 axes[0, 0].legend([Line2D([], [], color="#c52929", ls=s) for s in styles],
-                  [f"{p} atm" for p in (1, 50, 100, 200, 300)], loc="upper right", fontsize=8)
+                  [f"{p} atm" for p in (1, 50, 100, 200, 300)], loc="upper right", fontsize=5)
 fig.legend([Line2D([], [], color="#c52929"), Line2D([], [], color="#1765b5", marker="o", mfc="none", ls="none"),
             Line2D([], [], color="black", marker="^", mfc="none", ls="none")],
            ["Published curves (vector digitization)", "Our OF8 SRK", "NIST retrieved 2026-10-17"],
-           loc="upper center", bbox_to_anchor=(.52, .955), ncol=3, fontsize=8)
-fig.suptitle("2022 Figure 6 - direct methane-property comparison", y=.995)
-fig.text(.5, .012, "Paper axis limits retained; hidden Cp peak is not interpolated. Inversion criterion remains failed.", ha="center", fontsize=8)
+           loc="upper center", bbox_to_anchor=(.52, 1.005), ncol=3, fontsize=4.5)
+
+
 save(fig, "2022-fig06")
 (out/"data/methane-paper-curve-errors.json").write_text(json.dumps(metrics, indent=2)+"\n")
 
