@@ -56,3 +56,8 @@ cannot establish a steady flame. `oxy-200` and `air-100` select the other cases.
 The generator refuses an existing output and verifies the pinned coefficient
 hashes. It writes zero inlet speeds until `finalize_inlets.py` consumes densities
 from `rfPropertyProbe -initial`; do not run the solver before finalization.
+
+`summarize.py CASE` reads the final ASCII scalar fields and records finite positive
+T/p/rho, species bounds and the 1e-8 mass-fraction sum criterion in
+`pilot-summary.json`. It returns 3 for a failed numerical check. This is not a
+steady-state or mesh-convergence test, nor an integrated mass conservation balance.

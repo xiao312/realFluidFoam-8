@@ -52,6 +52,7 @@ elif [[ "$stage" == counterflow-pilot-* ]]; then
     realFluidReactingFoam -case "$case_dir" > "$job/solver.log" 2>&1
     grep -q '^End' "$job/solver.log"
     grep -q 'seulex' "$job/solver.log"
+    python3 -B "$release/replication/validation/flames/summarize.py" "$case_dir" > "$job/pilot-summary.json"
     echo 'PASS: counterflow startup/cost pilot only; convergence and scientific comparison pending' | tee "$job/result.txt"
 else
     echo "Unsupported validation stage: $stage" >&2
