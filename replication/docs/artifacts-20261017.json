@@ -1,0 +1,21 @@
+{
+  "date": "2026-10-17",
+  "location": "results/ under the configured SCNet trial; verified local copies under state/",
+  "artifacts": [
+    {
+      "file": "build-124657926-evidence.tar.gz",
+      "sha256": "81c935ff63a0a93273221eb5b7861f90ae671dc21134ae9b3054bae8c0b0dc96",
+      "scope": "full solver compilation and dependency checks"
+    },
+    {
+      "file": "properties-124660240-evidence.tar.gz",
+      "sha256": "adf7f71aca2864fab14a06e30abb794c29332e327ec7d6f27da33d0b340f99f1",
+      "scope": "finite exact-state property sweeps; inversion criterion failed"
+    },
+    {
+      "file": "flame-pilots-20261017-evidence.tar.gz",
+      "sha256": "aa2503ebf1f4299d57330da94fb0e353e33440799e54e0723ab14af025e986b2",
+      "scope": "three counterflow and one premixed startup pilot; no convergence or flame-speed claim"
+    }
+  ]
+}

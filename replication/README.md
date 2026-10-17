@@ -57,3 +57,9 @@ See [architecture](docs/architecture.md), [writing](docs/writing.md), and
 [validation stages](docs/validation-plan.md). The
 [2026-10-16 environment record](docs/environment-qualification-20261016.md)
 identifies the tested source, deployed image, scheduler jobs, and limits.
+
+The [2026-10-17 build record](docs/build-qualification-20261017.md) qualifies tag
+`build-scnet-of8-v1`. The [methane comparison](docs/properties-20261017.md)
+records completed NIST comparisons and failed inversion checks. The
+[flame pilots](docs/flame-pilots-20261017.md) passed startup checks only; the
+[next batch plan](docs/next-batch-plan.md) covers scaling and convergence.

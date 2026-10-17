@@ -1,0 +1,199 @@
+[
+  {
+    "job": "124660430",
+    "case": "oxy-1",
+    "status": "startup checks passed only",
+    "summary": {
+      "time_s": 1e-06,
+      "cells": 320,
+      "scope": "startup/cost pilot only",
+      "fields": {
+        "T": {
+          "min": 1790.67142667,
+          "max": 1800.36730633
+        },
+        "p": {
+          "min": 101276.808919,
+          "max": 101384.331362
+        },
+        "rho": {
+          "min": 0.156616286661,
+          "max": 0.157209381054
+        }
+      },
+      "mass_fractions": {
+        "minimum": 0.0,
+        "maximum": 0.50216528615,
+        "max_sum_error": 9.088285679581531e-13
+      },
+      "failed_checks": []
+    },
+    "configuration": {
+      "case": "oxy-1",
+      "pressure_Pa": 101325,
+      "length_m": 0.02,
+      "oxidizer_mass_fraction_O2": 0.16196984702531222,
+      "velocity_constraint": "momentum",
+      "cells": 320,
+      "status": "coarse ignition/cost pilot, not scientific validation",
+      "velocities_finalized": true,
+      "inlet_densities_kg_m3": {
+        "fuel": 0.6527899740071448,
+        "oxidizer": 0.5054398068904535
+      },
+      "inlet_speed_m_s": {
+        "fuel": 0.4680652194052346,
+        "oxidizer": 0.5319347805947654
+      },
+      "strain_per_s": 100.0
+    }
+  },
+  {
+    "job": "124660583",
+    "case": "oxy-200",
+    "status": "startup checks passed only",
+    "summary": {
+      "time_s": 1e-06,
+      "cells": 320,
+      "scope": "startup/cost pilot only",
+      "fields": {
+        "T": {
+          "min": 1794.67405713,
+          "max": 1803.11952274
+        },
+        "p": {
+          "min": 20302428.824,
+          "max": 20314776.7842
+        },
+        "rho": {
+          "min": 30.1366629019,
+          "max": 30.2239000597
+        }
+      },
+      "mass_fractions": {
+        "minimum": 0.0,
+        "maximum": 0.49717188412,
+        "max_sum_error": 9.453549054683208e-13
+      },
+      "failed_checks": []
+    },
+    "configuration": {
+      "case": "oxy-200",
+      "pressure_Pa": 20265000,
+      "length_m": 0.005,
+      "oxidizer_mass_fraction_O2": 0.16196984702531222,
+      "velocity_constraint": "momentum",
+      "cells": 320,
+      "status": "coarse ignition/cost pilot, not scientific validation",
+      "velocities_finalized": true,
+      "inlet_densities_kg_m3": {
+        "fuel": 150.3545416051159,
+        "oxidizer": 95.22516509493524
+      },
+      "inlet_speed_m_s": {
+        "fuel": 0.11078821906861167,
+        "oxidizer": 0.13921178093138833
+      },
+      "strain_per_s": 100.0
+    }
+  },
+  {
+    "job": "124660669",
+    "case": "air-100",
+    "status": "startup checks passed only",
+    "summary": {
+      "time_s": 1e-06,
+      "cells": 320,
+      "scope": "startup/cost pilot only",
+      "fields": {
+        "T": {
+          "min": 1781.18823387,
+          "max": 1801.19423508
+        },
+        "p": {
+          "min": 10141375.0908,
+          "max": 10183177.6029
+        },
+        "rho": {
+          "min": 13.7005364772,
+          "max": 13.8390768324
+        }
+      },
+      "mass_fractions": {
+        "minimum": 0.0,
+        "maximum": 0.502198913453,
+        "max_sum_error": 1.3953282973488967e-12
+      },
+      "failed_checks": []
+    },
+    "configuration": {
+      "case": "air-100",
+      "pressure_Pa": 10132500,
+      "length_m": 0.02,
+      "oxidizer_mass_fraction_O2": 0.23291751145757963,
+      "velocity_constraint": "mass",
+      "cells": 320,
+      "status": "coarse ignition/cost pilot, not scientific validation",
+      "velocities_finalized": true,
+      "inlet_densities_kg_m3": {
+        "fuel": 74.86878331648356,
+        "oxidizer": 116.089371261382
+      },
+      "inlet_speed_m_s": {
+        "fuel": 1.0,
+        "oxidizer": 0.6449236696089268
+      },
+      "strain_per_s": 164.4923669608927
+    }
+  },
+  {
+    "job": "124660912",
+    "case": "premixed-pilot-phi1",
+    "status": "startup checks passed only",
+    "summary": {
+      "time_s": 1e-06,
+      "cells": 200,
+      "scope": "startup/cost pilot only",
+      "fields": {
+        "T": {
+          "min": 298.0,
+          "max": 1809.89548287
+        },
+        "p": {
+          "min": 10132500.0,
+          "max": 10172098.5186
+        },
+        "rho": {
+          "min": 18.3675372271,
+          "max": 113.386218877
+        }
+      },
+      "mass_fractions": {
+        "minimum": 0.0,
+        "maximum": 0.724765345911,
+        "max_sum_error": 6.332712132461893e-13
+      },
+      "failed_checks": []
+    },
+    "configuration": {
+      "case": "premixed",
+      "phi": 1.0,
+      "pressure_Pa": 10132500,
+      "unburned_temperature_K": 298,
+      "length_m": 0.002,
+      "cells": 200,
+      "spacing_m": 1e-05,
+      "kernel_width_m": 0.0002,
+      "kernel_temperature_K": 1800,
+      "mass_fractions": {
+        "CH4": 0.055166966766398616,
+        "O2": 0.22006815884368708,
+        "N2": 0.7247648743899143
+      },
+      "status": "reconstructed startup pilot, not a flame-speed measurement",
+      "boundary_finalized": true,
+      "wave_gamma": 1.5604619129862674,
+      "unburned_density_kg_m3": 113.1464034452728
+    }
+  }
+]
