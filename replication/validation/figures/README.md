@@ -75,3 +75,8 @@ the project root and an explicit status label. Numerical status is always printe
 inside the figure. Values outside paper axes are counted, not silently hidden;
 the wider-range diagnostic plots remain available from `plot_flames.py`.
 This renderer does not generate missing flame-speed results or reference curves.
+Each contour panel states its own time. Plot provenance records case paths,
+times, cell counts and nearest-axis radii. The atlas reads this record to update
+its counterflow captions and summary, avoiding stale one-microsecond descriptions
+when a new case manifest is rendered. Such updates retain a developing-flow
+qualification until temporal and grid convergence are separately established.

@@ -147,3 +147,12 @@ retained. New configurations use eight radial partitions on the identical
 cases repeat their fresh initialization; oxy-1 restarts the completed 0.1-ms case.
 Each replacement reserves 16 core-hours. This is a performance hypothesis to
 measure, not a demonstrated speedup or scientific qualification.
+
+Replacement source 2b10379ecf1751b2d8fdd29c7f39314ef5d47a9a was verified and staged
+with archive SHA-256 ec8a494993d11b067a0b6fcf7440a81acf37358e193ff85976c43dc9dc1da31c.
+Submitted jobs: 124668502 (oxy-1 radial continuation), 124668512 (oxy-200 radial),
+124668515 (air-100 radial), 124668519/124668521 (air-100 relative-linear-tolerance
+test at two/eight ranks). Conservative reservations total 176.667 core-hours.
+Cancelled jobs used 7,584 + 7,536 + 2,976 allocated CPU-seconds, bringing accounted
+terminal jobs to 10.96444 core-hours. Running-job usage is additional. None of the
+cancelled reservations has been reclaimed. Premixed work remains outside this cap.

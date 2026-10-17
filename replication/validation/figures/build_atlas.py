@@ -26,6 +26,24 @@ summary=[
 'Source figure crops are reproduced from the two owner-supplied papers for this private comparison. Original data/figures are not our simulation outputs. No paper image or extracted reference curve is published in the Git repository.'
 ]
 labels={'property':'PROPERTY COMPARISON','startup':'STARTUP ONLY - NOT REPLICATED','missing':'RESULT UNAVAILABLE','diagram':'SOURCE DIAGRAM','context':'SOURCE CONTEXT MAP'}
+provenance_path=out/'data/paper-style-provenance.json'
+if provenance_path.exists():
+    provenance=json.loads(provenance_path.read_text())
+    if 'cases' in provenance:
+        labels['developing']='DEVELOPING - NOT CONVERGED'
+        details=[]
+        for name,value in provenance['cases'].items():
+            details.append(f"{name}: {value['cells']} cells, t={value['time_s']:g} s, nearest-axis r={value['nearest_axis_r_m']*1000:.4g} mm")
+        summary[0]=summary[0].replace('4 startup diagnostics','4 developing-flow diagnostics')
+        summary[4]='Counterflow (2022 Figures 8-11): '+ '; '.join(details)+'. These developing fields do not establish temporal or grid convergence. Curves retain the paper axes; out-of-range samples are marked.'
+        summary[6]=summary[6].replace('counterflow jobs','initial counterflow jobs')
+        summary[6]+=' Current counterflow case paths and plotting inputs are recorded in data/paper-style-provenance.json.'
+        for item in items:
+            if item['id'] not in ('2022-fig08','2022-fig09','2022-fig10','2022-fig11'):continue
+            names={'2022-fig08':['oxy-1','oxy-200'],'2022-fig09':['oxy-1'],'2022-fig10':['oxy-200'],'2022-fig11':['air-100']}[item['id']]
+            item['status']='developing'
+            item['qualification']='; '.join(details[list(provenance['cases']).index(name)] for name in names)+'. Developing flow only; no steady-flame replication claimed.'
+        if provenance.get('notes'):summary.insert(5,' '.join(provenance['notes']))
 style=ParagraphStyle('body',fontName='Helvetica',fontSize=12,leading=18,textColor='#26313b')
 width,height=landscape(A3)
 pdf=canvas.Canvas(str(out/pdf_name),pagesize=(width,height))
@@ -54,7 +72,7 @@ for number,item in enumerate(items,2):
     caption=out/f'captions/{ident}.png'
     assert caption.exists()
     assert original.exists()
-    if item['status'] in ('startup','property'):assert plot.exists()
+    if item['status'] in ('startup','property','developing'):assert plot.exists()
     title=f"{item['year']} Figure {item['figure']} | {item['title']}"
     base(title,number)
     para(labels[item['status']]+' - '+item['qualification'],40,height-65,width-80)

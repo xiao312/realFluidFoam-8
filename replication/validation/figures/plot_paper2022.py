@@ -80,8 +80,11 @@ for name,number,xlim,ohscale in [('oxy-1',9,(.003,.018),100),('oxy-200',10,(.002
 xyz,f,t,idx,radial=cases['air-100'];z=xyz[idx,2];fig=figure(11)
 a=fig.add_axes((.17,.55,.66,.40));b=fig.add_axes((.17,.055,.66,.40))
 setup(a,(.0105,.012),(200,2300),ylabel='Temperature [K]');tw=a.twinx();setup(tw,(.0105,.012),(10,120),xlabel='',ylabel=r'Density [kg/m$^3$]')
+a.set_yticks([500,1000,1500,2000]);tw.set_yticks([20,40,60,80,100,120])
 draw(a,z,f['T'][idx]);draw(tw,z,f['rho'][idx]);a.text(.03,.08,manifest['status']+f'\nt = {t:g} s',transform=a.transAxes,fontsize=5,color='#943321')
 setup(b,(.0105,.012),(-.02,1.02),ylabel='Mass Fraction')
+b.set_yticks(np.arange(0,1.01,.2))
+for ax in (a,b,tw):ax.set_xticks([.0105,.011,.0115,.012])
 for n in ['CH4','O2','CO2','H2O']:draw(b,z,f[n][idx],label=n)
 b.legend(fontsize=5,frameon=False)
 for ax,letter in [(a,'a'),(b,'b')]:ax.text(-.13,1,letter+')',transform=ax.transAxes,fontsize=10,fontweight='bold')
@@ -99,9 +102,17 @@ for index,(name,length,upper) in enumerate([('oxy-1',.02,2000),('oxy-200',.005,2
     ur=np.stack([np.interp(rg,rr,ur[:,j]) for j in range(len(zz))]);uz=np.stack([np.interp(rg,rr,uz[:,j]) for j in range(len(zz))])
     ax.streamplot(rg,zz,ur,uz,color='#a1eded',density=.7,linewidth=.4,arrowsize=.5)
     setup(ax,(0,length),(0,length),xlabel='r [m]',ylabel='z [m]')
+    ax.set_xticks(np.linspace(0,length,5 if index==0 else 6));ax.set_yticks(np.linspace(0,length,5 if index==0 else 6))
+    ax.text(.02,.96,f't = {t:g} s',transform=ax.transAxes,va='top',fontsize=5,
+            bbox={'facecolor':'white','alpha':.8,'edgecolor':'none','pad':1})
     cb=fig.add_axes((.45,.955-index*.49,.33,.025));fig.colorbar(mesh,cax=cb,orientation='horizontal',ticks=list(range(200,upper,400)))
     cb.tick_params(labelsize=5);fig.text(.19,.955-index*.49,('a)' if index==0 else 'b)')+'     T [K]',fontsize=8,fontweight='bold')
 fig.text(.52,.085,manifest['status'],ha='center',fontsize=4,color='#943321',bbox={'facecolor':'white','alpha':.8,'edgecolor':'none','pad':1})
 save(fig,8,t,None)
+record['8']['cases']={name:{'time_s':cases[name][2],'cells':len(cases[name][0])} for name in ('oxy-1','oxy-200')}
+record['cases']={name:{'path':manifest['cases'][name],'time_s':value[2],
+                      'cells':len(value[0]),'nearest_axis_r_m':float(value[4].min())}
+                 for name,value in cases.items()}
+record['notes']=manifest.get('notes',[])
 (out/'data/paper-style-provenance.json').write_text(json.dumps(record,indent=2)+'\n')
 print('Rendered Figures 8-11 at paper crop dimensions, retaining scientific status.')
