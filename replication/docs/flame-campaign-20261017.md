@@ -74,3 +74,10 @@ eight ranks, 60-minute limits, source jobs 124665830/124665841/124665857. Each
 continuation may be submitted only after its source passes field checks. This
 larger timestep remains a stability/splitting experiment, not a validated setting.
 Source fields and mesh hashes are preserved by the restart receipt.
+
+Job 124665830 passed final field checks at 100 microseconds: T=1262.31-1780.16 K,
+positive p/rho, maximum species-sum error 9.93e-13. It completed in 235 seconds
+on two CPUs (0.13056 core-hours). It remains a developing coarse flow.
+High-pressure two-rank cases have much larger chemistry cost per step. Identical
+eight-rank repeats are prepared to measure scaling while preserving the two-rank
+runs for direct comparison. No numerical settings other than rank count change.
