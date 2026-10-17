@@ -61,10 +61,12 @@ inertSpecie CO2;
         transport = case / "constant/momentumTransport"
         write(transport, transport.read_text().replace("object      turbulenceProperties", "object      momentumTransport"))
         end = 1e-5 if args.mode == "smoke" else end
+        # GRI startup is expensive: retain restart points within a bounded job.
+        write_interval = end if args.mode == "smoke" else (.001 if name == "gri30" else .01)
         write(case / "system/controlDict", f"""FoamFile {{ version 2.0; format ascii; class dictionary; object controlDict; }}
 application realFluidReactingFoam;
 startFrom startTime; startTime 0; stopAt endTime; endTime {end}; deltaT 1e-6;
-writeControl adjustableRunTime; writeInterval {end if args.mode == 'smoke' else .01};
+writeControl adjustableRunTime; writeInterval {write_interval};
 purgeWrite 0; writeFormat ascii; writePrecision 12; writeCompression off;
 timeFormat general; timePrecision 9; runTimeModifiable false; adjustTimeStep no; maxCo 0.4;
 """)
