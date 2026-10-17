@@ -61,3 +61,14 @@ from `rfPropertyProbe -initial`; do not run the solver before finalization.
 T/p/rho, species bounds and the 1e-8 mass-fraction sum criterion in
 `pilot-summary.json`. It returns 3 for a failed numerical check. This is not a
 steady-state or mesh-convergence test, nor an integrated mass conservation balance.
+
+`generate_premixed.py INPUTS CASE PHI` creates a reconstructed 100-atm, 298 K
+startup pilot using the counterflow generator's shared thermochemistry/settings.
+It replaces the geometry and fields with a 2 mm planar domain (200 cells,
+10 micrometre spacing), zero initial velocity, and a central 0.2 mm region at
+1800 K applied by `setFields`. These are pilot choices, not published dimensions.
+Pressure uses `waveTransmissive`; `finalize_premixed.py CASE` sets its constant
+gamma to the library's inlet Cp/Cv before ignition. Temperature and species use
+zeroGradient end conditions; the four transverse faces are empty. Check those
+boundary choices and domain/kernel sensitivity before a flame-speed campaign.
+No OH displacement speed is inferred from the 1-microsecond startup pilot.

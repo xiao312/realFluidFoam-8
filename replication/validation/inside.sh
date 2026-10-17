@@ -39,21 +39,31 @@ if [[ "$stage" == properties ]]; then
         exit 3
     fi
     echo 'PASS: SRK and PR property sweeps and inversion criterion; reference comparison pending' | tee "$job/result.txt"
-elif [[ "$stage" == counterflow-pilot-* ]]; then
+elif [[ "$stage" == counterflow-pilot-* || "$stage" == premixed-pilot-phi1 ]]; then
     case_name=${stage#counterflow-pilot-}
     case_dir="$job/$case_name"
-    python3 -B "$release/replication/validation/flames/generate_counterflow.py" \
-        "$release/replication/validation/inputs" "$case_dir" "$case_name"
+    if [[ "$stage" == premixed-pilot-phi1 ]]; then
+        python3 -B "$release/replication/validation/flames/generate_premixed.py" \
+            "$release/replication/validation/inputs" "$case_dir" 1.0
+    else
+        python3 -B "$release/replication/validation/flames/generate_counterflow.py" \
+            "$release/replication/validation/inputs" "$case_dir" "$case_name"
+    fi
     blockMesh -case "$case_dir" > "$job/blockMesh.log" 2>&1
     checkMesh -case "$case_dir" > "$job/checkMesh.log" 2>&1
     grep -q 'Mesh OK' "$job/checkMesh.log"
     rfPropertyProbe -case "$case_dir" -initial > "$job/inlet-probe.log" 2>&1
-    python3 -B "$release/replication/validation/flames/finalize_inlets.py" "$case_dir" > "$job/inlet-settings.json"
+    if [[ "$stage" == premixed-pilot-phi1 ]]; then
+        python3 -B "$release/replication/validation/flames/finalize_premixed.py" "$case_dir" > "$job/inlet-settings.json"
+        setFields -case "$case_dir" > "$job/setFields.log" 2>&1
+    else
+        python3 -B "$release/replication/validation/flames/finalize_inlets.py" "$case_dir" > "$job/inlet-settings.json"
+    fi
     realFluidReactingFoam -case "$case_dir" > "$job/solver.log" 2>&1
     grep -q '^End' "$job/solver.log"
     grep -q 'seulex' "$job/solver.log"
     python3 -B "$release/replication/validation/flames/summarize.py" "$case_dir" > "$job/pilot-summary.json"
-    echo 'PASS: counterflow startup/cost pilot only; convergence and scientific comparison pending' | tee "$job/result.txt"
+    echo 'PASS: flame startup/cost pilot and final field checks only; convergence and scientific comparison pending' | tee "$job/result.txt"
 else
     echo "Unsupported validation stage: $stage" >&2
     exit 2

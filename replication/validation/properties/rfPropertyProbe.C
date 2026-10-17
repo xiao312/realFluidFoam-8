@@ -16,13 +16,17 @@ int main(int argc, char *argv[])
     if (args.optionFound("initial"))
     {
         tmp<volScalarField> density = thermo.rho();
+        tmp<volScalarField> heatCp = thermo.Cp();
+        tmp<volScalarField> heatCv = thermo.Cv();
         std::ofstream initial((runTime.path()/"inlet-densities.csv").c_str());
-        initial << "patch,rho_kg_m3\n" << std::setprecision(16);
+        initial << "patch,rho_kg_m3,Cp_J_kg_K,Cv_J_kg_K\n" << std::setprecision(16);
         forAll(mesh.boundary(), patchi)
         {
             const scalarField& values = density().boundaryField()[patchi];
             if (values.size()) initial << mesh.boundary()[patchi].name()
-                                      << ',' << values[0] << '\n';
+                                      << ',' << values[0]
+                                      << ',' << heatCp().boundaryField()[patchi][0]
+                                      << ',' << heatCv().boundaryField()[patchi][0] << '\n';
         }
         initial.close();
         return initial ? 0 : 1;
