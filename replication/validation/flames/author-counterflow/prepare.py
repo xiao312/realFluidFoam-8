@@ -66,6 +66,11 @@ timeFormat general; timePrecision 9; runTimeModifiable false; adjustTimeStep no;
         write(case / "system/decomposeParDict", """FoamFile { version 2.0; format ascii; class dictionary; object decomposeParDict; }
 numberOfSubdomains 8; method simple; simpleCoeffs { n (8 1 1); delta 0.001; }
 """)
+        solution = case / "system/fvSolution"
+        text, replacements = re.subn(r"(?m)^(\s*)Yi\s*$", r'\1"Yi.*"', solution.read_text())
+        if replacements != 1:
+            raise ValueError("Expected one original Yi solver entry")
+        write(solution, text)
         write(case / "author-case.json", json.dumps(dict(source=manifest["revision"], mode=args.mode,
               phase=name, cells=11200, species=species.split("(", 1)[1].rsplit(")", 1)[0].split(),
               end_time_s=end, scientific_status="author settings port; convergence not established"), indent=2)+"\n")

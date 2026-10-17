@@ -54,6 +54,15 @@ def check(case):
         if min(values) <= 0:
             raise ValueError("Nonpositive " + name)
         ranges[name] = [min(values), max(values)]
+    _, velocity = internal(endpoint / "U")
+    vectors = re.findall(r"\(([^()]*)\)", velocity.group())
+    expected_vectors = count if "nonuniform" in velocity.group() else 1
+    if len(vectors) != expected_vectors:
+        raise ValueError("Invalid velocity field size")
+    for vector in vectors:
+        values = list(map(float, vector.split()))
+        if len(values) != 3 or not all(math.isfinite(v) for v in values):
+            raise ValueError("Invalid velocity vector")
     sums = [0.] * count
     for name in meta["species"]:
         values = scalars(endpoint / name, count)

@@ -10,6 +10,8 @@ the qualified OF8 executable or claim reproduction before convergence checks.
 
 `original/` contains text dictionaries and fields only, with original byte hashes
 in `provenance.json`. Mesh binaries, dynamicCode and compiled artifacts are excluded.
+Original whitespace and line endings are retained for byte verification; Git
+whitespace checks are disabled only for these unmodified imported inputs.
 `prepare.py plan|apply OUTPUT smoke|full` creates fresh `one-step` and `gri30`
 cases. Full runs retain the original end times (0.13 and 0.07 s), 1 microsecond
 timestep, 11,200-cell mesh, boundary conditions and chemistry tolerances. Smoke
@@ -19,6 +21,8 @@ OF8 compatibility changes are explicit: `SRKchungTakaMixture` replaces
 `SRKchungTakaReactingMixture`; thermo and reaction data are included in the OF8
 dictionaries; `turbulenceProperties` becomes `momentumTransport`; the invoked
 application is `realFluidReactingFoam`. Execution starts from fresh time zero.
+The `Yi` linear-solver entry is widened to `"Yi.*"` for OF8's `YiFinal` lookup;
+the original solver and tolerances are retained.
 Eight radial MPI partitions, 12-digit output and fixed immutable runtime controls
 are operational changes. Original numerical schemes and tolerances are retained.
 
