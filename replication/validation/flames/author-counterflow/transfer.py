@@ -101,6 +101,12 @@ def main():
             _, source_match = internal(src)
             target = args.target / "0" / name
             text, target_match = internal(target)
+            # Resolve original uniform boundary aliases before replacing the
+            # internal field with a nonuniform solution (not patch-sized data).
+            original_value = re.sub(r"^internalField\s+", "", target_match.group()).rstrip("; ")
+            if not original_value.startswith("uniform "):
+                raise ValueError("Transfer requires fresh uniform target fields")
+            text = text.replace("$internalField", original_value)
             receipt["source_field_hashes"][name] = hashlib.sha256(src.read_bytes()).hexdigest()
             if args.action == "apply":
                 target.write_text(text[:target_match.start()] + source_match.group() + text[target_match.end():], encoding="utf-8")

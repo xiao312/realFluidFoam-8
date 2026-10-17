@@ -29,6 +29,8 @@ are operational changes. Original numerical schemes and tolerances are retained.
 `transfer.py plan|apply SOURCE TARGET` transfers only internal T, p, U and the
 five common species from the one-step endpoint to the GRI time-zero fields,
 preserving GRI boundary conditions. Other species start at zero via Ydefault.
+Boundary `$internalField` aliases are resolved to their original uniform values
+before transfer, so the total-pressure outlet remains 101325 Pa.
 Energy and density are recomputed by GRI thermodynamics; one-step enthalpy is
 not copied between mechanisms. Mesh coordinates and connectivity must agree.
 The source endpoint must pass finite/bounded field checks. Endpoint completion
