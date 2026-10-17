@@ -94,3 +94,26 @@ GRI checkpoints are written every 1 ms instead of the tutorial's 10 ms. This
 output-only change allows continuation from saved processor fields. Completion
 of the original durations within the remaining budget is not guaranteed; review
 cost and steady-state histories before additional reservations.
+
+## Submitted baseline
+
+Job **124672685** runs the full two-mechanism pipeline from source
+`59b99e85dd6908fa6ecb89615885ba2eb4a3e936`, using eight CPUs and a 12-hour
+walltime limit. Its archive SHA256 is
+`39d20d32f4efbcab2838b15b7a466d44b1ac17e3fabb09771f043c0c771fa2dc`.
+It reserves 96 core-hours. The shared ledger now reserves **288.6667 core-hours**
+against the owner's **1,000 core-hour** cap, including all cancelled and failed
+reservations. Known terminal counterflow allocation at submission is 23.7578
+core-hours; the new active job is additional. This is submitted work, not a
+completed original-duration or converged result.
+
+Exact invocation after the read-only plan, from the project root with the host
+Python module loaded:
+
+```sh
+bash "$RELEASE/replication/validation/flames/author-counterflow/submit.sh" \
+  apply "$ROOT" "$IMAGE" "$RELEASE" 124657926 full kshcnormal 1000
+```
+
+`ROOT` is the existing controlled trial; `IMAGE` is its qualified runtime;
+`RELEASE` is its immutable release directory named by the source SHA above.
