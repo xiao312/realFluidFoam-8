@@ -15,3 +15,11 @@ Example after loading the isolated build environment: `wmake` then
 bulk properties, and relative inversion errors below 1e-6. The CSV header states
 units. Independent NIST comparisons are performed after execution; numerical
 completion alone is not agreement with the reference model.
+
+`compare.py SRK.csv PR.csv REFERENCE_DIR OUTPUT_DIR` verifies the pinned NIST
+hashes and exact pressure/temperature coverage, then writes signed relative
+errors and RMS/maximum absolute relative errors by pressure. It uses Python's
+standard library. The output directory must be new. Enthalpy is excluded because
+reference-state conventions differ. Cp is converted from J/(g K) to J/(kg K).
+The comparison records input hashes and does not assign a scientific pass/fail
+threshold. Plotting may consume the resulting CSV separately.

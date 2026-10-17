@@ -17,11 +17,11 @@ printf 'source=%s\nbuild_job=%s\nstage=%s\n' "$(cat "$release/SOURCE_REVISION")"
 ldd "$platform/bin/realFluidReactingFoam" > "$job/solver-ldd.txt"
 grep -F "$platform/lib/libspecie.so" "$job/solver-ldd.txt"
 if grep -q 'not found' "$job/solver-ldd.txt"; then exit 1; fi
+cp -a "$release/replication/validation/properties" "$job/property-probe"
+wmake "$job/property-probe" > "$job/property-probe-build.log" 2>&1
+ldd "$FOAM_USER_APPBIN/rfPropertyProbe" > "$job/property-probe-ldd.txt"
+grep -F "$platform/lib/libspecie.so" "$job/property-probe-ldd.txt"
 if [[ "$stage" == properties ]]; then
-    cp -a "$release/replication/validation/properties" "$job/property-probe"
-    wmake "$job/property-probe" > "$job/property-probe-build.log" 2>&1
-    ldd "$FOAM_USER_APPBIN/rfPropertyProbe" > "$job/property-probe-ldd.txt"
-    grep -F "$platform/lib/libspecie.so" "$job/property-probe-ldd.txt"
     for eos in SRK PR; do
         case_dir="$job/properties-$eos"
         python3 -B "$release/replication/validation/properties/generate.py" \
@@ -31,6 +31,20 @@ if [[ "$stage" == properties ]]; then
         test "$(wc -l < "$case_dir/properties.csv")" == 226
     done
     echo 'PASS: SRK and PR property sweeps; reference comparison pending' | tee "$job/result.txt"
+elif [[ "$stage" == counterflow-pilot-* ]]; then
+    case_name=${stage#counterflow-pilot-}
+    case_dir="$job/$case_name"
+    python3 -B "$release/replication/validation/flames/generate_counterflow.py" \
+        "$release/replication/validation/inputs" "$case_dir" "$case_name"
+    blockMesh -case "$case_dir" > "$job/blockMesh.log" 2>&1
+    checkMesh -case "$case_dir" > "$job/checkMesh.log" 2>&1
+    grep -q 'Mesh OK' "$job/checkMesh.log"
+    rfPropertyProbe -case "$case_dir" -initial > "$job/inlet-probe.log" 2>&1
+    python3 -B "$release/replication/validation/flames/finalize_inlets.py" "$case_dir" > "$job/inlet-settings.json"
+    realFluidReactingFoam -case "$case_dir" > "$job/solver.log" 2>&1
+    grep -q '^End' "$job/solver.log"
+    grep -q 'seulex' "$job/solver.log"
+    echo 'PASS: counterflow startup/cost pilot only; convergence and scientific comparison pending' | tee "$job/result.txt"
 else
     echo "Unsupported validation stage: $stage" >&2
     exit 2

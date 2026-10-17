@@ -7,11 +7,26 @@
 
 int main(int argc, char *argv[])
 {
+    argList::addBoolOption("initial", "Write initial boundary densities without a sweep");
     #include "setRootCase.H"
     #include "createTime.H"
     #include "createMesh.H"
     autoPtr<psiReactionThermo> model(psiReactionThermo::New(mesh));
     psiReactionThermo& thermo = model();
+    if (args.optionFound("initial"))
+    {
+        tmp<volScalarField> density = thermo.rho();
+        std::ofstream initial((runTime.path()/"inlet-densities.csv").c_str());
+        initial << "patch,rho_kg_m3\n" << std::setprecision(16);
+        forAll(mesh.boundary(), patchi)
+        {
+            const scalarField& values = density().boundaryField()[patchi];
+            if (values.size()) initial << mesh.boundary()[patchi].name()
+                                      << ',' << values[0] << '\n';
+        }
+        initial.close();
+        return initial ? 0 : 1;
+    }
     std::ofstream output((runTime.path()/"properties.csv").c_str());
     output << std::setprecision(16)
         << "p_atm,T_requested_K,T_K,rho_kg_m3,Cp_J_kg_K,mu_Pa_s,kappa_W_m_K,he_J_kg,inversion_relative_error\n";
