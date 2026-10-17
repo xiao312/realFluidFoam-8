@@ -33,3 +33,9 @@ threshold. Plotting may consume the resulting CSV separately.
 `plot.py COMPARISON_DIR --project-root ROOT` renders the verified comparison as
 PNG and PDF with matplotlib; it keeps its cache under `ROOT/cache/matplotlib`.
 Use the separately recorded analysis requirements to recreate that environment.
+
+For 2025 Figure 6, `rfPropertyProbe -nitrogen` evaluates 901 nitrogen states
+at 3.98 MPa, 100–325 K in 0.25 K steps. The generator accepts optional positional
+`N2 UPSTREAM_THERMO_FILE` arguments after EOS and extracts the nitrogen block
+from the pinned release's `tutorials/N2.jet.LES/c3.PR/constant/thermo.inputData`.
+The same inversion criterion remains independent of exact-state properties.

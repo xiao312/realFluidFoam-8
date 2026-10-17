@@ -5,7 +5,7 @@ build=${5:?completed build job}; stage=${6:?stage}; partition=${7:?partition}
 [[ "$action" == plan || "$action" == apply ]] || exit 2
 [[ "$build" =~ ^[0-9]+$ && "$partition" =~ ^[a-zA-Z0-9_-]+$ ]] || exit 2
 case "$stage" in
-    properties|counterflow-pilot-oxy-1|counterflow-pilot-oxy-200|counterflow-pilot-air-100|premixed-pilot-phi1) ;;
+    properties|properties-nitrogen|counterflow-pilot-oxy-1|counterflow-pilot-oxy-200|counterflow-pilot-air-100|premixed-pilot-phi1) ;;
     *) echo "Unsupported stage: $stage" >&2; exit 2 ;;
 esac
 scripts=$(cd -- "$(dirname -- "$0")/../environment" && pwd)

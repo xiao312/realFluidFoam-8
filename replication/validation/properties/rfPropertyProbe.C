@@ -4,10 +4,12 @@
 #include <fstream>
 #include <iomanip>
 #include <cmath>
+#include <vector>
 
 int main(int argc, char *argv[])
 {
     argList::addBoolOption("initial", "Write initial boundary densities without a sweep");
+    argList::addBoolOption("nitrogen", "2025 Figure 6: 3.98 MPa, 100 to 325 K, step 0.25 K");
     #include "setRootCase.H"
     #include "createTime.H"
     #include "createMesh.H"
@@ -35,11 +37,16 @@ int main(int argc, char *argv[])
     output << std::setprecision(16)
         << "p_atm,T_requested_K,T_K,rho_kg_m3,Cp_J_kg_K,mu_Pa_s,kappa_W_m_K,he_J_kg,inversion_relative_error,T_recovered_K\n";
     label inversionFailures = 0;
-    const scalar pressures[] = {1, 50, 100, 200, 300};
+    const bool nitrogen = args.optionFound("nitrogen");
+    std::vector<scalar> pressures = {1, 50, 100, 200, 300};
+    if (nitrogen) pressures = {3.98e6/101325.0};
+    label stateCount = 0;
     for (const scalar pressure : pressures)
     {
-        for (label temperature = 180; temperature <= 620; temperature += 10)
+        for (label index = 0; index <= (nitrogen ? 900 : 44); ++index)
         {
+            const scalar temperature = nitrogen ? 100+0.25*index : 180+10*index;
+            ++stateCount;
             thermo.p() = dimensionedScalar("p", dimPressure, pressure*101325.0);
             thermo.T() = dimensionedScalar("T", dimTemperature, temperature);
             thermo.he() = thermo.he(thermo.p(), thermo.T());
@@ -77,7 +84,7 @@ int main(int argc, char *argv[])
     }
     output.close();
     if (!output) return 1;
-    Info << "PASS: 225 finite property states at exact requested temperatures" << nl;
-    Info << "Enthalpy inversion criterion failures: " << inversionFailures << "/225" << nl;
+    Info << "PASS: " << stateCount << " finite property states at exact requested temperatures" << nl;
+    Info << "Enthalpy inversion criterion failures: " << inversionFailures << '/' << stateCount << nl;
     return inversionFailures ? 3 : 0;
 }

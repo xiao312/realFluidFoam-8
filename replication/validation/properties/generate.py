@@ -22,9 +22,11 @@ def species_block(text, name):
     raise ValueError("Unclosed species dictionary")
 
 
-def generate(inputs, output, eos):
+def generate(inputs, output, eos, species="CH4", data=None):
     if eos not in ("SRK", "PR"):
         raise ValueError("EOS must be SRK or PR")
+    if species not in ("CH4", "N2") or (species == "N2" and data is None):
+        raise ValueError("N2 requires its pinned upstream thermochemistry path")
     manifest = json.loads((inputs / "provenance.json").read_text())
     for item in manifest["files"]:
         assert hashlib.sha256((inputs/item["file"]).read_bytes()).hexdigest() == item["stored_sha256"]
@@ -34,15 +36,15 @@ def generate(inputs, output, eos):
     def write(name, text):
         with (output/name).open("w", encoding="utf-8", newline="\n") as stream:
             stream.write(text)
-    block = species_block((inputs/"property-thermo.inputData").read_text(), "CH4")
+    block = species_block((data or inputs/"property-thermo.inputData").read_text(), species)
     model = "soaveRedlichKwong" if eos == "SRK" else "PengRobinson"
     write("constant/thermophysicalProperties", header("thermophysicalProperties") +
           "thermoType { type hePsiThermo; mixture %schungTakaMixture; transport chungTaka; "
           "thermo rfJanaf; energy sensibleEnthalpy; equationOfState %s; specie rfSpecie; }\n"
-          "inertSpecie CH4;\nspecies (CH4);\n%s\n" % (eos, model, block))
+          "inertSpecie %s;\nspecies (%s);\n%s\n" % (eos, model, species, species, block))
     for name, dimensions, value in (("p", "1 -1 -2 0 0 0 0", "101325"),
                                      ("T", "0 0 0 1 0 0 0", "300"),
-                                     ("CH4", "0 0 0 0 0 0 0", "1"),
+                                     (species, "0 0 0 0 0 0 0", "1"),
                                      ("Ydefault", "0 0 0 0 0 0 0", "0")):
         write("0/"+name, header(name, "volScalarField") +
               "dimensions [%s]; internalField uniform %s;\n"
@@ -75,4 +77,5 @@ snGradSchemes { default corrected; }
 
 
 if __name__ == "__main__":
-    generate(Path(sys.argv[1]).resolve(), Path(sys.argv[2]).resolve(), sys.argv[3])
+    generate(Path(sys.argv[1]).resolve(), Path(sys.argv[2]).resolve(), sys.argv[3],
+             sys.argv[4] if len(sys.argv) > 4 else "CH4", Path(sys.argv[5]).resolve() if len(sys.argv) > 5 else None)
