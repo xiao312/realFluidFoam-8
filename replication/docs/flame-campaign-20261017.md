@@ -68,3 +68,9 @@ Next submitted jobs: 124665830 (oxy-1), 124665841 (oxy-200), 124665857 (air-100)
 Each uses two ranks, 320 cells, dt=1e-6 s, endTime=1e-4 s, and a 60-minute wall
 limit. Combined worst-case reservations including the MPI check are 6.667
 core-hours. They were submitted only after inspecting serial/MPI agreement.
+
+Prepared next hold point: same-mesh continuation to 1 ms, dt=10 microseconds,
+eight ranks, 60-minute limits, source jobs 124665830/124665841/124665857. Each
+continuation may be submitted only after its source passes field checks. This
+larger timestep remains a stability/splitting experiment, not a validated setting.
+Source fields and mesh hashes are preserved by the restart receipt.
