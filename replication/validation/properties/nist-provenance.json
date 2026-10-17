@@ -1,0 +1,36 @@
+{
+  "retrieved_utc": "2026-10-17T06:30:00.773556+00:00",
+  "source": "NIST Chemistry WebBook SRD 69; current retrieval, not the paper's 2017 snapshot",
+  "files": [
+    {
+      "file": "ch4-1atm.tsv",
+      "url": "https://webbook.nist.gov/cgi/fluid.cgi?Action=Data&Wide=on&ID=C74828&Type=IsoBar&Digits=12&P=1&TLow=180&THigh=620&TInc=10&RefState=DEF&TUnit=K&PUnit=atm&DUnit=kg%2Fm3&HUnit=kJ%2Fkg&WUnit=m%2Fs&VisUnit=Pa*s&STUnit=N%2Fm",
+      "sha256": "714e78bfebba04a84bc084196451293fb603b9912073e1f2fc64dfa6602a2405",
+      "rows": 45
+    },
+    {
+      "file": "ch4-50atm.tsv",
+      "url": "https://webbook.nist.gov/cgi/fluid.cgi?Action=Data&Wide=on&ID=C74828&Type=IsoBar&Digits=12&P=50&TLow=180&THigh=620&TInc=10&RefState=DEF&TUnit=K&PUnit=atm&DUnit=kg%2Fm3&HUnit=kJ%2Fkg&WUnit=m%2Fs&VisUnit=Pa*s&STUnit=N%2Fm",
+      "sha256": "d9a9c4173f856016a66db06b1396de322507d1422a07088d56d265254c6ac760",
+      "rows": 45
+    },
+    {
+      "file": "ch4-100atm.tsv",
+      "url": "https://webbook.nist.gov/cgi/fluid.cgi?Action=Data&Wide=on&ID=C74828&Type=IsoBar&Digits=12&P=100&TLow=180&THigh=620&TInc=10&RefState=DEF&TUnit=K&PUnit=atm&DUnit=kg%2Fm3&HUnit=kJ%2Fkg&WUnit=m%2Fs&VisUnit=Pa*s&STUnit=N%2Fm",
+      "sha256": "7d0c5b92b554e8a1d6f76250453fd57987345ed5854f208a53a964cd628eae78",
+      "rows": 45
+    },
+    {
+      "file": "ch4-200atm.tsv",
+      "url": "https://webbook.nist.gov/cgi/fluid.cgi?Action=Data&Wide=on&ID=C74828&Type=IsoBar&Digits=12&P=200&TLow=180&THigh=620&TInc=10&RefState=DEF&TUnit=K&PUnit=atm&DUnit=kg%2Fm3&HUnit=kJ%2Fkg&WUnit=m%2Fs&VisUnit=Pa*s&STUnit=N%2Fm",
+      "sha256": "9ab3f6ff1f737dd4c8eb0b994e98b0e6046da087ea3a8bd5305dd2020c2f6056",
+      "rows": 45
+    },
+    {
+      "file": "ch4-300atm.tsv",
+      "url": "https://webbook.nist.gov/cgi/fluid.cgi?Action=Data&Wide=on&ID=C74828&Type=IsoBar&Digits=12&P=300&TLow=180&THigh=620&TInc=10&RefState=DEF&TUnit=K&PUnit=atm&DUnit=kg%2Fm3&HUnit=kJ%2Fkg&WUnit=m%2Fs&VisUnit=Pa*s&STUnit=N%2Fm",
+      "sha256": "4578c574c619f98ed483a79e68c46c7ccc7d97f879f051c3a81309cc9650b38d",
+      "rows": 45
+    }
+  ]
+}

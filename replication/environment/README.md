@@ -1,7 +1,8 @@
 # OF8 build and runtime environment
 
 This module owns the pinned base image, project path setup, and bounded Slurm jobs.
-It does not launch scientific cases. Inputs are an exact source release and the
+The `validation/` module may use its contained launcher to execute scientific stages.
+Inputs are an exact source release and the
 base image in `lock.json`. Outputs are job-local receipts, build logs and binaries.
 
 On SCNet, direct SIF mounts are denied by site policy and user namespaces are

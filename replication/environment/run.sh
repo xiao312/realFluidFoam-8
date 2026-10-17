@@ -2,7 +2,12 @@
 # Run only in an allocation. Use explicit paths and a clean container environment.
 set -euo pipefail
 root=${1:?root}; image=${2:?image}; source_dir=${3:?source}; mode=${4:?preflight or build}
-[[ "$mode" == preflight || "$mode" == build ]] || exit 2
+[[ "$mode" == preflight || "$mode" == build || "$mode" == validation ]] || exit 2
+if [[ "$mode" == validation ]]; then
+    build_job=${5:?completed build job}; stage=${6:?validation stage}
+    [[ "$build_job" =~ ^[0-9]+$ && "$stage" =~ ^[a-z0-9_-]+$ ]] || exit 2
+    export APPTAINERENV_RF_BUILD_JOB="$build_job" APPTAINERENV_RF_STAGE="$stage"
+fi
 [[ -n ${SLURM_JOB_ID:-} ]] || { echo 'Run this script through Slurm' >&2; exit 2; }
 script_dir=$(cd -- "$(dirname -- "$0")" && pwd)
 bash "$script_dir/workspace.sh" plan "$root" >/dev/null

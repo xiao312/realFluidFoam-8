@@ -4,3 +4,6 @@ replication/**/*.md text eol=lf
 replication/**/*.json text eol=lf
 replication/**/Dockerfile text eol=lf
 replication/**/*.def text eol=lf
+replication/validation/inputs/* text eol=lf
+replication/**/*.C text eol=lf
+replication/**/Make/* text eol=lf

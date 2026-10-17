@@ -21,6 +21,9 @@ export PATH="$FOAM_USER_APPBIN:$PATH"
 export LD_LIBRARY_PATH="$FOAM_USER_LIBBIN:$LD_LIBRARY_PATH"
 export WM_NCOMPPROCS=${RF_CPUS:-2}
 mkdir -p "$FOAM_USER_APPBIN" "$FOAM_USER_LIBBIN"
+if [[ "$mode" == validation ]]; then
+    exec bash "$release/replication/validation/inside.sh" "$release"
+fi
 {
     date -u +%FT%TZ
     cat "$release/SOURCE_REVISION"

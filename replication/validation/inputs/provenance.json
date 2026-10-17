@@ -1,0 +1,28 @@
+{
+  "repository": "https://github.com/danhnam11/realFluidThermophysicalModels-8",
+  "revision": "301238a9450238f427021969127566866d679dd1",
+  "license": "GPL-3.0",
+  "files": [
+    {
+      "file": "thermo.inputData_GRI",
+      "source_path": "tutorials/test.realGas/laminarCounterFlowFlame-2D/GRI30.new/constant/thermo.inputData_GRI",
+      "source_sha256": "5f679b7f6f8700763381bea6d1fa4ded9e4bcad0b9630fac5410472e728a3b31",
+      "stored_sha256": "60235162a165af5f78c05455e38342c0ca2717bb928929552222801df7ef0722",
+      "transform": "CRLF to LF; strip trailing horizontal whitespace"
+    },
+    {
+      "file": "reactionsGRI",
+      "source_path": "tutorials/test.realGas/laminarCounterFlowFlame-2D/GRI30.new/constant/reactionsGRI",
+      "source_sha256": "c92d7b67c77faba2742de6999c990f383aea1413300706cee24bee0ada51ac40",
+      "stored_sha256": "c92d7b67c77faba2742de6999c990f383aea1413300706cee24bee0ada51ac40",
+      "transform": "CRLF to LF; strip trailing horizontal whitespace"
+    },
+    {
+      "file": "property-thermo.inputData",
+      "source_path": "tutorials/test.realGas/generatingProperties/forPureSpecies.SRK/constant/thermo.inputData",
+      "source_sha256": "261ed1d1f907cebabdff73284bfb43a6249c04aa54f18d4b5bd56e74e1d312ef",
+      "stored_sha256": "fa67f10dc26d9e06e5d34272d8026309f6e39b5b8267f867a81937a74cf9e091",
+      "transform": "CRLF to LF; strip trailing horizontal whitespace"
+    }
+  ]
+}

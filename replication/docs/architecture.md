@@ -19,6 +19,8 @@ flowchart LR
 
 `environment/` owns recipes, the image lock, contained execution, and job submission.
 `docs/` owns the scientific plan, writing rules, and reviewed result summaries.
+`validation/` owns case generation, property probes, and scientific comparisons;
+it uses contained execution from `environment/` and a completed isolated build.
 Future case modules own their inputs, reference data provenance, comparisons, and README.
 The solver remains upstream code unless a separate source change is recorded.
 
