@@ -1,0 +1,977 @@
+{
+  "qualification": "Development only. The 100-microsecond high-pressure MPI temperature comparisons exceed the 1e-5 relative infinity-norm criterion.",
+  "approved_counterflow_core_hours": 1000,
+  "reserved_core_hours": 118.6666666667,
+  "completed_allocated_core_hours": 5.937777777777778,
+  "archive_sha256": {
+    "analysis-124665830.tar.gz": "ba9ecaddcbc62a6409e7bfffe27967ce73afcf99a9b1b62055667652159f5be0",
+    "analysis-124665841.tar.gz": "abbf0b61c673fd692157821db53bfd0d593f543b07c79ef33170f45d07d618e7",
+    "analysis-124665857.tar.gz": "d55007de6590d10a8334283858ea788c7aae30736cc22b26441257653baec213",
+    "analysis-124666397.tar.gz": "306b8491f65e7e4d9de2bde0bf5e220f8a0abe5a6195a490fd450a6aff680b72",
+    "analysis-124666401.tar.gz": "12e7db78496223e48d020ef0695928533d4d57bdd71d548055242ccb51deb7b4",
+    "analysis-124666404.tar.gz": "d8b1405bace54b8c021e60f955a4a3eedca32f30d3c0b7280c32e1f7f75269ce",
+    "analysis-124666858.tar.gz": "8d179740cae8c8e0958de6704e79c5437118397e47b750f08b2e46b7bea6c574"
+  },
+  "jobs": {
+    "124665830": {
+      "cells": 320,
+      "nearest_axis_r_m": 0.0016650803692999949,
+      "history": [
+        {
+          "time_s": 1e-05,
+          "T_max_K": 1802.18074578,
+          "T_min_K": 1712.54412839,
+          "axis_T_max_K": 1801.94430242,
+          "axis_T_range_K": 89.40017403000002,
+          "axis_peak_z_m": 0.00075,
+          "OH_max": 4.07461690734e-07,
+          "rho_min_kg_m3": 0.156240776581,
+          "rho_max_kg_m3": 0.162804404457
+        },
+        {
+          "time_s": 2e-05,
+          "T_max_K": 1801.66063004,
+          "T_min_K": 1637.72301701,
+          "axis_T_max_K": 1801.18513042,
+          "axis_T_range_K": 163.46211341000003,
+          "axis_peak_z_m": 0.00075,
+          "OH_max": 6.42195170783e-07,
+          "rho_min_kg_m3": 0.155969733887,
+          "rho_max_kg_m3": 0.168737684285,
+          "T_relative_linf_change": 0.041528970624361644
+        },
+        {
+          "time_s": 3e-05,
+          "T_max_K": 1798.75230496,
+          "T_min_K": 1572.49635184,
+          "axis_T_max_K": 1798.18866084,
+          "axis_T_range_K": 225.69230900000002,
+          "axis_peak_z_m": 0.00075,
+          "OH_max": 8.43038682197e-07,
+          "rho_min_kg_m3": 0.156081861749,
+          "rho_max_kg_m3": 0.174682372799,
+          "T_relative_linf_change": 0.036363915159210655
+        },
+        {
+          "time_s": 4e-05,
+          "T_max_K": 1793.70229898,
+          "T_min_K": 1514.37111021,
+          "axis_T_max_K": 1793.35213545,
+          "axis_T_range_K": 278.68747800000006,
+          "axis_peak_z_m": 0.00075,
+          "OH_max": 9.95926938096e-07,
+          "rho_min_kg_m3": 0.156173912589,
+          "rho_max_kg_m3": 0.180047661826,
+          "T_relative_linf_change": 0.032424039018666855
+        },
+        {
+          "time_s": 5e-05,
+          "T_max_K": 1790.71635622,
+          "T_min_K": 1462.1131522,
+          "axis_T_max_K": 1790.57157836,
+          "axis_T_range_K": 328.26809947000015,
+          "axis_peak_z_m": 0.0012500000000000002,
+          "OH_max": 1.15623466661e-06,
+          "rho_min_kg_m3": 0.156362788548,
+          "rho_max_kg_m3": 0.185087786047,
+          "T_relative_linf_change": 0.02924035310121846
+        },
+        {
+          "time_s": 6e-05,
+          "T_max_K": 1788.67601256,
+          "T_min_K": 1414.6673886,
+          "axis_T_max_K": 1788.54499413,
+          "axis_T_range_K": 373.87760553,
+          "axis_peak_z_m": 0.0012500000000000002,
+          "OH_max": 1.31407340802e-06,
+          "rho_min_kg_m3": 0.156618350405,
+          "rho_max_kg_m3": 0.189985159344,
+          "T_relative_linf_change": 0.02663203953958204
+        },
+        {
+          "time_s": 7e-05,
+          "T_max_K": 1786.90069785,
+          "T_min_K": 1371.3722077,
+          "axis_T_max_K": 1786.51164138,
+          "axis_T_range_K": 415.1394336799999,
+          "axis_peak_z_m": 0.0012500000000000002,
+          "OH_max": 1.46367432783e-06,
+          "rho_min_kg_m3": 0.156441757298,
+          "rho_max_kg_m3": 0.194810977779,
+          "T_relative_linf_change": 0.024229203644104507
+        },
+        {
+          "time_s": 8e-05,
+          "T_max_K": 1784.94796182,
+          "T_min_K": 1331.99252114,
+          "axis_T_max_K": 1784.59870661,
+          "axis_T_range_K": 452.6061854699999,
+          "axis_peak_z_m": 0.0012500000000000002,
+          "OH_max": 1.59947717961e-06,
+          "rho_min_kg_m3": 0.156477808889,
+          "rho_max_kg_m3": 0.199482579447,
+          "T_relative_linf_change": 0.022098655212211566
+        },
+        {
+          "time_s": 9e-05,
+          "T_max_K": 1782.71247647,
+          "T_min_K": 1295.84354748,
+          "axis_T_max_K": 1782.49417545,
+          "axis_T_range_K": 486.62936217000015,
+          "axis_peak_z_m": 0.0012500000000000002,
+          "OH_max": 1.71840491803e-06,
+          "rho_min_kg_m3": 0.156475484064,
+          "rho_max_kg_m3": 0.204059546087,
+          "T_relative_linf_change": 0.020359803074845893
+        },
+        {
+          "time_s": 0.0001,
+          "T_max_K": 1780.15898236,
+          "T_min_K": 1262.30659242,
+          "axis_T_max_K": 1780.13096506,
+          "axis_T_range_K": 517.7836417600001,
+          "axis_peak_z_m": 0.00175,
+          "OH_max": 1.83876401724e-06,
+          "rho_min_kg_m3": 0.15638834171,
+          "rho_max_kg_m3": 0.208662398378,
+          "T_relative_linf_change": 0.01884326073254985
+        }
+      ],
+      "qualification": "Temporal changes alone do not establish steady flame or grid convergence."
+    },
+    "124665841": {
+      "cells": 320,
+      "nearest_axis_r_m": 0.0004162700923259993,
+      "history": [
+        {
+          "time_s": 1e-05,
+          "T_max_K": 1870.08768749,
+          "T_min_K": 1780.53438182,
+          "axis_T_max_K": 1870.08768749,
+          "axis_T_range_K": 84.68326714,
+          "axis_peak_z_m": 0.00018749999999999998,
+          "OH_max": 1.06874358279e-06,
+          "rho_min_kg_m3": 27.4270832618,
+          "rho_max_kg_m3": 29.0846517621
+        },
+        {
+          "time_s": 2e-05,
+          "T_max_K": 1824.04158939,
+          "T_min_K": 1717.85773839,
+          "axis_T_max_K": 1824.04158939,
+          "axis_T_range_K": 105.35390527999994,
+          "axis_peak_z_m": 0.0049374999999999974,
+          "OH_max": 4.02524964389e-07,
+          "rho_min_kg_m3": 27.015380659,
+          "rho_max_kg_m3": 29.3868419876,
+          "T_relative_linf_change": 0.036576324042212005
+        },
+        {
+          "time_s": 3e-05,
+          "T_max_K": 1792.26748201,
+          "T_min_K": 1639.59632699,
+          "axis_T_max_K": 1789.25978261,
+          "axis_T_range_K": 149.66345561999992,
+          "axis_peak_z_m": 0.0049374999999999974,
+          "OH_max": 3.24905776973e-07,
+          "rho_min_kg_m3": 26.8086756354,
+          "rho_max_kg_m3": 29.4851957023,
+          "T_relative_linf_change": 0.044129215038427275
+        },
+        {
+          "time_s": 4e-05,
+          "T_max_K": 1778.14799037,
+          "T_min_K": 1574.80396503,
+          "axis_T_max_K": 1778.14799037,
+          "axis_T_range_K": 203.34402533999992,
+          "axis_peak_z_m": 0.0049374999999999974,
+          "OH_max": 3.15721066884e-07,
+          "rho_min_kg_m3": 27.1680424976,
+          "rho_max_kg_m3": 30.2785613452,
+          "T_relative_linf_change": 0.03797235322125814
+        },
+        {
+          "time_s": 5e-05,
+          "T_max_K": 1769.95477816,
+          "T_min_K": 1513.53481712,
+          "axis_T_max_K": 1769.95477816,
+          "axis_T_range_K": 256.41996103999986,
+          "axis_peak_z_m": 0.0049374999999999974,
+          "OH_max": 3.16778008186e-07,
+          "rho_min_kg_m3": 27.2424848001,
+          "rho_max_kg_m3": 31.1281087804,
+          "T_relative_linf_change": 0.03461622221427248
+        },
+        {
+          "time_s": 6e-05,
+          "T_max_K": 1765.47815727,
+          "T_min_K": 1457.51269519,
+          "axis_T_max_K": 1765.04768044,
+          "axis_T_range_K": 307.5349852500001,
+          "axis_peak_z_m": 0.0049374999999999974,
+          "OH_max": 3.25483305343e-07,
+          "rho_min_kg_m3": 27.2761317789,
+          "rho_max_kg_m3": 31.8318995558,
+          "T_relative_linf_change": 0.03173198246566157
+        },
+        {
+          "time_s": 7e-05,
+          "T_max_K": 1763.58204764,
+          "T_min_K": 1406.91157739,
+          "axis_T_max_K": 1763.35589851,
+          "axis_T_range_K": 356.44432112000004,
+          "axis_peak_z_m": 0.0049374999999999974,
+          "OH_max": 3.38497493126e-07,
+          "rho_min_kg_m3": 27.3364537735,
+          "rho_max_kg_m3": 32.6062497138,
+          "T_relative_linf_change": 0.028836158123776188
+        },
+        {
+          "time_s": 8e-05,
+          "T_max_K": 1763.00701817,
+          "T_min_K": 1360.16474539,
+          "axis_T_max_K": 1762.83097274,
+          "axis_T_range_K": 402.6662273500001,
+          "axis_peak_z_m": 0.0049374999999999974,
+          "OH_max": 3.53507701657e-07,
+          "rho_min_kg_m3": 27.3746608502,
+          "rho_max_kg_m3": 33.3794843428,
+          "T_relative_linf_change": 0.026542981058903396
+        },
+        {
+          "time_s": 9e-05,
+          "T_max_K": 1763.06029833,
+          "T_min_K": 1316.92857837,
+          "axis_T_max_K": 1762.83097274,
+          "axis_T_range_K": 445.90239437000014,
+          "axis_peak_z_m": 0.0049374999999999974,
+          "OH_max": 3.70298561873e-07,
+          "rho_min_kg_m3": 27.405612451,
+          "rho_max_kg_m3": 34.1199184421,
+          "T_relative_linf_change": 0.024523362621774226
+        },
+        {
+          "time_s": 0.0001,
+          "T_max_K": 1764.06578065,
+          "T_min_K": 1276.92894522,
+          "axis_T_max_K": 1763.81560162,
+          "axis_T_range_K": 486.8866564,
+          "axis_peak_z_m": 0.0049374999999999974,
+          "OH_max": 3.89379128915e-07,
+          "rho_min_kg_m3": 27.4330720574,
+          "rho_max_kg_m3": 34.862392707,
+          "T_relative_linf_change": 0.02270276010639654
+        }
+      ],
+      "qualification": "Temporal changes alone do not establish steady flame or grid convergence."
+    },
+    "124665857": {
+      "cells": 320,
+      "nearest_axis_r_m": 0.0016650803692999949,
+      "history": [
+        {
+          "time_s": 1e-05,
+          "T_max_K": 1898.28961678,
+          "T_min_K": 1654.47353321,
+          "axis_T_max_K": 1898.28961678,
+          "axis_T_range_K": 233.82194105999997,
+          "axis_peak_z_m": 0.01875000000000001,
+          "OH_max": 2.9013564863e-06,
+          "rho_min_kg_m3": 12.9180393299,
+          "rho_max_kg_m3": 15.6130363185
+        },
+        {
+          "time_s": 2e-05,
+          "T_max_K": 1881.46170445,
+          "T_min_K": 1520.0562832,
+          "axis_T_max_K": 1881.46170445,
+          "axis_T_range_K": 330.39981434000015,
+          "axis_peak_z_m": 0.019750000000000028,
+          "OH_max": 1.97171419351e-06,
+          "rho_min_kg_m3": 11.5886554168,
+          "rho_max_kg_m3": 17.0122201987,
+          "T_relative_linf_change": 0.07209383818399406
+        },
+        {
+          "time_s": 3e-05,
+          "T_max_K": 1830.57347437,
+          "T_min_K": 1387.92684911,
+          "axis_T_max_K": 1775.01802217,
+          "axis_T_range_K": 386.96636506999994,
+          "axis_peak_z_m": 0.004249999999999998,
+          "OH_max": 1.53279850739e-06,
+          "rho_min_kg_m3": 10.1118377136,
+          "rho_max_kg_m3": 15.9938738552,
+          "T_relative_linf_change": 0.08904872450754842
+        },
+        {
+          "time_s": 4e-05,
+          "T_max_K": 1817.32573674,
+          "T_min_K": 1275.28071416,
+          "axis_T_max_K": 1740.50914629,
+          "axis_T_range_K": 465.2284321300001,
+          "axis_peak_z_m": 0.019250000000000038,
+          "OH_max": 1.6578975387e-06,
+          "rho_min_kg_m3": 9.69886907585,
+          "rho_max_kg_m3": 16.8086602997,
+          "T_relative_linf_change": 0.06205323606008779
+        },
+        {
+          "time_s": 5e-05,
+          "T_max_K": 1840.18811058,
+          "T_min_K": 1224.52956374,
+          "axis_T_max_K": 1840.18811058,
+          "axis_T_range_K": 590.2918379100001,
+          "axis_peak_z_m": 0.019750000000000028,
+          "OH_max": 2.32017304176e-06,
+          "rho_min_kg_m3": 11.7755054223,
+          "rho_max_kg_m3": 18.4802614458,
+          "T_relative_linf_change": 0.06151699341450489
+        },
+        {
+          "time_s": 6e-05,
+          "T_max_K": 1883.14409252,
+          "T_min_K": 1156.27940939,
+          "axis_T_max_K": 1883.14409252,
+          "axis_T_range_K": 688.5673253099999,
+          "axis_peak_z_m": 0.019750000000000028,
+          "OH_max": 2.63162922111e-06,
+          "rho_min_kg_m3": 12.0575459162,
+          "rho_max_kg_m3": 21.2190577481,
+          "T_relative_linf_change": 0.03624266173846978
+        },
+        {
+          "time_s": 7e-05,
+          "T_max_K": 1879.99286316,
+          "T_min_K": 1093.04783142,
+          "axis_T_max_K": 1879.99286316,
+          "axis_T_range_K": 759.1942381200001,
+          "axis_peak_z_m": 0.019750000000000028,
+          "OH_max": 2.91765370017e-06,
+          "rho_min_kg_m3": 11.9913053333,
+          "rho_max_kg_m3": 21.1751295607,
+          "T_relative_linf_change": 0.039243841620754664
+        },
+        {
+          "time_s": 8e-05,
+          "T_max_K": 1871.89898359,
+          "T_min_K": 1033.19236295,
+          "axis_T_max_K": 1839.59780284,
+          "axis_T_range_K": 799.07586919,
+          "axis_peak_z_m": 0.019750000000000028,
+          "OH_max": 3.51769001828e-06,
+          "rho_min_kg_m3": 11.268394559,
+          "rho_max_kg_m3": 20.2508982993,
+          "T_relative_linf_change": 0.06369082815107356
+        },
+        {
+          "time_s": 9e-05,
+          "T_max_K": 1897.68119231,
+          "T_min_K": 977.608811718,
+          "axis_T_max_K": 1825.22953726,
+          "axis_T_range_K": 846.8462865739999,
+          "axis_peak_z_m": 0.019750000000000028,
+          "OH_max": 4.5573182592e-06,
+          "rho_min_kg_m3": 10.4374575079,
+          "rho_max_kg_m3": 21.0384085098,
+          "T_relative_linf_change": 0.04232480420076764
+        },
+        {
+          "time_s": 0.0001,
+          "T_max_K": 1930.01631419,
+          "T_min_K": 944.559344936,
+          "axis_T_max_K": 1916.13979456,
+          "axis_T_range_K": 957.5716663909999,
+          "axis_peak_z_m": 0.019750000000000028,
+          "OH_max": 6.09265732194e-06,
+          "rho_min_kg_m3": 11.774314527,
+          "rho_max_kg_m3": 21.9135418567,
+          "T_relative_linf_change": 0.04710336209678815
+        }
+      ],
+      "qualification": "Temporal changes alone do not establish steady flame or grid convergence."
+    },
+    "124666397": {
+      "cells": 320,
+      "nearest_axis_r_m": 0.0016650803692999949,
+      "history": [
+        {
+          "time_s": 0.0001,
+          "T_max_K": 1780.15898236,
+          "T_min_K": 1262.30659242,
+          "axis_T_max_K": 1780.13096506,
+          "axis_T_range_K": 517.7836417600001,
+          "axis_peak_z_m": 0.00175,
+          "OH_max": 1.83876401724e-06,
+          "rho_min_kg_m3": 0.15638834171,
+          "rho_max_kg_m3": 0.208662398378
+        },
+        {
+          "time_s": 0.0002,
+          "T_max_K": 1759.08064179,
+          "T_min_K": 1030.24785546,
+          "axis_T_max_K": 1759.05661725,
+          "axis_T_range_K": 728.8087617900001,
+          "axis_peak_z_m": 0.0022500000000000003,
+          "OH_max": 2.61866380389e-06,
+          "rho_min_kg_m3": 0.154725098435,
+          "rho_max_kg_m3": 0.245472519669,
+          "T_relative_linf_change": 0.13194362005133597
+        },
+        {
+          "time_s": 0.0003,
+          "T_max_K": 1739.79632975,
+          "T_min_K": 887.625438984,
+          "axis_T_max_K": 1739.69352966,
+          "axis_T_range_K": 852.068090676,
+          "axis_peak_z_m": 0.002750000000000001,
+          "OH_max": 3.13359672979e-06,
+          "rho_min_kg_m3": 0.15254659371,
+          "rho_max_kg_m3": 0.274374435557,
+          "T_relative_linf_change": 0.08557259441476864
+        },
+        {
+          "time_s": 0.0004,
+          "T_max_K": 1727.51864106,
+          "T_min_K": 789.121374698,
+          "axis_T_max_K": 1727.08505977,
+          "axis_T_range_K": 937.9636850720001,
+          "axis_peak_z_m": 0.01875000000000001,
+          "OH_max": 3.33577636442e-06,
+          "rho_min_kg_m3": 0.1507423703,
+          "rho_max_kg_m3": 0.297574447642,
+          "T_relative_linf_change": 0.07449056201271442
+        },
+        {
+          "time_s": 0.0005,
+          "T_max_K": 1715.89428998,
+          "T_min_K": 715.720210344,
+          "axis_T_max_K": 1715.01661209,
+          "axis_T_range_K": 999.2964017460001,
+          "axis_peak_z_m": 0.01875000000000001,
+          "OH_max": 3.34997674808e-06,
+          "rho_min_kg_m3": 0.149418698794,
+          "rho_max_kg_m3": 0.316588668218,
+          "T_relative_linf_change": 0.0628033822708601
+        },
+        {
+          "time_s": 0.0006,
+          "T_max_K": 1704.20893855,
+          "T_min_K": 658.456148702,
+          "axis_T_max_K": 1704.2007167,
+          "axis_T_range_K": 1045.744567998,
+          "axis_peak_z_m": 0.018249999999999978,
+          "OH_max": 3.27527142911e-06,
+          "rho_min_kg_m3": 0.148487641839,
+          "rho_max_kg_m3": 0.332470521414,
+          "T_relative_linf_change": 0.053184837515943266
+        },
+        {
+          "time_s": 0.0007,
+          "T_max_K": 1697.07016772,
+          "T_min_K": 612.333971757,
+          "axis_T_max_K": 1697.05742824,
+          "axis_T_range_K": 1084.722445309,
+          "axis_peak_z_m": 0.018249999999999978,
+          "OH_max": 3.18151177339e-06,
+          "rho_min_kg_m3": 0.147837976093,
+          "rho_max_kg_m3": 0.345973360801,
+          "T_relative_linf_change": 0.045452685668048796
+        },
+        {
+          "time_s": 0.0008,
+          "T_max_K": 1690.64515242,
+          "T_min_K": 574.326515169,
+          "axis_T_max_K": 1690.52156689,
+          "axis_T_range_K": 1116.1938953210001,
+          "axis_peak_z_m": 0.018249999999999978,
+          "OH_max": 3.21828854893e-06,
+          "rho_min_kg_m3": 0.147382297846,
+          "rho_max_kg_m3": 0.357616171946,
+          "T_relative_linf_change": 0.042205383263225364
+        },
+        {
+          "time_s": 0.0009,
+          "T_max_K": 1684.56476512,
+          "T_min_K": 542.466851971,
+          "axis_T_max_K": 1684.33332709,
+          "axis_T_range_K": 1141.866475119,
+          "axis_peak_z_m": 0.018249999999999978,
+          "OH_max": 3.37772015398e-06,
+          "rho_min_kg_m3": 0.147059964492,
+          "rho_max_kg_m3": 0.375047630013,
+          "T_relative_linf_change": 0.03907833581887276
+        },
+        {
+          "time_s": 0.001,
+          "T_max_K": 1678.71555669,
+          "T_min_K": 515.403252423,
+          "axis_T_max_K": 1678.40952021,
+          "axis_T_range_K": 1163.006267787,
+          "axis_peak_z_m": 0.018249999999999978,
+          "OH_max": 3.57849233204e-06,
+          "rho_min_kg_m3": 0.146830187156,
+          "rho_max_kg_m3": 0.392454888844,
+          "T_relative_linf_change": 0.0360309616831469
+        }
+      ],
+      "qualification": "Temporal changes alone do not establish steady flame or grid convergence."
+    },
+    "124666858": {
+      "cells": 3200,
+      "nearest_axis_r_m": 0.0016650803692999448,
+      "history": [
+        {
+          "time_s": 1e-05,
+          "T_max_K": 1790.4038098,
+          "T_min_K": 300.000001517,
+          "axis_T_max_K": 1790.38268394,
+          "axis_T_range_K": 1490.382682423,
+          "axis_peak_z_m": 0.011625000000000187,
+          "OH_max": 9.38234364658e-07,
+          "rho_min_kg_m3": 0.264270874393,
+          "rho_max_kg_m3": 0.652823096465
+        },
+        {
+          "time_s": 2e-05,
+          "T_max_K": 1781.90605399,
+          "T_min_K": 300.000001517,
+          "axis_T_max_K": 1781.8898765,
+          "axis_T_range_K": 1481.889874983,
+          "axis_peak_z_m": 0.011625000000000187,
+          "OH_max": 1.52601466932e-06,
+          "rho_min_kg_m3": 0.26533201684,
+          "rho_max_kg_m3": 0.652816620601,
+          "T_relative_linf_change": 0.004815787808108633
+        },
+        {
+          "time_s": 3e-05,
+          "T_max_K": 1773.87958302,
+          "T_min_K": 300.000001517,
+          "axis_T_max_K": 1773.86524433,
+          "axis_T_range_K": 1473.865242813,
+          "axis_peak_z_m": 0.011625000000000187,
+          "OH_max": 2.14940771584e-06,
+          "rho_min_kg_m3": 0.26632996174,
+          "rho_max_kg_m3": 0.652809820007,
+          "T_relative_linf_change": 0.0045601167618313666
+        },
+        {
+          "time_s": 4e-05,
+          "T_max_K": 1766.31912811,
+          "T_min_K": 300.000001517,
+          "axis_T_max_K": 1766.3022934,
+          "axis_T_range_K": 1466.3022918830002,
+          "axis_peak_z_m": 0.011625000000000187,
+          "OH_max": 2.81963556328e-06,
+          "rho_min_kg_m3": 0.267273146328,
+          "rho_max_kg_m3": 0.652817770942,
+          "T_relative_linf_change": 0.004311489559731265
+        },
+        {
+          "time_s": 5e-05,
+          "T_max_K": 1759.21665183,
+          "T_min_K": 300.000001517,
+          "axis_T_max_K": 1759.18984057,
+          "axis_T_range_K": 1459.189839053,
+          "axis_peak_z_m": 0.011625000000000187,
+          "OH_max": 3.5439760515e-06,
+          "rho_min_kg_m3": 0.2681498615,
+          "rho_max_kg_m3": 0.652868367508,
+          "T_relative_linf_change": 0.004066987401783287
+        },
+        {
+          "time_s": 6e-05,
+          "T_max_K": 1752.5156283,
+          "T_min_K": 300.000001517,
+          "axis_T_max_K": 1752.47001626,
+          "axis_T_range_K": 1452.4700147429999,
+          "axis_peak_z_m": 0.011625000000000187,
+          "OH_max": 4.32037177272e-06,
+          "rho_min_kg_m3": 0.268954236187,
+          "rho_max_kg_m3": 0.652822493296,
+          "T_relative_linf_change": 0.0038343876662134996
+        },
+        {
+          "time_s": 7e-05,
+          "T_max_K": 1746.33252974,
+          "T_min_K": 300.000001517,
+          "axis_T_max_K": 1746.28242456,
+          "axis_T_range_K": 1446.282423043,
+          "axis_peak_z_m": 0.011625000000000187,
+          "OH_max": 5.1873651459e-06,
+          "rho_min_kg_m3": 0.269705295927,
+          "rho_max_kg_m3": 0.652812195306,
+          "T_relative_linf_change": 0.0035666540214579225
+        },
+        {
+          "time_s": 8e-05,
+          "T_max_K": 1740.6211274,
+          "T_min_K": 300.000001517,
+          "axis_T_max_K": 1740.56795292,
+          "axis_T_range_K": 1440.5679514029998,
+          "axis_peak_z_m": 0.011625000000000187,
+          "OH_max": 6.10956418728e-06,
+          "rho_min_kg_m3": 0.270400634754,
+          "rho_max_kg_m3": 0.652803577294,
+          "T_relative_linf_change": 0.00331600377540035
+        },
+        {
+          "time_s": 9e-05,
+          "T_max_K": 1735.37158629,
+          "T_min_K": 300.000001517,
+          "axis_T_max_K": 1735.30948457,
+          "axis_T_range_K": 1435.309483053,
+          "axis_peak_z_m": 0.011625000000000187,
+          "OH_max": 7.07601093209e-06,
+          "rho_min_kg_m3": 0.271037800079,
+          "rho_max_kg_m3": 0.652842170906,
+          "T_relative_linf_change": 0.003073600600666275
+        },
+        {
+          "time_s": 0.0001,
+          "T_max_K": 1730.58271305,
+          "T_min_K": 300.000001517,
+          "axis_T_max_K": 1730.50925298,
+          "axis_T_range_K": 1430.509251463,
+          "axis_peak_z_m": 0.011625000000000187,
+          "OH_max": 8.08156850203e-06,
+          "rho_min_kg_m3": 0.271621749899,
+          "rho_max_kg_m3": 0.652814595797,
+          "T_relative_linf_change": 0.0028426521788894516
+        }
+      ],
+      "qualification": "Temporal changes alone do not establish steady flame or grid convergence."
+    },
+    "124666401": {
+      "cells": 320,
+      "nearest_axis_r_m": 0.0004162700923259993,
+      "history": [
+        {
+          "time_s": 1e-05,
+          "T_max_K": 1870.08735228,
+          "T_min_K": 1780.53405917,
+          "axis_T_max_K": 1870.08735228,
+          "axis_T_range_K": 84.68197514999997,
+          "axis_peak_z_m": 0.00018749999999999998,
+          "OH_max": 1.06874147898e-06,
+          "rho_min_kg_m3": 27.4271410081,
+          "rho_max_kg_m3": 29.0845170829
+        },
+        {
+          "time_s": 2e-05,
+          "T_max_K": 1824.0423496,
+          "T_min_K": 1717.85887777,
+          "axis_T_max_K": 1824.0423496,
+          "axis_T_range_K": 105.35327905000008,
+          "axis_peak_z_m": 0.0049374999999999974,
+          "OH_max": 4.02518768182e-07,
+          "rho_min_kg_m3": 27.0153825228,
+          "rho_max_kg_m3": 29.3867761054,
+          "T_relative_linf_change": 0.036576073244478376
+        },
+        {
+          "time_s": 3e-05,
+          "T_max_K": 1792.26741682,
+          "T_min_K": 1639.59628131,
+          "axis_T_max_K": 1789.25944932,
+          "axis_T_range_K": 149.66316800999994,
+          "axis_peak_z_m": 0.0049374999999999974,
+          "OH_max": 3.2490601242e-07,
+          "rho_min_kg_m3": 26.8087381254,
+          "rho_max_kg_m3": 29.4851850044,
+          "T_relative_linf_change": 0.04413001569840144
+        },
+        {
+          "time_s": 4e-05,
+          "T_max_K": 1778.14804624,
+          "T_min_K": 1574.80508758,
+          "axis_T_max_K": 1778.14804624,
+          "axis_T_range_K": 203.34295866000002,
+          "axis_peak_z_m": 0.0049374999999999974,
+          "OH_max": 3.15720274988e-07,
+          "rho_min_kg_m3": 27.1680445544,
+          "rho_max_kg_m3": 30.2785582362,
+          "T_relative_linf_change": 0.03797230262281918
+        },
+        {
+          "time_s": 5e-05,
+          "T_max_K": 1769.95483033,
+          "T_min_K": 1513.53540474,
+          "axis_T_max_K": 1769.95483033,
+          "axis_T_range_K": 256.41942558999995,
+          "axis_peak_z_m": 0.0049374999999999974,
+          "OH_max": 3.16781069996e-07,
+          "rho_min_kg_m3": 27.2424861273,
+          "rho_max_kg_m3": 31.1280976253,
+          "T_relative_linf_change": 0.03461652342199965
+        },
+        {
+          "time_s": 6e-05,
+          "T_max_K": 1765.47805406,
+          "T_min_K": 1457.51309106,
+          "axis_T_max_K": 1765.04756936,
+          "axis_T_range_K": 307.5344782999998,
+          "axis_peak_z_m": 0.0049374999999999974,
+          "OH_max": 3.25483008582e-07,
+          "rho_min_kg_m3": 27.2761328913,
+          "rho_max_kg_m3": 31.8318895233,
+          "T_relative_linf_change": 0.031732092931525104
+        },
+        {
+          "time_s": 7e-05,
+          "T_max_K": 1763.58435418,
+          "T_min_K": 1406.91195263,
+          "axis_T_max_K": 1763.35578901,
+          "axis_T_range_K": 356.44383638,
+          "axis_peak_z_m": 0.0049374999999999974,
+          "OH_max": 3.38493078587e-07,
+          "rho_min_kg_m3": 27.3364541605,
+          "rho_max_kg_m3": 32.6062376278,
+          "T_relative_linf_change": 0.02883614491105288
+        },
+        {
+          "time_s": 8e-05,
+          "T_max_K": 1763.00690574,
+          "T_min_K": 1360.16505901,
+          "axis_T_max_K": 1762.83085484,
+          "axis_T_range_K": 402.66579583,
+          "axis_peak_z_m": 0.0049374999999999974,
+          "OH_max": 3.53507284766e-07,
+          "rho_min_kg_m3": 27.3746607989,
+          "rho_max_kg_m3": 33.3794727079,
+          "T_relative_linf_change": 0.026543019172326
+        },
+        {
+          "time_s": 9e-05,
+          "T_max_K": 1763.05892441,
+          "T_min_K": 1316.92882936,
+          "axis_T_max_K": 1762.83085484,
+          "axis_T_range_K": 445.90202548,
+          "axis_peak_z_m": 0.0049374999999999974,
+          "OH_max": 3.70293419293e-07,
+          "rho_min_kg_m3": 27.4056128638,
+          "rho_max_kg_m3": 34.1199056942,
+          "T_relative_linf_change": 0.024523417255874678
+        },
+        {
+          "time_s": 0.0001,
+          "T_max_K": 1764.06563148,
+          "T_min_K": 1276.92917071,
+          "axis_T_max_K": 1763.81540297,
+          "axis_T_range_K": 486.8862322599998,
+          "axis_peak_z_m": 0.0049374999999999974,
+          "OH_max": 3.8937368129e-07,
+          "rho_min_kg_m3": 27.4330720704,
+          "rho_max_kg_m3": 34.8623791504,
+          "T_relative_linf_change": 0.022702756317745442
+        }
+      ],
+      "qualification": "Temporal changes alone do not establish steady flame or grid convergence.",
+      "same_mesh_comparison": {
+        "T": {
+          "absolute_linf": 0.05081344999985049,
+          "relative_linf": 2.880473651108827e-05
+        },
+        "p": {
+          "absolute_linf": 1.624099999666214,
+          "relative_linf": 8.014288519941236e-08
+        },
+        "rho": {
+          "absolute_linf": 0.00079161169999864,
+          "relative_linf": 2.270675184723316e-05
+        },
+        "CH4": {
+          "absolute_linf": 4.5096938000033227e-05,
+          "relative_linf": 7.457681267122164e-05
+        },
+        "O2": {
+          "absolute_linf": 1.0667260999996583e-07,
+          "relative_linf": 3.3286405582985375e-05
+        },
+        "CO2": {
+          "absolute_linf": 2.2163078999992702e-05,
+          "relative_linf": 4.2643308755009716e-05
+        },
+        "H2O": {
+          "absolute_linf": 7.322829100001038e-06,
+          "relative_linf": 8.177481136862597e-05
+        },
+        "OH": {
+          "absolute_linf": 4.466273170000432e-11,
+          "relative_linf": 0.00011470242851602358
+        },
+        "U": {
+          "absolute_linf": 0.004815839789900009,
+          "relative_linf": 0.011779767295386196
+        }
+      },
+      "temperature_relative_linf_below_1e-5": false
+    },
+    "124666404": {
+      "cells": 320,
+      "nearest_axis_r_m": 0.0016650803692999949,
+      "history": [
+        {
+          "time_s": 1e-05,
+          "T_max_K": 1898.28991005,
+          "T_min_K": 1654.46572594,
+          "axis_T_max_K": 1898.28991005,
+          "axis_T_range_K": 233.83468343999994,
+          "axis_peak_z_m": 0.018249999999999978,
+          "OH_max": 2.90135463426e-06,
+          "rho_min_kg_m3": 12.9180474581,
+          "rho_max_kg_m3": 15.6131815341
+        },
+        {
+          "time_s": 2e-05,
+          "T_max_K": 1881.46262803,
+          "T_min_K": 1520.06883332,
+          "axis_T_max_K": 1881.46262803,
+          "axis_T_range_K": 330.4748225599999,
+          "axis_peak_z_m": 0.019750000000000028,
+          "OH_max": 1.97138428219e-06,
+          "rho_min_kg_m3": 11.5884733311,
+          "rho_max_kg_m3": 17.012647319,
+          "T_relative_linf_change": 0.07208433436810065
+        },
+        {
+          "time_s": 3e-05,
+          "T_max_K": 1830.58829901,
+          "T_min_K": 1388.03241586,
+          "axis_T_max_K": 1775.02110885,
+          "axis_T_range_K": 386.80600237,
+          "axis_peak_z_m": 0.004249999999999998,
+          "OH_max": 1.53290578976e-06,
+          "rho_min_kg_m3": 10.113363359,
+          "rho_max_kg_m3": 15.9943835056,
+          "T_relative_linf_change": 0.0889182450680085
+        },
+        {
+          "time_s": 4e-05,
+          "T_max_K": 1817.3176163,
+          "T_min_K": 1275.41111406,
+          "axis_T_max_K": 1740.44447011,
+          "axis_T_range_K": 465.03335605000007,
+          "axis_peak_z_m": 0.019250000000000038,
+          "OH_max": 1.6577629792e-06,
+          "rho_min_kg_m3": 9.69614454383,
+          "rho_max_kg_m3": 16.8082844591,
+          "T_relative_linf_change": 0.06207169919458838
+        },
+        {
+          "time_s": 5e-05,
+          "T_max_K": 1840.20562054,
+          "T_min_K": 1224.53304014,
+          "axis_T_max_K": 1840.20562054,
+          "axis_T_range_K": 590.67996518,
+          "axis_peak_z_m": 0.019750000000000028,
+          "OH_max": 2.32153973615e-06,
+          "rho_min_kg_m3": 11.7752093266,
+          "rho_max_kg_m3": 18.4881367298,
+          "T_relative_linf_change": 0.061594485749227816
+        },
+        {
+          "time_s": 6e-05,
+          "T_max_K": 1883.14601337,
+          "T_min_K": 1156.27200509,
+          "axis_T_max_K": 1883.14601337,
+          "axis_T_range_K": 689.1492125100001,
+          "axis_peak_z_m": 0.019750000000000028,
+          "OH_max": 2.63148147193e-06,
+          "rho_min_kg_m3": 12.0574288233,
+          "rho_max_kg_m3": 21.2336023323,
+          "T_relative_linf_change": 0.03624840270768107
+        },
+        {
+          "time_s": 7e-05,
+          "T_max_K": 1880.05518485,
+          "T_min_K": 1093.05100135,
+          "axis_T_max_K": 1880.05518485,
+          "axis_T_range_K": 759.7282676,
+          "axis_peak_z_m": 0.019750000000000028,
+          "OH_max": 2.91784314702e-06,
+          "rho_min_kg_m3": 11.9916792376,
+          "rho_max_kg_m3": 21.1867482542,
+          "T_relative_linf_change": 0.03918495808189677
+        },
+        {
+          "time_s": 8e-05,
+          "T_max_K": 1871.86141136,
+          "T_min_K": 1033.23222457,
+          "axis_T_max_K": 1839.5834893,
+          "axis_T_range_K": 799.4135885800001,
+          "axis_peak_z_m": 0.019750000000000028,
+          "OH_max": 3.51670076535e-06,
+          "rho_min_kg_m3": 11.2690420652,
+          "rho_max_kg_m3": 20.2506484032,
+          "T_relative_linf_change": 0.06388400891448351
+        },
+        {
+          "time_s": 9e-05,
+          "T_max_K": 1897.65930527,
+          "T_min_K": 977.424921438,
+          "axis_T_max_K": 1825.08585084,
+          "axis_T_range_K": 847.0640858909999,
+          "axis_peak_z_m": 0.019750000000000028,
+          "OH_max": 4.55652171576e-06,
+          "rho_min_kg_m3": 10.4353065867,
+          "rho_max_kg_m3": 21.0384137759,
+          "T_relative_linf_change": 0.042609930231125005
+        },
+        {
+          "time_s": 0.0001,
+          "T_max_K": 1929.99569324,
+          "T_min_K": 944.603945001,
+          "axis_T_max_K": 1916.0653446,
+          "axis_T_range_K": 957.8011335079999,
+          "axis_peak_z_m": 0.019750000000000028,
+          "OH_max": 6.09163206925e-06,
+          "rho_min_kg_m3": 11.7731754964,
+          "rho_max_kg_m3": 21.9137170309,
+          "T_relative_linf_change": 0.047139739264012145
+        }
+      ],
+      "qualification": "Temporal changes alone do not establish steady flame or grid convergence.",
+      "same_mesh_comparison": {
+        "T": {
+          "absolute_linf": 1.7495011799999247,
+          "relative_linf": 0.0009064696329959082
+        },
+        "p": {
+          "absolute_linf": 1444.6351000014693,
+          "relative_linf": 0.00014318388829941695
+        },
+        "rho": {
+          "absolute_linf": 0.017185213100001206,
+          "relative_linf": 0.0007842279998542033
+        },
+        "CH4": {
+          "absolute_linf": 0.0013708762729999768,
+          "relative_linf": 0.0017860027424564258
+        },
+        "O2": {
+          "absolute_linf": 0.00010368964190999967,
+          "relative_linf": 0.0029500634313712353
+        },
+        "CO2": {
+          "absolute_linf": 6.730845789999947e-05,
+          "relative_linf": 0.002259704794838753
+        },
+        "H2O": {
+          "absolute_linf": 0.00018243561279999987,
+          "relative_linf": 0.0015057822176303068
+        },
+        "OH": {
+          "absolute_linf": 3.5358792569999843e-09,
+          "relative_linf": 0.0005803509158913444
+        },
+        "U": {
+          "absolute_linf": 0.3851225989799998,
+          "relative_linf": 0.005681007274994047
+        }
+      },
+      "temperature_relative_linf_below_1e-5": false
+    }
+  }
+}

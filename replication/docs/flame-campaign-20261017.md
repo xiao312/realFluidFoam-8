@@ -110,3 +110,30 @@ sensitivity test. They reserve 32 and 8 core-hours respectively if submitted.
 Final fields are reconstructed completely for restart. Intermediate reconstruction
 is limited to the twelve fields needed for figures/history; complete per-rank
 output remains archived remotely. This changes I/O only, not the solver physics.
+
+Jobs 124668179 (localized 3,200 cells) and 124668183 (uniform 320 cells) now run
+the 10 ms experiments from source f3eb8daea5a2fbd5bf23b0c647566f382d8388e7.
+Archive SHA-256 is 13478dbd3684322ccd81358df4c642a449e0e53c607e52edd1a8b8e051b9c5ce.
+Reserved allocation is 118.667 core-hours; the first eight completed jobs used
+5.93778 allocated core-hours according to Slurm CPUTimeRAW (not process CPU time).
+Seven analysis archives were retrieved and verified against remote SHA-256;
+complete raw fields remain in their remote job directories.
+
+The longer high-pressure MPI comparisons fail the strict 1e-5 temperature
+relative infinity-norm criterion: oxy-200 gives 2.88e-5 (0.0508 K), and air-100
+gives 9.06e-4 (1.7495 K). The short startup MPI pass therefore does not qualify
+these longer settings. Histories, all field differences and archive hashes are
+in `counterflow-development-20261017.json`. Development runs remain useful for
+cost/stability checks, but cannot establish replicated figures.
+
+Diagnosis hypotheses, in test order: (1) rank-dependent stopping of intermediate
+linear solves; setting their relative tolerance from 0.1 to zero should reduce
+the difference; (2) splitting sensitivity; reducing dt should reduce it if the
+linear experiment does not; (3) chemistry tolerances; tighter ODE integration
+should reduce the difference if chemistry error dominates. The first experiment
+repeats air-100 at two and eight ranks with only relative linear tolerance changed.
+Absolute linear tolerance remains 1e-7, dt remains 1e-6, and chemistry is unchanged.
+Writing only the final time reduces I/O, not the numerical integration.
+The existing comparison is a deterministic postprocessing failure signal; full
+solver replay takes minutes, an unavoidable exception to a seconds-only debug
+loop. No solver-source fix is asserted before these controlled experiments.

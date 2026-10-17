@@ -127,3 +127,8 @@ Campaign reconstruction keeps all fields at the final time for restart. At
 intermediate times it reconstructs T, p, rho, Cp, mu, kappa, U, CH4, O2, CO2,
 H2O and OH for analysis. Complete per-rank output remains in each remote case.
 This limits postprocessing I/O without changing the solver or its output fields.
+
+Optional `linear_relative_tolerance` changes only the intermediate p/U/h/e
+linear-solver relative stopping criterion (baseline 0.1). Final solves retain
+zero relative tolerance and all absolute tolerances remain 1e-7. Paired rank-count
+experiments isolate this setting when investigating decomposition sensitivity.
