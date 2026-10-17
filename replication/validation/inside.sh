@@ -51,7 +51,7 @@ elif [[ "$stage" == campaign-* ]]; then
     config="$release/replication/validation/flames/campaign/${stage#campaign-}.json"
     case_dir="$job/case"
     python3 -B "$release/replication/validation/flames/campaign.py" apply "$config" \
-        "$release/replication/validation/inputs" "$case_dir" > "$job/campaign-plan.json"
+        "$release/replication/validation/inputs" "$case_dir" > "$job/campaign-plan.log"
     blockMesh -case "$case_dir" > "$job/blockMesh.log" 2>&1
     checkMesh -case "$case_dir" > "$job/checkMesh.log" 2>&1
     grep -q 'Mesh OK' "$job/checkMesh.log"
@@ -63,6 +63,13 @@ elif [[ "$stage" == campaign-* ]]; then
         python3 -B "$release/replication/validation/flames/finalize_inlets.py" "$case_dir" > "$job/inlet-settings.json"
     fi
     ranks=$(python3 -c 'import json,sys; print(json.load(open(sys.argv[1]))["ranks"])' "$config")
+    restart=$(python3 -c 'import json,sys; print(json.load(open(sys.argv[1])).get("restart_job",0))' "$config")
+    if [[ "$restart" != 0 ]]; then
+        [[ "$restart" =~ ^[0-9]+$ ]] || exit 2
+        grep -q '^PASS:' "/work/jobs/$restart/result.txt"
+        python3 -B "$release/replication/validation/flames/restart.py" plan "/work/jobs/$restart/case" "$case_dir" > "$job/restart-plan.json"
+        python3 -B "$release/replication/validation/flames/restart.py" apply "/work/jobs/$restart/case" "$case_dir" > "$job/restart-applied.json"
+    fi
     if [[ "$ranks" -gt 1 ]]; then
         decomposePar -case "$case_dir" > "$job/decompose.log" 2>&1
         mpirun --mca btl self,vader,tcp -np "$ranks" realFluidReactingFoam -case "$case_dir" -parallel > "$job/solver.log" 2>&1

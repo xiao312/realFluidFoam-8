@@ -42,3 +42,29 @@ Verification: five valid configurations and invalid timestep/rank/wall-limit
 rejections; fresh premixed and counterflow generation; expected mesh/time/MPI
 settings; Python and shell syntax; existing environment lock validation. No live
 campaign or MPI scientific check has passed yet.
+
+Owner authorization received during this session: use a 1,000-core-hour cap for
+the counterflow replication work. This supersedes the pending-budget statement
+above for the counterflow campaign. Initial priority is MPI correctness, then
+counterflow timestep development and measured refinement. Premixed setup remains
+prepared; do not let it consume the counterflow allocation without recording the
+scope decision. All actual and worst-case reserved usage must be tracked.
+
+The release archive a5ec7be0735dd1189b2f550bd3e9477907294591 was verified against
+all 1278 Git blobs, staged under the SCNet trial root and passed the read-only
+submission plan. Archive SHA-256:
+`609195bea7e5dc203e7e50de7bd9298942f4d7bfbc0f8b4220d99c9f9ece6fad`.
+The initial dry-run's 100-core-hour argument was illustrative, not approval.
+The subsequent plan/apply uses the approved 1,000-core-hour cap.
+
+MPI baseline job 124665381 completed in 194 seconds on two allocated CPUs
+(0.10778 core-hours). The same-mesh reconstructed temperature relative infinity
+norm difference from serial pilot 124660430 is 5.72e-10 (criterion 1e-5). Velocity
+relative infinity norm is 3.69e-6. Pressure, density and species differences are
+recorded in `mpi-comparison-20261017.json`. This passes the declared short-run MPI
+check; it is not a steady-flame or strong-scaling result.
+
+Next submitted jobs: 124665830 (oxy-1), 124665841 (oxy-200), 124665857 (air-100).
+Each uses two ranks, 320 cells, dt=1e-6 s, endTime=1e-4 s, and a 60-minute wall
+limit. Combined worst-case reservations including the MPI check are 6.667
+core-hours. They were submitted only after inspecting serial/MPI agreement.

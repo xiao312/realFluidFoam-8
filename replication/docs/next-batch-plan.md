@@ -58,3 +58,7 @@ an explicit wall-time limit and project-contained output paths.
 - Full reference arrays and premixed initialization/domain details remain gaps.
 - Molecular-weight diffusion corrections and thermodynamic conventions must
   remain consistent when interpreting OH displacement speed.
+
+2026-10-17 amendment: the owner subsequently authorized 1,000 core-hours for the
+counterflow replication campaign. See `flame-campaign-20261017.md`; the earlier
+pending-budget paragraph is historical and is superseded for this scope.

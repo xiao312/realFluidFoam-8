@@ -9,6 +9,9 @@ from reportlab.lib.utils import ImageReader
 from reportlab.platypus import Paragraph
 from reportlab.lib.styles import ParagraphStyle
 root=Path(sys.argv[1]).resolve(strict=True)
+pdf_name=sys.argv[2] if len(sys.argv)>2 else 'realfluidfoam-figure-atlas.pdf'
+if Path(pdf_name).name != pdf_name or not pdf_name.endswith('.pdf'):
+    raise ValueError('PDF output must be a local basename ending in .pdf')
 out=root/'output/figure-comparison-20261017'
 items=json.loads((out/'inventory.json').read_text())
 assert len(items)==27 and len({i['id'] for i in items})==27
@@ -25,7 +28,7 @@ summary=[
 labels={'property':'PROPERTY COMPARISON','startup':'STARTUP ONLY - NOT REPLICATED','missing':'RESULT UNAVAILABLE','diagram':'SOURCE DIAGRAM','context':'SOURCE CONTEXT MAP'}
 style=ParagraphStyle('body',fontName='Helvetica',fontSize=12,leading=18,textColor='#26313b')
 width,height=landscape(A3)
-pdf=canvas.Canvas(str(out/'realfluidfoam-figure-atlas.pdf'),pagesize=(width,height))
+pdf=canvas.Canvas(str(out/pdf_name),pagesize=(width,height))
 pdf.setTitle('realFluidFoam - comparison of all 27 paper figures')
 pdf.setAuthor('realFluidFoam replication project')
 def para(text,x,y,w):
@@ -77,6 +80,6 @@ page='''<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewpor
 page+=''.join('<p>'+html.escape(p)+'</p>' for p in summary)
 page+='<p><a href="realfluidfoam-figure-atlas.pdf">Download PDF atlas</a> | <a href="data/methane-paper-curve-errors.json">Methane metrics</a> | <a href="data/nitrogen-nist-errors.json">Nitrogen metrics</a> | <a href="source-provenance.json">Source provenance</a></p><nav>'+nav+'</nav><label>Show: <select id="filter"><option value="all">All figures</option>'+''.join(f'<option value="{k}">{v}</option>' for k,v in labels.items())+'</select></label></header>'
 page+=''.join(sections)+'''</main><script>document.querySelector('#filter').onchange=e=>document.querySelectorAll('section').forEach(s=>s.hidden=e.target.value!=='all'&&s.dataset.status!==e.target.value);</script></html>'''
-(out/'index.html').write_text(page,encoding='utf-8')
+(out/'index.html').write_text(page.replace('realfluidfoam-figure-atlas.pdf',pdf_name),encoding='utf-8')
 (out/'summary.json').write_text(json.dumps({'date':'2026-10-17','figures':27,'summary':summary},indent=2)+'\n')
 print('Created 28-page PDF and offline HTML atlas.')

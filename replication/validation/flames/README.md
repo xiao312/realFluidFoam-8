@@ -94,3 +94,16 @@ approve compute expenditure. Planned examples are in `campaign/`.
 Verify by running the read-only plan, generating a local fixture case, checking
 cell counts and exact control settings, and running shell syntax checks. A live
 MPI job must be reconstructed before field comparison with the serial baseline.
+
+`analyze_history.py CASE --output SUMMARY [--compare REFERENCE_CASE]` uses the
+local pinned numpy analysis environment to measure saved temperature/OH histories
+and nearest-axis flame location. `--compare` requires matching mesh centroids and
+saved time, and reports absolute/relative infinity norms for serial/MPI checks.
+A small temporal change is explicitly not a sufficient steady-flame criterion.
+
+Optional `restart_job` identifies a completed campaign source job inside the same
+trial. `restart.py plan/apply SOURCE TARGET` requires identical case identity,
+cell count, pressure, length, and byte-identical mesh files; it copies the latest
+positive saved time into the fresh case and records source field hashes. Source
+fields are never overwritten. The target end time must exceed the source time.
+Refined-mesh mapping is deliberately not treated as a same-mesh restart.

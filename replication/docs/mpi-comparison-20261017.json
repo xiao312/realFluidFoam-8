@@ -1,0 +1,63 @@
+{
+  "cells": 320,
+  "nearest_axis_r_m": 0.0016650803692999949,
+  "history": [
+    {
+      "time_s": 1e-06,
+      "T_max_K": 1800.36730635,
+      "T_min_K": 1790.67142629,
+      "axis_T_max_K": 1800.36730635,
+      "axis_T_range_K": 9.694126890000007,
+      "axis_peak_z_m": 0.00075,
+      "OH_max": 1.0428544459e-07,
+      "rho_min_kg_m3": 0.156616286659,
+      "rho_max_kg_m3": 0.157209381059
+    }
+  ],
+  "qualification": "Temporal changes alone do not establish steady flame or grid convergence.",
+  "same_mesh_comparison": {
+    "T": {
+      "absolute_linf": 1.030000021273736e-06,
+      "relative_linf": 5.721054907253137e-10
+    },
+    "p": {
+      "absolute_linf": 0.0002570000069681555,
+      "relative_linf": 2.534908535822154e-09
+    },
+    "rho": {
+      "absolute_linf": 1.0600001432159445e-10,
+      "relative_linf": 6.74260108467601e-10
+    },
+    "CH4": {
+      "absolute_linf": 2.8100000104558376e-09,
+      "relative_linf": 5.595767146708888e-09
+    },
+    "O2": {
+      "absolute_linf": 1.2470000032571704e-10,
+      "relative_linf": 1.5262436914144108e-09
+    },
+    "CO2": {
+      "absolute_linf": 2.935000020798384e-09,
+      "relative_linf": 6.955226630351396e-09
+    },
+    "H2O": {
+      "absolute_linf": 1.9940000070214643e-14,
+      "relative_linf": 7.454496850597455e-09
+    },
+    "OH": {
+      "absolute_linf": 1.0859999999160517e-15,
+      "relative_linf": 1.0413725562107913e-08
+    },
+    "U": {
+      "absolute_linf": 8.449077043724414e-07,
+      "relative_linf": 3.692208912577122e-06
+    }
+  },
+  "temperature_relative_linf_below_1e-5": true,
+  "job": 124665381,
+  "reference_job": 124660430,
+  "elapsed_s": 194,
+  "allocated_cpus": 2,
+  "allocated_core_hours": 0.10777777777777778,
+  "archive_sha256": "aa3d9746d071c029be0c98404d54a6f04a793c652bc9446d833d624c63b9a235"
+}

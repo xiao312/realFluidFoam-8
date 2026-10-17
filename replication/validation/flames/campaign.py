@@ -10,12 +10,13 @@ from generate_counterflow import header
 
 
 def validate(config):
-    allowed={'case','radial_cells','axial_cells','delta_t_s','end_time_s','write_interval_steps','ranks','wall_minutes','phi','length_m','kernel_width_m'}
+    allowed={'case','radial_cells','axial_cells','delta_t_s','end_time_s','write_interval_steps','ranks','wall_minutes','phi','length_m','kernel_width_m','restart_job'}
     if set(config)-allowed:raise ValueError('Unknown configuration fields: '+str(set(config)-allowed))
     for key in ('axial_cells','ranks','wall_minutes','write_interval_steps'):
         if type(config.get(key)) is not int or config[key]<1:raise ValueError('Positive integer required: '+key)
     for key in ('delta_t_s','end_time_s'):
         if not isinstance(config.get(key),(int,float)) or not math.isfinite(config[key]) or config[key]<=0:raise ValueError('Positive finite value required: '+key)
+    if 'restart_job' in config and (type(config['restart_job']) is not int or config['restart_job']<=0):raise ValueError('Positive restart job ID required')
     if config['delta_t_s']>config['end_time_s']:raise ValueError('Timestep exceeds duration')
     if config['case'] not in ('oxy-1','oxy-200','air-100','premixed'):raise ValueError('Unsupported case')
     if config['case']=='premixed':
