@@ -35,3 +35,25 @@ tolerances before accepting results. Never infer scientific accuracy from compil
   reviewed for hierarchy and restraint. Its main scope is interface design.
 
 No global writing plugin installation is required by this project.
+
+## Project record layout
+
+Keep one current baseline at the top of the Lark record. Identify the solver source,
+compiled build, case release and original input source separately: these revisions
+need not be the same. Link immutable commits and the environment lock. A newer
+documentation commit does not change a running job's identity.
+
+Place the figure comparison register and side-by-side gallery before the dated
+work log. Keep original crops, captions and attachments intact. Label superseded
+plots beside the image, including their job, mesh and sampled time. A diagram is
+implementation context, not a numerical result. Distinguish errors against current
+reference data from errors against digitized paper curves.
+
+Each figure must trace to plotting code and data hashes, then to the job and case
+inputs, the executable/library hashes and build revision, and the source and
+environment pins. A visually matching layout is not an acceptance criterion.
+
+Historical entries remain dated evidence. Correct obsolete decisions through
+explicit amendments; do not leave several competing descriptions of the current
+baseline. Report monitoring with a timestamp, stage and measured progress, and
+keep log health separate from steady-state or mesh convergence.
