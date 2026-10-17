@@ -137,3 +137,13 @@ Writing only the final time reduces I/O, not the numerical integration.
 The existing comparison is a deterministic postprocessing failure signal; full
 solver replay takes minutes, an unavoidable exception to a seconds-only debug
 loop. No solver-source fix is asserted before these controlled experiments.
+
+Performance hold point: after approximately 7.5 minutes, localized high-pressure
+jobs 124667801/124667802 had reached only 4/7 microseconds; job 124668179 reached
+0.35 ms after 2.8 minutes. Axial partitioning places the thin hot layer on only
+a few ranks. These three jobs were cancelled with outputs and reservations
+retained. New configurations use eight radial partitions on the identical
+3,200-cell mesh, distributing the full axial layer across ranks. The high-pressure
+cases repeat their fresh initialization; oxy-1 restarts the completed 0.1-ms case.
+Each replacement reserves 16 core-hours. This is a performance hypothesis to
+measure, not a demonstrated speedup or scientific qualification.

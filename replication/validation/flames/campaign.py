@@ -10,7 +10,7 @@ from generate_counterflow import header
 
 
 def validate(config):
-    allowed={'case','radial_cells','axial_cells','delta_t_s','end_time_s','write_interval_steps','ranks','wall_minutes','phi','length_m','kernel_width_m','restart_job','initialization','linear_relative_tolerance'}
+    allowed={'case','radial_cells','axial_cells','delta_t_s','end_time_s','write_interval_steps','ranks','wall_minutes','phi','length_m','kernel_width_m','restart_job','initialization','linear_relative_tolerance','decomposition'}
     if set(config)-allowed:raise ValueError('Unknown configuration fields: '+str(set(config)-allowed))
     for key in ('axial_cells','ranks','wall_minutes','write_interval_steps'):
         if type(config.get(key)) is not int or config[key]<1:raise ValueError('Positive integer required: '+key)
@@ -26,7 +26,10 @@ def validate(config):
     else:
         if type(config.get('radial_cells')) is not int or config['radial_cells']<1:raise ValueError('Positive radial cell count required')
         cells=config['radial_cells']*config['axial_cells']
-    if config['axial_cells']%config['ranks']:raise ValueError('Axial cells must divide evenly among ranks')
+    parts=config.get('decomposition',[config['ranks'],1,1] if config['case']=='premixed' else [1,1,config['ranks']])
+    mesh_cells=[config['axial_cells'],1,1] if config['case']=='premixed' else [config['radial_cells'],1,config['axial_cells']]
+    if not isinstance(parts,list) or len(parts)!=3 or any(type(p) is not int or p<1 for p in parts):raise ValueError('Decomposition needs three positive integers')
+    if math.prod(parts)!=config['ranks'] or any(n%p for n,p in zip(mesh_cells,parts)):raise ValueError('Decomposition must divide mesh dimensions and multiply to ranks')
     if 'linear_relative_tolerance' in config:
         value=config['linear_relative_tolerance']
         if type(value) not in (int,float) or not math.isfinite(value) or not 0<=value<1:raise ValueError('Linear relative tolerance must be in [0, 1)')
@@ -70,6 +73,7 @@ def main():
         mesh=mesh.replace('(8 1 40)',f"({cfg['radial_cells']} 1 {cfg['axial_cells']})")
         decomposition=f"(1 1 {cfg['ranks']})"
     write('system/blockMeshDict',mesh)
+    if 'decomposition' in cfg:decomposition='('+' '.join(map(str,cfg['decomposition']))+')'
     control=(case/'system/controlDict').read_text()
     for key,value in [('endTime',cfg['end_time_s']),('deltaT',cfg['delta_t_s']),('writeInterval',cfg['write_interval_steps'])]:
         control,n=re.subn(r'\b'+key+r'\s+[^;]+;',f'{key} {value};',control)

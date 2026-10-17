@@ -132,3 +132,9 @@ Optional `linear_relative_tolerance` changes only the intermediate p/U/h/e
 linear-solver relative stopping criterion (baseline 0.1). Final solves retain
 zero relative tolerance and all absolute tolerances remain 1e-7. Paired rank-count
 experiments isolate this setting when investigating decomposition sensitivity.
+
+Optional `decomposition: [nx, ny, nz]` controls simple MPI partitioning. Its
+product must equal `ranks` and every component must divide the mesh cell count
+in that direction. Counterflow mesh dimensions are radial, azimuthal, axial.
+Radial partitioning shares a thin hot axial layer across ranks. It is a runtime
+choice requiring rank/decomposition checks, not a mesh or physics change.
