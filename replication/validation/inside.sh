@@ -77,7 +77,10 @@ elif [[ "$stage" == campaign-* ]]; then
     if [[ "$ranks" -gt 1 ]]; then
         decomposePar -case "$case_dir" > "$job/decompose.log" 2>&1
         mpirun --mca btl self,vader,tcp -np "$ranks" realFluidReactingFoam -case "$case_dir" -parallel > "$job/solver.log" 2>&1
-        reconstructPar -case "$case_dir" > "$job/reconstruct.log" 2>&1
+        # Preserve every final field for restart, but reconstruct only analysis
+        # fields at intermediate times; processor output remains complete.
+        reconstructPar -case "$case_dir" -latestTime > "$job/reconstruct.log" 2>&1
+        reconstructPar -case "$case_dir" -fields '(T p rho Cp mu kappa U CH4 O2 CO2 H2O OH)' >> "$job/reconstruct.log" 2>&1
     else
         realFluidReactingFoam -case "$case_dir" > "$job/solver.log" 2>&1
     fi

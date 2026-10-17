@@ -1,0 +1,11 @@
+{
+  "case": "oxy-1",
+  "radial_cells": 8,
+  "axial_cells": 400,
+  "delta_t_s": 1e-05,
+  "end_time_s": 0.01,
+  "write_interval_steps": 198,
+  "ranks": 16,
+  "wall_minutes": 120,
+  "restart_job": 124666858
+}

@@ -93,3 +93,20 @@ retained. The localized branch changes initialization and mesh, not solver physi
 
 Local fixture checks confirm finite bounded temperature and species-sum error
 1.11e-16. Actual OpenFOAM cell centres are used; no cell ordering is assumed.
+
+The localized 3,200-cell oxy-1 job 124666858 passed field checks at 0.1 ms:
+T=300.00-1730.58 K, species-sum error 1.28e-12. Its ignition has not yet developed
+into the published steady flame. High-pressure localized jobs 124667801 and
+124667802 were submitted next, reserving 16 core-hours each. Total conservative
+reservations are 78.667 of the owner-approved 1,000 counterflow core-hours.
+Two submission attempts on login04 failed before sbatch because python3 was
+absent from PATH; explicitly loading apps/python/3.8.10 resolved the control
+dependency. The simulation continues to use the pinned container's Python.
+
+Next configurations extend the localized 3,200-cell case and uniform-hot
+320-cell case to 10 ms with dt=10 microseconds. These are development experiments;
+the different meshes prevent treating their comparison as a pure ignition-state
+sensitivity test. They reserve 32 and 8 core-hours respectively if submitted.
+Final fields are reconstructed completely for restart. Intermediate reconstruction
+is limited to the twelve fields needed for figures/history; complete per-rank
+output remains archived remotely. This changes I/O only, not the solver physics.

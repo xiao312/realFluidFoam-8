@@ -122,3 +122,8 @@ inlet metadata. It changes internal fields only and records bounds and mass-sum
 checks. The runner calls the OF8 `postProcess -func writeCellCentres -time 0`
 function before initialization. See the [OF8 function definition](https://github.com/OpenFOAM/OpenFOAM-8/blob/master/etc/caseDicts/postProcessing/fields/writeCellCentres).
 Localized initialization and a restart are mutually exclusive.
+
+Campaign reconstruction keeps all fields at the final time for restart. At
+intermediate times it reconstructs T, p, rho, Cp, mu, kappa, U, CH4, O2, CO2,
+H2O and OH for analysis. Complete per-rank output remains in each remote case.
+This limits postprocessing I/O without changing the solver or its output fields.
