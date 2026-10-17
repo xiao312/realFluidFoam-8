@@ -50,7 +50,11 @@ int main(int argc, char *argv[])
             if (!std::isfinite(rho+cp+mu+kappa+T) || min(rho,min(cp,min(mu,kappa))) <= 0 || error > 1e-6)
             {
                 FatalErrorInFunction << "Invalid property/inversion at "
-                    << pressure << " atm, " << temperature << " K" << exit(FatalError);
+                    << pressure << " atm, " << temperature << " K"
+                    << "; recovered T=" << T << "; rho=" << rho << "; Cp=" << cp
+                    << "; mu=" << mu << "; kappa=" << kappa
+                    << "; he=" << thermo.he()[0] << "; relative inversion error=" << error
+                    << exit(FatalError);
             }
             output << pressure << ',' << temperature << ',' << T << ',' << rho
                 << ',' << cp << ',' << mu << ',' << kappa << ',' << thermo.he()[0]
