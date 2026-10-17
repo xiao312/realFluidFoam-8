@@ -1,0 +1,8 @@
+{
+  "family": "premixed",
+  "phi": 0.95,
+  "cells": 4000,
+  "length_m": 0.002,
+  "kernel_width_m": 0.0002,
+  "delta_t_s": 1e-08
+}

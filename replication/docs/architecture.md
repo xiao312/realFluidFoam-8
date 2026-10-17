@@ -35,6 +35,12 @@ the environment runner and shared counterflow budget ledger. Its inputs supersed
 the reconstructed campaign for the owner-selected baseline as of 2026-10-17.
 The solver remains upstream code unless a separate source change is recorded.
 
+`validation/flames/paper-campaign` extends that author-input port to the remaining
+counterflow conditions and uses the existing premixed generator for the 11-point
+Figure 12 sweep and selected sensitivity cases. It depends on the author transfer,
+flame field checks, property probe and environment runner, and shares the bounded
+reservation ledger. DeepFlame is inspected as a case reference, not a dependency.
+
 The project workspace owns `images`, `releases`, `builds`, `jobs`, `logs`, `cache`,
 `tmp`, `home`, and `results`. Each job has its own temporary and home directories.
 Source releases are immutable inputs. Compilation uses a separate build copy.
