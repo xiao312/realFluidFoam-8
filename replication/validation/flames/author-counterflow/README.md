@@ -23,6 +23,8 @@ dictionaries; `turbulenceProperties` becomes `momentumTransport`; the invoked
 application is `realFluidReactingFoam`. Execution starts from fresh time zero.
 The `Yi` linear-solver entry is widened to `"Yi.*"` for OF8's `YiFinal` lookup;
 the original solver and tolerances are retained.
+Reaction type identifiers use OF8 registration names (capitalized `ThirdBody`
+and no legacy `Reaction` suffix); reaction equations and coefficients are unchanged.
 Eight radial MPI partitions, 12-digit output and fixed immutable runtime controls
 are operational changes. Original numerical schemes and tolerances are retained.
 

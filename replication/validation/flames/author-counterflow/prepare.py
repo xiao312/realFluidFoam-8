@@ -45,6 +45,11 @@ def main():
         thermo_file = "thermo.inputData" if name == "one-step" else "thermo.inputData_GRI"
         reactions = "reactions" if name == "one-step" else "reactionsGRI"
         species = species_block((case / "constant" / reactions).read_text())
+        reaction_file = case / "constant" / reactions
+        reaction_text = reaction_file.read_text().replace(
+            "reversiblethirdBodyArrheniusReaction", "reversibleThirdBodyArrhenius")
+        reaction_text = re.sub(r"(\btype\s+\w+)Reaction;", r"\1;", reaction_text)
+        write(reaction_file, reaction_text)
         write(case / "constant/thermophysicalProperties", """FoamFile { version 2.0; format ascii; class dictionary; object thermophysicalProperties; }
 thermoType { type hePsiThermo; mixture SRKchungTakaMixture; transport chungTaka;
 thermo rfJanaf; energy sensibleEnthalpy; equationOfState soaveRedlichKwong; specie rfSpecie; }
