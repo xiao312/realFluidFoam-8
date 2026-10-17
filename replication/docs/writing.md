@@ -44,8 +44,12 @@ need not be the same. Link immutable commits and the environment lock. A newer
 documentation commit does not change a running job's identity.
 
 Place the figure comparison register and side-by-side gallery before the dated
-work log. Keep original crops, captions and attachments intact. Label superseded
-plots beside the image, including their job, mesh and sampled time. A diagram is
+work log. Keep original crops, captions and attachments intact. Maintain one current
+comparison per paper figure: replace previous simulation images and update their
+job, mesh, sampled time and qualification notes in place. Do not add a duplicate
+comparison section for each checkpoint. Preserve earlier results in dated PDF
+attachments and versioned evidence records. This follows the owner's 17 October
+2026 layout preference. A diagram is
 implementation context, not a numerical result. Distinguish errors against current
 reference data from errors against digitized paper curves.
 
