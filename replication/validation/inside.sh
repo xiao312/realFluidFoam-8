@@ -47,6 +47,9 @@ if [[ "$stage" == properties || "$stage" == properties-nitrogen ]]; then
         exit 3
     fi
     echo 'PASS: SRK and PR property sweeps and inversion criterion; reference comparison pending' | tee "$job/result.txt"
+elif [[ "$stage" == author-counterflow-* ]]; then
+    bash "$release/replication/validation/flames/author-counterflow/run.sh" \
+        "$release/replication/validation/flames/author-counterflow" "$job" "${stage#author-counterflow-}"
 elif [[ "$stage" == campaign-* ]]; then
     config="$release/replication/validation/flames/campaign/${stage#campaign-}.json"
     case_dir="$job/case"

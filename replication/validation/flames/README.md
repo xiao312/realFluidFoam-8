@@ -1,5 +1,10 @@
 # Laminar flame cases
 
+Owner decision, 2026-10-17: stop the reconstructed counterflow campaign and adopt
+the original OF6 examples on our existing OF8 executable. The new baseline is
+[author-counterflow](author-counterflow/README.md). This file retains the earlier
+generator and run history; those settings are not the current counterflow baseline.
+
 This module reconstructs the 2022 counterflow and premixed cases using the pinned
 GRI30 input and the compiled solver. It does not treat a coarse pilot as a paper
 comparison. Inputs are the validation input directory and an explicit case
