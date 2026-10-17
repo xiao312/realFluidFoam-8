@@ -37,7 +37,8 @@ both are absolute paths inside `ROOT`. `PREFLIGHT_OR_BUILD` is
 `preflight` or `build`. The image conversion command is documented in the
 [environment guide](environment/README.md).
 
-Use branch `work/environment-bootstrap` for setup. Use scoped Conventional Commits.
+Use branch `work/environment-bootstrap` for setup and `work/2022-replication` for
+the authorized scientific stages. Use scoped Conventional Commits.
 Keep environment changes, solver changes, and scientific case changes separate.
 Tag a tested source revision after its evidence record is committed. Retain the
 original upstream revision for comparisons with publication-era releases.

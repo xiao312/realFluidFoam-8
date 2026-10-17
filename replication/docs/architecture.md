@@ -21,6 +21,9 @@ flowchart LR
 `docs/` owns the scientific plan, writing rules, and reviewed result summaries.
 `validation/` owns case generation, property probes, and scientific comparisons;
 it uses contained execution from `environment/` and a completed isolated build.
+`validation/properties` owns library probes and NIST comparisons; its optional
+plotting step uses a separate local matplotlib environment. `validation/flames`
+uses the same property probe for inlet densities before setting velocity constraints.
 Future case modules own their inputs, reference data provenance, comparisons, and README.
 The solver remains upstream code unless a separate source change is recorded.
 

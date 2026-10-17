@@ -1,8 +1,10 @@
 # Scientific stages
 
-Environment qualification precedes simulation. The current authorization covers
-project setup and the environment needed to compile. No production flame campaign
-is launched by the environment scripts.
+Environment qualification precedes simulation. On 2026-10-17 the owner authorized
+proceeding through the next stages: compilation, properties, counterflow and
+premixed flame speed. Bounded validation jobs use their own explicit submissions;
+the environment scripts alone do not launch a flame campaign. Pilot completion
+does not establish temporal or grid convergence.
 
 | Stage | Paper target | Required comparison |
 | --- | --- | --- |
