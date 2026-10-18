@@ -1,0 +1,30 @@
+{
+  "observed_at": "2026-10-18T22:09:52.421549+08:00",
+  "source_revision": "cb66af1b09b4693e0a490844ea398d897038cf19",
+  "archive_sha256": "0cd8dfd803d885351b5b7ec9984d4c77f24e76d4dab21d6a6f9b1bf23ddfc8b3",
+  "library_build": 124657926,
+  "max_reserved_core_hours": 64,
+  "qualification": "10-us fine-grid warm-start checks; no steady-flow or grid-convergence acceptance",
+  "jobs": [
+    {
+      "job": 124799488,
+      "case": "oxy-1",
+      "cells": 888000,
+      "ranks": 32,
+      "wall_minutes": 60,
+      "donor_job": 124767586,
+      "donor_time_s": 0.07,
+      "state": "RUNNING"
+    },
+    {
+      "job": 124799489,
+      "case": "oxy-200",
+      "cells": 816000,
+      "ranks": 32,
+      "wall_minutes": 60,
+      "donor_job": 124767667,
+      "donor_time_s": 0.058,
+      "state": "RUNNING"
+    }
+  ]
+}
