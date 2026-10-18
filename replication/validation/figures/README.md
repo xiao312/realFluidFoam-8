@@ -14,6 +14,23 @@ It is a finite-time kinematic diagnostic, not an evaluation of the paper's
 discrete chemical/diffusive source expression or a converged flame speed.
 Verification checks addressing coverage, field finiteness, stable file hashes,
 marker uniqueness, timestep sensitivity and PDF rendering. No solver is changed.
+`temperature_speed.py SNAPSHOT OUTPUT_JSON` independently tracks the maximum
+positive temperature gradient using a three-point subcell fit, actual saved
+times and measured cold-stream velocity. It adapts DeepFlame's concept rather
+than its hardcoded sampling interval. Compare its 50/100-us fits with the OH
+estimate; do not assume agreement during thermal relaxation.
+
+`collect_counterflow.py ROOT oxy-1:JOB oxy-200:JOB air-100:JOB` streams a tar.gz
+of stable decomposed checkpoints, global mesh and source hashes to stdout without
+remote writes. Preserve that archive locally. `plot_paper2022.py` also accepts
+manifest case entries `{path, time, ranks}` for these decomposed snapshots and
+an optional output directory, plus per-case `case_status` labels. Real mesh
+edges are used in contours; only displayed streamlines are interpolated onto a
+regular grid. A failed case's earlier smoke must be explicitly identified.
+After rendering, run `counterflow_report.py PROJECT SNAPSHOT_DIR OUTPUT_DIR`
+to compare the same fields with the existing temperature digitization, export
+near-axis CSVs and create the five-page original/replication PDF. Inspect all
+pages and check `data/summary.json` for sample times, radii and qualifications.
 
 This module inventories all numbered figures in the two supplied papers and
 renders comparable plots from verified results. It does not fabricate absent
