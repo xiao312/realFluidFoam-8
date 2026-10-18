@@ -1,0 +1,1838 @@
+{
+  "scheduler_and_log_snapshot": {
+    "observed_at": "2026-10-18T15:43:48.084872+08:00",
+    "runs": {
+      "phi-90": {
+        "job": 124767487,
+        "key": "phi-90",
+        "mode": "full",
+        "source": "b15fb0db8213e6a5243c0f55691080195276253e",
+        "allocation_core_hours": 192.0,
+        "accounting": [
+          "RUNNING",
+          "02:30:48",
+          "2-00:00:00"
+        ],
+        "result": null,
+        "time_s": 0.000319660419723,
+        "delta_t_s": 1.13193425826e-07,
+        "max_co": 0.142206069488,
+        "max_T_K": 2977.97921919
+      },
+      "phi-95": {
+        "job": 124767490,
+        "key": "phi-95",
+        "mode": "full",
+        "source": "b15fb0db8213e6a5243c0f55691080195276253e",
+        "allocation_core_hours": 192.0,
+        "accounting": [
+          "RUNNING",
+          "02:30:45",
+          "2-00:00:00"
+        ],
+        "result": null,
+        "time_s": 0.000309831809127,
+        "delta_t_s": 8.40954363439e-08,
+        "max_co": 0.130863620454,
+        "max_T_K": 2983.97051374
+      },
+      "phi-100": {
+        "job": 124767496,
+        "key": "phi-100",
+        "mode": "full",
+        "source": "b15fb0db8213e6a5243c0f55691080195276253e",
+        "allocation_core_hours": 192.0,
+        "accounting": [
+          "RUNNING",
+          "02:30:39",
+          "2-00:00:00"
+        ],
+        "result": null,
+        "time_s": 0.000291380891379,
+        "delta_t_s": 1.21395896071e-07,
+        "max_co": 0.217419364422,
+        "max_T_K": 2987.1593033
+      },
+      "phi-105": {
+        "job": 124767500,
+        "key": "phi-105",
+        "mode": "full",
+        "source": "b15fb0db8213e6a5243c0f55691080195276253e",
+        "allocation_core_hours": 192.0,
+        "accounting": [
+          "RUNNING",
+          "02:30:33",
+          "2-00:00:00"
+        ],
+        "result": null,
+        "time_s": 0.000274443425377,
+        "delta_t_s": 9.26095770566e-08,
+        "max_co": 0.204342643364,
+        "max_T_K": 2989.01959963
+      },
+      "phi-110": {
+        "job": 124767505,
+        "key": "phi-110",
+        "mode": "full",
+        "source": "b15fb0db8213e6a5243c0f55691080195276253e",
+        "allocation_core_hours": 192.0,
+        "accounting": [
+          "RUNNING",
+          "02:30:26",
+          "2-00:00:00"
+        ],
+        "result": null,
+        "time_s": 0.000306035905148,
+        "delta_t_s": 9.91023712952e-08,
+        "max_co": 0.252995319536,
+        "max_T_K": 2988.88949593
+      },
+      "phi-115": {
+        "job": 124767509,
+        "key": "phi-115",
+        "mode": "full",
+        "source": "b15fb0db8213e6a5243c0f55691080195276253e",
+        "allocation_core_hours": 192.0,
+        "accounting": [
+          "RUNNING",
+          "02:30:20",
+          "2-00:00:00"
+        ],
+        "result": null,
+        "time_s": 0.000313951034754,
+        "delta_t_s": 1.1201787492e-07,
+        "max_co": 0.135013816555,
+        "max_T_K": 2987.21560271
+      },
+      "phi-120": {
+        "job": 124767513,
+        "key": "phi-120",
+        "mode": "full",
+        "source": "b15fb0db8213e6a5243c0f55691080195276253e",
+        "allocation_core_hours": 192.0,
+        "accounting": [
+          "RUNNING",
+          "02:29:58",
+          "2-00:00:00"
+        ],
+        "result": null,
+        "time_s": 0.000356656530227,
+        "delta_t_s": 1.07853863632e-07,
+        "max_co": 0.244500154519,
+        "max_T_K": 2982.08253451
+      },
+      "phi-125": {
+        "job": 124767516,
+        "key": "phi-125",
+        "mode": "full",
+        "source": "b15fb0db8213e6a5243c0f55691080195276253e",
+        "allocation_core_hours": 192.0,
+        "accounting": [
+          "RUNNING",
+          "02:29:54",
+          "2-00:00:00"
+        ],
+        "result": null,
+        "time_s": 0.000325116827303,
+        "delta_t_s": 1.10981197659e-07,
+        "max_co": 0.212563413397,
+        "max_T_K": 2982.99610425
+      },
+      "phi-130": {
+        "job": 124767522,
+        "key": "phi-130",
+        "mode": "full",
+        "source": "b15fb0db8213e6a5243c0f55691080195276253e",
+        "allocation_core_hours": 192.0,
+        "accounting": [
+          "RUNNING",
+          "02:29:49",
+          "2-00:00:00"
+        ],
+        "result": null,
+        "time_s": 0.000334690187085,
+        "delta_t_s": 1.20677566249e-07,
+        "max_co": 0.144652805805,
+        "max_T_K": 2977.20321751
+      },
+      "phi-135": {
+        "job": 124767530,
+        "key": "phi-135",
+        "mode": "full",
+        "source": "b15fb0db8213e6a5243c0f55691080195276253e",
+        "allocation_core_hours": 192.0,
+        "accounting": [
+          "RUNNING",
+          "02:29:42",
+          "2-00:00:00"
+        ],
+        "result": null,
+        "time_s": 0.00029445994918,
+        "delta_t_s": 9.08205052537e-08,
+        "max_co": 0.277734030373,
+        "max_T_K": 2979.84027441
+      },
+      "phi-140": {
+        "job": 124767540,
+        "key": "phi-140",
+        "mode": "full",
+        "source": "b15fb0db8213e6a5243c0f55691080195276253e",
+        "allocation_core_hours": 192.0,
+        "accounting": [
+          "RUNNING",
+          "02:29:33",
+          "2-00:00:00"
+        ],
+        "result": null,
+        "time_s": 0.000298618814065,
+        "delta_t_s": 1.06245071934e-07,
+        "max_co": 0.174178426187,
+        "max_T_K": 2976.57896192
+      },
+      "phi-110-dt": {
+        "job": 124767544,
+        "key": "phi-110-dt",
+        "mode": "full",
+        "source": "b15fb0db8213e6a5243c0f55691080195276253e",
+        "allocation_core_hours": 192.0,
+        "accounting": [
+          "RUNNING",
+          "02:29:27",
+          "2-00:00:00"
+        ],
+        "result": null,
+        "time_s": 0.000268,
+        "delta_t_s": 1e-07,
+        "max_co": 0.0854234321006,
+        "max_T_K": 2983.28921502
+      },
+      "phi-110-domain": {
+        "job": 124767550,
+        "key": "phi-110-domain",
+        "mode": "full",
+        "source": "b15fb0db8213e6a5243c0f55691080195276253e",
+        "allocation_core_hours": 192.0,
+        "accounting": [
+          "RUNNING",
+          "02:29:21",
+          "2-00:00:00"
+        ],
+        "result": null,
+        "time_s": 0.000152941623833,
+        "delta_t_s": 1.0229530677e-07,
+        "max_co": 0.116131874064,
+        "max_T_K": 2992.27591494
+      },
+      "oxy-1": {
+        "job": 124767586,
+        "key": "oxy-1",
+        "mode": "full",
+        "source": "b15fb0db8213e6a5243c0f55691080195276253e",
+        "allocation_core_hours": 384.0,
+        "accounting": [
+          "RUNNING",
+          "02:28:41",
+          "2-00:00:00"
+        ],
+        "result": null,
+        "time_s": 0.022,
+        "delta_t_s": 2e-05,
+        "max_co": 0.157157398903,
+        "max_T_K": 1970.43323762
+      },
+      "oxy-200": {
+        "job": 124767667,
+        "key": "oxy-200",
+        "mode": "full",
+        "source": "b15fb0db8213e6a5243c0f55691080195276253e",
+        "allocation_core_hours": 384.0,
+        "accounting": [
+          "RUNNING",
+          "02:25:12",
+          "2-00:00:00"
+        ],
+        "result": null,
+        "time_s": 0.01764,
+        "delta_t_s": 2e-05,
+        "max_co": 0.136670699206,
+        "max_T_K": 2266.29033684
+      },
+      "air-100": {
+        "job": 124767672,
+        "key": "air-100",
+        "mode": "full",
+        "source": "b15fb0db8213e6a5243c0f55691080195276253e",
+        "allocation_core_hours": 384.0,
+        "accounting": [
+          "FAILED",
+          "00:03:47",
+          "2-00:00:00"
+        ],
+        "result": null,
+        "time_s": 0.000189558699064,
+        "delta_t_s": 1.55220650468e-05,
+        "max_co": 0.19233334488,
+        "max_T_K": 2299.21202198
+      },
+      "phi-110-mesh": {
+        "job": 124767902,
+        "key": "phi-110-mesh",
+        "mode": "full",
+        "source": "b15fb0db8213e6a5243c0f55691080195276253e",
+        "allocation_core_hours": 192.0,
+        "accounting": [
+          "RUNNING",
+          "02:22:33",
+          "2-00:00:00"
+        ],
+        "result": null,
+        "time_s": 5.3239787174e-05,
+        "delta_t_s": 4.66221574205e-08,
+        "max_co": 0.110307756615,
+        "max_T_K": 2992.03571379
+      }
+    },
+    "attempts": [
+      {
+        "job": 124767270,
+        "key": "oxy-1",
+        "mode": "smoke",
+        "source": "91113753d861a0da3c45feeba1688db6a1d4c0d4",
+        "allocation_core_hours": 4.0,
+        "accounting": [
+          "COMPLETED",
+          "00:03:48",
+          "00:30:00"
+        ],
+        "result": "PASS: adaptive oxy-1 smoke; finite normalized endpoint, convergence unqualified",
+        "time_s": 0.0011,
+        "delta_t_s": 8.63821751574e-06,
+        "max_co": 0.0666666330783,
+        "max_T_K": 2018.78973567
+      },
+      {
+        "job": 124767271,
+        "key": "oxy-200",
+        "mode": "smoke",
+        "source": "91113753d861a0da3c45feeba1688db6a1d4c0d4",
+        "allocation_core_hours": 4.0,
+        "accounting": [
+          "FAILED",
+          "00:00:12",
+          "00:30:00"
+        ],
+        "result": null
+      },
+      {
+        "job": 124767272,
+        "key": "air-100",
+        "mode": "smoke",
+        "source": "91113753d861a0da3c45feeba1688db6a1d4c0d4",
+        "allocation_core_hours": 4.0,
+        "accounting": [
+          "FAILED",
+          "00:00:10",
+          "00:30:00"
+        ],
+        "result": null
+      },
+      {
+        "job": 124767275,
+        "key": "phi-90",
+        "mode": "smoke",
+        "source": "91113753d861a0da3c45feeba1688db6a1d4c0d4",
+        "allocation_core_hours": 2.0,
+        "accounting": [
+          "COMPLETED",
+          "00:02:06",
+          "00:30:00"
+        ],
+        "result": "PASS: adaptive phi-90 smoke; finite normalized endpoint, convergence unqualified",
+        "time_s": 8.2e-05,
+        "delta_t_s": 1.54771802308e-07,
+        "max_co": 0.154329812472,
+        "max_T_K": 3000.0
+      },
+      {
+        "job": 124767276,
+        "key": "phi-95",
+        "mode": "smoke",
+        "source": "91113753d861a0da3c45feeba1688db6a1d4c0d4",
+        "allocation_core_hours": 2.0,
+        "accounting": [
+          "COMPLETED",
+          "00:02:13",
+          "00:30:00"
+        ],
+        "result": "PASS: adaptive phi-95 smoke; finite normalized endpoint, convergence unqualified",
+        "time_s": 8.2e-05,
+        "delta_t_s": 1.3542532702e-07,
+        "max_co": 0.146584318003,
+        "max_T_K": 3000.0
+      },
+      {
+        "job": 124767278,
+        "key": "phi-100",
+        "mode": "smoke",
+        "source": "91113753d861a0da3c45feeba1688db6a1d4c0d4",
+        "allocation_core_hours": 2.0,
+        "accounting": [
+          "COMPLETED",
+          "00:02:17",
+          "00:30:00"
+        ],
+        "result": "PASS: adaptive phi-100 smoke; finite normalized endpoint, convergence unqualified",
+        "time_s": 7.2e-05,
+        "delta_t_s": 1.3542532702e-07,
+        "max_co": 0.161269451269,
+        "max_T_K": 3000.0
+      },
+      {
+        "job": 124767279,
+        "key": "phi-105",
+        "mode": "smoke",
+        "source": "91113753d861a0da3c45feeba1688db6a1d4c0d4",
+        "allocation_core_hours": 2.0,
+        "accounting": [
+          "COMPLETED",
+          "00:03:12",
+          "00:30:00"
+        ],
+        "result": "PASS: adaptive phi-105 smoke; finite normalized endpoint, convergence unqualified",
+        "time_s": 6.2e-05,
+        "delta_t_s": 1.3542532702e-07,
+        "max_co": 0.175305577529,
+        "max_T_K": 3000.0
+      },
+      {
+        "job": 124767280,
+        "key": "phi-110",
+        "mode": "smoke",
+        "source": "91113753d861a0da3c45feeba1688db6a1d4c0d4",
+        "allocation_core_hours": 2.0,
+        "accounting": [
+          "COMPLETED",
+          "00:02:09",
+          "00:30:00"
+        ],
+        "result": "PASS: adaptive phi-110 smoke; finite normalized endpoint, convergence unqualified",
+        "time_s": 8.2e-05,
+        "delta_t_s": 1.3542532702e-07,
+        "max_co": 0.156669596847,
+        "max_T_K": 3000.0
+      },
+      {
+        "job": 124767282,
+        "key": "phi-115",
+        "mode": "smoke",
+        "source": "91113753d861a0da3c45feeba1688db6a1d4c0d4",
+        "allocation_core_hours": 2.0,
+        "accounting": [
+          "COMPLETED",
+          "00:02:03",
+          "00:30:00"
+        ],
+        "result": "PASS: adaptive phi-115 smoke; finite normalized endpoint, convergence unqualified",
+        "time_s": 8.2e-05,
+        "delta_t_s": 1.3542532702e-07,
+        "max_co": 0.155702618573,
+        "max_T_K": 3000.0
+      },
+      {
+        "job": 124767283,
+        "key": "phi-120",
+        "mode": "smoke",
+        "source": "91113753d861a0da3c45feeba1688db6a1d4c0d4",
+        "allocation_core_hours": 2.0,
+        "accounting": [
+          "COMPLETED",
+          "00:01:58",
+          "00:30:00"
+        ],
+        "result": "PASS: adaptive phi-120 smoke; finite normalized endpoint, convergence unqualified",
+        "time_s": 0.000102,
+        "delta_t_s": 1.54771802308e-07,
+        "max_co": 0.159276690518,
+        "max_T_K": 3000.0
+      },
+      {
+        "job": 124767285,
+        "key": "phi-125",
+        "mode": "smoke",
+        "source": "91113753d861a0da3c45feeba1688db6a1d4c0d4",
+        "allocation_core_hours": 2.0,
+        "accounting": [
+          "COMPLETED",
+          "00:02:02",
+          "00:30:00"
+        ],
+        "result": "PASS: adaptive phi-125 smoke; finite normalized endpoint, convergence unqualified",
+        "time_s": 8.2e-05,
+        "delta_t_s": 1.3542532702e-07,
+        "max_co": 0.14376552913,
+        "max_T_K": 3000.0
+      },
+      {
+        "job": 124767286,
+        "key": "phi-130",
+        "mode": "smoke",
+        "source": "91113753d861a0da3c45feeba1688db6a1d4c0d4",
+        "allocation_core_hours": 2.0,
+        "accounting": [
+          "COMPLETED",
+          "00:02:01",
+          "00:30:00"
+        ],
+        "result": "PASS: adaptive phi-130 smoke; finite normalized endpoint, convergence unqualified",
+        "time_s": 8.2e-05,
+        "delta_t_s": 1.3542532702e-07,
+        "max_co": 0.142405349365,
+        "max_T_K": 3000.0
+      },
+      {
+        "job": 124767287,
+        "key": "phi-135",
+        "mode": "smoke",
+        "source": "91113753d861a0da3c45feeba1688db6a1d4c0d4",
+        "allocation_core_hours": 2.0,
+        "accounting": [
+          "COMPLETED",
+          "00:01:56",
+          "00:30:00"
+        ],
+        "result": "PASS: adaptive phi-135 smoke; finite normalized endpoint, convergence unqualified",
+        "time_s": 8.2e-05,
+        "delta_t_s": 1.54771802308e-07,
+        "max_co": 0.152610325561,
+        "max_T_K": 3000.0
+      },
+      {
+        "job": 124767290,
+        "key": "phi-140",
+        "mode": "smoke",
+        "source": "91113753d861a0da3c45feeba1688db6a1d4c0d4",
+        "allocation_core_hours": 2.0,
+        "accounting": [
+          "COMPLETED",
+          "00:02:01",
+          "00:30:00"
+        ],
+        "result": "PASS: adaptive phi-140 smoke; finite normalized endpoint, convergence unqualified",
+        "time_s": 8.2e-05,
+        "delta_t_s": 1.54771802308e-07,
+        "max_co": 0.148351760402,
+        "max_T_K": 3000.0
+      },
+      {
+        "job": 124767292,
+        "key": "phi-110-dt",
+        "mode": "smoke",
+        "source": "91113753d861a0da3c45feeba1688db6a1d4c0d4",
+        "allocation_core_hours": 2.0,
+        "accounting": [
+          "COMPLETED",
+          "00:02:54",
+          "00:30:00"
+        ],
+        "result": "PASS: adaptive phi-110-dt smoke; finite normalized endpoint, convergence unqualified",
+        "time_s": 4.2e-05,
+        "delta_t_s": 6.97455799942e-08,
+        "max_co": 0.091747516847,
+        "max_T_K": 2999.69994626
+      },
+      {
+        "job": 124767294,
+        "key": "phi-110-mesh",
+        "mode": "smoke",
+        "source": "91113753d861a0da3c45feeba1688db6a1d4c0d4",
+        "allocation_core_hours": 2.0,
+        "accounting": [
+          "COMPLETED",
+          "00:10:10",
+          "00:30:00"
+        ],
+        "result": "PASS: adaptive phi-110-mesh smoke; finite normalized endpoint, convergence unqualified",
+        "time_s": 2.2e-05,
+        "delta_t_s": 2.97928973435e-08,
+        "max_co": 0.179364135276,
+        "max_T_K": 3000.0
+      },
+      {
+        "job": 124767295,
+        "key": "phi-110-domain",
+        "mode": "smoke",
+        "source": "91113753d861a0da3c45feeba1688db6a1d4c0d4",
+        "allocation_core_hours": 2.0,
+        "accounting": [
+          "COMPLETED",
+          "00:03:36",
+          "00:30:00"
+        ],
+        "result": "PASS: adaptive phi-110-domain smoke; finite normalized endpoint, convergence unqualified",
+        "time_s": 4.2e-05,
+        "delta_t_s": 6.77126635099e-08,
+        "max_co": 0.0847240083913,
+        "max_T_K": 3000.0
+      },
+      {
+        "job": 124767361,
+        "key": "oxy-200",
+        "mode": "smoke",
+        "source": "74b917f87896ce1690e26a101f12db6cb0bb5553",
+        "allocation_core_hours": 4.0,
+        "accounting": [
+          "FAILED",
+          "00:00:09",
+          "00:30:00"
+        ],
+        "result": null
+      },
+      {
+        "job": 124767378,
+        "key": "air-100",
+        "mode": "smoke",
+        "source": "74b917f87896ce1690e26a101f12db6cb0bb5553",
+        "allocation_core_hours": 4.0,
+        "accounting": [
+          "FAILED",
+          "00:00:07",
+          "00:30:00"
+        ],
+        "result": null
+      },
+      {
+        "job": 124767480,
+        "key": "oxy-200",
+        "mode": "smoke",
+        "source": "b15fb0db8213e6a5243c0f55691080195276253e",
+        "allocation_core_hours": 4.0,
+        "accounting": [
+          "COMPLETED",
+          "00:03:26",
+          "00:30:00"
+        ],
+        "result": "PASS: adaptive oxy-200 smoke; finite normalized endpoint, convergence unqualified",
+        "time_s": 0.0001,
+        "delta_t_s": 8.63821751574e-06,
+        "max_co": 0.0554933126735,
+        "max_T_K": 2303.53458872
+      },
+      {
+        "job": 124767482,
+        "key": "air-100",
+        "mode": "smoke",
+        "source": "b15fb0db8213e6a5243c0f55691080195276253e",
+        "allocation_core_hours": 4.0,
+        "accounting": [
+          "COMPLETED",
+          "00:03:24",
+          "00:30:00"
+        ],
+        "result": "PASS: adaptive air-100 smoke; finite normalized endpoint, convergence unqualified",
+        "time_s": 0.0001,
+        "delta_t_s": 8.63821751574e-06,
+        "max_co": 0.105262839433,
+        "max_T_K": 2310.41810446
+      },
+      {
+        "job": 124767487,
+        "key": "phi-90",
+        "mode": "full",
+        "source": "b15fb0db8213e6a5243c0f55691080195276253e",
+        "allocation_core_hours": 192.0,
+        "accounting": [
+          "RUNNING",
+          "02:30:48",
+          "2-00:00:00"
+        ],
+        "result": null,
+        "time_s": 0.000319660419723,
+        "delta_t_s": 1.13193425826e-07,
+        "max_co": 0.142206069488,
+        "max_T_K": 2977.97921919
+      },
+      {
+        "job": 124767490,
+        "key": "phi-95",
+        "mode": "full",
+        "source": "b15fb0db8213e6a5243c0f55691080195276253e",
+        "allocation_core_hours": 192.0,
+        "accounting": [
+          "RUNNING",
+          "02:30:45",
+          "2-00:00:00"
+        ],
+        "result": null,
+        "time_s": 0.000309831809127,
+        "delta_t_s": 8.40954363439e-08,
+        "max_co": 0.130863620454,
+        "max_T_K": 2983.97051374
+      },
+      {
+        "job": 124767496,
+        "key": "phi-100",
+        "mode": "full",
+        "source": "b15fb0db8213e6a5243c0f55691080195276253e",
+        "allocation_core_hours": 192.0,
+        "accounting": [
+          "RUNNING",
+          "02:30:39",
+          "2-00:00:00"
+        ],
+        "result": null,
+        "time_s": 0.000291380891379,
+        "delta_t_s": 1.21395896071e-07,
+        "max_co": 0.217419364422,
+        "max_T_K": 2987.1593033
+      },
+      {
+        "job": 124767500,
+        "key": "phi-105",
+        "mode": "full",
+        "source": "b15fb0db8213e6a5243c0f55691080195276253e",
+        "allocation_core_hours": 192.0,
+        "accounting": [
+          "RUNNING",
+          "02:30:33",
+          "2-00:00:00"
+        ],
+        "result": null,
+        "time_s": 0.000274443425377,
+        "delta_t_s": 9.26095770566e-08,
+        "max_co": 0.204342643364,
+        "max_T_K": 2989.01959963
+      },
+      {
+        "job": 124767505,
+        "key": "phi-110",
+        "mode": "full",
+        "source": "b15fb0db8213e6a5243c0f55691080195276253e",
+        "allocation_core_hours": 192.0,
+        "accounting": [
+          "RUNNING",
+          "02:30:26",
+          "2-00:00:00"
+        ],
+        "result": null,
+        "time_s": 0.000306035905148,
+        "delta_t_s": 9.91023712952e-08,
+        "max_co": 0.252995319536,
+        "max_T_K": 2988.88949593
+      },
+      {
+        "job": 124767509,
+        "key": "phi-115",
+        "mode": "full",
+        "source": "b15fb0db8213e6a5243c0f55691080195276253e",
+        "allocation_core_hours": 192.0,
+        "accounting": [
+          "RUNNING",
+          "02:30:20",
+          "2-00:00:00"
+        ],
+        "result": null,
+        "time_s": 0.000313951034754,
+        "delta_t_s": 1.1201787492e-07,
+        "max_co": 0.135013816555,
+        "max_T_K": 2987.21560271
+      },
+      {
+        "job": 124767513,
+        "key": "phi-120",
+        "mode": "full",
+        "source": "b15fb0db8213e6a5243c0f55691080195276253e",
+        "allocation_core_hours": 192.0,
+        "accounting": [
+          "RUNNING",
+          "02:29:58",
+          "2-00:00:00"
+        ],
+        "result": null,
+        "time_s": 0.000356656530227,
+        "delta_t_s": 1.07853863632e-07,
+        "max_co": 0.244500154519,
+        "max_T_K": 2982.08253451
+      },
+      {
+        "job": 124767516,
+        "key": "phi-125",
+        "mode": "full",
+        "source": "b15fb0db8213e6a5243c0f55691080195276253e",
+        "allocation_core_hours": 192.0,
+        "accounting": [
+          "RUNNING",
+          "02:29:54",
+          "2-00:00:00"
+        ],
+        "result": null,
+        "time_s": 0.000325116827303,
+        "delta_t_s": 1.10981197659e-07,
+        "max_co": 0.212563413397,
+        "max_T_K": 2982.99610425
+      },
+      {
+        "job": 124767522,
+        "key": "phi-130",
+        "mode": "full",
+        "source": "b15fb0db8213e6a5243c0f55691080195276253e",
+        "allocation_core_hours": 192.0,
+        "accounting": [
+          "RUNNING",
+          "02:29:49",
+          "2-00:00:00"
+        ],
+        "result": null,
+        "time_s": 0.000334690187085,
+        "delta_t_s": 1.20677566249e-07,
+        "max_co": 0.144652805805,
+        "max_T_K": 2977.20321751
+      },
+      {
+        "job": 124767530,
+        "key": "phi-135",
+        "mode": "full",
+        "source": "b15fb0db8213e6a5243c0f55691080195276253e",
+        "allocation_core_hours": 192.0,
+        "accounting": [
+          "RUNNING",
+          "02:29:42",
+          "2-00:00:00"
+        ],
+        "result": null,
+        "time_s": 0.00029445994918,
+        "delta_t_s": 9.08205052537e-08,
+        "max_co": 0.277734030373,
+        "max_T_K": 2979.84027441
+      },
+      {
+        "job": 124767540,
+        "key": "phi-140",
+        "mode": "full",
+        "source": "b15fb0db8213e6a5243c0f55691080195276253e",
+        "allocation_core_hours": 192.0,
+        "accounting": [
+          "RUNNING",
+          "02:29:33",
+          "2-00:00:00"
+        ],
+        "result": null,
+        "time_s": 0.000298618814065,
+        "delta_t_s": 1.06245071934e-07,
+        "max_co": 0.174178426187,
+        "max_T_K": 2976.57896192
+      },
+      {
+        "job": 124767544,
+        "key": "phi-110-dt",
+        "mode": "full",
+        "source": "b15fb0db8213e6a5243c0f55691080195276253e",
+        "allocation_core_hours": 192.0,
+        "accounting": [
+          "RUNNING",
+          "02:29:27",
+          "2-00:00:00"
+        ],
+        "result": null,
+        "time_s": 0.000268,
+        "delta_t_s": 1e-07,
+        "max_co": 0.0854234321006,
+        "max_T_K": 2983.28921502
+      },
+      {
+        "job": 124767550,
+        "key": "phi-110-domain",
+        "mode": "full",
+        "source": "b15fb0db8213e6a5243c0f55691080195276253e",
+        "allocation_core_hours": 192.0,
+        "accounting": [
+          "RUNNING",
+          "02:29:21",
+          "2-00:00:00"
+        ],
+        "result": null,
+        "time_s": 0.000152941623833,
+        "delta_t_s": 1.0229530677e-07,
+        "max_co": 0.116131874064,
+        "max_T_K": 2992.27591494
+      },
+      {
+        "job": 124767586,
+        "key": "oxy-1",
+        "mode": "full",
+        "source": "b15fb0db8213e6a5243c0f55691080195276253e",
+        "allocation_core_hours": 384.0,
+        "accounting": [
+          "RUNNING",
+          "02:28:41",
+          "2-00:00:00"
+        ],
+        "result": null,
+        "time_s": 0.022,
+        "delta_t_s": 2e-05,
+        "max_co": 0.157157398903,
+        "max_T_K": 1970.43323762
+      },
+      {
+        "job": 124767667,
+        "key": "oxy-200",
+        "mode": "full",
+        "source": "b15fb0db8213e6a5243c0f55691080195276253e",
+        "allocation_core_hours": 384.0,
+        "accounting": [
+          "RUNNING",
+          "02:25:12",
+          "2-00:00:00"
+        ],
+        "result": null,
+        "time_s": 0.01764,
+        "delta_t_s": 2e-05,
+        "max_co": 0.136670699206,
+        "max_T_K": 2266.29033684
+      },
+      {
+        "job": 124767672,
+        "key": "air-100",
+        "mode": "full",
+        "source": "b15fb0db8213e6a5243c0f55691080195276253e",
+        "allocation_core_hours": 384.0,
+        "accounting": [
+          "FAILED",
+          "00:03:47",
+          "2-00:00:00"
+        ],
+        "result": null,
+        "time_s": 0.000189558699064,
+        "delta_t_s": 1.55220650468e-05,
+        "max_co": 0.19233334488,
+        "max_T_K": 2299.21202198
+      },
+      {
+        "job": 124767902,
+        "key": "phi-110-mesh",
+        "mode": "full",
+        "source": "b15fb0db8213e6a5243c0f55691080195276253e",
+        "allocation_core_hours": 192.0,
+        "accounting": [
+          "RUNNING",
+          "02:22:33",
+          "2-00:00:00"
+        ],
+        "result": null,
+        "time_s": 5.3239787174e-05,
+        "delta_t_s": 4.66221574205e-08,
+        "max_co": 0.110307756615,
+        "max_T_K": 2992.03571379
+      }
+    ],
+    "reserved_core_hours": 3896.0
+  },
+  "saved_field_checks": {
+    "observed_at": "2026-10-18T15:44:38.933116+08:00",
+    "cases": {
+      "phi-90": {
+        "job": 124767487,
+        "samples": [
+          {
+            "time_s": 0.0003,
+            "ranges": {
+              "T": [
+                296.017422637,
+                2981.80559657
+              ],
+              "CH4": [
+                8.53841365958e-16,
+                0.0499256950987
+              ],
+              "OH": [
+                1.71371178233e-47,
+                0.00691771763198
+              ]
+            },
+            "T_3000_cells": 0
+          },
+          {
+            "time_s": 0.00031,
+            "ranges": {
+              "T": [
+                295.989762739,
+                2980.07882348
+              ],
+              "CH4": [
+                7.99325777584e-16,
+                0.0499256950954
+              ],
+              "OH": [
+                1.73926699714e-47,
+                0.00688913232598
+              ]
+            },
+            "T_3000_cells": 0
+          }
+        ],
+        "change_between_samples": {
+          "T": {
+            "rms": 40.34762245785625,
+            "max_abs": 320.3601812899999
+          },
+          "CH4": {
+            "rms": 0.0011479327582296112,
+            "max_abs": 0.0094048824122
+          },
+          "OH": {
+            "rms": 3.154540270503946e-05,
+            "max_abs": 0.00037669414365300004
+          }
+        }
+      },
+      "phi-95": {
+        "job": 124767490,
+        "samples": [
+          {
+            "time_s": 0.00029,
+            "ranges": {
+              "T": [
+                296.222062083,
+                2987.09071819
+              ],
+              "CH4": [
+                1.82401802996e-15,
+                0.0525535796865
+              ],
+              "OH": [
+                1.7291920353e-47,
+                0.00658188467733
+              ]
+            },
+            "T_3000_cells": 0
+          },
+          {
+            "time_s": 0.0003,
+            "ranges": {
+              "T": [
+                296.208074099,
+                2985.38778033
+              ],
+              "CH4": [
+                1.69156549759e-15,
+                0.052553579746
+              ],
+              "OH": [
+                1.7548218608e-47,
+                0.00656006157535
+              ]
+            },
+            "T_3000_cells": 0
+          }
+        ],
+        "change_between_samples": {
+          "T": {
+            "rms": 47.69124257695161,
+            "max_abs": 390.59985912
+          },
+          "CH4": {
+            "rms": 0.0013917213350764103,
+            "max_abs": 0.0118185373659
+          },
+          "OH": {
+            "rms": 3.848436631692796e-05,
+            "max_abs": 0.00048609552044399994
+          }
+        }
+      },
+      "phi-100": {
+        "job": 124767496,
+        "samples": [
+          {
+            "time_s": 0.00027,
+            "ranges": {
+              "T": [
+                296.218897968,
+                2990.0788359
+              ],
+              "CH4": [
+                1.50941345707e-14,
+                0.0551669668959
+              ],
+              "OH": [
+                1.71632100934e-47,
+                0.00612039856172
+              ]
+            },
+            "T_3000_cells": 0
+          },
+          {
+            "time_s": 0.00028,
+            "ranges": {
+              "T": [
+                296.201801094,
+                2988.54742144
+              ],
+              "CH4": [
+                1.43401570938e-14,
+                0.0551669670047
+              ],
+              "OH": [
+                1.74301693567e-47,
+                0.00609821687301
+              ]
+            },
+            "T_3000_cells": 0
+          }
+        ],
+        "change_between_samples": {
+          "T": {
+            "rms": 54.136711841210136,
+            "max_abs": 451.70791979
+          },
+          "CH4": {
+            "rms": 0.0016275024405114627,
+            "max_abs": 0.014127727518500001
+          },
+          "OH": {
+            "rms": 4.228141984997617e-05,
+            "max_abs": 0.000528750284721
+          }
+        }
+      },
+      "phi-105": {
+        "job": 124767500,
+        "samples": [
+          {
+            "time_s": 0.00025,
+            "ranges": {
+              "T": [
+                296.31058665,
+                2992.71912479
+              ],
+              "CH4": [
+                4.07299753318e-13,
+                0.0577659764677
+              ],
+              "OH": [
+                1.70209986706e-47,
+                0.00554322261692
+              ]
+            },
+            "T_3000_cells": 0
+          },
+          {
+            "time_s": 0.00026,
+            "ranges": {
+              "T": [
+                296.146704418,
+                2991.64201815
+              ],
+              "CH4": [
+                4.06538158506e-13,
+                0.0577659764788
+              ],
+              "OH": [
+                1.72897686563e-47,
+                0.00552629645244
+              ]
+            },
+            "T_3000_cells": 0
+          }
+        ],
+        "change_between_samples": {
+          "T": {
+            "rms": 56.42893594604392,
+            "max_abs": 483.12717269999985
+          },
+          "CH4": {
+            "rms": 0.0017647038659198244,
+            "max_abs": 0.015582393729099999
+          },
+          "OH": {
+            "rms": 3.5717725746673455e-05,
+            "max_abs": 0.00040805861980499996
+          }
+        }
+      },
+      "phi-110": {
+        "job": 124767505,
+        "samples": [
+          {
+            "time_s": 0.00028,
+            "ranges": {
+              "T": [
+                296.312342624,
+                2992.25176047
+              ],
+              "CH4": [
+                1.90806719435e-12,
+                0.0603507268759
+              ],
+              "OH": [
+                1.8295776704e-47,
+                0.00491317146722
+              ]
+            },
+            "T_3000_cells": 0
+          },
+          {
+            "time_s": 0.00029,
+            "ranges": {
+              "T": [
+                296.347768418,
+                2990.65556484
+              ],
+              "CH4": [
+                1.90188350955e-12,
+                0.0603507268686
+              ],
+              "OH": [
+                1.85619822648e-47,
+                0.0048943966557
+              ]
+            },
+            "T_3000_cells": 0
+          }
+        ],
+        "change_between_samples": {
+          "T": {
+            "rms": 56.13761454975595,
+            "max_abs": 480.60675612
+          },
+          "CH4": {
+            "rms": 0.0018292143291572661,
+            "max_abs": 0.0160021358242
+          },
+          "OH": {
+            "rms": 2.175630916418268e-05,
+            "max_abs": 0.0002127255762491
+          }
+        }
+      },
+      "phi-115": {
+        "job": 124767509,
+        "samples": [
+          {
+            "time_s": 0.00029,
+            "ranges": {
+              "T": [
+                296.336161201,
+                2991.07005891
+              ],
+              "CH4": [
+                5.99662942897e-12,
+                0.0629213354283
+              ],
+              "OH": [
+                1.90381499346e-47,
+                0.00432447659239
+              ]
+            },
+            "T_3000_cells": 0
+          },
+          {
+            "time_s": 0.0003,
+            "ranges": {
+              "T": [
+                296.409445759,
+                2989.35549561
+              ],
+              "CH4": [
+                5.96090094666e-12,
+                0.0629213353763
+              ],
+              "OH": [
+                0.0,
+                0.00430512986386
+              ]
+            },
+            "T_3000_cells": 0
+          }
+        ],
+        "change_between_samples": {
+          "T": {
+            "rms": 53.24814542365077,
+            "max_abs": 465.1955405000001
+          },
+          "CH4": {
+            "rms": 0.0018113027738194908,
+            "max_abs": 0.016036065932500003
+          },
+          "OH": {
+            "rms": 1.4604349254152489e-05,
+            "max_abs": 0.00011309064410380002
+          }
+        }
+      },
+      "phi-120": {
+        "job": 124767513,
+        "samples": [
+          {
+            "time_s": 0.00033,
+            "ranges": {
+              "T": [
+                296.183835406,
+                2986.85798859
+              ],
+              "CH4": [
+                1.5848524555e-11,
+                0.0654779166315
+              ],
+              "OH": [
+                0.0,
+                0.00378641164471
+              ]
+            },
+            "T_3000_cells": 0
+          },
+          {
+            "time_s": 0.00034,
+            "ranges": {
+              "T": [
+                296.168143365,
+                2984.50607199
+              ],
+              "CH4": [
+                1.58456369187e-11,
+                0.0654779170367
+              ],
+              "OH": [
+                2.09991677281e-47,
+                0.00375806055122
+              ]
+            },
+            "T_3000_cells": 0
+          }
+        ],
+        "change_between_samples": {
+          "T": {
+            "rms": 47.6569536658931,
+            "max_abs": 408.50870370000007
+          },
+          "CH4": {
+            "rms": 0.0016890310726845657,
+            "max_abs": 0.014583778766999997
+          },
+          "OH": {
+            "rms": 1.1382836519736385e-05,
+            "max_abs": 6.44937157875e-05
+          }
+        }
+      },
+      "phi-125": {
+        "job": 124767516,
+        "samples": [
+          {
+            "time_s": 0.0003,
+            "ranges": {
+              "T": [
+                296.06775066,
+                2986.48754168
+              ],
+              "CH4": [
+                3.78341828794e-11,
+                0.0680205861048
+              ],
+              "OH": [
+                2.06913100625e-47,
+                0.00338742607749
+              ]
+            },
+            "T_3000_cells": 0
+          },
+          {
+            "time_s": 0.00031,
+            "ranges": {
+              "T": [
+                296.179610499,
+                2984.37331241
+              ],
+              "CH4": [
+                3.77569892253e-11,
+                0.0680205866289
+              ],
+              "OH": [
+                2.09569865481e-47,
+                0.00336430493356
+              ]
+            },
+            "T_3000_cells": 0
+          }
+        ],
+        "change_between_samples": {
+          "T": {
+            "rms": 45.37089203837545,
+            "max_abs": 382.49831199999994
+          },
+          "CH4": {
+            "rms": 0.0016627521778974188,
+            "max_abs": 0.014061884472500001
+          },
+          "OH": {
+            "rms": 1.1806087557908745e-05,
+            "max_abs": 4.44090803395e-05
+          }
+        }
+      },
+      "phi-130": {
+        "job": 124767522,
+        "samples": [
+          {
+            "time_s": 0.00031,
+            "ranges": {
+              "T": [
+                296.312127986,
+                2982.16111151
+              ],
+              "CH4": [
+                8.04974086076e-11,
+                0.0705494575755
+              ],
+              "OH": [
+                2.17692974043e-47,
+                0.0030188126753
+              ]
+            },
+            "T_3000_cells": 0
+          },
+          {
+            "time_s": 0.00032,
+            "ranges": {
+              "T": [
+                296.145076768,
+                2980.82206722
+              ],
+              "CH4": [
+                8.05157029996e-11,
+                0.07054945743
+              ],
+              "OH": [
+                2.20305962302e-47,
+                0.00300868977507
+              ]
+            },
+            "T_3000_cells": 0
+          }
+        ],
+        "change_between_samples": {
+          "T": {
+            "rms": 40.05699525658927,
+            "max_abs": 345.74362963
+          },
+          "CH4": {
+            "rms": 0.0015195883368004034,
+            "max_abs": 0.0130852478909
+          },
+          "OH": {
+            "rms": 8.613476377393847e-06,
+            "max_abs": 3.0210861768100003e-05
+          }
+        }
+      },
+      "phi-135": {
+        "job": 124767530,
+        "samples": [
+          {
+            "time_s": 0.00027,
+            "ranges": {
+              "T": [
+                296.222631774,
+                2985.31767546
+              ],
+              "CH4": [
+                1.56458256089e-10,
+                0.0730646414703
+              ],
+              "OH": [
+                2.17282261742e-47,
+                0.00279270649906
+              ]
+            },
+            "T_3000_cells": 0
+          },
+          {
+            "time_s": 0.00028,
+            "ranges": {
+              "T": [
+                296.178202154,
+                2984.57601185
+              ],
+              "CH4": [
+                1.56594943177e-10,
+                0.073064641707
+              ],
+              "OH": [
+                2.19964025692e-47,
+                0.00277774875926
+              ]
+            },
+            "T_3000_cells": 0
+          }
+        ],
+        "change_between_samples": {
+          "T": {
+            "rms": 39.063058695676574,
+            "max_abs": 323.91855669999995
+          },
+          "CH4": {
+            "rms": 0.001524249898952563,
+            "max_abs": 0.012589522824900001
+          },
+          "OH": {
+            "rms": 1.0771262828603483e-05,
+            "max_abs": 3.346891903999996e-05
+          }
+        }
+      },
+      "phi-140": {
+        "job": 124767540,
+        "samples": [
+          {
+            "time_s": 0.00028,
+            "ranges": {
+              "T": [
+                296.09307353,
+                2980.63042886
+              ],
+              "CH4": [
+                2.82665425442e-10,
+                0.0755662495158
+              ],
+              "OH": [
+                2.28819885699e-47,
+                0.00252043823178
+              ]
+            },
+            "T_3000_cells": 0
+          },
+          {
+            "time_s": 0.00029,
+            "ranges": {
+              "T": [
+                296.14519882,
+                2979.41965297
+              ],
+              "CH4": [
+                2.81962568946e-10,
+                0.0755662495336
+              ],
+              "OH": [
+                2.31488767279e-47,
+                0.00250859796823
+              ]
+            },
+            "T_3000_cells": 0
+          }
+        ],
+        "change_between_samples": {
+          "T": {
+            "rms": 38.5891692880643,
+            "max_abs": 320.4856473499999
+          },
+          "CH4": {
+            "rms": 0.0015399031639792733,
+            "max_abs": 0.012695328333499997
+          },
+          "OH": {
+            "rms": 1.0666777238044593e-05,
+            "max_abs": 3.4868693940000046e-05
+          }
+        }
+      },
+      "phi-110-dt": {
+        "job": 124767544,
+        "samples": [
+          {
+            "time_s": 0.00024,
+            "ranges": {
+              "T": [
+                297.492503472,
+                2987.26481297
+              ],
+              "CH4": [
+                1.90811192572e-12,
+                0.0603507267891
+              ],
+              "OH": [
+                1.75374174616e-47,
+                0.00483825420129
+              ]
+            },
+            "T_3000_cells": 0
+          },
+          {
+            "time_s": 0.00025,
+            "ranges": {
+              "T": [
+                297.494018191,
+                2985.82590473
+              ],
+              "CH4": [
+                1.90571545235e-12,
+                0.0603507267891
+              ],
+              "OH": [
+                1.78294676394e-47,
+                0.00481783056915
+              ]
+            },
+            "T_3000_cells": 0
+          }
+        ],
+        "change_between_samples": {
+          "T": {
+            "rms": 55.637303612749825,
+            "max_abs": 478.2582916399999
+          },
+          "CH4": {
+            "rms": 0.001814233300091742,
+            "max_abs": 0.0159566088634
+          },
+          "OH": {
+            "rms": 2.2797284158741742e-05,
+            "max_abs": 0.00021291680753399996
+          }
+        }
+      },
+      "phi-110-domain": {
+        "job": 124767550,
+        "samples": [
+          {
+            "time_s": 0.00013,
+            "ranges": {
+              "T": [
+                296.528604458,
+                2995.61631615
+              ],
+              "CH4": [
+                1.92465694533e-12,
+                0.0603507267891
+              ],
+              "OH": [
+                8.13252193352e-48,
+                0.0049144974266
+              ]
+            },
+            "T_3000_cells": 0
+          },
+          {
+            "time_s": 0.00014,
+            "ranges": {
+              "T": [
+                296.619754922,
+                2993.42493718
+              ],
+              "CH4": [
+                1.92162421148e-12,
+                0.0603507267891
+              ],
+              "OH": [
+                8.36363775931e-48,
+                0.00490167640842
+              ]
+            },
+            "T_3000_cells": 0
+          }
+        ],
+        "change_between_samples": {
+          "T": {
+            "rms": 48.94355040791166,
+            "max_abs": 618.33458666
+          },
+          "CH4": {
+            "rms": 0.0015858277422576771,
+            "max_abs": 0.020670129389800004
+          },
+          "OH": {
+            "rms": 2.5356421777277373e-05,
+            "max_abs": 0.0003342650508898
+          }
+        }
+      },
+      "oxy-1": {
+        "job": 124767586,
+        "samples": [
+          {
+            "time_s": 0.021,
+            "ranges": {
+              "T": [
+                299.985536655,
+                1970.61280558
+              ],
+              "CH4": [
+                5.29676957303e-18,
+                1.0
+              ],
+              "OH": [
+                3.8676548627e-40,
+                0.00227439554759
+              ]
+            },
+            "T_3000_cells": 0
+          },
+          {
+            "time_s": 0.0215,
+            "ranges": {
+              "T": [
+                299.985536655,
+                1970.50659833
+              ],
+              "CH4": [
+                4.79255679015e-18,
+                1.0
+              ],
+              "OH": [
+                5.06009226743e-40,
+                0.00227423343298
+              ]
+            },
+            "T_3000_cells": 0
+          }
+        ],
+        "change_between_samples": {
+          "T": {
+            "rms": 0.12102774042355949,
+            "max_abs": 0.8261312699999053
+          },
+          "CH4": {
+            "rms": 2.6135670666037272e-05,
+            "max_abs": 0.0002978855130000013
+          },
+          "OH": {
+            "rms": 3.718909630710955e-07,
+            "max_abs": 6.735826449999916e-06
+          }
+        }
+      },
+      "oxy-200": {
+        "job": 124767667,
+        "samples": [
+          {
+            "time_s": 0.0165,
+            "ranges": {
+              "T": [
+                299.990175809,
+                2266.51708848
+              ],
+              "CH4": [
+                2.21399526549e-36,
+                1.0
+              ],
+              "OH": [
+                2.42627704692e-109,
+                0.000385360184979
+              ]
+            },
+            "T_3000_cells": 0
+          },
+          {
+            "time_s": 0.017,
+            "ranges": {
+              "T": [
+                299.990175809,
+                2266.29033684
+              ],
+              "CH4": [
+                9.18500571964e-37,
+                1.0
+              ],
+              "OH": [
+                0.0,
+                0.000384644547884
+              ]
+            },
+            "T_3000_cells": 0
+          }
+        ],
+        "change_between_samples": {
+          "T": {
+            "rms": 0.13217859786454964,
+            "max_abs": 1.2222577099998944
+          },
+          "CH4": {
+            "rms": 3.7691337518418984e-05,
+            "max_abs": 0.0005241338510000304
+          },
+          "OH": {
+            "rms": 8.422495209565158e-08,
+            "max_abs": 1.945791589999979e-06
+          }
+        }
+      },
+      "air-100": {
+        "job": 124767672,
+        "samples": [
+          {
+            "time_s": 0.0,
+            "ranges": {
+              "T": [
+                297.437083118,
+                2371.70530092
+              ],
+              "CH4": [
+                0.0,
+                1.0
+              ],
+              "OH": [
+                0.0,
+                0.0
+              ]
+            },
+            "T_3000_cells": 0
+          }
+        ]
+      },
+      "phi-110-mesh": {
+        "job": 124767902,
+        "samples": [
+          {
+            "time_s": 3e-05,
+            "ranges": {
+              "T": [
+                297.545949281,
+                2999.42743422
+              ],
+              "CH4": [
+                1.78099073043e-12,
+                0.0603507267891
+              ],
+              "OH": [
+                1.14476927222e-47,
+                0.00507270771171
+              ]
+            },
+            "T_3000_cells": 0
+          },
+          {
+            "time_s": 4e-05,
+            "ranges": {
+              "T": [
+                297.282572884,
+                2994.49815881
+              ],
+              "CH4": [
+                1.82652459698e-12,
+                0.0603507267891
+              ],
+              "OH": [
+                1.14890786032e-47,
+                0.00496800324777
+              ]
+            },
+            "T_3000_cells": 0
+          }
+        ],
+        "change_between_samples": {
+          "T": {
+            "rms": 122.35033144757682,
+            "max_abs": 1222.411731133
+          },
+          "CH4": {
+            "rms": 0.0038437569313848384,
+            "max_abs": 0.04069352572008
+          },
+          "OH": {
+            "rms": 0.00011585897053449729,
+            "max_abs": 0.0009716229746273001
+          }
+        }
+      }
+    }
+  },
+  "qualification": "T/CH4/OH only, not full endpoint species validation; checkpoint samples exclude the newest directory to avoid an in-progress write."
+}
