@@ -40,7 +40,11 @@ def inspect(case,ranks,time,require_rho=True):
         count=int(re.search(r'\n\s*(\d+)\s*\(',address)[1]);total+=count
         sums=[0.0]*count
         for name in names:
-            values=scalar(proc/time/name,count)
+            field=proc/time/name
+            # OF8 fills absent startup species from Ydefault. Written solver
+            # checkpoints must contain every individual species instead.
+            if not field.exists() and not require_rho:field=proc/time/'Ydefault'
+            values=scalar(field,count)
             if not all(math.isfinite(v) and -1e-12<=v<=1+1e-8 for v in values):
                 raise ValueError('Invalid species '+name)
             sums=[a+b for a,b in zip(sums,values)]

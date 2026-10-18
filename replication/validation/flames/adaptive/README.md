@@ -19,6 +19,8 @@ checkpoint/mesh/dictionaries and changes only controlDict. It retains all 53
 species and validates positive finite T/p, saved rho when present, and bounded
 normalized mass fractions. Fresh stage-zero input may omit rho because the solver
 computes it; endpoint checks always require positive finite rho.
+Absent startup species use OF8's Ydefault field; every species must be present
+individually in solver-written endpoint checkpoints.
 `check.py CASE` validates the latest common output and reports T/CH4/OH changes
 relative to the restart state. These changes are diagnostics, not acceptance tests.
 
