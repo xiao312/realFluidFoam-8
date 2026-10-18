@@ -17,6 +17,9 @@ printf 'source=%s\nbuild_job=%s\nstage=%s\n' "$(cat "$release/SOURCE_REVISION")"
 ldd "$platform/bin/realFluidReactingFoam" > "$job/solver-ldd.txt"
 grep -F "$platform/lib/libspecie.so" "$job/solver-ldd.txt"
 if grep -q 'not found' "$job/solver-ldd.txt"; then exit 1; fi
+if [[ "$stage" == dev-replay-* ]]; then
+    exec bash "$release/replication/development/counterflow/run_replay.sh" "$release" "$job" "${stage#dev-replay-}"
+fi
 if [[ "$stage" == dev-refine-* ]]; then
     exec bash "$release/replication/development/counterflow/run_refined.sh" "$release" "$job" "${stage#dev-refine-}"
 fi

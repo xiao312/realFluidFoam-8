@@ -109,3 +109,22 @@ OF8 mapFields remain separate preprocessing utilities.
 Timing uses Bash built-in `time` (wall/user/system seconds); the pinned image
 does not provide `/usr/bin/time`. Observe memory through scheduler accounting
 or a separate process measurement, not these timing files.
+
+## Replay a qualified mapped initial state
+
+`replay.py plan|apply SOURCE_JOB NEW_JOB` reuses a checked fine-grid time-zero
+state after an allocation proves too short. It copies mesh, dictionaries and all
+32 processor initial fields into the new job, verifying file hashes, and records
+the source executable hash. It does not recover unsaved in-memory progress or
+rerun the expensive mesh/property/mapping preparation. Inputs must be sibling
+numeric job directories inside the project root. Existing destinations are refused.
+The source must have passed mapped-field and inlet checks. No credentials are read.
+
+`run_replay.sh RELEASE NEW_JOB SOURCE_ID` runs through validation stage
+`dev-replay-SOURCE_ID`, using the source job's immutable executable and qualified
+library build. The target remains 10 microseconds, maxCo=0.2 and maxDeltaT=1e-6 s.
+Checkpoints are written every 1 microsecond with two retained; runtime control
+rereading is enabled. Adjustable output alignment can change individual time steps.
+Verification: read-only plan, copied-file hashes, initial processor-field/inlet
+checks, 32-rank solver startup, intermediate output and endpoint checks. A replay
+has a distinct job/source identity. Budget wall time from measured step costs.

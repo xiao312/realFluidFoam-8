@@ -74,3 +74,7 @@ qualification. It depends on author/paper case preparation, the runtime density
 probe, OF8 mapFields and adaptive field checks. Private donor copies are read
 from pinned coarse checkpoints; original jobs remain unchanged. Its output is
 a fine-grid qualification, followed separately by developed-flow assessment.
+
+The counterflow replay path depends on a prior fine-grid job's checked mapped
+initial fields and executable. It copies those immutable inputs, records hashes
+and changes checkpoint controls; it does not depend on a completed reacting run.

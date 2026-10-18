@@ -57,9 +57,9 @@ def main():
 application rfReactingFoam;
 startFrom startTime; startTime 0; stopAt endTime; endTime 1e-5; deltaT 1e-7;
 adjustTimeStep yes; maxCo 0.2; maxDeltaT 1e-6;
-writeControl adjustableRunTime; writeInterval 1e-5; purgeWrite 0;
+writeControl adjustableRunTime; writeInterval 1e-6; purgeWrite 2;
 writeFormat ascii; writePrecision 12; writeCompression off;
-timeFormat general; timePrecision 12; runTimeModifiable false;
+timeFormat general; timePrecision 12; runTimeModifiable true;
 ''')
     (case/'system/decomposeParDict').write_text('''FoamFile { version 2.0; format ascii; class dictionary; object decomposeParDict; }
 numberOfSubdomains 32; method simple; simpleCoeffs { n (8 1 4); delta 0.001; }
