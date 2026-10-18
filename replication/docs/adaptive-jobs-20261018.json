@@ -1,0 +1,1110 @@
+{
+  "observed_at": "2026-10-18T13:21:27.800297+08:00",
+  "runs": {
+    "phi-90": {
+      "job": 124767487,
+      "key": "phi-90",
+      "mode": "full",
+      "source": "b15fb0db8213e6a5243c0f55691080195276253e",
+      "allocation_core_hours": 192.0,
+      "accounting": [
+        "RUNNING",
+        "00:08:27",
+        "2-00:00:00"
+      ],
+      "result": null,
+      "time_s": 9.2433787164e-05,
+      "delta_t_s": 7.27520464996e-08,
+      "max_co": 0.156939185522,
+      "max_T_K": 3000.0
+    },
+    "phi-95": {
+      "job": 124767490,
+      "key": "phi-95",
+      "mode": "full",
+      "source": "b15fb0db8213e6a5243c0f55691080195276253e",
+      "allocation_core_hours": 192.0,
+      "accounting": [
+        "RUNNING",
+        "00:08:24",
+        "2-00:00:00"
+      ],
+      "result": null,
+      "time_s": 9.25935566534e-05,
+      "delta_t_s": 6.92190966975e-08,
+      "max_co": 0.29438393082,
+      "max_T_K": 2999.21055583
+    },
+    "phi-100": {
+      "job": 124767496,
+      "key": "phi-100",
+      "mode": "full",
+      "source": "b15fb0db8213e6a5243c0f55691080195276253e",
+      "allocation_core_hours": 192.0,
+      "accounting": [
+        "RUNNING",
+        "00:08:18",
+        "2-00:00:00"
+      ],
+      "result": null,
+      "time_s": 8.1835829417e-05,
+      "delta_t_s": 7.16155314296e-08,
+      "max_co": 0.164707213588,
+      "max_T_K": 2999.51265385
+    },
+    "phi-105": {
+      "job": 124767500,
+      "key": "phi-105",
+      "mode": "full",
+      "source": "b15fb0db8213e6a5243c0f55691080195276253e",
+      "allocation_core_hours": 192.0,
+      "accounting": [
+        "RUNNING",
+        "00:08:12",
+        "2-00:00:00"
+      ],
+      "result": null,
+      "time_s": 7.18018753374e-05,
+      "delta_t_s": 8.81518780928e-08,
+      "max_co": 0.149568881061,
+      "max_T_K": 2998.80543921
+    },
+    "phi-110": {
+      "job": 124767505,
+      "key": "phi-110",
+      "mode": "full",
+      "source": "b15fb0db8213e6a5243c0f55691080195276253e",
+      "allocation_core_hours": 192.0,
+      "accounting": [
+        "RUNNING",
+        "00:08:05",
+        "2-00:00:00"
+      ],
+      "result": null,
+      "time_s": 9.26767715974e-05,
+      "delta_t_s": 9.26990937037e-08,
+      "max_co": 0.26448385986,
+      "max_T_K": 3000.0
+    },
+    "phi-115": {
+      "job": 124767509,
+      "key": "phi-115",
+      "mode": "full",
+      "source": "b15fb0db8213e6a5243c0f55691080195276253e",
+      "allocation_core_hours": 192.0,
+      "accounting": [
+        "RUNNING",
+        "00:07:59",
+        "2-00:00:00"
+      ],
+      "result": null,
+      "time_s": 9.2887448531e-05,
+      "delta_t_s": 9.11865572947e-08,
+      "max_co": 0.111223547366,
+      "max_T_K": 3000.0
+    },
+    "phi-120": {
+      "job": 124767513,
+      "key": "phi-120",
+      "mode": "full",
+      "source": "b15fb0db8213e6a5243c0f55691080195276253e",
+      "allocation_core_hours": 192.0,
+      "accounting": [
+        "RUNNING",
+        "00:07:37",
+        "2-00:00:00"
+      ],
+      "result": null,
+      "time_s": 0.000113034588124,
+      "delta_t_s": 1.2664385229e-07,
+      "max_co": 0.208789669074,
+      "max_T_K": 3000.0
+    },
+    "phi-125": {
+      "job": 124767516,
+      "key": "phi-125",
+      "mode": "full",
+      "source": "b15fb0db8213e6a5243c0f55691080195276253e",
+      "allocation_core_hours": 192.0,
+      "accounting": [
+        "RUNNING",
+        "00:07:33",
+        "2-00:00:00"
+      ],
+      "result": null,
+      "time_s": 9.23921988295e-05,
+      "delta_t_s": 1.20758748738e-07,
+      "max_co": 0.216025075254,
+      "max_T_K": 3000.0
+    },
+    "phi-130": {
+      "job": 124767522,
+      "key": "phi-130",
+      "mode": "full",
+      "source": "b15fb0db8213e6a5243c0f55691080195276253e",
+      "allocation_core_hours": 192.0,
+      "accounting": [
+        "RUNNING",
+        "00:07:28",
+        "2-00:00:00"
+      ],
+      "result": null,
+      "time_s": 9.20313190605e-05,
+      "delta_t_s": 8.04917266618e-08,
+      "max_co": 0.128097736549,
+      "max_T_K": 3000.0
+    },
+    "phi-135": {
+      "job": 124767530,
+      "key": "phi-135",
+      "mode": "full",
+      "source": "b15fb0db8213e6a5243c0f55691080195276253e",
+      "allocation_core_hours": 192.0,
+      "accounting": [
+        "RUNNING",
+        "00:07:21",
+        "2-00:00:00"
+      ],
+      "result": null,
+      "time_s": 8.89611707156e-05,
+      "delta_t_s": 1.15425476042e-07,
+      "max_co": 0.145339001379,
+      "max_T_K": 3000.0
+    },
+    "phi-140": {
+      "job": 124767540,
+      "key": "phi-140",
+      "mode": "full",
+      "source": "b15fb0db8213e6a5243c0f55691080195276253e",
+      "allocation_core_hours": 192.0,
+      "accounting": [
+        "RUNNING",
+        "00:07:12",
+        "2-00:00:00"
+      ],
+      "result": null,
+      "time_s": 8.9755805879e-05,
+      "delta_t_s": 1.22097060513e-07,
+      "max_co": 0.168054991021,
+      "max_T_K": 3000.0
+    },
+    "phi-110-dt": {
+      "job": 124767544,
+      "key": "phi-110-dt",
+      "mode": "full",
+      "source": "b15fb0db8213e6a5243c0f55691080195276253e",
+      "allocation_core_hours": 192.0,
+      "accounting": [
+        "RUNNING",
+        "00:07:06",
+        "2-00:00:00"
+      ],
+      "result": null,
+      "time_s": 4.7351030549e-05,
+      "delta_t_s": 7.79108662052e-08,
+      "max_co": 0.100094953302,
+      "max_T_K": 2999.09295516
+    },
+    "phi-110-domain": {
+      "job": 124767550,
+      "key": "phi-110-domain",
+      "mode": "full",
+      "source": "b15fb0db8213e6a5243c0f55691080195276253e",
+      "allocation_core_hours": 192.0,
+      "accounting": [
+        "RUNNING",
+        "00:07:00",
+        "2-00:00:00"
+      ],
+      "result": null,
+      "time_s": 4.58688857394e-05,
+      "delta_t_s": 1.37703808686e-07,
+      "max_co": 0.172767640562,
+      "max_T_K": 2999.5318834
+    },
+    "oxy-1": {
+      "job": 124767586,
+      "key": "oxy-1",
+      "mode": "full",
+      "source": "b15fb0db8213e6a5243c0f55691080195276253e",
+      "allocation_core_hours": 384.0,
+      "accounting": [
+        "RUNNING",
+        "00:06:20",
+        "2-00:00:00"
+      ],
+      "result": null,
+      "time_s": 0.0016,
+      "delta_t_s": 2e-05,
+      "max_co": 0.15636764081,
+      "max_T_K": 1999.11247038
+    },
+    "oxy-200": {
+      "job": 124767667,
+      "key": "oxy-200",
+      "mode": "full",
+      "source": "b15fb0db8213e6a5243c0f55691080195276253e",
+      "allocation_core_hours": 384.0,
+      "accounting": [
+        "RUNNING",
+        "00:02:51",
+        "2-00:00:00"
+      ],
+      "result": null,
+      "time_s": 0.000118650887263,
+      "delta_t_s": 1.90674556368e-05,
+      "max_co": 0.104849912737,
+      "max_T_K": 2291.99004227
+    },
+    "air-100": {
+      "job": 124767672,
+      "key": "air-100",
+      "mode": "full",
+      "source": "b15fb0db8213e6a5243c0f55691080195276253e",
+      "allocation_core_hours": 384.0,
+      "accounting": [
+        "RUNNING",
+        "00:02:45",
+        "2-00:00:00"
+      ],
+      "result": null,
+      "time_s": 9.57244414942e-05,
+      "delta_t_s": 1.44384128038e-05,
+      "max_co": 0.156868743496,
+      "max_T_K": 2308.85002896
+    },
+    "phi-110-mesh": {
+      "job": 124767902,
+      "key": "phi-110-mesh",
+      "mode": "full",
+      "source": "b15fb0db8213e6a5243c0f55691080195276253e",
+      "allocation_core_hours": 192.0,
+      "accounting": [
+        "RUNNING",
+        "00:00:12",
+        "2-00:00:00"
+      ],
+      "result": null
+    }
+  },
+  "attempts": [
+    {
+      "job": 124767270,
+      "key": "oxy-1",
+      "mode": "smoke",
+      "source": "91113753d861a0da3c45feeba1688db6a1d4c0d4",
+      "allocation_core_hours": 4.0,
+      "accounting": [
+        "COMPLETED",
+        "00:03:48",
+        "00:30:00"
+      ],
+      "result": "PASS: adaptive oxy-1 smoke; finite normalized endpoint, convergence unqualified",
+      "time_s": 0.0011,
+      "delta_t_s": 8.63821751574e-06,
+      "max_co": 0.0666666330783,
+      "max_T_K": 2018.78973567
+    },
+    {
+      "job": 124767271,
+      "key": "oxy-200",
+      "mode": "smoke",
+      "source": "91113753d861a0da3c45feeba1688db6a1d4c0d4",
+      "allocation_core_hours": 4.0,
+      "accounting": [
+        "FAILED",
+        "00:00:12",
+        "00:30:00"
+      ],
+      "result": null
+    },
+    {
+      "job": 124767272,
+      "key": "air-100",
+      "mode": "smoke",
+      "source": "91113753d861a0da3c45feeba1688db6a1d4c0d4",
+      "allocation_core_hours": 4.0,
+      "accounting": [
+        "FAILED",
+        "00:00:10",
+        "00:30:00"
+      ],
+      "result": null
+    },
+    {
+      "job": 124767275,
+      "key": "phi-90",
+      "mode": "smoke",
+      "source": "91113753d861a0da3c45feeba1688db6a1d4c0d4",
+      "allocation_core_hours": 2.0,
+      "accounting": [
+        "COMPLETED",
+        "00:02:06",
+        "00:30:00"
+      ],
+      "result": "PASS: adaptive phi-90 smoke; finite normalized endpoint, convergence unqualified",
+      "time_s": 8.2e-05,
+      "delta_t_s": 1.54771802308e-07,
+      "max_co": 0.154329812472,
+      "max_T_K": 3000.0
+    },
+    {
+      "job": 124767276,
+      "key": "phi-95",
+      "mode": "smoke",
+      "source": "91113753d861a0da3c45feeba1688db6a1d4c0d4",
+      "allocation_core_hours": 2.0,
+      "accounting": [
+        "COMPLETED",
+        "00:02:13",
+        "00:30:00"
+      ],
+      "result": "PASS: adaptive phi-95 smoke; finite normalized endpoint, convergence unqualified",
+      "time_s": 8.2e-05,
+      "delta_t_s": 1.3542532702e-07,
+      "max_co": 0.146584318003,
+      "max_T_K": 3000.0
+    },
+    {
+      "job": 124767278,
+      "key": "phi-100",
+      "mode": "smoke",
+      "source": "91113753d861a0da3c45feeba1688db6a1d4c0d4",
+      "allocation_core_hours": 2.0,
+      "accounting": [
+        "COMPLETED",
+        "00:02:17",
+        "00:30:00"
+      ],
+      "result": "PASS: adaptive phi-100 smoke; finite normalized endpoint, convergence unqualified",
+      "time_s": 7.2e-05,
+      "delta_t_s": 1.3542532702e-07,
+      "max_co": 0.161269451269,
+      "max_T_K": 3000.0
+    },
+    {
+      "job": 124767279,
+      "key": "phi-105",
+      "mode": "smoke",
+      "source": "91113753d861a0da3c45feeba1688db6a1d4c0d4",
+      "allocation_core_hours": 2.0,
+      "accounting": [
+        "COMPLETED",
+        "00:03:12",
+        "00:30:00"
+      ],
+      "result": "PASS: adaptive phi-105 smoke; finite normalized endpoint, convergence unqualified",
+      "time_s": 6.2e-05,
+      "delta_t_s": 1.3542532702e-07,
+      "max_co": 0.175305577529,
+      "max_T_K": 3000.0
+    },
+    {
+      "job": 124767280,
+      "key": "phi-110",
+      "mode": "smoke",
+      "source": "91113753d861a0da3c45feeba1688db6a1d4c0d4",
+      "allocation_core_hours": 2.0,
+      "accounting": [
+        "COMPLETED",
+        "00:02:09",
+        "00:30:00"
+      ],
+      "result": "PASS: adaptive phi-110 smoke; finite normalized endpoint, convergence unqualified",
+      "time_s": 8.2e-05,
+      "delta_t_s": 1.3542532702e-07,
+      "max_co": 0.156669596847,
+      "max_T_K": 3000.0
+    },
+    {
+      "job": 124767282,
+      "key": "phi-115",
+      "mode": "smoke",
+      "source": "91113753d861a0da3c45feeba1688db6a1d4c0d4",
+      "allocation_core_hours": 2.0,
+      "accounting": [
+        "COMPLETED",
+        "00:02:03",
+        "00:30:00"
+      ],
+      "result": "PASS: adaptive phi-115 smoke; finite normalized endpoint, convergence unqualified",
+      "time_s": 8.2e-05,
+      "delta_t_s": 1.3542532702e-07,
+      "max_co": 0.155702618573,
+      "max_T_K": 3000.0
+    },
+    {
+      "job": 124767283,
+      "key": "phi-120",
+      "mode": "smoke",
+      "source": "91113753d861a0da3c45feeba1688db6a1d4c0d4",
+      "allocation_core_hours": 2.0,
+      "accounting": [
+        "COMPLETED",
+        "00:01:58",
+        "00:30:00"
+      ],
+      "result": "PASS: adaptive phi-120 smoke; finite normalized endpoint, convergence unqualified",
+      "time_s": 0.000102,
+      "delta_t_s": 1.54771802308e-07,
+      "max_co": 0.159276690518,
+      "max_T_K": 3000.0
+    },
+    {
+      "job": 124767285,
+      "key": "phi-125",
+      "mode": "smoke",
+      "source": "91113753d861a0da3c45feeba1688db6a1d4c0d4",
+      "allocation_core_hours": 2.0,
+      "accounting": [
+        "COMPLETED",
+        "00:02:02",
+        "00:30:00"
+      ],
+      "result": "PASS: adaptive phi-125 smoke; finite normalized endpoint, convergence unqualified",
+      "time_s": 8.2e-05,
+      "delta_t_s": 1.3542532702e-07,
+      "max_co": 0.14376552913,
+      "max_T_K": 3000.0
+    },
+    {
+      "job": 124767286,
+      "key": "phi-130",
+      "mode": "smoke",
+      "source": "91113753d861a0da3c45feeba1688db6a1d4c0d4",
+      "allocation_core_hours": 2.0,
+      "accounting": [
+        "COMPLETED",
+        "00:02:01",
+        "00:30:00"
+      ],
+      "result": "PASS: adaptive phi-130 smoke; finite normalized endpoint, convergence unqualified",
+      "time_s": 8.2e-05,
+      "delta_t_s": 1.3542532702e-07,
+      "max_co": 0.142405349365,
+      "max_T_K": 3000.0
+    },
+    {
+      "job": 124767287,
+      "key": "phi-135",
+      "mode": "smoke",
+      "source": "91113753d861a0da3c45feeba1688db6a1d4c0d4",
+      "allocation_core_hours": 2.0,
+      "accounting": [
+        "COMPLETED",
+        "00:01:56",
+        "00:30:00"
+      ],
+      "result": "PASS: adaptive phi-135 smoke; finite normalized endpoint, convergence unqualified",
+      "time_s": 8.2e-05,
+      "delta_t_s": 1.54771802308e-07,
+      "max_co": 0.152610325561,
+      "max_T_K": 3000.0
+    },
+    {
+      "job": 124767290,
+      "key": "phi-140",
+      "mode": "smoke",
+      "source": "91113753d861a0da3c45feeba1688db6a1d4c0d4",
+      "allocation_core_hours": 2.0,
+      "accounting": [
+        "COMPLETED",
+        "00:02:01",
+        "00:30:00"
+      ],
+      "result": "PASS: adaptive phi-140 smoke; finite normalized endpoint, convergence unqualified",
+      "time_s": 8.2e-05,
+      "delta_t_s": 1.54771802308e-07,
+      "max_co": 0.148351760402,
+      "max_T_K": 3000.0
+    },
+    {
+      "job": 124767292,
+      "key": "phi-110-dt",
+      "mode": "smoke",
+      "source": "91113753d861a0da3c45feeba1688db6a1d4c0d4",
+      "allocation_core_hours": 2.0,
+      "accounting": [
+        "COMPLETED",
+        "00:02:54",
+        "00:30:00"
+      ],
+      "result": "PASS: adaptive phi-110-dt smoke; finite normalized endpoint, convergence unqualified",
+      "time_s": 4.2e-05,
+      "delta_t_s": 6.97455799942e-08,
+      "max_co": 0.091747516847,
+      "max_T_K": 2999.69994626
+    },
+    {
+      "job": 124767294,
+      "key": "phi-110-mesh",
+      "mode": "smoke",
+      "source": "91113753d861a0da3c45feeba1688db6a1d4c0d4",
+      "allocation_core_hours": 2.0,
+      "accounting": [
+        "COMPLETED",
+        "00:10:10",
+        "00:30:00"
+      ],
+      "result": "PASS: adaptive phi-110-mesh smoke; finite normalized endpoint, convergence unqualified",
+      "time_s": 2.2e-05,
+      "delta_t_s": 2.97928973435e-08,
+      "max_co": 0.179364135276,
+      "max_T_K": 3000.0
+    },
+    {
+      "job": 124767295,
+      "key": "phi-110-domain",
+      "mode": "smoke",
+      "source": "91113753d861a0da3c45feeba1688db6a1d4c0d4",
+      "allocation_core_hours": 2.0,
+      "accounting": [
+        "COMPLETED",
+        "00:03:36",
+        "00:30:00"
+      ],
+      "result": "PASS: adaptive phi-110-domain smoke; finite normalized endpoint, convergence unqualified",
+      "time_s": 4.2e-05,
+      "delta_t_s": 6.77126635099e-08,
+      "max_co": 0.0847240083913,
+      "max_T_K": 3000.0
+    },
+    {
+      "job": 124767361,
+      "key": "oxy-200",
+      "mode": "smoke",
+      "source": "74b917f87896ce1690e26a101f12db6cb0bb5553",
+      "allocation_core_hours": 4.0,
+      "accounting": [
+        "FAILED",
+        "00:00:09",
+        "00:30:00"
+      ],
+      "result": null
+    },
+    {
+      "job": 124767378,
+      "key": "air-100",
+      "mode": "smoke",
+      "source": "74b917f87896ce1690e26a101f12db6cb0bb5553",
+      "allocation_core_hours": 4.0,
+      "accounting": [
+        "FAILED",
+        "00:00:07",
+        "00:30:00"
+      ],
+      "result": null
+    },
+    {
+      "job": 124767480,
+      "key": "oxy-200",
+      "mode": "smoke",
+      "source": "b15fb0db8213e6a5243c0f55691080195276253e",
+      "allocation_core_hours": 4.0,
+      "accounting": [
+        "COMPLETED",
+        "00:03:26",
+        "00:30:00"
+      ],
+      "result": "PASS: adaptive oxy-200 smoke; finite normalized endpoint, convergence unqualified",
+      "time_s": 0.0001,
+      "delta_t_s": 8.63821751574e-06,
+      "max_co": 0.0554933126735,
+      "max_T_K": 2303.53458872
+    },
+    {
+      "job": 124767482,
+      "key": "air-100",
+      "mode": "smoke",
+      "source": "b15fb0db8213e6a5243c0f55691080195276253e",
+      "allocation_core_hours": 4.0,
+      "accounting": [
+        "COMPLETED",
+        "00:03:24",
+        "00:30:00"
+      ],
+      "result": "PASS: adaptive air-100 smoke; finite normalized endpoint, convergence unqualified",
+      "time_s": 0.0001,
+      "delta_t_s": 8.63821751574e-06,
+      "max_co": 0.105262839433,
+      "max_T_K": 2310.41810446
+    },
+    {
+      "job": 124767487,
+      "key": "phi-90",
+      "mode": "full",
+      "source": "b15fb0db8213e6a5243c0f55691080195276253e",
+      "allocation_core_hours": 192.0,
+      "accounting": [
+        "RUNNING",
+        "00:08:27",
+        "2-00:00:00"
+      ],
+      "result": null,
+      "time_s": 9.2433787164e-05,
+      "delta_t_s": 7.27520464996e-08,
+      "max_co": 0.156939185522,
+      "max_T_K": 3000.0
+    },
+    {
+      "job": 124767490,
+      "key": "phi-95",
+      "mode": "full",
+      "source": "b15fb0db8213e6a5243c0f55691080195276253e",
+      "allocation_core_hours": 192.0,
+      "accounting": [
+        "RUNNING",
+        "00:08:24",
+        "2-00:00:00"
+      ],
+      "result": null,
+      "time_s": 9.25935566534e-05,
+      "delta_t_s": 6.92190966975e-08,
+      "max_co": 0.29438393082,
+      "max_T_K": 2999.21055583
+    },
+    {
+      "job": 124767496,
+      "key": "phi-100",
+      "mode": "full",
+      "source": "b15fb0db8213e6a5243c0f55691080195276253e",
+      "allocation_core_hours": 192.0,
+      "accounting": [
+        "RUNNING",
+        "00:08:18",
+        "2-00:00:00"
+      ],
+      "result": null,
+      "time_s": 8.1835829417e-05,
+      "delta_t_s": 7.16155314296e-08,
+      "max_co": 0.164707213588,
+      "max_T_K": 2999.51265385
+    },
+    {
+      "job": 124767500,
+      "key": "phi-105",
+      "mode": "full",
+      "source": "b15fb0db8213e6a5243c0f55691080195276253e",
+      "allocation_core_hours": 192.0,
+      "accounting": [
+        "RUNNING",
+        "00:08:12",
+        "2-00:00:00"
+      ],
+      "result": null,
+      "time_s": 7.18018753374e-05,
+      "delta_t_s": 8.81518780928e-08,
+      "max_co": 0.149568881061,
+      "max_T_K": 2998.80543921
+    },
+    {
+      "job": 124767505,
+      "key": "phi-110",
+      "mode": "full",
+      "source": "b15fb0db8213e6a5243c0f55691080195276253e",
+      "allocation_core_hours": 192.0,
+      "accounting": [
+        "RUNNING",
+        "00:08:05",
+        "2-00:00:00"
+      ],
+      "result": null,
+      "time_s": 9.26767715974e-05,
+      "delta_t_s": 9.26990937037e-08,
+      "max_co": 0.26448385986,
+      "max_T_K": 3000.0
+    },
+    {
+      "job": 124767509,
+      "key": "phi-115",
+      "mode": "full",
+      "source": "b15fb0db8213e6a5243c0f55691080195276253e",
+      "allocation_core_hours": 192.0,
+      "accounting": [
+        "RUNNING",
+        "00:07:59",
+        "2-00:00:00"
+      ],
+      "result": null,
+      "time_s": 9.2887448531e-05,
+      "delta_t_s": 9.11865572947e-08,
+      "max_co": 0.111223547366,
+      "max_T_K": 3000.0
+    },
+    {
+      "job": 124767513,
+      "key": "phi-120",
+      "mode": "full",
+      "source": "b15fb0db8213e6a5243c0f55691080195276253e",
+      "allocation_core_hours": 192.0,
+      "accounting": [
+        "RUNNING",
+        "00:07:37",
+        "2-00:00:00"
+      ],
+      "result": null,
+      "time_s": 0.000113034588124,
+      "delta_t_s": 1.2664385229e-07,
+      "max_co": 0.208789669074,
+      "max_T_K": 3000.0
+    },
+    {
+      "job": 124767516,
+      "key": "phi-125",
+      "mode": "full",
+      "source": "b15fb0db8213e6a5243c0f55691080195276253e",
+      "allocation_core_hours": 192.0,
+      "accounting": [
+        "RUNNING",
+        "00:07:33",
+        "2-00:00:00"
+      ],
+      "result": null,
+      "time_s": 9.23921988295e-05,
+      "delta_t_s": 1.20758748738e-07,
+      "max_co": 0.216025075254,
+      "max_T_K": 3000.0
+    },
+    {
+      "job": 124767522,
+      "key": "phi-130",
+      "mode": "full",
+      "source": "b15fb0db8213e6a5243c0f55691080195276253e",
+      "allocation_core_hours": 192.0,
+      "accounting": [
+        "RUNNING",
+        "00:07:28",
+        "2-00:00:00"
+      ],
+      "result": null,
+      "time_s": 9.20313190605e-05,
+      "delta_t_s": 8.04917266618e-08,
+      "max_co": 0.128097736549,
+      "max_T_K": 3000.0
+    },
+    {
+      "job": 124767530,
+      "key": "phi-135",
+      "mode": "full",
+      "source": "b15fb0db8213e6a5243c0f55691080195276253e",
+      "allocation_core_hours": 192.0,
+      "accounting": [
+        "RUNNING",
+        "00:07:21",
+        "2-00:00:00"
+      ],
+      "result": null,
+      "time_s": 8.89611707156e-05,
+      "delta_t_s": 1.15425476042e-07,
+      "max_co": 0.145339001379,
+      "max_T_K": 3000.0
+    },
+    {
+      "job": 124767540,
+      "key": "phi-140",
+      "mode": "full",
+      "source": "b15fb0db8213e6a5243c0f55691080195276253e",
+      "allocation_core_hours": 192.0,
+      "accounting": [
+        "RUNNING",
+        "00:07:12",
+        "2-00:00:00"
+      ],
+      "result": null,
+      "time_s": 8.9755805879e-05,
+      "delta_t_s": 1.22097060513e-07,
+      "max_co": 0.168054991021,
+      "max_T_K": 3000.0
+    },
+    {
+      "job": 124767544,
+      "key": "phi-110-dt",
+      "mode": "full",
+      "source": "b15fb0db8213e6a5243c0f55691080195276253e",
+      "allocation_core_hours": 192.0,
+      "accounting": [
+        "RUNNING",
+        "00:07:06",
+        "2-00:00:00"
+      ],
+      "result": null,
+      "time_s": 4.7351030549e-05,
+      "delta_t_s": 7.79108662052e-08,
+      "max_co": 0.100094953302,
+      "max_T_K": 2999.09295516
+    },
+    {
+      "job": 124767550,
+      "key": "phi-110-domain",
+      "mode": "full",
+      "source": "b15fb0db8213e6a5243c0f55691080195276253e",
+      "allocation_core_hours": 192.0,
+      "accounting": [
+        "RUNNING",
+        "00:07:00",
+        "2-00:00:00"
+      ],
+      "result": null,
+      "time_s": 4.58688857394e-05,
+      "delta_t_s": 1.37703808686e-07,
+      "max_co": 0.172767640562,
+      "max_T_K": 2999.5318834
+    },
+    {
+      "job": 124767586,
+      "key": "oxy-1",
+      "mode": "full",
+      "source": "b15fb0db8213e6a5243c0f55691080195276253e",
+      "allocation_core_hours": 384.0,
+      "accounting": [
+        "RUNNING",
+        "00:06:20",
+        "2-00:00:00"
+      ],
+      "result": null,
+      "time_s": 0.0016,
+      "delta_t_s": 2e-05,
+      "max_co": 0.15636764081,
+      "max_T_K": 1999.11247038
+    },
+    {
+      "job": 124767667,
+      "key": "oxy-200",
+      "mode": "full",
+      "source": "b15fb0db8213e6a5243c0f55691080195276253e",
+      "allocation_core_hours": 384.0,
+      "accounting": [
+        "RUNNING",
+        "00:02:51",
+        "2-00:00:00"
+      ],
+      "result": null,
+      "time_s": 0.000118650887263,
+      "delta_t_s": 1.90674556368e-05,
+      "max_co": 0.104849912737,
+      "max_T_K": 2291.99004227
+    },
+    {
+      "job": 124767672,
+      "key": "air-100",
+      "mode": "full",
+      "source": "b15fb0db8213e6a5243c0f55691080195276253e",
+      "allocation_core_hours": 384.0,
+      "accounting": [
+        "RUNNING",
+        "00:02:45",
+        "2-00:00:00"
+      ],
+      "result": null,
+      "time_s": 9.57244414942e-05,
+      "delta_t_s": 1.44384128038e-05,
+      "max_co": 0.156868743496,
+      "max_T_K": 2308.85002896
+    },
+    {
+      "job": 124767902,
+      "key": "phi-110-mesh",
+      "mode": "full",
+      "source": "b15fb0db8213e6a5243c0f55691080195276253e",
+      "allocation_core_hours": 192.0,
+      "accounting": [
+        "RUNNING",
+        "00:00:12",
+        "2-00:00:00"
+      ],
+      "result": null
+    }
+  ],
+  "reserved_core_hours": 3896.0,
+  "configuration": {
+    "oxy-1": {
+      "origin": 124672685,
+      "subdir": "author-cases/gri30",
+      "ranks": 8,
+      "cells": 11200,
+      "initial_dt": 1e-06,
+      "max_co": 0.2,
+      "max_dt": 2e-05,
+      "end_time": 0.07,
+      "write_interval": 0.0005
+    },
+    "oxy-200": {
+      "origin": 124674723,
+      "subdir": "paper-cases/gri30",
+      "ranks": 8,
+      "cells": 11200,
+      "initial_dt": 1e-06,
+      "max_co": 0.2,
+      "max_dt": 2e-05,
+      "end_time": 0.07,
+      "write_interval": 0.0005
+    },
+    "air-100": {
+      "origin": 124674728,
+      "subdir": "paper-cases/gri30",
+      "ranks": 8,
+      "cells": 11200,
+      "initial_dt": 1e-06,
+      "max_co": 0.2,
+      "max_dt": 2e-05,
+      "end_time": 0.07,
+      "write_interval": 0.0005
+    },
+    "phi-90": {
+      "origin": 124674593,
+      "subdir": "paper-cases/premixed",
+      "ranks": 4,
+      "cells": 4000,
+      "initial_dt": 1e-08,
+      "max_co": 0.2,
+      "max_dt": 2e-07,
+      "end_time": 0.001,
+      "write_interval": 1e-05
+    },
+    "phi-95": {
+      "origin": 124674594,
+      "subdir": "paper-cases/premixed",
+      "ranks": 4,
+      "cells": 4000,
+      "initial_dt": 1e-08,
+      "max_co": 0.2,
+      "max_dt": 2e-07,
+      "end_time": 0.001,
+      "write_interval": 1e-05
+    },
+    "phi-100": {
+      "origin": 124674595,
+      "subdir": "paper-cases/premixed",
+      "ranks": 4,
+      "cells": 4000,
+      "initial_dt": 1e-08,
+      "max_co": 0.2,
+      "max_dt": 2e-07,
+      "end_time": 0.001,
+      "write_interval": 1e-05
+    },
+    "phi-105": {
+      "origin": 124674598,
+      "subdir": "paper-cases/premixed",
+      "ranks": 4,
+      "cells": 4000,
+      "initial_dt": 1e-08,
+      "max_co": 0.2,
+      "max_dt": 2e-07,
+      "end_time": 0.001,
+      "write_interval": 1e-05
+    },
+    "phi-110": {
+      "origin": 124674599,
+      "subdir": "paper-cases/premixed",
+      "ranks": 4,
+      "cells": 4000,
+      "initial_dt": 1e-08,
+      "max_co": 0.2,
+      "max_dt": 2e-07,
+      "end_time": 0.001,
+      "write_interval": 1e-05
+    },
+    "phi-115": {
+      "origin": 124674601,
+      "subdir": "paper-cases/premixed",
+      "ranks": 4,
+      "cells": 4000,
+      "initial_dt": 1e-08,
+      "max_co": 0.2,
+      "max_dt": 2e-07,
+      "end_time": 0.001,
+      "write_interval": 1e-05
+    },
+    "phi-120": {
+      "origin": 124674603,
+      "subdir": "paper-cases/premixed",
+      "ranks": 4,
+      "cells": 4000,
+      "initial_dt": 1e-08,
+      "max_co": 0.2,
+      "max_dt": 2e-07,
+      "end_time": 0.001,
+      "write_interval": 1e-05
+    },
+    "phi-125": {
+      "origin": 124674604,
+      "subdir": "paper-cases/premixed",
+      "ranks": 4,
+      "cells": 4000,
+      "initial_dt": 1e-08,
+      "max_co": 0.2,
+      "max_dt": 2e-07,
+      "end_time": 0.001,
+      "write_interval": 1e-05
+    },
+    "phi-130": {
+      "origin": 124674606,
+      "subdir": "paper-cases/premixed",
+      "ranks": 4,
+      "cells": 4000,
+      "initial_dt": 1e-08,
+      "max_co": 0.2,
+      "max_dt": 2e-07,
+      "end_time": 0.001,
+      "write_interval": 1e-05
+    },
+    "phi-135": {
+      "origin": 124674607,
+      "subdir": "paper-cases/premixed",
+      "ranks": 4,
+      "cells": 4000,
+      "initial_dt": 1e-08,
+      "max_co": 0.2,
+      "max_dt": 2e-07,
+      "end_time": 0.001,
+      "write_interval": 1e-05
+    },
+    "phi-140": {
+      "origin": 124674610,
+      "subdir": "paper-cases/premixed",
+      "ranks": 4,
+      "cells": 4000,
+      "initial_dt": 1e-08,
+      "max_co": 0.2,
+      "max_dt": 2e-07,
+      "end_time": 0.001,
+      "write_interval": 1e-05
+    },
+    "phi-110-dt": {
+      "origin": 124674612,
+      "subdir": "paper-cases/premixed",
+      "ranks": 4,
+      "cells": 4000,
+      "initial_dt": 5e-09,
+      "max_co": 0.1,
+      "max_dt": 1e-07,
+      "end_time": 0.001,
+      "write_interval": 1e-05
+    },
+    "phi-110-mesh": {
+      "origin": 124674627,
+      "subdir": "paper-cases/premixed",
+      "ranks": 4,
+      "cells": 8000,
+      "initial_dt": 5e-09,
+      "max_co": 0.2,
+      "max_dt": 1e-07,
+      "end_time": 0.001,
+      "write_interval": 1e-05
+    },
+    "phi-110-domain": {
+      "origin": 124674633,
+      "subdir": "paper-cases/premixed",
+      "ranks": 4,
+      "cells": 8000,
+      "initial_dt": 1e-08,
+      "max_co": 0.2,
+      "max_dt": 2e-07,
+      "end_time": 0.001,
+      "write_interval": 1e-05
+    }
+  },
+  "qualified_build_job": 124657926,
+  "log_metric_note": "time_s is latest entered step, not necessarily a completed or written checkpoint; max_co is the last printed pre-controller Co; rates and stability remain unqualified."
+}

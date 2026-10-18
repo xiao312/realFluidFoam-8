@@ -37,7 +37,8 @@ Full runs require a passed smoke with identical case configuration and qualified
 build (validator-only release changes are allowed), and use 48-hour
 allocations. Submissions are recorded in an additional reservation ledger; owner
 authorization on 17/18 October supersedes the initial 1,000 core-hour cap. All 17
-full allocations reserve at most 3,840 core-hours, plus 40 core-hours for smokes;
+full allocations reserve at most 3,840 core-hours, plus 40 core-hours for one
+smoke per case (56 including the four input-validation retries on 18 October);
 jobs stop on reaching their targets. No unattended extension is installed.
 
 The author's code reconstructs some caches at restart, notably species enthalpy;

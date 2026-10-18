@@ -4,7 +4,9 @@ This directory owns environment recipes, replication inputs, and result summarie
 for Nguyen's 2022 library and 2025 solver papers. The first scientific stages are
 properties, counterflow flames, and premixed flame speed. No result is accepted yet.
 
-Current run coverage is recorded in the
+The current adaptive continuations are recorded in the
+[18 October continuation record](docs/adaptive-continuation-20261018.md) and
+[job register](docs/adaptive-jobs-20261018.json). Original case coverage is in the
 [expanded low-dimensional campaign](docs/low-dimensional-campaign-20261017.md)
 and its [job register](docs/low-dimensional-jobs-20261017.json). These dated
 records identify the original-input counterflow baseline, the adapted remaining
