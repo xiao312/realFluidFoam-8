@@ -1,0 +1,72 @@
+{
+  "schema_version": 1,
+  "name": "2026-10-19-style-review",
+  "papers": {
+    "2022": {
+      "path": "references/nguyen-2022.pdf"
+    },
+    "2025": {
+      "path": "references/nguyen-2025.pdf"
+    }
+  },
+  "methane": {
+    "job": "124660240",
+    "status": "Finite property sweep; enthalpy inversion criterion failed",
+    "source_revision": "4aed44d63eb0254837644a939c9b5fbae034b8df",
+    "build_job": "124657926",
+    "files": {
+      "SRK": "state/properties-124660240/jobs/124660240/properties-SRK/properties.csv",
+      "PR": "state/properties-124660240/jobs/124660240/properties-PR/properties.csv"
+    },
+    "reference_dir": "state/nist-20261017",
+    "receipt": "state/properties-124660240/jobs/124660240/validation-inputs.txt",
+    "executable": "rfPropertyProbe"
+  },
+  "nitrogen": {
+    "job": "124662568",
+    "status": "Finite property sweep; enthalpy inversion criterion failed; not LES",
+    "source_revision": "58cee1b4818ffaa4bdb5cadb0f590047db78263d",
+    "build_job": "124657926",
+    "files": {
+      "SRK": "state/nitrogen-124662568/jobs/124662568/properties-SRK/properties.csv",
+      "PR": "state/nitrogen-124662568/jobs/124662568/properties-PR/properties.csv"
+    },
+    "reference": "state/figure-audit-20261017/nitrogen-3.98MPa.tsv",
+    "reference_manifest": "state/figure-audit-20261017/nitrogen-reference.json",
+    "receipt": "state/nitrogen-124662568/jobs/124662568/validation-inputs.txt",
+    "executable": "rfPropertyProbe"
+  },
+  "counterflow": {
+    "manifest": "state/counterflow-latest-manifest.json",
+    "snapshot_receipt": "state/counterflow-latest-20261018/snapshot.json",
+    "status": "Coarse GRI30 oxyfuel interim; air-100 prior smoke only; NOT converged paper-mesh results",
+    "source_revision": "b15fb0db8213e6a5243c0f55691080195276253e",
+    "build_job": "124657926",
+    "executable": "realFluidReactingFoam"
+  },
+  "premixed": {
+    "snapshot": "state/inlet-profiles-20261018.json",
+    "status": "Historical cancelled inlet-guess runs at phi=1.10; interim only, not latest Liang sweep",
+    "source_revision": "4ae4c078ff3f1b85b7adfd488d6da3c80d5ef979",
+    "build_job": "124657926",
+    "windows_s": [
+      5e-05,
+      0.0001
+    ],
+    "OH_levels": [
+      2e-05,
+      5e-05,
+      0.0001
+    ],
+    "executable": "rfReactingFoam"
+  },
+  "dpi": 360,
+  "builds": {
+    "124657926": {
+      "source_revision": "b1153ea9c64b9abf55f7be6c488549024c081279",
+      "evidence_archive": "state/build-124657926-evidence.tar.gz",
+      "evidence_sha256": "81c935ff63a0a93273221eb5b7861f90ae671dc21134ae9b3054bae8c0b0dc96",
+      "runtime_sif_sha256": "7d4e96e0b1a97a0b361cbaf808b6242fa0c576e5ee2a27cd6a9a514c59cb529e"
+    }
+  }
+}

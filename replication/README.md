@@ -73,3 +73,9 @@ The [2026-10-17 build record](docs/build-qualification-20261017.md) qualifies ta
 records completed NIST comparisons and failed inversion checks. The
 [flame pilots](docs/flame-pilots-20261017.md) passed startup checks only; the
 [next batch plan](docs/next-batch-plan.md) covers scaling and convergence.
+# Repeat comparisons after a code change
+
+Start with [the replication suite](suite/README.md). It indexes the property probes,
+paper counterflows, premixed variants, environment pins and remaining checks.
+The local runner regenerates comparisons and paper-frame overlays from an explicit
+evidence manifest. Simulation preparation and scheduler submission remain manual.

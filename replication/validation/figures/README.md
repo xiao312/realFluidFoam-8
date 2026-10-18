@@ -1,5 +1,11 @@
 # Paper figure comparisons
 
+For new comparisons, use [the manifest-driven suite](../../suite/README.md).
+It reuses this module's field readers and curve extractors with explicit input
+paths, measured panel coordinates and current run identities. The dated scripts
+below remain historical entrypoints; do not treat their hardcoded jobs or status
+strings as the current campaign. Their files are retained to reproduce old evidence.
+
 `extract_inlet_profiles.py ROOT JOB...` reads stable saved 1-D development
 checkpoints and emits JSON on stdout; it never writes remotely. It reconstructs
 global ordering through cellProcAddressing, validates the declared uniform mesh,

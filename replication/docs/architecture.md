@@ -84,3 +84,27 @@ its verified solver executable and adaptive field parsing. Its scheduled watcher
 compares physical-time field changes and mass flux, saves convergence evidence,
 and requests a checkpointed stop on a candidate or wall-time boundary. It does
 not submit additional batches or equate a physical time limit with convergence.
+# Repeatable comparison analysis
+
+`suite/` joins existing modules through explicit evidence manifests. It depends on
+property comparison, the OpenFOAM field reader, PDF curve extractors and the pinned
+analysis environment. It has no scheduler or network dependency. Source PDFs and
+bulk results remain private inputs outside Git. The environment and solver do not
+depend on the analysis suite.
+
+```mermaid
+flowchart LR
+  Environment[Environment lock and isolated build] --> Probes[Property probes]
+  Environment --> Cases[Counterflow and premixed case modules]
+  Probes --> Evidence[Saved evidence and run identities]
+  Cases --> Evidence
+  Evidence --> Suite[Suite numerical checks]
+  Papers[Read-only PDFs and NIST tables] --> Suite
+  Suite --> Plots[Measured figure styles and computed layers]
+  Plots --> Review[Local HTML and PDF review]
+```
+
+`development/premixed-inlet` is included from draft revision `b54a8bf` for one
+reviewable source checkout. It depends on the existing flame generators and
+runtime property probe; seed generation additionally uses pinned Cantera.
+This assembly does not promote the numerical draft into `develop/reacting`.
