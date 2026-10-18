@@ -105,3 +105,7 @@ processor inlet velocities; normalized mapped fields; MPI solver startup.
 Expected result: reference comparisons pass before integration begins. This
 change addresses the serial thermodynamic initialization; mesh construction and
 OF8 mapFields remain separate preprocessing utilities.
+
+Timing uses Bash built-in `time` (wall/user/system seconds); the pinned image
+does not provide `/usr/bin/time`. Observe memory through scheduler accounting
+or a separate process measurement, not these timing files.

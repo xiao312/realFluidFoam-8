@@ -14,7 +14,9 @@
       "wall_minutes": 60,
       "donor_job": 124767586,
       "donor_time_s": 0.07,
-      "state": "RUNNING"
+      "state": "CANCELLED",
+      "reason": "Owner requested MPI initialization; serial property probe stopped before CFD integration.",
+      "replacement_job": 124802435
     },
     {
       "job": 124799489,
@@ -24,7 +26,10 @@
       "wall_minutes": 60,
       "donor_job": 124767667,
       "donor_time_s": 0.058,
-      "state": "RUNNING"
+      "state": "CANCELLED",
+      "reason": "Owner requested MPI initialization; serial property probe stopped before CFD integration.",
+      "replacement_job": 124802436
     }
-  ]
+  ],
+  "last_checked_at": "2026-10-18T22:45:56.272808+08:00"
 }
