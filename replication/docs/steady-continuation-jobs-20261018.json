@@ -1,0 +1,53 @@
+{
+  "observed_at": "2026-10-18T23:56:31+08:00",
+  "runner_source_revision": "b38d40d544245ba274b3179a1b8760bc87727e3a",
+  "archive_sha256": "f2fad9ebaf6d31a17b9c1096a33503717c087cef46456197341c5a6ef1e0c57d",
+  "solver_source_revision": "8d9ecd2a6091b0453350049cd61a23a23adf938c",
+  "library_build": 124657926,
+  "release": "releases/dev-steady-b38d40d",
+  "max_reserved_core_hours": 3072,
+  "automatic_additional_batches": false,
+  "physical_time_ceiling_s": 0.05,
+  "checkpoint_interval_s": 1e-05,
+  "purge_write": 3,
+  "max_co": 0.2,
+  "max_delta_t_s": 1e-06,
+  "wall_stop_solver_hours": 46,
+  "convergence": {
+    "minimum_window_s": 0.01,
+    "minimum_check_separation_s": 0.001,
+    "consecutive_passes": 3,
+    "temperature_max_change_K": 1,
+    "velocity_component_max_change_m_s": 0.001,
+    "density_relative_to_reference_peak": 0.001,
+    "pressure_relative_to_reference_peak": 1e-05,
+    "species_change_limit": "max(1e-8, 0.001 * reference peak) for every species",
+    "maximum_relative_mass_imbalance": 0.001,
+    "minimum_peak_temperature_K": 1000,
+    "qualification": "steady candidate; not scientific acceptance"
+  },
+  "jobs": [
+    {
+      "case": "oxy-1",
+      "job": 124806101,
+      "state": "PENDING",
+      "reason": "Dependency",
+      "afterok_job": 124805217,
+      "ranks": 32,
+      "cells": 888000,
+      "wall_hours": 48,
+      "expected_start_checkpoint_s": 1e-05
+    },
+    {
+      "case": "oxy-200",
+      "job": 124806108,
+      "state": "PENDING",
+      "reason": "Dependency",
+      "afterok_job": 124805218,
+      "ranks": 32,
+      "cells": 816000,
+      "wall_hours": 48,
+      "expected_start_checkpoint_s": 1e-05
+    }
+  ]
+}
