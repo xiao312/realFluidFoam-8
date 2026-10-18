@@ -21,7 +21,7 @@ receipt=dict(key=key,mode=mode,source=str(source),checkpoint=checkpoint,
              destination=str(dest),config=config,end_time=end)
 print(json.dumps(receipt))
 if action=='plan':sys.exit(0)
-validation,_=inspect(source,config['ranks'],checkpoint)
+validation,_=inspect(source,config['ranks'],checkpoint,require_rho=False)
 assert validation['cells']==config['cells']
 dest.mkdir()
 for name in ['system','constant']:

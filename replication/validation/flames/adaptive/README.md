@@ -16,7 +16,9 @@ and convergence assessment. Architecture remains in replication/docs/architectur
 `python3 -B prepare.py plan ROOT KEY OUTPUT smoke` discovers a common saved time
 on every rank without writes. `apply` requires an absent output, copies the
 checkpoint/mesh/dictionaries and changes only controlDict. It retains all 53
-species and validates positive finite T/p/rho and bounded normalized mass fractions.
+species and validates positive finite T/p, saved rho when present, and bounded
+normalized mass fractions. Fresh stage-zero input may omit rho because the solver
+computes it; endpoint checks always require positive finite rho.
 `check.py CASE` validates the latest common output and reports T/CH4/OH changes
 relative to the restart state. These changes are diagnostics, not acceptance tests.
 
@@ -29,7 +31,8 @@ dt remains at the old small value; OF8 limits subsequent growth to 20% per step.
 
 Smokes advance 0.0001 s (counterflow) or 2e-6 s (premixed), saving at their endpoint.
 They qualify restart, controller operation and finite fields, not temporal accuracy.
-Full runs require a matching passed smoke from this source release and use 48-hour
+Full runs require a passed smoke with identical case configuration and qualified
+build (validator-only release changes are allowed), and use 48-hour
 allocations. Submissions are recorded in an additional reservation ledger; owner
 authorization on 17/18 October supersedes the initial 1,000 core-hour cap. All 17
 full allocations reserve at most 3,840 core-hours, plus 40 core-hours for smokes;

@@ -32,7 +32,7 @@ def species(case):
                 return names
     raise ValueError('Expected GRI30 species list in constant input')
 
-def inspect(case,ranks,time):
+def inspect(case,ranks,time,require_rho=True):
     names=species(case);total=0;error=0;fields={k:[] for k in ['T','p','rho','CH4','OH']}
     for rank in range(ranks):
         proc=case/('processor'+str(rank))
@@ -47,6 +47,7 @@ def inspect(case,ranks,time):
             if name in fields:fields[name].extend(values)
         error=max(error,max(abs(s-1) for s in sums))
         for name in ['T','p','rho']:
+            if name=='rho' and not require_rho and not (proc/time/name).exists():continue
             values=scalar(proc/time/name,count)
             if not all(math.isfinite(v) and v>0 for v in values):raise ValueError('Invalid '+name)
             fields[name].extend(values)
@@ -56,4 +57,4 @@ def inspect(case,ranks,time):
         if not all(math.isfinite(float(v)) for v in re.findall(r'[-+0-9.eE]+',(m[1] or m[2]))):raise ValueError('Nonfinite velocity')
     if error>1e-8:raise ValueError('Species sum error '+str(error))
     return dict(time_s=float(time),cells=total,species_sum_error=error,
-                fields={k:dict(min=min(v),max=max(v)) for k,v in fields.items()}),fields
+                fields={k:dict(min=min(v),max=max(v)) for k,v in fields.items() if v}),fields
