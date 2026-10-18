@@ -1,0 +1,260 @@
+{
+  "observed_at": "2026-10-18T16:21:23.541690+08:00",
+  "maximum_reserved_core_hours": 400.0,
+  "jobs": [
+    {
+      "job": 124779617,
+      "key": "phi-110-u010",
+      "source_revision": "dca06025c548e5afdc7008b8f3482494c3d1fb15",
+      "maximum_reserved_core_hours": 4.0,
+      "accounting": {
+        "state": "COMPLETED",
+        "elapsed": "00:10:56",
+        "limit": "01:00:00",
+        "exit_code": "0:0"
+      },
+      "endpoint-check": {
+        "time_s": 2e-06,
+        "cells": 4000,
+        "species_sum_error": 1.4166445794216997e-12,
+        "fields": {
+          "T": {
+            "min": 297.945420278,
+            "max": 2229.53354053
+          },
+          "p": {
+            "min": 10127004.7236,
+            "max": 10132706.0067
+          },
+          "rho": {
+            "min": 14.5697275012,
+            "max": 112.802088134
+          },
+          "CH4": {
+            "min": 1.64080933326e-11,
+            "max": 0.0603507267891
+          },
+          "OH": {
+            "min": 1.02406415765e-50,
+            "max": 0.000187181304906
+          }
+        },
+        "qualification": "finite normalized endpoint only; flame speed and equilibrium relaxation unqualified"
+      },
+      "upstream-endpoint-check": {
+        "time_s": 2e-06,
+        "cells": 4000,
+        "species_sum_error": 1.4166445794216997e-12,
+        "fields": {
+          "T": {
+            "min": 297.945420278,
+            "max": 2229.53354053
+          },
+          "p": {
+            "min": 10127004.7236,
+            "max": 10132706.0067
+          },
+          "rho": {
+            "min": 14.5697275012,
+            "max": 112.802088134
+          },
+          "CH4": {
+            "min": 1.64080933326e-11,
+            "max": 0.0603507267891
+          },
+          "OH": {
+            "min": 1.02406415765e-50,
+            "max": 0.000187181304906
+          }
+        },
+        "qualification": "finite normalized endpoint only; flame speed and equilibrium relaxation unqualified"
+      },
+      "baseline-comparison": {
+        "matched_field_bodies": 676,
+        "end_time_s": 2e-06,
+        "qualification": "rename-only baseline equivalence for this smoke"
+      },
+      "runtime-state": {
+        "unburned_density_kg_m3": 112.7998488854405,
+        "burned_density_kg_m3": 14.5757234981735,
+        "initial_product_speed_m_s": 0.773888506457848,
+        "mass_flux_kg_m2_s": 11.27998488854405,
+        "outlet_gamma": 1.2479524763082035
+      },
+      "result.txt": "PASS: inlet phi-110-u010 startup; renamed solver matches upstream fields; scientific acceptance pending",
+      "solver-product.sha256": "f2df3effff068d9acf08ee023dc73ec3137a619a32ceeed4b1539255b28e4f6e",
+      "solver.log": {
+        "latest_entered_time_s": 2e-06,
+        "end_seen": true
+      },
+      "upstream-solver.log": {
+        "latest_entered_time_s": 2e-06,
+        "end_seen": true
+      }
+    },
+    {
+      "job": 124779619,
+      "key": "phi-110-u020",
+      "source_revision": "dca06025c548e5afdc7008b8f3482494c3d1fb15",
+      "maximum_reserved_core_hours": 4.0,
+      "accounting": {
+        "state": "COMPLETED",
+        "elapsed": "00:11:21",
+        "limit": "01:00:00",
+        "exit_code": "0:0"
+      },
+      "endpoint-check": {
+        "time_s": 2e-06,
+        "cells": 4000,
+        "species_sum_error": 1.3703482792948307e-12,
+        "fields": {
+          "T": {
+            "min": 297.887162111,
+            "max": 2229.25848521
+          },
+          "p": {
+            "min": 10121514.7872,
+            "max": 10132499.9969
+          },
+          "rho": {
+            "min": 14.5618667296,
+            "max": 112.79984885
+          },
+          "CH4": {
+            "min": 1.64063161887e-11,
+            "max": 0.0603507267891
+          },
+          "OH": {
+            "min": 9.12898825683e-51,
+            "max": 0.00018672560549
+          }
+        },
+        "qualification": "finite normalized endpoint only; flame speed and equilibrium relaxation unqualified"
+      },
+      "upstream-endpoint-check": {
+        "time_s": 2e-06,
+        "cells": 4000,
+        "species_sum_error": 1.3703482792948307e-12,
+        "fields": {
+          "T": {
+            "min": 297.887162111,
+            "max": 2229.25848521
+          },
+          "p": {
+            "min": 10121514.7872,
+            "max": 10132499.9969
+          },
+          "rho": {
+            "min": 14.5618667296,
+            "max": 112.79984885
+          },
+          "CH4": {
+            "min": 1.64063161887e-11,
+            "max": 0.0603507267891
+          },
+          "OH": {
+            "min": 9.12898825683e-51,
+            "max": 0.00018672560549
+          }
+        },
+        "qualification": "finite normalized endpoint only; flame speed and equilibrium relaxation unqualified"
+      },
+      "baseline-comparison": {
+        "matched_field_bodies": 676,
+        "end_time_s": 2e-06,
+        "qualification": "rename-only baseline equivalence for this smoke"
+      },
+      "runtime-state": {
+        "unburned_density_kg_m3": 112.7998488854405,
+        "burned_density_kg_m3": 14.5757234981735,
+        "initial_product_speed_m_s": 1.547777012915696,
+        "mass_flux_kg_m2_s": 22.5599697770881,
+        "outlet_gamma": 1.2479524763082035
+      },
+      "result.txt": "PASS: inlet phi-110-u020 startup; renamed solver matches upstream fields; scientific acceptance pending",
+      "solver-product.sha256": "f2df3effff068d9acf08ee023dc73ec3137a619a32ceeed4b1539255b28e4f6e",
+      "solver.log": {
+        "latest_entered_time_s": 2e-06,
+        "end_seen": true
+      },
+      "upstream-solver.log": {
+        "latest_entered_time_s": 2e-06,
+        "end_seen": true
+      }
+    },
+    {
+      "job": 124779822,
+      "key": "counterflow-mesh",
+      "source_revision": "7e78004397143f0d27b910b52b16849d91b2350b",
+      "maximum_reserved_core_hours": 8.0,
+      "accounting": {
+        "state": "RUNNING",
+        "elapsed": "00:11:26",
+        "limit": "01:00:00",
+        "exit_code": "0:0"
+      },
+      "meshes": {
+        "oxy-1": {
+          "mesh_ok": true,
+          "cells": 888000
+        },
+        "oxy-200": {
+          "mesh_ok": true,
+          "cells": 816000
+        },
+        "air-100": {
+          "mesh_ok": false,
+          "cells": 1978000
+        }
+      }
+    },
+    {
+      "job": 124780751,
+      "key": "phi-110-u010-full",
+      "source_revision": "4ae4c078ff3f1b85b7adfd488d6da3c80d5ef979",
+      "maximum_reserved_core_hours": 192.0,
+      "accounting": {
+        "state": "RUNNING",
+        "elapsed": "00:02:39",
+        "limit": "2-00:00:00",
+        "exit_code": "0:0"
+      },
+      "runtime-state": {
+        "unburned_density_kg_m3": 112.7998488854405,
+        "burned_density_kg_m3": 14.5757234981735,
+        "initial_product_speed_m_s": 0.773888506457848,
+        "mass_flux_kg_m2_s": 11.27998488854405,
+        "outlet_gamma": 1.2479524763082035
+      },
+      "solver-product.sha256": "f2df3effff068d9acf08ee023dc73ec3137a619a32ceeed4b1539255b28e4f6e",
+      "solver.log": {
+        "latest_entered_time_s": 2.18800076199e-07,
+        "end_seen": false
+      }
+    },
+    {
+      "job": 124780755,
+      "key": "phi-110-u020-full",
+      "source_revision": "4ae4c078ff3f1b85b7adfd488d6da3c80d5ef979",
+      "maximum_reserved_core_hours": 192.0,
+      "accounting": {
+        "state": "RUNNING",
+        "elapsed": "00:02:23",
+        "limit": "2-00:00:00",
+        "exit_code": "0:0"
+      },
+      "runtime-state": {
+        "unburned_density_kg_m3": 112.7998488854405,
+        "burned_density_kg_m3": 14.5757234981735,
+        "initial_product_speed_m_s": 1.547777012915696,
+        "mass_flux_kg_m2_s": 22.5599697770881,
+        "outlet_gamma": 1.2479524763082035
+      },
+      "solver-product.sha256": "f2df3effff068d9acf08ee023dc73ec3137a619a32ceeed4b1539255b28e4f6e",
+      "solver.log": {
+        "latest_entered_time_s": 7.07210824873e-08,
+        "end_seen": false
+      }
+    }
+  ]
+}

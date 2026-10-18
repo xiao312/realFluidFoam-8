@@ -44,3 +44,9 @@ Example: `git switch -c draft/premixed-inlet develop/reacting`.
 Verification: `git diff --check`, module-specific checks and scheduled smoke
 evidence. Expected result is a traceable draft, not implied scientific acceptance.
 
+`python3 status.py ROOT` is a read-only monitor. It reads the development ledger,
+queries Slurm and emits JSON with pinned sources, limits, binary hashes and
+available test receipts. Dependencies: Python 3.8+ and sacct; no credentials or
+filesystem writes. Missing ledger fails with its path. Verify against recorded
+job IDs and keep each snapshot timestamp; a RUNNING state is not convergence.
+
