@@ -22,6 +22,10 @@ flowchart LR
 `development/` owns the single `develop/reacting` integration line and isolated
 draft experiments. Its named solver depends on the pinned OF8/library build;
 benchmark runners depend on that solver or the unchanged upstream executable.
+`development/premixed-inlet` owns the single-front case and rename-equivalence
+checks. Cantera 3.2.0 is an offline ideal-gas seed dependency only; the actual
+flow/chemistry run uses the pinned real-fluid library. Runtime density/Cp/Cv
+come from the existing property probe before initial mass flux is finalized.
 `validation/` owns case generation, property probes, and scientific comparisons;
 it uses contained execution from `environment/` and a completed isolated build.
 `validation/properties` owns library probes and NIST comparisons; its optional
