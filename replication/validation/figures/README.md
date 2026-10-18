@@ -1,5 +1,37 @@
 # Paper figure comparisons
 
+`extract_inlet_profiles.py ROOT JOB...` reads stable saved 1-D development
+checkpoints and emits JSON on stdout; it never writes remotely. It reconstructs
+global ordering through cellProcAddressing, validates the declared uniform mesh,
+hashes each source field, and omits the newest common time to avoid active writes.
+Run over SSH stdin and save stdout under the local project state directory.
+`plot_inlet_profiles.py PROJECT SNAPSHOT OUTPUT` produces diagnostic profiles,
+fixed-OH-isoline displacement estimates, a Figure 12 comparison and a PDF.
+These use the existing analysis dependencies. The paper has no corresponding
+premixed spatial profiles; only its Figure 12 speed at phi=1.10 is compared.
+The speed estimate is rho/rho_u times (U - dx_front/dt), on the rising OH edge.
+It is a finite-time kinematic diagnostic, not an evaluation of the paper's
+discrete chemical/diffusive source expression or a converged flame speed.
+Verification checks addressing coverage, field finiteness, stable file hashes,
+marker uniqueness, timestep sensitivity and PDF rendering. No solver is changed.
+`temperature_speed.py SNAPSHOT OUTPUT_JSON` independently tracks the maximum
+positive temperature gradient using a three-point subcell fit, actual saved
+times and measured cold-stream velocity. It adapts DeepFlame's concept rather
+than its hardcoded sampling interval. Compare its 50/100-us fits with the OH
+estimate; do not assume agreement during thermal relaxation.
+
+`collect_counterflow.py ROOT oxy-1:JOB oxy-200:JOB air-100:JOB` streams a tar.gz
+of stable decomposed checkpoints, global mesh and source hashes to stdout without
+remote writes. Preserve that archive locally. `plot_paper2022.py` also accepts
+manifest case entries `{path, time, ranks}` for these decomposed snapshots and
+an optional output directory, plus per-case `case_status` labels. Real mesh
+edges are used in contours; only displayed streamlines are interpolated onto a
+regular grid. A failed case's earlier smoke must be explicitly identified.
+After rendering, run `counterflow_report.py PROJECT SNAPSHOT_DIR OUTPUT_DIR`
+to compare the same fields with the existing temperature digitization, export
+near-axis CSVs and create the five-page original/replication PDF. Inspect all
+pages and check `data/summary.json` for sample times, radii and qualifications.
+
 This module inventories all numbered figures in the two supplied papers and
 renders comparable plots from verified results. It does not fabricate absent
 LES statistics, steady flames, or burning velocities. Original figures and
