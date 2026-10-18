@@ -4,6 +4,8 @@ This directory owns environment recipes, replication inputs, and result summarie
 for Nguyen's 2022 library and 2025 solver papers. The first scientific stages are
 properties, counterflow flames, and premixed flame speed. No result is accepted yet.
 
+Solver iteration now uses [development rules](development/README.md) and the
+single `develop/reacting` integration branch, with independent `draft/*` branches.
 The current adaptive continuations are recorded in the
 [18 October continuation record](docs/adaptive-continuation-20261018.md) and
 [job register](docs/adaptive-jobs-20261018.json). Original case coverage is in the

@@ -19,6 +19,9 @@ flowchart LR
 
 `environment/` owns recipes, the image lock, contained execution, and job submission.
 `docs/` owns the scientific plan, writing rules, and reviewed result summaries.
+`development/` owns the single `develop/reacting` integration line and isolated
+draft experiments. Its named solver depends on the pinned OF8/library build;
+benchmark runners depend on that solver or the unchanged upstream executable.
 `validation/` owns case generation, property probes, and scientific comparisons;
 it uses contained execution from `environment/` and a completed isolated build.
 `validation/properties` owns library probes and NIST comparisons; its optional
