@@ -17,6 +17,9 @@ printf 'source=%s\nbuild_job=%s\nstage=%s\n' "$(cat "$release/SOURCE_REVISION")"
 ldd "$platform/bin/realFluidReactingFoam" > "$job/solver-ldd.txt"
 grep -F "$platform/lib/libspecie.so" "$job/solver-ldd.txt"
 if grep -q 'not found' "$job/solver-ldd.txt"; then exit 1; fi
+if [[ "$stage" == dev-counterflow-mesh ]]; then
+    exec bash "$release/replication/development/counterflow/check_meshes.sh" "$release" "$job"
+fi
 if [[ "$stage" == profile ]]; then
     exec bash "$release/replication/validation/profiling/run.sh" "$release" "$job" "$build"
 fi

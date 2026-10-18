@@ -47,3 +47,8 @@ centerline/radial sampling. Acceptance requires multiple resolutions, stable
 profiles and comparison with the paper curves. The 100-atm chemistry failure
 must be resolved in a separate numerical-control/solver draft before a large run.
 
+`check_meshes.sh RELEASE JOB` runs inside the pinned container in a scheduled
+allocation through validation stage `dev-counterflow-mesh`. It generates all
+three paper variants, checks identical phase mesh dictionaries and requires
+blockMesh/checkMesh success. It runs no chemistry and does not qualify flow.
+
