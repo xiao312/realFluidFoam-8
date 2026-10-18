@@ -19,7 +19,7 @@ def plan(condition,variant):
     if variant=='tutorial':nr,nz,ratio=80,[40,60,40],1
     elif condition=='oxy-1':nr,nz,ratio=1000,[244,400,244],1.5
     elif condition=='oxy-200':nr,nz,ratio=1000,[208,400,208],2
-    else:nr,nz,ratio=1000,[189,1600,189],20
+    else:nr,nz,ratio=4000,[189,1600,189],20
     outer=.3*length;n=nz[0]
     q=ratio**(1/(n-1));first=outer/n if ratio==1 else outer*(q-1)/(q**n-1)
     return dict(condition=condition,variant=variant,pressure_Pa=pressure,length_m=length,

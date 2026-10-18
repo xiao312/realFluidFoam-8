@@ -68,3 +68,9 @@ ledger before submission. The existing validation runner handles decomposition,
 contained single-node MPI, reconstruction and final field checks. It does not
 infer convergence from a successful run. Figure rendering consumes reconstructed
 case fields through an explicit case manifest, separately from job submission.
+
+`development/counterflow` owns paper-setting reconstruction and bounded refinement
+qualification. It depends on author/paper case preparation, the runtime density
+probe, OF8 mapFields and adaptive field checks. Private donor copies are read
+from pinned coarse checkpoints; original jobs remain unchanged. Its output is
+a fine-grid qualification, followed separately by developed-flow assessment.
