@@ -82,3 +82,26 @@ species lists; all generated species fields; preserved target boundary types;
 mesh and normalized-field checks; isolated solver hash/ldd; timed Slurm run.
 All generated state stays below JOB_DIR inside the project root. The runner
 uses the existing environment, property probe and adaptive field inspector.
+
+## Parallel inlet qualification
+
+The fine-grid property initialization now runs on the same 32-rank decomposition
+as the reacting solver. Each rank writes its own `processorN/inlet-densities.csv`.
+`parallel_inlets.py plan|apply CASE RANKS --reference SERIAL_CSV` requires every
+rank output, both inlet patches, finite positive properties and agreement across
+inlet-owning ranks. It also compares rho/Cp/Cv to a small serial reference at
+relative tolerance 1e-12. Plan validates without writing; apply emits the combined
+CSV consumed by inlet finalization. It does not change thermophysical formulas.
+
+The runner first creates a 112-cell fixture with identical inlet states and
+species data, using `fixture-plan|fixture-apply FIXTURE 4 --fixture-source CASE`.
+It compares serial and four-rank outputs before starting the 32-rank probe.
+After inlet velocities are finalized and primitive fields mapped, OF8
+`decomposePar -fields` refreshes processor fields using the existing mesh split.
+This avoids leaving zero placeholder inlet velocities on processor boundaries.
+
+Verification: serial/four-rank/32-rank density, Cp and Cv comparisons; generated
+processor inlet velocities; normalized mapped fields; MPI solver startup.
+Expected result: reference comparisons pass before integration begins. This
+change addresses the serial thermodynamic initialization; mesh construction and
+OF8 mapFields remain separate preprocessing utilities.

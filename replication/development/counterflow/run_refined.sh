@@ -18,11 +18,22 @@ wmake "$job/property-probe" > "$job/property-probe-build.log" 2>&1
 blockMesh -case "$case" > "$job/blockMesh.log" 2>&1
 checkMesh -case "$case" > "$job/checkMesh.log" 2>&1
 grep -q 'Mesh OK' "$job/checkMesh.log"
-rfPropertyProbe -case "$case" -initial > "$job/inlet-probe.log" 2>&1
+fixture="$job/inlet-probe-check"
+python3 -B "$module/parallel_inlets.py" fixture-plan "$fixture" 4 --fixture-source "$case" > "$job/probe-check-plan.json"
+python3 -B "$module/parallel_inlets.py" fixture-apply "$fixture" 4 --fixture-source "$case" > "$job/probe-check-prepare.json"
+blockMesh -case "$fixture" > "$job/probe-check-mesh.log" 2>&1
+rfPropertyProbe -case "$fixture" -initial > "$job/probe-check-serial.log" 2>&1
+decomposePar -case "$fixture" > "$job/probe-check-decompose.log" 2>&1
+mpirun --mca btl self,vader,tcp -np 4 rfPropertyProbe -case "$fixture" -initial -parallel > "$job/probe-check-parallel.log" 2>&1
+python3 -B "$module/parallel_inlets.py" plan "$fixture" 4 --reference "$fixture/inlet-densities.csv" > "$job/probe-serial-parallel-check.json"
+decomposePar -case "$case" > "$job/decompose-mesh.log" 2>&1
+/usr/bin/time -v mpirun --mca btl self,vader,tcp -np 32 rfPropertyProbe -case "$case" -initial -parallel > "$job/inlet-probe.log" 2> "$job/inlet-probe-resources.txt"
+python3 -B "$module/parallel_inlets.py" plan "$case" 32 --reference "$fixture/inlet-densities.csv" > "$job/parallel-inlets-plan.json"
+python3 -B "$module/parallel_inlets.py" apply "$case" 32 --reference "$fixture/inlet-densities.csv" > "$job/parallel-inlets-check.json"
 python3 -B "$release/replication/validation/flames/finalize_inlets.py" "$case" > "$job/inlet-settings.json"
 mapFields "$job/donor" -case "$case" -parallelSource -sourceTime "$(python3 -c 'import json,sys;print(json.load(open(sys.argv[1]))["donor_time_s"])' "$job/refinement.json")" -mapMethod interpolate > "$job/mapFields.log" 2>&1
 (cd "$case"; find 0 constant system -type f -print0 | sort -z | xargs -0 sha256sum) > "$job/initialized-inputs.sha256"
-decomposePar -case "$case" > "$job/decompose.log" 2>&1
+decomposePar -fields -case "$case" > "$job/decompose.log" 2>&1
 python3 -B "$module/check_refined.py" "$case" initial > "$job/mapped-field-check.json"
 /usr/bin/time -v mpirun --mca btl self,vader,tcp -np 32 "$named" -case "$case" -parallel > "$job/solver.log" 2> "$job/solver-resources.txt"
 grep -q '^End' "$job/solver.log"

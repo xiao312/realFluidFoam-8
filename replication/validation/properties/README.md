@@ -39,3 +39,9 @@ at 3.98 MPa, 100–325 K in 0.25 K steps. The generator accepts optional positio
 `N2 UPSTREAM_THERMO_FILE` arguments after EOS and extracts the nitrogen block
 from the pinned release's `tutorials/N2.jet.LES/c3.PR/constant/thermo.inputData`.
 The same inversion criterion remains independent of exact-state properties.
+
+For an existing flame case, `rfPropertyProbe -initial -parallel` supports MPI
+when invoked with mpirun after decomposition. Its CSV path is rank-local through
+`runTime.path()`. Do not let ranks write a shared CSV. The counterflow refinement
+runner collects only physical inlet patches and checks serial/MPI agreement.
+The property sweep mode remains qualified by the existing serial workflow.
