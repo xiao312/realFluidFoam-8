@@ -1,5 +1,20 @@
 # Paper figure comparisons
 
+`extract_inlet_profiles.py ROOT JOB...` reads stable saved 1-D development
+checkpoints and emits JSON on stdout; it never writes remotely. It reconstructs
+global ordering through cellProcAddressing, validates the declared uniform mesh,
+hashes each source field, and omits the newest common time to avoid active writes.
+Run over SSH stdin and save stdout under the local project state directory.
+`plot_inlet_profiles.py PROJECT SNAPSHOT OUTPUT` produces diagnostic profiles,
+fixed-OH-isoline displacement estimates, a Figure 12 comparison and a PDF.
+These use the existing analysis dependencies. The paper has no corresponding
+premixed spatial profiles; only its Figure 12 speed at phi=1.10 is compared.
+The speed estimate is rho/rho_u times (U - dx_front/dt), on the rising OH edge.
+It is a finite-time kinematic diagnostic, not an evaluation of the paper's
+discrete chemical/diffusive source expression or a converged flame speed.
+Verification checks addressing coverage, field finiteness, stable file hashes,
+marker uniqueness, timestep sensitivity and PDF rendering. No solver is changed.
+
 This module inventories all numbered figures in the two supplied papers and
 renders comparable plots from verified results. It does not fabricate absent
 LES statistics, steady flames, or burning velocities. Original figures and
