@@ -22,6 +22,9 @@ flowchart LR
 `development/` owns the single `develop/reacting` integration line and isolated
 draft experiments. Its named solver depends on the pinned OF8/library build;
 benchmark runners depend on that solver or the unchanged upstream executable.
+`development/counterflow` prepares separate tutorial and paper-informed mesh
+variants through the existing author/paper generators. It depends on their input
+manifests and runtime density finalization; it does not modify solver numerics.
 `validation/` owns case generation, property probes, and scientific comparisons;
 it uses contained execution from `environment/` and a completed isolated build.
 `validation/properties` owns library probes and NIST comparisons; its optional
