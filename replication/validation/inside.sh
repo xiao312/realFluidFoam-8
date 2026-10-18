@@ -20,6 +20,10 @@ if grep -q 'not found' "$job/solver-ldd.txt"; then exit 1; fi
 if [[ "$stage" == profile ]]; then
     exec bash "$release/replication/validation/profiling/run.sh" "$release" "$job" "$build"
 fi
+if [[ "$stage" == adaptive-* ]]; then
+    selector=${stage#adaptive-}; mode=${selector##*-}; key=${selector%-*}
+    exec bash "$release/replication/validation/flames/adaptive/run.sh" "$release" "$job" "$key" "$mode"
+fi
 cp -a "$release/replication/validation/properties" "$job/property-probe"
 wmake "$job/property-probe" > "$job/property-probe-build.log" 2>&1
 ldd "$FOAM_USER_APPBIN/rfPropertyProbe" > "$job/property-probe-ldd.txt"

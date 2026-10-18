@@ -1,0 +1,189 @@
+{
+  "oxy-1": {
+    "origin": 124672685,
+    "subdir": "author-cases/gri30",
+    "ranks": 8,
+    "cells": 11200,
+    "initial_dt": 1e-06,
+    "max_co": 0.2,
+    "max_dt": 2e-05,
+    "end_time": 0.07,
+    "write_interval": 0.0005
+  },
+  "oxy-200": {
+    "origin": 124674723,
+    "subdir": "paper-cases/gri30",
+    "ranks": 8,
+    "cells": 11200,
+    "initial_dt": 1e-06,
+    "max_co": 0.2,
+    "max_dt": 2e-05,
+    "end_time": 0.07,
+    "write_interval": 0.0005
+  },
+  "air-100": {
+    "origin": 124674728,
+    "subdir": "paper-cases/gri30",
+    "ranks": 8,
+    "cells": 11200,
+    "initial_dt": 1e-06,
+    "max_co": 0.2,
+    "max_dt": 2e-05,
+    "end_time": 0.07,
+    "write_interval": 0.0005
+  },
+  "phi-90": {
+    "origin": 124674593,
+    "subdir": "paper-cases/premixed",
+    "ranks": 4,
+    "cells": 4000,
+    "initial_dt": 1e-08,
+    "max_co": 0.2,
+    "max_dt": 2e-07,
+    "end_time": 0.001,
+    "write_interval": 1e-05
+  },
+  "phi-95": {
+    "origin": 124674594,
+    "subdir": "paper-cases/premixed",
+    "ranks": 4,
+    "cells": 4000,
+    "initial_dt": 1e-08,
+    "max_co": 0.2,
+    "max_dt": 2e-07,
+    "end_time": 0.001,
+    "write_interval": 1e-05
+  },
+  "phi-100": {
+    "origin": 124674595,
+    "subdir": "paper-cases/premixed",
+    "ranks": 4,
+    "cells": 4000,
+    "initial_dt": 1e-08,
+    "max_co": 0.2,
+    "max_dt": 2e-07,
+    "end_time": 0.001,
+    "write_interval": 1e-05
+  },
+  "phi-105": {
+    "origin": 124674598,
+    "subdir": "paper-cases/premixed",
+    "ranks": 4,
+    "cells": 4000,
+    "initial_dt": 1e-08,
+    "max_co": 0.2,
+    "max_dt": 2e-07,
+    "end_time": 0.001,
+    "write_interval": 1e-05
+  },
+  "phi-110": {
+    "origin": 124674599,
+    "subdir": "paper-cases/premixed",
+    "ranks": 4,
+    "cells": 4000,
+    "initial_dt": 1e-08,
+    "max_co": 0.2,
+    "max_dt": 2e-07,
+    "end_time": 0.001,
+    "write_interval": 1e-05
+  },
+  "phi-115": {
+    "origin": 124674601,
+    "subdir": "paper-cases/premixed",
+    "ranks": 4,
+    "cells": 4000,
+    "initial_dt": 1e-08,
+    "max_co": 0.2,
+    "max_dt": 2e-07,
+    "end_time": 0.001,
+    "write_interval": 1e-05
+  },
+  "phi-120": {
+    "origin": 124674603,
+    "subdir": "paper-cases/premixed",
+    "ranks": 4,
+    "cells": 4000,
+    "initial_dt": 1e-08,
+    "max_co": 0.2,
+    "max_dt": 2e-07,
+    "end_time": 0.001,
+    "write_interval": 1e-05
+  },
+  "phi-125": {
+    "origin": 124674604,
+    "subdir": "paper-cases/premixed",
+    "ranks": 4,
+    "cells": 4000,
+    "initial_dt": 1e-08,
+    "max_co": 0.2,
+    "max_dt": 2e-07,
+    "end_time": 0.001,
+    "write_interval": 1e-05
+  },
+  "phi-130": {
+    "origin": 124674606,
+    "subdir": "paper-cases/premixed",
+    "ranks": 4,
+    "cells": 4000,
+    "initial_dt": 1e-08,
+    "max_co": 0.2,
+    "max_dt": 2e-07,
+    "end_time": 0.001,
+    "write_interval": 1e-05
+  },
+  "phi-135": {
+    "origin": 124674607,
+    "subdir": "paper-cases/premixed",
+    "ranks": 4,
+    "cells": 4000,
+    "initial_dt": 1e-08,
+    "max_co": 0.2,
+    "max_dt": 2e-07,
+    "end_time": 0.001,
+    "write_interval": 1e-05
+  },
+  "phi-140": {
+    "origin": 124674610,
+    "subdir": "paper-cases/premixed",
+    "ranks": 4,
+    "cells": 4000,
+    "initial_dt": 1e-08,
+    "max_co": 0.2,
+    "max_dt": 2e-07,
+    "end_time": 0.001,
+    "write_interval": 1e-05
+  },
+  "phi-110-dt": {
+    "origin": 124674612,
+    "subdir": "paper-cases/premixed",
+    "ranks": 4,
+    "cells": 4000,
+    "initial_dt": 5e-09,
+    "max_co": 0.1,
+    "max_dt": 1e-07,
+    "end_time": 0.001,
+    "write_interval": 1e-05
+  },
+  "phi-110-mesh": {
+    "origin": 124674627,
+    "subdir": "paper-cases/premixed",
+    "ranks": 4,
+    "cells": 8000,
+    "initial_dt": 5e-09,
+    "max_co": 0.2,
+    "max_dt": 1e-07,
+    "end_time": 0.001,
+    "write_interval": 1e-05
+  },
+  "phi-110-domain": {
+    "origin": 124674633,
+    "subdir": "paper-cases/premixed",
+    "ranks": 4,
+    "cells": 8000,
+    "initial_dt": 1e-08,
+    "max_co": 0.2,
+    "max_dt": 2e-07,
+    "end_time": 0.001,
+    "write_interval": 1e-05
+  }
+}

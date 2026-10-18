@@ -40,6 +40,11 @@ the environment runner and shared counterflow budget ledger. Its inputs supersed
 the reconstructed campaign for the owner-selected baseline as of 2026-10-17.
 The solver remains upstream code unless a separate source change is recorded.
 
+`validation/flames/adaptive` copies stopped decomposed flame checkpoints and changes
+time/output controls for bounded adaptive continuations. It depends on the qualified
+build and environment runner, and provides hashes, smoke checks and field-change
+diagnostics to later figure/convergence assessment. It does not modify solver physics.
+
 `validation/flames/paper-campaign` extends that author-input port to the remaining
 counterflow conditions and uses the existing premixed generator for the 11-point
 Figure 12 sweep and selected sensitivity cases. It depends on the author transfer,
