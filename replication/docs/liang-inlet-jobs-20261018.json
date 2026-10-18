@@ -1,0 +1,1247 @@
+{
+  "observed_at": "2026-10-18T21:31:37.802715+08:00",
+  "source_revision": "b54a8bf3297036e37e6c95732d25b7f8ab94b620",
+  "archive_sha256": "d83b1e2dc6bb0efe4cbdc7e20e7c91e43c4e24062f800ec0217ba28e2fbd5507",
+  "cancelled_jobs": [
+    124780751,
+    124780755
+  ],
+  "max_reserved_core_hours": 2156.0,
+  "jobs": [
+    {
+      "job": 124797173,
+      "key": "phi-090-liang-smoke",
+      "source_revision": "b54a8bf3297036e37e6c95732d25b7f8ab94b620",
+      "maximum_reserved_core_hours": 4.0,
+      "accounting": {
+        "state": "COMPLETED",
+        "elapsed": "00:08:04",
+        "limit": "01:00:00",
+        "exit_code": "0:0"
+      },
+      "endpoint-check": {
+        "time_s": 2e-06,
+        "cells": 4000,
+        "species_sum_error": 1.382893799473095e-12,
+        "fields": {
+          "T": {
+            "min": 297.986238438,
+            "max": 2160.09274342
+          },
+          "p": {
+            "min": 10131028.7162,
+            "max": 10134497.2969
+          },
+          "rho": {
+            "min": 15.4347866403,
+            "max": 113.521460363
+          },
+          "CH4": {
+            "min": 2.26034977937e-19,
+            "max": 0.0499256950055
+          },
+          "OH": {
+            "min": 1.02702130063e-50,
+            "max": 0.000605027263831
+          }
+        },
+        "qualification": "finite normalized endpoint only; flame speed and equilibrium relaxation unqualified"
+      },
+      "upstream-endpoint-check": {
+        "time_s": 2e-06,
+        "cells": 4000,
+        "species_sum_error": 1.382893799473095e-12,
+        "fields": {
+          "T": {
+            "min": 297.986238438,
+            "max": 2160.09274342
+          },
+          "p": {
+            "min": 10131028.7162,
+            "max": 10134497.2969
+          },
+          "rho": {
+            "min": 15.4347866403,
+            "max": 113.521460363
+          },
+          "CH4": {
+            "min": 2.26034977937e-19,
+            "max": 0.0499256950055
+          },
+          "OH": {
+            "min": 1.02702130063e-50,
+            "max": 0.000605027263831
+          }
+        },
+        "qualification": "finite normalized endpoint only; flame speed and equilibrium relaxation unqualified"
+      },
+      "baseline-comparison": {
+        "matched_field_bodies": 676,
+        "end_time_s": 2e-06,
+        "qualification": "rename-only baseline equivalence for this smoke"
+      },
+      "runtime-state": {
+        "unburned_density_kg_m3": 113.499644170785,
+        "burned_density_kg_m3": 15.43856531469753,
+        "initial_product_speed_m_s": 0.39258058473541924,
+        "mass_flux_kg_m2_s": 6.060880998719918,
+        "outlet_gamma": 1.2494439876549084
+      },
+      "result.txt": "PASS: inlet phi-090-liang startup; renamed solver matches upstream fields; scientific acceptance pending",
+      "solver-product.sha256": "f2df3effff068d9acf08ee023dc73ec3137a619a32ceeed4b1539255b28e4f6e",
+      "solver.log": {
+        "latest_entered_time_s": 2e-06,
+        "end_seen": true
+      },
+      "upstream-solver.log": {
+        "latest_entered_time_s": 2e-06,
+        "end_seen": true
+      }
+    },
+    {
+      "job": 124797177,
+      "key": "phi-095-liang-smoke",
+      "source_revision": "b54a8bf3297036e37e6c95732d25b7f8ab94b620",
+      "maximum_reserved_core_hours": 4.0,
+      "accounting": {
+        "state": "COMPLETED",
+        "elapsed": "00:08:28",
+        "limit": "01:00:00",
+        "exit_code": "0:0"
+      },
+      "endpoint-check": {
+        "time_s": 2e-06,
+        "cells": 4000,
+        "species_sum_error": 1.3946621635341216e-12,
+        "fields": {
+          "T": {
+            "min": 297.986464921,
+            "max": 2233.55912321
+          },
+          "p": {
+            "min": 10130656.4438,
+            "max": 10134431.5993
+          },
+          "rho": {
+            "min": 14.8984789647,
+            "max": 113.343248229
+          },
+          "CH4": {
+            "min": 5.24332441042e-18,
+            "max": 0.0525535795068
+          },
+          "OH": {
+            "min": 1.03555304552e-50,
+            "max": 0.000683567079808
+          }
+        },
+        "qualification": "finite normalized endpoint only; flame speed and equilibrium relaxation unqualified"
+      },
+      "upstream-endpoint-check": {
+        "time_s": 2e-06,
+        "cells": 4000,
+        "species_sum_error": 1.3946621635341216e-12,
+        "fields": {
+          "T": {
+            "min": 297.986464921,
+            "max": 2233.55912321
+          },
+          "p": {
+            "min": 10130656.4438,
+            "max": 10134431.5993
+          },
+          "rho": {
+            "min": 14.8984789647,
+            "max": 113.343248229
+          },
+          "CH4": {
+            "min": 5.24332441042e-18,
+            "max": 0.0525535795068
+          },
+          "OH": {
+            "min": 1.03555304552e-50,
+            "max": 0.000683567079808
+          }
+        },
+        "qualification": "finite normalized endpoint only; flame speed and equilibrium relaxation unqualified"
+      },
+      "baseline-comparison": {
+        "matched_field_bodies": 676,
+        "end_time_s": 2e-06,
+        "qualification": "rename-only baseline equivalence for this smoke"
+      },
+      "runtime-state": {
+        "unburned_density_kg_m3": 113.322175779069,
+        "burned_density_kg_m3": 14.90369605835765,
+        "initial_product_speed_m_s": 0.451655563487013,
+        "mass_flux_kg_m2_s": 6.731337241276699,
+        "outlet_gamma": 1.2465120450151623
+      },
+      "result.txt": "PASS: inlet phi-095-liang startup; renamed solver matches upstream fields; scientific acceptance pending",
+      "solver-product.sha256": "f2df3effff068d9acf08ee023dc73ec3137a619a32ceeed4b1539255b28e4f6e",
+      "solver.log": {
+        "latest_entered_time_s": 2e-06,
+        "end_seen": true
+      },
+      "upstream-solver.log": {
+        "latest_entered_time_s": 2e-06,
+        "end_seen": true
+      }
+    },
+    {
+      "job": 124797179,
+      "key": "phi-100-liang-smoke",
+      "source_revision": "b54a8bf3297036e37e6c95732d25b7f8ab94b620",
+      "maximum_reserved_core_hours": 4.0,
+      "accounting": {
+        "state": "COMPLETED",
+        "elapsed": "00:09:29",
+        "limit": "01:00:00",
+        "exit_code": "0:0"
+      },
+      "endpoint-check": {
+        "time_s": 2e-06,
+        "cells": 4000,
+        "species_sum_error": 1.4619416788264061e-12,
+        "fields": {
+          "T": {
+            "min": 297.981391188,
+            "max": 2293.25229081
+          },
+          "p": {
+            "min": 10130185.6856,
+            "max": 10134155.9473
+          },
+          "rho": {
+            "min": 14.4670069197,
+            "max": 113.16444649
+          },
+          "CH4": {
+            "min": 9.44280705751e-16,
+            "max": 0.0551669667664
+          },
+          "OH": {
+            "min": 1.04310378156e-50,
+            "max": 0.000527738561108
+          }
+        },
+        "qualification": "finite normalized endpoint only; flame speed and equilibrium relaxation unqualified"
+      },
+      "upstream-endpoint-check": {
+        "time_s": 2e-06,
+        "cells": 4000,
+        "species_sum_error": 1.4619416788264061e-12,
+        "fields": {
+          "T": {
+            "min": 297.981391188,
+            "max": 2293.25229081
+          },
+          "p": {
+            "min": 10130185.6856,
+            "max": 10134155.9473
+          },
+          "rho": {
+            "min": 14.4670069197,
+            "max": 113.16444649
+          },
+          "CH4": {
+            "min": 9.44280705751e-16,
+            "max": 0.0551669667664
+          },
+          "OH": {
+            "min": 1.04310378156e-50,
+            "max": 0.000527738561108
+          }
+        },
+        "qualification": "finite normalized endpoint only; flame speed and equilibrium relaxation unqualified"
+      },
+      "baseline-comparison": {
+        "matched_field_bodies": 676,
+        "end_time_s": 2e-06,
+        "qualification": "rename-only baseline equivalence for this smoke"
+      },
+      "runtime-state": {
+        "unburned_density_kg_m3": 113.1464034452728,
+        "burned_density_kg_m3": 14.47177747990464,
+        "initial_product_speed_m_s": 0.5058516352310156,
+        "mass_flux_kg_m2_s": 7.320572302909149,
+        "outlet_gamma": 1.2443310757060708
+      },
+      "result.txt": "PASS: inlet phi-100-liang startup; renamed solver matches upstream fields; scientific acceptance pending",
+      "solver-product.sha256": "f2df3effff068d9acf08ee023dc73ec3137a619a32ceeed4b1539255b28e4f6e",
+      "solver.log": {
+        "latest_entered_time_s": 2e-06,
+        "end_seen": true
+      },
+      "upstream-solver.log": {
+        "latest_entered_time_s": 2e-06,
+        "end_seen": true
+      }
+    },
+    {
+      "job": 124797181,
+      "key": "phi-105-liang-smoke",
+      "source_revision": "b54a8bf3297036e37e6c95732d25b7f8ab94b620",
+      "maximum_reserved_core_hours": 4.0,
+      "accounting": {
+        "state": "COMPLETED",
+        "elapsed": "00:08:14",
+        "limit": "01:00:00",
+        "exit_code": "0:0"
+      },
+      "endpoint-check": {
+        "time_s": 2e-06,
+        "cells": 4000,
+        "species_sum_error": 1.4023227024040352e-12,
+        "fields": {
+          "T": {
+            "min": 297.973023883,
+            "max": 2272.96361419
+          },
+          "p": {
+            "min": 10130064.718,
+            "max": 10133602.8462
+          },
+          "rho": {
+            "min": 14.4569891537,
+            "max": 112.984304424
+          },
+          "CH4": {
+            "min": 7.10358324577e-13,
+            "max": 0.0577659764196
+          },
+          "OH": {
+            "min": 1.05079719351e-50,
+            "max": 0.000248223327167
+          }
+        },
+        "qualification": "finite normalized endpoint only; flame speed and equilibrium relaxation unqualified"
+      },
+      "upstream-endpoint-check": {
+        "time_s": 2e-06,
+        "cells": 4000,
+        "species_sum_error": 1.4023227024040352e-12,
+        "fields": {
+          "T": {
+            "min": 297.973023883,
+            "max": 2272.96361419
+          },
+          "p": {
+            "min": 10130064.718,
+            "max": 10133602.8462
+          },
+          "rho": {
+            "min": 14.4569891537,
+            "max": 112.984304424
+          },
+          "CH4": {
+            "min": 7.10358324577e-13,
+            "max": 0.0577659764196
+          },
+          "OH": {
+            "min": 1.05079719351e-50,
+            "max": 0.000248223327167
+          }
+        },
+        "qualification": "finite normalized endpoint only; flame speed and equilibrium relaxation unqualified"
+      },
+      "baseline-comparison": {
+        "matched_field_bodies": 676,
+        "end_time_s": 2e-06,
+        "qualification": "rename-only baseline equivalence for this smoke"
+      },
+      "runtime-state": {
+        "unburned_density_kg_m3": 112.9723025323785,
+        "burned_density_kg_m3": 14.46103435738569,
+        "initial_product_speed_m_s": 0.5382596743852877,
+        "mass_flux_kg_m2_s": 7.783791644480879,
+        "outlet_gamma": 1.2456532710137074
+      },
+      "result.txt": "PASS: inlet phi-105-liang startup; renamed solver matches upstream fields; scientific acceptance pending",
+      "solver-product.sha256": "f2df3effff068d9acf08ee023dc73ec3137a619a32ceeed4b1539255b28e4f6e",
+      "solver.log": {
+        "latest_entered_time_s": 2e-06,
+        "end_seen": true
+      },
+      "upstream-solver.log": {
+        "latest_entered_time_s": 2e-06,
+        "end_seen": true
+      }
+    },
+    {
+      "job": 124797183,
+      "key": "phi-110-liang-smoke",
+      "source_revision": "b54a8bf3297036e37e6c95732d25b7f8ab94b620",
+      "maximum_reserved_core_hours": 4.0,
+      "accounting": {
+        "state": "COMPLETED",
+        "elapsed": "00:08:23",
+        "limit": "01:00:00",
+        "exit_code": "0:0"
+      },
+      "endpoint-check": {
+        "time_s": 2e-06,
+        "cells": 4000,
+        "species_sum_error": 1.3844481117075702e-12,
+        "fields": {
+          "T": {
+            "min": 297.96391199,
+            "max": 2229.62151924
+          },
+          "p": {
+            "min": 10130146.5104,
+            "max": 10133320.3586
+          },
+          "rho": {
+            "min": 14.5719190343,
+            "max": 112.808765771
+          },
+          "CH4": {
+            "min": 1.6408693662e-11,
+            "max": 0.0603507267891
+          },
+          "OH": {
+            "min": 1.0600390006e-50,
+            "max": 0.000187110449123
+          }
+        },
+        "qualification": "finite normalized endpoint only; flame speed and equilibrium relaxation unqualified"
+      },
+      "upstream-endpoint-check": {
+        "time_s": 2e-06,
+        "cells": 4000,
+        "species_sum_error": 1.3844481117075702e-12,
+        "fields": {
+          "T": {
+            "min": 297.96391199,
+            "max": 2229.62151924
+          },
+          "p": {
+            "min": 10130146.5104,
+            "max": 10133320.3586
+          },
+          "rho": {
+            "min": 14.5719190343,
+            "max": 112.808765771
+          },
+          "CH4": {
+            "min": 1.6408693662e-11,
+            "max": 0.0603507267891
+          },
+          "OH": {
+            "min": 1.0600390006e-50,
+            "max": 0.000187110449123
+          }
+        },
+        "qualification": "finite normalized endpoint only; flame speed and equilibrium relaxation unqualified"
+      },
+      "baseline-comparison": {
+        "matched_field_bodies": 676,
+        "end_time_s": 2e-06,
+        "qualification": "rename-only baseline equivalence for this smoke"
+      },
+      "runtime-state": {
+        "unburned_density_kg_m3": 112.7998488854405,
+        "burned_density_kg_m3": 14.5757234981735,
+        "initial_product_speed_m_s": 0.5424958430269514,
+        "mass_flux_kg_m2_s": 7.9072694068693785,
+        "outlet_gamma": 1.2479524763082035
+      },
+      "result.txt": "PASS: inlet phi-110-liang startup; renamed solver matches upstream fields; scientific acceptance pending",
+      "solver-product.sha256": "f2df3effff068d9acf08ee023dc73ec3137a619a32ceeed4b1539255b28e4f6e",
+      "solver.log": {
+        "latest_entered_time_s": 2e-06,
+        "end_seen": true
+      },
+      "upstream-solver.log": {
+        "latest_entered_time_s": 2e-06,
+        "end_seen": true
+      }
+    },
+    {
+      "job": 124797187,
+      "key": "phi-115-liang-smoke",
+      "source_revision": "b54a8bf3297036e37e6c95732d25b7f8ab94b620",
+      "maximum_reserved_core_hours": 4.0,
+      "accounting": {
+        "state": "COMPLETED",
+        "elapsed": "00:08:12",
+        "limit": "01:00:00",
+        "exit_code": "0:0"
+      },
+      "endpoint-check": {
+        "time_s": 2e-06,
+        "cells": 4000,
+        "species_sum_error": 1.340261235327489e-12,
+        "fields": {
+          "T": {
+            "min": 297.965248368,
+            "max": 2185.85960779
+          },
+          "p": {
+            "min": 10130366.3987,
+            "max": 10133142.631
+          },
+          "rho": {
+            "min": 14.6973299639,
+            "max": 112.6359956
+          },
+          "CH4": {
+            "min": 1.24184491435e-10,
+            "max": 0.0629213349026
+          },
+          "OH": {
+            "min": 1.07181329128e-50,
+            "max": 0.000144622371009
+          }
+        },
+        "qualification": "finite normalized endpoint only; flame speed and equilibrium relaxation unqualified"
+      },
+      "upstream-endpoint-check": {
+        "time_s": 2e-06,
+        "cells": 4000,
+        "species_sum_error": 1.340261235327489e-12,
+        "fields": {
+          "T": {
+            "min": 297.965248368,
+            "max": 2185.85960779
+          },
+          "p": {
+            "min": 10130366.3987,
+            "max": 10133142.631
+          },
+          "rho": {
+            "min": 14.6973299639,
+            "max": 112.6359956
+          },
+          "CH4": {
+            "min": 1.24184491435e-10,
+            "max": 0.0629213349026
+          },
+          "OH": {
+            "min": 1.07181329128e-50,
+            "max": 0.000144622371009
+          }
+        },
+        "qualification": "finite normalized endpoint only; flame speed and equilibrium relaxation unqualified"
+      },
+      "baseline-comparison": {
+        "matched_field_bodies": 676,
+        "end_time_s": 2e-06,
+        "qualification": "rename-only baseline equivalence for this smoke"
+      },
+      "runtime-state": {
+        "unburned_density_kg_m3": 112.6290188197026,
+        "burned_density_kg_m3": 14.70075448503106,
+        "initial_product_speed_m_s": 0.5263412568921098,
+        "mass_flux_kg_m2_s": 7.737613592913568,
+        "outlet_gamma": 1.2502944101632802
+      },
+      "result.txt": "PASS: inlet phi-115-liang startup; renamed solver matches upstream fields; scientific acceptance pending",
+      "solver-product.sha256": "f2df3effff068d9acf08ee023dc73ec3137a619a32ceeed4b1539255b28e4f6e",
+      "solver.log": {
+        "latest_entered_time_s": 2e-06,
+        "end_seen": true
+      },
+      "upstream-solver.log": {
+        "latest_entered_time_s": 2e-06,
+        "end_seen": true
+      }
+    },
+    {
+      "job": 124797190,
+      "key": "phi-120-liang-smoke",
+      "source_revision": "b54a8bf3297036e37e6c95732d25b7f8ab94b620",
+      "maximum_reserved_core_hours": 4.0,
+      "accounting": {
+        "state": "COMPLETED",
+        "elapsed": "00:07:58",
+        "limit": "01:00:00",
+        "exit_code": "0:0"
+      },
+      "endpoint-check": {
+        "time_s": 2e-06,
+        "cells": 4000,
+        "species_sum_error": 1.4164225348167747e-12,
+        "fields": {
+          "T": {
+            "min": 297.979409179,
+            "max": 2142.88783604
+          },
+          "p": {
+            "min": 10130524.2192,
+            "max": 10133010.032
+          },
+          "rho": {
+            "min": 14.8264416729,
+            "max": 112.465319738
+          },
+          "CH4": {
+            "min": 5.77648277879e-10,
+            "max": 0.0654779165109
+          },
+          "OH": {
+            "min": 1.08328573974e-50,
+            "max": 0.000112442979489
+          }
+        },
+        "qualification": "finite normalized endpoint only; flame speed and equilibrium relaxation unqualified"
+      },
+      "upstream-endpoint-check": {
+        "time_s": 2e-06,
+        "cells": 4000,
+        "species_sum_error": 1.4164225348167747e-12,
+        "fields": {
+          "T": {
+            "min": 297.979409179,
+            "max": 2142.88783604
+          },
+          "p": {
+            "min": 10130524.2192,
+            "max": 10133010.032
+          },
+          "rho": {
+            "min": 14.8264416729,
+            "max": 112.465319738
+          },
+          "CH4": {
+            "min": 5.77648277879e-10,
+            "max": 0.0654779165109
+          },
+          "OH": {
+            "min": 1.08328573974e-50,
+            "max": 0.000112442979489
+          }
+        },
+        "qualification": "finite normalized endpoint only; flame speed and equilibrium relaxation unqualified"
+      },
+      "baseline-comparison": {
+        "matched_field_bodies": 676,
+        "end_time_s": 2e-06,
+        "qualification": "rename-only baseline equivalence for this smoke"
+      },
+      "runtime-state": {
+        "unburned_density_kg_m3": 112.4597891090694,
+        "burned_density_kg_m3": 14.82954426819763,
+        "initial_product_speed_m_s": 0.5050608312169211,
+        "mass_flux_kg_m2_s": 7.4898219546640235,
+        "outlet_gamma": 1.2526289823120875
+      },
+      "result.txt": "PASS: inlet phi-120-liang startup; renamed solver matches upstream fields; scientific acceptance pending",
+      "solver-product.sha256": "f2df3effff068d9acf08ee023dc73ec3137a619a32ceeed4b1539255b28e4f6e",
+      "solver.log": {
+        "latest_entered_time_s": 2e-06,
+        "end_seen": true
+      },
+      "upstream-solver.log": {
+        "latest_entered_time_s": 2e-06,
+        "end_seen": true
+      }
+    },
+    {
+      "job": 124797192,
+      "key": "phi-125-liang-smoke",
+      "source_revision": "b54a8bf3297036e37e6c95732d25b7f8ab94b620",
+      "maximum_reserved_core_hours": 4.0,
+      "accounting": {
+        "state": "COMPLETED",
+        "elapsed": "00:07:55",
+        "limit": "01:00:00",
+        "exit_code": "0:0"
+      },
+      "endpoint-check": {
+        "time_s": 2e-06,
+        "cells": 4000,
+        "species_sum_error": 1.0584866316776242e-12,
+        "fields": {
+          "T": {
+            "min": 297.976141669,
+            "max": 2100.89353141
+          },
+          "p": {
+            "min": 10130683.9727,
+            "max": 10132904.1743
+          },
+          "rho": {
+            "min": 14.9580713981,
+            "max": 112.296514585
+          },
+          "CH4": {
+            "min": 2.04019166984e-09,
+            "max": 0.0680205861047
+          },
+          "OH": {
+            "min": 1.09425739692e-50,
+            "max": 8.79410146119e-05
+          }
+        },
+        "qualification": "finite normalized endpoint only; flame speed and equilibrium relaxation unqualified"
+      },
+      "upstream-endpoint-check": {
+        "time_s": 2e-06,
+        "cells": 4000,
+        "species_sum_error": 1.0584866316776242e-12,
+        "fields": {
+          "T": {
+            "min": 297.976141669,
+            "max": 2100.89353141
+          },
+          "p": {
+            "min": 10130683.9727,
+            "max": 10132904.1743
+          },
+          "rho": {
+            "min": 14.9580713981,
+            "max": 112.296514585
+          },
+          "CH4": {
+            "min": 2.04019166984e-09,
+            "max": 0.0680205861047
+          },
+          "OH": {
+            "min": 1.09425739692e-50,
+            "max": 8.79410146119e-05
+          }
+        },
+        "qualification": "finite normalized endpoint only; flame speed and equilibrium relaxation unqualified"
+      },
+      "baseline-comparison": {
+        "matched_field_bodies": 676,
+        "end_time_s": 2e-06,
+        "qualification": "rename-only baseline equivalence for this smoke"
+      },
+      "runtime-state": {
+        "unburned_density_kg_m3": 112.2921369749191,
+        "burned_density_kg_m3": 14.96095880900573,
+        "initial_product_speed_m_s": 0.4818645172293546,
+        "mass_flux_kg_m2_s": 7.2091551937898055,
+        "outlet_gamma": 1.2549485407988141
+      },
+      "result.txt": "PASS: inlet phi-125-liang startup; renamed solver matches upstream fields; scientific acceptance pending",
+      "solver-product.sha256": "f2df3effff068d9acf08ee023dc73ec3137a619a32ceeed4b1539255b28e4f6e",
+      "solver.log": {
+        "latest_entered_time_s": 2e-06,
+        "end_seen": true
+      },
+      "upstream-solver.log": {
+        "latest_entered_time_s": 2e-06,
+        "end_seen": true
+      }
+    },
+    {
+      "job": 124797214,
+      "key": "phi-130-liang-smoke",
+      "source_revision": "b54a8bf3297036e37e6c95732d25b7f8ab94b620",
+      "maximum_reserved_core_hours": 4.0,
+      "accounting": {
+        "state": "COMPLETED",
+        "elapsed": "00:07:51",
+        "limit": "01:00:00",
+        "exit_code": "0:0"
+      },
+      "endpoint-check": {
+        "time_s": 2e-06,
+        "cells": 4000,
+        "species_sum_error": 1.028954699222595e-12,
+        "fields": {
+          "T": {
+            "min": 297.975302515,
+            "max": 2059.87189617
+          },
+          "p": {
+            "min": 10130805.5651,
+            "max": 10132836.642
+          },
+          "rho": {
+            "min": 15.0922062347,
+            "max": 112.129681983
+          },
+          "CH4": {
+            "min": 6.03026301374e-09,
+            "max": 0.0705494569325
+          },
+          "OH": {
+            "min": 1.10398997968e-50,
+            "max": 6.91623986668e-05
+          }
+        },
+        "qualification": "finite normalized endpoint only; flame speed and equilibrium relaxation unqualified"
+      },
+      "upstream-endpoint-check": {
+        "time_s": 2e-06,
+        "cells": 4000,
+        "species_sum_error": 1.028954699222595e-12,
+        "fields": {
+          "T": {
+            "min": 297.975302515,
+            "max": 2059.87189617
+          },
+          "p": {
+            "min": 10130805.5651,
+            "max": 10132836.642
+          },
+          "rho": {
+            "min": 15.0922062347,
+            "max": 112.129681983
+          },
+          "CH4": {
+            "min": 6.03026301374e-09,
+            "max": 0.0705494569325
+          },
+          "OH": {
+            "min": 1.10398997968e-50,
+            "max": 6.91623986668e-05
+          }
+        },
+        "qualification": "finite normalized endpoint only; flame speed and equilibrium relaxation unqualified"
+      },
+      "baseline-comparison": {
+        "matched_field_bodies": 676,
+        "end_time_s": 2e-06,
+        "qualification": "rename-only baseline equivalence for this smoke"
+      },
+      "runtime-state": {
+        "unburned_density_kg_m3": 112.1260400752445,
+        "burned_density_kg_m3": 15.09483949433383,
+        "initial_product_speed_m_s": 0.4568284059738433,
+        "mass_flux_kg_m2_s": 6.895751464627538,
+        "outlet_gamma": 1.2572530999475464
+      },
+      "result.txt": "PASS: inlet phi-130-liang startup; renamed solver matches upstream fields; scientific acceptance pending",
+      "solver-product.sha256": "f2df3effff068d9acf08ee023dc73ec3137a619a32ceeed4b1539255b28e4f6e",
+      "solver.log": {
+        "latest_entered_time_s": 2e-06,
+        "end_seen": true
+      },
+      "upstream-solver.log": {
+        "latest_entered_time_s": 2e-06,
+        "end_seen": true
+      }
+    },
+    {
+      "job": 124797216,
+      "key": "phi-135-liang-smoke",
+      "source_revision": "b54a8bf3297036e37e6c95732d25b7f8ab94b620",
+      "maximum_reserved_core_hours": 4.0,
+      "accounting": {
+        "state": "COMPLETED",
+        "elapsed": "00:07:41",
+        "limit": "01:00:00",
+        "exit_code": "0:0"
+      },
+      "endpoint-check": {
+        "time_s": 2e-06,
+        "cells": 4000,
+        "species_sum_error": 1.0447198661722723e-12,
+        "fields": {
+          "T": {
+            "min": 297.969102291,
+            "max": 2019.79536768
+          },
+          "p": {
+            "min": 10130881.4187,
+            "max": 10132754.2319
+          },
+          "rho": {
+            "min": 15.2288779505,
+            "max": 111.964262011
+          },
+          "CH4": {
+            "min": 1.57378473239e-08,
+            "max": 0.0730646410167
+          },
+          "OH": {
+            "min": 1.11344929769e-50,
+            "max": 5.47541835921e-05
+          }
+        },
+        "qualification": "finite normalized endpoint only; flame speed and equilibrium relaxation unqualified"
+      },
+      "upstream-endpoint-check": {
+        "time_s": 2e-06,
+        "cells": 4000,
+        "species_sum_error": 1.0447198661722723e-12,
+        "fields": {
+          "T": {
+            "min": 297.969102291,
+            "max": 2019.79536768
+          },
+          "p": {
+            "min": 10130881.4187,
+            "max": 10132754.2319
+          },
+          "rho": {
+            "min": 15.2288779505,
+            "max": 111.964262011
+          },
+          "CH4": {
+            "min": 1.57378473239e-08,
+            "max": 0.0730646410167
+          },
+          "OH": {
+            "min": 1.11344929769e-50,
+            "max": 5.47541835921e-05
+          }
+        },
+        "qualification": "finite normalized endpoint only; flame speed and equilibrium relaxation unqualified"
+      },
+      "baseline-comparison": {
+        "matched_field_bodies": 676,
+        "end_time_s": 2e-06,
+        "qualification": "rename-only baseline equivalence for this smoke"
+      },
+      "runtime-state": {
+        "unburned_density_kg_m3": 111.9614764941127,
+        "burned_density_kg_m3": 15.23132252930025,
+        "initial_product_speed_m_s": 0.43295852693142334,
+        "mass_flux_kg_m2_s": 6.594530965503237,
+        "outlet_gamma": 1.2595449414823956
+      },
+      "result.txt": "PASS: inlet phi-135-liang startup; renamed solver matches upstream fields; scientific acceptance pending",
+      "solver-product.sha256": "f2df3effff068d9acf08ee023dc73ec3137a619a32ceeed4b1539255b28e4f6e",
+      "solver.log": {
+        "latest_entered_time_s": 2e-06,
+        "end_seen": true
+      },
+      "upstream-solver.log": {
+        "latest_entered_time_s": 2e-06,
+        "end_seen": true
+      }
+    },
+    {
+      "job": 124797219,
+      "key": "phi-140-liang-smoke",
+      "source_revision": "b54a8bf3297036e37e6c95732d25b7f8ab94b620",
+      "maximum_reserved_core_hours": 4.0,
+      "accounting": {
+        "state": "COMPLETED",
+        "elapsed": "00:07:42",
+        "limit": "01:00:00",
+        "exit_code": "0:0"
+      },
+      "endpoint-check": {
+        "time_s": 2e-06,
+        "cells": 4000,
+        "species_sum_error": 1.0158540675320182e-12,
+        "fields": {
+          "T": {
+            "min": 297.969118277,
+            "max": 1980.59674935
+          },
+          "p": {
+            "min": 10130912.1173,
+            "max": 10132689.8771
+          },
+          "rho": {
+            "min": 15.3683301293,
+            "max": 111.801722569
+          },
+          "CH4": {
+            "min": 3.74890155673e-08,
+            "max": 0.0755662491703
+          },
+          "OH": {
+            "min": 1.12211392455e-50,
+            "max": 4.33937485341e-05
+          }
+        },
+        "qualification": "finite normalized endpoint only; flame speed and equilibrium relaxation unqualified"
+      },
+      "upstream-endpoint-check": {
+        "time_s": 2e-06,
+        "cells": 4000,
+        "species_sum_error": 1.0158540675320182e-12,
+        "fields": {
+          "T": {
+            "min": 297.969118277,
+            "max": 1980.59674935
+          },
+          "p": {
+            "min": 10130912.1173,
+            "max": 10132689.8771
+          },
+          "rho": {
+            "min": 15.3683301293,
+            "max": 111.801722569
+          },
+          "CH4": {
+            "min": 3.74890155673e-08,
+            "max": 0.0755662491703
+          },
+          "OH": {
+            "min": 1.12211392455e-50,
+            "max": 4.33937485341e-05
+          }
+        },
+        "qualification": "finite normalized endpoint only; flame speed and equilibrium relaxation unqualified"
+      },
+      "baseline-comparison": {
+        "matched_field_bodies": 676,
+        "end_time_s": 2e-06,
+        "qualification": "rename-only baseline equivalence for this smoke"
+      },
+      "runtime-state": {
+        "unburned_density_kg_m3": 111.7984247314322,
+        "burned_density_kg_m3": 15.37064681936789,
+        "initial_product_speed_m_s": 0.41022549206631787,
+        "mass_flux_kg_m2_s": 6.305431154852776,
+        "outlet_gamma": 1.2618269945528078
+      },
+      "result.txt": "PASS: inlet phi-140-liang startup; renamed solver matches upstream fields; scientific acceptance pending",
+      "solver-product.sha256": "f2df3effff068d9acf08ee023dc73ec3137a619a32ceeed4b1539255b28e4f6e",
+      "solver.log": {
+        "latest_entered_time_s": 2e-06,
+        "end_seen": true
+      },
+      "upstream-solver.log": {
+        "latest_entered_time_s": 2e-06,
+        "end_seen": true
+      }
+    },
+    {
+      "job": 124797642,
+      "key": "phi-090-liang-full",
+      "source_revision": "b54a8bf3297036e37e6c95732d25b7f8ab94b620",
+      "maximum_reserved_core_hours": 192.0,
+      "accounting": {
+        "state": "RUNNING",
+        "elapsed": "00:01:30",
+        "limit": "2-00:00:00",
+        "exit_code": "0:0"
+      },
+      "solver-product.sha256": "f2df3effff068d9acf08ee023dc73ec3137a619a32ceeed4b1539255b28e4f6e"
+    },
+    {
+      "job": 124797644,
+      "key": "phi-095-liang-full",
+      "source_revision": "b54a8bf3297036e37e6c95732d25b7f8ab94b620",
+      "maximum_reserved_core_hours": 192.0,
+      "accounting": {
+        "state": "RUNNING",
+        "elapsed": "00:01:28",
+        "limit": "2-00:00:00",
+        "exit_code": "0:0"
+      },
+      "runtime-state": {
+        "unburned_density_kg_m3": 113.322175779069,
+        "burned_density_kg_m3": 14.90369605835765,
+        "initial_product_speed_m_s": 0.451655563487013,
+        "mass_flux_kg_m2_s": 6.731337241276699,
+        "outlet_gamma": 1.2465120450151623
+      },
+      "solver-product.sha256": "f2df3effff068d9acf08ee023dc73ec3137a619a32ceeed4b1539255b28e4f6e"
+    },
+    {
+      "job": 124797648,
+      "key": "phi-100-liang-full",
+      "source_revision": "b54a8bf3297036e37e6c95732d25b7f8ab94b620",
+      "maximum_reserved_core_hours": 192.0,
+      "accounting": {
+        "state": "RUNNING",
+        "elapsed": "00:01:25",
+        "limit": "2-00:00:00",
+        "exit_code": "0:0"
+      },
+      "runtime-state": {
+        "unburned_density_kg_m3": 113.1464034452728,
+        "burned_density_kg_m3": 14.47177747990464,
+        "initial_product_speed_m_s": 0.5058516352310156,
+        "mass_flux_kg_m2_s": 7.320572302909149,
+        "outlet_gamma": 1.2443310757060708
+      },
+      "solver-product.sha256": "f2df3effff068d9acf08ee023dc73ec3137a619a32ceeed4b1539255b28e4f6e",
+      "solver.log": {
+        "latest_entered_time_s": 2.05603628721e-08,
+        "end_seen": false
+      }
+    },
+    {
+      "job": 124797650,
+      "key": "phi-105-liang-full",
+      "source_revision": "b54a8bf3297036e37e6c95732d25b7f8ab94b620",
+      "maximum_reserved_core_hours": 192.0,
+      "accounting": {
+        "state": "RUNNING",
+        "elapsed": "00:01:22",
+        "limit": "2-00:00:00",
+        "exit_code": "0:0"
+      },
+      "runtime-state": {
+        "unburned_density_kg_m3": 112.9723025323785,
+        "burned_density_kg_m3": 14.46103435738569,
+        "initial_product_speed_m_s": 0.5382596743852877,
+        "mass_flux_kg_m2_s": 7.783791644480879,
+        "outlet_gamma": 1.2456532710137074
+      },
+      "solver-product.sha256": "f2df3effff068d9acf08ee023dc73ec3137a619a32ceeed4b1539255b28e4f6e"
+    },
+    {
+      "job": 124797651,
+      "key": "phi-110-liang-full",
+      "source_revision": "b54a8bf3297036e37e6c95732d25b7f8ab94b620",
+      "maximum_reserved_core_hours": 192.0,
+      "accounting": {
+        "state": "RUNNING",
+        "elapsed": "00:01:19",
+        "limit": "2-00:00:00",
+        "exit_code": "0:0"
+      },
+      "runtime-state": {
+        "unburned_density_kg_m3": 112.7998488854405,
+        "burned_density_kg_m3": 14.5757234981735,
+        "initial_product_speed_m_s": 0.5424958430269514,
+        "mass_flux_kg_m2_s": 7.9072694068693785,
+        "outlet_gamma": 1.2479524763082035
+      },
+      "solver-product.sha256": "f2df3effff068d9acf08ee023dc73ec3137a619a32ceeed4b1539255b28e4f6e",
+      "solver.log": {
+        "latest_entered_time_s": 1.68288805387e-08,
+        "end_seen": false
+      }
+    },
+    {
+      "job": 124797654,
+      "key": "phi-115-liang-full",
+      "source_revision": "b54a8bf3297036e37e6c95732d25b7f8ab94b620",
+      "maximum_reserved_core_hours": 192.0,
+      "accounting": {
+        "state": "RUNNING",
+        "elapsed": "00:01:16",
+        "limit": "2-00:00:00",
+        "exit_code": "0:0"
+      },
+      "runtime-state": {
+        "unburned_density_kg_m3": 112.6290188197026,
+        "burned_density_kg_m3": 14.70075448503106,
+        "initial_product_speed_m_s": 0.5263412568921098,
+        "mass_flux_kg_m2_s": 7.737613592913568,
+        "outlet_gamma": 1.2502944101632802
+      },
+      "solver-product.sha256": "f2df3effff068d9acf08ee023dc73ec3137a619a32ceeed4b1539255b28e4f6e",
+      "solver.log": {
+        "latest_entered_time_s": 1.69521456658e-08,
+        "end_seen": false
+      }
+    },
+    {
+      "job": 124797656,
+      "key": "phi-120-liang-full",
+      "source_revision": "b54a8bf3297036e37e6c95732d25b7f8ab94b620",
+      "maximum_reserved_core_hours": 192.0,
+      "accounting": {
+        "state": "RUNNING",
+        "elapsed": "00:01:13",
+        "limit": "2-00:00:00",
+        "exit_code": "0:0"
+      },
+      "runtime-state": {
+        "unburned_density_kg_m3": 112.4597891090694,
+        "burned_density_kg_m3": 14.82954426819763,
+        "initial_product_speed_m_s": 0.5050608312169211,
+        "mass_flux_kg_m2_s": 7.4898219546640235,
+        "outlet_gamma": 1.2526289823120875
+      },
+      "solver-product.sha256": "f2df3effff068d9acf08ee023dc73ec3137a619a32ceeed4b1539255b28e4f6e",
+      "solver.log": {
+        "latest_entered_time_s": 1.37029537497e-08,
+        "end_seen": false
+      }
+    },
+    {
+      "job": 124797657,
+      "key": "phi-125-liang-full",
+      "source_revision": "b54a8bf3297036e37e6c95732d25b7f8ab94b620",
+      "maximum_reserved_core_hours": 192.0,
+      "accounting": {
+        "state": "RUNNING",
+        "elapsed": "00:01:10",
+        "limit": "2-00:00:00",
+        "exit_code": "0:0"
+      },
+      "runtime-state": {
+        "unburned_density_kg_m3": 112.2921369749191,
+        "burned_density_kg_m3": 14.96095880900573,
+        "initial_product_speed_m_s": 0.4818645172293546,
+        "mass_flux_kg_m2_s": 7.2091551937898055,
+        "outlet_gamma": 1.2549485407988141
+      },
+      "solver-product.sha256": "f2df3effff068d9acf08ee023dc73ec3137a619a32ceeed4b1539255b28e4f6e",
+      "solver.log": {
+        "latest_entered_time_s": 6.25995415469e-09,
+        "end_seen": false
+      }
+    },
+    {
+      "job": 124797665,
+      "key": "phi-130-liang-full",
+      "source_revision": "b54a8bf3297036e37e6c95732d25b7f8ab94b620",
+      "maximum_reserved_core_hours": 192.0,
+      "accounting": {
+        "state": "RUNNING",
+        "elapsed": "00:01:03",
+        "limit": "2-00:00:00",
+        "exit_code": "0:0"
+      },
+      "runtime-state": {
+        "unburned_density_kg_m3": 112.1260400752445,
+        "burned_density_kg_m3": 15.09483949433383,
+        "initial_product_speed_m_s": 0.4568284059738433,
+        "mass_flux_kg_m2_s": 6.895751464627538,
+        "outlet_gamma": 1.2572530999475464
+      },
+      "solver-product.sha256": "f2df3effff068d9acf08ee023dc73ec3137a619a32ceeed4b1539255b28e4f6e",
+      "solver.log": {
+        "latest_entered_time_s": 8.46398674159e-09,
+        "end_seen": false
+      }
+    },
+    {
+      "job": 124797666,
+      "key": "phi-135-liang-full",
+      "source_revision": "b54a8bf3297036e37e6c95732d25b7f8ab94b620",
+      "maximum_reserved_core_hours": 192.0,
+      "accounting": {
+        "state": "RUNNING",
+        "elapsed": "00:01:03",
+        "limit": "2-00:00:00",
+        "exit_code": "0:0"
+      },
+      "runtime-state": {
+        "unburned_density_kg_m3": 111.9614764941127,
+        "burned_density_kg_m3": 15.23132252930025,
+        "initial_product_speed_m_s": 0.43295852693142334,
+        "mass_flux_kg_m2_s": 6.594530965503237,
+        "outlet_gamma": 1.2595449414823956
+      },
+      "solver-product.sha256": "f2df3effff068d9acf08ee023dc73ec3137a619a32ceeed4b1539255b28e4f6e",
+      "solver.log": {
+        "latest_entered_time_s": 8.50037264619e-09,
+        "end_seen": false
+      }
+    },
+    {
+      "job": 124797667,
+      "key": "phi-140-liang-full",
+      "source_revision": "b54a8bf3297036e37e6c95732d25b7f8ab94b620",
+      "maximum_reserved_core_hours": 192.0,
+      "accounting": {
+        "state": "RUNNING",
+        "elapsed": "00:01:01",
+        "limit": "2-00:00:00",
+        "exit_code": "0:0"
+      },
+      "runtime-state": {
+        "unburned_density_kg_m3": 111.7984247314322,
+        "burned_density_kg_m3": 15.37064681936789,
+        "initial_product_speed_m_s": 0.41022549206631787,
+        "mass_flux_kg_m2_s": 6.305431154852776,
+        "outlet_gamma": 1.2618269945528078
+      },
+      "solver-product.sha256": "f2df3effff068d9acf08ee023dc73ec3137a619a32ceeed4b1539255b28e4f6e",
+      "solver.log": {
+        "latest_entered_time_s": 6.31574720799e-09,
+        "end_seen": false
+      }
+    }
+  ]
+}

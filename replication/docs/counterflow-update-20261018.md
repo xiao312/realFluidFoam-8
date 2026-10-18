@@ -5,13 +5,14 @@ one-step initialization images. The 1 atm oxyfuel temperature profile is close
 to the paper drawing; the 200 atm flame remains displaced. Neither is grid
 converged. The 100 atm air continuation failed and has no new saved checkpoint.
 
-Snapshot collection started at 21:20:20 Asia/Shanghai. It excludes the newest
+Snapshot collection started at 21:20:20 Asia/Shanghai. The completed 1-atm
+70-ms endpoint was retrieved separately at 21:32:46, with its 69.5-ms predecessor. It excludes the newest
 common time of a running case. Each selected file was hashed and checked again
 before archiving; all snapshots retain global processor cell addressing.
 
 | Case | Job | Saved time | Sampled peak T | Approx. paper peak T | Peak position difference |
 |---|---|---:|---:|---:|---:|
-| Oxyfuel, 1 atm | 124767586 | 69 ms | 1968.5 K | 1983.7 K | +132.7 micrometres |
+| Oxyfuel, 1 atm | 124767586 | 70 ms | 1968.5 K | 1983.7 K | +132.7 micrometres |
 | Oxyfuel, 200 atm | 124767667 | 58 ms | 2232.4 K | 2273.5 K | -123.8 micrometres |
 | Air, 100 atm, prior smoke | 124767482 | 0.1 ms | 2264.6 K | 2215.3 K | -151.7 micrometres |
 
@@ -22,10 +23,10 @@ digitizations of the published red temperature curves, not author tables or
 independent OPPDIF data. No axial shift was fitted to improve agreement.
 
 On the paper's plotted axial interval, near-axis temperature RMS differences
-are 13.35 K (1 atm) and 402.53 K (200 atm). Thus peak-temperature differences
+are 13.34 K (1 atm) and 402.53 K (200 atm). Thus peak-temperature differences
 of -0.77% and -1.81% alone conceal the substantial 200-atm position mismatch.
 The whole-field temperature RMS changes over the last saved 0.5-ms intervals
-are 0.04123 K and 0.01170 K, respectively. Small local-in-time changes do not
+are 0.03985 K and 0.01170 K, respectively. Small local-in-time changes do not
 establish mesh convergence or reproduce the paper's case conditions exactly.
 
 Air-100 full job 124767672 failed in chemistry at 0.18956 ms before its next
@@ -56,3 +57,25 @@ hashes; true nonuniform axial mesh edges in contours; regular-grid interpolation
 only for displayed streamlines; paper crop dimensions; five rendered PDF pages
 visually inspected. The displayed air failure and coarse-mesh qualifications
 remain on the figures themselves.
+
+## Both-series overlay amendment
+
+Figures 9–11 now overlay both published line series with our fields. The
+benchmark is OPPDIF in Figures 9/10 and Juanos and Sirignano in Figure 11.
+All 50 curves were extracted from the supplied PDF vector paths. The extractor
+records the source hash, drawing indices, continuous groups and axis calibration.
+PDF SHA-256: `716602f37f6b27f62791986770788e450225bc688686c54049849ecfe8414a60`.
+
+The benchmark is dash-dot, Nguyen is dashed, and our fields are solid. Species
+retain quantity colours. Figure 11 includes only its three published species.
+Partial benchmark ranges remain partial; no axial shift, extrapolation or
+synthetic author data is introduced. Figure 8 remains side-by-side contours.
+The source crops and captions remain beside the plots in the PDF and Lark.
+The approximate temperature metrics above still compare with Nguyen only.
+
+The overlay also reveals differences in 1-atm species and transport profiles
+that the close temperature profile alone does not show. At 200 atm, position
+and coarse sampling affect multiple quantities. Neither comparison is accepted.
+The final 1-atm archive is `state/counterflow-oxy1-final-20261018.tar.gz`.
+Its fields were added to the local analysis snapshot after matching existing
+file hashes. The original archives remain unchanged.

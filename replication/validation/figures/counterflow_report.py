@@ -26,7 +26,8 @@ manifest = json.loads((snapshot/'snapshot.json').read_text())
 atlas = root/'output/figure-comparison-20261017'
 reference_path = atlas/'data/paper-2022-temperature-targets.csv'
 reference = np.genfromtxt(reference_path, delimiter=',', names=True)
-summary = {'observed_at':manifest['observed_at'], 'status':'INTERIM; no mesh-convergence acceptance',
+paper = json.loads((out/'data/paper-counterflow-curves.json').read_text())
+summary = {'observed_at':manifest.get('updated_at',manifest['observed_at']), 'paper_curves_sha256':hashlib.sha256((out/'data/paper-counterflow-curves.json').read_bytes()).hexdigest(), 'status':'INTERIM; no mesh-convergence acceptance',
            'source_revision':'b15fb0db8213e6a5243c0f55691080195276253e',
            'solver':'upstream realFluidReactingFoam, qualified build 124657926',
            'reference_sha256':hashlib.sha256(reference_path.read_bytes()).hexdigest(), 'cases':{}}
@@ -57,9 +58,11 @@ for ax, (key, number) in zip(axes, [('oxy-1',9),('oxy-200',10),('air-100',11)]):
     else:
         row['qualification']='prior successful 0.1 ms smoke; full job 124767672 failed at 0.1896 ms without a new checkpoint; not a developed flame'
     summary['cases'][key]=row
-    ax.plot(zz*1000,tt,'k-',lw=1,label='Paper temperature (digitized)')
+    for series,style,color,label in [('benchmark','-.','#222222','Benchmark (paper)'),('nguyen','--','#d62728','Nguyen (paper)')]:
+        curve=next(c for c in paper['curves'] if c['figure']==number and c['field']=='T' and c['series']==series)
+        ax.plot(np.array(curve['z_m'])*1000,curve['value'],style,color=color,lw=1,label=label)
     for n,(time,field) in enumerate(zip(meta['times'],states)):
-        ax.plot(z*1000,field['T'][idx], '--' if n==len(states)-1 else ':', color='#c92a2a' if n==len(states)-1 else '#888888',
+        ax.plot(z*1000,field['T'][idx], '-' if n==len(states)-1 else ':', color='#165bbb' if n==len(states)-1 else '#888888',
                 label=f'Saved {float(time)*1000:g} ms')
     ax.set(xlabel='Axial coordinate z [mm]',ylabel='Temperature [K]',title=key,xlim=(0,xyz[:,2].max()*1000),ylim=(250,2450))
     ax.legend(fontsize=7)
@@ -86,7 +89,7 @@ def picture(path,x,y,w,h):
 for number in [8,9,10,11]:
     pdf.setFont('Helvetica-Bold',18);pdf.drawString(35,805,f'2022 Figure {number}: latest retrieved counterflow comparison')
     if number==8:
-        note='GRI30 oxyfuel snapshots: 1 atm at 69 ms and 200 atm at 58 ms; each uses 11,200 cells. Coarse-grid results, not accepted replication.'
+        note=f"GRI30 oxyfuel snapshots: 1 atm at {summary['cases']['oxy-1']['time_s']*1000:g} ms and 200 atm at {summary['cases']['oxy-200']['time_s']*1000:g} ms; each uses 11,200 cells. Coarse-grid results, not accepted replication."
     else:
         key={9:'oxy-1',10:'oxy-200',11:'air-100'}[number];r=summary['cases'][key]
         note=f"Job {r['job']}; {r['time_s']*1000:g} ms; {r['cells']:,} cells; near-axis radius {r['nearest_axis_radius_m']*1000:.4f} mm. {r['qualification']}."
@@ -95,9 +98,9 @@ for number in [8,9,10,11]:
     picture(out/f'plots/2022-fig{number:02}.png',610,210,540,520)
     picture(atlas/f'captions/2022-fig{number:02}.png',35,65,540,110)
     paragraph('Original paper crop and caption',35,200,540)
-    paragraph('Current fields with paper-scale axes and panel layout',610,200,540)
+    paragraph('Current fields and both published line series (Figures 9-11)',610,200,540)
     paragraph('Upstream realFluidReactingFoam; case source b15fb0d; qualified library/solver build 124657926. These are not the new rfReactingFoam development counterflows. The larger paper-informed meshes have only passed mesh checks.',610,165,540)
-    paragraph('Finite fields and a small change between two saved states do not establish mesh convergence. Narrow paper windows can omit a misplaced flame; see the full-domain comparison on the final page.',610,100,540)
+    paragraph('Dash-dot: published benchmark; dashed: Nguyen; solid: our saved fields. Species retain quantity colours. Paper curves are approximate digitizations. Figure 8 remains a contour comparison. No mesh-convergence acceptance.',610,100,540)
     pdf.showPage()
 pdf.setFont('Helvetica-Bold',18);pdf.drawString(35,805,'Temperature comparison and remaining limits')
 picture(out/'plots/counterflow-temperature-comparison.png',35,385,1120,370)
@@ -105,7 +108,7 @@ for i,(key,row) in enumerate(summary['cases'].items()):
     line=f"{key}: sampled peak {row['sampled_peak_T_K']:.1f} K versus paper ~{row['paper_peak_T_K_approx']:.1f} K; peak-location difference {row['peak_position_difference_um_approx']:+.1f} micrometres."
     if 'field_change' in row:line+=f" Whole-field T RMS change over 0.5 ms: {row['field_change']['T']['RMS']:.5f} K."
     paragraph(line,35,345-i*45,1120)
-paragraph('Paper curves are approximate vector digitizations of the temperature drawings, not original author tables or separate OPPDIF validation. RMS differences combine flame-position and shape differences. No translation or fitted alignment was applied.',35,190,1120)
-paragraph('Oxyfuel continues on the 11,200-cell tutorial mesh, much coarser than the paper-informed meshes. Air-100 remains failed: its displayed 0.1 ms smoke cannot be claimed as a steady counterflow result. All original data, hashes and checkpoints are retained.',35,140,1120)
+paragraph('Both published series are approximate PDF line digitizations, not author tables. Figures 9/10 use OPPDIF; Figure 11 uses Juanos and Sirignano. Numerical peak/RMS comparisons above use Nguyen only. Partial reference curves are not extrapolated; no axial alignment was applied.',35,190,1120)
+paragraph('These oxyfuel snapshots use the 11,200-cell tutorial mesh, much coarser than the paper-informed meshes. Air-100 remains failed: its displayed 0.1 ms smoke cannot be claimed as a steady counterflow result. All original data, hashes and checkpoints are retained.',35,140,1120)
 pdf.save()
 print(json.dumps(summary,indent=2))
