@@ -1,5 +1,4 @@
 """Copy selected checkpoint inputs and compare short replay outputs."""
-import hashlib
 import json
 from pathlib import Path
 import re

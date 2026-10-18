@@ -24,3 +24,8 @@ Verification: run the instrumenter plan before apply; compilation must succeed;
 each replay must reach `End`, and timers must exist for every MPI rank. Compare
 the final fields of an uninstrumented replay with the same instrumented replay.
 Short replays qualify section costs at those states, not whole-campaign averages.
+
+`python3 -B summarize.py JOB` emits JSON with per-rank seconds and mean section
+shares, using steps 2–4 of each five-step replay. Step 1 and the forced final
+write are excluded. The command is read-only and requires all observed profiles
+to contain five timesteps.
