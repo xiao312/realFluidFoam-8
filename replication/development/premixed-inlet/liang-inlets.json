@@ -1,0 +1,96 @@
+{
+  "source": "Nguyen et al. CPC 273 (2022) 108264, Figure 12 black curve attributed to Liang et al. [52]",
+  "pdf_sha256": "716602f37f6b27f62791986770788e450225bc688686c54049849ecfe8414a60",
+  "page": 13,
+  "path_index": 521,
+  "axes_pdf_points": [
+    357.69073486328125,
+    532.8677368164062,
+    175.70819091796875,
+    61.56732177734375
+  ],
+  "displayed_phi_range": [
+    0.9197081634786244,
+    1.4336444026340547
+  ],
+  "qualification": "Approximate graphical inlet guesses only; not measured flame speed or author numerical table.",
+  "cases": [
+    {
+      "key": "phi-090-liang",
+      "phi": 0.9,
+      "speed_cm_s_approx": 5.34,
+      "inlet_speed_m_s": 0.053399999999999996,
+      "method": "short secant extrapolation from curve start to phi=0.95"
+    },
+    {
+      "key": "phi-095-liang",
+      "phi": 0.95,
+      "speed_cm_s_approx": 5.94,
+      "inlet_speed_m_s": 0.0594,
+      "method": "vector-curve interpolation"
+    },
+    {
+      "key": "phi-100-liang",
+      "phi": 1.0,
+      "speed_cm_s_approx": 6.47,
+      "inlet_speed_m_s": 0.0647,
+      "method": "vector-curve interpolation"
+    },
+    {
+      "key": "phi-105-liang",
+      "phi": 1.05,
+      "speed_cm_s_approx": 6.89,
+      "inlet_speed_m_s": 0.0689,
+      "method": "vector-curve interpolation"
+    },
+    {
+      "key": "phi-110-liang",
+      "phi": 1.1,
+      "speed_cm_s_approx": 7.01,
+      "inlet_speed_m_s": 0.0701,
+      "method": "vector-curve interpolation"
+    },
+    {
+      "key": "phi-115-liang",
+      "phi": 1.15,
+      "speed_cm_s_approx": 6.87,
+      "inlet_speed_m_s": 0.0687,
+      "method": "vector-curve interpolation"
+    },
+    {
+      "key": "phi-120-liang",
+      "phi": 1.2,
+      "speed_cm_s_approx": 6.66,
+      "inlet_speed_m_s": 0.0666,
+      "method": "vector-curve interpolation"
+    },
+    {
+      "key": "phi-125-liang",
+      "phi": 1.25,
+      "speed_cm_s_approx": 6.42,
+      "inlet_speed_m_s": 0.0642,
+      "method": "vector-curve interpolation"
+    },
+    {
+      "key": "phi-130-liang",
+      "phi": 1.3,
+      "speed_cm_s_approx": 6.15,
+      "inlet_speed_m_s": 0.061500000000000006,
+      "method": "vector-curve interpolation"
+    },
+    {
+      "key": "phi-135-liang",
+      "phi": 1.35,
+      "speed_cm_s_approx": 5.89,
+      "inlet_speed_m_s": 0.058899999999999994,
+      "method": "vector-curve interpolation"
+    },
+    {
+      "key": "phi-140-liang",
+      "phi": 1.4,
+      "speed_cm_s_approx": 5.64,
+      "inlet_speed_m_s": 0.0564,
+      "method": "vector-curve interpolation"
+    }
+  ]
+}

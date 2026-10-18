@@ -26,6 +26,10 @@ benchmark runners depend on that solver or the unchanged upstream executable.
 checks. Cantera 3.2.0 is an offline ideal-gas seed dependency only; the actual
 flow/chemistry run uses the pinned real-fluid library. Runtime density/Cp/Cv
 come from the existing property probe before initial mass flux is finalized.
+The inlet draft's optional Liang-curve extractor uses the existing local
+PyMuPDF/numpy analysis environment to prepare approximate inlet guesses. Its
+outputs are explicit inputs; neither PDFs nor analysis libraries are runtime
+dependencies of OpenFOAM or the cluster jobs.
 `validation/` owns case generation, property probes, and scientific comparisons;
 it uses contained execution from `environment/` and a completed isolated build.
 `validation/properties` owns library probes and NIST comparisons; its optional

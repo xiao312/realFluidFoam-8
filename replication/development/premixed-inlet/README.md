@@ -32,6 +32,21 @@ Initialize U so rho*U is equal on both halves, using densities from the runtime
 library probe. The discontinuity is at L/2; no artificial hot ignition kernel.
 Two initial speed guesses at phi=1.10 test sensitivity to imposed inflow.
 
+The 18 October replacement sweep uses `phi-090-liang` through `phi-140-liang`
+in 0.05 equivalence-ratio increments at the same 100 atm / 298 K condition.
+`liang-inlets.json` records approximate inlet guesses from the black Liang curve
+in Nguyen 2022 Figure 12, not Nguyen's red-square results. The displayed curve
+starts near phi=0.920: phi=0.90 is explicitly a short secant extrapolation.
+The prescribed inlet is only a guess; gas-relative flame displacement remains
+the measurement. Each new condition requires its own renamed/upstream startup
+comparison before a fresh full run. Previous 0.10/0.20 m/s cases remain historical
+inputs, but their running allocations are cancelled at the owner's request.
+`digitize_liang.py PDF OUTPUT` is a local, read-only PDF extraction with an explicit
+output directory; it uses the existing analysis environment's PyMuPDF/numpy.
+It refuses existing output and verifies the inspected vector path and axis extent.
+The original PDF and full extracted curve stay outside Git. The small inlet
+table is a numeric input with its digitization provenance, not reference truth.
+
 Example: `python prepare.py plan phi-110-u010 OUTPUT smoke`.
 Generate seeds locally with `equilibrium.py apply SEED_DIR`; pass that directory
 to prepare's `--seeds`. `runtime.py finalize CASE` reads the density probe and

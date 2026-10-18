@@ -4,7 +4,7 @@ action=${1:?plan/apply}; root=${2:?}; image=${3:?}; release=${4:?}; key=${5:?}
 mode=${6:-smoke}; smoke=${7:-}
 [[ "$action" == plan || "$action" == apply ]] || exit 2
 [[ "$mode" == smoke || "$mode" == full ]] || exit 2
-[[ "$key" == phi-110-u010 || "$key" == phi-110-u020 ]] || exit 2
+[[ "$key" =~ ^phi-[0-9]{3}-(u010|u020|liang)$ ]] || exit 2
 bash "$release/replication/environment/workspace.sh" plan "$root" >/dev/null
 for path in "$image" "$release"; do [[ $(realpath -e "$path") == "$root/"* ]] || exit 2; done
 minutes=60
