@@ -128,3 +128,47 @@ rereading is enabled. Adjustable output alignment can change individual time ste
 Verification: read-only plan, copied-file hashes, initial processor-field/inlet
 checks, 32-rank solver startup, intermediate output and endpoint checks. A replay
 has a distinct job/source identity. Budget wall time from measured step costs.
+
+## Checkpointed steady-flow continuation
+
+`continue.py plan|apply SOURCE_JOB NEW_JOB` prepares continuation of a successful
+10-us replay. Plan can describe a pending dependency; apply requires PASS and
+finite normalized endpoint fields, then copies and hashes the saved checkpoint,
+mesh and dictionaries. It verifies the reused executable hash. Source and target
+must be distinct sibling numeric jobs inside the project root. No secrets are read.
+
+`run_steady.sh RELEASE NEW_JOB SOURCE_ID` runs through `dev-steady-SOURCE_ID`.
+Submit with Slurm afterok on the replay job and a 48-hour allocation. The physical
+ceiling is 0.05 s (five inverse-strain times), not an assertion that it is steady.
+maxCo=0.2 and maxDeltaT=1e-6 s remain unchanged. Checkpoints every 1e-5 s retain
+three output times; runtime controls remain readable. The watcher asks for a
+write-and-stop after 46 solver wall hours, leaving time before scheduler expiry.
+A later batch must start from the latest validated saved state, never time zero.
+
+`steady_metrics.py CASE REFERENCE_ROOT REFERENCE_TIME CURRENT_TIME` compares all
+cells on identical decomposition. Project-selected candidate criteria are a
+minimum 0.01-s physical observation window, max temperature change <=1 K,
+velocity-component change <=0.001 m/s, density change <=0.1% of reference peak,
+pressure change <=0.001% of reference peak, and each species change <=max(1e-8,
+0.1% of its reference peak). All 53 species must remain bounded/normalized,
+T/p/rho finite and positive, peak T >1000 K, and total inlet/outlet phi imbalance
+<=0.1% of inflow. These are proposed numerical stability criteria, not paper values.
+
+`steady_watch.py` checks a safely older retained checkpoint, requires three
+passing comparisons separated by >=0.001 s against the same reference, and then
+requests stopAt=writeNow. A failed window saves a new reference and resets the
+count. Comparing full fields also detects flame movement; it does not replace
+centerline figure comparison, energy-balance assessment or mesh/time sensitivity.
+An automatic stop is labelled a steady candidate, not scientific acceptance.
+Reference copies and JSON measurements remain inside the job. Unexpected parsing,
+field or solver errors fail explicitly; no automatic successful-convergence claim.
+
+Verification: dependency/discovery plans; source/copy hashes; scheduled checkpoint
+and solver startup; synthetic steady/change/mass-imbalance metric checks; shell
+and Python syntax. Dependencies remain the environment runner, the existing field
+reader and qualified solver/library. Restarted trajectories have not yet been
+proved identical to uninterrupted trajectories because the solver rebuilds caches.
+
+Local metric verification: `python -B test_steady.py NEW_SCRATCH_DIRECTORY`.
+Expected output: PASS for short-window rejection, identical steady fields,
+temperature drift, mass imbalance, reference-copy hashes and atomic stop control.

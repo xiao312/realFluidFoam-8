@@ -78,3 +78,9 @@ a fine-grid qualification, followed separately by developed-flow assessment.
 The counterflow replay path depends on a prior fine-grid job's checked mapped
 initial fields and executable. It copies those immutable inputs, records hashes
 and changes checkpoint controls; it does not depend on a completed reacting run.
+
+The counterflow steady continuation depends on a successful replay checkpoint,
+its verified solver executable and adaptive field parsing. Its scheduled watcher
+compares physical-time field changes and mass flux, saves convergence evidence,
+and requests a checkpointed stop on a candidate or wall-time boundary. It does
+not submit additional batches or equate a physical time limit with convergence.
