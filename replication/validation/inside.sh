@@ -18,7 +18,8 @@ ldd "$platform/bin/realFluidReactingFoam" > "$job/solver-ldd.txt"
 grep -F "$platform/lib/libspecie.so" "$job/solver-ldd.txt"
 if grep -q 'not found' "$job/solver-ldd.txt"; then exit 1; fi
 if [[ "$stage" == dev-inlet-* ]]; then
-    exec bash "$release/replication/development/premixed-inlet/run.sh" "$release" "$job" "${stage#dev-inlet-}"
+    selector=${stage#dev-inlet-}; mode=${selector##*-}; key=${selector%-*}
+    exec bash "$release/replication/development/premixed-inlet/run.sh" "$release" "$job" "$key" "$mode"
 fi
 if [[ "$stage" == profile ]]; then
     exec bash "$release/replication/validation/profiling/run.sh" "$release" "$job" "$build"

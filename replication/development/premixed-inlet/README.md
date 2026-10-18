@@ -38,6 +38,10 @@ to prepare's `--seeds`. `runtime.py finalize CASE` reads the density probe and
 finalizes U/gamma; `runtime.py check CASE` validates all written species and rho.
 Smokes advance 2 microseconds. They qualify initialization/build only; full
 development runs target 1 ms and require passed startup evidence.
+Full submission uses `submit.sh plan|apply ROOT IMAGE RELEASE KEY full SMOKE_ID`,
+verifying identical configuration, seed and solver source plus renamed/upstream
+field agreement. It builds in a new job and reserves 4 cores for at most 48 hours.
+These are development allocations; no automatic convergence acceptance or extension.
 
 Verification: syntax/plan, normalized and element-conserving seed, exactly half
 the cells in each state, fixed boundary composition and mass-consistent U, then
