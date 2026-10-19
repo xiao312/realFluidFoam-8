@@ -53,7 +53,7 @@ def main():
                       '8000\n(\n'+'\n'.join(map(str,owners))+'\n)\n')
     (case/'system/decomposeParDict').write_text(
         'FoamFile {version 2.0; format ascii; class dictionary; object decomposeParDict;}\n'
-        'numberOfSubdomains 32;\nmethod manual;\nmanualCoeffs {dataFile cellDecomposition;}\n')
+        'numberOfSubdomains 32;\nmethod manual;\nmanualCoeffs {dataFile "cellDecomposition";}\n')
     (case/'partition-inputs.json').write_text(json.dumps(report,indent=2)+'\n')
 
 
