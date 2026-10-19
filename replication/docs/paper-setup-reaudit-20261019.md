@@ -34,9 +34,16 @@ mesh spacing and chemistry tolerances differ. Do not compare wall time per step
 or domain dimension alone as an efficiency measure.
 
 Fine cases actually specify maxCo=0.2 and maxDeltaT=1e-6 s, but their observed
-late steps remain 2e-7 s at maxCo about 0.019/0.025. Their 1-us adjustable output
-cadence requires an isolated time-control check before more expensive runs;
-the limiting mechanism is not established by the dictionaries alone. Each late
+late steps remain 2e-7 s at maxCo about 0.019/0.025. Inspection of the pinned
+OF8 runtime source identifies an output-alignment limit consistent with these
+steps. `setDeltaT.H` caps step growth at 1.2; `Time::adjustDeltaT()` then divides
+the time remaining to the next write by `int(max(nSteps,1)+0.99)`. With a 1-us
+write interval and a 0.2-us step, the proposed 0.24 us becomes 0.2 us again:
+the next interval still needs five steps. The same rounding repeats throughout
+the interval. This arithmetic explains why low Co alone does not grow the step.
+Source excerpts are saved in `state/debug-audit-20261019/of8-time-control.txt`.
+Test output cadence separately from the timestep cap before another long run;
+larger steps still need temporal-accuracy qualification. Each late
 fine step costs approximately 210–220 seconds on 32 cores. The two dependent
 steady continuations did not start. None of these endpoints demonstrates the
 paper's steady-profile stopping criterion.
