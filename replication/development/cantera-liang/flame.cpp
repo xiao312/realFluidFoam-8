@@ -1,4 +1,5 @@
 #include "StagedTransport.h"
+#include "PropertyChecks.h"
 #include "cantera/onedim.h"
 #include "cantera/oneD/DomainFactory.h"
 #include "cantera/thermo/ThermoFactory.h"
@@ -31,6 +32,8 @@ try {
     auto gas=sol->thermo();
     for(size_t k=0;k<species.size();k++) if(gas->speciesName(k)!=species[k])throw std::runtime_error("Species order mismatch");
     gas->setEquivalenceRatio(phi,"CH4","O2:0.21,N2:0.79");gas->setState_TP(298,10132500);
+    fs::create_directories(output);
+    propertyChecks(sol,(output/"property-checks.csv").string());
     std::vector<double> xin(gas->nSpecies());gas->getMoleFractions(xin.data());double rho=gas->density();
     std::ifstream file(input/"guess.csv");std::string line;std::getline(file,line);auto columns=split(line);
     std::vector<std::vector<double>> values(columns.size());
@@ -42,12 +45,12 @@ try {
     flow->setFluxGradientBasis(ThermoBasis::molar);flow->enableSoret(false);
     auto inlet=newDomain<Inlet1D>("inlet",sol);inlet->setTemperature(298);inlet->setMoleFractions(xin.data());
     inlet->setMdot(rho*values[2][0]);auto outlet=newDomain<Outlet1D>("outlet",sol);
-    Sim1D flame({inlet,flow,outlet});flame.setMaxGridPoints(1,6000);
+    std::vector<std::shared_ptr<Domain1D>> domains{inlet,flow,outlet};
+    Sim1D flame(domains);flame.setMaxGridPoints(1,6000);
     auto loc=values[0];for(auto& x:loc)x=(x-values[0][0])/(values[0].back()-values[0][0]);
     flow->setProfile("T",loc,values[1]);flow->setProfile("velocity",loc,values[2]);
     for(size_t k=5;k<columns.size();k++)flow->setProfile(columns[k],loc,values[k]);
     flame.setFixedTemperature(298+.3*(values[1].back()-298));flow->setEnergyEnabled(true);
-    fs::create_directories(output);
     std::ofstream results(output/"refinement.csv");results<<"stage,phi,slope,curve,points,speed_cm_s\n"<<std::setprecision(16);
     for(auto level:std::vector<std::pair<double,double>>{{.015,.025},{.0075,.0125}}) {
         flow->setRefineCriteria(3,level.first,level.second,0);flame.solve(1,true);

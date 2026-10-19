@@ -14,9 +14,11 @@ export CANTERA_DATA="$sdk/share/cantera/data" PKG_CONFIG_PATH="$sdk/lib/pkgconfi
 cd "$job"
 module_path="$release/replication/development/cantera-liang"
 if [[ $stage == build ]]; then
+ unset CPLUS_INCLUDE_PATH C_INCLUDE_PATH CPATH LIBRARY_PATH
  compiler=/public/software/compiler/gcc/11.2.0/bin/g++
  "$compiler" --version > compiler.txt
  flags=$($sdk/bin/pkg-config --cflags --libs cantera)
+ printf '%s\n' "$flags" > compiler-flags.txt
  # pkg-config supplies compiler arguments, not shell commands.
  "$compiler" -std=c++17 -O2 -D_GLIBCXX_USE_CXX11_ABI=1 "$module_path/test_srk.cpp" -o test-srk
  ./test-srk > kernel-check.txt
