@@ -11,13 +11,15 @@ public:
     std::string type() const override {return "liang-srk";}
     bool isIdeal() const override {return false;}
     const State& state() const {
-        std::vector<double> x(nSpecies());getMoleFractions(x.data());
-        if(cachedT!=temperature() || cachedRho!=density() || x!=cachedX) {
+        // Cantera increments this counter for normalized and nonnormalized
+        // composition setters. Pressure is queried inside every Takahashi pair.
+        if(cachedT!=temperature() || cachedRho!=density() || cachedComposition!=stateMFNumber()) {
+            std::vector<double> x(nSpecies());getMoleFractions(x.data());
             auto c=evaluate(temperature(),1e5,x,parameters);
             double v=1/molarDensity();
             double p=R*temperature()/(v-c.b)-c.a/(v*(v+c.b));
             cached=evaluate(temperature(),p,x,parameters);
-            cachedT=temperature();cachedRho=density();cachedX=x;
+            cachedT=temperature();cachedRho=density();cachedComposition=stateMFNumber();
         }
         return cached;
     }
@@ -30,7 +32,7 @@ public:
         std::vector<double> x(nSpecies());getMoleFractions(x.data());
         cached=evaluate(temperature(),p,x,parameters);eosCalls++;
         setDensity(meanMolecularWeight()/cached.v);
-        cachedT=temperature();cachedRho=density();cachedX=x;
+        cachedT=temperature();cachedRho=density();cachedComposition=stateMFNumber();
     }
     double enthalpy_mole() const override {
         enthalpyCalls++;return IdealGasPhase::enthalpy_mole()+(stage>=3?state().h:0);
@@ -104,7 +106,7 @@ public:
     }
 private:
     mutable double cachedT=-1,cachedRho=-1;
-    mutable std::vector<double> cachedX;
+    mutable int cachedComposition=-2;
     mutable State cached{};
 };
 }
