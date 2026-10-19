@@ -1,5 +1,11 @@
 # Replication boundaries
 
+`development/cantera-bridge` depends on the pinned Cantera3.2 SDK and
+`development/cantera-liang` adapters. It exposes state properties and net sources
+through a C ABI, with no Cantera/OpenFOAM C++ objects crossing the boundary.
+Its independent ABI client consumes saved FreeFlame profiles for parity checks.
+No production CFD solver depends on this draft yet.
+
 `development/cantera-liang` registers SRK thermo and staged transport with the
 pinned Cantera C++ SDK. It consumes ideal-baseline mechanisms/profiles and the
 liang-properties Ely–Hanley kernel. Its independent steady flames feed the
