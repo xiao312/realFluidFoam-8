@@ -20,7 +20,12 @@ def verify(family,case):
     control=(case/'system/controlDict').read_text()
     if entry(control,'startFrom')!='startTime' or float(entry(control,'startTime'))!=0:
         raise ValueError('Owner policy requires startFrom=startTime and startTime=0')
-    for directory in [case]+[case/('processor'+str(i)) for i in range(8)]:
+    ranks=int(entry((case/'system/decomposeParDict').read_text(),'numberOfSubdomains'))
+    if ranks not in (8,32):raise ValueError('Unqualified MPI rank count')
+    expected={'processor'+str(i) for i in range(ranks)}
+    actual={p.name for p in case.glob('processor[0-9]*') if p.is_dir()}
+    if actual!=expected:raise ValueError('Processor directories differ from declared decomposition')
+    for directory in [case]+[case/('processor'+str(i)) for i in range(ranks)]:
         if not (directory/'0').is_dir(): raise ValueError('Missing original zero fields: '+str(directory))
         for p in directory.iterdir():
             if not p.is_dir(): continue
@@ -41,7 +46,7 @@ def verify(family,case):
     physics['system/controlDict']=hashlib.sha256(normalized.encode()).hexdigest()
     config.update(initial_file_sha256=hashes,
         physical_input_sha256=hashlib.sha256(json.dumps(physics,sort_keys=True).encode()).hexdigest(),
-        verified_start_time_s=0,positive_time_directories=0)
+        verified_start_time_s=0,positive_time_directories=0,mpi_ranks=ranks)
     (case/'fresh-start-inputs.json').write_text(json.dumps(config,indent=2)+'\n')
     print(json.dumps(config,indent=2))
 

@@ -2,6 +2,8 @@
 set -o pipefail
 release=${1:?}; bridge_job=${2:?}; key=${3:?}; mode=${4:?}; build_job=${5:?}
 chemistry=${6:-native}
+execution=${7:-uniform8}
+ranks=8; [[ $execution == bands32 ]] && ranks=32
 . /opt/openfoam8/etc/bashrc
 set -euo pipefail
 job=/work/jobs/$RF_JOB_ID
@@ -32,19 +34,23 @@ ldd "$solver" > "$job/solver-ldd.txt"
 fresh=$release/replication/development/fresh-start
 python3 -B "$fresh/prepare.py" plan energy "$key" "$job/case" --end-us 300 > "$job/case-plan.json"
 python3 -B "$fresh/prepare.py" apply energy "$key" "$job/case" --end-us 300 > "$job/prepare.log"
-python3 -B "$module/case.py" configure "$job" "$bridge_job" "$mode" --chemistry-mode "$chemistry"
+python3 -B "$module/case.py" configure "$job" "$bridge_job" "$mode" --chemistry-mode "$chemistry" --execution-profile "$execution"
 blockMesh -case "$job/case" > "$job/blockMesh.log" 2>&1
 checkMesh -case "$job/case" > "$job/checkMesh.log" 2>&1
 grep -q 'Mesh OK' "$job/checkMesh.log"
 probe=/work/jobs/124878193/openfoam-user/platforms/$WM_OPTIONS/bin/rfPropertyProbe
 printf '%s  %s\n' b1c5a9c56e419bea81c556da391dd473df8011c066202f3fdb6a390683151c03 "$probe" | sha256sum -c - > "$job/probe-verified.txt"
 "$probe" -case "$job/case" -initial > "$job/initial-probe.log" 2>&1
+if [[ $execution == bands32 ]]; then
+ python3 -B "$module/partition.py" plan "$job/case" "$execution" > "$job/partition-plan.json"
+ python3 -B "$module/partition.py" apply "$job/case" "$execution" > "$job/partition-applied.json"
+fi
 python3 -B "$release/replication/development/premixed-paper/check.py" finalize "$job/case" > "$job/finalize.log"
 decomposePar -case "$job/case" > "$job/decompose.log" 2>&1
 python3 -B "$fresh/prepare.py" verify energy "$job/case" > "$job/initial-state-verified.json"
-mpirun --mca btl self,vader,tcp -np 8 "$solver" -case "$job/case" -parallel > "$job/case.log" 2>&1
+mpirun --mca btl self,vader,tcp -np "$ranks" "$solver" -case "$job/case" -parallel > "$job/case.log" 2>&1
 grep -q '^End' "$job/case.log"
-python3 -B "$module/case.py" check "$job" "$bridge_job" "$mode" --chemistry-mode "$chemistry" > "$job/endpoint-check.json"
+python3 -B "$module/case.py" check "$job" "$bridge_job" "$mode" --chemistry-mode "$chemistry" --execution-profile "$execution" > "$job/endpoint-check.json"
 if [[ $mode == build ]]; then
  printf 'PASS: ideal Cantera transport + %s chemistry original-zero smoke; steady speed unqualified\n' "$chemistry" > "$job/qualification-passed.txt"
 else

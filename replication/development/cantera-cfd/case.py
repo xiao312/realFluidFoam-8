@@ -14,6 +14,7 @@ p=argparse.ArgumentParser(description=__doc__)
 p.add_argument('action',choices=['configure','check'])
 p.add_argument('job',type=Path);p.add_argument('bridge_job');p.add_argument('mode',choices=['build','full'])
 p.add_argument('--chemistry-mode',choices=['native','adiabaticCP'],default='native')
+p.add_argument('--execution-profile',choices=['uniform8','bands32'],default='uniform8')
 a=p.parse_args();case=a.job/'case'
 if not a.bridge_job.isdigit():raise ValueError('Numeric bridge job required')
 if a.action=='configure':
@@ -40,14 +41,17 @@ if a.action=='configure':
         model_stage=1,model_options='full',changed_coefficients=['kappa','Dimix'],
         current_native_species_enthalpy=True,chemistry_changed=a.chemistry_mode!='native',
         chemistry_mode=a.chemistry_mode,chemistry_rtol=1e-10,chemistry_atol=1e-18,
-        initialization='generated_original_zero',mode=a.mode),indent=2)+'\n')
+        initialization='generated_original_zero',mode=a.mode,execution_profile=a.execution_profile,
+        mpi_ranks=32 if a.execution_profile=='bands32' else 8),indent=2)+'\n')
 else:
-    latest=times(case,8)[-1];data,_=inspect(case,8,latest)
+    ranks=32 if a.execution_profile=='bands32' else 8
+    latest=times(case,ranks)[-1];data,_=inspect(case,ranks,latest)
     rows=list(csv.DictReader((case/'processor0/front-tracking.csv').open()))
     if not rows or min(float(row['time_s']) for row in rows)!=0:raise ValueError('Not an original-zero trace')
     expected=json.loads((case/'fresh-start-inputs.json').read_text())['end_time_s']
     metadata=json.loads((a.job/'bridge-inputs.json').read_text())
     if metadata['chemistry_mode']!=a.chemistry_mode:raise ValueError('Chemistry mode mismatch')
+    if metadata['execution_profile']!=a.execution_profile:raise ValueError('Execution profile mismatch')
     if a.chemistry_mode=='adiabaticCP' and 'Cantera/native molar formation enthalpies verified' not in (a.job/'case.log').read_text():
         raise ValueError('Missing formation-enthalpy qualification')
     if abs(float(latest)-expected)>2.6e-8:raise ValueError('Endpoint mismatch')

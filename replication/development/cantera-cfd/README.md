@@ -80,3 +80,20 @@ per step for chemistry, diffusion-pair corrections, linear solves, flow equation
 and property updates. This read-only observer uses the standard C++ clock and
 does not change solver fields. Generated smoke and full cases enable it; compare all ranks because
 rank-zero time alone cannot establish load balance or CPU cost.
+
+`executionProfile bands32` is an optional parallel-layout experiment; `uniform8`
+is the unchanged default. It requests 32 scheduler cores and partitions the
+pinned 8000-cell mesh into three bands: original 400-cell products slab, its
+1200 adjacent cells, and the remaining 6400 cells. Each band is distributed
+among all ranks in contiguous chunks; each rank owns 250 cells and 12 or 13
+initially hot cells. This is static load balancing, not mesh refinement or a
+physical model change. OpenFOAM's manual decomposition reads the generated
+`constant/cellDecomposition` label list. The physical initial fields are retained.
+
+`python3 partition.py plan CASE bands32` reports counts without writing;
+`apply` refuses existing processor directories or decomposition data. It checks
+the mesh hash and original hot-slab placement. Full runs require a successful
+smoke with the same execution profile. Compare reconstructed global field values
+with the qualified uniform-eight-rank smoke before launching a full case.
+Fresh-start verification reads the declared rank count and checks every rank
+for original zero fields and absence of positive-time directories.

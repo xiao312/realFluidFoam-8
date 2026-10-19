@@ -31,7 +31,10 @@ and prints placement; `apply` submits the same plan with a deduplicated ledger.
 `python prepare.py plan native phi110 NEW_CASE` is read-only. Apply always invokes
 the original initial-state generator. `python prepare.py verify FAMILY CASE`
 must pass after decomposition and before execution: startTime=0, startFrom=startTime,
-no positive-time directories and complete original 0 fields for all eight ranks.
+no positive-time directories and complete original 0 fields for every declared rank.
+The standard launcher still uses eight ranks. Verification also accepts 32 ranks
+for the separately qualified `cantera-cfd` layout experiment and rejects missing
+or extra processor directories. It records the declared count as `mpi_ranks`.
 No smoke checkpoint is used as a production initial state.
 
 Example longer fresh run: `bash submit.sh plan ROOT RELEASE energy phi110 300`.
