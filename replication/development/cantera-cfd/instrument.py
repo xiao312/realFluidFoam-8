@@ -43,7 +43,7 @@ replace('YEqn.H','            fvScalarMatrix YiEqn',
         '            tmp<fvScalarMatrix> selectedReaction=reaction->R(Yi);\n'
         '            if(canteraTransport.integratesChemistry()) {\n'
         '                selectedReaction=tmp<fvScalarMatrix>(new fvScalarMatrix(Yi,dimMass/dimTime));\n'
-        '                selectedReaction.ref().source()=mesh.V()*canteraTransport.source(i).primitiveField();\n'
+        '                selectedReaction.ref() += canteraTransport.source(i);\n'
         '            }\n            fvScalarMatrix YiEqn')
 replace('YEqn.H','                reaction->R(Yi)','                selectedReaction')
 replace('YEqn.H','                sampledSource=mesh.lookupObject<basicChemistryModel>("chemistryProperties").RR(i);',

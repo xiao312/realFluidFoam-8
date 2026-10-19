@@ -45,6 +45,11 @@ experiment. The CP mode is a separate physical closure, not solely a switch from
 SEULEX to CVODE. For each cell and PIMPLE iteration, the supplied current TPY
 starts an independent integration of duration deltaT. Integrated species sources
 are `rho_start*(Y_final-Y_start)/deltaT` in kg/(m3 s). The sensible-enthalpy source
+uses the native `fvMatrix += volScalarField` assembly convention: the stored
+matrix source is negative cell-volume times RR when the matrix is on the RHS.
+Directly assigning positive V*RR reverses chemistry; failed smoke 124949326
+exposed this error and is excluded from physical comparisons.
+The sensible-enthalpy source
 is `Qdot=-sum(Hf_native*RR)` in W/m3, matching the native energy convention.
 The reactor's final T is diagnostic only; the CFD energy equation updates T.
 Pressure/transport/PIMPLE and thermodynamic property updates retain their placement.
