@@ -80,8 +80,9 @@ Cantera 2.6. Build job 124897210 failed at linking because the compiler used the
 ABI, whereas the selected OF7 and Cantera libraries use the new ABI. Dependent
 flame job 124897805 was cancelled automatically. Job 124898271 then caught an ABI
 preflight failure: inherited CPLUS_INCLUDE_PATH forced old compiler headers even
-with the ABI macro set. The next build clears these inherited include paths and
-uses GCC 11 explicitly (source d015691). CPU/CVODE is enabled;
+with the ABI macro set. Build 124898712 clears these inherited include paths and
+uses GCC 11 explicitly (source d015691). Its ABI preflight passed; dependent
+flame 124898785 waits for build success. CPU/CVODE is enabled;
 DNN and GPU chemistry are disabled. DeepFlame uses an isothermal CV chemistry
 substep while the native OpenFOAM chemistry includes a temperature equation.
 
@@ -95,3 +96,20 @@ Raw results are in the project state directory `solver-comparison-20261019` and
 SCNet `jobs/JOB_ID`. The adjacent JSON records quantitative evidence and hashes.
 The current comparison paragraph in Lark was replaced in place; existing paper
 images were retained.
+
+## Case-sensitive source verification
+
+DeepFlame is exported directly from Git objects with git archive and extracted on
+Linux. The Windows sparse working tree is not a build input. A read-only audit of
+build 124898712 checked all 554 archived files and every path component. It passed:
+`src/dfCombustionModels/CombustionModel` and `combustionModel` remain distinct.
+Only four documented CRLF-to-LF shell/configuration entry conversions differ from
+the archive. No C/C++ content differences were found. A comparison of full file
+paths alone would have missed this directory collision. Archive SHA256 and the
+audit are recorded in the adjacent JSON; future wrappers enforce both checks.
+
+The stock profile adapter reuses the existing trackingCore. At 47.43 us, its last
+5-us medians are 6.602/6.597 cm/s for the left/right temperature markers and
+5.880/5.872 cm/s for OH. Marker disagreement shows that these are early transient
+observations. They must not be compared as matched-age values with the native
+161-us observation. Both histories need the same physical-time window.

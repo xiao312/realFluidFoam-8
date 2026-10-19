@@ -49,6 +49,10 @@ def prepare(action, family, case):
         write('constant/turbulenceProperties', header('turbulenceProperties')+'simulationType laminar;\n')
         write('constant/g', header('g', 'uniformDimensionedVectorField')+
               'dimensions [0 1 -2 0 0 0 0]; value (0 0 0);\n')
+        # dfLowMachFoam constructs a spray cloud even for gas-only cases.
+        # Match the pinned upstream gas-flame tutorial's inactive cloud.
+        write('constant/sprayCloudProperties', header('sprayCloudProperties')+
+              'solution {active false; coupled false; transient no; cellValueSourceCorrection off;}\n')
         write('constant/CanteraTorchProperties', header('CanteraTorchProperties')+'''
 chemistry on;
 CanteraMechanismFile "constant/author-gri30.yaml";

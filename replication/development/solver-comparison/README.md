@@ -58,3 +58,20 @@ nodes could not resolve the package host. Upstream CRLF shell files are normaliz
 in the private build copy. A small executable checks the converted mechanism with
 native Cantera 2.6 before the flame run. Only YAML type names/default phase state
 change for compatibility; NASA coefficients and reactions remain unchanged.
+
+`sampleHistory.C` reuses the qualified flame-tracking core on stock/DeepFlame raw
+line samples. Compile with `g++ -std=c++11 sampleHistory.C -o OUTPUT_BINARY`.
+Run `OUTPUT_BINARY PROFILE_ROOT MANIFEST OUTPUT_CSV`; the manifest has time and
+relative sample-directory columns in increasing time order. It expects the exact
+`axisLine_T_rho_OH_p.xy` and `axisLine_U.xy` columns from prepare.py. This adapter
+uses the existing 780.872245 K / OH=2e-5 markers and 5-us fit, not a new speed
+definition. Raw files must be stable snapshots. Partial/mismatched rows fail.
+
+Source packaging must preserve case. Export DeepFlame with `git archive REV`
+from Git objects and extract on Linux; never copy a Windows working tree as build
+input. Directory names can collide even when full file paths do not. Run
+`python3 source_audit.py ARCHIVE LINUX_SOURCE_TREE` to verify every archived path
+component and file against the build copy. Only documented CRLF normalization of
+shell/configuration entry files is allowed. Output is JSON; mismatches return 1.
+The audit is read-only and ignores added build products. Archive identity must
+also match the recorded SHA256 and pinned Git revision.

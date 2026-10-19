@@ -5,9 +5,9 @@
   "library_build": "124657926",
   "stock_job": "124896761",
   "stock_source": "c18481dc5423c4447ca85c1e69978551a3442090",
-  "deep_build_job": "124897210",
-  "deep_run_job": "124897805",
-  "deep_run_source": "882725ad545113ad57e2ef488270691dda5280a4",
+  "deep_build_job": "124898712",
+  "deep_run_job": "124898785",
+  "deep_run_source": "d015691143dfda5fa4ac1ad844cc34f958b85d9a",
   "reference": {
     "cantera_version": "3.2.0",
     "profile_sha256": "9304d6f5ea3861b5b0ea3783674932f23f036c1e600e5c479c5cc7a8eb48ff9f",
@@ -71,5 +71,48 @@
   "native_stock_byte_identical": {
     "base": true,
     "tight": true
+  },
+  "deep_status": "build running, flame pending build success",
+  "failed_deep_attempts": [
+    {
+      "build": "124897210",
+      "run": "124897805",
+      "reason": "old/new C++ string ABI link failure; dependent run cancelled"
+    },
+    {
+      "build": "124898271",
+      "run": "124898345",
+      "reason": "ABI preflight rejected inherited old compiler headers"
+    }
+  ],
+  "source_archive_audit": {
+    "archive_sha256": "7f114d8ccac2753ab8c31db47dcfaa1204662db6d27f21b24122bd6539ada559",
+    "checked_files": 554,
+    "case_collision_groups": [
+      [
+        "src/dfCombustionModels/CombustionModel",
+        "src/dfCombustionModels/combustionModel"
+      ]
+    ],
+    "normalized_entry_files": [
+      "Allwmake",
+      "bashrc.in",
+      "configure.sh",
+      "src/lagrangian/Allwmake"
+    ],
+    "errors": [],
+    "passed": true,
+    "source_revision": "7cb3294b275525cb8829ada3d3fbc067ab9323eb",
+    "build_job": "124898712"
+  },
+  "stock_early_tracking": {
+    "job": "124896761",
+    "time_s": 4.74296036276e-05,
+    "method": "same trackingCore, T and OH markers, five-microsecond fit; last five-microsecond median",
+    "T_left_cm_s": 6.6021597,
+    "T_right_cm_s": 6.5974352,
+    "OH_left_cm_s": 5.8802689,
+    "OH_right_cm_s": 5.8722524,
+    "qualification": "transient; not a matched-age comparison with native 161 us"
   }
 }

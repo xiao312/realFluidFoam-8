@@ -10,6 +10,7 @@ if [[ $mode == deep-build ]]; then
  "$tool" create -y --offline --no-rc -p "$job/cantera" -f "$root/cache/solver-comparison/dependencies-explicit.txt" > "$job/dependencies.log" 2>&1
  "$tool" list --no-rc -p "$job/cantera" --explicit > "$job/environment-explicit.txt"
  mkdir "$job/deepflame"
+ printf '%s  %s\n' 7f114d8ccac2753ab8c31db47dcfaa1204662db6d27f21b24122bd6539ada559 "$root/cache/solver-comparison/deepflame-7cb3294.tar.gz" | sha256sum -c -
  tar -xzf "$root/cache/solver-comparison/deepflame-7cb3294.tar.gz" -C "$job/deepflame"
  # The pinned upstream stores CRLF shell files. Normalize only the build copy.
  python3 - "$job/deepflame" <<'PY'
@@ -20,6 +21,7 @@ for p in Path(sys.argv[1]).rglob('*'):
         data=p.read_bytes()
         if b'\r\n' in data:p.write_bytes(data.replace(b'\r\n',b'\n'))
 PY
+ python3 -B "$module_path/source_audit.py" "$root/cache/solver-comparison/deepflame-7cb3294.tar.gz" "$job/deepflame" > "$job/source-audit.json"
  build="$job"
 else
  [[ $dependency =~ ^[0-9]+$ ]] || exit 2
