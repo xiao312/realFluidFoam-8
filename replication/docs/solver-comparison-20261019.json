@@ -1,0 +1,75 @@
+{
+  "date": "2026-10-19",
+  "probe_job": "124897206",
+  "probe_source": "c5e1463877eccd7590e86eeb8f960e475688252f",
+  "library_build": "124657926",
+  "stock_job": "124896761",
+  "stock_source": "c18481dc5423c4447ca85c1e69978551a3442090",
+  "deep_build_job": "124897210",
+  "deep_run_job": "124897805",
+  "deep_run_source": "882725ad545113ad57e2ef488270691dda5280a4",
+  "reference": {
+    "cantera_version": "3.2.0",
+    "profile_sha256": "9304d6f5ea3861b5b0ea3783674932f23f036c1e600e5c479c5cc7a8eb48ff9f",
+    "mechanism_sha256": "c6e72c25dbf5af75a16b71042e071aed15ca4fd4a8a854fd8720a820ce1986c6",
+    "original_reference_pressure_Pa": 101325.0,
+    "reference_pressure_Pa": 100000.0,
+    "reference_pressure_override_is_diagnostic": true
+  },
+  "cache_checks": [
+    {
+      "case": "native-base",
+      "samples": 424,
+      "unchanged_samples": 424,
+      "max_absolute_error_J_kg": 2062192.4128493965,
+      "min_temperature_increment_K": 100.00000288936099,
+      "passes_refresh": false
+    },
+    {
+      "case": "native-tight",
+      "samples": 424,
+      "unchanged_samples": 424,
+      "max_absolute_error_J_kg": 2062192.4128493965,
+      "min_temperature_increment_K": 100.00000288936099,
+      "passes_refresh": false
+    }
+  ],
+  "csv_sha256": {
+    "native-base\\chemistry-probe.csv": "a799bb601861f3fadc5ce649a425baa17408dc13c90d43e7b71fa62959cf6b65",
+    "native-tight\\chemistry-probe.csv": "dc5dad2b117a6b07dc50ef40348cb1f2ec77d889c9e6905912745cf584b8ad4d",
+    "stock-base\\chemistry-probe.csv": "a799bb601861f3fadc5ce649a425baa17408dc13c90d43e7b71fa62959cf6b65",
+    "stock-tight\\chemistry-probe.csv": "dc5dad2b117a6b07dc50ef40348cb1f2ec77d889c9e6905912745cf584b8ad4d",
+    "native-base\\enthalpy-cache.csv": "fb10235b6f992fc18d4c71587878bdb14b2310dfdbb9e286590344410097efbd",
+    "native-tight\\enthalpy-cache.csv": "fb10235b6f992fc18d4c71587878bdb14b2310dfdbb9e286590344410097efbd"
+  },
+  "chemistry": {
+    "native-base": {
+      "states": 8,
+      "max_source_vector_L1_relative": 0.00017933560708045893,
+      "max_absolute_mass_fraction_difference": 1.6741010369636378e-08,
+      "max_abs_CH4_source_relative_difference": 0.00013864403706387307
+    },
+    "native-tight": {
+      "states": 8,
+      "max_source_vector_L1_relative": 4.9261347168256025e-05,
+      "max_absolute_mass_fraction_difference": 1.5996935984197158e-08,
+      "max_abs_CH4_source_relative_difference": 5.245209659532346e-05
+    },
+    "stock-base": {
+      "states": 8,
+      "max_source_vector_L1_relative": 0.00017933560708045893,
+      "max_absolute_mass_fraction_difference": 1.6741010369636378e-08,
+      "max_abs_CH4_source_relative_difference": 0.00013864403706387307
+    },
+    "stock-tight": {
+      "states": 8,
+      "max_source_vector_L1_relative": 4.9261347168256025e-05,
+      "max_absolute_mass_fraction_difference": 1.5996935984197158e-08,
+      "max_abs_CH4_source_relative_difference": 5.245209659532346e-05
+    }
+  },
+  "native_stock_byte_identical": {
+    "base": true,
+    "tight": true
+  }
+}
