@@ -19,8 +19,12 @@ if [[ "$action" == apply ]]; then
     ledger="$root/results/heat-release-reservations.tsv"
     exec 9>"$ledger.lock"; flock -x 9
     sha=$(cat "$release/SOURCE_REVISION")
-    if [[ -f "$ledger" ]] && grep -q "$sha" "$ledger"; then echo 'Already submitted; inspect ledger' >&2;exit 2;fi
+    # Legacy rows have no stage: conservatively retain their duplicate guard.
+    if [[ -f "$ledger" ]] && awk -F '\t' -v revision="$sha" -v stage="$stage" \
+        '$3==revision && (NF<4 || $4==stage) {found=1} END {exit !found}' "$ledger"; then
+        echo 'Source/stage already submitted; inspect ledger' >&2;exit 2
+    fi
     id=$(sbatch "${args[@]}")
-    printf '%s\t4\t%s\n' "$id" "$sha" >> "$ledger"
+    printf '%s\t4\t%s\t%s\n' "$id" "$sha" "$stage" >> "$ledger"
     echo "SUBMITTED $id"
 fi

@@ -8,6 +8,9 @@ every cell; saved-field integrals must match the CSV. It does not deploy or rest
 production. The existing observer-only command omits `native`. Each check reserves
 eight cores for at most 30 minutes. Source, executable and library hashes identify
 the result; a successful check establishes source-output equivalence only.
+Reservation identity includes both source SHA and qualification stage, so observer
+and native checks can run once each from the same revision. Legacy three-column
+ledger rows conservatively block repeat submissions for their source SHA.
 
 Observe the chemistry source used by the running premixed energy equation without
 restarting or changing the solver, chemistry or time controls. This module owns a
@@ -32,6 +35,10 @@ includes both fronts; do not equate it with a single-front flame speed.
 `Qdot_used` fields are written only at existing field-write times. CSV resides
 in processor0/heat-release-used.csv. Data start at attachment; there is no
 backfilled in-situ history. Startup time zero is skipped.
+The observer does not deduplicate times across process restarts. Continue into a
+separately identified case segment with fresh CSV paths; in-place history reuse
+is not qualified. Its raw chemistry source equals the combustion source for the
+current laminar model; PaSR/EDC or other closures need separate qualification.
 
 Dependencies: pinned OF8/custom chemistry headers and libraries, wmake, MPI and
 the contained Slurm runner. Dependents: flame comparison plots and project logs.

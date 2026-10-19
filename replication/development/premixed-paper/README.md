@@ -47,6 +47,10 @@ timestep-averaged source, not the instantaneous end-step diagnostic or transport
 terms. The library accessor and baseline source remain unchanged. Qualification
 in `../heat-release` compares the previous binary against this generated solver
 and checks the saved field against the independent read-only source observer.
+This does not qualify a same-directory restart: the flame-speed diagnostic
+intentionally refuses an existing flame-speed.csv. Any continuation must preserve
+the old history and create a separately identified segment with fresh output paths.
+That continuation workflow needs a restart comparison before production use.
 
 `instrument.py plan|apply SOURCE_SOLVER OUTPUT` creates `rfPaperReactingFoam`
 with opt-in diagnostics and unchanged equations. The source accessor is the
