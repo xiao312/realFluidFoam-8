@@ -1,0 +1,118 @@
+# Cantera transport experiment in OpenFOAM
+
+This draft isolates conductivity and species diffusion in the ideal-gas 1D
+flame. It supplies these coefficients from the qualified Cantera C bridge at
+the current pressure, temperature and composition. The solver uses the same
+current-state native species enthalpies as the energy-update experiment.
+In default mode, chemistry integration, native thermodynamics, viscosity, equations, mesh and
+PIMPLE placement remain the recorded baseline. No nonideal CFD is supported yet.
+
+Inputs: pinned OF8/native libraries, a separately qualified bridge binary and
+SDK, explicit bridge model inputs, and an original-zero fresh-start case.
+`constant/canteraBridge` has `libraryPath` and `inputDirectory` (absolute paths),
+`stage 1` and `options full`. Other stages/options fail until their energy and
+chemistry coupling is implemented and qualified. Species order must match exactly.
+Outputs: a separately named `rfCanteraBridgeFoam`, binary/input hashes,
+frozen-state parity report, original-zero verification, Qdot and tracking fields.
+
+Dependencies: `cantera-bridge`, `flame-tracking`, `fresh-start`, the pinned native
+library and OF8 container. This module does not change those sources or active
+runs. Dependents: the ideal-flame transport comparison. No credentials are used.
+Generated files and temporary state stay inside the selected project root;
+source/build/model references are immutable read-only inputs. Each MPI rank owns
+one bridge context. There is no network access from the solver. Earlier immutable
+transport-only builds retain their `rfCanteraTransportFoam` executable name.
+
+The initial and end-step transport update follows the baseline property-update
+placement. Boundary coefficients use each patch's current TPY. Transport queries
+skip source evaluation. Cp and mixture enthalpy remain native, so this experiment
+is not a complete Cantera thermodynamics replacement. Absolute Cantera species
+enthalpies are never inserted into the native sensible-enthalpy equation.
+
+Example: `python3 instrument.py plan RELEASE NEW_SOLVER`, then `apply` for an
+isolated build tree. `submit.sh plan ROOT RELEASE BRIDGE_JOB KEY` performs
+read-only discovery; `apply` submits compilation and a fresh-zero smoke test.
+Full flames require the successful qualification receipt and are generated anew.
+
+Verification: `git diff --check`, Python compilation, Bash syntax, pinned binary
+hash checks, a one-core bridge parity check, and a scheduled eight-rank smoke
+case. Check finite T/Y, original start time zero, source values and transport
+coefficient parity. Passing startup does not establish steady flame speed.
+
+An optional `chemistryMode adiabaticCP` adds the independently qualified Cantera
+constant-pressure reactor. The default `native` preserves the transport-only
+experiment. The CP mode is a separate physical closure, not solely a switch from
+SEULEX to CVODE. For each cell and PIMPLE iteration, the supplied current TPY
+starts an independent integration of duration deltaT. Integrated species sources
+are `rho_start*(Y_final-Y_start)/deltaT` in kg/(m3 s). Species source assembly
+uses the native `fvMatrix += volScalarField` assembly convention: the stored
+matrix source is negative cell-volume times RR when the matrix is on the RHS.
+Directly assigning positive V*RR reverses chemistry; failed smoke 124949326
+exposed this error and is excluded from physical comparisons.
+The sensible-enthalpy source
+is `Qdot=-sum(Hf_native*RR)` in W/m3, matching the native energy convention.
+The reactor's final T is diagnostic only; the CFD energy equation updates T.
+Pressure/transport/PIMPLE and thermodynamic property updates retain their placement.
+
+Only stage1/full is permitted. Molar formation enthalpies divided by each
+library's gas constant must match before the first integration. OF8 uses an older
+CODATA gas constant, 8.9583e-7 higher than pinned Cantera3.2; startup records both
+values and compares the underlying NASA polynomial. Legacy native molecular weights
+differ from Cantera by at most 5.007e-5 relative; startup checks a 6e-5 ceiling
+and prints the measured maximum. Native mass-specific formation heats are used
+in Qdot. Frozen-state conversion predicts at most 0.000102 K equivalent energy
+defect per 50-ns step (0.01149 K over 5 us); this is a known coupling limit, not
+exact mass-basis parity. No species weights or initial fields are silently changed.
+The source diagnostic reads the
+actual selected source; native chemistry is not also advanced. Existing
+transport-only runs continue using their immutable source and binaries.
+`chemistryRtol` and `chemistryAtol` are explicit required controls for CP mode;
+their units differ from native concentration-based ODE tolerances. A separate
+CP smoke must pass before a fresh full flame is submitted.
+
+CP example: `submit.sh plan ROOT RELEASE BRIDGE_JOB phi110 build none adiabaticCP
+REACTOR_QUALIFICATION_JOB`. The reactor receipt must name the same library hash.
+The runtime configuration records mode and tolerances; a full run requires a
+smoke receipt with the same chemistry mode. No reactor checkpoint is reused.
+
+`runtimeProfiling true` writes rank-local `cantera-runtime.csv` with wall seconds
+per step for chemistry, diffusion-pair corrections, linear solves, flow equations
+and property updates. This read-only observer uses the standard C++ clock and
+does not change solver fields. Generated smoke and full cases enable it; compare all ranks because
+rank-zero time alone cannot establish load balance or CPU cost.
+
+`executionProfile bands32` is an optional parallel-layout experiment; `uniform8`
+is the unchanged default. It requests 32 scheduler cores and partitions the
+pinned 8000-cell mesh into three bands: original 400-cell products slab, its
+1200 adjacent cells, and the remaining 6400 cells. Each band is distributed
+among all ranks in contiguous chunks; each rank owns 250 cells and 12 or 13
+initially hot cells. This is static load balancing, not mesh refinement or a
+physical model change. OpenFOAM's manual decomposition reads the generated
+`constant/cellDecomposition` label list. The physical initial fields are retained.
+
+`python3 partition.py plan CASE bands32` reports counts without writing;
+`apply` refuses existing processor directories or decomposition data. It checks
+the mesh hash and original hot-slab placement. Full runs require a successful
+smoke with the same execution profile. Compare reconstructed global field values
+with the qualified uniform-eight-rank smoke before launching a full case.
+Fresh-start verification reads the declared rank count and checks every rank
+for original zero fields and absence of positive-time directories.
+
+`python3 decomposition_parity.py REFERENCE_CASE CANDIDATE_CASE` reconstructs
+global cell order from each mesh's addressing without modifying either case.
+It checks the declared rank count, bijective 8000-cell coverage, exact original
+T/p/U/species values, common final physical time and endpoint differences.
+Inputs must be completed original-zero smoke cases; output is a JSON report.
+Thresholds are explicit in the script and are numerical smoke screens, not
+steady-flame accuracy limits. A failed comparison exits nonzero after printing
+the evidence. This uses the existing ASCII reader and standard Python only.
+
+The optional final launcher argument `strict` sets all linear-solver absolute
+tolerances to 1e-10 and relative tolerances to zero. The default `standard`
+retains the original dictionaries. This isolates decomposition sensitivity to
+linear solves; it does not change the physical fields, timestep controls or
+PIMPLE corrector counts. The selected profile is recorded in `bridge-inputs.json`
+and a full run must use a smoke with the same numerical profile.
+`strict12` retains zero relative tolerances and lowers the absolute tolerance
+to 1e-12 for the next independent convergence check. It does not relax the
+global-field comparison thresholds.

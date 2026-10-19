@@ -5,6 +5,29 @@ processes and can assign distinct CPUs inside their existing affinity union.
 It depends on Linux/Python process APIs only and changes no solver source, field,
 time history or scheduler allocation. Its JSON receipts feed performance reports.
 
+`development/cantera-cfd` depends on `cantera-bridge`, `flame-tracking` and
+`fresh-start`. It builds an isolated ideal-gas transport experiment using
+Cantera conductivity/diffusion and refreshed native species enthalpies.
+It consumes original-zero inputs; it does not replace production thermodynamics
+or chemistry. Its bridge binary must pass separate ABI/property qualification.
+Its optional `bands32` execution profile uses the shared adaptive field reader
+to check the original slab, then writes a manual cell-to-rank assignment.
+`fresh-start` verifies all 32 declared zero-time partitions. No model coefficients
+or physical mesh are changed by this execution profile.
+
+`development/cantera-bridge` depends on the pinned Cantera3.2 SDK and
+`development/cantera-liang` adapters. It exposes state properties and net sources
+through a C ABI, with no Cantera/OpenFOAM C++ objects crossing the boundary.
+Its independent ABI client consumes saved FreeFlame profiles for parity checks.
+No production CFD solver depends on this draft yet.
+
+`development/cantera-bridge` also exposes an experimental closed constant-pressure
+chemistry step through Cantera ReactorNet/CVODES. It depends on the same SDK and
+model adapters. Frozen Python reactor references qualify the ideal closure before
+coupling. `cantera-cfd` has a separately configured adiabatic-CP experiment that
+converts integrated mass-fraction changes into species and sensible-energy
+sources. Transport-only mode remains the default; no nonideal CFD is enabled.
+
 `development/cantera-liang` registers SRK thermo and staged transport with the
 pinned Cantera C++ SDK. It consumes ideal-baseline mechanisms/profiles and the
 liang-properties Ely–Hanley kernel. Its independent steady flames feed the
