@@ -6,7 +6,7 @@ import json
 from pathlib import Path
 
 PAPER_SHA='24163be0124e0fa6cd28ddb1d369b813e64e82bd7446e9f9218a340445aca6fe'
-GREEN=(0,.48,.27); PURPLE=(.60,.1,.65); BLUE=(0,.4,.75)
+GREEN=(0,.48,.27); PURPLE=(.60,.1,.65); BLUE=(0,.4,.75); ORANGE=(.75,.35,0)
 FIG1=(48,53,240,384); CAP1=(48,394,240,424)
 FIG2=(263,53,456,210); CAP2=(263,219,456,239)
 
@@ -33,15 +33,22 @@ def curve(page,data,transform,color,dash=False,marker_every=50):
 def overlay1(page,origin,oxygen,nist):
     ox,oy=origin;ox-=FIG1[0];oy-=FIG1[1]
     # Calibration uses the embedded 775 x 1371-pixel image at 186 x 328.95 pt.
-    # Density: 400 K at x108.9, 1000 K at230.6; rho0 at198.8, rho200 at73.2.
-    a=lambda t,r:(ox+108.9+(t-400)*121.7/600,oy+198.8-r*125.6/200)
-    b=lambda t,k:(ox+87.05+(t-200)*143.55/800,oy+359.2-(k-.02)*124.2/.12)
+    # Embedded raster tick centres: density T400/1000 x242/746, rho0/200 y603.5/80.5;
+    # conductivity T200/1000 x153/750, k.02/.14 y1273/755. Preserve its slight margins.
+    sx=186/775;sy=328.95/1371
+    a=lambda t,r:(ox+50.733+sx*(242+(t-400)*504/600),
+                  oy+54.012+sy*(603.5-r*523/200))
+    b=lambda t,k:(ox+50.733+sx*(153+(t-200)*597/800),
+                  oy+54.012+sy*(1273-(k-.02)*518/.12))
     curve(page,[(float(r['T_K']),float(r['rho_kg_m3'])) for r in oxygen if 225<=float(r['T_K'])<=1000],a,GREEN)
     curve(page,[(float(r['T_K']),float(r['kappa_W_m_K'])) for r in oxygen
-                if .011<float(r['kappa_W_m_K'])<.149],b,GREEN)
+                if float(r['T_K'])>=120 and .011<float(r['kappa_W_m_K'])<.149],b,GREEN)
+    if 'kappa_mass_mapping_W_m_K' in oxygen[0]:
+        curve(page,[(float(r['T_K']),float(r['kappa_mass_mapping_W_m_K'])) for r in oxygen
+                    if float(r['T_K'])>=120 and .011<float(r['kappa_mass_mapping_W_m_K'])<.149],b,ORANGE,True,75)
     for r in nist:
         t=float(r['Temperature (K)'])
-        if int(t)%100:continue
+        if int(t)%100 or t<120:continue
         for transform,value,valid in [(a,float(r['Density (kg/m3)']),t>=300),
                                       (b,float(r['Therm. Cond. (W/m*K)']),True)]:
             if valid:
@@ -89,7 +96,7 @@ def main():
                                         (2,FIG2,CAP2,lambda p,o:overlay2(p,o,critical))]:
         width=clip[2]-clip[0];height=clip[3]-clip[1]
         page=doc.new_page(width=468,height=height+174)
-        text(page,(18,12,450,29),'Liang Fig. %s: property-model comparison'%number,11)
+        text(page,(18,12,450,35),'Liang Fig. %s: property-model comparison'%number,11)
         text(page,(18,35,222,49),'Original paper',8)
         text(page,(246,35,450,49),'Original + our computed data',8)
         for x in [18,246]:
@@ -100,10 +107,11 @@ def main():
         if number==1:
             legend(page,246,bottom+8,'OpenFOAM SRK / new Ely-Hanley',GREEN)
             legend(page,246,bottom+23,'Current NIST (open blue circles)',BLUE)
+            legend(page,246,bottom+38,'Mass-density mapping sensitivity',ORANGE,True)
             note=('Oxygen, 100 atm. Density calls the compiled SRK library. Conductivity uses the explicit\n'
                   'Ely-Hanley shape-factor variant and SRK volume; exact Liang variant remains unverified.\n'
-                  'Below 200 K: NASA Cp is extrapolated and unqualified. Original black curves/triangles\n'
-                  'are Liang model/reference data. New NIST evaluations are a separate reference.')
+                  'Orange: diagnostic mass-density mapping; this is not an established Liang input choice.\n'
+                  'Below 200 K: NASA Cp is extrapolated. Black: paper data; blue: current NIST reference.')
         else:
             legend(page,246,bottom+8,'Computed Tc (green); Pc (purple)',GREEN)
             legend(page,246,bottom+23,'Dashed: CH4/air; solid: H2/air',PURPLE,True)

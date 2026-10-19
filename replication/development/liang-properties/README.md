@@ -19,6 +19,11 @@ It returns W/(m K). It neither selects an EOS nor changes viscosity/diffusion.
 The reference density uses methane's mass per corresponding molar volume.
 All inputs must be finite; nonpositive shape factors/volumes fail explicitly.
 
+The explicit `massDensityShortcut` mapping is a diagnostic variant only. It
+reproduces the omitted molecular-weight factor in the Cantera 3.2 formula,
+using our own kernel and the same SRK state. It does not run a Cantera flame
+or establish the unprovided Liang implementation. Both curves remain labelled.
+
 The oxygen sweep uses its NASA polynomial directly. Values below its stated
 200 K bound are explicitly marked extrapolated; no temperature clipping or
 caloric inversion is used. These values are exploratory, not qualified calorics.

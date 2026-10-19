@@ -9,6 +9,7 @@ namespace rfElyHanley {
 constexpr double R=8314.46261815324, referenceW=16.04, referenceTc=190.4;
 constexpr double referenceVc=.0986, referenceZc=.288, referenceOmega=.011;
 struct Species { double Tc, Pc, Vc, W, omega, cp_R; };
+enum class DensityMapping { molarVolume, massDensityShortcut };
 inline void positive(double value, const char* name) {
     if (!(value>0) || !std::isfinite(value)) throw std::domain_error(name);
 }
@@ -47,15 +48,16 @@ inline double referenceConductivity(double density_g_cm3,double T) {
     return dilute+1e-3*(linear+excess);
 }
 inline double conductivity(double T,double molarVolume,const std::vector<Species>& species,
-    const std::vector<double>& X,const std::vector<double>& partialVolumes) {
+    const std::vector<double>& X,const std::vector<double>& partialVolumes,
+    DensityMapping mapping=DensityMapping::molarVolume) {
     positive(molarVolume,"mixture molar volume");
     const auto n=species.size();
     if(!n || X.size()!=n || partialVolumes.size()!=n) throw std::domain_error("Ely-Hanley input sizes");
     std::vector<Shape> shapes(n); std::vector<double> internal(n);
-    double sumX=0,volumeSum=0;
+    double sumX=0,volumeSum=0,meanW=0;
     for(std::size_t i=0;i<n;++i) {
         if(X[i]<0 || !std::isfinite(X[i])) throw std::domain_error("mole fraction");
-        sumX+=X[i]; volumeSum+=X[i]*partialVolumes[i];
+        sumX+=X[i]; volumeSum+=X[i]*partialVolumes[i];meanW+=X[i]*species[i].W;
         shapes[i]=shape(T,partialVolumes[i],species[i]); const auto s=shapes[i];
         const double mu=referenceViscosity(T/s.f)*std::sqrt(s.f*species[i].W/referenceW)*std::pow(s.h,-2./3.);
         if(!std::isfinite(species[i].cp_R) || species[i].cp_R<2.5-1e-8) throw std::domain_error("ideal Cp/R below 2.5");
@@ -76,7 +78,10 @@ inline double conductivity(double T,double molarVolume,const std::vector<Species
     }
     f/=h; const double W=std::pow(mass,-2)*f*std::pow(h,-8./3.);
     // h maps molar volume, so reference mass density must use methane W.
-    const double referenceDensity=referenceW*h/molarVolume*1e-3;
+    // massDensityShortcut is a named diagnostic for the Cantera-3.2 formula,
+    // not the molar-consistent default and not evidence of Liang's implementation.
+    const double densityW=mapping==DensityMapping::molarVolume?referenceW:meanW;
+    const double referenceDensity=densityW*h/molarVolume*1e-3;
     const double scale=std::sqrt(f*referenceW/W)*std::pow(h,-2./3.);
     const double value=lambdaInternal+scale*referenceConductivity(referenceDensity,T/f);
     positive(value,"Ely-Hanley conductivity"); return value;

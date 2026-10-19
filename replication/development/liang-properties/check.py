@@ -17,7 +17,7 @@ def check(root):
     for i,r in enumerate(oxygen):
         assert float(r['T_K'])==100+i and float(r['p_Pa'])==10132500
         assert int(r['caloric_extrapolated'])==(i<100)
-        for key in ['rho_kg_m3','kappa_W_m_K','cp0_R']:
+        for key in ['rho_kg_m3','kappa_W_m_K','kappa_mass_mapping_W_m_K','cp0_R']:
             assert math.isfinite(float(r[key])) and float(r[key])>0
     residual=max(abs(float(r[k])) for r in critical for k in ['dp_normalized','d2p_normalized'])
     assert residual<1e-10

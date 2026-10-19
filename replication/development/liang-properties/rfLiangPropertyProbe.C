@@ -44,14 +44,15 @@ int main(int argc,char**argv) {
         const double common=readScalar(caloric.lookup("Tcommon"));
         const double lower=readScalar(caloric.lookup("Tlow"));
         std::ofstream o(root+"/oxygen.csv");
-        o<<std::setprecision(16)<<"T_K,p_Pa,rho_kg_m3,kappa_W_m_K,cp0_R,caloric_extrapolated\n";
+        o<<std::setprecision(16)<<"T_K,p_Pa,rho_kg_m3,kappa_W_m_K,kappa_mass_mapping_W_m_K,cp0_R,caloric_extrapolated\n";
         for(int k=0;k<=900;++k) {
             const double T=100+k,p=10132500,rho=oxygen.rho(p,T),v=oxygen.W()/rho;
             const scalarList& coeff=T<common?low:high;
             double cp=0;for(int j=4;j>=0;--j)cp=cp*T+coeff[j];
             rfElyHanley::Species s={oxygen.Tc(),oxygen.Pc(),oxygen.Vc()*1e-3,oxygen.W(),oxygen.omega(),cp};
             const double lambda=rfElyHanley::conductivity(T,v,{s},{1},{v});
-            o<<T<<','<<p<<','<<rho<<','<<lambda<<','<<cp<<','<<(T<lower)<<'\n';
+            const double shortcut=rfElyHanley::conductivity(T,v,{s},{1},{v},rfElyHanley::DensityMapping::massDensityShortcut);
+            o<<T<<','<<p<<','<<rho<<','<<lambda<<','<<shortcut<<','<<cp<<','<<(T<lower)<<'\n';
         }
         std::ofstream c(root+"/critical.csv");
         c<<std::setprecision(16)<<"fuel,phi,Tc_K,Pc_atm,vc_m3_kmol,dp_normalized,d2p_normalized\n";
