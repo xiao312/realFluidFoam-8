@@ -28,7 +28,7 @@ blockMesh -case "$job/case" > "$job/blockMesh.log" 2>&1
 checkMesh -case "$job/case" > "$job/checkMesh.log" 2>&1
 grep -q 'Mesh OK' "$job/checkMesh.log"
 probe="/work/jobs/124878193/openfoam-user/platforms/$WM_OPTIONS/bin/rfPropertyProbe"
-sha256sum -c "$release/replication/development/fresh-start/probe.sha256" > "$job/probe-verified.txt"
+printf '%s  %s\n' b1c5a9c56e419bea81c556da391dd473df8011c066202f3fdb6a390683151c03 "$probe" | sha256sum -c - > "$job/probe-verified.txt"
 "$probe" -case "$job/case" -initial > "$job/initial-probe.log" 2>&1
 python3 -B "$release/replication/development/premixed-paper/check.py" finalize "$job/case" > "$job/finalize.log"
 decomposePar -case "$job/case" > "$job/decompose.log" 2>&1
