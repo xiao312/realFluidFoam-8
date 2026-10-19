@@ -9,6 +9,10 @@ Its optional central products initialization consumes a versioned ideal-gas HP
 seed from the earlier premixed-inlet module, with the original generator commit
 and NASA7 hash recorded. This is a data dependency; Cantera is not required in
 the solver runtime. Both initialization variants use the same diagnostic runner.
+`development/heat-release` loads a read-only observer into these running solvers.
+It depends on the qualified chemistry ABI and OF8 function-object interface,
+and supplies signed source histories and fields to comparison analysis. Its
+on/off replay must pass before any live controlDict attachment.
 
 ```mermaid
 flowchart LR
