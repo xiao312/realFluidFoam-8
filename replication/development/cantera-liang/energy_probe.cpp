@@ -22,7 +22,7 @@ try {
     if(names.size()!=53)throw std::runtime_error("Expected 53 species");
     ThermoFactory::factory()->reg("liang-srk",[](){auto* g=new liang::SrkPhase;g->stage=1;return g;});
     TransportFactory::factory()->reg("liang-staged",[&](){auto* t=new liang::StagedTransport;
-        t->smoothedAlpha=options.smoothedAlpha;t->parameters=parameters;t->stage=stage;t->denseIncrementOnly=options.dense;t->boundedTakahashi=options.bounded;return t;});
+        t->table2=options.table2;t->smoothedAlpha=options.smoothedAlpha;t->parameters=parameters;t->stage=stage;t->denseIncrementOnly=options.dense;t->boundedTakahashi=options.bounded;return t;});
     auto sol=newSolution((input/(stage==1?"ideal.yaml":"srk.yaml")).string(),"",stage==1?"mixture-averaged":"liang-staged");
     auto gas=sol->thermo();if(auto* g=dynamic_cast<liang::SrkPhase*>(gas.get())) {g->smoothedAlpha=options.smoothedAlpha;g->parameters=parameters;g->stage=stage;}
     std::ifstream file(argv[3]);std::string line,value;std::getline(file,line);

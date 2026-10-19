@@ -178,6 +178,11 @@ limits separation of Cases 1/2; those references carry larger uncertainty.
 These are digitized image coordinates, not author numerical data. Extraction
 retains pixel coordinates, calibration and explicit uncertainty for audit.
 The paper marker near phi=1.02 is included in addition to the earlier sweep grid.
+`compare_reference.py RESULTS_JSON REFERENCE_JSON` reports per-point differences
+and per-stage RMS/max errors. Its predeclared comparison screen is max(0.05 cm/s,
+1% of reference) plus image uncertainty. It never extrapolates and compares
+marker series only at matching nominal operating conditions. A screen pass
+does not establish scientific acceptance or identify unpublished author models.
 
 `alpha-probe SPECIES.txt PROFILE.csv NEW_OUTPUT.csv` checks the existing SRK
 kernel at each in-flame zero of the Soave square-root factor. It freezes the
@@ -193,3 +198,11 @@ projected states. It is not a verified Liang closure. `test_alpha.cpp` checks
 enthalpy integrability across the original species crossings; the legacy model
 must reproduce the failing control. `test_srk.cpp` checks both variants' EOS,
 Cp, partial enthalpy and fugacity identities away from and at smooth crossings.
+
+`takahashi-table2` corrects only the Pr=3 row exponent B from Cantera 3.2's
+3.39031 to 2.39031, verified in Takahashi Table 2, printed page 419, and Nguyen's
+`chungTakaTransportI.H`. Use together with `bounded-takahashi`; the existing
+bounded control remains unchanged. `TakahashiTable.h` computes the difference
+of that row and its interpolation weight, leaving all other coefficients and
+limits intact. Build verification checks the actual Cantera function against
+the primary row at Tr=2, outside-interval parity, and pressure continuity.

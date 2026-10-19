@@ -71,7 +71,7 @@ def main():
         ys = yy[xx == x]
         if len(ys): rows.append(point(x, float(np.median(ys)), 5, .015))
     black = rgb.max(axis=2) < 100
-    for x in range(170, 1150, 4):
+    for x in range(182, 1150, 4):
         ys = np.where(black[170:680, x])[0]+170
         if not len(ys): continue
         # The top stroke below the title is the curve; later strokes are legend text.

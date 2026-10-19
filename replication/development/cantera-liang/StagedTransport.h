@@ -1,5 +1,6 @@
 #pragma once
 #include "SrkPhase.h"
+#include "TakahashiTable.h"
 #include "../liang-properties/ElyHanley.H"
 #include "cantera/transport/HighPressureGasTransport.h"
 // Exported by the pinned Cantera 3.2 SDK, but not declared in its header.
@@ -12,6 +13,7 @@ public:
     bool denseIncrementOnly=false;
     bool boundedTakahashi=false;
     bool smoothedAlpha=false;
+    bool table2=false;
     size_t boundedPairCalls=0;
     std::vector<Species> parameters;
     size_t conductivityCalls=0,diffusionCalls=0;
@@ -43,6 +45,7 @@ public:
             if(bounded!=tr)boundedPairCalls++;
             double pr=p/(xi*m_Pcrit[i]+xj*m_Pcrit[j]);
             double factor=Cantera::takahashiCorrectionFactor(pr,bounded);
+            if(table2)factor+=takahashiTable2Delta(pr,bounded);
             if(!(factor>0 && std::isfinite(factor)))throw std::runtime_error("Invalid bounded Takahashi factor");
             m_P_corr_ij(i,j)=factor;
         }
