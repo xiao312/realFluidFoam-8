@@ -57,12 +57,19 @@ def main():
         with target.open() as stream:rows=[{k:float(v) for k,v in row.items()} for row in csv.DictReader(stream)]
         if len(rows)<10 or not all(math.isfinite(v) for row in rows for v in row.values()):
             raise ValueError('Invalid reconstructed flux')
+        if 'pure_species_total_W_m2' not in rows[0]:
+            raise ValueError('Rebuild energy-probe: pure-species diagnostic columns are missing')
+        if record['stage']<3 and any(r['pure_minus_partial_W_m2']!=0 for r in rows):
+            raise ValueError('Ideal-enthalpy control has a nonzero pure/partial difference')
         values=[r['total_W_m2'] for r in rows];scale=max(abs(r['conductive_W_m2']) for r in rows)
         if scale<=0:raise ValueError('No conductive flux scale')
+        pure_values=[r['pure_species_total_W_m2'] for r in rows]
         reports.append(dict(record,profile_sha256=digest(profile),
             input_sha256={p.name:digest(p) for p in inputs.iterdir() if p.is_file()},
             total_range_W_m2=max(values)-min(values),endpoint_difference_W_m2=values[-1]-values[0],
             peak_conductive_W_m2=scale,range_over_peak_conduction=(max(values)-min(values))/scale,
+            pure_species_range_W_m2=max(pure_values)-min(pure_values),
+            maximum_pure_minus_partial_W_m2=max(abs(r['pure_minus_partial_W_m2']) for r in rows),
             maximum_mass_diffusion_sum_kg_m2s=max(abs(r['mass_diffusion_sum_kg_m2s']) for r in rows)))
     result=dict(binary_sha256=checksum[0],manifest_sha256=digest(manifest),
                 audit_script_sha256=digest(Path(__file__)),profiles=reports,scientific_acceptance=False)

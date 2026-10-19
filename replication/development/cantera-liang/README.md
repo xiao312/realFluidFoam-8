@@ -228,6 +228,17 @@ output, and records profile/input hashes, flux range, endpoint difference and
 diffusive mass-flux closure. This is a reconstructed face flux, not the exact
 discrete Flow1D residual. Compare identical models across refinement levels.
 
+The energy probe also reconstructs a separately labelled pure-species enthalpy
+diffusion flux. Liang p.1734 applies the departure formula to individual species
+and distinguishes their mass-weighted enthalpy from mixture enthalpy. This makes
+pure-species versus partial-molar diffusion enthalpy a testable interpretation,
+not a confirmed implementation detail. The probe holds the saved flame, mixture
+enthalpy, chemistry and transport coefficients fixed and changes only the
+enthalpy multiplying each diffusive mass flux. It never changes the phase's
+thermodynamic API or a flame solution. In the ideal case both fluxes must agree.
+`pure_species_total_W_m2` and `pure_minus_partial_W_m2` expose this diagnostic;
+the existing `total_W_m2` remains the partial-molar reconstruction.
+
 `takahashi-high-t` is a diagnostic that removes only the reduced-temperature
 upper clamp at 5, retaining the lower clamp at 1 and requiring both
 `bounded-takahashi` and `takahashi-table2`. This tests an implementation detail
