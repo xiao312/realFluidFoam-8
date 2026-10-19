@@ -199,5 +199,25 @@
     "status": "running after red/green probe and parallel smoke"
   },
   "lark_comparison_section": "https://qcnwovvb1xop.feishu.cn/docx/KgobdGw8CoIfRCxI2BvcoFYEnCf#doxcnWu6E53VgOF3CbYTLwvIdzb",
-  "lark_energy_section": "https://qcnwovvb1xop.feishu.cn/docx/KgobdGw8CoIfRCxI2BvcoFYEnCf#doxcn82dCpZuP5yM38TqoOunyzf"
+  "lark_energy_section": "https://qcnwovvb1xop.feishu.cn/docx/KgobdGw8CoIfRCxI2BvcoFYEnCf#doxcn82dCpZuP5yM38TqoOunyzf",
+  "native_final": {
+    "job": "124885085",
+    "scheduler_state": "COMPLETED",
+    "exit_code": "0:0",
+    "simulation_time_us": 200.01806325130363,
+    "last_5us_primary_median_cm_s": {
+      "T": 7.125828756384328,
+      "OH": 7.2324008539968325
+    },
+    "steady_state_accepted": false
+  },
+  "energy_first_window": {
+    "simulation_time_us": 55.41806325130013,
+    "valid_primary_rows_per_job": 4,
+    "native_T_cm_s": 6.421956899722037,
+    "native_OH_cm_s": 6.048480875774868,
+    "corrected_T_cm_s": 6.427042206429062,
+    "corrected_OH_cm_s": 6.044994196046607,
+    "qualification": "first valid tracking frame only; no causal speed conclusion"
+  }
 }

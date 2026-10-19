@@ -168,3 +168,10 @@ The correction's speed effect and restart/energy-balance qualification are pendi
 See the [energy draft evidence](https://github.com/xiao312/realFluidFoam-8/blob/77b0c6dc203b239487e61ef2007332de93899d7a/replication/docs/energy-update-20261019.md).
 The existing Lark comparison and energy paragraphs were replaced in place; paper
 images were not duplicated or changed by these startup observations.
+
+At 17:29 CST the unchanged native job completed its 200.018-us endpoint (exit 0).
+The last 5-us primary-marker medians are 7.1258 cm/s (temperature) and 7.2324 cm/s
+(OH), still below Cantera and not accepted as steady. The corrected case's first
+valid frame at 55.418 us gives 6.4270/6.0450 cm/s, versus 6.4220/6.0485 for the
+unchanged native case at the same time (temperature/OH, both sides pooled). This
+is only one valid tracking frame; it does not yet establish a speed effect.
