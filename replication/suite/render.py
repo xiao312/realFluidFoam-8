@@ -226,7 +226,7 @@ def render_all(inventory, styles, layers, contours, output, dpi):
             l,t,r,b=rect
             x0=int((l-crop[0])*dpi/72)-3;x1=int((r-crop[0])*dpi/72)+4
             y0=int((t-crop[1])*dpi/72)-3;y1=int((b-crop[1])*dpi/72)+4
-            mask[y0:y1,x0:x1]=False
+            mask[max(0,y0):min(mask.shape[0],y1),max(0,x0):min(mask.shape[1],x1)]=False
         unchanged=float(np.mean(np.all(source_pixels[mask]==overlay_pixels[mask],axis=1)))
         if unchanged!=1: raise ValueError(f"Original frame changed outside data panels and legend: {key}")
         records[key]={"size_pt":[crop[2]-crop[0],crop[3]-crop[1]],"pixels":list(actual),"standalone_font":family,
