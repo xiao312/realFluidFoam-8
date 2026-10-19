@@ -15,13 +15,14 @@ p.add_argument('action',choices=['configure','check'])
 p.add_argument('job',type=Path);p.add_argument('bridge_job');p.add_argument('mode',choices=['build','full'])
 p.add_argument('--chemistry-mode',choices=['native','adiabaticCP'],default='native')
 p.add_argument('--execution-profile',choices=['uniform8','bands32'],default='uniform8')
-p.add_argument('--numerical-profile',choices=['standard','strict'],default='standard')
+p.add_argument('--numerical-profile',choices=['standard','strict','strict12'],default='standard')
 a=p.parse_args();case=a.job/'case'
 if not a.bridge_job.isdigit():raise ValueError('Numeric bridge job required')
 if a.action=='configure':
-    if a.numerical_profile=='strict':
+    if a.numerical_profile!='standard':
         path=case/'system/fvSolution';text=path.read_text()
-        text,n=re.subn(r'\btolerance\s+[^;]+;','tolerance 1e-10;',text)
+        tolerance={'strict':'1e-10','strict12':'1e-12'}[a.numerical_profile]
+        text,n=re.subn(r'\btolerance\s+[^;]+;','tolerance '+tolerance+';',text)
         if n!=2:raise ValueError('Unexpected linear-solver tolerance declarations')
         text,n=re.subn(r'\brelTol\s+[^;]+;','relTol 0;',text)
         if n!=4:raise ValueError('Unexpected linear-solver relative tolerance declarations')

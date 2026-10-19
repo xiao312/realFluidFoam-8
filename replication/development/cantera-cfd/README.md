@@ -113,3 +113,6 @@ retains the original dictionaries. This isolates decomposition sensitivity to
 linear solves; it does not change the physical fields, timestep controls or
 PIMPLE corrector counts. The selected profile is recorded in `bridge-inputs.json`
 and a full run must use a smoke with the same numerical profile.
+`strict12` retains zero relative tolerances and lowers the absolute tolerance
+to 1e-12 for the next independent convergence check. It does not relax the
+global-field comparison thresholds.

@@ -8,7 +8,7 @@ numerics=${11:-standard}
 [[ $mode == build || $mode == full ]] || exit 2
 [[ $chemistry == native || $chemistry == adiabaticCP ]] || exit 2
 [[ $execution == uniform8 || $execution == bands32 ]] || exit 2
-[[ $numerics == standard || $numerics == strict ]] || exit 2
+[[ $numerics == standard || $numerics == strict || $numerics == strict12 ]] || exit 2
 ranks=8; [[ $execution == bands32 ]] && ranks=32
 [[ $bridge_job =~ ^[0-9]+$ && $key =~ ^phi(090|095|100|105|110|115|120|125|130|135|140)$ ]] || exit 2
 root=$(realpath -e "$root")
@@ -31,10 +31,10 @@ if [[ $mode == full ]]; then
  else
   ! grep -q '"execution_profile": "bands32"' "$root/jobs/$build_job/bridge-inputs.json"
  fi
- if [[ $numerics == strict ]]; then
-  grep -q '"numerical_profile": "strict"' "$root/jobs/$build_job/bridge-inputs.json"
+ if [[ $numerics != standard ]]; then
+  grep -q '"numerical_profile": "'"$numerics"'"' "$root/jobs/$build_job/bridge-inputs.json"
  else
-  ! grep -q '"numerical_profile": "strict"' "$root/jobs/$build_job/bridge-inputs.json"
+  ! grep -q '"numerical_profile": "strict' "$root/jobs/$build_job/bridge-inputs.json"
  fi
 fi
 hours=1; [[ $mode == full ]] && hours=8
