@@ -1,5 +1,10 @@
 # Replication boundaries
 
+`validation/flame-speed` evaluates Nguyen 2022 Eq.40 from copied 1-D checkpoints.
+It depends on the contained environment, qualified real-fluid libraries and
+saved complete species fields. It produces chemistry/diffusion/gradient CSVs
+and fixed-OH measurements for figure analysis, without advancing the solver.
+
 ```mermaid
 flowchart LR
   U[Upstream source pin] --> R[Fork revision]
