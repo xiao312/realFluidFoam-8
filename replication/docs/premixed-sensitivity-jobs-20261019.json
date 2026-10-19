@@ -1,0 +1,18 @@
+{
+  "case_source": "191fd8fe16a53dfd6fbdf043364875119a329f11",
+  "binary_source": "a438f6414a1d2820cbc3de3c0a4d3336afa434db",
+  "binary_build": "124870644",
+  "binary_sha256": "e3ef56491e44c2dfdd79826805f992ed8220901643ac14554c38ca8e81e6b385",
+  "library_build": "124657926",
+  "donor_job": "124864929",
+  "checkpoint_s": 0.0000799834968798,
+  "end_s": 0.0000999834968798,
+  "snapshot": "2026-10-19T12:18:38+08:00",
+  "jobs": [
+    {"key": "dt100", "id": "124873143", "dt_s": 1e-7, "ranks": 8, "reserved_core_hours": 16, "state": "RUNNING", "input_manifest_sha256": "e25a6b55a958597dedefb3b9ff894aeb0e379c9c3f8c11351bfd4f98fdaad566"},
+    {"key": "dt50", "id": "124873144", "dt_s": 5e-8, "ranks": 8, "reserved_core_hours": 16, "state": "RUNNING", "input_manifest_sha256": "3ddcd8577f1757b8d3b21bfb9cf83051828974e3c3a3f1ee363eeddfe7afd051"},
+    {"key": "dt25", "id": "124873146", "dt_s": 2.5e-8, "ranks": 8, "reserved_core_hours": 16, "state": "RUNNING", "input_manifest_sha256": "03d3beb1ba79db58728a878d4151681804c94b6b0b9b0953781be6991ed5972e"}
+  ],
+  "qualification": {"id": "124873486", "source": "de62ba41edc08f3248df7871a1e8f13f3cb43920", "dependency": "afterany:124873143:124873144:124873146", "reserved_core_hours": 0.166667},
+  "limit": "Original job exit may reflect inherited-output-phase check failure; use separate qualified endpoint and field checks. No scientific acceptance."
+}

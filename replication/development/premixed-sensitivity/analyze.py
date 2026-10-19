@@ -31,6 +31,28 @@ def tracking(data, side):
             'fit_window_s': [float(t[0]), float(t[-1])]}
 
 
+def paired_difference(rows_a, rows_b, start, end):
+    """Interpolate only within shared coverage; never pair unequal timestamps."""
+    differences = {}
+    for side in ['left', 'right']:
+        for stage in STAGES:
+            for level in LEVELS:
+                a = select(rows_a, stage, side, level, start-1e-6, end+1e-6)
+                b = select(rows_b, stage, side, level, start-1e-6, end+1e-6)
+                low = max(start, a['time_s'][0], b['time_s'][0])
+                high = min(end, a['time_s'][-1], b['time_s'][-1])
+                if high-low < 3e-6:
+                    raise ValueError('Insufficient common coverage for paired comparison')
+                grid = np.linspace(low, high, int(round((high-low)/5e-7))+1)
+                delta = 100*(np.interp(grid, a['time_s'], a['speed_m_s'])
+                             - np.interp(grid, b['time_s'], b['speed_m_s']))
+                differences[f'{side}|{stage}|{level}'] = {
+                    'median_difference_cm_s': float(np.median(delta)),
+                    'max_abs_difference_cm_s': float(np.max(np.abs(delta))),
+                    'interpolated_window_s': [float(low), float(high)]}
+    return differences
+
+
 def analyze(inputs, output, reference=None):
     datasets = {key: load(path) for key, path in inputs.items()}
     start = max(min(float(r['time_s']) for r in rows) for rows in datasets.values())
@@ -72,9 +94,12 @@ def analyze(inputs, output, reference=None):
         stage_difference = {k: ma[k]-mb[k] for k in ma}
         track_difference = {f"{x['side']}|{x['level']}": x['local_density_weighted_cm_s']-y['local_density_weighted_cm_s']
                             for x, y in zip(ca['tracking'], cb['tracking'])}
+        paired = paired_difference(datasets[a], datasets[b], end-5e-6, end)
         summary['temporal_comparisons'][a+' minus '+b] = {
             'median_difference_cm_s': stage_difference, 'tracking_difference_cm_s': track_difference,
-            'within_0_5_cm_s': max(abs(v) for v in [*stage_difference.values(), *track_difference.values()]) <= .5}
+            'paired_physical_time': paired,
+            'within_0_5_cm_s': max([v['max_abs_difference_cm_s'] for v in paired.values()]
+                                  + [abs(v) for v in track_difference.values()]) <= .5}
     for ax, title in zip(axes[0], ['Source used in OH solve', 'Instantaneous Eq.(40)']):
         ax.set(xlabel='Physical time (µs)', ylabel='Speed at OH=2e−5 (cm/s)', title=title)
     axes[1, 0].set(xlabel='OH mass fraction × 10⁶', ylabel='Median Eq.(40) (cm/s)',

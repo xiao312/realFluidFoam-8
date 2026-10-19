@@ -46,6 +46,9 @@ it by less than its output interval. Do not reset the saved time index silently.
 Tracking uses the fitted contour velocity relative to local fluid velocity,
 multiplied by local/unburned density; laboratory contour velocity is also retained.
 All three OH levels and both sides remain in the numerical summary.
+Paired source-stage comparisons interpolate within common physical-time coverage,
+because the saved index changes output phase. Raw curves and medians remain
+separate; interpolation adds no simulation steps or spatial resolution.
 
 `gate.py CSV --end-us 79.9834968798` is a fast failure signal on recorded solver
 output. It rejects stage disagreement or marker spread above 0.5 cm/s during

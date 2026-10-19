@@ -5,13 +5,23 @@ from pathlib import Path
 import tempfile
 import unittest
 import numpy as np
-from analyze import tracking
+from analyze import tracking, paired_difference
 from gate import evaluate, LEVELS, STAGES
 from prepare import prepare
 from check import check_progress
 
 
 class StudyTests(unittest.TestCase):
+    def test_comparison_aligns_different_sampling_phases(self):
+        def history(offset):
+            return [dict(time_s=str(t), side=side, stage=stage, OH_level=str(level),
+                         status='valid', speed_m_s=str(.06+1e4*t), x_m='.0019',
+                         U_local='0', rho_local='20', rho_unburned='100')
+                    for t in np.arange(0, 10e-6, 5e-7)+offset
+                    for side in ['left', 'right'] for stage in STAGES for level in LEVELS]
+        paired = paired_difference(history(0), history(2e-7), 2e-6, 8e-6)
+        self.assertLess(max(v['max_abs_difference_cm_s'] for v in paired.values()), 1e-10)
+
     def test_completion_uses_solver_endpoint_not_output_phase(self):
         log = 'Time = 9.99834968798e-05\nCourant Number mean: 0.08 max: 0.084\nEnd\n'
         self.assertEqual(check_progress(log, 9.95834968798e-5,
