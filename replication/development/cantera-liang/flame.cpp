@@ -81,7 +81,7 @@ try {
     }
     std::ofstream counters(output/"callbacks.txt");
     if(auto* g=dynamic_cast<liang::SrkPhase*>(gas.get()))counters<<"eos "<<g->eosCalls<<" cp "<<g->cpCalls<<" partial_enthalpy "<<g->partialCalls<<'\n';
-    if(auto* t=dynamic_cast<liang::StagedTransport*>(sol->transport().get()))counters<<"conductivity "<<t->conductivityCalls<<" diffusion "<<t->diffusionCalls<<'\n';
+    if(auto* t=dynamic_cast<liang::StagedTransport*>(sol->transport().get()))counters<<"conductivity "<<t->conductivityCalls<<" diffusion "<<t->diffusionCalls<<" negative_partial_volume_calls "<<t->negativePartialVolumeCalls<<'\n';
     std::cout<<"COMPLETED stage="<<stage<<" phi="<<phi<<" speed_cm_s="<<100*u[0]<<std::endl;
 } catch(const std::exception& e) {std::cerr<<e.what()<<std::endl;return 1;}
 }

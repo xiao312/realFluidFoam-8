@@ -17,7 +17,9 @@ Tc [K], Pc [Pa], Vc [m3/kmol], W [kg/kmol], omega, and ideal Cp/R. It takes
 mole fractions, partial molar volumes [m3/kmol], mixture molar volume, and T.
 It returns W/(m K). It neither selects an EOS nor changes viscosity/diffusion.
 The reference density uses methane's mass per corresponding molar volume.
-All inputs must be finite; nonpositive shape factors/volumes fail explicitly.
+All inputs must be finite; nonpositive shape factors or mixture volume fail.
+Partial molar volumes can be negative. The shape correlation bounds their
+reduced values to [0.5,2], as it does for other out-of-range values.
 
 The explicit `massDensityShortcut` mapping is a diagnostic variant only. It
 reproduces the omitted molecular-weight factor in the Cantera 3.2 formula,

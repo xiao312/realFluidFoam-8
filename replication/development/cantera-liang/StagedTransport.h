@@ -9,6 +9,7 @@ public:
     int stage=2;
     std::vector<Species> parameters;
     size_t conductivityCalls=0,diffusionCalls=0;
+    size_t negativePartialVolumeCalls=0;
     std::string transportModel() const override {return "liang-staged";}
     void init(Cantera::ThermoPhase* gas,int mode=0) override {
         Cantera::MixTransport::init(gas,mode);
@@ -26,6 +27,7 @@ public:
         if(stage<4)return Cantera::MixTransport::thermalConductivity();
         std::vector<double> x(m_nsp),v(m_nsp),cp(m_nsp);
         m_thermo->getMoleFractions(x.data());m_thermo->getPartialMolarVolumes(v.data());
+        if(*std::min_element(v.begin(),v.end())<0)negativePartialVolumeCalls++;
         m_thermo->getCp_R_ref(cp.data());
         std::vector<rfElyHanley::Species> s;
         for(size_t k=0;k<m_nsp;k++) {

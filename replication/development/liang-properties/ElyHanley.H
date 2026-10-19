@@ -15,7 +15,10 @@ inline void positive(double value, const char* name) {
 }
 struct Shape { double f,h; };
 inline Shape shape(double T,double V,const Species& s) {
-    positive(T,"Ely-Hanley T"); positive(V,"Ely-Hanley partial molar volume");
+    positive(T,"Ely-Hanley T");
+    // Partial molar volumes can be negative, including trace/absent species.
+    // The corresponding-states correlation bounds reduced volume to [0.5,2].
+    if(!std::isfinite(V)) throw std::domain_error("Ely-Hanley partial molar volume");
     positive(s.Tc,"Ely-Hanley Tc"); positive(s.Pc,"Ely-Hanley Pc");
     positive(s.Vc,"Ely-Hanley Vc"); positive(s.W,"Ely-Hanley W");
     const double t=std::max(.5,std::min(2.,T/s.Tc));
