@@ -1,8 +1,9 @@
 #!/bin/bash
-set -eo pipefail
+set -o pipefail
 release=${1:?}; mode=${2:?}
 . /opt/openfoam8/etc/bashrc
 set -euo pipefail
+[[ $WM_PROJECT_VERSION == 8 ]] || exit 2
 job="/work/jobs/$RF_JOB_ID"
 export WM_PROJECT_USER_DIR="$job/openfoam-user"
 export FOAM_USER_APPBIN="$WM_PROJECT_USER_DIR/platforms/$WM_OPTIONS/bin"
