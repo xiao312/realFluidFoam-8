@@ -43,3 +43,15 @@ Verification: Python compilation, shell syntax, start-policy negative checks,
 scheduled mesh/density checks, binary hashes, earliest runtime tracking time=0,
 and matching native/energy phi110 initial fields. Completion uses the existing
 finite-field/tracking check and does not establish steady convergence.
+
+`python monitor.py ROOT JOB_ID [JOB_ID ...]` reads scheduler state, tracking
+endpoints and saved Qdot fields without modifying jobs. It supports only the
+declared uniform 8000-cell, 4-mm one-dimensional mesh and eight ranks, checking
+that mesh before integrating Qdot over x. Outputs are JSON: first/latest tracking
+times, primary-marker speeds, and saved heat-release extrema (W/m3) and integral
+(W/m2). Incomplete checkpoints are reported and skipped, never called healthy.
+The integral covers both fronts. Qdot is the solver's chemistry energy source,
+not an instantaneous-source flame-speed estimate. This monitor depends on the
+existing adaptive ASCII field reader and standard Python; no new dependency or
+remote mutation is introduced. Verify on a completed job and an active job;
+first tracking time must be zero for these fresh-start families.
