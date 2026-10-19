@@ -1,5 +1,14 @@
 # Heat-release monitoring
 
+Native field qualification: `submit.sh plan|apply ROOT IMAGE RELEASE native`
+builds the premixed draft solver in an isolated job, replays the completed products
+startup for one identical step with the old and new binaries, and compares all
+original fields. The new `Qdot` must equal independently observed `Qdot_used` in
+every cell; saved-field integrals must match the CSV. It does not deploy or restart
+production. The existing observer-only command omits `native`. Each check reserves
+eight cores for at most 30 minutes. Source, executable and library hashes identify
+the result; a successful check establishes source-output equivalence only.
+
 Observe the chemistry source used by the running premixed energy equation without
 restarting or changing the solver, chemistry or time controls. This module owns a
 loadable OF8 function object, scheduled qualification and a guarded controlDict
@@ -29,13 +38,22 @@ the contained Slurm runner. Dependents: flame comparison plots and project logs.
 No credentials are read. Compilation and test runs occur only on compute nodes;
 libraries, temporary state and evidence remain under the selected job directory.
 Existing library products and solver binaries are never overwritten.
+The qualification job's monitor-lib directory becomes a live runtime dependency
+after attachment. Preserve that directory while any attached run remains active.
 
 Verification: scheduled wmake and dependency checks; replay a copied completed
 startup with the monitor on/off, compare all original written numerical field
 bodies, and independently integrate saved Qdot_used values to check CSV totals.
-Only after PASS may attach.py plan/apply CASE LIBRARY QUALIFICATION_JOB add the
+Only after PASS may attach.py plan/apply CASE QUALIFICATION_JOB_DIRECTORY add the
 monitor. It saves the original controlDict plus before/after hashes and uses an
 atomic file replacement. It changes only a function-object entry. Reload happens
 through the case's existing runTimeModifiable setting. Verify new CSV output and
 absence of function-object errors in every live run. This is qualification of
 an observer, not acceptance of a chemical model or simulation result.
+
+`plot.py MANIFEST OUTPUT` consumes reviewed CSV snapshots through a JSON list of
+`{job, label, csv}` entries. It exports signed heat-release, total power per area
+and temperature histories with visible legends and input hashes. Sampling starts
+at live attachment, so the figure never extends a curve back to ignition. Plotting
+alone depends on the project's numpy/matplotlib analysis environment. Example:
+`python plot.py histories.json OUTPUT`; expected outputs are PNG/PDF and provenance.

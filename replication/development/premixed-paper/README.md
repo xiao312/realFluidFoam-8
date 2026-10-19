@@ -38,6 +38,16 @@ First production endpoint is 0.2 ms, not an assertion of relaxed flame speed.
 
 ## In-situ diagnostic
 
+The generated draft solver also registers `Qdot` (W/m3, positive exothermic),
+refreshes it immediately after `reaction->correct()` on every outer iteration,
+and uses that same field in the energy equation. `AUTO_WRITE` saves it at ordinary
+field-output times; `NO_READ` avoids reusing a stale source on restart. Before
+the first chemistry correction it is zero. It contains the combustion model's
+timestep-averaged source, not the instantaneous end-step diagnostic or transport
+terms. The library accessor and baseline source remain unchanged. Qualification
+in `../heat-release` compares the previous binary against this generated solver
+and checks the saved field against the independent read-only source observer.
+
 `instrument.py plan|apply SOURCE_SOLVER OUTPUT` creates `rfPaperReactingFoam`
 with opt-in diagnostics and unchanged equations. The source accessor is the
 registered `basicChemistryModel::RR(OH)` (already kg/m3/s), not a matrix source

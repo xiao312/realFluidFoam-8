@@ -24,7 +24,22 @@ def instrument(action, source, output):
     replace(main,'    turbulence->validate();','    turbulence->validate();\n    FlameSpeedDiagnostics flameSpeed(mesh);')
     replace(main,'        runTime.write();','        #include "endStepDiagnostics.H"\n        runTime.write();')
     replace(output/"Make/files",'$(FOAM_USER_APPBIN)/rfReactingFoam','$(FOAM_USER_APPBIN)/rfPaperReactingFoam')
+    replace(output/"createFields.H", 'Info<< "Creating field dpdt\\n" << endl;', '''// Persist the exact combustion source used by EEqn, without another chemistry solve.
+volScalarField Qdot
+(
+    IOobject
+    (
+        "Qdot", runTime.timeName(), mesh,
+        IOobject::NO_READ, IOobject::AUTO_WRITE
+    ),
+    mesh,
+    dimensionedScalar(dimEnergy/dimVolume/dimTime, 0)
+);
+
+Info<< "Creating field dpdt\\n" << endl;''')
     species=output/"YEqn.H"
+    replace(species, '    reaction->correct();', '    reaction->correct();\n    Qdot = reaction->Qdot();')
+    replace(output/"EEqn.H", 'reaction->Qdot()', 'Qdot')
     replace(species,'            fvScalarMatrix YiEqn','''            const bool sampleOH=flameSpeed.due() && Yi.name()=="OH";
             autoPtr<volScalarField> sampledExplicit;
             scalarField sampledSource;

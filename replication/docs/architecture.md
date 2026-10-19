@@ -13,6 +13,10 @@ the solver runtime. Both initialization variants use the same diagnostic runner.
 It depends on the qualified chemistry ABI and OF8 function-object interface,
 and supplies signed source histories and fields to comparison analysis. Its
 on/off replay must pass before any live controlDict attachment.
+The premixed draft solver now owns a registered `Qdot` energy-source field;
+heat-release qualification depends on its generator and compares the new binary
+against the previous executable plus the qualified observer. Existing running
+jobs retain their executable and load only the observer.
 
 ```mermaid
 flowchart LR
