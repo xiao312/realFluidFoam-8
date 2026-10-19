@@ -64,6 +64,13 @@ python replication/development/solver-comparison/analyze.py SNAPSHOT CVODE_REFER
 
 Expected result on the unchanged library: nonzero exit and
 `FAIL: species enthalpy does not refresh after thermo.correct()`.
+Static lineage check: the downloaded OF6 solver snapshot 3cc6aaca and OF6
+thermophysical-library snapshot 61f86014 contain the same pattern: heList_ is
+filled by init() during construction, hei() returns it, and hePsiThermo::correct()
+calls calculate() without refreshing the species cache. This suggests an upstream
+lineage issue rather than a new solver-development regression. No OF6 runtime
+probe was run, and this does not identify the private code used for paper results.
+
 The next isolated physics change should refresh species enthalpy at the current
 pressure and temperature, then rerun phi=1.10 with all other settings unchanged.
 Do not combine it with chemistry tolerance, transport, or pressure-reference edits.

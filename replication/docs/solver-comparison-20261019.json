@@ -163,5 +163,11 @@
       "src/thermophysicalModels/basic/psiThermo/hePsiThermo.C": "0ccb5f23759b8ce90f27d708ac71afcf22173ef6bbe2a96efdf1c5bea9114d50"
     },
     "matches_git_objects": true
+  },
+  "cache_static_lineage": {
+    "realFluidFoam-6": "3cc6aaca8e792c03c57011172092103b258f941c",
+    "realFluidThermophysicalModels-6": "61f86014ef3f4277d04a348c83777d6a20d24cf3",
+    "same_constructor_only_cache_pattern": true,
+    "OF6_runtime_probe": false
   }
 }
