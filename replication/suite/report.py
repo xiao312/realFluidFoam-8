@@ -11,7 +11,10 @@ def status(item, config, metrics):
     key=item["id"]
     if key=="2022-fig06": return config["methane"]["status"]+". Open blue triangles: our SRK values; original red curves and black triangles retained. PR is in numerical checks."
     if key=="2025-fig06": return config["nitrogen"]["status"]+". Open blue circles: our PR; open teal circles: our SRK density."
-    if key=="2022-fig12": return config["premixed"]["status"]+". Open blue/orange squares: OH gas-relative estimates. Inlet speed is not measured flame speed."
+    if key=="2022-fig12":
+        cfg=config["premixed"]
+        keytext="Open blue squares: OH gas-relative estimates; open teal circles: temperature-front estimates." if cfg.get("include_temperature") else "Open squares: OH gas-relative estimates."
+        return cfg["status"]+". "+keytext+f" OH threshold {metrics['premixed']['primary_OH_level']:g}, final {metrics['premixed']['primary_window_s']*1e6:g} microseconds. Inlet speed is not measured flame speed."
     if key in {"2022-fig08","2022-fig09","2022-fig10","2022-fig11"}:
         cases=metrics["counterflow"]
         relevant=["oxy-1","oxy-200"] if key=="2022-fig08" else [{"09":"oxy-1","10":"oxy-200","11":"air-100"}[key[-2:]]]

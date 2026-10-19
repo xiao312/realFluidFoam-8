@@ -99,6 +99,9 @@ def main():
     write_json(output/"data/series.json",layers)
     print("Extracted counterflow profiles and premixed speed diagnostics.",flush=True)
     rendering=render_all(inventory,styles,layers,contours,output,config["dpi"])
+    if config["premixed"].get("group_by_method"):
+        from premixed_diagnostics import render as render_premixed_diagnostics
+        render_premixed_diagnostics(config,inputs,output)
     build(inventory,config,metrics,output)
     inputs.verify()
     checkout=REPLICATION.parent

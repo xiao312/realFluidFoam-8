@@ -10,6 +10,12 @@ It does not submit jobs, change live cases, merge solver drafts or declare scien
 `campaign.example.json` describes a local evidence bundle. Copy it to an ignored `*.local.json` file.
 Paths are relative to an explicit project root, except the two read-only source PDFs.
 Each dataset records its source revision, build, scheduler jobs and scientific status separately.
+Premixed `primary_OH_level` selects one fixed isoline for the whole sweep (default 5e-5);
+`group_by_method` uses one marker key across conditions, and `include_temperature` adds
+the independent temperature-front estimate. Missing isolines are recorded as rejected
+measurements, never silently replaced by another threshold. `require_run_receipts`
+checks the exported run release/build against the manifest. Speed windows use the
+last requested duration only; earlier spatial samples do not determine marker validity.
 Do not substitute the plotting revision for the revision that produced the data.
 `source_revision` identifies the run/case release. `builds` identifies the compiled
 library source, preserved build evidence hash, product hashes and runtime SIF hash.
@@ -50,6 +56,10 @@ legend for our markers, lines or fields. The gallery also supplies run status.
 Legend positions are recorded in PDF points in `styles.json`; measured legend bounds
 are excluded from the original-frame pixel comparison, alongside data panels.
 The renderer checks that each legend remains inside the unchanged figure canvas.
+For a grouped premixed sweep, `premixed_diagnostics.py` also renders current spatial
+profiles, explicitly front-relative profiles and short-window speed histories.
+These supplemental diagnostics have no corresponding paper panels; they never
+shift the Figure 12 comparison or its reference data.
 Counterflow additions use solid lines, keeping species colours. Property additions use open blue markers.
 Figure 8 replaces only the field interiors, with the original axes and colour bars retained.
 Streamlines are interpolated for display; temperature uses the actual nonuniform mesh edges.

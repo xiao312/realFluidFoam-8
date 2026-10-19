@@ -198,6 +198,11 @@ def render_all(inventory, styles, layers, contours, output, dpi):
         if key not in styles: continue
         style=styles[key];crop=item["crop"]
         selected=[s for s in layers if s["figure"]==key]
+        if key=="2022-fig12":
+            keys=list(dict.fromkeys((s["label"],s["color"],s["marker"]) for s in selected))
+            if len(keys)>len(style["legend"]):raise ValueError("Premixed legend needs more inspected positions")
+            style=dict(style,legend=[dict(position,label=label,color=color,marker=marker)
+                       for position,(label,color,marker) in zip(style["legend"],keys)])
         original=Image.open(output/"originals"/(key+".png"))
         fig,ax=canvas(plt,crop)
         clipped=curves(ax,selected,style)

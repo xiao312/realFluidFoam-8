@@ -134,16 +134,36 @@ def premixed(config, inputs, output):
     cfg = config["premixed"]
     data = read_json(inputs.file(cfg["snapshot"]))
     layers, records = [], []
+    primary_level=cfg.get("primary_OH_level",5e-5)
+    primary_window=min(cfg["windows_s"])
     for index, job in enumerate(data["jobs"]):
+        if cfg.get("require_run_receipts"):
+            receipt=job["validation_inputs"]
+            if "source="+cfg["source_revision"] not in receipt or "build_job="+cfg["build_job"] not in receipt:
+                raise ValueError(f"Premixed identity mismatch: {job['job']}")
         record = {"job":job["job"],"phi":job["metadata"]["config"]["phi"],
-                  "binary_sha256":job["binary_sha256"],"inlet_m_s":job["metadata"]["config"]["inlet_speed_m_s"],"estimates":[]}
+                  "binary_sha256":job["binary_sha256"],"inlet_m_s":job["metadata"]["config"]["inlet_speed_m_s"],
+                  "end_s":max(s["time_s"] for s in job["samples"]),"estimates":[],"rejected_estimates":[]}
         for level in cfg["OH_levels"]:
-            rows = track(job,level)
             for window in cfg["windows_s"]:
-                result = estimate(rows,job["runtime"]["unburned_density_kg_m3"],window)
-                record["estimates"].append(dict(OH_level=level,window_s=window,**result))
-        chosen = next(r for r in record["estimates"] if r["OH_level"]==5e-5 and r["window_s"]==min(cfg["windows_s"]))
-        layers.append(series("2022-fig12","speed","speed",[record["phi"]],[chosen["OH_speed_cm_s"]],
-                             f"Job {job['job']}, OH estimate",color=["#165bbb","#d47b00"][index%2],marker="s"))
+                tail=dict(job,samples=[s for s in job["samples"] if s["time_s"]>=record["end_s"]-window-1e-12])
+                try:
+                    rows=track(tail,level)
+                    result=estimate(rows,job["runtime"]["unburned_density_kg_m3"],window)
+                    record["estimates"].append(dict(OH_level=level,window_s=window,**result))
+                except ValueError as error:
+                    record["rejected_estimates"].append(dict(OH_level=level,window_s=window,reason=str(error)))
+        chosen=next((r for r in record["estimates"] if r["OH_level"]==primary_level and r["window_s"]==primary_window),None)
+        record["plotted_estimate"]=chosen
+        if chosen is not None:
+            grouped=cfg.get("group_by_method",False)
+            label=f"Our OH, Y={primary_level:g}" if grouped else f"Our OH: {job['job']}"
+            layers.append(series("2022-fig12","speed","speed",[record["phi"]],[chosen["OH_speed_cm_s"]],
+                                 label,color="#165bbb" if grouped else ["#165bbb","#d47b00"][index%2],marker="s"))
+            if cfg.get("include_temperature",False):
+                layers.append(series("2022-fig12","speed","speed",[record["phi"]],[chosen["temperature_speed_cm_s"]],
+                                     "Our temperature front",color="#009688",marker="o"))
         records.append(record)
-    return layers, {"status":cfg["status"],"method":"rho/rho_u*(U-dx_OH/dt); thermal crosscheck Uu-dx_dTmax/dt; no source-term Eq40 evaluation", "jobs":records}
+    if not layers:raise ValueError("No valid premixed estimates for the requested isoline/window")
+    return layers, {"status":cfg["status"],"primary_OH_level":primary_level,"primary_window_s":primary_window,
+                    "method":"rho/rho_u*(U-dx_OH/dt); thermal crosscheck Uu-dx_dTmax/dt; no source-term Eq40 evaluation", "jobs":records}
