@@ -29,7 +29,7 @@ replace('rfReactingFoam.C','    turbulence->validate();',
         '    RuntimeTimers runtimeTimers(mesh);\n'
         '    scalarField canteraFormationHeats(Y.size());\n'
         '    scalarField canteraWeights(Y.size());\n'
-        '    forAll(Y,i) {canteraFormationHeats[i]=composition.Hf(i);canteraWeights[i]=composition.W(i);}\n'
+        '    forAll(Y,i) {canteraFormationHeats[i]=composition.Hf(i);canteraWeights[i]=composition.Wi(i);}\n'
         '    canteraTransport.setFormationHeats(canteraFormationHeats,canteraWeights);\n'
         '    canteraTransport.update(T,p,Y,kappa,Dimix);\n    turbulence->validate();')
 replace('rfReactingFoam.C','        // ---\n        #include "endStepDiagnostics.H"',
