@@ -48,3 +48,33 @@ Startup jobs: 124864532 (cooler), 124864535 (products). Each must pass compilati
 manufactured sampling tests, mesh checks, finite normalized endpoint checks and
 numerical field equality with diagnostics on/off before its production submission.
 These checks establish a runnable experiment, not a relaxed flame or paper agreement.
+
+## Submission and qualification snapshot, 10:23 Asia/Shanghai
+
+Equilibrium startup 124864535 completed in 2 min 47 s and passed all checks:
+1,352 numerical field bodies matched with diagnostics on/off, no mismatches,
+species-sum error 9.29e-13, all 120 diagnostic samples valid. Its 1-ns endpoint
+peak is 2229.48898 K. Production **124864929 is RUNNING**, reaching about
+0.597 microseconds with peak T=2230.084 K at this snapshot. This short transient
+does not establish a sustained flame or a better final speed.
+
+Cooler startup **124864532 is RUNNING** after 9 min 20 s; its diagnostics-on
+replay has reached its final 1-ns step, with peak T=1399.98301 K. Qualification
+is not yet complete. Production **124865412 is PENDING, Reason=Dependency**,
+with `afterok:124864532`, invalid-dependency cancellation enabled, eight CPUs
+and a 24-hour limit. The submitted wrapper independently checks the exact PASS
+record and source before executing the original full runner. A failed check
+cannot start production. Controller source is
+`b4db782babeb23a5f81d865edbe297cfde71f3ea`; runnable source remains 9a02703.
+
+The cooler and equilibrium builds have the same solver binary SHA-256 as the
+original paper runs:
+`687a2f1494346bdfe9e64f52fdc1fd8cf6569dd9528538850e5401d3d13b6d8a`.
+The differences are initialized fields, not a different reacting executable.
+Original jobs 124862517 and 124863132 were both confirmed RUNNING at this check.
+No original job was cancelled, restarted or edited.
+
+Remote control access intermittently failed or landed on a login host without
+`python3`; those full-plan/submission attempts exited before sbatch. The eventual
+submission and scheduler dependency were verified. No cluster environment or
+source release was altered to work around this connectivity issue.
