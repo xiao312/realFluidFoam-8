@@ -28,12 +28,12 @@ wmake "$job/probe-source" > "$job/probe-build.log" 2>&1
 python3 -B "$comparison/probe_case.py" native base "$comparison/chemistry-states.json" "$job/probe" > "$job/probe-prepare.log"
 blockMesh -case "$job/probe" > "$job/probe-mesh.log" 2>&1
 set +e
-rfCheckEnthalpyUpdate -case "$job/probe" -legacy > "$job/legacy-probe.log" 2>&1
+"$FOAM_USER_APPBIN/rfCheckEnthalpyUpdate" -case "$job/probe" -legacy > "$job/legacy-probe.log" 2>&1
 legacy_status=$?
 set -e
 [[ $legacy_status == 1 ]]
 grep -q 'ENTHALPY_CHECK' "$job/legacy-probe.log"
-rfCheckEnthalpyUpdate -case "$job/probe" > "$job/refreshed-probe.log" 2>&1
+"$FOAM_USER_APPBIN/rfCheckEnthalpyUpdate" -case "$job/probe" > "$job/refreshed-probe.log" 2>&1
 grep -q 'failures=0' "$job/refreshed-probe.log"
 printf 'PASS: unchanged cache fails; current species enthalpy passes\n' > "$job/enthalpy-probe-passed.txt"
 tracking="$release/replication/development/flame-tracking"
