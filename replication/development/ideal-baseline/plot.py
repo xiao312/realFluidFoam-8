@@ -65,7 +65,7 @@ def main():
             rows=sorted([r for r in cfd if r['label']==label],key=lambda r:r['phi'])
             ax.plot([r['phi'] for r in rows],[r['speed_cm_s'] for r in rows],'s--',markersize=3,label=label)
     else:
-        ax.text(.04,.93,'Our ideal-gas solver: qualification / runs pending',transform=ax.transAxes,fontsize=7)
+        ax.text(.04,.93,'Our CFD runs are active; converged speeds pending',transform=ax.transAxes,fontsize=7)
     ax.set(xlim=(.916,1.437),ylim=(4.92,8.03),xlabel='Equivalence Ratio',ylabel='Laminar Flame Speed (cm/s)')
     ax.xaxis.set_major_locator(MultipleLocator(.1));ax.xaxis.set_minor_locator(MultipleLocator(.02))
     ax.yaxis.set_major_locator(MultipleLocator(.5));ax.yaxis.set_minor_locator(MultipleLocator(.1))
@@ -87,7 +87,14 @@ def main():
     paper.plot([to_x(r['phi']) for r in visible],[to_y(r['speed_cm_s']) for r in visible],
         color='#00894c',marker='o',mfc='white',ms=3,lw=1.2,ls='--')
     overlay.text(.03,.075,'Green circles: Cantera, author GRI30, 298 K, ideal gas',fontsize=8,color='#00894c')
-    overlay.text(.03,.035,'Paper pixels retained. Our solver result pending; no CFD speed plotted.',fontsize=8)
+    if a.cfd:
+        for label in dict.fromkeys(r['label'] for r in cfd):
+            rows=sorted([r for r in cfd if r['label']==label and .916<=r['phi']<=1.437],key=lambda r:r['phi'])
+            paper.plot([to_x(r['phi']) for r in rows],[to_y(r['speed_cm_s']) for r in rows],
+                marker='s',ms=3,lw=1,ls='--',label=label)
+        paper.legend(loc='upper center',bbox_to_anchor=(.5,-.08),frameon=False,fontsize=7)
+    else:
+        overlay.text(.03,.035,'Paper pixels retained. Our CFD runs are active; converged speeds pending.',fontsize=8)
     overlay.savefig(a.output/'ideal-paper-overlay.png',dpi=200)
     overlay.savefig(a.output/'ideal-paper-overlay.pdf')
     plt.close(overlay)
