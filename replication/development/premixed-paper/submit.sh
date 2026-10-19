@@ -2,7 +2,7 @@
 set -Eeuo pipefail
 action=${1:?}; root=${2:?}; image=${3:?}; release=${4:?}; key=${5:?}; mode=${6:?}; smoke=${7:-}
 [[ "$action" == plan || "$action" == apply ]] || exit 2
-[[ "$key" == phi110-dt100 || "$key" == phi110-dt050 ]] || exit 2
+[[ "$key" == phi110-dt100 || "$key" == phi110-dt050 || "$key" == phi110-cool1400 || "$key" == phi110-equilibrium ]] || exit 2
 [[ "$mode" == smoke || "$mode" == full ]] || exit 2
 bash "$release/replication/environment/workspace.sh" plan "$root" >/dev/null
 for path in "$image" "$release"; do [[ $(realpath -e "$path") == "$root/"* ]] || exit 2; done

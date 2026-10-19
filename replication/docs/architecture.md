@@ -5,6 +5,10 @@ generator, property probe, field reader and contained environment. It creates
 central-ignition two-front cases and an isolated diagnostic solver, then supplies
 stage-labelled in-situ Eq.(40) histories to plotting. It changes no library
 physics. The instrumented solver must match diagnostics-off fields before use.
+Its optional central products initialization consumes a versioned ideal-gas HP
+seed from the earlier premixed-inlet module, with the original generator commit
+and NASA7 hash recorded. This is a data dependency; Cantera is not required in
+the solver runtime. Both initialization variants use the same diagnostic runner.
 
 ```mermaid
 flowchart LR

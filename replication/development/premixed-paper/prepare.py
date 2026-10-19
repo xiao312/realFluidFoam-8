@@ -7,6 +7,7 @@ from pathlib import Path
 import re
 import subprocess
 import sys
+from initialization import products_fields,scalar_field,seed_for
 
 MODULE=Path(__file__).resolve().parent
 FLAMES=MODULE.parents[1]/"validation/flames"
@@ -21,12 +22,16 @@ def configuration(key,mode):
     cfg=json.loads((MODULE/"cases.json").read_text())[key]
     if mode not in ("smoke","full"): raise ValueError("Expected smoke/full")
     if abs(cfg["length_m"]/cfg["cells"]-5e-7)>1e-15: raise ValueError("Paper mesh is 0.5 um")
-    return dict(cfg,key=key,mode=mode,ranks=8,pressure_Pa=10132500,unburned_temperature_K=298,
+    result=dict(cfg,key=key,mode=mode,ranks=8,pressure_Pa=10132500,unburned_temperature_K=298,
         end_time_s=1e-9 if mode=="smoke" else 2e-4,initial_delta_t_s=1e-10,max_co=.1,
         write_interval_s=1e-9 if mode=="smoke" else 1e-5,
         diagnostic_interval_steps=1 if mode=="smoke" else 10,
         maximum_allocated_core_hours=8 if mode=="smoke" else 192,
         status="paper-method reconstruction; numerical and ignition/domain independence unqualified")
+    if result.get('initialization')=='equilibrium_slab':
+        seed,digest=seed_for(result)
+        result.update(kernel_temperature_K=seed['burned']['temperature_K'],seed_sha256=digest)
+    return result
 
 
 def prepare(action,key,output,mode):
@@ -42,9 +47,15 @@ def prepare(action,key,output,mode):
     mesh=mesh.replace("(200 1 1)","("+str(cfg["cells"])+" 1 1)")
     write("system/blockMeshDict",mesh)
     write("0/p",(output/"0/p").read_text().replace("lInf 0.002","lInf "+str(cfg["length_m"])))
-    values=[temperature((i+.5)*cfg["length_m"]/cfg["cells"],cfg["length_m"],cfg["kernel_width_m"],cfg["kernel_temperature_K"]) for i in range(cfg["cells"])]
-    field="internalField nonuniform List<scalar>\n"+str(len(values))+"\n(\n"+"\n".join(format(v,".16g") for v in values)+"\n);"
-    write("0/T",re.sub(r"internalField\s+uniform\s+[^;]+;",field,(output/"0/T").read_text()))
+    if cfg.get('initialization')=='equilibrium_slab':
+        values,receipt=products_fields(output,cfg)
+    else:
+        values=[temperature((i+.5)*cfg["length_m"]/cfg["cells"],cfg["length_m"],cfg["kernel_width_m"],cfg["kernel_temperature_K"]) for i in range(cfg["cells"])]
+        receipt={'recipe':'fresh mixture, compact cosine hot spot','temperature_min_K':min(values),
+            'temperature_max_K':max(values),'heated_cells':sum(v>298 for v in values),
+            'symmetric':max(abs(a-b) for a,b in zip(values,values[::-1]))<1e-8}
+    write('initialization-check.json',json.dumps(receipt,indent=2)+'\n')
+    write("0/T",scalar_field((output/"0/T").read_text(),values,'T'))
     # Ignition exists entirely in 0/T. A stale setFields file must not reset it.
     (output/"system/setFieldsDict").unlink()
     from_header='FoamFile { version 2.0; format ascii; class dictionary; object '
@@ -63,7 +74,7 @@ runTimeModifiable true;
     pilot=json.loads((output/"pilot.json").read_text())
     pilot.update(length_m=cfg["length_m"],cells=cfg["cells"],spacing_m=5e-7,
         kernel_width_m=cfg["kernel_width_m"],kernel_temperature_K=cfg["kernel_temperature_K"],
-        kernel_shape="compact cosine",initial_velocity_m_s=0.)
+        kernel_shape="products slab" if cfg.get('initialization')=='equilibrium_slab' else "compact cosine",initial_velocity_m_s=0.)
     write("pilot.json",json.dumps(pilot,indent=2)+"\n")
     write("paper-case.json",json.dumps(cfg,indent=2)+"\n")
 

@@ -79,3 +79,31 @@ Production interpretation additionally requires two separated fronts, left/right
 agreement, stationary travelling profiles and timestep/domain/kernel checks.
 Plots always distinguish source stage, front and threshold, and show ignition
 history rather than selecting a window merely because it matches the paper.
+
+## Initialization sensitivity, 19 October
+
+Draft `draft/premixed-ignition` extends paper-draft f020edc; its integration
+ancestor remains 99d64f7. Existing dt100/dt050 jobs continue unchanged.
+`phi110-cool1400` changes only the fresh cosine kernel peak to 1400 K relative
+to dt100. `phi110-equilibrium` uses a uniform equilibrium-products slab in the
+central 0.2 mm, with abrupt interfaces as in the earlier half-state setup.
+It changes T and all 53 species together; pressure and zero velocity remain
+uniform. Both variants retain 4 mm / 8,000 cells, two outlets, maxCo=.1 and
+maxDeltaT=1e-7 s. Neither is claimed to reproduce unpublished paper inputs.
+
+The versioned `equilibrium-seed.json` is the exact phi-110-liang input from
+replication-suite commit 674b5e289e707918843ea7038b03af2f38170b09. Its provenance
+includes Cantera 3.2.0, author NASA7 hash, mass fractions and HP conservation
+checks. It is ideal-gas HP equilibrium, not real-fluid equilibrium; the real-fluid
+solver must relax it. No Cantera runtime dependency is added. The top-hat
+products seed and cosine hot fresh seed test distinct initialization recipes,
+not a pure temperature perturbation of one another. No later external heating.
+
+`prepare.py plan|apply` validates seed pressure/phi, fresh state, all species,
+normalization and NASA7 input hash. Generated `initialization-check.json` records
+symmetry, species-sum error, changed-cell count and seed hash. The existing
+on/off smoke qualification is required independently before each full run.
+Verify the generated initial fields, then compare temperature peaks, actual
+timesteps, source-stage/marker sensitivity and post-ignition propagation.
+The two new full allocations reserve at most 384 core-hours together; two
+startup allocations add at most 16. They do not replace or cancel prior jobs.
