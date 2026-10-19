@@ -19,6 +19,8 @@ rf_ct_context* rf_ct_create(const char* inputs,int stage,const char* options,
 void rf_ct_destroy(rf_ct_context* context);
 size_t rf_ct_species_count(const rf_ct_context* context);
 int rf_ct_species_name(rf_ct_context* context,size_t index,char* name,size_t capacity);
+/* Species molecular weight in kg/kmol; required caller-owned output. */
+int rf_ct_species_weight(rf_ct_context* context,size_t index,double* weight);
 const char* rf_ct_error(const rf_ct_context* context);
 int rf_ct_evaluate(rf_ct_context* context,double temperature,double pressure,
                    const double* mass_fractions,size_t n,rf_ct_properties* properties,

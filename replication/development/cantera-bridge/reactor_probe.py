@@ -31,6 +31,7 @@ def main():
     lib.rf_ct_error.argtypes = [c.c_void_p]
     lib.rf_ct_error.restype = c.c_char_p
     lib.rf_ct_species_name.argtypes = [c.c_void_p, c.c_size_t, c.c_char_p, c.c_size_t]
+    lib.rf_ct_species_weight.argtypes = [c.c_void_p, c.c_size_t, pointer]
     lib.rf_ct_advance_cp.argtypes = [c.c_void_p, c.c_double, c.c_double, pointer, c.c_size_t,
                                    c.c_double, c.c_double, c.c_double, pointer, pointer]
     lib.rf_ct_evaluate.argtypes = [c.c_void_p, c.c_double, c.c_double, pointer, c.c_size_t,
@@ -63,6 +64,10 @@ def main():
             check(lib.rf_ct_species_name(context, k, error, len(error)))
             if error.value.decode() != name:
                 raise ValueError('Species ordering mismatch')
+            weight = c.c_double()
+            check(lib.rf_ct_species_weight(context, k, c.byref(weight)))
+            if abs(weight.value-ref['molecular_weights'][k])>1e-12:
+                raise ValueError('Molecular-weight mismatch')
         output = []
         for row in ref['cases']:
             h0 = enthalpy(row['T0'], row['p'], array(*row['Y0']))

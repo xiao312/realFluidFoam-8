@@ -49,8 +49,14 @@ is `Qdot=-sum(Hf_native*RR)` in W/m3, matching the native energy convention.
 The reactor's final T is diagnostic only; the CFD energy equation updates T.
 Pressure/transport/PIMPLE and thermodynamic property updates retain their placement.
 
-Only stage1/full is permitted. Native formation enthalpies must match the bridge
-reference values before the first integration. The source diagnostic reads the
+Only stage1/full is permitted. Molar formation enthalpies must match the bridge
+reference values before the first integration. Legacy native molecular weights
+differ from Cantera by at most 5.007e-5 relative; startup checks a 6e-5 ceiling
+and prints the measured maximum. Native mass-specific formation heats are used
+in Qdot. Frozen-state conversion predicts at most 0.000102 K equivalent energy
+defect per 50-ns step (0.01149 K over 5 us); this is a known coupling limit, not
+exact mass-basis parity. No species weights or initial fields are silently changed.
+The source diagnostic reads the
 actual selected source; native chemistry is not also advanced. Existing
 transport-only runs continue using their immutable source and binaries.
 `chemistryRtol` and `chemistryAtol` are explicit required controls for CP mode;

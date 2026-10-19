@@ -124,6 +124,16 @@ extern "C" int rf_ct_evaluate(rf_ct_context* context,double temperature,double p
     catch(...){context->error="Unknown state-evaluation error";return 1;}
 }
 
+extern "C" int rf_ct_species_weight(rf_ct_context* context,size_t index,double* weight) {
+    if(!context)return 1;
+    try {
+        if(!weight || index>=rf_ct_species_count(context))throw std::runtime_error("Invalid molecular-weight query");
+        *weight=context->solution->thermo()->molecularWeight(index);
+        context->error.clear();return 0;
+    }catch(const std::exception& e){context->error=e.what();return 1;}
+    catch(...){context->error="Unknown molecular-weight error";return 1;}
+}
+
 extern "C" int rf_ct_advance_cp(rf_ct_context* context,double temperature,double pressure,
                                  const double* y,size_t n,double duration,
                                  double relativeTolerance,double absoluteTolerance,

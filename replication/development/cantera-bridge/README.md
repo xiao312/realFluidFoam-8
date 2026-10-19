@@ -74,6 +74,12 @@ mass and elemental conservation, and specific enthalpy. Repeat states in reverse
 order to detect history leakage. Nonideal tests establish conservation only;
 they do not independently validate the custom thermodynamic closure.
 
+`rf_ct_species_weight` returns each species molecular weight in kg/kmol. Compare
+molar enthalpies when auditing models with different atomic-weight conventions;
+equal molar polynomials do not imply equal mass-specific enthalpies. The
+read-only `audit_mass_basis.py INPUTS REACTOR_REFERENCE` uses Python Cantera3.2
+to quantify the native-weight enthalpy defect on the frozen reactor states.
+
 Prepare references with `python reactor_reference.py plan|apply IDEAL_YAML
 PROFILE NEW_JSON` using the pinned Python Cantera environment. Submit the C ABI
 test with `bash reactor-submit.sh plan|apply ROOT RELEASE SDK BUILD INPUTS

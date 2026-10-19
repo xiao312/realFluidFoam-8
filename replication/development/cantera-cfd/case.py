@@ -47,7 +47,7 @@ else:
     expected=json.loads((case/'fresh-start-inputs.json').read_text())['end_time_s']
     metadata=json.loads((a.job/'bridge-inputs.json').read_text())
     if metadata['chemistry_mode']!=a.chemistry_mode:raise ValueError('Chemistry mode mismatch')
-    if a.chemistry_mode=='adiabaticCP' and 'Cantera/native formation enthalpies verified' not in (a.job/'case.log').read_text():
+    if a.chemistry_mode=='adiabaticCP' and 'Cantera/native molar formation enthalpies verified' not in (a.job/'case.log').read_text():
         raise ValueError('Missing formation-enthalpy qualification')
     if abs(float(latest)-expected)>2.6e-8:raise ValueError('Endpoint mismatch')
     data.update(first_time_s=0,latest_time_s=float(latest),scientific_acceptance=False)

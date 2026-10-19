@@ -44,6 +44,7 @@ def main():
                                 h=reactor.phase.enthalpy_mass))
     output = dict(cantera_version=ct.__version__, relative_tolerance=1e-10,
                   absolute_tolerance=1e-18, species=gas.species_names,
+                  molecular_weights=gas.molecular_weights.tolist(),
                   element_mass_matrix=[[gas.n_atoms(k, e)*gas.atomic_weight(e)/gas.molecular_weights[k]
                                         for k in range(gas.n_species)] for e in range(gas.n_elements)],
                   hashes={name: hashlib.sha256(getattr(args, name).read_bytes()).hexdigest()

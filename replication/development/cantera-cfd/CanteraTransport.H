@@ -87,19 +87,36 @@ public:
     void operator=(const CanteraTransport&)=delete;
     bool integratesChemistry() const {return integrate_;}
     const Foam::volScalarField& source(Foam::label k) const {return sources_[k];}
-    void setFormationHeats(const Foam::scalarField& heats) {
+    void setFormationHeats(const Foam::scalarField& heats,const Foam::scalarField& nativeWeights) {
         if(!integrate_)return;
         formationHeats_=heats;
-        std::fill(y_.begin(),y_.end(),0.);y_[0]=1.;
+        // Partial ideal-gas enthalpies are composition independent. Keep a
+        // mixed state because this evaluation also validates mixture diffusion.
+        std::fill(y_.begin(),y_.end(),1./y_.size());
         std::vector<double> enthalpies(y_.size());
         if(evaluate_(context_,298.15,101325,y_.data(),y_.size(),&properties_,
                      enthalpies.data(),diffusion_.data(),nullptr))
             FatalErrorInFunction << error_(context_) << Foam::exit(Foam::FatalError);
-        forAll(heats,k) if(std::abs(heats[k]-enthalpies[k])>std::max(1e-3,1e-8*std::abs(heats[k])))
-            FatalErrorInFunction << "Formation enthalpy mismatch at species " << k
-                << ": native=" << heats[k] << " bridge=" << enthalpies[k]
-                << Foam::exit(Foam::FatalError);
-        Foam::Info << "Cantera/native formation enthalpies verified" << Foam::endl;
+        auto weight=symbol<decltype(&rf_ct_species_weight)>("rf_ct_species_weight");
+        double maximumWeightDifference=0;
+        forAll(heats,k) {
+            double canteraWeight=0;
+            if(weight(context_,k,&canteraWeight))
+                FatalErrorInFunction << error_(context_) << Foam::exit(Foam::FatalError);
+            maximumWeightDifference=std::max(maximumWeightDifference,std::abs(canteraWeight/nativeWeights[k]-1));
+            const double nativeMolar=heats[k]*nativeWeights[k];
+            const double canteraMolar=enthalpies[k]*canteraWeight;
+            if(std::abs(nativeMolar-canteraMolar)>std::max(1e-3,1e-8*std::abs(nativeMolar)))
+                FatalErrorInFunction << "Molar formation enthalpy mismatch at species " << k
+                    << ": native=" << nativeMolar << " bridge=" << canteraMolar
+                    << Foam::exit(Foam::FatalError);
+        }
+        // The independently audited legacy molecular weights differ by <=5.007e-5.
+        // This bounded, recorded mass-basis difference is not silently normalized.
+        if(maximumWeightDifference>6e-5)
+            FatalErrorInFunction << "Molecular weights exceed audited difference" << Foam::exit(Foam::FatalError);
+        Foam::Info << "Cantera/native molar formation enthalpies verified; maximum MW relative difference="
+            << maximumWeightDifference << Foam::endl;
     }
     void correctChemistry(const Foam::volScalarField& temperature,const Foam::volScalarField& pressure,
                           const Foam::volScalarField& density,const Foam::PtrList<Foam::volScalarField>& species,
