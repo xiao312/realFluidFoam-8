@@ -1,0 +1,433 @@
+{
+  "observed_utc": "2026-10-19T16:09:17.402630+00:00",
+  "jobs": [
+    {
+      "label": "chemistry-eos",
+      "stage": "2",
+      "variant": "pressure-chemistry",
+      "pressure_atm": "100",
+      "inputs": "/public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/inputs",
+      "job_id": "124934195",
+      "scheduler": [
+        "COMPLETED",
+        "00:04:46",
+        "0:0"
+      ],
+      "source": "c315a326bdbea73f72f387a91ca22123a0a0dfcd",
+      "screen_passed": true,
+      "screen": {
+        "stage": 2,
+        "phi": 1.1,
+        "speed_cm_s": 7.478854916188587,
+        "last_refinement_relative_change": 0.001155286973548053,
+        "mass_flux_relative_range": 1.5508261753461055e-10,
+        "maximum_species_sum_error": 1.5627454885702718e-10,
+        "minimum_mass_fraction": -2.025178212776091e-12,
+        "points": 2114,
+        "scientific_acceptance": false,
+        "remaining": [
+          "domain sensitivity",
+          "initial-guess sensitivity",
+          "publication parameter uncertainty"
+        ]
+      },
+      "profile_sha256": "317bd0265d16e0403cebab08d74141a9fc50aee22a893b63045419975bd484ec",
+      "input_sha256_receipt": "9304d6f5ea3861b5b0ea3783674932f23f036c1e600e5c479c5cc7a8eb48ff9f  /public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/inputs/guess.csv\nc6e72c25dbf5af75a16b71042e071aed15ca4fd4a8a854fd8720a820ce1986c6  /public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/inputs/ideal.yaml\nd4df42d03137ae3c9174b7b95c04ec3f9b03941f5a511cb7466c1a5e2b74e6bc  /public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/inputs/manifest.json\n6374f6cb2c693997f1f2a1e6505c1579c62e9adc238555a2d4ba45edebca1b61  /public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/inputs/species.txt\n9d2e7b8a245d38c5f8950e97ccb819402cecce87af91639e0457d9aee489e1f5  /public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/inputs/srk.yaml\n"
+    },
+    {
+      "label": "chemistry-caloric",
+      "stage": "3",
+      "variant": "pressure-chemistry",
+      "pressure_atm": "100",
+      "inputs": "/public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/inputs",
+      "job_id": "124934198",
+      "scheduler": [
+        "COMPLETED",
+        "00:05:04",
+        "0:0"
+      ],
+      "source": "c315a326bdbea73f72f387a91ca22123a0a0dfcd",
+      "screen_passed": true,
+      "screen": {
+        "stage": 3,
+        "phi": 1.1,
+        "speed_cm_s": 7.059936887153246,
+        "last_refinement_relative_change": 0.0015613330110014756,
+        "mass_flux_relative_range": 1.9493979636662003e-10,
+        "maximum_species_sum_error": 1.9543500151542048e-10,
+        "minimum_mass_fraction": -3.450758934961528e-12,
+        "points": 2128,
+        "scientific_acceptance": false,
+        "remaining": [
+          "domain sensitivity",
+          "initial-guess sensitivity",
+          "publication parameter uncertainty"
+        ]
+      },
+      "profile_sha256": "dfca2a0ae200526e2ca4133daaecf20761012b0bec4389ae4e17d164341d546f",
+      "input_sha256_receipt": "9304d6f5ea3861b5b0ea3783674932f23f036c1e600e5c479c5cc7a8eb48ff9f  /public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/inputs/guess.csv\nc6e72c25dbf5af75a16b71042e071aed15ca4fd4a8a854fd8720a820ce1986c6  /public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/inputs/ideal.yaml\nd4df42d03137ae3c9174b7b95c04ec3f9b03941f5a511cb7466c1a5e2b74e6bc  /public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/inputs/manifest.json\n6374f6cb2c693997f1f2a1e6505c1579c62e9adc238555a2d4ba45edebca1b61  /public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/inputs/species.txt\n9d2e7b8a245d38c5f8950e97ccb819402cecce87af91639e0457d9aee489e1f5  /public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/inputs/srk.yaml\n"
+    },
+    {
+      "label": "bounded-full",
+      "stage": "5",
+      "variant": "bounded-takahashi",
+      "pressure_atm": "100",
+      "inputs": "/public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/inputs",
+      "job_id": "124934199",
+      "scheduler": [
+        "COMPLETED",
+        "00:06:50",
+        "0:0"
+      ],
+      "source": "c315a326bdbea73f72f387a91ca22123a0a0dfcd",
+      "screen_passed": true,
+      "screen": {
+        "stage": 5,
+        "phi": 1.1,
+        "speed_cm_s": 7.869948896286448,
+        "last_refinement_relative_change": 0.0017804439880485523,
+        "mass_flux_relative_range": 2.1935277088262492e-09,
+        "maximum_species_sum_error": 3.7736702651613996e-11,
+        "minimum_mass_fraction": -1.084401208036849e-12,
+        "points": 2150,
+        "scientific_acceptance": false,
+        "remaining": [
+          "domain sensitivity",
+          "initial-guess sensitivity",
+          "publication parameter uncertainty"
+        ]
+      },
+      "profile_sha256": "524c6d4e08e3fef2d449563ec266f2fdb7c12d202fcef815df83090dbfe50fd8",
+      "input_sha256_receipt": "9304d6f5ea3861b5b0ea3783674932f23f036c1e600e5c479c5cc7a8eb48ff9f  /public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/inputs/guess.csv\nc6e72c25dbf5af75a16b71042e071aed15ca4fd4a8a854fd8720a820ce1986c6  /public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/inputs/ideal.yaml\nd4df42d03137ae3c9174b7b95c04ec3f9b03941f5a511cb7466c1a5e2b74e6bc  /public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/inputs/manifest.json\n6374f6cb2c693997f1f2a1e6505c1579c62e9adc238555a2d4ba45edebca1b61  /public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/inputs/species.txt\n9d2e7b8a245d38c5f8950e97ccb819402cecce87af91639e0457d9aee489e1f5  /public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/inputs/srk.yaml\n"
+    },
+    {
+      "label": "bounded-dense",
+      "stage": "5",
+      "variant": "dense-increment,bounded-takahashi",
+      "pressure_atm": "100",
+      "inputs": "/public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/inputs",
+      "job_id": "124934200",
+      "scheduler": [
+        "RUNNING",
+        "00:07:20",
+        "0:0"
+      ],
+      "source": "c315a326bdbea73f72f387a91ca22123a0a0dfcd",
+      "screen_passed": false
+    },
+    {
+      "label": "low-ideal",
+      "stage": "1",
+      "variant": "full",
+      "pressure_atm": "1",
+      "inputs": "/public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/inputs-1atm",
+      "job_id": "124934201",
+      "scheduler": [
+        "COMPLETED",
+        "00:03:03",
+        "0:0"
+      ],
+      "source": "c315a326bdbea73f72f387a91ca22123a0a0dfcd",
+      "screen_passed": true,
+      "screen": {
+        "stage": 1,
+        "phi": 1.1,
+        "speed_cm_s": 37.29923145824507,
+        "last_refinement_relative_change": 0.0018562631581330313,
+        "mass_flux_relative_range": 1.767287475414762e-10,
+        "maximum_species_sum_error": 1.517390657568285e-10,
+        "minimum_mass_fraction": -5.927160466315581e-12,
+        "points": 2365,
+        "scientific_acceptance": false,
+        "remaining": [
+          "domain sensitivity",
+          "initial-guess sensitivity",
+          "publication parameter uncertainty"
+        ]
+      },
+      "profile_sha256": "c63f6042b8b7148ac2a91911cfcfeb8726f222eaca4225dbfa16464a1d233857",
+      "input_sha256_receipt": "aa248556606f9c1093c3dca4bc47c3c52653ec6a297ff84e866bee5735fef3bb  /public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/inputs-1atm/guess.csv\nb02f0e5689e468e82cb7d49e537f1272c5b96efc761e334b2bbd9f22cd03dbe6  /public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/inputs-1atm/ideal-flame.yaml\nc6e72c25dbf5af75a16b71042e071aed15ca4fd4a8a854fd8720a820ce1986c6  /public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/inputs-1atm/ideal.yaml\n04ffa6c9944ee2ec8f7c4a2e6e66d3aa497b3677512d4533d87e20fc8888e6c3  /public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/inputs-1atm/manifest.json\n6374f6cb2c693997f1f2a1e6505c1579c62e9adc238555a2d4ba45edebca1b61  /public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/inputs-1atm/species.txt\n9d2e7b8a245d38c5f8950e97ccb819402cecce87af91639e0457d9aee489e1f5  /public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/inputs-1atm/srk.yaml\n"
+    },
+    {
+      "label": "low-eos",
+      "stage": "2",
+      "variant": "full",
+      "pressure_atm": "1",
+      "inputs": "/public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/inputs-1atm",
+      "job_id": "124934202",
+      "scheduler": [
+        "COMPLETED",
+        "00:03:28",
+        "0:0"
+      ],
+      "source": "c315a326bdbea73f72f387a91ca22123a0a0dfcd",
+      "screen_passed": true,
+      "screen": {
+        "stage": 2,
+        "phi": 1.1,
+        "speed_cm_s": 37.28467359359124,
+        "last_refinement_relative_change": 0.0018575838307487436,
+        "mass_flux_relative_range": 1.7700174517629592e-10,
+        "maximum_species_sum_error": 1.520636949692289e-10,
+        "minimum_mass_fraction": -1.024180036541239e-11,
+        "points": 2365,
+        "scientific_acceptance": false,
+        "remaining": [
+          "domain sensitivity",
+          "initial-guess sensitivity",
+          "publication parameter uncertainty"
+        ]
+      },
+      "profile_sha256": "5f2817d5165d0876aa429a0707fc449cb8586cc506129a0f98ecc2e3930ad1af",
+      "input_sha256_receipt": "aa248556606f9c1093c3dca4bc47c3c52653ec6a297ff84e866bee5735fef3bb  /public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/inputs-1atm/guess.csv\nb02f0e5689e468e82cb7d49e537f1272c5b96efc761e334b2bbd9f22cd03dbe6  /public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/inputs-1atm/ideal-flame.yaml\nc6e72c25dbf5af75a16b71042e071aed15ca4fd4a8a854fd8720a820ce1986c6  /public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/inputs-1atm/ideal.yaml\n04ffa6c9944ee2ec8f7c4a2e6e66d3aa497b3677512d4533d87e20fc8888e6c3  /public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/inputs-1atm/manifest.json\n6374f6cb2c693997f1f2a1e6505c1579c62e9adc238555a2d4ba45edebca1b61  /public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/inputs-1atm/species.txt\n9d2e7b8a245d38c5f8950e97ccb819402cecce87af91639e0457d9aee489e1f5  /public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/inputs-1atm/srk.yaml\n"
+    },
+    {
+      "label": "low-caloric",
+      "stage": "3",
+      "variant": "full",
+      "pressure_atm": "1",
+      "inputs": "/public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/inputs-1atm",
+      "job_id": "124934203",
+      "scheduler": [
+        "COMPLETED",
+        "00:03:29",
+        "0:0"
+      ],
+      "source": "c315a326bdbea73f72f387a91ca22123a0a0dfcd",
+      "screen_passed": true,
+      "screen": {
+        "stage": 3,
+        "phi": 1.1,
+        "speed_cm_s": 37.26199456513845,
+        "last_refinement_relative_change": 0.0018673004415243888,
+        "mass_flux_relative_range": 1.7739408119148894e-10,
+        "maximum_species_sum_error": 1.524904646998948e-10,
+        "minimum_mass_fraction": -1.573246132542976e-11,
+        "points": 2366,
+        "scientific_acceptance": false,
+        "remaining": [
+          "domain sensitivity",
+          "initial-guess sensitivity",
+          "publication parameter uncertainty"
+        ]
+      },
+      "profile_sha256": "c5dafd87e9f6f08ba94b61f4028f6b4e0f0312ec4040fa37275044cfcf23e6fa",
+      "input_sha256_receipt": "aa248556606f9c1093c3dca4bc47c3c52653ec6a297ff84e866bee5735fef3bb  /public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/inputs-1atm/guess.csv\nb02f0e5689e468e82cb7d49e537f1272c5b96efc761e334b2bbd9f22cd03dbe6  /public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/inputs-1atm/ideal-flame.yaml\nc6e72c25dbf5af75a16b71042e071aed15ca4fd4a8a854fd8720a820ce1986c6  /public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/inputs-1atm/ideal.yaml\n04ffa6c9944ee2ec8f7c4a2e6e66d3aa497b3677512d4533d87e20fc8888e6c3  /public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/inputs-1atm/manifest.json\n6374f6cb2c693997f1f2a1e6505c1579c62e9adc238555a2d4ba45edebca1b61  /public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/inputs-1atm/species.txt\n9d2e7b8a245d38c5f8950e97ccb819402cecce87af91639e0457d9aee489e1f5  /public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/inputs-1atm/srk.yaml\n"
+    },
+    {
+      "label": "low-full-conductivity",
+      "stage": "4",
+      "variant": "full",
+      "pressure_atm": "1",
+      "inputs": "/public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/inputs-1atm",
+      "job_id": "124934207",
+      "scheduler": [
+        "COMPLETED",
+        "00:05:05",
+        "0:0"
+      ],
+      "source": "c315a326bdbea73f72f387a91ca22123a0a0dfcd",
+      "screen_passed": true,
+      "screen": {
+        "stage": 4,
+        "phi": 1.1,
+        "speed_cm_s": 41.07438504048563,
+        "last_refinement_relative_change": 0.00196411431409782,
+        "mass_flux_relative_range": 1.1080695510111549e-10,
+        "maximum_species_sum_error": 8.356737524195523e-11,
+        "minimum_mass_fraction": -1.35413569028059e-11,
+        "points": 2360,
+        "scientific_acceptance": false,
+        "remaining": [
+          "domain sensitivity",
+          "initial-guess sensitivity",
+          "publication parameter uncertainty"
+        ]
+      },
+      "profile_sha256": "b8066ba64ad4b5b5df9b5208fbb683df1502411e7fb45f04d75fecd61253cc67",
+      "input_sha256_receipt": "aa248556606f9c1093c3dca4bc47c3c52653ec6a297ff84e866bee5735fef3bb  /public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/inputs-1atm/guess.csv\nb02f0e5689e468e82cb7d49e537f1272c5b96efc761e334b2bbd9f22cd03dbe6  /public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/inputs-1atm/ideal-flame.yaml\nc6e72c25dbf5af75a16b71042e071aed15ca4fd4a8a854fd8720a820ce1986c6  /public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/inputs-1atm/ideal.yaml\n04ffa6c9944ee2ec8f7c4a2e6e66d3aa497b3677512d4533d87e20fc8888e6c3  /public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/inputs-1atm/manifest.json\n6374f6cb2c693997f1f2a1e6505c1579c62e9adc238555a2d4ba45edebca1b61  /public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/inputs-1atm/species.txt\n9d2e7b8a245d38c5f8950e97ccb819402cecce87af91639e0457d9aee489e1f5  /public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/inputs-1atm/srk.yaml\n"
+    },
+    {
+      "label": "low-dense-conductivity",
+      "stage": "4",
+      "variant": "dense-increment",
+      "pressure_atm": "1",
+      "inputs": "/public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/inputs-1atm",
+      "job_id": "124934208",
+      "scheduler": [
+        "COMPLETED",
+        "00:06:19",
+        "0:0"
+      ],
+      "source": "c315a326bdbea73f72f387a91ca22123a0a0dfcd",
+      "screen_passed": true,
+      "screen": {
+        "stage": 4,
+        "phi": 1.1,
+        "speed_cm_s": 37.27979125467842,
+        "last_refinement_relative_change": 0.001868917510688961,
+        "mass_flux_relative_range": 1.7887576874498568e-10,
+        "maximum_species_sum_error": 1.5459655777760872e-10,
+        "minimum_mass_fraction": -1.27935030546479e-11,
+        "points": 2367,
+        "scientific_acceptance": false,
+        "remaining": [
+          "domain sensitivity",
+          "initial-guess sensitivity",
+          "publication parameter uncertainty"
+        ]
+      },
+      "profile_sha256": "ea3247d3199b4bc8857161a4cc690adb093f5564a3b5de63043c84b169b5b639",
+      "input_sha256_receipt": "aa248556606f9c1093c3dca4bc47c3c52653ec6a297ff84e866bee5735fef3bb  /public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/inputs-1atm/guess.csv\nb02f0e5689e468e82cb7d49e537f1272c5b96efc761e334b2bbd9f22cd03dbe6  /public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/inputs-1atm/ideal-flame.yaml\nc6e72c25dbf5af75a16b71042e071aed15ca4fd4a8a854fd8720a820ce1986c6  /public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/inputs-1atm/ideal.yaml\n04ffa6c9944ee2ec8f7c4a2e6e66d3aa497b3677512d4533d87e20fc8888e6c3  /public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/inputs-1atm/manifest.json\n6374f6cb2c693997f1f2a1e6505c1579c62e9adc238555a2d4ba45edebca1b61  /public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/inputs-1atm/species.txt\n9d2e7b8a245d38c5f8950e97ccb819402cecce87af91639e0457d9aee489e1f5  /public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/inputs-1atm/srk.yaml\n"
+    },
+    {
+      "label": "low-full-diffusion",
+      "stage": "5",
+      "variant": "full",
+      "pressure_atm": "1",
+      "inputs": "/public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/inputs-1atm",
+      "job_id": "124934210",
+      "scheduler": [
+        "COMPLETED",
+        "00:05:16",
+        "0:0"
+      ],
+      "source": "c315a326bdbea73f72f387a91ca22123a0a0dfcd",
+      "screen_passed": true,
+      "screen": {
+        "stage": 5,
+        "phi": 1.1,
+        "speed_cm_s": 41.07438504048563,
+        "last_refinement_relative_change": 0.00196411431409782,
+        "mass_flux_relative_range": 1.1080695510111549e-10,
+        "maximum_species_sum_error": 8.356737524195523e-11,
+        "minimum_mass_fraction": -1.35413569028059e-11,
+        "points": 2360,
+        "scientific_acceptance": false,
+        "remaining": [
+          "domain sensitivity",
+          "initial-guess sensitivity",
+          "publication parameter uncertainty"
+        ]
+      },
+      "profile_sha256": "b8066ba64ad4b5b5df9b5208fbb683df1502411e7fb45f04d75fecd61253cc67",
+      "input_sha256_receipt": "aa248556606f9c1093c3dca4bc47c3c52653ec6a297ff84e866bee5735fef3bb  /public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/inputs-1atm/guess.csv\nb02f0e5689e468e82cb7d49e537f1272c5b96efc761e334b2bbd9f22cd03dbe6  /public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/inputs-1atm/ideal-flame.yaml\nc6e72c25dbf5af75a16b71042e071aed15ca4fd4a8a854fd8720a820ce1986c6  /public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/inputs-1atm/ideal.yaml\n04ffa6c9944ee2ec8f7c4a2e6e66d3aa497b3677512d4533d87e20fc8888e6c3  /public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/inputs-1atm/manifest.json\n6374f6cb2c693997f1f2a1e6505c1579c62e9adc238555a2d4ba45edebca1b61  /public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/inputs-1atm/species.txt\n9d2e7b8a245d38c5f8950e97ccb819402cecce87af91639e0457d9aee489e1f5  /public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/inputs-1atm/srk.yaml\n"
+    },
+    {
+      "label": "low-bounded-dense",
+      "stage": "5",
+      "variant": "dense-increment,bounded-takahashi",
+      "pressure_atm": "1",
+      "inputs": "/public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/inputs-1atm",
+      "job_id": "124934211",
+      "scheduler": [
+        "COMPLETED",
+        "00:06:27",
+        "0:0"
+      ],
+      "source": "c315a326bdbea73f72f387a91ca22123a0a0dfcd",
+      "screen_passed": true,
+      "screen": {
+        "stage": 5,
+        "phi": 1.1,
+        "speed_cm_s": 37.27979125467842,
+        "last_refinement_relative_change": 0.001868917510688961,
+        "mass_flux_relative_range": 1.7887576874498568e-10,
+        "maximum_species_sum_error": 1.5459655777760872e-10,
+        "minimum_mass_fraction": -1.27935030546479e-11,
+        "points": 2367,
+        "scientific_acceptance": false,
+        "remaining": [
+          "domain sensitivity",
+          "initial-guess sensitivity",
+          "publication parameter uncertainty"
+        ]
+      },
+      "profile_sha256": "ea3247d3199b4bc8857161a4cc690adb093f5564a3b5de63043c84b169b5b639",
+      "input_sha256_receipt": "aa248556606f9c1093c3dca4bc47c3c52653ec6a297ff84e866bee5735fef3bb  /public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/inputs-1atm/guess.csv\nb02f0e5689e468e82cb7d49e537f1272c5b96efc761e334b2bbd9f22cd03dbe6  /public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/inputs-1atm/ideal-flame.yaml\nc6e72c25dbf5af75a16b71042e071aed15ca4fd4a8a854fd8720a820ce1986c6  /public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/inputs-1atm/ideal.yaml\n04ffa6c9944ee2ec8f7c4a2e6e66d3aa497b3677512d4533d87e20fc8888e6c3  /public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/inputs-1atm/manifest.json\n6374f6cb2c693997f1f2a1e6505c1579c62e9adc238555a2d4ba45edebca1b61  /public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/inputs-1atm/species.txt\n9d2e7b8a245d38c5f8950e97ccb819402cecce87af91639e0457d9aee489e1f5  /public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/inputs-1atm/srk.yaml\n"
+    },
+    {
+      "label": "combined-conductivity",
+      "stage": "4",
+      "variant": "dense-increment,pressure-chemistry",
+      "pressure_atm": "100",
+      "inputs": "/public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/inputs",
+      "job_id": "124934680",
+      "scheduler": [
+        "RUNNING",
+        "00:01:09",
+        "0:0"
+      ],
+      "source": "82efc5241c3676e25bd97e377834976e2ee26369",
+      "screen_passed": false
+    },
+    {
+      "label": "combined-diffusion",
+      "stage": "5",
+      "variant": "dense-increment,bounded-takahashi,pressure-chemistry",
+      "pressure_atm": "100",
+      "inputs": "/public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/inputs",
+      "job_id": "124934681",
+      "scheduler": [
+        "RUNNING",
+        "00:01:09",
+        "0:0"
+      ],
+      "source": "82efc5241c3676e25bd97e377834976e2ee26369",
+      "screen_passed": false
+    },
+    {
+      "label": "fine-ideal",
+      "stage": "1",
+      "variant": "fine-grid",
+      "pressure_atm": "100",
+      "inputs": "/public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/fine-inputs-124919519",
+      "job_id": "124934682",
+      "scheduler": [
+        "RUNNING",
+        "00:01:09",
+        "0:0"
+      ],
+      "source": "82efc5241c3676e25bd97e377834976e2ee26369",
+      "screen_passed": false
+    },
+    {
+      "label": "fine-caloric",
+      "stage": "3",
+      "variant": "fine-grid",
+      "pressure_atm": "100",
+      "inputs": "/public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/fine-inputs-124919531",
+      "job_id": "124934683",
+      "scheduler": [
+        "RUNNING",
+        "00:01:09",
+        "0:0"
+      ],
+      "source": "82efc5241c3676e25bd97e377834976e2ee26369",
+      "screen_passed": false
+    }
+  ],
+  "build_jobs": {
+    "c315a326bdbea73f72f387a91ca22123a0a0dfcd": "124933885",
+    "82efc5241c3676e25bd97e377834976e2ee26369": "124934625"
+  },
+  "sdk_job": "124917358",
+  "probe_job": "124934018",
+  "fine_energy_audit_job": "124934721",
+  "dense_conductivity_pilot": {
+    "job": "124932554",
+    "speed_cm_s": 7.023334428452424,
+    "source": "5543d41",
+    "build_job": "124932388"
+  },
+  "original_sweep": {
+    "completed_screened_points": 48,
+    "stages": [
+      1,
+      2,
+      3,
+      4
+    ]
+  },
+  "scientific_acceptance": false
+}

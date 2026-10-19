@@ -1,0 +1,1878 @@
+{
+  "paper_sha256": "24163be0124e0fa6cd28ddb1d369b813e64e82bd7446e9f9218a340445aca6fe",
+  "results_sha256": "e5c1906199b342ce7e8d4f0e40cd95ff4fd7882925706c469edc579009045ae2",
+  "plotter_sha256": "4243f81f598d21ccbb4c9c98e7c7378c79b85704e44967333e9a764ca1faf7e4",
+  "results": [
+    {
+      "job": "124919999",
+      "stage": 1,
+      "phi": 0.92,
+      "guess_phi": 0.92,
+      "source": "961f6a1fc6662167076abea2b8d4c6aee449622c",
+      "build_job": "124919933",
+      "sdk_job": "124917358",
+      "input_directory": "/public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/sweep-inputs-v2/phi092",
+      "submitted_epoch": 1792414220.3837092,
+      "scheduler": [
+        "COMPLETED",
+        "00:04:17",
+        "0:0"
+      ],
+      "screen_passed": true,
+      "speed_cm_s": 5.990352704426165,
+      "last_refinement_relative_change": 9.471040881114945e-06,
+      "mass_flux_relative_range": 1.3175662712798823e-10,
+      "maximum_species_sum_error": 5.595257590584879e-11,
+      "minimum_mass_fraction": -1.817754885943885e-12,
+      "points": 2292,
+      "scientific_acceptance": false,
+      "remaining": [
+        "domain sensitivity",
+        "initial-guess sensitivity",
+        "publication parameter uncertainty"
+      ],
+      "output_sha256": {
+        "profile.csv": "1e3d58b1e22f1513a35592c566e17bad49f9e4bd376efa9f4bf8911e83b2aaba",
+        "refinement.csv": "07e6ecfebda45c5a7060bcf24a6bf953d1329dbf76f15f40c4bc250baefdc6a0",
+        "property-checks.csv": "8cd8a61424d85c86a38ab80db70063201281b59114f212bbe60ee80ea375eced"
+      },
+      "callbacks": ""
+    },
+    {
+      "job": "124920000",
+      "stage": 2,
+      "phi": 0.92,
+      "guess_phi": 0.92,
+      "source": "961f6a1fc6662167076abea2b8d4c6aee449622c",
+      "build_job": "124919933",
+      "sdk_job": "124917358",
+      "input_directory": "/public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/sweep-inputs-v2/phi092",
+      "submitted_epoch": 1792414220.598582,
+      "scheduler": [
+        "COMPLETED",
+        "00:05:55",
+        "0:0"
+      ],
+      "screen_passed": true,
+      "speed_cm_s": 5.936677831155009,
+      "last_refinement_relative_change": 1.9108682751012296e-05,
+      "mass_flux_relative_range": 3.0929746286673076e-11,
+      "maximum_species_sum_error": 2.7081226150471593e-11,
+      "minimum_mass_fraction": -7.22812517195805e-13,
+      "points": 2301,
+      "scientific_acceptance": false,
+      "remaining": [
+        "domain sensitivity",
+        "initial-guess sensitivity",
+        "publication parameter uncertainty"
+      ],
+      "output_sha256": {
+        "profile.csv": "477933b1e3021c64d3bfa9510fc3c30cc267e6499728dd7772aa24be2bf27570",
+        "refinement.csv": "bff0c34421726317b7686d016949acdcd1d51ee6f617bd96434b46af0cdb908b",
+        "property-checks.csv": "48a80fe84a7ee89525f0cc3ba4efd9ff7e05e83be417858aa216c6d8faf8e987"
+      },
+      "callbacks": "eos 5746269 cp 5240347 partial_enthalpy 5238046\nconductivity 508208 diffusion 505907 negative_partial_volume_calls 0 projected_composition_calls 0\n"
+    },
+    {
+      "job": "124920001",
+      "stage": 3,
+      "phi": 0.92,
+      "guess_phi": 0.92,
+      "source": "961f6a1fc6662167076abea2b8d4c6aee449622c",
+      "build_job": "124919933",
+      "sdk_job": "124917358",
+      "input_directory": "/public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/sweep-inputs-v2/phi092",
+      "submitted_epoch": 1792414220.827987,
+      "scheduler": [
+        "COMPLETED",
+        "00:22:59",
+        "0:0"
+      ],
+      "screen_passed": true,
+      "speed_cm_s": 5.570012822178842,
+      "last_refinement_relative_change": 1.7730358989886952e-05,
+      "mass_flux_relative_range": 3.406432008146132e-10,
+      "maximum_species_sum_error": 3.1921976173521216e-10,
+      "minimum_mass_fraction": -2.219129455586938e-12,
+      "points": 2346,
+      "scientific_acceptance": false,
+      "remaining": [
+        "domain sensitivity",
+        "initial-guess sensitivity",
+        "publication parameter uncertainty"
+      ],
+      "output_sha256": {
+        "profile.csv": "fa49c5e2e12ca313b3733df776b16e1d64011b9804d12d0773fa27b6007bbbf7",
+        "refinement.csv": "924cb241830942b9546e6a5a8dd2af70c918051d6d26b947e5ec4c0f1493db48",
+        "property-checks.csv": "75a594153d4768619bbb7f56bb558af9382849565a8c32b97688d06f5b212117"
+      },
+      "callbacks": "eos 21474613 cp 19182125 partial_enthalpy 19179779\nconductivity 2282363 diffusion 2280017 negative_partial_volume_calls 0 projected_composition_calls 0\n"
+    },
+    {
+      "job": "124920002",
+      "stage": 1,
+      "phi": 0.95,
+      "guess_phi": 0.95,
+      "source": "961f6a1fc6662167076abea2b8d4c6aee449622c",
+      "build_job": "124919933",
+      "sdk_job": "124917358",
+      "input_directory": "/public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/sweep-inputs-v2/phi095",
+      "submitted_epoch": 1792414221.146507,
+      "scheduler": [
+        "COMPLETED",
+        "00:04:47",
+        "0:0"
+      ],
+      "screen_passed": true,
+      "speed_cm_s": 6.379410650711995,
+      "last_refinement_relative_change": 6.2500642583618315e-06,
+      "mass_flux_relative_range": 1.4168374070822215e-10,
+      "maximum_species_sum_error": 4.8895554272121444e-11,
+      "minimum_mass_fraction": -7.866196960560329e-13,
+      "points": 2312,
+      "scientific_acceptance": false,
+      "remaining": [
+        "domain sensitivity",
+        "initial-guess sensitivity",
+        "publication parameter uncertainty"
+      ],
+      "output_sha256": {
+        "profile.csv": "b1c24fd1bd6a41bc2d745d7331af0b7a6b812e66b5e93b9bafb3c51b986024f3",
+        "refinement.csv": "0462214ac7f54733c11ad49ba472035e183e0827e96692ad0fe8306fc50d1485",
+        "property-checks.csv": "182fcfd40ae2126d8a69fa481afd8cf9767786cd84d5f79b39f55aff98332419"
+      },
+      "callbacks": ""
+    },
+    {
+      "job": "124920003",
+      "stage": 2,
+      "phi": 0.95,
+      "guess_phi": 0.95,
+      "source": "961f6a1fc6662167076abea2b8d4c6aee449622c",
+      "build_job": "124919933",
+      "sdk_job": "124917358",
+      "input_directory": "/public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/sweep-inputs-v2/phi095",
+      "submitted_epoch": 1792414221.3675184,
+      "scheduler": [
+        "COMPLETED",
+        "00:08:40",
+        "0:0"
+      ],
+      "screen_passed": true,
+      "speed_cm_s": 6.320534104974532,
+      "last_refinement_relative_change": 1.5601408842380593e-05,
+      "mass_flux_relative_range": 4.3540069500250206e-11,
+      "maximum_species_sum_error": 2.2892354678560878e-11,
+      "minimum_mass_fraction": -5.963568483142043e-13,
+      "points": 2322,
+      "scientific_acceptance": false,
+      "remaining": [
+        "domain sensitivity",
+        "initial-guess sensitivity",
+        "publication parameter uncertainty"
+      ],
+      "output_sha256": {
+        "profile.csv": "0c682780ede309fc14bd00b927eb45bd9461c2fc9b971d17472435dec1061e1f",
+        "refinement.csv": "369249fe7f417ce9a35dd1d6d878d88d6a3f6cb1957a20d25503e8eba4c4963c",
+        "property-checks.csv": "fc0fc626990974ff3ec520302d39c5545daf8f6c5482634fbf6ccbd555e9efcb"
+      },
+      "callbacks": "eos 9007754 cp 8252973 partial_enthalpy 8250651\nconductivity 757088 diffusion 754766 negative_partial_volume_calls 0 projected_composition_calls 0\n"
+    },
+    {
+      "job": "124920004",
+      "stage": 3,
+      "phi": 0.95,
+      "guess_phi": 0.95,
+      "source": "961f6a1fc6662167076abea2b8d4c6aee449622c",
+      "build_job": "124919933",
+      "sdk_job": "124917358",
+      "input_directory": "/public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/sweep-inputs-v2/phi095",
+      "submitted_epoch": 1792414221.6461535,
+      "scheduler": [
+        "COMPLETED",
+        "00:11:28",
+        "0:0"
+      ],
+      "screen_passed": true,
+      "speed_cm_s": 5.941586293647024,
+      "last_refinement_relative_change": 1.2770473382550662e-05,
+      "mass_flux_relative_range": 2.2377367471223586e-10,
+      "maximum_species_sum_error": 2.1546675554873218e-10,
+      "minimum_mass_fraction": -1.32335217927023e-12,
+      "points": 2357,
+      "scientific_acceptance": false,
+      "remaining": [
+        "domain sensitivity",
+        "initial-guess sensitivity",
+        "publication parameter uncertainty"
+      ],
+      "output_sha256": {
+        "profile.csv": "ea318bb3be2e7f6867950012c2501f1618e2070fd9e72aa3185553de10fd1cf3",
+        "refinement.csv": "fb9632cc639adf93f7abdf67daf65e8530397dfbda1d92cf1fbde4961b9a9cfd",
+        "property-checks.csv": "f652a7ba609cfa4dafcb69ec8f7f7896b0be6a4b081302e0bc9f175d6b2f247c"
+      },
+      "callbacks": "eos 10016455 cp 9096670 partial_enthalpy 9094313\nconductivity 909558 diffusion 907201 negative_partial_volume_calls 0 projected_composition_calls 0\n"
+    },
+    {
+      "job": "124920005",
+      "stage": 1,
+      "phi": 1.0,
+      "guess_phi": 1.0,
+      "source": "961f6a1fc6662167076abea2b8d4c6aee449622c",
+      "build_job": "124919933",
+      "sdk_job": "124917358",
+      "input_directory": "/public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/sweep-inputs-v2/phi100",
+      "submitted_epoch": 1792414221.987793,
+      "scheduler": [
+        "COMPLETED",
+        "00:05:02",
+        "0:0"
+      ],
+      "screen_passed": true,
+      "speed_cm_s": 6.910556897431561,
+      "last_refinement_relative_change": 4.762125561219577e-06,
+      "mass_flux_relative_range": 9.000487455697016e-11,
+      "maximum_species_sum_error": 4.995714952826802e-11,
+      "minimum_mass_fraction": -5.472838184275605e-13,
+      "points": 2323,
+      "scientific_acceptance": false,
+      "remaining": [
+        "domain sensitivity",
+        "initial-guess sensitivity",
+        "publication parameter uncertainty"
+      ],
+      "output_sha256": {
+        "profile.csv": "47dc3646fad966ac6292535d4b76b3f581e24a0c87138ee4933668fc9d508af8",
+        "refinement.csv": "5ed70dc2c8211484484d02ac1de789cf10d8a146c2dae1fed2b6994cb6951a54",
+        "property-checks.csv": "8c8508da571c4e12a0d0e1c71cecfe8c1f90de7880c67c13c262b64e11508325"
+      },
+      "callbacks": ""
+    },
+    {
+      "job": "124920006",
+      "stage": 2,
+      "phi": 1.0,
+      "guess_phi": 1.0,
+      "source": "961f6a1fc6662167076abea2b8d4c6aee449622c",
+      "build_job": "124919933",
+      "sdk_job": "124917358",
+      "input_directory": "/public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/sweep-inputs-v2/phi100",
+      "submitted_epoch": 1792414222.2102716,
+      "scheduler": [
+        "COMPLETED",
+        "00:06:18",
+        "0:0"
+      ],
+      "screen_passed": true,
+      "speed_cm_s": 6.8426369500566,
+      "last_refinement_relative_change": 8.534566037110558e-06,
+      "mass_flux_relative_range": 6.089665297956855e-11,
+      "maximum_species_sum_error": 4.314448798226067e-11,
+      "minimum_mass_fraction": -4.869846136901235e-13,
+      "points": 2330,
+      "scientific_acceptance": false,
+      "remaining": [
+        "domain sensitivity",
+        "initial-guess sensitivity",
+        "publication parameter uncertainty"
+      ],
+      "output_sha256": {
+        "profile.csv": "4c4b80a8631f9bf0a71a54174ba297512e76941b838882a94815bb8772c4e6e8",
+        "refinement.csv": "aa28ce63de7cf3f52c7073f4259290f4f3750254efe12f580a9a45e9908bcf6f",
+        "property-checks.csv": "1e6cdcbe628a60ac262681455bd941b4496dc0015afe309adc6baf68deb5db43"
+      },
+      "callbacks": "eos 7152446 cp 6658629 partial_enthalpy 6656299\nconductivity 496132 diffusion 493802 negative_partial_volume_calls 0 projected_composition_calls 0\n"
+    },
+    {
+      "job": "124920007",
+      "stage": 3,
+      "phi": 1.0,
+      "guess_phi": 1.0,
+      "source": "961f6a1fc6662167076abea2b8d4c6aee449622c",
+      "build_job": "124919933",
+      "sdk_job": "124917358",
+      "input_directory": "/public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/sweep-inputs-v2/phi100",
+      "submitted_epoch": 1792414223.346931,
+      "scheduler": [
+        "COMPLETED",
+        "00:10:43",
+        "0:0"
+      ],
+      "screen_passed": true,
+      "speed_cm_s": 6.446375967657556,
+      "last_refinement_relative_change": 2.8681394780405434e-05,
+      "mass_flux_relative_range": 3.7121978067512666e-10,
+      "maximum_species_sum_error": 1.339612865081108e-10,
+      "minimum_mass_fraction": -6.017176622143162e-13,
+      "points": 2376,
+      "scientific_acceptance": false,
+      "remaining": [
+        "domain sensitivity",
+        "initial-guess sensitivity",
+        "publication parameter uncertainty"
+      ],
+      "output_sha256": {
+        "profile.csv": "2aea9ee20e38d7289a359f2c04cdbf099e251ab9d4e0ad39e0f7c952059ba2d5",
+        "refinement.csv": "6009ae83c52000b5b0abebfe6b1b9a7cc8e0d1ff36c1f3f7bd34808fbf0a77eb",
+        "property-checks.csv": "3cb9a691104f5616fc1b77e2a66ec253ff1d7a158e9e5dd674c007bacacbb4a9"
+      },
+      "callbacks": "eos 10647459 cp 9755397 partial_enthalpy 9753021\nconductivity 844130 diffusion 841754 negative_partial_volume_calls 0 projected_composition_calls 0\n"
+    },
+    {
+      "job": "124920010",
+      "stage": 1,
+      "phi": 1.05,
+      "guess_phi": 1.05,
+      "source": "961f6a1fc6662167076abea2b8d4c6aee449622c",
+      "build_job": "124919933",
+      "sdk_job": "124917358",
+      "input_directory": "/public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/sweep-inputs-v2/phi105",
+      "submitted_epoch": 1792414223.6119015,
+      "scheduler": [
+        "COMPLETED",
+        "00:03:31",
+        "0:0"
+      ],
+      "screen_passed": true,
+      "speed_cm_s": 7.324550779486868,
+      "last_refinement_relative_change": 5.624395194248066e-06,
+      "mass_flux_relative_range": 1.4657093121817418e-10,
+      "maximum_species_sum_error": 4.1586734056409114e-11,
+      "minimum_mass_fraction": -1.555621454745028e-12,
+      "points": 2283,
+      "scientific_acceptance": false,
+      "remaining": [
+        "domain sensitivity",
+        "initial-guess sensitivity",
+        "publication parameter uncertainty"
+      ],
+      "output_sha256": {
+        "profile.csv": "d4fc54334427e78d9cfd14ccf326058fae540a9eecfc18c5152ba2cdf50b93d7",
+        "refinement.csv": "d3c506e9ae75314f16a84b80967a8f4e672556c908c9400e0fbb95a5903c9e2c",
+        "property-checks.csv": "45d4fe518f5840b2f1c3b3f96db5bd33853e5cbf789b5d6883164597ed0f5f77"
+      },
+      "callbacks": ""
+    },
+    {
+      "job": "124920012",
+      "stage": 2,
+      "phi": 1.05,
+      "guess_phi": 1.05,
+      "source": "961f6a1fc6662167076abea2b8d4c6aee449622c",
+      "build_job": "124919933",
+      "sdk_job": "124917358",
+      "input_directory": "/public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/sweep-inputs-v2/phi105",
+      "submitted_epoch": 1792414223.8162103,
+      "scheduler": [
+        "COMPLETED",
+        "00:05:05",
+        "0:0"
+      ],
+      "screen_passed": true,
+      "speed_cm_s": 7.242262702315795,
+      "last_refinement_relative_change": 9.815452708283878e-06,
+      "mass_flux_relative_range": 6.034445159358775e-11,
+      "maximum_species_sum_error": 2.653388619933139e-11,
+      "minimum_mass_fraction": -5.721552940487905e-13,
+      "points": 2288,
+      "scientific_acceptance": false,
+      "remaining": [
+        "domain sensitivity",
+        "initial-guess sensitivity",
+        "publication parameter uncertainty"
+      ],
+      "output_sha256": {
+        "profile.csv": "a4e593fb903b5b9f36229d1c695c01c583b3aa64e18499024cab889b65dd762d",
+        "refinement.csv": "ea376a3c3e19857ee96194baf605de6eceba3e91d8cfe48f1be429d923ccdcdd",
+        "property-checks.csv": "a1fb70af55bece1b054a1b97b652bbd08d0f1ed29778813cee306746a6cbb70a"
+      },
+      "callbacks": "eos 5638208 cp 5175527 partial_enthalpy 5173239\nconductivity 464954 diffusion 462666 negative_partial_volume_calls 0 projected_composition_calls 0\n"
+    },
+    {
+      "job": "124920013",
+      "stage": 3,
+      "phi": 1.05,
+      "guess_phi": 1.05,
+      "source": "961f6a1fc6662167076abea2b8d4c6aee449622c",
+      "build_job": "124919933",
+      "sdk_job": "124917358",
+      "input_directory": "/public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/sweep-inputs-v2/phi105",
+      "submitted_epoch": 1792414224.134823,
+      "scheduler": [
+        "COMPLETED",
+        "00:08:28",
+        "0:0"
+      ],
+      "screen_passed": true,
+      "speed_cm_s": 6.836039734486508,
+      "last_refinement_relative_change": 1.0363765709064943e-05,
+      "mass_flux_relative_range": 2.2860188770544827e-10,
+      "maximum_species_sum_error": 2.0151702528892201e-10,
+      "minimum_mass_fraction": -1.17985657634007e-12,
+      "points": 2321,
+      "scientific_acceptance": false,
+      "remaining": [
+        "domain sensitivity",
+        "initial-guess sensitivity",
+        "publication parameter uncertainty"
+      ],
+      "output_sha256": {
+        "profile.csv": "78b630f8900b712f7f8b1093098ad4c85d4251fd0226e21fb2792d199270e836",
+        "refinement.csv": "c81cf9dad160f8daf2eae535d684da09fcb7327172d75542abb5525e375050a9",
+        "property-checks.csv": "155ec2ca25bc904287605661f1d58cfffaddbc211fb907cbbd8c2b07e3acaebc"
+      },
+      "callbacks": "eos 8270486 cp 7496285 partial_enthalpy 7493964\nconductivity 759077 diffusion 756756 negative_partial_volume_calls 0 projected_composition_calls 0\n"
+    },
+    {
+      "job": "124920014",
+      "stage": 1,
+      "phi": 1.1,
+      "guess_phi": 1.1,
+      "source": "961f6a1fc6662167076abea2b8d4c6aee449622c",
+      "build_job": "124919933",
+      "sdk_job": "124917358",
+      "input_directory": "/public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/sweep-inputs-v2/phi110",
+      "submitted_epoch": 1792414224.4266574,
+      "scheduler": [
+        "COMPLETED",
+        "00:02:52",
+        "0:0"
+      ],
+      "screen_passed": true,
+      "speed_cm_s": 7.461702833306255,
+      "last_refinement_relative_change": 1.020069528090417e-05,
+      "mass_flux_relative_range": 1.1043368538732205e-10,
+      "maximum_species_sum_error": 2.5655477742247967e-11,
+      "minimum_mass_fraction": -8.539559004299679e-13,
+      "points": 2127,
+      "scientific_acceptance": false,
+      "remaining": [
+        "domain sensitivity",
+        "initial-guess sensitivity",
+        "publication parameter uncertainty"
+      ],
+      "output_sha256": {
+        "profile.csv": "09408212459b4f4b318de2310714cba6b4429d169cfad386d84c2c47962d550e",
+        "refinement.csv": "1cdf497a838f5aa73465c8d3179023e7fec12db971766951b9236558dad8cdc9",
+        "property-checks.csv": "9e3915ce109894d6e3a66a951c78b059d3f33e7100adea57da1268ff290560f0"
+      },
+      "callbacks": ""
+    },
+    {
+      "job": "124920015",
+      "stage": 2,
+      "phi": 1.1,
+      "guess_phi": 1.1,
+      "source": "961f6a1fc6662167076abea2b8d4c6aee449622c",
+      "build_job": "124919933",
+      "sdk_job": "124917358",
+      "input_directory": "/public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/sweep-inputs-v2/phi110",
+      "submitted_epoch": 1792414224.6078722,
+      "scheduler": [
+        "COMPLETED",
+        "00:04:40",
+        "0:0"
+      ],
+      "screen_passed": true,
+      "speed_cm_s": 7.366151612588964,
+      "last_refinement_relative_change": 1.052684354441169e-05,
+      "mass_flux_relative_range": 6.43399556134576e-11,
+      "maximum_species_sum_error": 3.047406771372607e-11,
+      "minimum_mass_fraction": -1.044565414340127e-12,
+      "points": 2133,
+      "scientific_acceptance": false,
+      "remaining": [
+        "domain sensitivity",
+        "initial-guess sensitivity",
+        "publication parameter uncertainty"
+      ],
+      "output_sha256": {
+        "profile.csv": "fedde8f1fb789adeca64333892b271b4ba3aa3f65dc4bee8ff963aa05294b2ef",
+        "refinement.csv": "a895ff5a67ff1627f0ff9c425e74bd84c18278ab3b7bf220685c94afbcdf5fc0",
+        "property-checks.csv": "f55a58ff72b1a5b2106d436f6984d74956b7a88ff275a6225f328f29873409a5"
+      },
+      "callbacks": "eos 5231557 cp 4812891 partial_enthalpy 4810758\nconductivity 420784 diffusion 418651 negative_partial_volume_calls 0 projected_composition_calls 0\n"
+    },
+    {
+      "job": "124920016",
+      "stage": 3,
+      "phi": 1.1,
+      "guess_phi": 1.1,
+      "source": "961f6a1fc6662167076abea2b8d4c6aee449622c",
+      "build_job": "124919933",
+      "sdk_job": "124917358",
+      "input_directory": "/public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/sweep-inputs-v2/phi110",
+      "submitted_epoch": 1792414224.865632,
+      "scheduler": [
+        "COMPLETED",
+        "00:07:50",
+        "0:0"
+      ],
+      "screen_passed": true,
+      "speed_cm_s": 6.952261296420091,
+      "last_refinement_relative_change": 4.618382919774344e-05,
+      "mass_flux_relative_range": 2.2487286450648173e-10,
+      "maximum_species_sum_error": 3.043654217549374e-11,
+      "minimum_mass_fraction": -1.079693790911297e-12,
+      "points": 2169,
+      "scientific_acceptance": false,
+      "remaining": [
+        "domain sensitivity",
+        "initial-guess sensitivity",
+        "publication parameter uncertainty"
+      ],
+      "output_sha256": {
+        "profile.csv": "45ace16d9e281388931f3ea255b93fc70bb6e0049927c7339c5ae01c352cb75e",
+        "refinement.csv": "e3a38ef93e6d3af6768192a911fcc15166e4022fef0e3af6c7902aa61259b614",
+        "property-checks.csv": "3a58b8c2b8f99eee00f11f0b93da44f6bcacb615e3057eae91bdc8f431c944c8"
+      },
+      "callbacks": "eos 7706513 cp 6987069 partial_enthalpy 6984900\nconductivity 703725 diffusion 701556 negative_partial_volume_calls 0 projected_composition_calls 0\n"
+    },
+    {
+      "job": "124920017",
+      "stage": 1,
+      "phi": 1.15,
+      "guess_phi": 1.15,
+      "source": "961f6a1fc6662167076abea2b8d4c6aee449622c",
+      "build_job": "124919933",
+      "sdk_job": "124917358",
+      "input_directory": "/public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/sweep-inputs-v2/phi115",
+      "submitted_epoch": 1792414225.0339684,
+      "scheduler": [
+        "COMPLETED",
+        "00:02:18",
+        "0:0"
+      ],
+      "screen_passed": true,
+      "speed_cm_s": 7.33869342194257,
+      "last_refinement_relative_change": 5.450913043381078e-06,
+      "mass_flux_relative_range": 1.278745019008728e-10,
+      "maximum_species_sum_error": 3.454425634430436e-11,
+      "minimum_mass_fraction": -7.329282906967148e-13,
+      "points": 2084,
+      "scientific_acceptance": false,
+      "remaining": [
+        "domain sensitivity",
+        "initial-guess sensitivity",
+        "publication parameter uncertainty"
+      ],
+      "output_sha256": {
+        "profile.csv": "d58fdc111176621b5b4e4ae119686f881f6c854dfa8a005f49687aa5fae591b9",
+        "refinement.csv": "9a2d425232e0ddece592aa6ed88b549c8ed3d89c284e571f8d30a39b3e14e6a1",
+        "property-checks.csv": "e58daa09019164c22b008f7cc2a7f704a3fb973b172b0f4756b74beee6d5a2f1"
+      },
+      "callbacks": ""
+    },
+    {
+      "job": "124920018",
+      "stage": 2,
+      "phi": 1.15,
+      "guess_phi": 1.15,
+      "source": "961f6a1fc6662167076abea2b8d4c6aee449622c",
+      "build_job": "124919933",
+      "sdk_job": "124917358",
+      "input_directory": "/public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/sweep-inputs-v2/phi115",
+      "submitted_epoch": 1792414225.1944091,
+      "scheduler": [
+        "COMPLETED",
+        "00:04:46",
+        "0:0"
+      ],
+      "screen_passed": true,
+      "speed_cm_s": 7.233956957931532,
+      "last_refinement_relative_change": 1.0543128974416227e-05,
+      "mass_flux_relative_range": 7.313243581651244e-11,
+      "maximum_species_sum_error": 4.0169645387777564e-11,
+      "minimum_mass_fraction": -9.94888324640869e-13,
+      "points": 2093,
+      "scientific_acceptance": false,
+      "remaining": [
+        "domain sensitivity",
+        "initial-guess sensitivity",
+        "publication parameter uncertainty"
+      ],
+      "output_sha256": {
+        "profile.csv": "4e97258dcedc1d637e0d9c9e77781756e233eadec386f022fd3937a5dc74a4bc",
+        "refinement.csv": "8be2d0489ca4b8247816cf2d9fbb10a30183fe3953bc8769e1993469eff4b49c",
+        "property-checks.csv": "9f715cf982b726999ce5d1d19a241cd33fceca0056cb4072741c19f5991f4cf0"
+      },
+      "callbacks": "eos 5128801 cp 4718403 partial_enthalpy 4716310\nconductivity 412476 diffusion 410383 negative_partial_volume_calls 0 projected_composition_calls 0\n"
+    },
+    {
+      "job": "124920019",
+      "stage": 3,
+      "phi": 1.15,
+      "guess_phi": 1.15,
+      "source": "961f6a1fc6662167076abea2b8d4c6aee449622c",
+      "build_job": "124919933",
+      "sdk_job": "124917358",
+      "input_directory": "/public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/sweep-inputs-v2/phi115",
+      "submitted_epoch": 1792414225.3824186,
+      "scheduler": [
+        "COMPLETED",
+        "00:07:06",
+        "0:0"
+      ],
+      "screen_passed": true,
+      "speed_cm_s": 6.821290357585444,
+      "last_refinement_relative_change": 1.7367373424614918e-05,
+      "mass_flux_relative_range": 5.419586966877936e-10,
+      "maximum_species_sum_error": 1.1185496973098452e-10,
+      "minimum_mass_fraction": -1.390166365826571e-12,
+      "points": 2128,
+      "scientific_acceptance": false,
+      "remaining": [
+        "domain sensitivity",
+        "initial-guess sensitivity",
+        "publication parameter uncertainty"
+      ],
+      "output_sha256": {
+        "profile.csv": "74c4e4131a8e604afd0d272b5a621dccd044ee6eaed6db1e5b30c556cd902a03",
+        "refinement.csv": "4e2cb32f1250b415e2609fa1545827650a546378e84cfbc7cb7ca6f0a1d059bf",
+        "property-checks.csv": "ec2662400bf49800e0634af5a20db3a3b6af387b6368d0d5f138b392532e1405"
+      },
+      "callbacks": "eos 6778616 cp 6153651 partial_enthalpy 6151523\nconductivity 608418 diffusion 606290 negative_partial_volume_calls 0 projected_composition_calls 0\n"
+    },
+    {
+      "job": "124920020",
+      "stage": 1,
+      "phi": 1.2,
+      "guess_phi": 1.2,
+      "source": "961f6a1fc6662167076abea2b8d4c6aee449622c",
+      "build_job": "124919933",
+      "sdk_job": "124917358",
+      "input_directory": "/public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/sweep-inputs-v2/phi120",
+      "submitted_epoch": 1792414226.5406451,
+      "scheduler": [
+        "COMPLETED",
+        "00:02:59",
+        "0:0"
+      ],
+      "screen_passed": true,
+      "speed_cm_s": 7.115844489565243,
+      "last_refinement_relative_change": 5.783973354489547e-06,
+      "mass_flux_relative_range": 1.1639545440142074e-10,
+      "maximum_species_sum_error": 3.395861369881459e-11,
+      "minimum_mass_fraction": -4.504439406426537e-13,
+      "points": 2177,
+      "scientific_acceptance": false,
+      "remaining": [
+        "domain sensitivity",
+        "initial-guess sensitivity",
+        "publication parameter uncertainty"
+      ],
+      "output_sha256": {
+        "profile.csv": "0c2106bf77b6625b8f003b043eec0e355a690ddb0e8a3729ec86d5dea16ccf8d",
+        "refinement.csv": "f56a9fd05e0db3ad4f1a502a1a4b93d08438cc220ba5142efe59ec721d4a5e34",
+        "property-checks.csv": "5e16e4f9ff0f10e9a1fa547318d0e53f5f00a2e6417f217e4ab4f4f1e29c0536"
+      },
+      "callbacks": ""
+    },
+    {
+      "job": "124920021",
+      "stage": 2,
+      "phi": 1.2,
+      "guess_phi": 1.2,
+      "source": "961f6a1fc6662167076abea2b8d4c6aee449622c",
+      "build_job": "124919933",
+      "sdk_job": "124917358",
+      "input_directory": "/public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/sweep-inputs-v2/phi120",
+      "submitted_epoch": 1792414226.8672833,
+      "scheduler": [
+        "COMPLETED",
+        "00:05:16",
+        "0:0"
+      ],
+      "screen_passed": true,
+      "speed_cm_s": 7.004547729769338,
+      "last_refinement_relative_change": 1.0125752339162908e-05,
+      "mass_flux_relative_range": 6.854913126297432e-11,
+      "maximum_species_sum_error": 3.097699874388127e-11,
+      "minimum_mass_fraction": -1.197339222522061e-12,
+      "points": 2189,
+      "scientific_acceptance": false,
+      "remaining": [
+        "domain sensitivity",
+        "initial-guess sensitivity",
+        "publication parameter uncertainty"
+      ],
+      "output_sha256": {
+        "profile.csv": "b544c2e1f0a274077b273e62d71b175ccce6ffbc891a0262ff5ce3be1e706b18",
+        "refinement.csv": "0455c4b7f71a26d00b5567809758497bc43aab5dc2e0df3448bede3014f4c099",
+        "property-checks.csv": "c3c41bba314b3beed3536a1cab64f46fec1a78fe4325ceb218398abe7b871005"
+      },
+      "callbacks": "eos 6035883 cp 5587965 partial_enthalpy 5585776\nconductivity 450092 diffusion 447903 negative_partial_volume_calls 0 projected_composition_calls 0\n"
+    },
+    {
+      "job": "124920022",
+      "stage": 3,
+      "phi": 1.2,
+      "guess_phi": 1.2,
+      "source": "961f6a1fc6662167076abea2b8d4c6aee449622c",
+      "build_job": "124919933",
+      "sdk_job": "124917358",
+      "input_directory": "/public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/sweep-inputs-v2/phi120",
+      "submitted_epoch": 1792414227.1442251,
+      "scheduler": [
+        "COMPLETED",
+        "00:07:46",
+        "0:0"
+      ],
+      "screen_passed": true,
+      "speed_cm_s": 6.602444336155461,
+      "last_refinement_relative_change": 1.1523296737703248e-05,
+      "mass_flux_relative_range": 1.283070289605004e-10,
+      "maximum_species_sum_error": 9.639400389005459e-11,
+      "minimum_mass_fraction": -1.063607504787439e-12,
+      "points": 2219,
+      "scientific_acceptance": false,
+      "remaining": [
+        "domain sensitivity",
+        "initial-guess sensitivity",
+        "publication parameter uncertainty"
+      ],
+      "output_sha256": {
+        "profile.csv": "44242ed5aa1546388af406f08e557aa87417f48d5518fd470baed64cc5cc7c19",
+        "refinement.csv": "8b3397d623925bfca897f95edebe4c96c5fa587806a9e1a71dd6fcecee16a1e8",
+        "property-checks.csv": "5b9129b5ded989b441a8b7da2cb24fa02c003d719af6295e4c7d5807261feae9"
+      },
+      "callbacks": "eos 7739485 cp 7075257 partial_enthalpy 7073038\nconductivity 645872 diffusion 643653 negative_partial_volume_calls 0 projected_composition_calls 0\n"
+    },
+    {
+      "job": "124920023",
+      "stage": 1,
+      "phi": 1.25,
+      "guess_phi": 1.25,
+      "source": "961f6a1fc6662167076abea2b8d4c6aee449622c",
+      "build_job": "124919933",
+      "sdk_job": "124917358",
+      "input_directory": "/public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/sweep-inputs-v2/phi125",
+      "submitted_epoch": 1792414227.906037,
+      "scheduler": [
+        "COMPLETED",
+        "00:03:22",
+        "0:0"
+      ],
+      "screen_passed": true,
+      "speed_cm_s": 6.868865867632599,
+      "last_refinement_relative_change": 7.834758115166096e-06,
+      "mass_flux_relative_range": 1.450753060327648e-10,
+      "maximum_species_sum_error": 3.963895878200674e-11,
+      "minimum_mass_fraction": -4.162501663465029e-13,
+      "points": 2192,
+      "scientific_acceptance": false,
+      "remaining": [
+        "domain sensitivity",
+        "initial-guess sensitivity",
+        "publication parameter uncertainty"
+      ],
+      "output_sha256": {
+        "profile.csv": "d35c562d13676b858a5d4151a8a9af747bbae50b7f9ac8ecad2235b33fc0be6b",
+        "refinement.csv": "031d12748e89e97bfdabf9b6da764ec169480486afdf237ea1fdb6e31ee08988",
+        "property-checks.csv": "c863b29eb5917919f7ac831857eed4527013babb013ce893bdac72ba51bf161a"
+      },
+      "callbacks": ""
+    },
+    {
+      "job": "124920025",
+      "stage": 2,
+      "phi": 1.25,
+      "guess_phi": 1.25,
+      "source": "961f6a1fc6662167076abea2b8d4c6aee449622c",
+      "build_job": "124919933",
+      "sdk_job": "124917358",
+      "input_directory": "/public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/sweep-inputs-v2/phi125",
+      "submitted_epoch": 1792414228.22366,
+      "scheduler": [
+        "COMPLETED",
+        "00:05:54",
+        "0:0"
+      ],
+      "screen_passed": true,
+      "speed_cm_s": 6.753269120891285,
+      "last_refinement_relative_change": 1.1273209788331684e-05,
+      "mass_flux_relative_range": 5.741450070955575e-10,
+      "maximum_species_sum_error": 3.211408916570235e-11,
+      "minimum_mass_fraction": -6.607900189665024e-13,
+      "points": 2201,
+      "scientific_acceptance": false,
+      "remaining": [
+        "domain sensitivity",
+        "initial-guess sensitivity",
+        "publication parameter uncertainty"
+      ],
+      "output_sha256": {
+        "profile.csv": "bf5e821aeb795e28b6bf049c836df22528e9b4e874d5d2ab26eb5b4e62d96000",
+        "refinement.csv": "cd9eb86206953a584f9f7eaea00a4c387b7bcf5a98cef08fb63add1272ac3ef1",
+        "property-checks.csv": "8bff74a78c8fbc1d716e53156f85d4a52bc5eaf90d478a868129309cd371d0b8"
+      },
+      "callbacks": "eos 6067224 cp 5620609 partial_enthalpy 5618408\nconductivity 448801 diffusion 446600 negative_partial_volume_calls 0 projected_composition_calls 0\n"
+    },
+    {
+      "job": "124920026",
+      "stage": 3,
+      "phi": 1.25,
+      "guess_phi": 1.25,
+      "source": "961f6a1fc6662167076abea2b8d4c6aee449622c",
+      "build_job": "124919933",
+      "sdk_job": "124917358",
+      "input_directory": "/public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/sweep-inputs-v2/phi125",
+      "submitted_epoch": 1792414228.4498475,
+      "scheduler": [
+        "COMPLETED",
+        "00:08:30",
+        "0:0"
+      ],
+      "screen_passed": true,
+      "speed_cm_s": 6.362715013882631,
+      "last_refinement_relative_change": 2.223634471465452e-05,
+      "mass_flux_relative_range": 2.077648197974851e-10,
+      "maximum_species_sum_error": 1.8622170472326616e-10,
+      "minimum_mass_fraction": -2.958309168939896e-12,
+      "points": 2239,
+      "scientific_acceptance": false,
+      "remaining": [
+        "domain sensitivity",
+        "initial-guess sensitivity",
+        "publication parameter uncertainty"
+      ],
+      "output_sha256": {
+        "profile.csv": "88d977d61738ff3fccc7e686b21bd6d7094bd9247ea7c47dd3ffc2db54c55f19",
+        "refinement.csv": "f77876066599761e71a36d2eb480bcaf58ae79ad0a9599e22432cbb8c3857bb7",
+        "property-checks.csv": "44d7234a16ea54fe6c0f9b61e1cefef8169c63148a6089b4f28a327af2b149e2"
+      },
+      "callbacks": "eos 7718640 cp 7089939 partial_enthalpy 7087700\nconductivity 615415 diffusion 613176 negative_partial_volume_calls 0 projected_composition_calls 0\n"
+    },
+    {
+      "job": "124920027",
+      "stage": 1,
+      "phi": 1.3,
+      "guess_phi": 1.3,
+      "source": "961f6a1fc6662167076abea2b8d4c6aee449622c",
+      "build_job": "124919933",
+      "sdk_job": "124917358",
+      "input_directory": "/public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/sweep-inputs-v2/phi130",
+      "submitted_epoch": 1792414228.7098923,
+      "scheduler": [
+        "COMPLETED",
+        "00:04:03",
+        "0:0"
+      ],
+      "screen_passed": true,
+      "speed_cm_s": 6.614454323655951,
+      "last_refinement_relative_change": 0.0013025359864576869,
+      "mass_flux_relative_range": 9.181921168464214e-11,
+      "maximum_species_sum_error": 9.885381402341409e-11,
+      "minimum_mass_fraction": -3.082704064867855e-12,
+      "points": 2243,
+      "scientific_acceptance": false,
+      "remaining": [
+        "domain sensitivity",
+        "initial-guess sensitivity",
+        "publication parameter uncertainty"
+      ],
+      "output_sha256": {
+        "profile.csv": "580af8117cceb57b4f0bbfb5dfb044fee78b3a9be76a11b3be8763d3eebab9bb",
+        "refinement.csv": "2330280b19d82c4927716d826b36b1e89f41dbfad5b4e2a6ce2a3a56d60353a9",
+        "property-checks.csv": "9fdfd9c90b3fe320d1d5397db3cd00f011070a5d9a3f63f049c6e7cb389684f4"
+      },
+      "callbacks": ""
+    },
+    {
+      "job": "124920028",
+      "stage": 2,
+      "phi": 1.3,
+      "guess_phi": 1.3,
+      "source": "961f6a1fc6662167076abea2b8d4c6aee449622c",
+      "build_job": "124919933",
+      "sdk_job": "124917358",
+      "input_directory": "/public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/sweep-inputs-v2/phi130",
+      "submitted_epoch": 1792414228.9270368,
+      "scheduler": [
+        "COMPLETED",
+        "00:04:47",
+        "0:0"
+      ],
+      "screen_passed": true,
+      "speed_cm_s": 6.494596590381501,
+      "last_refinement_relative_change": 0.0014031438707695632,
+      "mass_flux_relative_range": 9.847849329433049e-11,
+      "maximum_species_sum_error": 1.0661804772382766e-10,
+      "minimum_mass_fraction": -2.199423422641571e-12,
+      "points": 2245,
+      "scientific_acceptance": false,
+      "remaining": [
+        "domain sensitivity",
+        "initial-guess sensitivity",
+        "publication parameter uncertainty"
+      ],
+      "output_sha256": {
+        "profile.csv": "c2b6b569be2fdc59baca23ec05a6811269de4fb9c240ce8b4fb5e6fb3c5ea3dd",
+        "refinement.csv": "50789b49e6853a15d67f29a97c2dd400ac1df1ad20f956cb1983888a2c70060f",
+        "property-checks.csv": "7b5fdf11858b0a21d39a799eb4e2eda9bc331936c0b659c3ea3cd8b0d1b5f147"
+      },
+      "callbacks": "eos 5400994 cp 5045752 partial_enthalpy 5043507\nconductivity 357472 diffusion 355227 negative_partial_volume_calls 0 projected_composition_calls 0\n"
+    },
+    {
+      "job": "124920029",
+      "stage": 3,
+      "phi": 1.3,
+      "guess_phi": 1.3,
+      "source": "961f6a1fc6662167076abea2b8d4c6aee449622c",
+      "build_job": "124919933",
+      "sdk_job": "124917358",
+      "input_directory": "/public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/sweep-inputs-v2/phi130",
+      "submitted_epoch": 1792414229.2002578,
+      "scheduler": [
+        "COMPLETED",
+        "00:06:01",
+        "0:0"
+      ],
+      "screen_passed": true,
+      "speed_cm_s": 6.116002014116199,
+      "last_refinement_relative_change": 0.001769706519464176,
+      "mass_flux_relative_range": 1.4594008983890094e-10,
+      "maximum_species_sum_error": 8.232392545437506e-11,
+      "minimum_mass_fraction": -4.84553251918447e-12,
+      "points": 2259,
+      "scientific_acceptance": false,
+      "remaining": [
+        "domain sensitivity",
+        "initial-guess sensitivity",
+        "publication parameter uncertainty"
+      ],
+      "output_sha256": {
+        "profile.csv": "0a7fe93564096a4663813aa2c3c0c3e323381083f1f01711a7abcce5468ebc29",
+        "refinement.csv": "18e5c7304c00fbf8012eeaef7a9cab06fb1d1a81d184857095e03471bf225e3a",
+        "property-checks.csv": "a69f7e262f08ff3954e2e2b873f06255b2aeaae78512a137774b10649ae79673"
+      },
+      "callbacks": "eos 5835728 cp 5468280 partial_enthalpy 5466021\nconductivity 353520 diffusion 351261 negative_partial_volume_calls 0 projected_composition_calls 0\n"
+    },
+    {
+      "job": "124920030",
+      "stage": 1,
+      "phi": 1.35,
+      "guess_phi": 1.35,
+      "source": "961f6a1fc6662167076abea2b8d4c6aee449622c",
+      "build_job": "124919933",
+      "sdk_job": "124917358",
+      "input_directory": "/public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/sweep-inputs-v2/phi135",
+      "submitted_epoch": 1792414229.464628,
+      "scheduler": [
+        "COMPLETED",
+        "00:03:17",
+        "0:0"
+      ],
+      "screen_passed": true,
+      "speed_cm_s": 6.36147819695285,
+      "last_refinement_relative_change": 0.0013137943295825627,
+      "mass_flux_relative_range": 1.2311194263106506e-10,
+      "maximum_species_sum_error": 6.011946496187193e-11,
+      "minimum_mass_fraction": -3.233390975164581e-12,
+      "points": 2254,
+      "scientific_acceptance": false,
+      "remaining": [
+        "domain sensitivity",
+        "initial-guess sensitivity",
+        "publication parameter uncertainty"
+      ],
+      "output_sha256": {
+        "profile.csv": "5a52e1c4e4fe66929f61a5faa6b98f327bfbfdae040c2001e7f6633a5b43b855",
+        "refinement.csv": "18dd91a3b882739a9103b041be6b78f74e8c99143bd10e6b3a2f847fb17fe76a",
+        "property-checks.csv": "1541ba959142f5ced6916c9bb96139eb23421944573994567805248b7063dc0d"
+      },
+      "callbacks": ""
+    },
+    {
+      "job": "124920031",
+      "stage": 2,
+      "phi": 1.35,
+      "guess_phi": 1.35,
+      "source": "961f6a1fc6662167076abea2b8d4c6aee449622c",
+      "build_job": "124919933",
+      "sdk_job": "124917358",
+      "input_directory": "/public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/sweep-inputs-v2/phi135",
+      "submitted_epoch": 1792414229.658702,
+      "scheduler": [
+        "COMPLETED",
+        "00:04:27",
+        "0:0"
+      ],
+      "screen_passed": true,
+      "speed_cm_s": 6.239887959997245,
+      "last_refinement_relative_change": 0.0014103717122780912,
+      "mass_flux_relative_range": 1.514014123258632e-10,
+      "maximum_species_sum_error": 6.593858792314222e-11,
+      "minimum_mass_fraction": -2.194048071424361e-12,
+      "points": 2258,
+      "scientific_acceptance": false,
+      "remaining": [
+        "domain sensitivity",
+        "initial-guess sensitivity",
+        "publication parameter uncertainty"
+      ],
+      "output_sha256": {
+        "profile.csv": "a5a3c21d45850cb0d2651b28f35537e3e56488dd0018e60621dd18400588d546",
+        "refinement.csv": "0eeb9c725b29e93af94df407f49ea72f33cdc2036c6453dce3fdba61d63213ad",
+        "property-checks.csv": "48a00a83ccdac5c6d8b3d68e67719be02329efe3f273b4e5a0088882cae89db7"
+      },
+      "callbacks": "eos 4727788 cp 4392357 partial_enthalpy 4390099\nconductivity 337674 diffusion 335416 negative_partial_volume_calls 0 projected_composition_calls 0\n"
+    },
+    {
+      "job": "124920032",
+      "stage": 3,
+      "phi": 1.35,
+      "guess_phi": 1.35,
+      "source": "961f6a1fc6662167076abea2b8d4c6aee449622c",
+      "build_job": "124919933",
+      "sdk_job": "124917358",
+      "input_directory": "/public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/sweep-inputs-v2/phi135",
+      "submitted_epoch": 1792414229.8298516,
+      "scheduler": [
+        "COMPLETED",
+        "00:05:23",
+        "0:0"
+      ],
+      "screen_passed": true,
+      "speed_cm_s": 5.8754552523021,
+      "last_refinement_relative_change": 0.0016444761478477954,
+      "mass_flux_relative_range": 2.471791512812033e-10,
+      "maximum_species_sum_error": 1.8989565475635573e-10,
+      "minimum_mass_fraction": -2.730442398128504e-13,
+      "points": 2253,
+      "scientific_acceptance": false,
+      "remaining": [
+        "domain sensitivity",
+        "initial-guess sensitivity",
+        "publication parameter uncertainty"
+      ],
+      "output_sha256": {
+        "profile.csv": "a9d9125982ee6c62b04280bd36fc2543c162c402c5588c9e6e99746cfaa47af1",
+        "refinement.csv": "bb0ffb8b1b3683d6607c72c6fcad6e77168111d0dcf20f841f8e45e5a0b4dfed",
+        "property-checks.csv": "5c19eafa3b95ec13c06a834c30c2eb5a894dac97b287507d64f6805fe3a46e11"
+      },
+      "callbacks": "eos 5103352 cp 4746696 partial_enthalpy 4744443\nconductivity 341604 diffusion 339351 negative_partial_volume_calls 0 projected_composition_calls 0\n"
+    },
+    {
+      "job": "124920034",
+      "stage": 1,
+      "phi": 1.4,
+      "guess_phi": 1.4,
+      "source": "961f6a1fc6662167076abea2b8d4c6aee449622c",
+      "build_job": "124919933",
+      "sdk_job": "124917358",
+      "input_directory": "/public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/sweep-inputs-v2/phi140",
+      "submitted_epoch": 1792414230.9860046,
+      "scheduler": [
+        "COMPLETED",
+        "00:03:17",
+        "0:0"
+      ],
+      "screen_passed": true,
+      "speed_cm_s": 6.116619431452803,
+      "last_refinement_relative_change": 0.0012783120907197132,
+      "mass_flux_relative_range": 1.8157960408432182e-09,
+      "maximum_species_sum_error": 1.7852264111439808e-10,
+      "minimum_mass_fraction": -4.122322066773991e-12,
+      "points": 2267,
+      "scientific_acceptance": false,
+      "remaining": [
+        "domain sensitivity",
+        "initial-guess sensitivity",
+        "publication parameter uncertainty"
+      ],
+      "output_sha256": {
+        "profile.csv": "97a17e04e79c367d1d4118753432806c5cc66b12206994b9325a040172e6adce",
+        "refinement.csv": "06056456fd24e1400a10b354808492201fe8cc57f684bfe35210b5302df23220",
+        "property-checks.csv": "446317feefef116a5632be0fb0179cda8ee294dad216d4dee5c27339cf7ca085"
+      },
+      "callbacks": ""
+    },
+    {
+      "job": "124920035",
+      "stage": 2,
+      "phi": 1.4,
+      "guess_phi": 1.4,
+      "source": "961f6a1fc6662167076abea2b8d4c6aee449622c",
+      "build_job": "124919933",
+      "sdk_job": "124917358",
+      "input_directory": "/public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/sweep-inputs-v2/phi140",
+      "submitted_epoch": 1792414231.294617,
+      "scheduler": [
+        "COMPLETED",
+        "00:04:33",
+        "0:0"
+      ],
+      "screen_passed": true,
+      "speed_cm_s": 5.993986761261874,
+      "last_refinement_relative_change": 0.0013771550203632854,
+      "mass_flux_relative_range": 2.8360783527077834e-10,
+      "maximum_species_sum_error": 9.384548693702754e-11,
+      "minimum_mass_fraction": -7.475307055244453e-13,
+      "points": 2257,
+      "scientific_acceptance": false,
+      "remaining": [
+        "domain sensitivity",
+        "initial-guess sensitivity",
+        "publication parameter uncertainty"
+      ],
+      "output_sha256": {
+        "profile.csv": "d168a9576b5174348c19c4717f91409f84860c1e600065dda0d87eebe0ba79b0",
+        "refinement.csv": "56293b3a58e4f9083bd2f89e985fda36c22f1b699512aae30bd6e447a414be98",
+        "property-checks.csv": "6f1fd95c94494f2803f527f0770abc9f99c09f101ccf974c77c52fab9b253eb3"
+      },
+      "callbacks": "eos 4729679 cp 4400233 partial_enthalpy 4397976\nconductivity 331688 diffusion 329431 negative_partial_volume_calls 0 projected_composition_calls 0\n"
+    },
+    {
+      "job": "124920036",
+      "stage": 3,
+      "phi": 1.4,
+      "guess_phi": 1.4,
+      "source": "961f6a1fc6662167076abea2b8d4c6aee449622c",
+      "build_job": "124919933",
+      "sdk_job": "124917358",
+      "input_directory": "/public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/sweep-inputs-v2/phi140",
+      "submitted_epoch": 1792414231.4861526,
+      "scheduler": [
+        "COMPLETED",
+        "00:04:40",
+        "0:0"
+      ],
+      "screen_passed": true,
+      "speed_cm_s": 5.641481435598954,
+      "last_refinement_relative_change": 0.0017124518634069608,
+      "mass_flux_relative_range": 1.7194098866179668e-10,
+      "maximum_species_sum_error": 6.36701802392281e-11,
+      "minimum_mass_fraction": -1.367734032475793e-12,
+      "points": 2194,
+      "scientific_acceptance": false,
+      "remaining": [
+        "domain sensitivity",
+        "initial-guess sensitivity",
+        "publication parameter uncertainty"
+      ],
+      "output_sha256": {
+        "profile.csv": "8e8f5747ef754a02e79afcb369e3429c0158f12de015b39e4c0fd3b0353f4e12",
+        "refinement.csv": "18416c9ab34b1bf357ea9fedccb918bacfd42fa4c6da857843de4179b8e699d8",
+        "property-checks.csv": "c7162bbe162cbc23a96c18f5307b60b5c589bd6a13c9189488f7c1328e5e1011"
+      },
+      "callbacks": "eos 4333033 cp 4014661 partial_enthalpy 4012467\nconductivity 302245 diffusion 300051 negative_partial_volume_calls 0 projected_composition_calls 0\n"
+    },
+    {
+      "job": "124920037",
+      "stage": 1,
+      "phi": 1.44,
+      "guess_phi": 1.4,
+      "source": "961f6a1fc6662167076abea2b8d4c6aee449622c",
+      "build_job": "124919933",
+      "sdk_job": "124917358",
+      "input_directory": "/public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/sweep-inputs-v2/phi144",
+      "submitted_epoch": 1792414231.7939892,
+      "scheduler": [
+        "COMPLETED",
+        "00:03:58",
+        "0:0"
+      ],
+      "screen_passed": true,
+      "speed_cm_s": 5.929065249252011,
+      "last_refinement_relative_change": 0.0013048931102314087,
+      "mass_flux_relative_range": 1.1444686186428417e-10,
+      "maximum_species_sum_error": 4.480615878321714e-11,
+      "minimum_mass_fraction": -9.656887284622424e-13,
+      "points": 2182,
+      "scientific_acceptance": false,
+      "remaining": [
+        "domain sensitivity",
+        "initial-guess sensitivity",
+        "publication parameter uncertainty"
+      ],
+      "output_sha256": {
+        "profile.csv": "5a450c82e8f0ddb8668f5f48eadca859e2d086984754c785f0ffdc4ff0f6ee7f",
+        "refinement.csv": "796c040c7e5c56fc9d47cf674ef80eabfcd48827cb62b314e865e5b76a1da584",
+        "property-checks.csv": "052e7bc889cc20911ba27a43b80ebd93f9c765cb9229ec1584d74e6c19a381cd"
+      },
+      "callbacks": ""
+    },
+    {
+      "job": "124920038",
+      "stage": 2,
+      "phi": 1.44,
+      "guess_phi": 1.4,
+      "source": "961f6a1fc6662167076abea2b8d4c6aee449622c",
+      "build_job": "124919933",
+      "sdk_job": "124917358",
+      "input_directory": "/public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/sweep-inputs-v2/phi144",
+      "submitted_epoch": 1792414232.3414872,
+      "scheduler": [
+        "COMPLETED",
+        "00:04:03",
+        "0:0"
+      ],
+      "screen_passed": true,
+      "speed_cm_s": 5.805943271912993,
+      "last_refinement_relative_change": 0.0013185724411178823,
+      "mass_flux_relative_range": 1.6476082214982428e-10,
+      "maximum_species_sum_error": 5.988165518999722e-11,
+      "minimum_mass_fraction": -2.251817502331799e-13,
+      "points": 2174,
+      "scientific_acceptance": false,
+      "remaining": [
+        "domain sensitivity",
+        "initial-guess sensitivity",
+        "publication parameter uncertainty"
+      ],
+      "output_sha256": {
+        "profile.csv": "95429ab9f1db23c86cdfbcc1e9a12e71ccb08c2457fea5d6ed732ac9c6b9dc2b",
+        "refinement.csv": "994316e2a43ba78b13ddc5e1945027a5499358124b5e2b3a2a7fea3954da7b06",
+        "property-checks.csv": "a09121025eaeb7f3f37b1abd80679a08d75a84a1a49c264e59317ac8c8113ee7"
+      },
+      "callbacks": "eos 4323851 cp 4012421 partial_enthalpy 4010247\nconductivity 313589 diffusion 311415 negative_partial_volume_calls 0 projected_composition_calls 0\n"
+    },
+    {
+      "job": "124920039",
+      "stage": 3,
+      "phi": 1.44,
+      "guess_phi": 1.4,
+      "source": "961f6a1fc6662167076abea2b8d4c6aee449622c",
+      "build_job": "124919933",
+      "sdk_job": "124917358",
+      "input_directory": "/public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/sweep-inputs-v2/phi144",
+      "submitted_epoch": 1792414232.5749342,
+      "scheduler": [
+        "COMPLETED",
+        "00:04:37",
+        "0:0"
+      ],
+      "screen_passed": true,
+      "speed_cm_s": 5.463521147993692,
+      "last_refinement_relative_change": 0.0016927933650776605,
+      "mass_flux_relative_range": 1.3428952303026685e-10,
+      "maximum_species_sum_error": 1.4218404231769455e-10,
+      "minimum_mass_fraction": -4.493386480893298e-12,
+      "points": 2118,
+      "scientific_acceptance": false,
+      "remaining": [
+        "domain sensitivity",
+        "initial-guess sensitivity",
+        "publication parameter uncertainty"
+      ],
+      "output_sha256": {
+        "profile.csv": "867619f068451e9eeac51f429d9ee6cdeaede7d55489c5339697805684098fb0",
+        "refinement.csv": "532bd4cfe56ed73c9d38eb8bda804d5b1f970f8a55b90f92cfd822ee7e7c05f0",
+        "property-checks.csv": "9bffbd5735c7c89f3b9becadfd9f8d6e58e16a660db71091c6e8b8c943022c29"
+      },
+      "callbacks": "eos 4289298 cp 3965787 partial_enthalpy 3963669\nconductivity 308302 diffusion 306184 negative_partial_volume_calls 0 projected_composition_calls 0\n"
+    },
+    {
+      "job": "124921352",
+      "stage": 4,
+      "phi": 0.92,
+      "guess_phi": 0.92,
+      "source": "961f6a1fc6662167076abea2b8d4c6aee449622c",
+      "build_job": "124919933",
+      "sdk_job": "124917358",
+      "input_directory": "/public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/sweep-inputs-v2/phi092",
+      "submitted_epoch": 1792415060.7231624,
+      "scheduler": [
+        "COMPLETED",
+        "00:47:29",
+        "0:0"
+      ],
+      "screen_passed": true,
+      "speed_cm_s": 6.499600880865477,
+      "last_refinement_relative_change": 1.4859402506117725e-05,
+      "mass_flux_relative_range": 2.4950233596189595e-10,
+      "maximum_species_sum_error": 1.4910050971650435e-10,
+      "minimum_mass_fraction": -1.030506432446565e-11,
+      "points": 2350,
+      "scientific_acceptance": false,
+      "remaining": [
+        "domain sensitivity",
+        "initial-guess sensitivity",
+        "publication parameter uncertainty"
+      ],
+      "output_sha256": {
+        "profile.csv": "fd55251f89191693c02eb75a65f5e874f7201a9b62269bcae60bd5a64bd591ca",
+        "refinement.csv": "d29971dbf9edc977143e7418f360e313b1e59751d3bf00ea45f884140cfc7a30",
+        "property-checks.csv": "e76417939228d1365bce7dc5fb7b071142efdbc4eae55c223a9468d8263fa3de"
+      },
+      "callbacks": "eos 22045704 cp 19805851 partial_enthalpy 19803501\nconductivity 2229732 diffusion 2227382 negative_partial_volume_calls 138067 projected_composition_calls 1534850\n"
+    },
+    {
+      "job": "124921357",
+      "stage": 4,
+      "phi": 0.95,
+      "guess_phi": 0.95,
+      "source": "961f6a1fc6662167076abea2b8d4c6aee449622c",
+      "build_job": "124919933",
+      "sdk_job": "124917358",
+      "input_directory": "/public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/sweep-inputs-v2/phi095",
+      "submitted_epoch": 1792415061.388062,
+      "scheduler": [
+        "COMPLETED",
+        "00:20:45",
+        "0:0"
+      ],
+      "screen_passed": true,
+      "speed_cm_s": 6.941107581989773,
+      "last_refinement_relative_change": 2.8212052064380266e-05,
+      "mass_flux_relative_range": 2.68819285997143e-10,
+      "maximum_species_sum_error": 1.3634249285132682e-10,
+      "minimum_mass_fraction": -3.555312434370468e-12,
+      "points": 2363,
+      "scientific_acceptance": false,
+      "remaining": [
+        "domain sensitivity",
+        "initial-guess sensitivity",
+        "publication parameter uncertainty"
+      ],
+      "output_sha256": {
+        "profile.csv": "739b9b8ed9a6380f0df9863f9e74185b8403af0280e0cc38be430730cd75f081",
+        "refinement.csv": "b718f58d604d6f3596929f0d8b6a78616f931b658894209617b6ced203191460",
+        "property-checks.csv": "545677d33c8fd010b6205c60fb4bca2ed8a814f840c667ce07713fd41ca660d7"
+      },
+      "callbacks": "eos 11232127 cp 10386182 partial_enthalpy 10383819\nconductivity 835724 diffusion 833361 negative_partial_volume_calls 52625 projected_composition_calls 301658\n"
+    },
+    {
+      "job": "124921360",
+      "stage": 4,
+      "phi": 1.0,
+      "guess_phi": 1.0,
+      "source": "961f6a1fc6662167076abea2b8d4c6aee449622c",
+      "build_job": "124919933",
+      "sdk_job": "124917358",
+      "input_directory": "/public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/sweep-inputs-v2/phi100",
+      "submitted_epoch": 1792415062.2200701,
+      "scheduler": [
+        "COMPLETED",
+        "00:17:30",
+        "0:0"
+      ],
+      "screen_passed": true,
+      "speed_cm_s": 7.53314108751584,
+      "last_refinement_relative_change": 1.2970939962553274e-05,
+      "mass_flux_relative_range": 1.0084603952131308e-10,
+      "maximum_species_sum_error": 7.620548636566582e-11,
+      "minimum_mass_fraction": -4.992252663074149e-13,
+      "points": 2383,
+      "scientific_acceptance": false,
+      "remaining": [
+        "domain sensitivity",
+        "initial-guess sensitivity",
+        "publication parameter uncertainty"
+      ],
+      "output_sha256": {
+        "profile.csv": "dc47b59cc561f0fd8e1843141efb748f2ebbcbd7f9d746992a2484d7c69eedbd",
+        "refinement.csv": "e4c252ec7389fe1f9e978b1de8757b91d7a465180b5d814508606110672eab2e",
+        "property-checks.csv": "877349cab29aa45e5b06441bc1c55d35ea4b2a281022d662a24fbed0a0f8bdcf"
+      },
+      "callbacks": "eos 9059274 cp 8278569 partial_enthalpy 8276186\nconductivity 732780 diffusion 730397 negative_partial_volume_calls 46328 projected_composition_calls 244340\n"
+    },
+    {
+      "job": "124921361",
+      "stage": 4,
+      "phi": 1.05,
+      "guess_phi": 1.05,
+      "source": "961f6a1fc6662167076abea2b8d4c6aee449622c",
+      "build_job": "124919933",
+      "sdk_job": "124917358",
+      "input_directory": "/public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/sweep-inputs-v2/phi105",
+      "submitted_epoch": 1792415063.8217635,
+      "scheduler": [
+        "COMPLETED",
+        "00:44:06",
+        "0:0"
+      ],
+      "screen_passed": true,
+      "speed_cm_s": 7.913627493959151,
+      "last_refinement_relative_change": 9.63538749121362e-06,
+      "mass_flux_relative_range": 2.0634129476051644e-10,
+      "maximum_species_sum_error": 1.5751511206474333e-10,
+      "minimum_mass_fraction": -3.04008016799721e-12,
+      "points": 2334,
+      "scientific_acceptance": false,
+      "remaining": [
+        "domain sensitivity",
+        "initial-guess sensitivity",
+        "publication parameter uncertainty"
+      ],
+      "output_sha256": {
+        "profile.csv": "f6fc176827554c53d5cb221c4b7dae3e21b4a53a32fad10676cfbf8f01afa1d4",
+        "refinement.csv": "213d4d588c0676cd41872b3607bddf0aca58ef0a4f7f3a6d263693fabc30fa23",
+        "property-checks.csv": "504a997e553b9cec4035ea9ab1e125663dc0d108d32fd0939d1a1a22ec1b7b6b"
+      },
+      "callbacks": "eos 20248027 cp 18192989 partial_enthalpy 18190655\nconductivity 2039927 diffusion 2037593 negative_partial_volume_calls 122646 projected_composition_calls 967007\n"
+    },
+    {
+      "job": "124921366",
+      "stage": 4,
+      "phi": 1.1,
+      "guess_phi": 1.1,
+      "source": "961f6a1fc6662167076abea2b8d4c6aee449622c",
+      "build_job": "124919933",
+      "sdk_job": "124917358",
+      "input_directory": "/public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/sweep-inputs-v2/phi110",
+      "submitted_epoch": 1792415064.6124747,
+      "scheduler": [
+        "COMPLETED",
+        "00:17:34",
+        "0:0"
+      ],
+      "screen_passed": true,
+      "speed_cm_s": 7.980027677495497,
+      "last_refinement_relative_change": 1.0700082182291126e-05,
+      "mass_flux_relative_range": 1.193945260118904e-10,
+      "maximum_species_sum_error": 9.472866935311686e-11,
+      "minimum_mass_fraction": -1.382672001583804e-12,
+      "points": 2173,
+      "scientific_acceptance": false,
+      "remaining": [
+        "domain sensitivity",
+        "initial-guess sensitivity",
+        "publication parameter uncertainty"
+      ],
+      "output_sha256": {
+        "profile.csv": "a6e4c6615205de395e15a292444e4483c64107678aea97b88bbcb51d13d0eb93",
+        "refinement.csv": "9716b58029b8a17b3d46840bacf1e80e1554a871396b9762759d75000626c98c",
+        "property-checks.csv": "38e815d1adfe35450aff46691d4a1449564226203cc5e924a732c05b14738d2e"
+      },
+      "callbacks": "eos 7983696 cp 7126287 partial_enthalpy 7124114\nconductivity 841694 diffusion 839521 negative_partial_volume_calls 67160 projected_composition_calls 370809\n"
+    },
+    {
+      "job": "124921369",
+      "stage": 4,
+      "phi": 1.15,
+      "guess_phi": 1.15,
+      "source": "961f6a1fc6662167076abea2b8d4c6aee449622c",
+      "build_job": "124919933",
+      "sdk_job": "124917358",
+      "input_directory": "/public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/sweep-inputs-v2/phi115",
+      "submitted_epoch": 1792415065.3424106,
+      "scheduler": [
+        "COMPLETED",
+        "00:33:19",
+        "0:0"
+      ],
+      "screen_passed": true,
+      "speed_cm_s": 7.773345274969974,
+      "last_refinement_relative_change": 9.943923095612206e-06,
+      "mass_flux_relative_range": 1.5679972425551127e-10,
+      "maximum_species_sum_error": 1.2356804468538485e-10,
+      "minimum_mass_fraction": -3.183507113427052e-12,
+      "points": 2140,
+      "scientific_acceptance": false,
+      "remaining": [
+        "domain sensitivity",
+        "initial-guess sensitivity",
+        "publication parameter uncertainty"
+      ],
+      "output_sha256": {
+        "profile.csv": "bf5506699289b8b60ea2626e36ad7b9cb6f8bfd725804002a2a2185dace7d757",
+        "refinement.csv": "4b03ef5e330562a4a44dee05829313c060a0193bdb7c0cced353226f39510eb2",
+        "property-checks.csv": "6384febddacd47b02325763ff0880eeed4c8626a3965cf772af41a0154a587a2"
+      },
+      "callbacks": "eos 15868001 cp 14386887 partial_enthalpy 14384747\nconductivity 1464579 diffusion 1462439 negative_partial_volume_calls 120415 projected_composition_calls 608449\n"
+    },
+    {
+      "job": "124921373",
+      "stage": 4,
+      "phi": 1.2,
+      "guess_phi": 1.2,
+      "source": "961f6a1fc6662167076abea2b8d4c6aee449622c",
+      "build_job": "124919933",
+      "sdk_job": "124917358",
+      "input_directory": "/public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/sweep-inputs-v2/phi120",
+      "submitted_epoch": 1792415066.3049762,
+      "scheduler": [
+        "COMPLETED",
+        "00:17:13",
+        "0:0"
+      ],
+      "screen_passed": true,
+      "speed_cm_s": 7.478408614657744,
+      "last_refinement_relative_change": 1.6555230373360708e-05,
+      "mass_flux_relative_range": 5.362831451782014e-11,
+      "maximum_species_sum_error": 4.490319227556938e-11,
+      "minimum_mass_fraction": -5.81874006668654e-13,
+      "points": 2246,
+      "scientific_acceptance": false,
+      "remaining": [
+        "domain sensitivity",
+        "initial-guess sensitivity",
+        "publication parameter uncertainty"
+      ],
+      "output_sha256": {
+        "profile.csv": "20274c0d0018222aa4f8865c986373ff197d62dd851c3ec62904d69c4d5471fb",
+        "refinement.csv": "effbf93d88278deb1229e47c2a9d1e620d121989446c8feec0550370e5c5fb58",
+        "property-checks.csv": "69518b78e9ccda07ccfe0a47ba3fe85c4b71736635fea4f613bfbb7b3a1c686c"
+      },
+      "callbacks": "eos 9134868 cp 8418241 partial_enthalpy 8415995\nconductivity 698298 diffusion 696052 negative_partial_volume_calls 57319 projected_composition_calls 536075\n"
+    },
+    {
+      "job": "124921379",
+      "stage": 4,
+      "phi": 1.25,
+      "guess_phi": 1.25,
+      "source": "961f6a1fc6662167076abea2b8d4c6aee449622c",
+      "build_job": "124919933",
+      "sdk_job": "124917358",
+      "input_directory": "/public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/sweep-inputs-v2/phi125",
+      "submitted_epoch": 1792415067.2951953,
+      "scheduler": [
+        "COMPLETED",
+        "00:30:21",
+        "0:0"
+      ],
+      "screen_passed": true,
+      "speed_cm_s": 7.170074393093976,
+      "last_refinement_relative_change": 1.133958814381053e-05,
+      "mass_flux_relative_range": 1.8547196832524003e-10,
+      "maximum_species_sum_error": 1.2960121864580287e-10,
+      "minimum_mass_fraction": -4.124448130520565e-12,
+      "points": 2262,
+      "scientific_acceptance": false,
+      "remaining": [
+        "domain sensitivity",
+        "initial-guess sensitivity",
+        "publication parameter uncertainty"
+      ],
+      "output_sha256": {
+        "profile.csv": "a7287a558096cde29dc985e6f27ed4b48ab6a6cf047398c8d92746ae7092c877",
+        "refinement.csv": "1fbd252acf046d5a7583303aa5f3c22d68876c8c38e8d8d320ff8089883479fb",
+        "property-checks.csv": "d8eaa8e93ea0e9cb8ac2ef207ec7c8ec200037bc51311efaeac6e06fd4a316ba"
+      },
+      "callbacks": "eos 15096805 cp 13688837 partial_enthalpy 13686575\nconductivity 1394705 diffusion 1392443 negative_partial_volume_calls 111657 projected_composition_calls 736667\n"
+    },
+    {
+      "job": "124921381",
+      "stage": 4,
+      "phi": 1.3,
+      "guess_phi": 1.3,
+      "source": "961f6a1fc6662167076abea2b8d4c6aee449622c",
+      "build_job": "124919933",
+      "sdk_job": "124917358",
+      "input_directory": "/public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/sweep-inputs-v2/phi130",
+      "submitted_epoch": 1792415068.2710774,
+      "scheduler": [
+        "COMPLETED",
+        "00:08:51",
+        "0:0"
+      ],
+      "screen_passed": true,
+      "speed_cm_s": 6.868404355573656,
+      "last_refinement_relative_change": 0.0020015070771407517,
+      "mass_flux_relative_range": 1.0765330961525505e-10,
+      "maximum_species_sum_error": 1.0781087134148493e-10,
+      "minimum_mass_fraction": -4.267655665452032e-12,
+      "points": 2257,
+      "scientific_acceptance": false,
+      "remaining": [
+        "domain sensitivity",
+        "initial-guess sensitivity",
+        "publication parameter uncertainty"
+      ],
+      "output_sha256": {
+        "profile.csv": "a9835ae736e72ca1931ba9754f5d694d43d543d17546346b7bd85119a64083ae",
+        "refinement.csv": "870a252d0e7562678b316aec9ba892ff2a0a2a414f99e43a28b904eb2f942d50",
+        "property-checks.csv": "abdade1a06c5649f86e7eb75cad3916ee6a2976e3513bc41650b36ba74d18cfd"
+      },
+      "callbacks": "eos 5357955 cp 5055355 partial_enthalpy 5053098\nconductivity 288670 diffusion 286413 negative_partial_volume_calls 22236 projected_composition_calls 55928\n"
+    },
+    {
+      "job": "124921384",
+      "stage": 4,
+      "phi": 1.35,
+      "guess_phi": 1.35,
+      "source": "961f6a1fc6662167076abea2b8d4c6aee449622c",
+      "build_job": "124919933",
+      "sdk_job": "124917358",
+      "input_directory": "/public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/sweep-inputs-v2/phi135",
+      "submitted_epoch": 1792415069.595239,
+      "scheduler": [
+        "COMPLETED",
+        "00:08:49",
+        "0:0"
+      ],
+      "screen_passed": true,
+      "speed_cm_s": 6.576364283064469,
+      "last_refinement_relative_change": 0.001972462900374672,
+      "mass_flux_relative_range": 1.5909672556086233e-10,
+      "maximum_species_sum_error": 1.6033596672571093e-10,
+      "minimum_mass_fraction": -1.364116652127336e-12,
+      "points": 2236,
+      "scientific_acceptance": false,
+      "remaining": [
+        "domain sensitivity",
+        "initial-guess sensitivity",
+        "publication parameter uncertainty"
+      ],
+      "output_sha256": {
+        "profile.csv": "e2f80d741ba16ffd76c025f31f4589c0cae3c35ae198299768d80c99becaf896",
+        "refinement.csv": "9a32986008bd4a7f448f080493723775a7afeaf6c7a9054cf2cde777526d68fd",
+        "property-checks.csv": "aacf5a4bc8dcbf03df8c1a1458a60fd57c78c5fdfc1c5f04c72bacbf030f841e"
+      },
+      "callbacks": "eos 4986854 cp 4682667 partial_enthalpy 4680431\nconductivity 289118 diffusion 286882 negative_partial_volume_calls 22326 projected_composition_calls 53804\n"
+    },
+    {
+      "job": "124921389",
+      "stage": 4,
+      "phi": 1.4,
+      "guess_phi": 1.4,
+      "source": "961f6a1fc6662167076abea2b8d4c6aee449622c",
+      "build_job": "124919933",
+      "sdk_job": "124917358",
+      "input_directory": "/public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/sweep-inputs-v2/phi140",
+      "submitted_epoch": 1792415070.1990943,
+      "scheduler": [
+        "COMPLETED",
+        "00:07:34",
+        "0:0"
+      ],
+      "screen_passed": true,
+      "speed_cm_s": 6.298679772081754,
+      "last_refinement_relative_change": 0.0019963668689882974,
+      "mass_flux_relative_range": 2.0404446307059917e-10,
+      "maximum_species_sum_error": 6.529188301129807e-11,
+      "minimum_mass_fraction": -1.372869681091542e-12,
+      "points": 2197,
+      "scientific_acceptance": false,
+      "remaining": [
+        "domain sensitivity",
+        "initial-guess sensitivity",
+        "publication parameter uncertainty"
+      ],
+      "output_sha256": {
+        "profile.csv": "da3fbf0cca470861bcad098045cfa950b0761a4fdf71700065b4c59cfaa8f880",
+        "refinement.csv": "4e614350a53573e65bb864377e1c7e627bff1be4ede9a6aae5a8a7f1d39b64ed",
+        "property-checks.csv": "e0c86bc36e7ad16d9f23d8b199ae4c21d766e236b9f69d9415253e275ecad122"
+      },
+      "callbacks": "eos 4284024 cp 3995905 partial_enthalpy 3993708\nconductivity 271995 diffusion 269798 negative_partial_volume_calls 21019 projected_composition_calls 52339\n"
+    },
+    {
+      "job": "124921393",
+      "stage": 4,
+      "phi": 1.44,
+      "guess_phi": 1.4,
+      "source": "961f6a1fc6662167076abea2b8d4c6aee449622c",
+      "build_job": "124919933",
+      "sdk_job": "124917358",
+      "input_directory": "/public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/sweep-inputs-v2/phi144",
+      "submitted_epoch": 1792415070.774148,
+      "scheduler": [
+        "COMPLETED",
+        "00:11:22",
+        "0:0"
+      ],
+      "screen_passed": true,
+      "speed_cm_s": 6.088262415162783,
+      "last_refinement_relative_change": 0.0020270891451633632,
+      "mass_flux_relative_range": 1.2266221019764603e-09,
+      "maximum_species_sum_error": 6.843869915229561e-11,
+      "minimum_mass_fraction": -1.772362424589996e-13,
+      "points": 2127,
+      "scientific_acceptance": false,
+      "remaining": [
+        "domain sensitivity",
+        "initial-guess sensitivity",
+        "publication parameter uncertainty"
+      ],
+      "output_sha256": {
+        "profile.csv": "40384e2725d5cab9145cb2eea854e60f501da8a26a1b210ab280da61003c8cf7",
+        "refinement.csv": "fdc475e831faacefb7c2e6650b6dde18053adf4777168ff0f4630612bd460dc4",
+        "property-checks.csv": "0a73f0cdc4e995e681fe0e0a0c66fcfb4f4401795a968c4817e7943b2b6c1601"
+      },
+      "callbacks": "eos 5812355 cp 5299593 partial_enthalpy 5297466\nconductivity 497562 diffusion 495435 negative_partial_volume_calls 39506 projected_composition_calls 98083\n"
+    }
+  ],
+  "diagnostics": [
+    {
+      "stage": 4,
+      "phi": 1.1,
+      "speed_cm_s": 7.023334428452424,
+      "pressure_atm": 100,
+      "label": "4: dilute baseline + dense increment",
+      "job": "124932554",
+      "source": "5543d41",
+      "build_job": "124932388"
+    },
+    {
+      "stage": 2,
+      "phi": 1.1,
+      "pressure_atm": 100,
+      "speed_cm_s": 7.478854916188587,
+      "label": "2: pressure-based chemistry",
+      "job": "124934195",
+      "source": "c315a326bdbea73f72f387a91ca22123a0a0dfcd"
+    },
+    {
+      "stage": 3,
+      "phi": 1.1,
+      "pressure_atm": 100,
+      "speed_cm_s": 7.059936887153246,
+      "label": "3: pressure-based chemistry",
+      "job": "124934198",
+      "source": "c315a326bdbea73f72f387a91ca22123a0a0dfcd"
+    },
+    {
+      "stage": 5,
+      "phi": 1.1,
+      "pressure_atm": 100,
+      "speed_cm_s": 7.869948896286448,
+      "label": "5: full EH + bounded diffusion",
+      "job": "124934199",
+      "source": "c315a326bdbea73f72f387a91ca22123a0a0dfcd"
+    }
+  ],
+  "panel_size_pt": [
+    204,
+    175
+  ],
+  "excluded_outside_printed_phi_axis": [
+    {
+      "job": "124920037",
+      "stage": 1,
+      "phi": 1.44,
+      "guess_phi": 1.4,
+      "source": "961f6a1fc6662167076abea2b8d4c6aee449622c",
+      "build_job": "124919933",
+      "sdk_job": "124917358",
+      "input_directory": "/public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/sweep-inputs-v2/phi144",
+      "submitted_epoch": 1792414231.7939892,
+      "scheduler": [
+        "COMPLETED",
+        "00:03:58",
+        "0:0"
+      ],
+      "screen_passed": true,
+      "speed_cm_s": 5.929065249252011,
+      "last_refinement_relative_change": 0.0013048931102314087,
+      "mass_flux_relative_range": 1.1444686186428417e-10,
+      "maximum_species_sum_error": 4.480615878321714e-11,
+      "minimum_mass_fraction": -9.656887284622424e-13,
+      "points": 2182,
+      "scientific_acceptance": false,
+      "remaining": [
+        "domain sensitivity",
+        "initial-guess sensitivity",
+        "publication parameter uncertainty"
+      ],
+      "output_sha256": {
+        "profile.csv": "5a450c82e8f0ddb8668f5f48eadca859e2d086984754c785f0ffdc4ff0f6ee7f",
+        "refinement.csv": "796c040c7e5c56fc9d47cf674ef80eabfcd48827cb62b314e865e5b76a1da584",
+        "property-checks.csv": "052e7bc889cc20911ba27a43b80ebd93f9c765cb9229ec1584d74e6c19a381cd"
+      },
+      "callbacks": ""
+    },
+    {
+      "job": "124920038",
+      "stage": 2,
+      "phi": 1.44,
+      "guess_phi": 1.4,
+      "source": "961f6a1fc6662167076abea2b8d4c6aee449622c",
+      "build_job": "124919933",
+      "sdk_job": "124917358",
+      "input_directory": "/public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/sweep-inputs-v2/phi144",
+      "submitted_epoch": 1792414232.3414872,
+      "scheduler": [
+        "COMPLETED",
+        "00:04:03",
+        "0:0"
+      ],
+      "screen_passed": true,
+      "speed_cm_s": 5.805943271912993,
+      "last_refinement_relative_change": 0.0013185724411178823,
+      "mass_flux_relative_range": 1.6476082214982428e-10,
+      "maximum_species_sum_error": 5.988165518999722e-11,
+      "minimum_mass_fraction": -2.251817502331799e-13,
+      "points": 2174,
+      "scientific_acceptance": false,
+      "remaining": [
+        "domain sensitivity",
+        "initial-guess sensitivity",
+        "publication parameter uncertainty"
+      ],
+      "output_sha256": {
+        "profile.csv": "95429ab9f1db23c86cdfbcc1e9a12e71ccb08c2457fea5d6ed732ac9c6b9dc2b",
+        "refinement.csv": "994316e2a43ba78b13ddc5e1945027a5499358124b5e2b3a2a7fea3954da7b06",
+        "property-checks.csv": "a09121025eaeb7f3f37b1abd80679a08d75a84a1a49c264e59317ac8c8113ee7"
+      },
+      "callbacks": "eos 4323851 cp 4012421 partial_enthalpy 4010247\nconductivity 313589 diffusion 311415 negative_partial_volume_calls 0 projected_composition_calls 0\n"
+    },
+    {
+      "job": "124920039",
+      "stage": 3,
+      "phi": 1.44,
+      "guess_phi": 1.4,
+      "source": "961f6a1fc6662167076abea2b8d4c6aee449622c",
+      "build_job": "124919933",
+      "sdk_job": "124917358",
+      "input_directory": "/public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/sweep-inputs-v2/phi144",
+      "submitted_epoch": 1792414232.5749342,
+      "scheduler": [
+        "COMPLETED",
+        "00:04:37",
+        "0:0"
+      ],
+      "screen_passed": true,
+      "speed_cm_s": 5.463521147993692,
+      "last_refinement_relative_change": 0.0016927933650776605,
+      "mass_flux_relative_range": 1.3428952303026685e-10,
+      "maximum_species_sum_error": 1.4218404231769455e-10,
+      "minimum_mass_fraction": -4.493386480893298e-12,
+      "points": 2118,
+      "scientific_acceptance": false,
+      "remaining": [
+        "domain sensitivity",
+        "initial-guess sensitivity",
+        "publication parameter uncertainty"
+      ],
+      "output_sha256": {
+        "profile.csv": "867619f068451e9eeac51f429d9ee6cdeaede7d55489c5339697805684098fb0",
+        "refinement.csv": "532bd4cfe56ed73c9d38eb8bda804d5b1f970f8a55b90f92cfd822ee7e7c05f0",
+        "property-checks.csv": "9bffbd5735c7c89f3b9becadfd9f8d6e58e16a660db71091c6e8b8c943022c29"
+      },
+      "callbacks": "eos 4289298 cp 3965787 partial_enthalpy 3963669\nconductivity 308302 diffusion 306184 negative_partial_volume_calls 0 projected_composition_calls 0\n"
+    },
+    {
+      "job": "124921393",
+      "stage": 4,
+      "phi": 1.44,
+      "guess_phi": 1.4,
+      "source": "961f6a1fc6662167076abea2b8d4c6aee449622c",
+      "build_job": "124919933",
+      "sdk_job": "124917358",
+      "input_directory": "/public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/sweep-inputs-v2/phi144",
+      "submitted_epoch": 1792415070.774148,
+      "scheduler": [
+        "COMPLETED",
+        "00:11:22",
+        "0:0"
+      ],
+      "screen_passed": true,
+      "speed_cm_s": 6.088262415162783,
+      "last_refinement_relative_change": 0.0020270891451633632,
+      "mass_flux_relative_range": 1.2266221019764603e-09,
+      "maximum_species_sum_error": 6.843869915229561e-11,
+      "minimum_mass_fraction": -1.772362424589996e-13,
+      "points": 2127,
+      "scientific_acceptance": false,
+      "remaining": [
+        "domain sensitivity",
+        "initial-guess sensitivity",
+        "publication parameter uncertainty"
+      ],
+      "output_sha256": {
+        "profile.csv": "40384e2725d5cab9145cb2eea854e60f501da8a26a1b210ab280da61003c8cf7",
+        "refinement.csv": "fdc475e831faacefb7c2e6650b6dde18053adf4777168ff0f4630612bd460dc4",
+        "property-checks.csv": "0a73f0cdc4e995e681fe0e0a0c66fcfb4f4401795a968c4817e7943b2b6c1601"
+      },
+      "callbacks": "eos 5812355 cp 5299593 partial_enthalpy 5297466\nconductivity 497562 diffusion 495435 negative_partial_volume_calls 39506 projected_composition_calls 98083\n"
+    }
+  ],
+  "publication_agreement": "not established",
+  "artifacts": {
+    "liang-staged-comparison.pdf": "14f94a83c545baeee67398245adb6c21c2c1826194545cb0590bb88c47e22f0f",
+    "liang-staged-comparison.png": "2d78db72896a6c3b0b70ae4f35ce3918cdeba3bd8b811c1a7c21db8621142d44",
+    "liang-staged-overlay.png": "b3510a929f60a4005b0e10527a91d329e7f1e8e0a3121b3fd4bddc45639671b8"
+  }
+}
