@@ -258,6 +258,16 @@ Only free flames without radiation/two-point control are supported. Qualify with
 an ideal control, refinement, and the reconstructed upwind total-flux balance
 before comparing nonideal pilots. All options remain disabled by default.
 
+The same frozen-profile energy audit compares the native CFD energy-flux
+closure (raw non-inert diffusion velocities, with nitrogen balancing their sum)
+against the mass-fraction-weighted correction used in the species equations.
+`inert_minus_mass_corrected_sensible_W_m2` quantifies only this closure difference with
+identical coefficients and enthalpies. A nonzero value is a consistency diagnostic,
+not a measured flame-speed effect. This audit does not change running CFD cases.
+Species enthalpies in this closure check subtract ideal NASA formation enthalpies
+at 298.15 K, matching the sensible-enthalpy CFD convention. They are separate from
+the absolute enthalpies used in the total-energy reconstruction.
+
 `takahashi-high-t` is a diagnostic that removes only the reduced-temperature
 upper clamp at 5, retaining the lower clamp at 1 and requiring both
 `bounded-takahashi` and `takahashi-table2`. This tests an implementation detail
