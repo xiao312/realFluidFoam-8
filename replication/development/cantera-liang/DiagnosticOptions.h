@@ -5,7 +5,7 @@
 #include <set>
 namespace liang {
 struct DiagnosticOptions {
-    bool dense=false,bounded=false,pressureChemistry=false;
+    bool dense=false,bounded=false,pressureChemistry=false,fineGrid=false;
     explicit DiagnosticOptions(const std::string& text) {
         if(text=="full")return;
         std::stringstream stream(text);std::string item;std::set<std::string> seen;
@@ -14,6 +14,7 @@ struct DiagnosticOptions {
             if(item=="dense-increment")dense=true;
             else if(item=="bounded-takahashi")bounded=true;
             else if(item=="pressure-chemistry")pressureChemistry=true;
+            else if(item=="fine-grid")fineGrid=true;
             else throw std::runtime_error("Unknown diagnostic option: "+item);
         }
         if(seen.empty() || text.back()==',')throw std::runtime_error("Empty diagnostic option");

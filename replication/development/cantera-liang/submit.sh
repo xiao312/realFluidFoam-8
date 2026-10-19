@@ -3,7 +3,7 @@ set -euo pipefail
 action=${1:?}; root=${2:?}; release=${3:?}; sdk=${4:?}; inputs=${5:?}; stage=${6:?}; build=${7:-}
 phi=${8:-1.10}
 variant=${9:-full}
-[[ $variant =~ ^(full|(dense-increment|bounded-takahashi|pressure-chemistry)(,(dense-increment|bounded-takahashi|pressure-chemistry))*)$ ]] || exit 2
+[[ $variant =~ ^(full|(dense-increment|bounded-takahashi|pressure-chemistry|fine-grid)(,(dense-increment|bounded-takahashi|pressure-chemistry|fine-grid))*)$ ]] || exit 2
 pressure=${10:-100}
 [[ $pressure =~ ^[0-9]+([.][0-9]+)?$ ]] || exit 2
 [[ $phi =~ ^[0-9]+([.][0-9]+)?$ ]] || exit 2

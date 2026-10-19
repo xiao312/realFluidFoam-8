@@ -142,3 +142,20 @@ Python Cantera 3.2.0 to solve a fresh ideal steady control at phi=1.10 and 298 K
 It copies the three model inputs, records hashes and two mesh refinements, and
 writes a compatible numerical guess. Run locally or in a compute allocation;
 never run the flame solve on an HPC login node. The C++ pilot refines it further.
+
+The plotter optionally accepts a separate `diagnostics` list with phi, stage,
+speed_cm_s, pressure_atm=100 and a short label. These use square markers and
+separate legends; they never replace default-stage results or connect unlike
+model variants into one curve. At most six labelled diagnostic points are shown.
+
+`collect_diagnostics.py ROOT LEDGER.tsv CHECK_SCRIPT` reads the diagnostic pilot
+ledger and scheduler once, screens completed results, and emits JSON without
+writing remote state. It checks recorded variant and pressure against the ledger.
+Inputs and check script must resolve below ROOT; per-job source and input hashes
+remain authoritative. Unlike the fixed sweep collector, it retains pressure and
+variant labels so sensitivity points cannot be silently combined.
+
+The additional `fine-grid` option appends a third mesh level (slope 0.001875,
+curve 0.003125) under the existing 6000-point cap. It changes no model closure.
+Use a labelled converged steady guess and compare energy-flux variation with
+the two-level result; this is independent of OpenFOAM's original-zero rule.

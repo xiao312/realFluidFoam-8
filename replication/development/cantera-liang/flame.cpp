@@ -73,7 +73,9 @@ try {
     for(size_t k=5;k<columns.size();k++)flow->setProfile(columns[k],loc,values[k]);
     flame.setFixedTemperature(298+.3*(values[1].back()-298));flow->setEnergyEnabled(true);
     std::ofstream results(output/"refinement.csv");results<<"stage,phi,slope,curve,points,speed_cm_s\n"<<std::setprecision(16);
-    for(auto level:std::vector<std::pair<double,double>>{{.0075,.0125},{.00375,.00625}}) {
+    std::vector<std::pair<double,double>> levels{{.0075,.0125},{.00375,.00625}};
+    if(options.fineGrid)levels.push_back({.001875,.003125});
+    for(auto level:levels) {
         flow->setRefineCriteria(3,level.first,level.second,0);flame.solve(1,true);
         results<<stage<<','<<phi<<','<<level.first<<','<<level.second<<','<<flow->nPoints()<<','<<100*flow->values("velocity")[0]<<'\n';results.flush();
     }
