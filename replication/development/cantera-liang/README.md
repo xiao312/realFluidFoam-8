@@ -206,3 +206,15 @@ bounded control remains unchanged. `TakahashiTable.h` computes the difference
 of that row and its interpolation weight, leaving all other coefficients and
 limits intact. Build verification checks the actual Cantera function against
 the primary row at Tr=2, outside-interval parity, and pressure continuity.
+
+`prepare_sensitivity.py plan|apply BASE NEW_OUTPUT extended-domain|shifted-guess`
+prepares a labelled steady FreeFlame numerical sensitivity input. Domain extension
+doubles the width by adding flat inlet/outlet regions while preserving every
+original interior point. The shifted guess keeps the original domain and moves
+the profile by one eighth of its width; its velocity guess is 25% higher.
+Mechanisms, model table and physical inlet state are unchanged. Neither mode
+creates CFD fields or permits a transient restart. Output must not exist.
+The provenance file records all source hashes and transformations. Verify finite
+data, increasing coordinates and species normalization, then compare converged
+speeds with the same model/options and refinement criteria. These sensitivities
+must not be represented as additional operating conditions.
