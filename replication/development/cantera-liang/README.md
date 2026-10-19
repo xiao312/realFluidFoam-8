@@ -206,3 +206,72 @@ bounded control remains unchanged. `TakahashiTable.h` computes the difference
 of that row and its interpolation weight, leaving all other coefficients and
 limits intact. Build verification checks the actual Cantera function against
 the primary row at Tr=2, outside-interval parity, and pressure continuity.
+
+`prepare_sensitivity.py plan|apply BASE NEW_OUTPUT extended-domain|shifted-guess`
+prepares a labelled steady FreeFlame numerical sensitivity input. Domain extension
+doubles the width by adding flat inlet/outlet regions while preserving every
+original interior point. The shifted guess keeps the original domain and moves
+the profile by one eighth of its width; its velocity guess is 25% higher.
+Mechanisms, model table and physical inlet state are unchanged. Neither mode
+creates CFD fields or permits a transient restart. Output must not exist.
+The provenance file records all source hashes and transformations. Verify finite
+data, increasing coordinates and species normalization, then compare converged
+speeds with the same model/options and refinement criteria. These sensitivities
+must not be represented as additional operating conditions.
+
+`energy_audit.py plan|apply ROOT BUILD SDK MANIFEST NEW_OUTPUT` runs the existing
+energy probe on frozen profiles in a scheduler allocation. MANIFEST is a JSON
+list of `profile_job`, `stage`, `variant`, `pressure_atm`, and absolute `inputs`.
+All paths must be inside ROOT; output belongs to the current Slurm job. Plan is
+read-only. The apply path verifies the energy binary hash, rejects existing
+output, and records profile/input hashes, flux range, endpoint difference and
+diffusive mass-flux closure. This is a reconstructed face flux, not the exact
+discrete Flow1D residual. Compare identical models across refinement levels.
+
+The energy probe also reconstructs a separately labelled pure-species enthalpy
+diffusion flux. Liang p.1734 applies the departure formula to individual species
+and distinguishes their mass-weighted enthalpy from mixture enthalpy. This makes
+pure-species versus partial-molar diffusion enthalpy a testable interpretation,
+not a confirmed implementation detail. The probe holds the saved flame, mixture
+enthalpy, chemistry and transport coefficients fixed and changes only the
+enthalpy multiplying each diffusive mass flux. It never changes the phase's
+thermodynamic API or a flame solution. In the ideal case both fluxes must agree.
+`pure_species_total_W_m2` and `pure_minus_partial_W_m2` expose this diagnostic;
+the existing `total_W_m2` remains the partial-molar reconstruction.
+
+`total-enthalpy` selects an experimental free-flame energy residual from the
+divergence of total enthalpy flux: upwind advective mixture enthalpy, centered
+heat conduction and face species diffusion enthalpy. Chemistry has no separate
+energy source in this total-enthalpy balance. The optional `pure-species-flux`
+changes only diffusion enthalpies to pure-species values; it requires
+`total-enthalpy`. Mixture enthalpy, Cp, equilibrium and kinetics retain their
+existing APIs. Neither option is a verified Liang implementation.
+
+This diagnostic follows the interpretation supported by Liang p.1734 and
+Jorda Juanos/Sirignano (2017), p.57, which evaluates species enthalpies with
+individual-species parameters. Source: https://doi.org/10.1016/j.combustflame.2017.01.030
+(author copy: https://sirignano.eng.uci.edu/theme/pdfs/39.pdf).
+The partial-molar total-enthalpy control separates this flux choice from changing
+the energy discretization. Pseudo-time stepping retains Cantera's T relaxation
+term solely to find a steady solution; it is not a physical transient reactor.
+Only free flames without radiation/two-point control are supported. Qualify with
+an ideal control, refinement, and the reconstructed upwind total-flux balance
+before comparing nonideal pilots. All options remain disabled by default.
+
+The same frozen-profile energy audit compares the native CFD energy-flux
+closure (raw non-inert diffusion velocities, with nitrogen balancing their sum)
+against the mass-fraction-weighted correction used in the species equations.
+`inert_minus_mass_corrected_sensible_W_m2` quantifies only this closure difference with
+identical coefficients and enthalpies. A nonzero value is a consistency diagnostic,
+not a measured flame-speed effect. This audit does not change running CFD cases.
+Species enthalpies in this closure check subtract ideal NASA formation enthalpies
+at 298.15 K, matching the sensible-enthalpy CFD convention. They are separate from
+the absolute enthalpies used in the total-energy reconstruction.
+
+`takahashi-high-t` is a diagnostic that removes only the reduced-temperature
+upper clamp at 5, retaining the lower clamp at 1 and requiring both
+`bounded-takahashi` and `takahashi-table2`. This tests an implementation detail
+not specified by Liang. Takahashi's fitted data mostly cover Tr=0.95–5; using
+the correlation above that range is extrapolation, not an accepted correction.
+The frozen-state probe reports H2, OH and CH4 diffusivities with and without
+this upper clamp before any flame comparison. All other models remain fixed.

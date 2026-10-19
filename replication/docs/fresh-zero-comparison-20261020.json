@@ -1,0 +1,595 @@
+{
+  "pair": {
+    "capture_utc": "2026-10-19T17:25:55.853311+00:00",
+    "reference_cm_s": 7.454695241504742,
+    "cases": [
+      {
+        "key": "native",
+        "label": "Original-zero native",
+        "job": "124916221",
+        "state": "COMPLETED",
+        "source": "1a0bcfbc5ff1c70cff493514428a88e371b2f488",
+        "csv": "native.csv",
+        "expected_start_time_s": 0,
+        "physical_input_sha256": "74eb13eaa06937c65077d734707102fb3722c7de35884ee5b324d8be01a886d6",
+        "sha256": "e185bd17a283b0b6d118fb7ac367932e1f971b1978b1c8f4b0243ae9347722cd",
+        "first_time_us": 0.0,
+        "latest_time_us": 200.01806325134535,
+        "status_counts": {
+          "warmup": 56,
+          "valid": 1640
+        },
+        "markers": {
+          "T": {
+            "valid_points": 410,
+            "first_time_us": 5.418063251340931,
+            "last_time_us": 200.01806325134535,
+            "last_mean_cm_s": 7.139979685365538,
+            "min_mean_cm_s": 6.236823068151674,
+            "max_mean_cm_s": 20.089112485125824
+          },
+          "OH": {
+            "valid_points": 410,
+            "first_time_us": 5.418063251340931,
+            "last_time_us": 200.01806325134535,
+            "last_mean_cm_s": 7.23277930739022,
+            "min_mean_cm_s": -5.396790036267285,
+            "max_mean_cm_s": 7.244727419289138
+          }
+        }
+      },
+      {
+        "key": "energy",
+        "label": "Original-zero energy correction",
+        "job": "124916226",
+        "state": "COMPLETED",
+        "source": "1a0bcfbc5ff1c70cff493514428a88e371b2f488",
+        "csv": "energy.csv",
+        "expected_start_time_s": 0,
+        "physical_input_sha256": "74eb13eaa06937c65077d734707102fb3722c7de35884ee5b324d8be01a886d6",
+        "sha256": "79870c830333cb6f2627b9252975d20752268d35b34d7cc0a5fe9854afbfcb80",
+        "first_time_us": 0.0,
+        "latest_time_us": 200.02097558885708,
+        "status_counts": {
+          "warmup": 56,
+          "valid": 1640
+        },
+        "markers": {
+          "T": {
+            "valid_points": 410,
+            "first_time_us": 5.420975588852664,
+            "last_time_us": 200.02097558885708,
+            "last_mean_cm_s": 7.333287175610792,
+            "min_mean_cm_s": 6.312688873114043,
+            "max_mean_cm_s": 19.931693333003786
+          },
+          "OH": {
+            "valid_points": 410,
+            "first_time_us": 5.420975588852664,
+            "last_time_us": 200.02097558885708,
+            "last_mean_cm_s": 7.432820246092918,
+            "min_mean_cm_s": -5.292527349051611,
+            "max_mean_cm_s": 7.433049930911532
+          }
+        }
+      },
+      {
+        "key": "stock",
+        "label": "Stock reactingFoam (completed)",
+        "job": "124896761",
+        "state": "COMPLETED",
+        "source": "c18481dc5423c4447ca85c1e69978551a3442090",
+        "csv": "stock.csv",
+        "expected_start_time_s": 0,
+        "sha256": "aa57cea4936a5ae7c359b1addde119d7275745016ecfcb3e55d96ab2a9611626",
+        "first_time_us": 0.0,
+        "latest_time_us": 198.929603628,
+        "status_counts": {
+          "warmup": 56,
+          "valid": 1552
+        },
+        "markers": {
+          "T": {
+            "valid_points": 388,
+            "first_time_us": 5.42960362763,
+            "last_time_us": 198.929603628,
+            "last_mean_cm_s": 6.6260447869167365,
+            "min_mean_cm_s": 6.526268784517889,
+            "max_mean_cm_s": 19.816889637699017
+          },
+          "OH": {
+            "valid_points": 388,
+            "first_time_us": 5.42960362763,
+            "last_time_us": 198.929603628,
+            "last_mean_cm_s": 6.609476291057341,
+            "min_mean_cm_s": -4.619427174351626,
+            "max_mean_cm_s": 6.616846759379412
+          }
+        }
+      },
+      {
+        "key": "deepflame",
+        "label": "DeepFlame (completed)",
+        "job": "124901315",
+        "state": "COMPLETED",
+        "source": "9957c2cfbea7dbcbb1af7deba91a004cbdf7fe1d",
+        "csv": "deepflame.csv",
+        "expected_start_time_s": 3.11504185344e-09,
+        "sha256": "75d2e25c21f487cea859329b584ba82522c16db11bdedd91a329d687ba66c2a6",
+        "first_time_us": 0.00311504185344,
+        "latest_time_us": 198.941249729,
+        "status_counts": {
+          "warmup": 52,
+          "valid": 1552
+        },
+        "markers": {
+          "T": {
+            "valid_points": 388,
+            "first_time_us": 5.44124972922,
+            "last_time_us": 198.941249729,
+            "last_mean_cm_s": 7.237348802848587,
+            "min_mean_cm_s": 6.5003251999988825,
+            "max_mean_cm_s": 18.70624755093589
+          },
+          "OH": {
+            "valid_points": 388,
+            "first_time_us": 5.44124972922,
+            "last_time_us": 198.941249729,
+            "last_mean_cm_s": 7.304692315201122,
+            "min_mean_cm_s": -4.227665368924009,
+            "max_mean_cm_s": 7.305483667847035
+          }
+        }
+      }
+    ],
+    "reference_job": "124934682",
+    "definition": "outward sign * mean_window[rho_front/rho_fresh * (fitted dx/dt - U_front)]; mean of both fronts",
+    "fit_window_s": 5e-06,
+    "script_sha256": "380720169c328df42bec10b7606b8d6722e098074928b84c0bc746f9b3916ce3"
+  },
+  "sweep": {
+    "timestamp_local": "2026-10-20T01:31:53.454010 Asia/Shanghai",
+    "cases": [
+      {
+        "key": "phi090",
+        "label": "phi090",
+        "job": "124916319",
+        "csv": "124916319/front-tracking.csv",
+        "source": "1a0bcfbc5ff1c70cff493514428a88e371b2f488",
+        "state": "COMPLETED",
+        "phi": 0.9,
+        "expected_start_time_s": 0,
+        "sha256": "229b542ae7d84d9a054de9eaa88360054d7d0379fcd1c2dad4db1f5d3b6aa050",
+        "first_time_us": 0.0,
+        "latest_time_us": 200.00462387820835,
+        "status_counts": {
+          "warmup": 56,
+          "valid": 1640
+        },
+        "markers": {
+          "T": {
+            "valid_points": 410,
+            "first_time_us": 5.454623878203941,
+            "last_time_us": 200.00462387820835,
+            "last_mean_cm_s": 5.595433111324471,
+            "min_mean_cm_s": 5.020371694857193,
+            "max_mean_cm_s": 19.46855788959672
+          },
+          "OH": {
+            "valid_points": 410,
+            "first_time_us": 5.454623878203941,
+            "last_time_us": 200.00462387820835,
+            "last_mean_cm_s": 5.6436169762567685,
+            "min_mean_cm_s": -7.475645033044719,
+            "max_mean_cm_s": 5.6436169762567685
+          }
+        },
+        "reference_cm_s": 5.705747444706062,
+        "temperature_anchor_K": 763.4723992894018
+      },
+      {
+        "key": "phi095",
+        "label": "phi095",
+        "job": "124916334",
+        "csv": "124916334/front-tracking.csv",
+        "source": "1a0bcfbc5ff1c70cff493514428a88e371b2f488",
+        "state": "COMPLETED",
+        "phi": 0.95,
+        "expected_start_time_s": 0,
+        "sha256": "259486b13e4cf57875b82b727890aaa0e471f2f315d1774368ae56074b82a6a9",
+        "first_time_us": 0.0,
+        "latest_time_us": 199.98575430708559,
+        "status_counts": {
+          "warmup": 56,
+          "valid": 1640
+        },
+        "markers": {
+          "T": {
+            "valid_points": 410,
+            "first_time_us": 5.43575430708117,
+            "last_time_us": 199.98575430708559,
+            "last_mean_cm_s": 6.323387104490921,
+            "min_mean_cm_s": 5.558020767917018,
+            "max_mean_cm_s": 19.642600439709923
+          },
+          "OH": {
+            "valid_points": 410,
+            "first_time_us": 5.43575430708117,
+            "last_time_us": 199.98575430708559,
+            "last_mean_cm_s": 6.39118210263196,
+            "min_mean_cm_s": -5.915335224675955,
+            "max_mean_cm_s": 6.407313322484422
+          }
+        },
+        "reference_cm_s": 6.382402399944982,
+        "temperature_anchor_K": 781.8439466361449
+      },
+      {
+        "key": "phi100",
+        "label": "phi100",
+        "job": "124916350",
+        "csv": "124916350/front-tracking.csv",
+        "source": "1a0bcfbc5ff1c70cff493514428a88e371b2f488",
+        "state": "COMPLETED",
+        "phi": 1.0,
+        "expected_start_time_s": 0,
+        "sha256": "0ff7408bd0a419f9efbd415baeda6ebe8d35bff3c594741e614974af1d8bbddd",
+        "first_time_us": 0.0,
+        "latest_time_us": 200.01626177906246,
+        "status_counts": {
+          "warmup": 56,
+          "valid": 1640
+        },
+        "markers": {
+          "T": {
+            "valid_points": 410,
+            "first_time_us": 5.416261779058049,
+            "last_time_us": 200.01626177906246,
+            "last_mean_cm_s": 6.8654922507572795,
+            "min_mean_cm_s": 5.963199424148797,
+            "max_mean_cm_s": 19.70925020050557
+          },
+          "OH": {
+            "valid_points": 410,
+            "first_time_us": 5.416261779058049,
+            "last_time_us": 200.01626177906246,
+            "last_mean_cm_s": 6.99248070324286,
+            "min_mean_cm_s": -5.000800909457418,
+            "max_mean_cm_s": 6.99248070324286
+          }
+        },
+        "reference_cm_s": 6.91474179170129,
+        "temperature_anchor_K": 796.774000467596
+      },
+      {
+        "key": "phi105",
+        "label": "phi105",
+        "job": "124916356",
+        "csv": "124916356/front-tracking.csv",
+        "source": "1a0bcfbc5ff1c70cff493514428a88e371b2f488",
+        "state": "COMPLETED",
+        "phi": 1.05,
+        "expected_start_time_s": 0,
+        "sha256": "90fff73801480480ce9df3f6c32051b227c6d00875b7ae9e69213bade92a2673",
+        "first_time_us": 0.0,
+        "latest_time_us": 200.0140829823281,
+        "status_counts": {
+          "warmup": 56,
+          "valid": 1640
+        },
+        "markers": {
+          "T": {
+            "valid_points": 410,
+            "first_time_us": 5.414082982323651,
+            "last_time_us": 200.0140829823281,
+            "last_mean_cm_s": 7.167811433470849,
+            "min_mean_cm_s": 6.264504226890326,
+            "max_mean_cm_s": 19.80319110737854
+          },
+          "OH": {
+            "valid_points": 410,
+            "first_time_us": 5.414082982323651,
+            "last_time_us": 200.0140829823281,
+            "last_mean_cm_s": 7.256077843020265,
+            "min_mean_cm_s": -4.91502474016367,
+            "max_mean_cm_s": 7.276586482751016
+          }
+        },
+        "reference_cm_s": 7.330248421544574,
+        "temperature_anchor_K": 791.7025261312986
+      },
+      {
+        "key": "phi110",
+        "label": "phi110",
+        "job": "124916221",
+        "csv": "124916221/front-tracking.csv",
+        "source": "1a0bcfbc5ff1c70cff493514428a88e371b2f488",
+        "state": "COMPLETED",
+        "phi": 1.1,
+        "expected_start_time_s": 0,
+        "sha256": "e185bd17a283b0b6d118fb7ac367932e1f971b1978b1c8f4b0243ae9347722cd",
+        "first_time_us": 0.0,
+        "latest_time_us": 200.01806325134535,
+        "status_counts": {
+          "warmup": 56,
+          "valid": 1640
+        },
+        "markers": {
+          "T": {
+            "valid_points": 410,
+            "first_time_us": 5.418063251340931,
+            "last_time_us": 200.01806325134535,
+            "last_mean_cm_s": 7.139979685365538,
+            "min_mean_cm_s": 6.236823068151674,
+            "max_mean_cm_s": 20.089112485125824
+          },
+          "OH": {
+            "valid_points": 410,
+            "first_time_us": 5.418063251340931,
+            "last_time_us": 200.01806325134535,
+            "last_mean_cm_s": 7.23277930739022,
+            "min_mean_cm_s": -5.396790036267285,
+            "max_mean_cm_s": 7.244727419289138
+          }
+        },
+        "reference_cm_s": 7.467003112153642,
+        "temperature_anchor_K": 780.8722452267356
+      },
+      {
+        "key": "phi115",
+        "label": "phi115",
+        "job": "124916361",
+        "csv": "124916361/front-tracking.csv",
+        "source": "1a0bcfbc5ff1c70cff493514428a88e371b2f488",
+        "state": "COMPLETED",
+        "phi": 1.15,
+        "expected_start_time_s": 0,
+        "sha256": "de900288580270d34594abbc05a8bc51136a2406220339ad091169667fb30c21",
+        "first_time_us": 0.0,
+        "latest_time_us": 200.0226953939413,
+        "status_counts": {
+          "warmup": 56,
+          "valid": 1640
+        },
+        "markers": {
+          "T": {
+            "valid_points": 410,
+            "first_time_us": 5.422695393936876,
+            "last_time_us": 200.0226953939413,
+            "last_mean_cm_s": 6.858674610821021,
+            "min_mean_cm_s": 6.1288347575033555,
+            "max_mean_cm_s": 20.279136380708387
+          },
+          "OH": {
+            "valid_points": 410,
+            "first_time_us": 5.422695393936876,
+            "last_time_us": 200.0226953939413,
+            "last_mean_cm_s": 6.98638451269756,
+            "min_mean_cm_s": -6.08041039309643,
+            "max_mean_cm_s": 6.98638451269756
+          }
+        },
+        "reference_cm_s": 7.343496980167247,
+        "temperature_anchor_K": 769.9301534631155
+      },
+      {
+        "key": "phi120",
+        "label": "phi120",
+        "job": "124916364",
+        "csv": "124916364/front-tracking.csv",
+        "source": "1a0bcfbc5ff1c70cff493514428a88e371b2f488",
+        "state": "COMPLETED",
+        "phi": 1.2,
+        "expected_start_time_s": 0,
+        "sha256": "187196dd6c393ee21fd9e2a07f1000b07eeca5c5e2fcf14a0d023428c6076d99",
+        "first_time_us": 0.0,
+        "latest_time_us": 199.97751203813698,
+        "status_counts": {
+          "warmup": 56,
+          "valid": 1640
+        },
+        "markers": {
+          "T": {
+            "valid_points": 410,
+            "first_time_us": 5.427512038132562,
+            "last_time_us": 199.97751203813698,
+            "last_mean_cm_s": 6.516777513766698,
+            "min_mean_cm_s": 5.95146716703854,
+            "max_mean_cm_s": 20.441988153496624
+          },
+          "OH": {
+            "valid_points": 410,
+            "first_time_us": 5.427512038132562,
+            "last_time_us": 199.97751203813698,
+            "last_mean_cm_s": 6.654064107050732,
+            "min_mean_cm_s": -6.8380207056876285,
+            "max_mean_cm_s": 6.654064107050732
+          }
+        },
+        "reference_cm_s": 7.120380052909459,
+        "temperature_anchor_K": 759.1860630265394
+      },
+      {
+        "key": "phi125",
+        "label": "phi125",
+        "job": "124916369",
+        "csv": "124916369/front-tracking.csv",
+        "source": "1a0bcfbc5ff1c70cff493514428a88e371b2f488",
+        "state": "COMPLETED",
+        "phi": 1.25,
+        "expected_start_time_s": 0,
+        "sha256": "531bee0e006a61ba291d1b12f35fdf6c6a216e600fdf084a189f8c5883e387e3",
+        "first_time_us": 0.0,
+        "latest_time_us": 199.98356759347,
+        "status_counts": {
+          "warmup": 56,
+          "valid": 1640
+        },
+        "markers": {
+          "T": {
+            "valid_points": 410,
+            "first_time_us": 5.433567593465589,
+            "last_time_us": 199.98356759347,
+            "last_mean_cm_s": 6.213764584339193,
+            "min_mean_cm_s": 5.760096792592915,
+            "max_mean_cm_s": 20.528122176433513
+          },
+          "OH": {
+            "valid_points": 410,
+            "first_time_us": 5.433567593465589,
+            "last_time_us": 199.98356759347,
+            "last_mean_cm_s": 6.357677917263549,
+            "min_mean_cm_s": -7.567845907909835,
+            "max_mean_cm_s": 6.357677917263549
+          }
+        },
+        "reference_cm_s": 6.873698515469016,
+        "temperature_anchor_K": 748.6865412525168
+      },
+      {
+        "key": "phi130",
+        "label": "phi130",
+        "job": "124916375",
+        "csv": "124916375/front-tracking.csv",
+        "source": "1a0bcfbc5ff1c70cff493514428a88e371b2f488",
+        "state": "COMPLETED",
+        "phi": 1.3,
+        "expected_start_time_s": 0,
+        "sha256": "1c978cff58d0784d7c4108eb12945da2101b8b7bc00e7a317021ee1aecd67d5a",
+        "first_time_us": 0.0,
+        "latest_time_us": 199.98726483599734,
+        "status_counts": {
+          "warmup": 50,
+          "missing_contour": 8,
+          "valid": 1638
+        },
+        "markers": {
+          "T": {
+            "valid_points": 410,
+            "first_time_us": 5.437264835992917,
+            "last_time_us": 199.98726483599734,
+            "last_mean_cm_s": 5.952712879254749,
+            "min_mean_cm_s": 5.5661459812449205,
+            "max_mean_cm_s": 20.623826502445027
+          },
+          "OH": {
+            "valid_points": 409,
+            "first_time_us": 5.937264835992921,
+            "last_time_us": 199.98726483599734,
+            "last_mean_cm_s": 6.061350075670321,
+            "min_mean_cm_s": -7.041545362165302,
+            "max_mean_cm_s": 6.061350075670321
+          }
+        },
+        "reference_cm_s": 6.619133757678313,
+        "temperature_anchor_K": 738.4331803230109
+      },
+      {
+        "key": "phi135",
+        "label": "phi135",
+        "job": "124916381",
+        "csv": "124916381/front-tracking.csv",
+        "source": "1a0bcfbc5ff1c70cff493514428a88e371b2f488",
+        "state": "COMPLETED",
+        "phi": 1.35,
+        "expected_start_time_s": 0,
+        "sha256": "e7b1d9b5c4eabf81a77e0c2bb4f0135192caf8ad06c60ba0a8b45b6706e2d7ea",
+        "first_time_us": 0.0,
+        "latest_time_us": 199.99009069421288,
+        "status_counts": {
+          "warmup": 50,
+          "missing_contour": 8,
+          "valid": 1638
+        },
+        "markers": {
+          "T": {
+            "valid_points": 410,
+            "first_time_us": 5.440090694208437,
+            "last_time_us": 199.99009069421288,
+            "last_mean_cm_s": 5.676457251883582,
+            "min_mean_cm_s": 5.381454820563504,
+            "max_mean_cm_s": 20.679607705981127
+          },
+          "OH": {
+            "valid_points": 409,
+            "first_time_us": 5.940090694208441,
+            "last_time_us": 199.99009069421288,
+            "last_mean_cm_s": 5.7951918117278165,
+            "min_mean_cm_s": -7.938020221363779,
+            "max_mean_cm_s": 5.796393082561922
+          }
+        },
+        "reference_cm_s": 6.3658559337846174,
+        "temperature_anchor_K": 728.4153979919608
+      },
+      {
+        "key": "phi140",
+        "label": "phi140",
+        "job": "124916387",
+        "csv": "124916387/front-tracking.csv",
+        "source": "1a0bcfbc5ff1c70cff493514428a88e371b2f488",
+        "state": "COMPLETED",
+        "phi": 1.4,
+        "expected_start_time_s": 0,
+        "sha256": "efe0d71b74ad8748176c7a6fefb9067e761bdcc054ee281ef3b3c81ca4d61d68",
+        "first_time_us": 0.0,
+        "latest_time_us": 199.99266126209156,
+        "status_counts": {
+          "warmup": 48,
+          "missing_contour": 10,
+          "valid": 1638
+        },
+        "markers": {
+          "T": {
+            "valid_points": 410,
+            "first_time_us": 5.44266126208714,
+            "last_time_us": 199.99266126209156,
+            "last_mean_cm_s": 5.451451292540353,
+            "min_mean_cm_s": 5.239206098635931,
+            "max_mean_cm_s": 20.718744663581298
+          },
+          "OH": {
+            "valid_points": 409,
+            "first_time_us": 5.942661262087144,
+            "last_time_us": 199.99266126209156,
+            "last_mean_cm_s": 5.570141351060574,
+            "min_mean_cm_s": -9.044131987617732,
+            "max_mean_cm_s": 5.5717041466463675
+          }
+        },
+        "reference_cm_s": 6.121807950118492,
+        "temperature_anchor_K": 718.6193673285339
+      }
+    ],
+    "script_sha256": "e873cf2aaaad11475fbcb8e4676f81c0038ff7a343e74f8bec30f9146465884a"
+  },
+  "windows": {
+    "native": {
+      "T": {
+        "mean_180_200us_cm_s": 7.083750419534857,
+        "samples_both_fronts": 86
+      },
+      "OH": {
+        "mean_180_200us_cm_s": 7.202209410437263,
+        "samples_both_fronts": 86
+      }
+    },
+    "energy": {
+      "T": {
+        "mean_180_200us_cm_s": 7.259628141521947,
+        "samples_both_fronts": 86
+      },
+      "OH": {
+        "mean_180_200us_cm_s": 7.397009560557312,
+        "samples_both_fronts": 86
+      }
+    }
+  },
+  "scientific_acceptance": false,
+  "limitations": [
+    "Time drift persists",
+    "Transport differs across solver families",
+    "Native sweep uses original recorded Cantera reference grids; paired figure uses refined job124934682"
+  ],
+  "pdf_sha256": "865e590f4de1afd5abd3c57fc91f2080a67a087446b35e06a4bb2a3f90744242"
+}

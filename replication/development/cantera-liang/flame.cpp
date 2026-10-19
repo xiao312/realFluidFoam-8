@@ -3,6 +3,7 @@
 #include "PressureChemistry.h"
 #include "PropertyChecks.h"
 #include "EquilibriumCheck.h"
+#include "TotalEnthalpyFlow.h"
 #include "cantera/onedim.h"
 #include "cantera/oneD/DomainFactory.h"
 #include "cantera/thermo/ThermoFactory.h"
@@ -41,6 +42,7 @@ try {
         auto* gas=new liang::SrkPhase;gas->stage=1;return gas;});
     TransportFactory::factory()->reg("liang-staged",[&](){
         auto* tr=new liang::StagedTransport;tr->stage=stage;tr->parameters=parameters;
+        tr->highTemperature=options.highTemperature;
         tr->table2=options.table2;tr->smoothedAlpha=options.smoothedAlpha;tr->denseIncrementOnly=options.dense;tr->boundedTakahashi=options.bounded;return tr;});
     auto sol=newSolution((input/(stage==1?"ideal.yaml":"srk.yaml")).string(),"",stage==1?"mixture-averaged":"liang-staged");
     auto gas=sol->thermo();
@@ -61,7 +63,10 @@ try {
     while(std::getline(file,line)) {auto fields=split(line);if(fields.size()!=columns.size())throw std::runtime_error("CSV width");
         for(size_t k=0;k<fields.size();k++)values[k].push_back(std::stod(fields[k]));}
     if(values[0].size()<10 || columns[0]!="x_m")throw std::runtime_error("Invalid initial profile");
-    auto flow=newDomain<Flow1D>("gas-flow",sol,"flow");flow->setFreeFlow();flow->setPressure(pressure);
+    std::shared_ptr<Flow1D> flow;
+    if(options.totalEnthalpy)flow=std::make_shared<liang::TotalEnthalpyFlow>(sol,options.pureSpeciesFlux);
+    else flow=newDomain<Flow1D>("gas-flow",sol,"flow");
+    flow->setFreeFlow();flow->setPressure(pressure);
     flow->setupGrid(values[0].size(),values[0].data());flow->setSteadyTolerances(1e-5,1e-11);
     flow->setFluxGradientBasis(ThermoBasis::molar);flow->enableSoret(false);
     auto inlet=newDomain<Inlet1D>("inlet",sol);inlet->setTemperature(298);inlet->setMoleFractions(xin.data());

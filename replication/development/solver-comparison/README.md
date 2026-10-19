@@ -72,6 +72,10 @@ plotted-data CSV and a JSON audit from local CSV snapshots. It never contacts th
 cluster or changes cases. CONFIG is JSON with `capture_utc`, `reference_cm_s`
 and `cases` (each: `key`, `label`, `csv`, `job`, `state`, `source`). CSV paths are
 relative to CONFIG. Optional `snapshot_sha256` records the raw archive identity.
+Optional per-case `expected_start_time_s` asserts the first recorded time. The
+plot derives start annotations from the CSV, including initial invalid fit rows;
+it never assumes an old restart time. A zero-time trace alone does not prove the
+initial fields were freshly generated: retain the case provenance separately.
 Inputs are native tracking CSVs or sampleHistory outputs, using only primary
 markers and valid 5-us fits. A point requires both fronts; their mean is drawn
 and their range shaded. Invalid observations remain gaps. Outputs include all

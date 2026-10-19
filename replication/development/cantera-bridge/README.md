@@ -64,8 +64,9 @@ source or return an ambiguously normalized integrated source.
 This closure is distinct from the native solver's concentration ODE and from
 DeepFlame's isothermal integration. It is not a test of the ODE integrator alone.
 For nonideal stages with departure calorics, `smoothed-alpha` is required because
-the original high-temperature alpha extension has enthalpy jumps. No active CFD
-solver calls this function yet. On integration failure, the context discards its
+the original high-temperature alpha extension has enthalpy jumps. The optional
+`cantera-cfd` ideal pilot calls this function; production native chemistry
+remains unchanged. On integration failure, the context discards its
 reactor state; the next call starts independently.
 
 Qualification uses frozen ideal-flame states and independent Python Cantera3.2
@@ -86,3 +87,9 @@ test with `bash reactor-submit.sh plan|apply ROOT RELEASE SDK BUILD INPUTS
 REFERENCE`. It verifies the built library hash and records each result and input
 hash; the test script itself imports no Cantera package. The expected result is
 ideal-reference parity, conservation for both models and order-independent calls.
+
+The bridge rejects `fine-grid`, `total-enthalpy` and `pure-species-flux`: these
+configure the steady-flow equations or grid and have no property/reactor meaning.
+The probe verifies these rejections. The transport-only `takahashi-high-t` option
+is forwarded explicitly; it retains its documented unqualified extrapolation
+status and is not enabled in the ideal CFD pilot.

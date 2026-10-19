@@ -21,6 +21,7 @@ def read_case(case, base):
     groups = defaultdict(dict)
     statuses = Counter()
     latest = 0.
+    first = np.inf
     with path.open(encoding='utf8', newline='') as stream:
         reader = csv.DictReader(stream)
         required = {'time_s', 'side', 'marker', 'status', 'density_weighted_m_s'}
@@ -33,6 +34,7 @@ def read_case(case, base):
             if not np.isfinite(time):
                 raise ValueError(f'{path}: nonfinite time')
             latest = max(latest, time)
+            first = min(first, time)
             statuses[row['status']] += 1
             side = row['side']
             if side not in ('left', 'right'):
@@ -44,6 +46,10 @@ def read_case(case, base):
             if row['status'] == 'valid' and not np.isfinite(speed):
                 raise ValueError(f'{path}: nonfinite valid speed')
             groups[key][side] = speed
+    if not np.isfinite(first):
+        raise ValueError(f'{path}: no primary tracking rows')
+    if 'expected_start_time_s' in case and abs(first-case['expected_start_time_s']) > 1e-12:
+        raise ValueError(f'{path}: first time {first} differs from declared start')
     rows = []
     for (marker, time), sides in sorted(groups.items()):
         left, right = sides.get('left', np.nan), sides.get('right', np.nan)
@@ -54,7 +60,8 @@ def read_case(case, base):
                          lower_cm_s=min(left, right) if valid else np.nan,
                          upper_cm_s=max(left, right) if valid else np.nan))
     audit = dict(case, sha256=hashlib.sha256(path.read_bytes()).hexdigest(),
-                 latest_time_us=latest*1e6, status_counts=dict(statuses), markers={})
+                 first_time_us=first*1e6, latest_time_us=latest*1e6,
+                 status_counts=dict(statuses), markers={})
     for marker in ('T', 'OH'):
         valid = [r for r in rows if r['marker'] == marker and np.isfinite(r['mean_cm_s'])]
         audit['markers'][marker] = dict(valid_points=len(valid))
@@ -84,7 +91,9 @@ def figure(config, all_rows, zoom):
                             [r['upper_cm_s'] for r in rows], color=color, alpha=.14, linewidth=0)
         ax.axhline(config['reference_cm_s'], color='.2', ls=(0, (5, 3)), lw=1.,
                    label=f"Cantera FreeFlame: {config['reference_cm_s']:.3f} cm/s")
-        ax.axvline(50.0180632513, color='.65', ls=':', lw=.8)
+        for start in sorted({case['first_time_us'] for case in config['cases']}):
+            if start > 1e-6:
+                ax.axvline(start, color='.65', ls=':', lw=.8)
         ax.set_title(title, fontsize=11, pad=9)
         ax.set_xlabel(r'Physical time ($\mu$s)')
         ax.tick_params(direction='in', top=True, right=True)
@@ -98,8 +107,11 @@ def figure(config, all_rows, zoom):
                ncol=2, frameon=False, fontsize=9.3, handlelength=3.3)
     fig.suptitle(r'Methane/air: $\phi=1.10$, 100 atm, $T_u=298$ K' +
                  (' — detail: 4–10 cm/s' if zoom else ' — full speed range'), y=.98, fontsize=13)
+    starts = sorted({round(case['first_time_us'], 3) for case in config['cases']})
+    start_note = ('All tracking histories start at 0 μs.' if starts == [0.]
+                  else 'Recorded start times (μs): '+', '.join(f'{value:g}' for value in starts)+'.')
     footer = ('5 μs fits; lines = mean of left/right fronts; shading = their range (not uncertainty).\n'
-              'Native curves restart at 50.018 μs (dotted line); stock and DeepFlame start at 0.\n'
+              + start_note + '\n'
               'Transport models differ. These are transient diagnostics, not accepted steady flame speeds.\n'
               f"Snapshot: {config['capture_utc']}" )
     fig.text(.075, .055, footer, va='bottom', fontsize=9, linespacing=1.5)
@@ -131,7 +143,7 @@ def main():
     (args.output/'audit.json').write_text(json.dumps(audit, indent=2)+'\n', encoding='utf8')
     with PdfPages(args.output/'flame-speed-history.pdf') as pdf:
         for zoom, stem in [(False, 'flame-speed-history'), (True, 'flame-speed-history-detail')]:
-            fig = figure(config, rows, zoom)
+            fig = figure(dict(config, cases=audits), rows, zoom)
             fig.savefig(args.output/(stem+'.png'), dpi=220)
             pdf.savefig(fig); plt.close(fig)
     print(json.dumps(audits, indent=2))

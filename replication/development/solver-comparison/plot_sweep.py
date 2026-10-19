@@ -29,6 +29,8 @@ def main():
         case = dict(key=item['key'], label=item['key'], job=item['job'],
                     csv=item['job']+'/front-tracking.csv', source=item['source'],
                     state=states[item['job']], phi=config['phi'])
+        if 'expected_start_time_s' in item:
+            case['expected_start_time_s']=item['expected_start_time_s']
         rows, audit = read_case(case, args.snapshot)
         audit['reference_cm_s'] = config['temperature_anchor']['speed_cm_s']
         audit['temperature_anchor_K'] = config['temperature_anchor']['temperature_anchor_K']
@@ -54,7 +56,7 @@ def main():
     axes.flat[-1].legend(handles, labels, loc='upper left', frameon=False, fontsize=9)
     axes.flat[-1].text(.02,.10,'5 μs fit; mean of both fronts\nShading: left–right range\nDensity-normalized speed\nTransient; no steady acceptance',
                        transform=axes.flat[-1].transAxes, fontsize=8, linespacing=1.5)
-    axes.flat[0].set_xlim(0, 205)
+    axes.flat[0].set_xlim(0, max(205,max(row['time_us'] for row in all_rows)*1.025))
     # Shared full range: do not silently discard ignition transients.
     if all_values:
         lower, upper = min(0, min(all_values)), max(10, max(all_values))

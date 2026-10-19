@@ -14,6 +14,7 @@ public:
     bool boundedTakahashi=false;
     bool smoothedAlpha=false;
     bool table2=false;
+    bool highTemperature=false;
     size_t boundedPairCalls=0;
     std::vector<Species> parameters;
     size_t conductivityCalls=0,diffusionCalls=0;
@@ -41,7 +42,7 @@ public:
             double xj=std::max(Cantera::Tiny,m_molefracs[j]);
             double sum=xi+xj;xi/=sum;xj/=sum;
             double tr=m_temp/(xi*m_Tcrit[i]+xj*m_Tcrit[j]);
-            double bounded=std::clamp(tr,1.,5.);
+            double bounded=highTemperature?std::max(tr,1.):std::clamp(tr,1.,5.);
             if(bounded!=tr)boundedPairCalls++;
             double pr=p/(xi*m_Pcrit[i]+xj*m_Pcrit[j]);
             double factor=Cantera::takahashiCorrectionFactor(pr,bounded);

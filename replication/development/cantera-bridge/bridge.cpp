@@ -43,7 +43,8 @@ extern "C" rf_ct_context* rf_ct_create(const char* inputs,int stage,const char* 
     try {
         if(!inputs || !text || stage<1 || stage>5)throw std::runtime_error("Invalid model configuration");
         liang::DiagnosticOptions options(text);
-        if(options.fineGrid)throw std::runtime_error("fine-grid is not a property model option");
+        if(options.fineGrid || options.totalEnthalpy || options.pureSpeciesFlux)
+            throw std::runtime_error("Flow/grid diagnostics are not property or reactor model options");
         std::filesystem::path directory=std::filesystem::canonical(inputs);
         std::ifstream table(directory/"species.txt");
         std::vector<liang::Species> parameters;std::vector<std::string> names;
@@ -66,6 +67,7 @@ extern "C" rf_ct_context* rf_ct_create(const char* inputs,int stage,const char* 
             auto transport=std::make_shared<liang::StagedTransport>();
             transport->parameters=parameters;transport->stage=stage;
             transport->smoothedAlpha=options.smoothedAlpha;transport->table2=options.table2;
+            transport->highTemperature=options.highTemperature;
             transport->denseIncrementOnly=options.dense;transport->boundedTakahashi=options.bounded;
             transport->init(gas.get());solution->setTransport(transport);
         }

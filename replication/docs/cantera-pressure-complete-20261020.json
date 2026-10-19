@@ -1,0 +1,2133 @@
+{
+  "observed_utc": "2026-10-19T18:48:38.342931+00:00",
+  "results": [
+    {
+      "stage": 1,
+      "phi": 0.92,
+      "job": "124919999",
+      "source": "961f6a1fc6662167076abea2b8d4c6aee449622c",
+      "build_job": "124919933",
+      "input_directory": "/public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/sweep-inputs-v2/phi092",
+      "speed_cm_s": 5.990352704426165,
+      "last_refinement_relative_change": 9.471040881114945e-06,
+      "mass_flux_relative_range": 1.3175662712798823e-10,
+      "maximum_species_sum_error": 5.595257590584879e-11,
+      "minimum_mass_fraction": -1.817754885943885e-12,
+      "output_sha256": {
+        "profile.csv": "1e3d58b1e22f1513a35592c566e17bad49f9e4bd376efa9f4bf8911e83b2aaba",
+        "refinement.csv": "07e6ecfebda45c5a7060bcf24a6bf953d1329dbf76f15f40c4bc250baefdc6a0",
+        "property-checks.csv": "8cd8a61424d85c86a38ab80db70063201281b59114f212bbe60ee80ea375eced"
+      }
+    },
+    {
+      "stage": 1,
+      "phi": 0.95,
+      "job": "124920002",
+      "source": "961f6a1fc6662167076abea2b8d4c6aee449622c",
+      "build_job": "124919933",
+      "input_directory": "/public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/sweep-inputs-v2/phi095",
+      "speed_cm_s": 6.379410650711995,
+      "last_refinement_relative_change": 6.2500642583618315e-06,
+      "mass_flux_relative_range": 1.4168374070822215e-10,
+      "maximum_species_sum_error": 4.8895554272121444e-11,
+      "minimum_mass_fraction": -7.866196960560329e-13,
+      "output_sha256": {
+        "profile.csv": "b1c24fd1bd6a41bc2d745d7331af0b7a6b812e66b5e93b9bafb3c51b986024f3",
+        "refinement.csv": "0462214ac7f54733c11ad49ba472035e183e0827e96692ad0fe8306fc50d1485",
+        "property-checks.csv": "182fcfd40ae2126d8a69fa481afd8cf9767786cd84d5f79b39f55aff98332419"
+      }
+    },
+    {
+      "stage": 1,
+      "phi": 1.0,
+      "job": "124920005",
+      "source": "961f6a1fc6662167076abea2b8d4c6aee449622c",
+      "build_job": "124919933",
+      "input_directory": "/public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/sweep-inputs-v2/phi100",
+      "speed_cm_s": 6.910556897431561,
+      "last_refinement_relative_change": 4.762125561219577e-06,
+      "mass_flux_relative_range": 9.000487455697016e-11,
+      "maximum_species_sum_error": 4.995714952826802e-11,
+      "minimum_mass_fraction": -5.472838184275605e-13,
+      "output_sha256": {
+        "profile.csv": "47dc3646fad966ac6292535d4b76b3f581e24a0c87138ee4933668fc9d508af8",
+        "refinement.csv": "5ed70dc2c8211484484d02ac1de789cf10d8a146c2dae1fed2b6994cb6951a54",
+        "property-checks.csv": "8c8508da571c4e12a0d0e1c71cecfe8c1f90de7880c67c13c262b64e11508325"
+      }
+    },
+    {
+      "stage": 1,
+      "phi": 1.02,
+      "job": "124940112",
+      "variant": "full",
+      "pressure_atm": 100,
+      "source": "96ba5de3776c72a2925d8db75a4a39d73d3eb1c1",
+      "build_job": "124939982",
+      "input_directory": "/public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/extra-phi102/phi102",
+      "speed_cm_s": 7.096915248337034,
+      "last_refinement_relative_change": 0.0011071238450078846,
+      "mass_flux_relative_range": 1.562058426943906e-10,
+      "maximum_species_sum_error": 2.9369617848828966e-11,
+      "minimum_mass_fraction": -7.290155975287288e-13,
+      "output_sha256": {
+        "profile.csv": "d2f4af5499c878b39677ccbfdc2bcfd9741dd2c21ad4baaa93cd5e9d5eb5abbc",
+        "refinement.csv": "cfce1f4961bf38240c1777d3604514b9f107d7e1cb644610dcc6bf225705eba1",
+        "property-checks.csv": "596f1084fa3ae561a3567a1d87f7459e40f367546b5c345da8a28443ad653a45"
+      }
+    },
+    {
+      "stage": 1,
+      "phi": 1.05,
+      "job": "124920010",
+      "source": "961f6a1fc6662167076abea2b8d4c6aee449622c",
+      "build_job": "124919933",
+      "input_directory": "/public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/sweep-inputs-v2/phi105",
+      "speed_cm_s": 7.324550779486868,
+      "last_refinement_relative_change": 5.624395194248066e-06,
+      "mass_flux_relative_range": 1.4657093121817418e-10,
+      "maximum_species_sum_error": 4.1586734056409114e-11,
+      "minimum_mass_fraction": -1.555621454745028e-12,
+      "output_sha256": {
+        "profile.csv": "d4fc54334427e78d9cfd14ccf326058fae540a9eecfc18c5152ba2cdf50b93d7",
+        "refinement.csv": "d3c506e9ae75314f16a84b80967a8f4e672556c908c9400e0fbb95a5903c9e2c",
+        "property-checks.csv": "45d4fe518f5840b2f1c3b3f96db5bd33853e5cbf789b5d6883164597ed0f5f77"
+      }
+    },
+    {
+      "stage": 1,
+      "phi": 1.1,
+      "job": "124920014",
+      "source": "961f6a1fc6662167076abea2b8d4c6aee449622c",
+      "build_job": "124919933",
+      "input_directory": "/public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/sweep-inputs-v2/phi110",
+      "speed_cm_s": 7.461702833306255,
+      "last_refinement_relative_change": 1.020069528090417e-05,
+      "mass_flux_relative_range": 1.1043368538732205e-10,
+      "maximum_species_sum_error": 2.5655477742247967e-11,
+      "minimum_mass_fraction": -8.539559004299679e-13,
+      "output_sha256": {
+        "profile.csv": "09408212459b4f4b318de2310714cba6b4429d169cfad386d84c2c47962d550e",
+        "refinement.csv": "1cdf497a838f5aa73465c8d3179023e7fec12db971766951b9236558dad8cdc9",
+        "property-checks.csv": "9e3915ce109894d6e3a66a951c78b059d3f33e7100adea57da1268ff290560f0"
+      }
+    },
+    {
+      "stage": 1,
+      "phi": 1.15,
+      "job": "124920017",
+      "source": "961f6a1fc6662167076abea2b8d4c6aee449622c",
+      "build_job": "124919933",
+      "input_directory": "/public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/sweep-inputs-v2/phi115",
+      "speed_cm_s": 7.33869342194257,
+      "last_refinement_relative_change": 5.450913043381078e-06,
+      "mass_flux_relative_range": 1.278745019008728e-10,
+      "maximum_species_sum_error": 3.454425634430436e-11,
+      "minimum_mass_fraction": -7.329282906967148e-13,
+      "output_sha256": {
+        "profile.csv": "d58fdc111176621b5b4e4ae119686f881f6c854dfa8a005f49687aa5fae591b9",
+        "refinement.csv": "9a2d425232e0ddece592aa6ed88b549c8ed3d89c284e571f8d30a39b3e14e6a1",
+        "property-checks.csv": "e58daa09019164c22b008f7cc2a7f704a3fb973b172b0f4756b74beee6d5a2f1"
+      }
+    },
+    {
+      "stage": 1,
+      "phi": 1.2,
+      "job": "124920020",
+      "source": "961f6a1fc6662167076abea2b8d4c6aee449622c",
+      "build_job": "124919933",
+      "input_directory": "/public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/sweep-inputs-v2/phi120",
+      "speed_cm_s": 7.115844489565243,
+      "last_refinement_relative_change": 5.783973354489547e-06,
+      "mass_flux_relative_range": 1.1639545440142074e-10,
+      "maximum_species_sum_error": 3.395861369881459e-11,
+      "minimum_mass_fraction": -4.504439406426537e-13,
+      "output_sha256": {
+        "profile.csv": "0c2106bf77b6625b8f003b043eec0e355a690ddb0e8a3729ec86d5dea16ccf8d",
+        "refinement.csv": "f56a9fd05e0db3ad4f1a502a1a4b93d08438cc220ba5142efe59ec721d4a5e34",
+        "property-checks.csv": "5e16e4f9ff0f10e9a1fa547318d0e53f5f00a2e6417f217e4ab4f4f1e29c0536"
+      }
+    },
+    {
+      "stage": 1,
+      "phi": 1.25,
+      "job": "124920023",
+      "source": "961f6a1fc6662167076abea2b8d4c6aee449622c",
+      "build_job": "124919933",
+      "input_directory": "/public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/sweep-inputs-v2/phi125",
+      "speed_cm_s": 6.868865867632599,
+      "last_refinement_relative_change": 7.834758115166096e-06,
+      "mass_flux_relative_range": 1.450753060327648e-10,
+      "maximum_species_sum_error": 3.963895878200674e-11,
+      "minimum_mass_fraction": -4.162501663465029e-13,
+      "output_sha256": {
+        "profile.csv": "d35c562d13676b858a5d4151a8a9af747bbae50b7f9ac8ecad2235b33fc0be6b",
+        "refinement.csv": "031d12748e89e97bfdabf9b6da764ec169480486afdf237ea1fdb6e31ee08988",
+        "property-checks.csv": "c863b29eb5917919f7ac831857eed4527013babb013ce893bdac72ba51bf161a"
+      }
+    },
+    {
+      "stage": 1,
+      "phi": 1.3,
+      "job": "124920027",
+      "source": "961f6a1fc6662167076abea2b8d4c6aee449622c",
+      "build_job": "124919933",
+      "input_directory": "/public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/sweep-inputs-v2/phi130",
+      "speed_cm_s": 6.614454323655951,
+      "last_refinement_relative_change": 0.0013025359864576869,
+      "mass_flux_relative_range": 9.181921168464214e-11,
+      "maximum_species_sum_error": 9.885381402341409e-11,
+      "minimum_mass_fraction": -3.082704064867855e-12,
+      "output_sha256": {
+        "profile.csv": "580af8117cceb57b4f0bbfb5dfb044fee78b3a9be76a11b3be8763d3eebab9bb",
+        "refinement.csv": "2330280b19d82c4927716d826b36b1e89f41dbfad5b4e2a6ce2a3a56d60353a9",
+        "property-checks.csv": "9fdfd9c90b3fe320d1d5397db3cd00f011070a5d9a3f63f049c6e7cb389684f4"
+      }
+    },
+    {
+      "stage": 1,
+      "phi": 1.35,
+      "job": "124920030",
+      "source": "961f6a1fc6662167076abea2b8d4c6aee449622c",
+      "build_job": "124919933",
+      "input_directory": "/public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/sweep-inputs-v2/phi135",
+      "speed_cm_s": 6.36147819695285,
+      "last_refinement_relative_change": 0.0013137943295825627,
+      "mass_flux_relative_range": 1.2311194263106506e-10,
+      "maximum_species_sum_error": 6.011946496187193e-11,
+      "minimum_mass_fraction": -3.233390975164581e-12,
+      "output_sha256": {
+        "profile.csv": "5a52e1c4e4fe66929f61a5faa6b98f327bfbfdae040c2001e7f6633a5b43b855",
+        "refinement.csv": "18dd91a3b882739a9103b041be6b78f74e8c99143bd10e6b3a2f847fb17fe76a",
+        "property-checks.csv": "1541ba959142f5ced6916c9bb96139eb23421944573994567805248b7063dc0d"
+      }
+    },
+    {
+      "stage": 1,
+      "phi": 1.4,
+      "job": "124920034",
+      "source": "961f6a1fc6662167076abea2b8d4c6aee449622c",
+      "build_job": "124919933",
+      "input_directory": "/public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/sweep-inputs-v2/phi140",
+      "speed_cm_s": 6.116619431452803,
+      "last_refinement_relative_change": 0.0012783120907197132,
+      "mass_flux_relative_range": 1.8157960408432182e-09,
+      "maximum_species_sum_error": 1.7852264111439808e-10,
+      "minimum_mass_fraction": -4.122322066773991e-12,
+      "output_sha256": {
+        "profile.csv": "97a17e04e79c367d1d4118753432806c5cc66b12206994b9325a040172e6adce",
+        "refinement.csv": "06056456fd24e1400a10b354808492201fe8cc57f684bfe35210b5302df23220",
+        "property-checks.csv": "446317feefef116a5632be0fb0179cda8ee294dad216d4dee5c27339cf7ca085"
+      }
+    },
+    {
+      "stage": 1,
+      "phi": 1.44,
+      "job": "124920037",
+      "source": "961f6a1fc6662167076abea2b8d4c6aee449622c",
+      "build_job": "124919933",
+      "input_directory": "/public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/sweep-inputs-v2/phi144",
+      "speed_cm_s": 5.929065249252011,
+      "last_refinement_relative_change": 0.0013048931102314087,
+      "mass_flux_relative_range": 1.1444686186428417e-10,
+      "maximum_species_sum_error": 4.480615878321714e-11,
+      "minimum_mass_fraction": -9.656887284622424e-13,
+      "output_sha256": {
+        "profile.csv": "5a450c82e8f0ddb8668f5f48eadca859e2d086984754c785f0ffdc4ff0f6ee7f",
+        "refinement.csv": "796c040c7e5c56fc9d47cf674ef80eabfcd48827cb62b314e865e5b76a1da584",
+        "property-checks.csv": "052e7bc889cc20911ba27a43b80ebd93f9c765cb9229ec1584d74e6c19a381cd"
+      }
+    },
+    {
+      "stage": 2,
+      "phi": 0.92,
+      "job": "124937455",
+      "variant": "pressure-chemistry",
+      "pressure_atm": 100,
+      "source": "cf4083449b57c778c44fe97f5b74d46b5955a8eb",
+      "build_job": "124937336",
+      "input_directory": "/public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/sweep-inputs-v2/phi092",
+      "speed_cm_s": 6.019086317174071,
+      "last_refinement_relative_change": 9.811217759225777e-06,
+      "mass_flux_relative_range": 1.3854145674549615e-10,
+      "maximum_species_sum_error": 1.2711653951669177e-10,
+      "minimum_mass_fraction": -1.307822319582421e-12,
+      "output_sha256": {
+        "profile.csv": "378caf9ee95975a7810e242286938c86da69839b28dbe4e9fa4997e01eb479cf",
+        "refinement.csv": "0c610f4c972f94e61914094355348f710e4880b2e45ca825524ee60d6ba36aa2",
+        "property-checks.csv": "48a80fe84a7ee89525f0cc3ba4efd9ff7e05e83be417858aa216c6d8faf8e987"
+      }
+    },
+    {
+      "stage": 2,
+      "phi": 0.95,
+      "job": "124937457",
+      "variant": "pressure-chemistry",
+      "pressure_atm": 100,
+      "source": "cf4083449b57c778c44fe97f5b74d46b5955a8eb",
+      "build_job": "124937336",
+      "input_directory": "/public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/sweep-inputs-v2/phi095",
+      "speed_cm_s": 6.40887160766699,
+      "last_refinement_relative_change": 4.555455495602878e-06,
+      "mass_flux_relative_range": 1.1108066174736358e-10,
+      "maximum_species_sum_error": 5.605405029029953e-11,
+      "minimum_mass_fraction": -6.621770035596871e-13,
+      "output_sha256": {
+        "profile.csv": "6fef0c676f71276e1b7fbf25b356aea4800f9d5570e0cffc50af3b3edfeb3133",
+        "refinement.csv": "d5c0679dc3970caac3b17d8d3c944abffd84b4c03497a97bb8abeb23f60ba6ab",
+        "property-checks.csv": "fc0fc626990974ff3ec520302d39c5545daf8f6c5482634fbf6ccbd555e9efcb"
+      }
+    },
+    {
+      "stage": 2,
+      "phi": 1.0,
+      "job": "124937459",
+      "variant": "pressure-chemistry",
+      "pressure_atm": 100,
+      "source": "cf4083449b57c778c44fe97f5b74d46b5955a8eb",
+      "build_job": "124937336",
+      "input_directory": "/public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/sweep-inputs-v2/phi100",
+      "speed_cm_s": 6.93999508712814,
+      "last_refinement_relative_change": 9.354861785215718e-07,
+      "mass_flux_relative_range": 9.096187158486429e-10,
+      "maximum_species_sum_error": 1.1115952602835932e-10,
+      "minimum_mass_fraction": -5.234864695503604e-13,
+      "output_sha256": {
+        "profile.csv": "766e2734b3204144fb4930e19231274583ead3d9c37bf2de974a08f7a392b12e",
+        "refinement.csv": "635d82037d20860d929c2ac67174416f66c40cfb0333c637add78469e5be200b",
+        "property-checks.csv": "1e6cdcbe628a60ac262681455bd941b4496dc0015afe309adc6baf68deb5db43"
+      }
+    },
+    {
+      "stage": 2,
+      "phi": 1.02,
+      "job": "124938865",
+      "variant": "pressure-chemistry",
+      "pressure_atm": 100,
+      "source": "a10cd1b647a53016b9aa5a918a1a3af1dfddc2e1",
+      "build_job": "124938314",
+      "input_directory": "/public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/extra-phi102/phi102",
+      "speed_cm_s": 7.124864577444933,
+      "last_refinement_relative_change": 0.0012341661086949784,
+      "mass_flux_relative_range": 1.602345673676145e-10,
+      "maximum_species_sum_error": 3.1208147177608225e-11,
+      "minimum_mass_fraction": -4.212666628206506e-13,
+      "output_sha256": {
+        "profile.csv": "986c5521ab22cbe75373d56e7f4935923b994272c33c2855896b80c3cc4d5189",
+        "refinement.csv": "4df69867d5fd93593712b4210b80d9428ee0e9cdb054d67dad2606fd359ec0af",
+        "property-checks.csv": "9b83875b8401da5e47a64f50f180e43b1786d1c17673ba68db6d66c8ac20f7aa"
+      }
+    },
+    {
+      "stage": 2,
+      "phi": 1.05,
+      "job": "124937461",
+      "variant": "pressure-chemistry",
+      "pressure_atm": 100,
+      "source": "cf4083449b57c778c44fe97f5b74d46b5955a8eb",
+      "build_job": "124937336",
+      "input_directory": "/public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/sweep-inputs-v2/phi105",
+      "speed_cm_s": 7.348059844624125,
+      "last_refinement_relative_change": 5.027725081818701e-06,
+      "mass_flux_relative_range": 1.4757181036555824e-10,
+      "maximum_species_sum_error": 7.366351972848406e-11,
+      "minimum_mass_fraction": -6.289540051196593e-13,
+      "output_sha256": {
+        "profile.csv": "1877d05645b1afaaa636277ebb2a8b21a3967068d0ff42e961648846f8e6665a",
+        "refinement.csv": "a2f6c5105d7d67eec2464dee02535dbc6a05ea896ee8ceffb52f8ebe65323b9f",
+        "property-checks.csv": "a1fb70af55bece1b054a1b97b652bbd08d0f1ed29778813cee306746a6cbb70a"
+      }
+    },
+    {
+      "stage": 2,
+      "phi": 1.1,
+      "job": "124937462",
+      "variant": "pressure-chemistry",
+      "pressure_atm": 100,
+      "source": "cf4083449b57c778c44fe97f5b74d46b5955a8eb",
+      "build_job": "124937336",
+      "input_directory": "/public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/sweep-inputs-v2/phi110",
+      "speed_cm_s": 7.478315807644632,
+      "last_refinement_relative_change": 5.4945726728483635e-06,
+      "mass_flux_relative_range": 1.5189427322839528e-10,
+      "maximum_species_sum_error": 3.2559510643181966e-11,
+      "minimum_mass_fraction": -1.522578265947292e-12,
+      "output_sha256": {
+        "profile.csv": "21fa608db088df7b6c1e4b482b750f8aa699d20feaed1f80f2ed182b5e6bdaee",
+        "refinement.csv": "f66e5bc940afdfebc8820fefa91d1f54399c6bcae800713e6e82f7534a290c2f",
+        "property-checks.csv": "f55a58ff72b1a5b2106d436f6984d74956b7a88ff275a6225f328f29873409a5"
+      }
+    },
+    {
+      "stage": 2,
+      "phi": 1.15,
+      "job": "124937463",
+      "variant": "pressure-chemistry",
+      "pressure_atm": 100,
+      "source": "cf4083449b57c778c44fe97f5b74d46b5955a8eb",
+      "build_job": "124937336",
+      "input_directory": "/public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/sweep-inputs-v2/phi115",
+      "speed_cm_s": 7.349020256616656,
+      "last_refinement_relative_change": 5.980683218664851e-06,
+      "mass_flux_relative_range": 1.622507880099342e-10,
+      "maximum_species_sum_error": 3.982436602711914e-11,
+      "minimum_mass_fraction": -9.422524687309728e-13,
+      "output_sha256": {
+        "profile.csv": "6e71072b0ad430b133b1b6ba48cf8b528b75694418a5ed47fd16f6025107f6cc",
+        "refinement.csv": "5a06d79105a93dec85cdcf0088507978ca198054220e8e7b2ed99fd76516371d",
+        "property-checks.csv": "9f715cf982b726999ce5d1d19a241cd33fceca0056cb4072741c19f5991f4cf0"
+      }
+    },
+    {
+      "stage": 2,
+      "phi": 1.2,
+      "job": "124937464",
+      "variant": "pressure-chemistry",
+      "pressure_atm": 100,
+      "source": "cf4083449b57c778c44fe97f5b74d46b5955a8eb",
+      "build_job": "124937336",
+      "input_directory": "/public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/sweep-inputs-v2/phi120",
+      "speed_cm_s": 7.120137569982892,
+      "last_refinement_relative_change": 6.8637092742740435e-06,
+      "mass_flux_relative_range": 1.386245212417506e-10,
+      "maximum_species_sum_error": 5.465849994834571e-11,
+      "minimum_mass_fraction": -6.738288756926485e-13,
+      "output_sha256": {
+        "profile.csv": "d86386daf8b9d480ae832b39fb93d6172d2734cc959862aebb5554809e29792c",
+        "refinement.csv": "3f1716c9f5d117b0d1970dda0448f78d09ab4ff0a7ea1c00612028990cf1e199",
+        "property-checks.csv": "c3c41bba314b3beed3536a1cab64f46fec1a78fe4325ceb218398abe7b871005"
+      }
+    },
+    {
+      "stage": 2,
+      "phi": 1.25,
+      "job": "124937466",
+      "variant": "pressure-chemistry",
+      "pressure_atm": 100,
+      "source": "cf4083449b57c778c44fe97f5b74d46b5955a8eb",
+      "build_job": "124937336",
+      "input_directory": "/public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/sweep-inputs-v2/phi125",
+      "speed_cm_s": 6.868243167696382,
+      "last_refinement_relative_change": 3.226519333932032e-06,
+      "mass_flux_relative_range": 1.2517621344965293e-10,
+      "maximum_species_sum_error": 6.426215115595824e-11,
+      "minimum_mass_fraction": -2.571343120422019e-12,
+      "output_sha256": {
+        "profile.csv": "b794448d3593add76e8d9f2ffa1189319d8d1d4c6d1627eb8f2c57c37a4d133b",
+        "refinement.csv": "6aae4ac95814240f571f8c933d8cf7caa90f8186a72825cd4015578b3be0ad39",
+        "property-checks.csv": "8bff74a78c8fbc1d716e53156f85d4a52bc5eaf90d478a868129309cd371d0b8"
+      }
+    },
+    {
+      "stage": 2,
+      "phi": 1.3,
+      "job": "124937467",
+      "variant": "pressure-chemistry",
+      "pressure_atm": 100,
+      "source": "cf4083449b57c778c44fe97f5b74d46b5955a8eb",
+      "build_job": "124937336",
+      "input_directory": "/public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/sweep-inputs-v2/phi130",
+      "speed_cm_s": 6.610059533661349,
+      "last_refinement_relative_change": 0.001317570259583567,
+      "mass_flux_relative_range": 9.024766413024894e-11,
+      "maximum_species_sum_error": 9.115641574908295e-11,
+      "minimum_mass_fraction": -1.40910062071465e-12,
+      "output_sha256": {
+        "profile.csv": "47260164c568cb68f574443fa364b213d956a3f522035f96dd412c595b7a6d6a",
+        "refinement.csv": "251fef80b0d1fae8045e74ea41854c07fbddb71dc7653b9f922052ee5c61352f",
+        "property-checks.csv": "7b5fdf11858b0a21d39a799eb4e2eda9bc331936c0b659c3ea3cd8b0d1b5f147"
+      }
+    },
+    {
+      "stage": 2,
+      "phi": 1.35,
+      "job": "124937468",
+      "variant": "pressure-chemistry",
+      "pressure_atm": 100,
+      "source": "cf4083449b57c778c44fe97f5b74d46b5955a8eb",
+      "build_job": "124937336",
+      "input_directory": "/public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/sweep-inputs-v2/phi135",
+      "speed_cm_s": 6.353785969676514,
+      "last_refinement_relative_change": 0.0013057448546799355,
+      "mass_flux_relative_range": 1.463595794812971e-10,
+      "maximum_species_sum_error": 5.7725157986965314e-11,
+      "minimum_mass_fraction": -9.601497268271906e-13,
+      "output_sha256": {
+        "profile.csv": "0aa8fbaaf85bba67d9142d55106d5be36ee5dedcf0da671d0567496505ca4ff9",
+        "refinement.csv": "4a35ff1e458832a2e9bdbcf984171efec9287d8007a576c5b6b9ddb037826690",
+        "property-checks.csv": "48a00a83ccdac5c6d8b3d68e67719be02329efe3f273b4e5a0088882cae89db7"
+      }
+    },
+    {
+      "stage": 2,
+      "phi": 1.4,
+      "job": "124937469",
+      "variant": "pressure-chemistry",
+      "pressure_atm": 100,
+      "source": "cf4083449b57c778c44fe97f5b74d46b5955a8eb",
+      "build_job": "124937336",
+      "input_directory": "/public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/sweep-inputs-v2/phi140",
+      "speed_cm_s": 6.106087675972156,
+      "last_refinement_relative_change": 0.0012947322022188734,
+      "mass_flux_relative_range": 2.0301816430446964e-10,
+      "maximum_species_sum_error": 9.502432174457454e-11,
+      "minimum_mass_fraction": -4.677482559275509e-13,
+      "output_sha256": {
+        "profile.csv": "db405a860f5c4fb596b95054a1928e46ac3092e44cf072740acf985b690ff99f",
+        "refinement.csv": "33cfe5fd93fafe2aea2620232e66e4d6c5cc2aafb2884971fa08c5ec7584c522",
+        "property-checks.csv": "6f1fd95c94494f2803f527f0770abc9f99c09f101ccf974c77c52fab9b253eb3"
+      }
+    },
+    {
+      "stage": 2,
+      "phi": 1.44,
+      "job": "124937473",
+      "variant": "pressure-chemistry",
+      "pressure_atm": 100,
+      "source": "cf4083449b57c778c44fe97f5b74d46b5955a8eb",
+      "build_job": "124937336",
+      "input_directory": "/public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/sweep-inputs-v2/phi144",
+      "speed_cm_s": 5.916167754916478,
+      "last_refinement_relative_change": 0.0013732341894080458,
+      "mass_flux_relative_range": 3.333555275363851e-10,
+      "maximum_species_sum_error": 9.453882121590595e-11,
+      "minimum_mass_fraction": -2.074921487375129e-12,
+      "output_sha256": {
+        "profile.csv": "2d3ea1b0f4c3f748cfe312dd0f89c7b2efcc00fc0b0c6614d3671f1476a435ba",
+        "refinement.csv": "3920e2cab73ff29f85183c821b1c135f661beb89c84529bb6251f527a018978b",
+        "property-checks.csv": "a09121025eaeb7f3f37b1abd80679a08d75a84a1a49c264e59317ac8c8113ee7"
+      }
+    },
+    {
+      "stage": 3,
+      "phi": 0.92,
+      "job": "124937474",
+      "variant": "pressure-chemistry",
+      "pressure_atm": 100,
+      "source": "cf4083449b57c778c44fe97f5b74d46b5955a8eb",
+      "build_job": "124937336",
+      "input_directory": "/public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/sweep-inputs-v2/phi092",
+      "speed_cm_s": 5.649955244699904,
+      "last_refinement_relative_change": 1.7319044576247222e-05,
+      "mass_flux_relative_range": 2.6030623821505674e-10,
+      "maximum_species_sum_error": 2.405577959052607e-10,
+      "minimum_mass_fraction": -1.093134115362113e-12,
+      "output_sha256": {
+        "profile.csv": "97666f8457d80177c66f6a61650991b4f76ed89dda6a6fef097ccef5b76903dc",
+        "refinement.csv": "814ad00d3cb41565d8277499354d76804afd510838dfd0f6ac50f25b36805dc0",
+        "property-checks.csv": "75a594153d4768619bbb7f56bb558af9382849565a8c32b97688d06f5b212117"
+      }
+    },
+    {
+      "stage": 3,
+      "phi": 0.95,
+      "job": "124937478",
+      "variant": "pressure-chemistry",
+      "pressure_atm": 100,
+      "source": "cf4083449b57c778c44fe97f5b74d46b5955a8eb",
+      "build_job": "124937336",
+      "input_directory": "/public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/sweep-inputs-v2/phi095",
+      "speed_cm_s": 6.027258998404866,
+      "last_refinement_relative_change": 1.5934996733912854e-05,
+      "mass_flux_relative_range": 1.1554533766212898e-10,
+      "maximum_species_sum_error": 8.984502031239572e-11,
+      "minimum_mass_fraction": -3.1850320839419e-13,
+      "output_sha256": {
+        "profile.csv": "7955e84a96b87af36955444f8ef43b8fd4d1e4e9ee27cae19c9317477b72060c",
+        "refinement.csv": "efae89ff05a94c3f81973d8219ec7e38bcd84cd3ef34af07314a5b83f006da20",
+        "property-checks.csv": "f652a7ba609cfa4dafcb69ec8f7f7896b0be6a4b081302e0bc9f175d6b2f247c"
+      }
+    },
+    {
+      "stage": 3,
+      "phi": 1.0,
+      "job": "124937482",
+      "variant": "pressure-chemistry",
+      "pressure_atm": 100,
+      "source": "cf4083449b57c778c44fe97f5b74d46b5955a8eb",
+      "build_job": "124937336",
+      "input_directory": "/public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/sweep-inputs-v2/phi100",
+      "speed_cm_s": 6.540947567612079,
+      "last_refinement_relative_change": 9.546627283363307e-06,
+      "mass_flux_relative_range": 9.222487321746937e-11,
+      "maximum_species_sum_error": 6.134293073500885e-11,
+      "minimum_mass_fraction": -5.374796599544185e-14,
+      "output_sha256": {
+        "profile.csv": "c7918819aa02c29e5a757cc7855ec7992692c28e0f8b88b5ec5451e3aa0fdac0",
+        "refinement.csv": "520ff53a86c97c2ec6c5d0ba135e073d9c55b86447dacd041bb2e16481e09808",
+        "property-checks.csv": "3cb9a691104f5616fc1b77e2a66ec253ff1d7a158e9e5dd674c007bacacbb4a9"
+      }
+    },
+    {
+      "stage": 3,
+      "phi": 1.02,
+      "job": "124938868",
+      "variant": "pressure-chemistry",
+      "pressure_atm": 100,
+      "source": "a10cd1b647a53016b9aa5a918a1a3af1dfddc2e1",
+      "build_job": "124938314",
+      "input_directory": "/public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/extra-phi102/phi102",
+      "speed_cm_s": 6.719080624924533,
+      "last_refinement_relative_change": 0.001457264250670276,
+      "mass_flux_relative_range": 8.479936310809908e-11,
+      "maximum_species_sum_error": 8.599609913062523e-11,
+      "minimum_mass_fraction": -1.337651923517088e-12,
+      "output_sha256": {
+        "profile.csv": "59289e592766ef5f730044d20d8ed18a2b3b217fbaa5ab0e9506b9a3a816145c",
+        "refinement.csv": "88608c20ccafaa7fd8bfb3202389f9a08054013f8081a2b2e19be0508ea5e3fd",
+        "property-checks.csv": "3be700d873d2d910616d465ba7282cbe9934d41dde8c45bff2bb59e2f544b9d0"
+      }
+    },
+    {
+      "stage": 3,
+      "phi": 1.05,
+      "job": "124937486",
+      "variant": "pressure-chemistry",
+      "pressure_atm": 100,
+      "source": "cf4083449b57c778c44fe97f5b74d46b5955a8eb",
+      "build_job": "124937336",
+      "input_directory": "/public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/sweep-inputs-v2/phi105",
+      "speed_cm_s": 6.93891337127862,
+      "last_refinement_relative_change": 1.4312272546224136e-05,
+      "mass_flux_relative_range": 1.5713002558867238e-10,
+      "maximum_species_sum_error": 1.4250067792431764e-10,
+      "minimum_mass_fraction": -1.66979851602122e-12,
+      "output_sha256": {
+        "profile.csv": "54acd94fbea5a9e2787b137a4880ede56bf02425784d2bbe626352aaa2077e6d",
+        "refinement.csv": "9ee0bf182708980d3e2c4473c190498e9972541d1383453d012229267db46748",
+        "property-checks.csv": "155ec2ca25bc904287605661f1d58cfffaddbc211fb907cbbd8c2b07e3acaebc"
+      }
+    },
+    {
+      "stage": 3,
+      "phi": 1.1,
+      "job": "124937487",
+      "variant": "pressure-chemistry",
+      "pressure_atm": 100,
+      "source": "cf4083449b57c778c44fe97f5b74d46b5955a8eb",
+      "build_job": "124937336",
+      "input_directory": "/public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/sweep-inputs-v2/phi110",
+      "speed_cm_s": 7.061554837536449,
+      "last_refinement_relative_change": 3.506494890237466e-05,
+      "mass_flux_relative_range": 1.961498301040901e-10,
+      "maximum_species_sum_error": 2.4794277742046233e-11,
+      "minimum_mass_fraction": -6.678198406986331e-13,
+      "output_sha256": {
+        "profile.csv": "bb4d78be99db188bc064ed43297bd5df7073bec1fe96d211aa369b1d2377357a",
+        "refinement.csv": "00a803f6963dbfd512e4deb266d399faa94dcf932c0280bfef6eea3309ccbd91",
+        "property-checks.csv": "3a58b8c2b8f99eee00f11f0b93da44f6bcacb615e3057eae91bdc8f431c944c8"
+      }
+    },
+    {
+      "stage": 3,
+      "phi": 1.15,
+      "job": "124937488",
+      "variant": "pressure-chemistry",
+      "pressure_atm": 100,
+      "source": "cf4083449b57c778c44fe97f5b74d46b5955a8eb",
+      "build_job": "124937336",
+      "input_directory": "/public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/sweep-inputs-v2/phi115",
+      "speed_cm_s": 6.932695727433341,
+      "last_refinement_relative_change": 1.1380709721731108e-05,
+      "mass_flux_relative_range": 8.816069862370391e-11,
+      "maximum_species_sum_error": 6.351985604169386e-11,
+      "minimum_mass_fraction": -1.54691945571045e-12,
+      "output_sha256": {
+        "profile.csv": "ce205e704aa89d7a973d0fc2b32ccb532a86a4f34c1016f367919b861896edd1",
+        "refinement.csv": "f34fe00aff09d26225a1a4429f2bbd08bdd055786fe3b8f22ed59f885d449fc8",
+        "property-checks.csv": "ec2662400bf49800e0634af5a20db3a3b6af387b6368d0d5f138b392532e1405"
+      }
+    },
+    {
+      "stage": 3,
+      "phi": 1.2,
+      "job": "124937494",
+      "variant": "pressure-chemistry",
+      "pressure_atm": 100,
+      "source": "cf4083449b57c778c44fe97f5b74d46b5955a8eb",
+      "build_job": "124937336",
+      "input_directory": "/public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/sweep-inputs-v2/phi120",
+      "speed_cm_s": 6.714166889763224,
+      "last_refinement_relative_change": 1.10404564389599e-05,
+      "mass_flux_relative_range": 7.690625799007926e-11,
+      "maximum_species_sum_error": 4.565636757547509e-11,
+      "minimum_mass_fraction": -8.158903269956587e-13,
+      "output_sha256": {
+        "profile.csv": "35d60e5099f80aa4db89b842667f2e110faec5b2175a5e457d2e6d166f8904f0",
+        "refinement.csv": "5a712045fe365355a7b93c48af65324887750c33e60a5a4ee03603be3ad64402",
+        "property-checks.csv": "5b9129b5ded989b441a8b7da2cb24fa02c003d719af6295e4c7d5807261feae9"
+      }
+    },
+    {
+      "stage": 3,
+      "phi": 1.25,
+      "job": "124937496",
+      "variant": "pressure-chemistry",
+      "pressure_atm": 100,
+      "source": "cf4083449b57c778c44fe97f5b74d46b5955a8eb",
+      "build_job": "124937336",
+      "input_directory": "/public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/sweep-inputs-v2/phi125",
+      "speed_cm_s": 6.473972635922041,
+      "last_refinement_relative_change": 1.17883500113658e-05,
+      "mass_flux_relative_range": 7.652274525870226e-11,
+      "maximum_species_sum_error": 3.59847707187555e-11,
+      "minimum_mass_fraction": -3.021083275984433e-12,
+      "output_sha256": {
+        "profile.csv": "3d74885715cf49a474e1c493a431adda849c0bb591b30b6133550840b914ca3b",
+        "refinement.csv": "f56861fba262f0d1581a72dc7e2a1395e7d6ae1e2b91da0af9838d5a3f3b3cdc",
+        "property-checks.csv": "44d7234a16ea54fe6c0f9b61e1cefef8169c63148a6089b4f28a327af2b149e2"
+      }
+    },
+    {
+      "stage": 3,
+      "phi": 1.3,
+      "job": "124937498",
+      "variant": "pressure-chemistry",
+      "pressure_atm": 100,
+      "source": "cf4083449b57c778c44fe97f5b74d46b5955a8eb",
+      "build_job": "124937336",
+      "input_directory": "/public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/sweep-inputs-v2/phi130",
+      "speed_cm_s": 6.225986603270626,
+      "last_refinement_relative_change": 0.0017987716022671574,
+      "mass_flux_relative_range": 1.2987465712920766e-10,
+      "maximum_species_sum_error": 1.4812839843614256e-10,
+      "minimum_mass_fraction": -1.491348895624639e-12,
+      "output_sha256": {
+        "profile.csv": "9d876f17b0d9140f3e03a4087f4f3719ebf4e35eaef0014e9fe351ffdd779a00",
+        "refinement.csv": "07d942d4b5d19116435f4f19d615d9a7ca7f1803ca8c7a7a7ce9652c8451509e",
+        "property-checks.csv": "a69f7e262f08ff3954e2e2b873f06255b2aeaae78512a137774b10649ae79673"
+      }
+    },
+    {
+      "stage": 3,
+      "phi": 1.35,
+      "job": "124937499",
+      "variant": "pressure-chemistry",
+      "pressure_atm": 100,
+      "source": "cf4083449b57c778c44fe97f5b74d46b5955a8eb",
+      "build_job": "124937336",
+      "input_directory": "/public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/sweep-inputs-v2/phi135",
+      "speed_cm_s": 5.98292534436395,
+      "last_refinement_relative_change": 0.001780690227380588,
+      "mass_flux_relative_range": 1.337120550694528e-10,
+      "maximum_species_sum_error": 9.684253399200315e-11,
+      "minimum_mass_fraction": -1.660569734452022e-12,
+      "output_sha256": {
+        "profile.csv": "82612f95b96f1bc6bc0577a5727b06b6d76da49eaacdf092e4b90d91a4fb3a5e",
+        "refinement.csv": "854b6156ae44235d1e5911f913456041c17b7dc8c6f0ed350ce9de1c53853068",
+        "property-checks.csv": "5c19eafa3b95ec13c06a834c30c2eb5a894dac97b287507d64f6805fe3a46e11"
+      }
+    },
+    {
+      "stage": 3,
+      "phi": 1.4,
+      "job": "124937501",
+      "variant": "pressure-chemistry",
+      "pressure_atm": 100,
+      "source": "cf4083449b57c778c44fe97f5b74d46b5955a8eb",
+      "build_job": "124937336",
+      "input_directory": "/public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/sweep-inputs-v2/phi140",
+      "speed_cm_s": 5.748140586382971,
+      "last_refinement_relative_change": 0.0017548669001237194,
+      "mass_flux_relative_range": 1.7112048044628218e-10,
+      "maximum_species_sum_error": 6.55228094004201e-11,
+      "minimum_mass_fraction": -6.959123567730432e-13,
+      "output_sha256": {
+        "profile.csv": "5f2f247b90ecff12496cf90ea571cf0ef44d93cf322c8769af692063ef958cde",
+        "refinement.csv": "14c1dab0cbab07e08b2a937cfc7be427b0ec5720f6efb56c70a9c672c6821fe0",
+        "property-checks.csv": "c7162bbe162cbc23a96c18f5307b60b5c589bd6a13c9189488f7c1328e5e1011"
+      }
+    },
+    {
+      "stage": 3,
+      "phi": 1.44,
+      "job": "124937503",
+      "variant": "pressure-chemistry",
+      "pressure_atm": 100,
+      "source": "cf4083449b57c778c44fe97f5b74d46b5955a8eb",
+      "build_job": "124937336",
+      "input_directory": "/public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/sweep-inputs-v2/phi144",
+      "speed_cm_s": 5.568595584939551,
+      "last_refinement_relative_change": 0.0016953958125414115,
+      "mass_flux_relative_range": 1.0674974730484204e-10,
+      "maximum_species_sum_error": 1.1421907863962133e-10,
+      "minimum_mass_fraction": -3.210298583473005e-12,
+      "output_sha256": {
+        "profile.csv": "829defd958b71187bcba698323affef1cfe8f24a2663f1bd321d6285369a707d",
+        "refinement.csv": "f3566a9ddb342dd2b8785e89eb29d8d11e867d9e4ef05c527c66deddfd661c9e",
+        "property-checks.csv": "9bffbd5735c7c89f3b9becadfd9f8d6e58e16a660db71091c6e8b8c943022c29"
+      }
+    },
+    {
+      "stage": 4,
+      "phi": 0.92,
+      "job": "124937513",
+      "variant": "dense-increment,pressure-chemistry",
+      "pressure_atm": 100,
+      "source": "cf4083449b57c778c44fe97f5b74d46b5955a8eb",
+      "build_job": "124937336",
+      "input_directory": "/public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/sweep-inputs-v2/phi092",
+      "speed_cm_s": 5.712783729893163,
+      "last_refinement_relative_change": 7.782357176466803e-07,
+      "mass_flux_relative_range": 2.1501614690692727e-10,
+      "maximum_species_sum_error": 2.1654700255169246e-10,
+      "minimum_mass_fraction": -6.245030327021805e-12,
+      "output_sha256": {
+        "profile.csv": "af2c7c8170586f69f3f41a740fd8af7d96e19b36080dcc6a96e7b9811f2c0302",
+        "refinement.csv": "0eccd9f06b88c7b884a70d57cd8a07e49eaa2b85a6f5b03b5d203558a3ff11de",
+        "property-checks.csv": "a142c29114256edbedcd5a08538e9c0912f0e114a92467f2a378054222e01796"
+      }
+    },
+    {
+      "stage": 4,
+      "phi": 0.95,
+      "job": "124937517",
+      "variant": "dense-increment,pressure-chemistry",
+      "pressure_atm": 100,
+      "source": "cf4083449b57c778c44fe97f5b74d46b5955a8eb",
+      "build_job": "124937336",
+      "input_directory": "/public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/sweep-inputs-v2/phi095",
+      "speed_cm_s": 6.093605196501859,
+      "last_refinement_relative_change": 5.1115434969162266e-06,
+      "mass_flux_relative_range": 2.2323035595971577e-10,
+      "maximum_species_sum_error": 1.1399725607930122e-10,
+      "minimum_mass_fraction": -2.720737707004267e-12,
+      "output_sha256": {
+        "profile.csv": "f3ef1d3ec8ab577a6d4d11d2f0f337ab5233b27bdccdc6dbfb85317586d2e7ed",
+        "refinement.csv": "0f637c3c2658e39c2dc9a118a0ae07b7edf7e00ee60262f602cc43998632ea03",
+        "property-checks.csv": "91d92347cd4110b14da64bc99078a765e9c84858b4c92c60f7a410a799b0ac3a"
+      }
+    },
+    {
+      "stage": 4,
+      "phi": 1.0,
+      "job": "124937518",
+      "variant": "dense-increment,pressure-chemistry",
+      "pressure_atm": 100,
+      "source": "cf4083449b57c778c44fe97f5b74d46b5955a8eb",
+      "build_job": "124937336",
+      "input_directory": "/public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/sweep-inputs-v2/phi100",
+      "speed_cm_s": 6.612824661203528,
+      "last_refinement_relative_change": 7.680390689657202e-06,
+      "mass_flux_relative_range": 3.0811352326958357e-10,
+      "maximum_species_sum_error": 1.5100320993610694e-10,
+      "minimum_mass_fraction": -2.108439167639909e-12,
+      "output_sha256": {
+        "profile.csv": "e58b665a10d39fcbfcf9341e30c004e4e633ce570cc56158ac57fbcda34e5a02",
+        "refinement.csv": "9c95e2f86bc14f1bb0d68c4e8d0e09f263687b93d87501fbf7659884b0fdf393",
+        "property-checks.csv": "fd647913a83008070a1e00e26e668cc9b1def46e0553d1f3dd6b9d6a26d208ea"
+      }
+    },
+    {
+      "stage": 4,
+      "phi": 1.02,
+      "job": "124938872",
+      "variant": "dense-increment,pressure-chemistry",
+      "pressure_atm": 100,
+      "source": "a10cd1b647a53016b9aa5a918a1a3af1dfddc2e1",
+      "build_job": "124938314",
+      "input_directory": "/public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/extra-phi102/phi102",
+      "speed_cm_s": 6.79401089237185,
+      "last_refinement_relative_change": 0.0016855489540972268,
+      "mass_flux_relative_range": 8.137712463417743e-11,
+      "maximum_species_sum_error": 8.207545754146395e-11,
+      "minimum_mass_fraction": -1.633845825682308e-12,
+      "output_sha256": {
+        "profile.csv": "27caa4504395b5f8adbe177cbb3fa8249708759a5a2f0fea96d6b2caeef2430d",
+        "refinement.csv": "04310ef3bc4fb495bb1fcc2279d63b628ba6c2cf8273f4350ed40bef2e36d537",
+        "property-checks.csv": "68f4ed5f0ce3e16d57a6825e297f5abb81690047a959e8a9656a75ae5aeee371"
+      }
+    },
+    {
+      "stage": 4,
+      "phi": 1.05,
+      "job": "124937519",
+      "variant": "dense-increment,pressure-chemistry",
+      "pressure_atm": 100,
+      "source": "cf4083449b57c778c44fe97f5b74d46b5955a8eb",
+      "build_job": "124937336",
+      "input_directory": "/public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/sweep-inputs-v2/phi105",
+      "speed_cm_s": 7.013714119685273,
+      "last_refinement_relative_change": 1.1108801445947059e-05,
+      "mass_flux_relative_range": 1.87124611809044e-10,
+      "maximum_species_sum_error": 1.6811374514702493e-10,
+      "minimum_mass_fraction": -1.858162339186793e-12,
+      "output_sha256": {
+        "profile.csv": "e3b8c7370dc968bb3b4e784abb37883192024d53f38cea260102ec61bdd3bc28",
+        "refinement.csv": "29ec57fc8d4f05e261f752ed1667812d85bf9c8d447e0ebb4730db2c376afa59",
+        "property-checks.csv": "6e4628136af1e637fecc1a0adb271b3f545a5df17c1cdb31bc6b82189596d6c1"
+      }
+    },
+    {
+      "stage": 4,
+      "phi": 1.1,
+      "job": "124937521",
+      "variant": "dense-increment,pressure-chemistry",
+      "pressure_atm": 100,
+      "source": "cf4083449b57c778c44fe97f5b74d46b5955a8eb",
+      "build_job": "124937336",
+      "input_directory": "/public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/sweep-inputs-v2/phi110",
+      "speed_cm_s": 7.134648247403376,
+      "last_refinement_relative_change": 1.1309341643062076e-05,
+      "mass_flux_relative_range": 9.023730623204202e-11,
+      "maximum_species_sum_error": 6.633560367674818e-11,
+      "minimum_mass_fraction": -5.147925587852259e-13,
+      "output_sha256": {
+        "profile.csv": "a57de853cad9007159ec6d5149afb47878ec0ba87f9d1b63ea51bec6513f4c5e",
+        "refinement.csv": "30b8fe2d493cc34cfb3f3859839119528fe9e300988ce9426f6a2f43132d9c1f",
+        "property-checks.csv": "4e35622970ed900fc8b456dd812130d47188d5667dbf4c486784da1d9e195eb8"
+      }
+    },
+    {
+      "stage": 4,
+      "phi": 1.15,
+      "job": "124937522",
+      "variant": "dense-increment,pressure-chemistry",
+      "pressure_atm": 100,
+      "source": "cf4083449b57c778c44fe97f5b74d46b5955a8eb",
+      "build_job": "124937336",
+      "input_directory": "/public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/sweep-inputs-v2/phi115",
+      "speed_cm_s": 7.003237094620751,
+      "last_refinement_relative_change": 1.1588732778733402e-05,
+      "mass_flux_relative_range": 1.077669365093502e-10,
+      "maximum_species_sum_error": 8.489542402401185e-11,
+      "minimum_mass_fraction": -1.300310788492822e-12,
+      "output_sha256": {
+        "profile.csv": "b3430c5bb0946822bed465e20bf7f81f914fe2feaa3e859697a37dd0be19d233",
+        "refinement.csv": "320d123cdd9083dd14fd8f82c4fa4723318eeee922f319866d8a2f2185a64d57",
+        "property-checks.csv": "3a85943799f998aaf002c943299742fb41e81f677a874e53e149559bb897ffec"
+      }
+    },
+    {
+      "stage": 4,
+      "phi": 1.2,
+      "job": "124937523",
+      "variant": "dense-increment,pressure-chemistry",
+      "pressure_atm": 100,
+      "source": "cf4083449b57c778c44fe97f5b74d46b5955a8eb",
+      "build_job": "124937336",
+      "input_directory": "/public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/sweep-inputs-v2/phi120",
+      "speed_cm_s": 6.781166892656194,
+      "last_refinement_relative_change": 1.1285665584392923e-05,
+      "mass_flux_relative_range": 1.0415893433505651e-10,
+      "maximum_species_sum_error": 7.200462448508915e-11,
+      "minimum_mass_fraction": -1.725051583986844e-12,
+      "output_sha256": {
+        "profile.csv": "b56fdcd7b30eb2d026bb0f1072947c516ebbd502f0f8e69626d808db06f095f8",
+        "refinement.csv": "5435f55203c1d35a4f2c77dda7c8f04f1e37932926ed3405551b71db8dc4b69c",
+        "property-checks.csv": "5837a29e9b8b2948c07cdbff2bb0b1b06963fbbc726e1b79a7659cb1adff8dd2"
+      }
+    },
+    {
+      "stage": 4,
+      "phi": 1.25,
+      "job": "124937524",
+      "variant": "dense-increment,pressure-chemistry",
+      "pressure_atm": 100,
+      "source": "cf4083449b57c778c44fe97f5b74d46b5955a8eb",
+      "build_job": "124937336",
+      "input_directory": "/public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/sweep-inputs-v2/phi125",
+      "speed_cm_s": 6.538187745108661,
+      "last_refinement_relative_change": 1.2003142024319402e-05,
+      "mass_flux_relative_range": 9.33718727701968e-11,
+      "maximum_species_sum_error": 5.602762698231345e-11,
+      "minimum_mass_fraction": -3.012653022995654e-12,
+      "output_sha256": {
+        "profile.csv": "421a2d88c3f61a2a9d304872b5ce7242518c9b5c64a5b42ef1b23533beab4c2d",
+        "refinement.csv": "b61cf81f859f561a36ecf17ebef1572e9115a4206b23db44b626f55b6b3c499b",
+        "property-checks.csv": "7dff6a8bb791dcfbab455613d539f498dd4a91f74b55e801e5b0f61aaef76113"
+      }
+    },
+    {
+      "stage": 4,
+      "phi": 1.3,
+      "job": "124937527",
+      "variant": "dense-increment,pressure-chemistry",
+      "pressure_atm": 100,
+      "source": "cf4083449b57c778c44fe97f5b74d46b5955a8eb",
+      "build_job": "124937336",
+      "input_directory": "/public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/sweep-inputs-v2/phi130",
+      "speed_cm_s": 6.288280914124998,
+      "last_refinement_relative_change": 0.0017470837720628962,
+      "mass_flux_relative_range": 1.2699727424597791e-10,
+      "maximum_species_sum_error": 1.4311707374758953e-10,
+      "minimum_mass_fraction": -4.501031518211116e-12,
+      "output_sha256": {
+        "profile.csv": "e8fa2d76d03b51983c01af0fc4cc60244e4e07be1a1f177846bb1849ab41a7b5",
+        "refinement.csv": "9a007e23702070ef03c2ca94568c6330bb230e156a3dfd584fc5766f770c0ab0",
+        "property-checks.csv": "5590d73b8fd15336c2ce6a26d3fc8865ba65c1679093b04c0bf4413a727865c0"
+      }
+    },
+    {
+      "stage": 4,
+      "phi": 1.35,
+      "job": "124937528",
+      "variant": "dense-increment,pressure-chemistry",
+      "pressure_atm": 100,
+      "source": "cf4083449b57c778c44fe97f5b74d46b5955a8eb",
+      "build_job": "124937336",
+      "input_directory": "/public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/sweep-inputs-v2/phi135",
+      "speed_cm_s": 6.04314335640305,
+      "last_refinement_relative_change": 0.0017187108887305458,
+      "mass_flux_relative_range": 4.971224883687452e-10,
+      "maximum_species_sum_error": 4.721290025599956e-11,
+      "minimum_mass_fraction": -7.95205443168967e-13,
+      "output_sha256": {
+        "profile.csv": "7bf04f207b9f796553b34d1642873ea4436c03ecc252351a49bbede9889f141d",
+        "refinement.csv": "656d005e6ace4158a579ac99017d04f0f4ebc0a54ddf1cbd70197f5164fc906f",
+        "property-checks.csv": "a1dd4ee4e5cf3906dddaa84d1f313514d0c0a1ef690905bf59e60a50a0dc494d"
+      }
+    },
+    {
+      "stage": 4,
+      "phi": 1.4,
+      "job": "124937529",
+      "variant": "dense-increment,pressure-chemistry",
+      "pressure_atm": 100,
+      "source": "cf4083449b57c778c44fe97f5b74d46b5955a8eb",
+      "build_job": "124937336",
+      "input_directory": "/public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/sweep-inputs-v2/phi140",
+      "speed_cm_s": 5.807094458279634,
+      "last_refinement_relative_change": 0.0016026689184431842,
+      "mass_flux_relative_range": 1.676815835193556e-10,
+      "maximum_species_sum_error": 6.335931779233306e-11,
+      "minimum_mass_fraction": -6.517420436118253e-13,
+      "output_sha256": {
+        "profile.csv": "21e7dea0564e54bd451fd64ef564b0e5a4505e54a62dcf5ef2500cfb390411d1",
+        "refinement.csv": "ee18e18729898fb2c40010a2f21c9288b0c0c48527ea9785a15c5916be93d57a",
+        "property-checks.csv": "ddba46b16162dee966dc1ce512e8bbec9036e5e66503275256ae2472370ccda3"
+      }
+    },
+    {
+      "stage": 4,
+      "phi": 1.44,
+      "job": "124937530",
+      "variant": "dense-increment,pressure-chemistry",
+      "pressure_atm": 100,
+      "source": "cf4083449b57c778c44fe97f5b74d46b5955a8eb",
+      "build_job": "124937336",
+      "input_directory": "/public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/sweep-inputs-v2/phi144",
+      "speed_cm_s": 5.625485638421042,
+      "last_refinement_relative_change": 0.0017135109913107849,
+      "mass_flux_relative_range": 1.8922941406754383e-10,
+      "maximum_species_sum_error": 8.134148909988426e-11,
+      "minimum_mass_fraction": -6.256508970165994e-13,
+      "output_sha256": {
+        "profile.csv": "e60aa71d0d8dfe157a44a9de48800795d30f3f2d9ae97faad9c4876983e1a822",
+        "refinement.csv": "9d840aaa149bd0747a317ae02bc69be331fbf0bec14042667b5e676665c54e0f",
+        "property-checks.csv": "8db0ff9fd096fa39b36d937a810a13e640804f8ef446121427b01d859a6a3d37"
+      }
+    },
+    {
+      "stage": 5,
+      "phi": 0.92,
+      "job": "124937531",
+      "variant": "dense-increment,bounded-takahashi,pressure-chemistry",
+      "pressure_atm": 100,
+      "source": "cf4083449b57c778c44fe97f5b74d46b5955a8eb",
+      "build_job": "124937336",
+      "input_directory": "/public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/sweep-inputs-v2/phi092",
+      "speed_cm_s": 5.622340805788623,
+      "last_refinement_relative_change": 5.0000655530291205e-05,
+      "mass_flux_relative_range": 2.685485543401674e-10,
+      "maximum_species_sum_error": 2.454150216379958e-10,
+      "minimum_mass_fraction": -1.074217560172631e-11,
+      "output_sha256": {
+        "profile.csv": "caf3f3a0a16d6f4e28851bfd944e8395c1889ce6d6fbc7be29ac3eb5b48172fa",
+        "refinement.csv": "3cdc2634cce74d3325ef72641c4ec6fee403c1d48e9a98e99b6b055e0b08a87a",
+        "property-checks.csv": "ec7700a53e4423ddafecffa46b0df345558ad015aeefab5dfcc6dd1abfb0ae27"
+      }
+    },
+    {
+      "stage": 5,
+      "phi": 0.95,
+      "job": "124937533",
+      "variant": "dense-increment,bounded-takahashi,pressure-chemistry",
+      "pressure_atm": 100,
+      "source": "cf4083449b57c778c44fe97f5b74d46b5955a8eb",
+      "build_job": "124937336",
+      "input_directory": "/public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/sweep-inputs-v2/phi095",
+      "speed_cm_s": 5.994283265170189,
+      "last_refinement_relative_change": 6.449888229098644e-05,
+      "mass_flux_relative_range": 1.5402285936100884e-09,
+      "maximum_species_sum_error": 1.6616152898052405e-10,
+      "minimum_mass_fraction": -5.612537011976375e-12,
+      "output_sha256": {
+        "profile.csv": "4bf6eea580983fbe75c4b29f53744c83e26c4192dd574616cd02fd6fb80f2d9c",
+        "refinement.csv": "db03e7f92a9d00d18325bcf2d8b84cf3bbdc98721220beb44f86fff40fab2351",
+        "property-checks.csv": "128cbb816d2efe823302d626df46874944c30432bae8c8fc04700d8d2b8a70bf"
+      }
+    },
+    {
+      "stage": 5,
+      "phi": 1.0,
+      "job": "124937534",
+      "variant": "dense-increment,bounded-takahashi,pressure-chemistry",
+      "pressure_atm": 100,
+      "source": "cf4083449b57c778c44fe97f5b74d46b5955a8eb",
+      "build_job": "124937336",
+      "input_directory": "/public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/sweep-inputs-v2/phi100",
+      "speed_cm_s": 6.500397779528274,
+      "last_refinement_relative_change": 8.817940082950226e-05,
+      "mass_flux_relative_range": 2.1509614048344453e-10,
+      "maximum_species_sum_error": 1.6794365897965235e-10,
+      "minimum_mass_fraction": -3.973655574787949e-13,
+      "output_sha256": {
+        "profile.csv": "ea678a3d19a314edfff8d3d5d748884ce927c61b7c4ff0477a6d8ddad91c31a0",
+        "refinement.csv": "c4975f8a7bb016da76a7a39d6931892f9c0ae506860dd6e451c1dafacc6b3907",
+        "property-checks.csv": "5ab28f2b042c41bea83124f499213df672d99aa1874f692637b855bf4559cf50"
+      }
+    },
+    {
+      "stage": 5,
+      "phi": 1.02,
+      "job": "124938880",
+      "variant": "dense-increment,bounded-takahashi,pressure-chemistry",
+      "pressure_atm": 100,
+      "source": "a10cd1b647a53016b9aa5a918a1a3af1dfddc2e1",
+      "build_job": "124938314",
+      "input_directory": "/public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/extra-phi102/phi102",
+      "speed_cm_s": 6.67978575975753,
+      "last_refinement_relative_change": 0.0015210323908132484,
+      "mass_flux_relative_range": 9.132683571887845e-11,
+      "maximum_species_sum_error": 9.191070127201328e-11,
+      "minimum_mass_fraction": -7.845045073454823e-13,
+      "output_sha256": {
+        "profile.csv": "c187243c527a1d81c23c275a48f288419cd5106b2e846897bfefb66e28289963",
+        "refinement.csv": "381403865fdf4769ec8aab3476efaa837f85df6692f62d83b7cb5b094b7bafa9",
+        "property-checks.csv": "3de6a4e0c24bbd3936642ef5ded747327edf7f0e3370e76d3af9be0e413642dd"
+      }
+    },
+    {
+      "stage": 5,
+      "phi": 1.05,
+      "job": "124937535",
+      "variant": "dense-increment,bounded-takahashi,pressure-chemistry",
+      "pressure_atm": 100,
+      "source": "cf4083449b57c778c44fe97f5b74d46b5955a8eb",
+      "build_job": "124937336",
+      "input_directory": "/public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/sweep-inputs-v2/phi105",
+      "speed_cm_s": 6.905074228238754,
+      "last_refinement_relative_change": 5.380827829548629e-05,
+      "mass_flux_relative_range": 3.5577938459001055e-10,
+      "maximum_species_sum_error": 4.706079970162591e-11,
+      "minimum_mass_fraction": -9.799478801228805e-13,
+      "output_sha256": {
+        "profile.csv": "3bc959deabb004d8f88010349e3b8995a2e222b7a441337aca9eed037c5e3df9",
+        "refinement.csv": "45fc88ec27fc61511664d6f0a4e0ac52bfa2284dec020a4e55b99144d0b9b70b",
+        "property-checks.csv": "8a64da25fc25dace5b25a2c4a725664e7b5367ac1550941b523118aad22427f4"
+      }
+    },
+    {
+      "stage": 5,
+      "phi": 1.1,
+      "job": "124937538",
+      "variant": "dense-increment,bounded-takahashi,pressure-chemistry",
+      "pressure_atm": 100,
+      "source": "cf4083449b57c778c44fe97f5b74d46b5955a8eb",
+      "build_job": "124937336",
+      "input_directory": "/public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/sweep-inputs-v2/phi110",
+      "speed_cm_s": 7.036204764199229,
+      "last_refinement_relative_change": 3.932772247905447e-05,
+      "mass_flux_relative_range": 2.6165217033720656e-10,
+      "maximum_species_sum_error": 4.637179529254354e-11,
+      "minimum_mass_fraction": -1.259459720287666e-12,
+      "output_sha256": {
+        "profile.csv": "85d639200f304fc928b4bd469a39abc88644fe57601d1b60ee21deef7ff708e9",
+        "refinement.csv": "3fbfaef8193a4950cf2b451b92355647408c85e12588683af5ff085f2e9d6adc",
+        "property-checks.csv": "19de926ecbb7dd1b195aca6d112e1316f9ab7d4578d2c424a5c365a23bf50f48"
+      }
+    },
+    {
+      "stage": 5,
+      "phi": 1.15,
+      "job": "124937539",
+      "variant": "dense-increment,bounded-takahashi,pressure-chemistry",
+      "pressure_atm": 100,
+      "source": "cf4083449b57c778c44fe97f5b74d46b5955a8eb",
+      "build_job": "124937336",
+      "input_directory": "/public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/sweep-inputs-v2/phi115",
+      "speed_cm_s": 6.915778538719418,
+      "last_refinement_relative_change": 2.6784459587148035e-05,
+      "mass_flux_relative_range": 3.5241000936049516e-10,
+      "maximum_species_sum_error": 1.9860335598309575e-10,
+      "minimum_mass_fraction": -1.231732178521274e-12,
+      "output_sha256": {
+        "profile.csv": "a4ab87162811d05ec21bd3dc6ade253538b7ebf6c411becf9fb6552934490125",
+        "refinement.csv": "279b2f360ffe82c43500a7fb30d45591af765c8310605824aa816dd73642a7b9",
+        "property-checks.csv": "8b081f9765742d831acb16ae68850c2aa870fca050fefb950462c8961b969b0f"
+      }
+    },
+    {
+      "stage": 5,
+      "phi": 1.2,
+      "job": "124937540",
+      "variant": "dense-increment,bounded-takahashi,pressure-chemistry",
+      "pressure_atm": 100,
+      "source": "cf4083449b57c778c44fe97f5b74d46b5955a8eb",
+      "build_job": "124937336",
+      "input_directory": "/public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/sweep-inputs-v2/phi120",
+      "speed_cm_s": 6.70462002072552,
+      "last_refinement_relative_change": 2.6114223777518042e-05,
+      "mass_flux_relative_range": 3.340292015329477e-10,
+      "maximum_species_sum_error": 1.977848995693421e-10,
+      "minimum_mass_fraction": -3.299268028031471e-12,
+      "output_sha256": {
+        "profile.csv": "29b5b5e6a1604ce804361470a0d54f5fc6a8e1893416ad7752661f33e9d559b7",
+        "refinement.csv": "dcf72ed4a1179489f3f262fddfbec54f03605c0542e4e2ebe8c2e940ceb159d2",
+        "property-checks.csv": "c1010be0ef76e465e142c17d56baae1a84dbf8537a55eca2f76f8a813a90122c"
+      }
+    },
+    {
+      "stage": 5,
+      "phi": 1.25,
+      "job": "124937541",
+      "variant": "dense-increment,bounded-takahashi,pressure-chemistry",
+      "pressure_atm": 100,
+      "source": "cf4083449b57c778c44fe97f5b74d46b5955a8eb",
+      "build_job": "124937336",
+      "input_directory": "/public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/sweep-inputs-v2/phi125",
+      "speed_cm_s": 6.470042139117369,
+      "last_refinement_relative_change": 3.973662114309384e-05,
+      "mass_flux_relative_range": 5.978352544586041e-10,
+      "maximum_species_sum_error": 2.656401765221972e-10,
+      "minimum_mass_fraction": -2.499199570689018e-12,
+      "output_sha256": {
+        "profile.csv": "44ca1588e278fee07f7c356651f8a02a2124951e1a120991cebf66d93fc30d81",
+        "refinement.csv": "d6219951294f0bf9ac03098fa9c459c8828282d23dd6ea9d9f67e6289fac5dd5",
+        "property-checks.csv": "f2dc3426463946aaf2b58d1cee3fe80057541e4412065e21bac12185435ec0bc"
+      }
+    },
+    {
+      "stage": 5,
+      "phi": 1.3,
+      "job": "124937543",
+      "variant": "dense-increment,bounded-takahashi,pressure-chemistry",
+      "pressure_atm": 100,
+      "source": "cf4083449b57c778c44fe97f5b74d46b5955a8eb",
+      "build_job": "124937336",
+      "input_directory": "/public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/sweep-inputs-v2/phi130",
+      "speed_cm_s": 6.226281393899344,
+      "last_refinement_relative_change": 0.0016623494806048411,
+      "mass_flux_relative_range": 1.5676639464169037e-10,
+      "maximum_species_sum_error": 7.404765689500437e-11,
+      "minimum_mass_fraction": -2.470115314283859e-12,
+      "output_sha256": {
+        "profile.csv": "c1ea33b4ace3a070d69f272947208250e7e5c3b6bfc57978cc9593a47a8a53fd",
+        "refinement.csv": "8545d54f21f0004d5b282e415d0be170dfc2a8a29c7547a6b586b6f3e927a664",
+        "property-checks.csv": "6ee9b6d9afc006f8a4cd504b93fd394ebaddfff0265916cbfc574c40e2e5afbd"
+      }
+    },
+    {
+      "stage": 5,
+      "phi": 1.35,
+      "job": "124937544",
+      "variant": "dense-increment,bounded-takahashi,pressure-chemistry",
+      "pressure_atm": 100,
+      "source": "cf4083449b57c778c44fe97f5b74d46b5955a8eb",
+      "build_job": "124937336",
+      "input_directory": "/public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/sweep-inputs-v2/phi135",
+      "speed_cm_s": 5.986542838082825,
+      "last_refinement_relative_change": 0.0016870575856652303,
+      "mass_flux_relative_range": 1.402374247748638e-10,
+      "maximum_species_sum_error": 1.4995804598072482e-10,
+      "minimum_mass_fraction": -5.263795435347248e-12,
+      "output_sha256": {
+        "profile.csv": "68a1f4606720fc050a8d1e29c166500dc3c9c593a8444031e6d5f5114416b00e",
+        "refinement.csv": "bf1731183f8648287c02d3dfb5c75dd06f890ddba94e28835a7b37dae855584c",
+        "property-checks.csv": "bea8e166e17a463d2407dac35f1f87509850aa6d9ad52a2dc6653f84d637ad4a"
+      }
+    },
+    {
+      "stage": 5,
+      "phi": 1.4,
+      "job": "124937545",
+      "variant": "dense-increment,bounded-takahashi,pressure-chemistry",
+      "pressure_atm": 100,
+      "source": "cf4083449b57c778c44fe97f5b74d46b5955a8eb",
+      "build_job": "124937336",
+      "input_directory": "/public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/sweep-inputs-v2/phi140",
+      "speed_cm_s": 5.754747064582587,
+      "last_refinement_relative_change": 0.0014679726378037383,
+      "mass_flux_relative_range": 1.7374594828910286e-10,
+      "maximum_species_sum_error": 7.468115015285548e-11,
+      "minimum_mass_fraction": -5.073248736456179e-13,
+      "output_sha256": {
+        "profile.csv": "b15ef4d5dc8e638032e8bdf8df7534ec391702541305d38101c62b2c6dab2d85",
+        "refinement.csv": "de3ef607bd80c4aeb77c811f9949559fe9b3d82911fcd9c95e657c16ee020dc7",
+        "property-checks.csv": "8ac9067be5c94450ca70ff761c8dd4ad4ee78d2b32aaa43f1f534de14cac7338"
+      }
+    },
+    {
+      "stage": 5,
+      "phi": 1.44,
+      "job": "124937547",
+      "variant": "dense-increment,bounded-takahashi,pressure-chemistry",
+      "pressure_atm": 100,
+      "source": "cf4083449b57c778c44fe97f5b74d46b5955a8eb",
+      "build_job": "124937336",
+      "input_directory": "/public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/sweep-inputs-v2/phi144",
+      "speed_cm_s": 5.576146537789334,
+      "last_refinement_relative_change": 0.001569652215292705,
+      "mass_flux_relative_range": 1.428380400622252e-10,
+      "maximum_species_sum_error": 1.4287326877138184e-10,
+      "minimum_mass_fraction": -3.971602614003915e-12,
+      "output_sha256": {
+        "profile.csv": "bfa7a8e6af5066ca2645d573f63afb4c753273ee9bb2f99e26cabb2ab14a7d64",
+        "refinement.csv": "5c236ce304837d5e50122065a240d4772fd28b4142ccac9a90511648b1cab725",
+        "property-checks.csv": "aeca6e23b5d87059309e9990b6f77a4c7f1538e534d77ca5a93b2ef39f1394ea"
+      }
+    }
+  ],
+  "diagnostics": [
+    {
+      "job": "124940385",
+      "stage": 5,
+      "phi": 1.1,
+      "variant": "dense-increment,bounded-takahashi,pressure-chemistry,takahashi-table2",
+      "pressure_atm": 100,
+      "guess_phi": 1.1,
+      "source": "8a0c8d001c22206ef03cf1c2e5a79a6053d4f46e",
+      "build_job": "124940280",
+      "sdk_job": "124917358",
+      "input_directory": "/public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/inputs",
+      "qualification_pilot": "124940385",
+      "submitted_epoch": null,
+      "registration_epoch": 1792431318.0144498,
+      "scheduler": [
+        "COMPLETED",
+        "00:19:57",
+        "0:0"
+      ],
+      "screen_passed": true,
+      "speed_cm_s": 7.049274733700522,
+      "last_refinement_relative_change": 0.0014884914113046932,
+      "mass_flux_relative_range": 1.8655968910318232e-10,
+      "maximum_species_sum_error": 1.8789902966886984e-10,
+      "minimum_mass_fraction": -4.117709820005323e-12,
+      "points": 2145,
+      "scientific_acceptance": false,
+      "remaining": [
+        "domain sensitivity",
+        "initial-guess sensitivity",
+        "publication parameter uncertainty"
+      ],
+      "output_sha256": {
+        "profile.csv": "d4021d9a37db81e18847f22ecee3f9d17b334aee7b4f806dd71f2cc271343ece",
+        "refinement.csv": "af258422a3db9469ac72fcea5676f138e364f9fb6dd5dd1034de4b2527173c4b",
+        "property-checks.csv": "afe3a1de71c4f8dee45b73de09c4c174c3ace82b8aa4d4a82c90867a5e622b19"
+      },
+      "callbacks": "eos 5636787 cp 5237053 partial_enthalpy 5234908\nconductivity 383991 diffusion 381846 negative_partial_volume_calls 29319 bounded_pair_calls 632963984 projected_composition_calls 274919\npressure_chemistry_calls 5234908\n",
+      "label": "Table 2, phi=1.10"
+    },
+    {
+      "job": "124942535",
+      "stage": 5,
+      "phi": 1.4,
+      "variant": "dense-increment,bounded-takahashi,pressure-chemistry,takahashi-table2",
+      "pressure_atm": 100,
+      "guess_phi": 1.4,
+      "source": "8a0c8d001c22206ef03cf1c2e5a79a6053d4f46e",
+      "build_job": "124940280",
+      "sdk_job": "124917358",
+      "input_directory": "/public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/sweep-inputs-v2/phi140",
+      "qualification_pilot": "124940385",
+      "submitted_epoch": 1792431346.3302388,
+      "scheduler": [
+        "COMPLETED",
+        "00:35:48",
+        "0:0"
+      ],
+      "screen_passed": true,
+      "speed_cm_s": 5.7623993647663,
+      "last_refinement_relative_change": 0.0014666964415280814,
+      "mass_flux_relative_range": 2.1598888248131973e-10,
+      "maximum_species_sum_error": 1.0707679187760277e-10,
+      "minimum_mass_fraction": -1.124557098834789e-13,
+      "points": 2196,
+      "scientific_acceptance": false,
+      "remaining": [
+        "domain sensitivity",
+        "initial-guess sensitivity",
+        "publication parameter uncertainty"
+      ],
+      "output_sha256": {
+        "profile.csv": "2daa38da8fc55cb11e9ea89b6d70d15ef314b4a52850349317904eaff93e27d8",
+        "refinement.csv": "63a6800c3572eb75408ca96a4db7b7a6371b6bd3b7d68f8ac553c5542b9207c3",
+        "property-checks.csv": "7904e1b5f966dedfeb6188910740da67f8caf51270471657821265b51597a608"
+      },
+      "callbacks": "eos 11312945 cp 10410091 partial_enthalpy 10407895\nconductivity 886729 diffusion 884533 negative_partial_volume_calls 64535 bounded_pair_calls 1366114899 projected_composition_calls 170703\npressure_chemistry_calls 10407895\n",
+      "label": "Table 2, phi=1.40"
+    },
+    {
+      "stage": 5,
+      "phi": 1.1,
+      "speed_cm_s": 7.018570355481232,
+      "last_refinement_relative_change": 4.47187678472849e-05,
+      "mass_flux_relative_range": 2.5382584141830427e-10,
+      "maximum_species_sum_error": 4.3375081304475316e-11,
+      "minimum_mass_fraction": -1.10259683972706e-12,
+      "points": 2176,
+      "scientific_acceptance": false,
+      "remaining": [
+        "domain sensitivity",
+        "initial-guess sensitivity",
+        "publication parameter uncertainty"
+      ],
+      "pressure_atm": 100,
+      "label": "Table 2 + smooth SRK, phi=1.10",
+      "job": "124946883"
+    },
+    {
+      "stage": 5,
+      "phi": 1.4,
+      "speed_cm_s": 5.733851859935742,
+      "last_refinement_relative_change": 0.0014978246495409575,
+      "mass_flux_relative_range": 1.6807771509583697e-10,
+      "maximum_species_sum_error": 7.11117831286856e-11,
+      "minimum_mass_fraction": -1.93920746787038e-12,
+      "points": 2180,
+      "scientific_acceptance": false,
+      "remaining": [
+        "domain sensitivity",
+        "initial-guess sensitivity",
+        "publication parameter uncertainty"
+      ],
+      "pressure_atm": 100,
+      "label": "Table 2 + smooth SRK, phi=1.40",
+      "job": "124946886"
+    }
+  ],
+  "comparison": {
+    "criteria": "abs(error) <= max(0.05 cm/s, 1% reference) + digitization uncertainty",
+    "rows": [
+      {
+        "stage": 1,
+        "phi": 0.95,
+        "job": "124920002",
+        "computed_cm_s": 6.379410650711995,
+        "paper_cm_s": 6.353303859831206,
+        "image_uncertainty_cm_s": 0.04,
+        "error_cm_s": 0.02610679088078971,
+        "error_percent": 0.41091676798035776,
+        "limit_cm_s": 0.10353303859831206,
+        "within_screen": true
+      },
+      {
+        "stage": 1,
+        "phi": 1.0,
+        "job": "124920005",
+        "computed_cm_s": 6.910556897431561,
+        "paper_cm_s": 6.921250962930507,
+        "image_uncertainty_cm_s": 0.04,
+        "error_cm_s": -0.010694065498945804,
+        "error_percent": -0.15451058712105797,
+        "limit_cm_s": 0.10921250962930507,
+        "within_screen": true
+      },
+      {
+        "stage": 1,
+        "phi": 1.02,
+        "job": "124940112",
+        "computed_cm_s": 7.096915248337034,
+        "paper_cm_s": 7.110751839368631,
+        "image_uncertainty_cm_s": 0.04,
+        "error_cm_s": -0.0138365910315974,
+        "error_percent": -0.19458689241538715,
+        "limit_cm_s": 0.11110751839368632,
+        "within_screen": true
+      },
+      {
+        "stage": 1,
+        "phi": 1.05,
+        "job": "124920010",
+        "computed_cm_s": 7.324550779486868,
+        "paper_cm_s": 7.3417677858842545,
+        "image_uncertainty_cm_s": 0.04,
+        "error_cm_s": -0.017217006397386214,
+        "error_percent": -0.23450764038722002,
+        "limit_cm_s": 0.11341767785884255,
+        "within_screen": true
+      },
+      {
+        "stage": 1,
+        "phi": 1.1,
+        "job": "124920014",
+        "computed_cm_s": 7.461702833306255,
+        "paper_cm_s": 7.476410006449377,
+        "image_uncertainty_cm_s": 0.04,
+        "error_cm_s": -0.014707173143121643,
+        "error_percent": -0.19671437401687164,
+        "limit_cm_s": 0.11476410006449378,
+        "within_screen": true
+      },
+      {
+        "stage": 1,
+        "phi": 1.15,
+        "job": "124920017",
+        "computed_cm_s": 7.33869342194257,
+        "paper_cm_s": 7.353495629969972,
+        "image_uncertainty_cm_s": 0.04,
+        "error_cm_s": -0.014802208027401953,
+        "error_percent": -0.20129485039841383,
+        "limit_cm_s": 0.11353495629969973,
+        "within_screen": true
+      },
+      {
+        "stage": 1,
+        "phi": 1.2,
+        "job": "124920020",
+        "computed_cm_s": 7.115844489565243,
+        "paper_cm_s": 7.122965052894832,
+        "image_uncertainty_cm_s": 0.04,
+        "error_cm_s": -0.0071205633295896575,
+        "error_percent": -0.09996628197264286,
+        "limit_cm_s": 0.11122965052894832,
+        "within_screen": true
+      },
+      {
+        "stage": 1,
+        "phi": 1.25,
+        "job": "124920023",
+        "computed_cm_s": 6.868865867632599,
+        "paper_cm_s": 6.876490142272244,
+        "image_uncertainty_cm_s": 0.04,
+        "error_cm_s": -0.007624274639645101,
+        "error_percent": -0.11087450838874847,
+        "limit_cm_s": 0.10876490142272244,
+        "within_screen": true
+      },
+      {
+        "stage": 1,
+        "phi": 1.3,
+        "job": "124920027",
+        "computed_cm_s": 6.614454323655951,
+        "paper_cm_s": 6.616136798884045,
+        "image_uncertainty_cm_s": 0.04,
+        "error_cm_s": -0.0016824752280939492,
+        "error_percent": -0.02542987364435595,
+        "limit_cm_s": 0.10616136798884046,
+        "within_screen": true
+      },
+      {
+        "stage": 1,
+        "phi": 1.35,
+        "job": "124920030",
+        "computed_cm_s": 6.36147819695285,
+        "paper_cm_s": 6.363337088078295,
+        "image_uncertainty_cm_s": 0.04,
+        "error_cm_s": -0.0018588911254449059,
+        "error_percent": -0.02921252009307406,
+        "limit_cm_s": 0.10363337088078295,
+        "within_screen": true
+      },
+      {
+        "stage": 1,
+        "phi": 1.4,
+        "job": "124920034",
+        "computed_cm_s": 6.116619431452803,
+        "paper_cm_s": 6.116682100188833,
+        "image_uncertainty_cm_s": 0.04,
+        "error_cm_s": -6.266873602989165e-05,
+        "error_percent": -0.0010245544071671951,
+        "limit_cm_s": 0.10116682100188834,
+        "within_screen": true
+      },
+      {
+        "stage": 2,
+        "phi": 1.0,
+        "job": "124937459",
+        "computed_cm_s": 6.93999508712814,
+        "paper_cm_s": 6.914470486863639,
+        "image_uncertainty_cm_s": 0.04,
+        "error_cm_s": 0.025524600264501096,
+        "error_percent": 0.36914757699803125,
+        "limit_cm_s": 0.1091447048686364,
+        "within_screen": true
+      },
+      {
+        "stage": 2,
+        "phi": 1.02,
+        "job": "124938865",
+        "computed_cm_s": 7.124864577444933,
+        "paper_cm_s": 7.100929041850884,
+        "image_uncertainty_cm_s": 0.04,
+        "error_cm_s": 0.02393553559404893,
+        "error_percent": 0.3370761128998698,
+        "limit_cm_s": 0.11100929041850885,
+        "within_screen": true
+      },
+      {
+        "stage": 2,
+        "phi": 1.05,
+        "job": "124937461",
+        "computed_cm_s": 7.348059844624125,
+        "paper_cm_s": 7.333154696698636,
+        "image_uncertainty_cm_s": 0.04,
+        "error_cm_s": 0.01490514792548936,
+        "error_percent": 0.2032569684122389,
+        "limit_cm_s": 0.11333154696698636,
+        "within_screen": true
+      },
+      {
+        "stage": 2,
+        "phi": 1.1,
+        "job": "124937462",
+        "computed_cm_s": 7.478315807644632,
+        "paper_cm_s": 7.4755412295979875,
+        "image_uncertainty_cm_s": 0.04,
+        "error_cm_s": 0.0027745780466448267,
+        "error_percent": 0.037115413605899344,
+        "limit_cm_s": 0.11475541229597988,
+        "within_screen": true
+      },
+      {
+        "stage": 2,
+        "phi": 1.15,
+        "job": "124937463",
+        "computed_cm_s": 7.349020256616656,
+        "paper_cm_s": 7.353495629969972,
+        "image_uncertainty_cm_s": 0.04,
+        "error_cm_s": -0.004475373353315604,
+        "error_percent": -0.06086048837882942,
+        "limit_cm_s": 0.11353495629969973,
+        "within_screen": true
+      },
+      {
+        "stage": 2,
+        "phi": 1.2,
+        "job": "124937464",
+        "computed_cm_s": 7.120137569982892,
+        "paper_cm_s": 7.122965052894832,
+        "image_uncertainty_cm_s": 0.04,
+        "error_cm_s": -0.002827482911940571,
+        "error_percent": -0.03969530793628502,
+        "limit_cm_s": 0.11122965052894832,
+        "within_screen": true
+      },
+      {
+        "stage": 2,
+        "phi": 1.25,
+        "job": "124937466",
+        "computed_cm_s": 6.868243167696382,
+        "paper_cm_s": 6.87717877586619,
+        "image_uncertainty_cm_s": 0.04,
+        "error_cm_s": -0.008935608169807985,
+        "error_percent": -0.12993130556915808,
+        "limit_cm_s": 0.10877178775866189,
+        "within_screen": true
+      },
+      {
+        "stage": 2,
+        "phi": 1.3,
+        "job": "124937467",
+        "computed_cm_s": 6.610059533661349,
+        "paper_cm_s": 6.616136798884045,
+        "image_uncertainty_cm_s": 0.04,
+        "error_cm_s": -0.006077265222696582,
+        "error_percent": -0.09185519295371347,
+        "limit_cm_s": 0.10616136798884046,
+        "within_screen": true
+      },
+      {
+        "stage": 2,
+        "phi": 1.35,
+        "job": "124937468",
+        "computed_cm_s": 6.353785969676514,
+        "paper_cm_s": 6.361875132992346,
+        "image_uncertainty_cm_s": 0.04,
+        "error_cm_s": -0.008089163315831982,
+        "error_percent": -0.12715061435082262,
+        "limit_cm_s": 0.10361875132992346,
+        "within_screen": true
+      },
+      {
+        "stage": 2,
+        "phi": 1.4,
+        "job": "124937469",
+        "computed_cm_s": 6.106087675972156,
+        "paper_cm_s": 6.116088855963705,
+        "image_uncertainty_cm_s": 0.04,
+        "error_cm_s": -0.010001179991548703,
+        "error_percent": -0.1635224769796584,
+        "limit_cm_s": 0.10116088855963705,
+        "within_screen": true
+      },
+      {
+        "stage": 3,
+        "phi": 1.0,
+        "job": "124937482",
+        "computed_cm_s": 6.540947567612079,
+        "paper_cm_s": 6.543248454661758,
+        "image_uncertainty_cm_s": 0.03,
+        "error_cm_s": -0.0023008870496790124,
+        "error_percent": -0.03516429286801326,
+        "limit_cm_s": 0.09543248454661758,
+        "within_screen": true
+      },
+      {
+        "stage": 3,
+        "phi": 1.02,
+        "job": "124938868",
+        "computed_cm_s": 6.719080624924533,
+        "paper_cm_s": 6.724621776331171,
+        "image_uncertainty_cm_s": 0.03,
+        "error_cm_s": -0.005541151406637468,
+        "error_percent": -0.08240093779163618,
+        "limit_cm_s": 0.09724621776331172,
+        "within_screen": true
+      },
+      {
+        "stage": 3,
+        "phi": 1.05,
+        "job": "124937486",
+        "computed_cm_s": 6.93891337127862,
+        "paper_cm_s": 6.946676964543254,
+        "image_uncertainty_cm_s": 0.03,
+        "error_cm_s": -0.007763593264634494,
+        "error_percent": -0.11175981414222783,
+        "limit_cm_s": 0.09946676964543254,
+        "within_screen": true
+      },
+      {
+        "stage": 3,
+        "phi": 1.1,
+        "job": "124937487",
+        "computed_cm_s": 7.061554837536449,
+        "paper_cm_s": 7.070417641943881,
+        "image_uncertainty_cm_s": 0.03,
+        "error_cm_s": -0.008862804407431923,
+        "error_percent": -0.12535050765396172,
+        "limit_cm_s": 0.10070417641943881,
+        "within_screen": true
+      },
+      {
+        "stage": 3,
+        "phi": 1.15,
+        "job": "124937488",
+        "computed_cm_s": 6.932695727433341,
+        "paper_cm_s": 6.943286808998032,
+        "image_uncertainty_cm_s": 0.03,
+        "error_cm_s": -0.010591081564690796,
+        "error_percent": -0.15253700237422813,
+        "limit_cm_s": 0.09943286808998032,
+        "within_screen": true
+      },
+      {
+        "stage": 3,
+        "phi": 1.2,
+        "job": "124937494",
+        "computed_cm_s": 6.714166889763224,
+        "paper_cm_s": 6.716146387468114,
+        "image_uncertainty_cm_s": 0.03,
+        "error_cm_s": -0.001979497704890143,
+        "error_percent": -0.029473712910483237,
+        "limit_cm_s": 0.09716146387468114,
+        "within_screen": true
+      },
+      {
+        "stage": 3,
+        "phi": 1.25,
+        "job": "124937496",
+        "computed_cm_s": 6.473972635922041,
+        "paper_cm_s": 6.473750265984694,
+        "image_uncertainty_cm_s": 0.03,
+        "error_cm_s": 0.00022236993734736643,
+        "error_percent": 0.00343494772289525,
+        "limit_cm_s": 0.09473750265984694,
+        "within_screen": true
+      },
+      {
+        "stage": 3,
+        "phi": 1.3,
+        "job": "124937498",
+        "computed_cm_s": 6.225986603270626,
+        "paper_cm_s": 6.22457383341083,
+        "image_uncertainty_cm_s": 0.03,
+        "error_cm_s": 0.0014127698597965477,
+        "error_percent": 0.022696651973399495,
+        "limit_cm_s": 0.09224573833410829,
+        "within_screen": true
+      },
+      {
+        "stage": 3,
+        "phi": 1.35,
+        "job": "124937499",
+        "computed_cm_s": 5.98292534436395,
+        "paper_cm_s": 5.999128489653523,
+        "image_uncertainty_cm_s": 0.03,
+        "error_cm_s": -0.01620314528957323,
+        "error_percent": -0.2700916527712017,
+        "limit_cm_s": 0.08999128489653523,
+        "within_screen": true
+      },
+      {
+        "stage": 3,
+        "phi": 1.4,
+        "job": "124937501",
+        "computed_cm_s": 5.748140586382971,
+        "paper_cm_s": 5.741476668216601,
+        "image_uncertainty_cm_s": 0.03,
+        "error_cm_s": 0.006663918166370131,
+        "error_percent": 0.1160662761769971,
+        "limit_cm_s": 0.08741476668216601,
+        "within_screen": true
+      },
+      {
+        "stage": 4,
+        "phi": 1.0,
+        "job": "124937518",
+        "computed_cm_s": 6.612824661203528,
+        "paper_cm_s": 6.587320476749653,
+        "image_uncertainty_cm_s": 0.03,
+        "error_cm_s": 0.025504184453875034,
+        "error_percent": 0.3871708465360627,
+        "limit_cm_s": 0.09587320476749653,
+        "within_screen": true
+      },
+      {
+        "stage": 4,
+        "phi": 1.02,
+        "job": "124938872",
+        "computed_cm_s": 6.79401089237185,
+        "paper_cm_s": 6.772083953964287,
+        "image_uncertainty_cm_s": 0.03,
+        "error_cm_s": 0.02192693840756288,
+        "error_percent": 0.32378420817903686,
+        "limit_cm_s": 0.09772083953964288,
+        "within_screen": true
+      },
+      {
+        "stage": 4,
+        "phi": 1.05,
+        "job": "124937519",
+        "computed_cm_s": 7.013714119685273,
+        "paper_cm_s": 6.997529297721594,
+        "image_uncertainty_cm_s": 0.03,
+        "error_cm_s": 0.01618482196367843,
+        "error_percent": 0.2312933790637823,
+        "limit_cm_s": 0.09997529297721594,
+        "within_screen": true
+      },
+      {
+        "stage": 4,
+        "phi": 1.1,
+        "job": "124937521",
+        "computed_cm_s": 7.134648247403376,
+        "paper_cm_s": 7.1246601306674435,
+        "image_uncertainty_cm_s": 0.03,
+        "error_cm_s": 0.009988116735932806,
+        "error_percent": 0.14019078177413513,
+        "limit_cm_s": 0.10124660130667444,
+        "within_screen": true
+      },
+      {
+        "stage": 4,
+        "phi": 1.15,
+        "job": "124937522",
+        "computed_cm_s": 7.003237094620751,
+        "paper_cm_s": 6.9924440644037595,
+        "image_uncertainty_cm_s": 0.03,
+        "error_cm_s": 0.010793030216991184,
+        "error_percent": 0.1543527573132113,
+        "limit_cm_s": 0.09992444064403759,
+        "within_screen": true
+      },
+      {
+        "stage": 4,
+        "phi": 1.2,
+        "job": "124937523",
+        "computed_cm_s": 6.781166892656194,
+        "paper_cm_s": 6.772083953964287,
+        "image_uncertainty_cm_s": 0.03,
+        "error_cm_s": 0.009082938691906683,
+        "error_percent": 0.13412324409518953,
+        "limit_cm_s": 0.09772083953964288,
+        "within_screen": true
+      },
+      {
+        "stage": 4,
+        "phi": 1.25,
+        "job": "124937524",
+        "computed_cm_s": 6.538187745108661,
+        "paper_cm_s": 6.527992754708256,
+        "image_uncertainty_cm_s": 0.03,
+        "error_cm_s": 0.010194990400404613,
+        "error_percent": 0.15617343314377252,
+        "limit_cm_s": 0.09527992754708256,
+        "within_screen": true
+      },
+      {
+        "stage": 4,
+        "phi": 1.3,
+        "job": "124937527",
+        "computed_cm_s": 6.288280914124998,
+        "paper_cm_s": 6.275426166589169,
+        "image_uncertainty_cm_s": 0.03,
+        "error_cm_s": 0.012854747535829603,
+        "error_percent": 0.20484262254999072,
+        "limit_cm_s": 0.09275426166589168,
+        "within_screen": true
+      },
+      {
+        "stage": 4,
+        "phi": 1.35,
+        "job": "124937528",
+        "computed_cm_s": 6.04314335640305,
+        "paper_cm_s": 6.033030045105749,
+        "image_uncertainty_cm_s": 0.03,
+        "error_cm_s": 0.010113311297301308,
+        "error_percent": 0.16763237082675658,
+        "limit_cm_s": 0.09033030045105749,
+        "within_screen": true
+      },
+      {
+        "stage": 4,
+        "phi": 1.4,
+        "job": "124937529",
+        "computed_cm_s": 5.807094458279634,
+        "paper_cm_s": 5.795719156940164,
+        "image_uncertainty_cm_s": 0.03,
+        "error_cm_s": 0.011375301339469956,
+        "error_percent": 0.19627074796832494,
+        "limit_cm_s": 0.08795719156940164,
+        "within_screen": true
+      },
+      {
+        "stage": 5,
+        "phi": 0.95,
+        "job": "124937533",
+        "computed_cm_s": 5.994283265170189,
+        "paper_cm_s": 5.951294895096059,
+        "image_uncertainty_cm_s": 0.015,
+        "error_cm_s": 0.04298837007412981,
+        "error_percent": 0.7223364130309314,
+        "limit_cm_s": 0.0745129489509606,
+        "within_screen": true
+      },
+      {
+        "stage": 5,
+        "phi": 1.0,
+        "job": "124937534",
+        "computed_cm_s": 6.500397779528274,
+        "paper_cm_s": 6.47374987004128,
+        "image_uncertainty_cm_s": 0.015,
+        "error_cm_s": 0.026647909486994692,
+        "error_percent": 0.4116301992190621,
+        "limit_cm_s": 0.0797374987004128,
+        "within_screen": true
+      },
+      {
+        "stage": 5,
+        "phi": 1.02,
+        "job": "124938880",
+        "computed_cm_s": 6.67978575975753,
+        "paper_cm_s": 6.6652216868311225,
+        "image_uncertainty_cm_s": 0.015,
+        "error_cm_s": 0.014564072926407157,
+        "error_percent": 0.21850845494280058,
+        "limit_cm_s": 0.08165221686831123,
+        "within_screen": true
+      },
+      {
+        "stage": 5,
+        "phi": 1.05,
+        "job": "124937535",
+        "computed_cm_s": 6.905074228238754,
+        "paper_cm_s": 6.898345911072894,
+        "image_uncertainty_cm_s": 0.015,
+        "error_cm_s": 0.006728317165859643,
+        "error_percent": 0.09753522442328777,
+        "limit_cm_s": 0.08398345911072895,
+        "within_screen": true
+      },
+      {
+        "stage": 5,
+        "phi": 1.1,
+        "job": "124937538",
+        "computed_cm_s": 7.036204764199229,
+        "paper_cm_s": 7.0122341303942815,
+        "image_uncertainty_cm_s": 0.015,
+        "error_cm_s": 0.02397063380494746,
+        "error_percent": 0.3418401804504444,
+        "limit_cm_s": 0.08512234130394282,
+        "within_screen": true
+      },
+      {
+        "stage": 5,
+        "phi": 1.15,
+        "job": "124937539",
+        "computed_cm_s": 6.915778538719418,
+        "paper_cm_s": 6.867919463026226,
+        "image_uncertainty_cm_s": 0.015,
+        "error_cm_s": 0.04785907569319203,
+        "error_percent": 0.6968496929942709,
+        "limit_cm_s": 0.08367919463026226,
+        "within_screen": true
+      },
+      {
+        "stage": 5,
+        "phi": 1.2,
+        "job": "124937540",
+        "computed_cm_s": 6.70462002072552,
+        "paper_cm_s": 6.658005219867544,
+        "image_uncertainty_cm_s": 0.015,
+        "error_cm_s": 0.04661480085797631,
+        "error_percent": 0.7001316358070335,
+        "limit_cm_s": 0.08158005219867544,
+        "within_screen": true
+      },
+      {
+        "stage": 5,
+        "phi": 1.25,
+        "job": "124937541",
+        "computed_cm_s": 6.470042139117369,
+        "paper_cm_s": 6.415375975697461,
+        "image_uncertainty_cm_s": 0.015,
+        "error_cm_s": 0.05466616341990793,
+        "error_percent": 0.852111608532262,
+        "limit_cm_s": 0.07915375975697461,
+        "within_screen": true
+      },
+      {
+        "stage": 5,
+        "phi": 1.3,
+        "job": "124937543",
+        "computed_cm_s": 6.226281393899344,
+        "paper_cm_s": 6.1552450205298825,
+        "image_uncertainty_cm_s": 0.015,
+        "error_cm_s": 0.07103637336946189,
+        "error_percent": 1.1540787268830224,
+        "limit_cm_s": 0.07655245020529883,
+        "within_screen": true
+      },
+      {
+        "stage": 5,
+        "phi": 1.35,
+        "job": "124937544",
+        "computed_cm_s": 5.986542838082825,
+        "paper_cm_s": 5.887284966144161,
+        "image_uncertainty_cm_s": 0.015,
+        "error_cm_s": 0.09925787193866409,
+        "error_percent": 1.6859702309207631,
+        "limit_cm_s": 0.07387284966144161,
+        "within_screen": false
+      },
+      {
+        "stage": 5,
+        "phi": 1.4,
+        "job": "124937545",
+        "computed_cm_s": 5.754747064582587,
+        "paper_cm_s": 5.642738222985565,
+        "image_uncertainty_cm_s": 0.015,
+        "error_cm_s": 0.11200884159702262,
+        "error_percent": 1.985008645993131,
+        "limit_cm_s": 0.07142738222985565,
+        "within_screen": false
+      }
+    ],
+    "excluded": [
+      {
+        "stage": 1,
+        "phi": 0.92,
+        "reason": "Outside digitized curve; no extrapolation"
+      },
+      {
+        "stage": 1,
+        "phi": 1.44,
+        "reason": "Outside digitized curve; no extrapolation"
+      },
+      {
+        "stage": 2,
+        "phi": 0.92,
+        "reason": "No paper marker at this operating condition"
+      },
+      {
+        "stage": 2,
+        "phi": 0.95,
+        "reason": "No paper marker at this operating condition"
+      },
+      {
+        "stage": 2,
+        "phi": 1.44,
+        "reason": "No paper marker at this operating condition"
+      },
+      {
+        "stage": 3,
+        "phi": 0.92,
+        "reason": "No paper marker at this operating condition"
+      },
+      {
+        "stage": 3,
+        "phi": 0.95,
+        "reason": "No paper marker at this operating condition"
+      },
+      {
+        "stage": 3,
+        "phi": 1.44,
+        "reason": "No paper marker at this operating condition"
+      },
+      {
+        "stage": 4,
+        "phi": 0.92,
+        "reason": "No paper marker at this operating condition"
+      },
+      {
+        "stage": 4,
+        "phi": 0.95,
+        "reason": "No paper marker at this operating condition"
+      },
+      {
+        "stage": 4,
+        "phi": 1.44,
+        "reason": "No paper marker at this operating condition"
+      },
+      {
+        "stage": 5,
+        "phi": 0.92,
+        "reason": "Outside digitized curve; no extrapolation"
+      },
+      {
+        "stage": 5,
+        "phi": 1.44,
+        "reason": "Outside digitized curve; no extrapolation"
+      }
+    ],
+    "stages": {
+      "1": {
+        "points": 11,
+        "rms_cm_s": 0.012913462124296012,
+        "max_abs_cm_s": 0.02610679088078971,
+        "failed_points": 0
+      },
+      "2": {
+        "points": 10,
+        "rms_cm_s": 0.013283587005955777,
+        "max_abs_cm_s": 0.025524600264501096,
+        "failed_points": 0
+      },
+      "3": {
+        "points": 10,
+        "rms_cm_s": 0.007745357525719615,
+        "max_abs_cm_s": 0.01620314528957323,
+        "failed_points": 0
+      },
+      "4": {
+        "points": 10,
+        "rms_cm_s": 0.01480815037907461,
+        "max_abs_cm_s": 0.025504184453875034,
+        "failed_points": 0
+      },
+      "5": {
+        "points": 11,
+        "rms_cm_s": 0.05899628423293877,
+        "max_abs_cm_s": 0.11200884159702262,
+        "failed_points": 2
+      }
+    },
+    "scientific_acceptance": false,
+    "input_sha256": {
+      "D:\\xiaok\\work\\FlamePilot\\projects\\realfluidfoam\\state\\cantera-liang-20261019\\pressure-complete-0255.json": "0f424a19a91901d4a409ef116b4732b61496a93a4f7a502aabdb28c641342aab",
+      "D:\\xiaok\\work\\FlamePilot\\projects\\realfluidfoam\\state\\cantera-liang-20261019\\liang-fig8a-reference-v2.json": "90b9bcbf91d95d7caf44697d654e324e8c80118daecff45e7360a0c56e1cf163"
+    }
+  }
+}
