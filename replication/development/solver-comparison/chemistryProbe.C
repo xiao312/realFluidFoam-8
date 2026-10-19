@@ -41,6 +41,30 @@ int main(int argc, char *argv[])
             }
         }
     }
+#ifdef NATIVE_THERMO
+    // Independent cache check after chemistry measurements, on a disposable case.
+    const scalarField initialT(thermo->T().primitiveField());
+    List<scalarField> initialH(names.size());
+    forAll(names, i) initialH[i] = thermo->hei(i)().primitiveField();
+    volScalarField targetT(thermo->T());
+    targetT += dimensionedScalar("increment", dimTemperature, 100);
+    thermo->he() = thermo->he(thermo->p(), targetT);
+    thermo->correct();
+    std::ofstream cache((runTime.path()/"enthalpy-cache.csv").c_str());
+    cache << std::setprecision(17);
+    cache << "state,species,T_before_K,T_after_K,cached_before_J_kg,cached_after_J_kg,expected_after_J_kg\n";
+    forAll(names, i)
+    {
+        tmp<volScalarField> values = thermo->hei(i);
+        forAll(rho, cell)
+        {
+            cache << cell << ',' << names[i] << ',' << initialT[cell] << ','
+                  << thermo->T()[cell] << ',' << initialH[i][cell] << ','
+                  << values()[cell] << ',' << thermo->composition().HE
+                     (i, thermo->p()[cell], thermo->T()[cell]) << '\n';
+        }
+    }
+#endif
     Info << "End" << endl;
     return 0;
 }

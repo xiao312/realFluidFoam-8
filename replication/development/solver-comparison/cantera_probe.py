@@ -9,6 +9,37 @@ import cantera as ct
 import numpy as np
 
 
+class ConcentrationReactor(ct.ExtensibleReactor):
+    """CVODE control with dc/dt=omega and the OpenFOAM Cp temperature equation.
+
+    GRI30 has no PLOG/Chebyshev rates: at fixed concentrations/T its rate law
+    does not use the pressure argument separately. This model does not represent
+    a physical constant-pressure material reactor.
+    """
+    def __init__(self, gas):
+        super().__init__(gas, clone=True)
+        self.values = np.r_[gas.concentrations, gas.T]
+
+    def after_initialize(self, time):
+        self.n_vars = self.phase.n_species+1
+
+    def replace_get_state(self, values):
+        values[:] = self.values
+
+    def replace_update_state(self, values):
+        self.values[:] = values
+
+    def replace_eval(self, time, lhs, rhs):
+        gas = self.phase
+        c = np.maximum(self.values[:-1], 0)
+        masses = c*gas.molecular_weights
+        gas.TDY = self.values[-1], masses.sum(), masses/masses.sum()
+        rates = gas.net_production_rates
+        lhs[:] = 1
+        rhs[:-1] = rates
+        rhs[-1] = -np.dot(gas.partial_molar_enthalpies, rates)/np.dot(c, gas.partial_molar_cp)
+
+
 def run(profile, mechanism, output):
     output.mkdir(exist_ok=False)
     gas = ct.Solution(str(mechanism))
@@ -33,7 +64,7 @@ def run(profile, mechanism, output):
         writer.writerow(['state','reactor','interval_s','species','T_initial_K','T_after_K',
                          'rho_initial_kg_m3','Cp_J_kg_K','kappa_W_m_K','Y_initial','RR_kg_m3_s','Y_after'])
         for index, state in enumerate(states):
-            for kind in ['constant-pressure-adiabatic', 'constant-volume-isothermal']:
+            for kind in ['constant-pressure-adiabatic', 'constant-volume-isothermal', 'openfoam-concentration-cp']:
                 for dt in [0, 1e-9, 5e-9, 5e-8, 5e-7]:
                     gas.TPY = state['T'], state['p'], state['Y']
                     rho, cp, kappa = gas.density, gas.cp_mass, gas.thermal_conductivity
@@ -42,11 +73,20 @@ def run(profile, mechanism, output):
                     if dt:
                         with warnings.catch_warnings():
                             warnings.simplefilter('ignore', DeprecationWarning)
-                            reactor = (ct.IdealGasConstPressureReactor(gas, clone=True) if kind.startswith('constant-pressure')
-                                       else ct.IdealGasReactor(gas, energy='off', clone=True))
+                            if kind == 'openfoam-concentration-cp':
+                                reactor = ConcentrationReactor(gas)
+                            elif kind.startswith('constant-pressure'):
+                                reactor = ct.IdealGasConstPressureReactor(gas, clone=True)
+                            else:
+                                reactor = ct.IdealGasReactor(gas, energy='off', clone=True)
                         network = ct.ReactorNet([reactor]); network.rtol = 1e-11; network.atol = 1e-18
                         network.advance(dt)
-                        final_y, final_t = reactor.phase.Y, reactor.T
+                        if kind == 'openfoam-concentration-cp':
+                            values = reactor.get_state()
+                            final_y = values[:-1]*gas.molecular_weights/rho
+                            final_t = values[-1]
+                        else:
+                            final_y, final_t = reactor.phase.Y, reactor.T
                         # Compare native averaged sources using the same initial density.
                         rates = rho*(final_y-y0)/dt
                     else:

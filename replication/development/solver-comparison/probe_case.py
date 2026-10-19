@@ -34,7 +34,7 @@ def prepare(family, tolerance, states_path, output):
         p.write_text(p.read_text().replace('idKineticStandard','standard'))
     if tolerance == 'tight':
         p = output/'constant/chemistryProperties'
-        p.write_text(p.read_text().replace('absTol 1e-8', 'absTol 1e-14').replace('relTol 1e-6', 'relTol 1e-10'))
+        p.write_text(p.read_text().replace('absTol 1e-8', 'absTol 1e-12').replace('relTol 1e-6', 'relTol 1e-8'))
 
 
 if __name__ == '__main__':

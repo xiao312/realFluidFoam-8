@@ -11,6 +11,15 @@ if [[ $mode == deep-build ]]; then
  "$tool" list --no-rc -p "$job/cantera" --explicit > "$job/environment-explicit.txt"
  mkdir "$job/deepflame"
  tar -xzf "$root/cache/solver-comparison/deepflame-7cb3294.tar.gz" -C "$job/deepflame"
+ # The pinned upstream stores CRLF shell files. Normalize only the build copy.
+ python3 - "$job/deepflame" <<'PY'
+from pathlib import Path
+import sys
+for p in Path(sys.argv[1]).rglob('*'):
+    if p.is_file() and (p.suffix in ('.sh', '.in') or p.name.startswith('Allw')):
+        data=p.read_bytes()
+        if b'\r\n' in data:p.write_bytes(data.replace(b'\r\n',b'\n'))
+PY
  build="$job"
 else
  [[ $dependency =~ ^[0-9]+$ ]] || exit 2

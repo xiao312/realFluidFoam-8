@@ -3,16 +3,18 @@ set -euo pipefail
 release=${1:?}; job=${2:?}
 module="$release/replication/development/solver-comparison"
 stock_ld="$LD_LIBRARY_PATH"
-for family in stock native; do
+for family in native stock; do
  build="$job/$family-build"
  mkdir "$build"
  cp "$module/chemistryProbe.C" "$build/"
  cp -r "$module/Make" "$build/"
+ unset NATIVE_THERMO
  export CHEM_SRC="$WM_PROJECT_DIR/src" CHEM_LIB="$FOAM_LIBBIN" LD_LIBRARY_PATH="$stock_ld"
  if [[ $family == native ]]; then
   export CHEM_SRC="/work/builds/124657926/src"
   export CHEM_LIB="/work/jobs/124657926/openfoam-user/platforms/$WM_OPTIONS/lib"
   export LD_LIBRARY_PATH="$CHEM_LIB:$stock_ld"
+  export NATIVE_THERMO=1
  fi
  wmake "$build" > "$job/$family-build.log" 2>&1
  cp "$FOAM_USER_APPBIN/rfChemistryCompare" "$build/rfChemistryCompare"
@@ -23,8 +25,13 @@ for family in stock native; do
   case="$job/$family-$tolerance"
   python3 -B "$module/probe_case.py" "$family" "$tolerance" /work/cache/solver-comparison/chemistry-states.json "$case" > "$job/$family-$tolerance-prepare.log"
   blockMesh -case "$case" > "$job/$family-$tolerance-mesh.log" 2>&1
-  "$build/rfChemistryCompare" -case "$case" > "$job/$family-$tolerance.log" 2>&1
+  if "$build/rfChemistryCompare" -case "$case" > "$job/$family-$tolerance.log" 2>&1; then
+   printf '%s %s 0\n' "$family" "$tolerance" >> "$job/probe-exits.txt"
+  else
+   code=$?
+   printf '%s %s %s\n' "$family" "$tolerance" "$code" >> "$job/probe-exits.txt"
+  fi
  done
 done
-echo 'PASS: chemistry probes completed; compare numerical evidence before interpretation' > "$job/probe-completed.txt"
+echo 'Probe attempts finished; inspect probe-exits.txt and numerical evidence' > "$job/probe-completed.txt"
 
