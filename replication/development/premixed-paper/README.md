@@ -107,3 +107,12 @@ Verify the generated initial fields, then compare temperature peaks, actual
 timesteps, source-stage/marker sensitivity and post-ignition propagation.
 The two new full allocations reserve at most 384 core-hours together; two
 startup allocations add at most 16. They do not replace or cancel prior jobs.
+
+For a slow but advancing startup, `queue-after-smoke.sh plan|apply ROOT IMAGE
+RELEASE KEY SMOKE_JOB` can reserve the same full allocation before the check
+finishes. It verifies the smoke source/key, uses Slurm afterok with invalid
+dependencies cancelled, and independently requires the exact PASS receipt and
+source before launching the existing job runner. It shares the duplicate-safe
+reservation ledger. A queued dependency is not a qualification result; a failed
+smoke cannot start production. Verify shell syntax, plan output, dependency and
+recorded source/guard. The controller revision can differ from runnable RELEASE.
