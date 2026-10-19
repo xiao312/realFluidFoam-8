@@ -10,10 +10,12 @@ def main():
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument('action',choices=['plan','apply'])
     for name in ['mechanism','species','profile','output']:p.add_argument(name,type=Path)
+    p.add_argument('--phi',type=float,default=1.10)
     a=p.parse_args()
     if a.output.exists():raise ValueError('Output exists')
     import cantera as ct
     gas=ct.Solution(a.mechanism)
+    if not .5<=a.phi<=2:raise ValueError('Expected phi between 0.5 and 2')
     text=a.species.read_text()
     rows=[]
     for name in gas.species_names:
@@ -30,7 +32,7 @@ def main():
             if not match:raise ValueError(name+'/'+key)
             values.append(float(match[1])*scale)
         rows.append([name,*values,int(name not in ['NO','NO2','N2O'])])
-    manifest={'pressure_Pa':10132500,'Tu_K':298,'cases':[1,2,3,4,5],
+    manifest={'phi':a.phi,'pressure_Pa':10132500,'Tu_K':298,'cases':[1,2,3,4,5],
         'alpha':'original Soave .48 + 1.574 omega - .176 omega^2; nonnegative sqrt(ai)',
         'kinetics':'physical concentrations, NASA reverse Kc',
         'initial_guess':'previously converged ideal FreeFlame; not a transient restart',

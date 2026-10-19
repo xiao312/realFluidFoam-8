@@ -63,7 +63,9 @@ inline double conductivity(double T,double molarVolume,const std::vector<Species
         sumX+=X[i]; volumeSum+=X[i]*partialVolumes[i];meanW+=X[i]*species[i].W;
         shapes[i]=shape(T,partialVolumes[i],species[i]); const auto s=shapes[i];
         const double mu=referenceViscosity(T/s.f)*std::sqrt(s.f*species[i].W/referenceW)*std::pow(s.h,-2./3.);
-        if(!std::isfinite(species[i].cp_R) || species[i].cp_R<2.5-1e-8) throw std::domain_error("ideal Cp/R below 2.5");
+        // GRI atomic-H NASA fits undershoot 2.5 by 1.2e-8 in the flame range.
+        // Treat only this fit-scale error as zero internal heat capacity.
+        if(!std::isfinite(species[i].cp_R) || species[i].cp_R<2.5-1e-7) throw std::domain_error("ideal Cp/R below 2.5 beyond NASA-fit tolerance");
         internal[i]=mu/species[i].W*1.32*R*std::max(0.,species[i].cp_R-2.5);
     }
     if(std::abs(sumX-1)>1e-10 || std::abs(volumeSum/molarVolume-1)>1e-7)

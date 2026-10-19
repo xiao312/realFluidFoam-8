@@ -1,10 +1,15 @@
 #include "SrkKernel.h"
+#include "../liang-properties/ElyHanley.H"
 #include <iostream>
 void check(double a,double b,double tol,const char* label) {
     if(std::abs(a-b)>tol*std::max({1.,std::abs(a),std::abs(b)}))
         throw std::runtime_error(std::string(label)+" analytical="+std::to_string(a)+" numerical="+std::to_string(b));
 }
 int main() {
+    auto shape=rfElyHanley::shape(298.,-.01,{647.1,22.064e6,.056,18.015,.344,4.});
+    if(!(shape.f>0 && shape.h>0))throw std::runtime_error("signed partial-volume shape");
+    double lambda=rfElyHanley::conductivity(1800.,1.,{{33.18,1.3e6,.064935,2.016,-.216,2.5-2e-8}}, {1.},{1.});
+    if(!(lambda>0))throw std::runtime_error("NASA-fit internal heat capacity tolerance");
     std::vector<liang::Species> s={{190.56,4.5992e6,.0986,16.04,.011},
         {154.58,5.043e6,.0734,32,.022},{126.2,3.3958e6,.0895,28,.0372}};
     std::vector<double> x={.1,.2,.7};
