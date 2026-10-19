@@ -17,6 +17,16 @@ printf 'source=%s\nbuild_job=%s\nstage=%s\n' "$(cat "$release/SOURCE_REVISION")"
 ldd "$platform/bin/realFluidReactingFoam" > "$job/solver-ldd.txt"
 grep -F "$platform/lib/libspecie.so" "$job/solver-ldd.txt"
 if grep -q 'not found' "$job/solver-ldd.txt"; then exit 1; fi
+if [[ "$stage" == heat-release-native ]]; then
+    exec bash "$release/replication/development/heat-release/native.sh" "$release" "$job"
+fi
+if [[ "$stage" == heat-release ]]; then
+    exec bash "$release/replication/development/heat-release/run.sh" "$release" "$job"
+fi
+if [[ "$stage" == paper-premixed-* ]]; then
+    selector=${stage#paper-premixed-}; mode=${selector##*-}; key=${selector%-*}
+    exec bash "$release/replication/development/premixed-paper/run.sh" "$release" "$job" "$key" "$mode"
+fi
 if [[ "$stage" == profile ]]; then
     exec bash "$release/replication/validation/profiling/run.sh" "$release" "$job" "$build"
 fi

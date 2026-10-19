@@ -1,5 +1,23 @@
 # Replication boundaries
 
+`development/premixed-paper` depends on the named baseline solver, flame input
+generator, property probe, field reader and contained environment. It creates
+central-ignition two-front cases and an isolated diagnostic solver, then supplies
+stage-labelled in-situ Eq.(40) histories to plotting. It changes no library
+physics. The instrumented solver must match diagnostics-off fields before use.
+Its optional central products initialization consumes a versioned ideal-gas HP
+seed from the earlier premixed-inlet module, with the original generator commit
+and NASA7 hash recorded. This is a data dependency; Cantera is not required in
+the solver runtime. Both initialization variants use the same diagnostic runner.
+`development/heat-release` loads a read-only observer into these running solvers.
+It depends on the qualified chemistry ABI and OF8 function-object interface,
+and supplies signed source histories and fields to comparison analysis. Its
+on/off replay must pass before any live controlDict attachment.
+The premixed draft solver now owns a registered `Qdot` energy-source field;
+heat-release qualification depends on its generator and compares the new binary
+against the previous executable plus the qualified observer. Existing running
+jobs retain their executable and load only the observer.
+
 ```mermaid
 flowchart LR
   U[Upstream source pin] --> R[Fork revision]
