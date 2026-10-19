@@ -67,3 +67,9 @@ CP example: `submit.sh plan ROOT RELEASE BRIDGE_JOB phi110 build none adiabaticC
 REACTOR_QUALIFICATION_JOB`. The reactor receipt must name the same library hash.
 The runtime configuration records mode and tolerances; a full run requires a
 smoke receipt with the same chemistry mode. No reactor checkpoint is reused.
+
+`runtimeProfiling true` writes rank-local `cantera-runtime.csv` with wall seconds
+per step for chemistry, diffusion-pair corrections, linear solves, flow equations
+and property updates. This read-only observer uses the standard C++ clock and
+does not change solver fields. Smoke tests enable it; compare all ranks because
+rank-zero time alone cannot establish load balance or CPU cost.

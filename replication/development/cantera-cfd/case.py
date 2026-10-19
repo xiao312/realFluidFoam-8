@@ -22,7 +22,8 @@ if a.action=='configure':
         f'libraryPath "/work/jobs/{a.bridge_job}/librfcantera.so";\n'
         'inputDirectory "/work/cache/cantera-liang-20261019/inputs";\n'
         'stage 1; options full;\n'
-        f'chemistryMode {a.chemistry_mode};\nchemistryRtol 1e-10; chemistryAtol 1e-18;\n')
+        f'chemistryMode {a.chemistry_mode};\nchemistryRtol 1e-10; chemistryAtol 1e-18;\n'
+        'runtimeProfiling true;\n')
     control=case/'system/controlDict';text=control.read_text()
     text=re.sub(r'\bapplication\s+[^;]+;','application rfCanteraBridgeFoam;',text)
     if a.mode=='build':
