@@ -37,6 +37,9 @@ Commands, from the repository root:
 ```
 python replication/development/ideal-baseline/cantera_run.py plan OUTPUT
 python replication/development/ideal-baseline/cantera_run.py apply OUTPUT
+python replication/development/ideal-baseline/cantera_refine.py plan OUTPUT FINE_OUTPUT
+python replication/development/ideal-baseline/cantera_refine.py apply OUTPUT FINE_OUTPUT
+python replication/development/ideal-baseline/plot.py FIGURE8_CROP FINE_OUTPUT FIGURE_OUTPUT
 python replication/development/ideal-baseline/prepare.py plan phi110 OUTPUT smoke
 bash replication/development/ideal-baseline/submit.sh plan ROOT IMAGE RELEASE phi110 smoke
 ```
@@ -52,3 +55,22 @@ shell syntax, `git diff --check`, scheduled model selection/property checks,
 diagnostics-on/off equality and finite normalized endpoint fields. Cantera saves
 successive refinement results; a small speed change is a numerical indicator,
 not proof of matching the unpublished PREMIX inputs.
+
+The mechanism test checks all grouped forward rates against bundled GRI30 at
+500, 1000, 1800 and 2300 K. Author activation temperatures are slightly different
+from bundled Ea/R. The largest observed difference is 0.7212% for HCN
+dissociation at 500 K; both rates are below 1e-39 in that test mixture.
+The adapter preserves author values. Molecular weights differ by at most
+0.00501% because the programs use different atomic-weight definitions.
+
+`cantera_refine.py` restores completed flames into a new output directory and
+adds two grid levels. The last change is reported, not hidden by rounding.
+`plot.py` requires the recorded 612-by-1218-pixel Fig.8 crop. It writes a
+side-by-side comparison and a direct overlay that retains the original pixels.
+Image-derived values have a declared approximate ±0.03 cm/s reading uncertainty.
+Missing CFD results remain labelled pending; a seed is never plotted as CFD.
+
+Startup job 124877695 passed on release 128d13d. All 1,360 common field bodies
+matched with diagnostics enabled/disabled. The ideal-density identity differed
+by 8.96e-7 relatively; normalized finite fields and native Qdot passed.
+This qualifies startup and diagnostic noninterference, not flame speed.
