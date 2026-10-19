@@ -74,7 +74,9 @@ if [[ $mode == deep-build ]]; then
  . ./bashrc
  # Build all dependencies in upstream order; unrelated executable targets are omitted.
  sed '/wmake applications\/solvers\/dfHighSpeedFoam/,$d' Allwmake > "$job/deepflame/build-comparison.sh"
- bash ./build-comparison.sh -j "$SLURM_CPUS_PER_TASK" > "$job/build.log" 2>&1
+ # Without -fromWmake, OF7's parser re-execs wmake -all and selects the original
+ # Allwmake, which defeats the bounded target list. WM_NCOMPPROCS is set above.
+ bash ./build-comparison.sh -fromWmake > "$job/build.log" 2>&1
  test -x "$DF_APPBIN/dfLowMachFoam"
  ldd "$DF_APPBIN/dfLowMachFoam" > "$job/solver-ldd.txt"
  ! grep -q 'not found' "$job/solver-ldd.txt"
