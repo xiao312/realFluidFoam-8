@@ -57,6 +57,7 @@ public:
         if(stage>=3) for(size_t k=0;k<nSpecies();k++) h[k]+=state().hb[k];
     }
     void getPartialMolarVolumes(double* v) const override {
+        if(parameters.empty()) {IdealGasPhase::getPartialMolarVolumes(v);return;}
         std::copy(state().vb.begin(),state().vb.end(),v);
     }
     void getPartialMolarIntEnergies(double* u) const override {
@@ -64,10 +65,12 @@ public:
         for(size_t k=0;k<nSpecies();k++) u[k]-=pressure()*state().vb[k];
     }
     void getActivityCoefficients(double* a) const override {
+        if(parameters.empty()) {IdealGasPhase::getActivityCoefficients(a);return;}
         if(stage<3) throw std::runtime_error("Case 2 is an EOS-only ablation; equilibrium unsupported");
         for(size_t k=0;k<nSpecies();k++) a[k]=std::exp(state().lnphi[k]);
     }
     void getChemPotentials(double* mu) const override {
+        if(parameters.empty()) {IdealGasPhase::getChemPotentials(mu);return;}
         if(stage<3) throw std::runtime_error("Case 2 equilibrium unsupported");
         IdealGasPhase::getChemPotentials(mu);
         for(size_t k=0;k<nSpecies();k++) mu[k]+=RT()*state().lnphi[k];

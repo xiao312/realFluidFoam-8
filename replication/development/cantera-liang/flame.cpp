@@ -30,12 +30,17 @@ try {
     while(table>>name>>row.Tc>>row.Pc>>row.Vc>>row.W>>row.omega>>row.eos) {parameters.push_back(row);species.push_back(name);}
     if(parameters.size()!=53)throw std::runtime_error("Expected 53 explicit species rows");
     ThermoFactory::factory()->reg("liang-srk",[&](){
-        auto* gas=new liang::SrkPhase;gas->stage=stage;gas->parameters=parameters;return gas;});
+        // Cantera queries pressure before all species have been installed.
+        // Load reference thermo first; activate SRK only on the complete phase.
+        auto* gas=new liang::SrkPhase;gas->stage=1;return gas;});
     TransportFactory::factory()->reg("liang-staged",[&](){
         auto* tr=new liang::StagedTransport;tr->stage=stage;tr->parameters=parameters;return tr;});
     auto sol=newSolution((input/(stage==1?"ideal.yaml":"srk.yaml")).string(),"",stage==1?"mixture-averaged":"liang-staged");
     auto gas=sol->thermo();
     for(size_t k=0;k<species.size();k++) if(gas->speciesName(k)!=species[k])throw std::runtime_error("Species order mismatch");
+    if(auto* model=dynamic_cast<liang::SrkPhase*>(gas.get())) {
+        model->parameters=parameters;model->stage=stage;model->setState_TP(298,10132500);
+    }
     gas->setEquivalenceRatio(phi,"CH4","O2:0.21,N2:0.79");gas->setState_TP(298,10132500);
     fs::create_directories(output);
     propertyChecks(sol,(output/"property-checks.csv").string());
