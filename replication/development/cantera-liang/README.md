@@ -48,3 +48,15 @@ Successful compilation is not scientific acceptance.
 qualification output. Gates: ideal parity within 0.1%, last grid change below 0.3%,
 mass-flux relative range below 0.1%, and species-sum error below 1e-7. These
 are numerical screening limits, not evidence of publication agreement.
+
+FreeFlame Newton iterates can contain small negative species fractions. The
+conductivity adapter projects its transport-only composition to nonnegative,
+normalized fractions and recalculates matching SRK volumes. It does not change
+the thermo state or solution fields. Final profiles must have Y >= -1e-9.
+The callback report counts these projections and negative partial-volume states.
+
+`prepare_sweep.py plan|apply MECHANISM SPECIES OUTPUT PROFILE_DIR...` prepares
+the declared 12-condition phi=0.92–1.44 sweep. Earlier directories win exact
+profile ties; the nearest saved phi supplies a numerical guess when necessary.
+`plan.json` records target phi and guess phi separately. The inlet uses target phi.
+Each stage uses `submit.sh plan|apply ROOT RELEASE SDK INPUTS STAGE BUILD PHI`.

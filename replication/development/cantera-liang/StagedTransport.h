@@ -10,6 +10,7 @@ public:
     std::vector<Species> parameters;
     size_t conductivityCalls=0,diffusionCalls=0;
     size_t negativePartialVolumeCalls=0;
+    size_t projectedCompositionCalls=0;
     std::string transportModel() const override {return "liang-staged";}
     void init(Cantera::ThermoPhase* gas,int mode=0) override {
         Cantera::MixTransport::init(gas,mode);
@@ -27,13 +28,24 @@ public:
         if(stage<4)return Cantera::MixTransport::thermalConductivity();
         std::vector<double> x(m_nsp),v(m_nsp),cp(m_nsp);
         m_thermo->getMoleFractions(x.data());m_thermo->getPartialMolarVolumes(v.data());
+        double molarVolume=1/m_thermo->molarDensity(),sum=0;bool projected=false;
+        // FreeFlame Newton iterates admit small negative species fractions.
+        // Like Cantera transport, evaluate transport on nonnegative fractions.
+        // Recompute volume consistently for the projected transport-only state.
+        for(auto& value:x) {if(value<0) {value=0;projected=true;}sum+=value;}
+        if(projected || std::abs(sum-1)>1e-12) {
+            if(!(sum>0))throw std::runtime_error("Invalid transport composition");
+            for(auto& value:x)value/=sum;
+            auto z=evaluate(m_thermo->temperature(),m_thermo->pressure(),x,parameters);
+            v=z.vb;molarVolume=z.v;projectedCompositionCalls++;
+        }
         if(*std::min_element(v.begin(),v.end())<0)negativePartialVolumeCalls++;
         m_thermo->getCp_R_ref(cp.data());
         std::vector<rfElyHanley::Species> s;
         for(size_t k=0;k<m_nsp;k++) {
             const auto& p=parameters[k];s.push_back({p.Tc,p.Pc,p.Vc,m_thermo->molecularWeight(k),p.omega,cp[k]});
         }
-        return rfElyHanley::conductivity(m_thermo->temperature(),1/m_thermo->molarDensity(),s,x,v);
+        return rfElyHanley::conductivity(m_thermo->temperature(),molarVolume,s,x,v);
     }
     void getMixDiffCoeffs(double* d) override {
         diffusionCalls++;

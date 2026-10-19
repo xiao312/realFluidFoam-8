@@ -24,14 +24,15 @@ def main():
     flux=[r['rho_kg_m3']*r['U_m_s'] for r in profile]
     imbalance=(max(flux)-min(flux))/abs(flux[0])
     species_error=max(abs(sum(v for k,v in r.items() if k.startswith('Y_'))-1) for r in profile)
+    minimum_y=min(v for r in profile for k,v in r.items() if k.startswith('Y_'))
     result={'stage':int(history[-1]['stage']),'phi':history[-1]['phi'],'speed_cm_s':speed,
         'last_refinement_relative_change':change,'mass_flux_relative_range':imbalance,
-        'maximum_species_sum_error':species_error,'points':len(profile),
+        'maximum_species_sum_error':species_error,'minimum_mass_fraction':minimum_y,'points':len(profile),
         'scientific_acceptance':False,'remaining':['domain sensitivity','initial-guess sensitivity','publication parameter uncertainty']}
     if a.ideal_reference_cm_s is not None:
         result['ideal_parity_relative_error']=abs(speed/a.ideal_reference_cm_s-1)
         if result['ideal_parity_relative_error']>.001:raise ValueError(result)
-    if speed<=0 or change>.003 or imbalance>1e-3 or species_error>1e-7:raise ValueError(result)
+    if speed<=0 or change>.003 or imbalance>1e-3 or species_error>1e-7 or minimum_y < -1e-9:raise ValueError(result)
     print(json.dumps(result,indent=2))
 
 
