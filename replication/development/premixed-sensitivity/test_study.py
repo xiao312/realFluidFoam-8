@@ -8,9 +8,20 @@ import numpy as np
 from analyze import tracking
 from gate import evaluate, LEVELS, STAGES
 from prepare import prepare
+from check import check_progress
 
 
 class StudyTests(unittest.TestCase):
+    def test_completion_uses_solver_endpoint_not_output_phase(self):
+        log = 'Time = 9.99834968798e-05\nCourant Number mean: 0.08 max: 0.084\nEnd\n'
+        self.assertEqual(check_progress(log, 9.95834968798e-5,
+                                       9.99834968798e-5, 1e-7, 5e-7), .084)
+        with self.assertRaises(ValueError):
+            check_progress(log.replace('End', ''), 9.95834968798e-5,
+                           9.99834968798e-5, 1e-7, 5e-7)
+        with self.assertRaises(ValueError):
+            check_progress(log, 9.8e-5, 9.99834968798e-5, 1e-7, 5e-7)
+
     def test_gate_detects_stage_and_marker_disagreement(self):
         rows = [dict(time_s=str(t), side=side, stage=stage, OH_level=str(level),
                      status='valid', speed_m_s='.06')

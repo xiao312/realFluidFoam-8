@@ -17,6 +17,8 @@ No credentials are read or stored. Donor directories are read-only inputs.
 
 Dependencies: premixed-spatial binary and contour definitions, premixed-paper
 diagnostics, validation/environment runners, Python 3.8+, Slurm, and MPI.
+Saved-field checks reuse `validation/flames/adaptive/fields.py` and include
+species normalization, positive density/pressure/temperature and native heat release.
 Local analysis uses numpy/matplotlib. Dependents are the numerical diagnosis
 and project record. No production job depends on this module.
 
@@ -24,12 +26,20 @@ Example: `bash submit.sh plan ROOT IMAGE RELEASE dt100` prints a read-only plan.
 Use `apply` with identical arguments to reserve eight cores for two hours.
 Repeat for dt50 and dt25. The complete first stage reserves at most 48 core-hours.
 Submission is locked and deduplicated by release and case key.
+`submit-check.sh plan ROOT IMAGE RELEASE` plans a one-core, ten-minute check
+after all three recorded segment jobs finish. It uses `afterany`, because the
+original release's completion check incorrectly requires an endpoint CSV sample.
+The corrected checker retains those original job exits and writes independent
+qualification evidence. It never changes a running release or donor output.
 
 `prepare.py plan JOB KEY` checks checkpoint completeness and destination paths.
 `apply` copies fields with before/after hashes, removes copied runtime functions,
 and changes only time/output controls and diagnostic frequency. Initial chemistry
 substep history is reconstructed by the solver; restart equivalence is not assumed.
 Spatial and contour output share a 0.5 us interval. Native fields use 5 us output.
+OF8 restores time index 854, so output phases differ between time-step branches.
+The solver log must reach the endpoint; the last diagnostic/field can precede
+it by less than its output interval. Do not reset the saved time index silently.
 
 `analyze.py OUTPUT KEY=CSV ...` creates stage and contour comparisons. Optional
 `--reference CSV` adds the uninterrupted donor over the same physical window.
