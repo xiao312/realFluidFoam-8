@@ -22,16 +22,20 @@ class RestartTests(unittest.TestCase):
                 folder=donor/f'processor{rank}/2.00180632513e-05';folder.mkdir()
                 for name in ['T','p','U','rho','OH','CH4','Qdot']:(folder/name).write_text('fixture '+name)
             job=root/'jobs/999'
-            with contextlib.redirect_stdout(io.StringIO()):
+            authorization='Synthetic unit-test permission; no real run is authorized'
+            with self.assertRaisesRegex(ValueError,'explicit owner authorization'):
                 prepare('plan',job,'phi110','qualify',root)
+            with contextlib.redirect_stdout(io.StringIO()):
+                prepare('plan',job,'phi110','qualify',root,authorization)
                 self.assertFalse(job.exists())
-                prepare('apply',job,'phi110','qualify',root)
+                prepare('apply',job,'phi110','qualify',root,authorization)
             self.assertEqual((donor/'system/controlDict').read_text(),original)
             self.assertIn('enabled false',(job/'off/constant/frontTrackingProperties').read_text())
             config=json.loads((job/'tracking-plan.json').read_text())
             self.assertAlmostEqual(config['temperature_anchor']['temperature_anchor_K'],780.8722452267356)
             self.assertEqual((job/'on/processor0/2.00180632513e-05/T').read_text(),'fixture T')
-            with self.assertRaises(ValueError):prepare('apply',job,'phi110','qualify',root)
+            self.assertEqual(config['restart_authorization'],authorization)
+            with self.assertRaises(ValueError):prepare('apply',job,'phi110','qualify',root,authorization)
 
 
 if __name__=='__main__':unittest.main()
