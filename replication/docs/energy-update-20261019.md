@@ -71,3 +71,10 @@ Raw evidence is retained under SCNet `jobs/124900963`, including
 `inputs-check.log`, `smoke-fields.json`, `solver-product.sha256` and the case
 tracking/source histories. The parent diagnosis is
 [the cross-solver record](solver-comparison-20261019.md).
+
+At 17:29 CST the first valid tracking frame at 55.418 us gave 6.4270 cm/s (T) and
+6.0450 cm/s (OH), versus 6.4220 and 6.0485 cm/s in the unchanged case at the same
+time. Each median pools the two front sides at one frame only. This early near-
+agreement does not establish the correction's later speed effect. The unchanged
+baseline has completed 200.018 us: its last 5-us medians are 7.1258/7.2324 cm/s
+(T/OH), compared with Cantera 7.4670 cm/s; steady convergence remains unaccepted.
