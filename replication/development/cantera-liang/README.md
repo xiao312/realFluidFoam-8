@@ -218,3 +218,12 @@ The provenance file records all source hashes and transformations. Verify finite
 data, increasing coordinates and species normalization, then compare converged
 speeds with the same model/options and refinement criteria. These sensitivities
 must not be represented as additional operating conditions.
+
+`energy_audit.py plan|apply ROOT BUILD SDK MANIFEST NEW_OUTPUT` runs the existing
+energy probe on frozen profiles in a scheduler allocation. MANIFEST is a JSON
+list of `profile_job`, `stage`, `variant`, `pressure_atm`, and absolute `inputs`.
+All paths must be inside ROOT; output belongs to the current Slurm job. Plan is
+read-only. The apply path verifies the energy binary hash, rejects existing
+output, and records profile/input hashes, flux range, endpoint difference and
+diffusive mass-flux closure. This is a reconstructed face flux, not the exact
+discrete Flow1D residual. Compare identical models across refinement levels.
