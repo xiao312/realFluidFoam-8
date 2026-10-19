@@ -1,6 +1,6 @@
 // Call the qualified OpenFOAM EOS; no thermodynamic inversion or T clipping.
-#include "soaveRedlichKwong.H"
 #include "rfSpecie.H"
+#include "soaveRedlichKwong.H"
 #include "IFstream.H"
 #include "scalarList.H"
 #include "ElyHanley.H"
@@ -9,7 +9,7 @@
 #include <array>
 using namespace Foam;
 using EOS=soaveRedlichKwong<rfSpecie>;
-constexpr double gasR=8314.46261815324;
+const double gasR=Foam::constant::thermodynamic::RR;
 struct Coefficients { double b,c1,c2,c3; };
 Coefficients mix(const std::vector<EOS>& eos,const std::vector<double>& x) {
     double b=0,A=0,C=0;
