@@ -136,3 +136,9 @@ writes advective, conductive and species-enthalpy fluxes in W/m2. This continuou
 flux reconstruction is a conservation diagnostic, not the exact discrete energy
 residual. Compare its variation under grid refinement and against ideal controls.
 No source or equilibrium result is fitted to a paper curve.
+
+`prepare_pressure_guess.py plan|apply INPUTS NEW_OUTPUT --atm 1` uses pinned
+Python Cantera 3.2.0 to solve a fresh ideal steady control at phi=1.10 and 298 K.
+It copies the three model inputs, records hashes and two mesh refinements, and
+writes a compatible numerical guess. Run locally or in a compute allocation;
+never run the flame solve on an HPC login node. The C++ pilot refines it further.
