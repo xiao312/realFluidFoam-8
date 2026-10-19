@@ -1,5 +1,10 @@
 # In-situ planar flame tracking
 
+`history.py SNAPSHOT OUTPUT` verifies local snapshot hashes and plots all three
+retained measures with the ideal Cantera reference. It uses matplotlib and
+does not contact or change running jobs. The output directory must be new;
+histories retain both fronts and explicitly mark scientific acceptance false.
+
 This module adds read-only OH and fixed-temperature front tracking to the
 qualified reacting equations. It retains the timestep-averaged OH source
 measure and removes instantaneous chemistry recalculation from this executable.
