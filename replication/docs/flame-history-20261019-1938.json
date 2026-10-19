@@ -1,0 +1,680 @@
+{
+  "capture": {
+    "capture_utc": "2026-10-19T11:38:50.625062Z",
+    "profiles": {
+      "stock": {
+        "job": "124896761",
+        "frames": 402,
+        "last_time": "0.000198929603628",
+        "excluded_newest_directories": 2
+      },
+      "deepflame": {
+        "job": "124901315",
+        "frames": 401,
+        "last_time": "0.000198941249729",
+        "excluded_newest_directories": 2
+      }
+    },
+    "csv": {
+      "native": {
+        "job": "124885085",
+        "incomplete_tail_bytes_removed": 0
+      },
+      "energy": {
+        "job": "124900963",
+        "incomplete_tail_bytes_removed": 0
+      }
+    },
+    "scheduler": "124885085         COMPLETED   02:50:52 \n124896761         COMPLETED   01:43:08 \n124900963           RUNNING   02:18:13 \n124901315         COMPLETED   02:12:02 \n"
+  },
+  "collection_interval_CST": "2026-10-19 19:38\u201319:44",
+  "comparison": {
+    "capture_utc": "2026-10-19T11:38:50.625062Z",
+    "reference_cm_s": 7.467003112,
+    "cases": [
+      {
+        "key": "native",
+        "label": "Native unchanged (completed)",
+        "job": "124885085",
+        "state": "COMPLETED",
+        "source": "02de163e8e97a2e761d36e60c59e50e7942a4d07",
+        "csv": "native.csv",
+        "sha256": "451eb821cdbe3ddedcbbd6151d5ce07e3e83ef29c7a692fd3b9315325df09afa",
+        "latest_time_us": 200.01806325130363,
+        "status_counts": {
+          "warmup": 44,
+          "valid": 1220
+        },
+        "markers": {
+          "T": {
+            "valid_points": 305,
+            "first_time_us": 55.41806325130013,
+            "last_time_us": 200.01806325130363,
+            "last_mean_cm_s": 7.143441081664141,
+            "min_mean_cm_s": 6.421956899722037,
+            "max_mean_cm_s": 7.156797891887649
+          },
+          "OH": {
+            "valid_points": 305,
+            "first_time_us": 55.41806325130013,
+            "last_time_us": 200.01806325130363,
+            "last_mean_cm_s": 7.242790784049056,
+            "min_mean_cm_s": 6.048480875774867,
+            "max_mean_cm_s": 7.246744174342952
+          }
+        }
+      },
+      {
+        "key": "energy",
+        "label": "Native energy-corrected (running)",
+        "job": "124900963",
+        "state": "RUNNING",
+        "source": "34f879f5696a9b760a16897a6b3f48909f831ce5",
+        "csv": "energy.csv",
+        "sha256": "3840ebff720de4894deb05040f27163ca1b3c00d6dbb5007e0b7559ac3b02705",
+        "latest_time_us": 172.91806325130298,
+        "status_counts": {
+          "warmup": 44,
+          "valid": 992
+        },
+        "markers": {
+          "T": {
+            "valid_points": 248,
+            "first_time_us": 55.41806325130013,
+            "last_time_us": 172.91806325130298,
+            "last_mean_cm_s": 7.148932602497094,
+            "min_mean_cm_s": 6.427042206429062,
+            "max_mean_cm_s": 7.1665777857125486
+          },
+          "OH": {
+            "valid_points": 248,
+            "first_time_us": 55.41806325130013,
+            "last_time_us": 172.91806325130298,
+            "last_mean_cm_s": 7.339151449566556,
+            "min_mean_cm_s": 6.044994196046607,
+            "max_mean_cm_s": 7.339151449566556
+          }
+        }
+      },
+      {
+        "key": "stock",
+        "label": "Stock reactingFoam (completed)",
+        "job": "124896761",
+        "state": "COMPLETED",
+        "source": "c18481dc5423c4447ca85c1e69978551a3442090",
+        "csv": "stock.csv",
+        "sha256": "aa57cea4936a5ae7c359b1addde119d7275745016ecfcb3e55d96ab2a9611626",
+        "latest_time_us": 198.929603628,
+        "status_counts": {
+          "warmup": 56,
+          "valid": 1552
+        },
+        "markers": {
+          "T": {
+            "valid_points": 388,
+            "first_time_us": 5.42960362763,
+            "last_time_us": 198.929603628,
+            "last_mean_cm_s": 6.6260447869167365,
+            "min_mean_cm_s": 6.526268784517889,
+            "max_mean_cm_s": 19.816889637699017
+          },
+          "OH": {
+            "valid_points": 388,
+            "first_time_us": 5.42960362763,
+            "last_time_us": 198.929603628,
+            "last_mean_cm_s": 6.609476291057341,
+            "min_mean_cm_s": -4.619427174351626,
+            "max_mean_cm_s": 6.616846759379412
+          }
+        }
+      },
+      {
+        "key": "deepflame",
+        "label": "DeepFlame (completed)",
+        "job": "124901315",
+        "state": "COMPLETED",
+        "source": "9957c2cfbea7dbcbb1af7deba91a004cbdf7fe1d",
+        "csv": "deepflame.csv",
+        "sha256": "75d2e25c21f487cea859329b584ba82522c16db11bdedd91a329d687ba66c2a6",
+        "latest_time_us": 198.941249729,
+        "status_counts": {
+          "warmup": 52,
+          "valid": 1552
+        },
+        "markers": {
+          "T": {
+            "valid_points": 388,
+            "first_time_us": 5.44124972922,
+            "last_time_us": 198.941249729,
+            "last_mean_cm_s": 7.237348802848587,
+            "min_mean_cm_s": 6.5003251999988825,
+            "max_mean_cm_s": 18.70624755093589
+          },
+          "OH": {
+            "valid_points": 388,
+            "first_time_us": 5.44124972922,
+            "last_time_us": 198.941249729,
+            "last_mean_cm_s": 7.304692315201122,
+            "min_mean_cm_s": -4.227665368924009,
+            "max_mean_cm_s": 7.305483667847035
+          }
+        }
+      }
+    ],
+    "snapshot_sha256": "ee1df0aeefd3cc2491cee71f878a694ca228b7ea40c9bbea634ef9febbe54b1c",
+    "definition": "outward sign * mean_window[rho_front/rho_fresh * (fitted dx/dt - U_front)]; mean of both fronts",
+    "fit_window_s": 5e-06,
+    "script_sha256": "6fce20b9359dc59590716189a58980a960971f39ab3e2b51a8d700f2965a8ca3"
+  },
+  "sweep": {
+    "timestamp_local": "20261019T193851",
+    "cases": [
+      {
+        "key": "phi090",
+        "label": "phi090",
+        "job": "124884982",
+        "csv": "124884982/front-tracking.csv",
+        "source": "02de163e8e97a2e761d36e60c59e50e7942a4d07",
+        "state": "RUNNING",
+        "phi": 0.9,
+        "sha256": "3411f21c790645f158802e5b2ffdcfc66327f030d3f730dede190b12d853ca6d",
+        "latest_time_us": 57.95462387820044,
+        "status_counts": {
+          "warmup": 44,
+          "valid": 108
+        },
+        "markers": {
+          "T": {
+            "valid_points": 27,
+            "first_time_us": 45.45462387820013,
+            "last_time_us": 57.95462387820044,
+            "last_mean_cm_s": 5.103802296718909,
+            "min_mean_cm_s": 5.028195201458057,
+            "max_mean_cm_s": 5.275820771472476
+          },
+          "OH": {
+            "valid_points": 27,
+            "first_time_us": 45.45462387820013,
+            "last_time_us": 57.95462387820044,
+            "last_mean_cm_s": 4.444976125261208,
+            "min_mean_cm_s": 4.047724855868175,
+            "max_mean_cm_s": 4.444976125261208
+          }
+        },
+        "reference_cm_s": 5.705747444706062,
+        "temperature_anchor_K": 763.4723992894018
+      },
+      {
+        "key": "phi095",
+        "label": "phi095",
+        "job": "124885003",
+        "csv": "124885003/front-tracking.csv",
+        "source": "02de163e8e97a2e761d36e60c59e50e7942a4d07",
+        "state": "COMPLETED",
+        "phi": 0.95,
+        "sha256": "05bed54dd4778d0259a5b8e80ab0d7c438ed26fa449a194e5f4b50ef7b738984",
+        "latest_time_us": 199.9857543071039,
+        "status_counts": {
+          "warmup": 44,
+          "valid": 1304
+        },
+        "markers": {
+          "T": {
+            "valid_points": 326,
+            "first_time_us": 45.43575430710013,
+            "last_time_us": 199.9857543071039,
+            "last_mean_cm_s": 6.324571157535883,
+            "min_mean_cm_s": 5.70890983429936,
+            "max_mean_cm_s": 6.325507408373857
+          },
+          "OH": {
+            "valid_points": 326,
+            "first_time_us": 45.43575430710013,
+            "last_time_us": 199.9857543071039,
+            "last_mean_cm_s": 6.396678714821471,
+            "min_mean_cm_s": 4.855227838357218,
+            "max_mean_cm_s": 6.412561806032064
+          }
+        },
+        "reference_cm_s": 6.382402399944982,
+        "temperature_anchor_K": 781.8439466361449
+      },
+      {
+        "key": "phi100",
+        "label": "phi100",
+        "job": "124885031",
+        "csv": "124885031/front-tracking.csv",
+        "source": "02de163e8e97a2e761d36e60c59e50e7942a4d07",
+        "state": "COMPLETED",
+        "phi": 1.0,
+        "sha256": "125c5894eee27825a94464841eb30501b3625b3ad5ecedb21123b04a9e125bcf",
+        "latest_time_us": 200.01626177910364,
+        "status_counts": {
+          "warmup": 44,
+          "valid": 1220
+        },
+        "markers": {
+          "T": {
+            "valid_points": 305,
+            "first_time_us": 55.41626177910013,
+            "last_time_us": 200.01626177910364,
+            "last_mean_cm_s": 6.878485933342111,
+            "min_mean_cm_s": 6.186701999550177,
+            "max_mean_cm_s": 6.9013780687282065
+          },
+          "OH": {
+            "valid_points": 305,
+            "first_time_us": 55.41626177910013,
+            "last_time_us": 200.01626177910364,
+            "last_mean_cm_s": 6.997313116034205,
+            "min_mean_cm_s": 5.816927901491784,
+            "max_mean_cm_s": 7.00443750068134
+          }
+        },
+        "reference_cm_s": 6.91474179170129,
+        "temperature_anchor_K": 796.774000467596
+      },
+      {
+        "key": "phi105",
+        "label": "phi105",
+        "job": "124885063",
+        "csv": "124885063/front-tracking.csv",
+        "source": "02de163e8e97a2e761d36e60c59e50e7942a4d07",
+        "state": "COMPLETED",
+        "phi": 1.05,
+        "sha256": "5709a3ed28c897c0749c02402ecc3cf727ed1a7fcf57d4543a0bc172bb10596c",
+        "latest_time_us": 200.01408298230388,
+        "status_counts": {
+          "warmup": 44,
+          "valid": 1304
+        },
+        "markers": {
+          "T": {
+            "valid_points": 326,
+            "first_time_us": 45.41408298230013,
+            "last_time_us": 200.01408298230388,
+            "last_mean_cm_s": 7.182098788572073,
+            "min_mean_cm_s": 6.425704678710823,
+            "max_mean_cm_s": 7.182473041353658
+          },
+          "OH": {
+            "valid_points": 326,
+            "first_time_us": 45.41408298230013,
+            "last_time_us": 200.01408298230388,
+            "last_mean_cm_s": 7.26322263240928,
+            "min_mean_cm_s": 5.834015641497811,
+            "max_mean_cm_s": 7.281751025546907
+          }
+        },
+        "reference_cm_s": 7.330248421544574,
+        "temperature_anchor_K": 791.7025261312986
+      },
+      {
+        "key": "phi110",
+        "label": "phi110",
+        "job": "124885085",
+        "csv": "124885085/front-tracking.csv",
+        "source": "02de163e8e97a2e761d36e60c59e50e7942a4d07",
+        "state": "COMPLETED",
+        "phi": 1.1,
+        "sha256": "451eb821cdbe3ddedcbbd6151d5ce07e3e83ef29c7a692fd3b9315325df09afa",
+        "latest_time_us": 200.01806325130363,
+        "status_counts": {
+          "warmup": 44,
+          "valid": 1220
+        },
+        "markers": {
+          "T": {
+            "valid_points": 305,
+            "first_time_us": 55.41806325130013,
+            "last_time_us": 200.01806325130363,
+            "last_mean_cm_s": 7.143441081664141,
+            "min_mean_cm_s": 6.421956899722037,
+            "max_mean_cm_s": 7.156797891887649
+          },
+          "OH": {
+            "valid_points": 305,
+            "first_time_us": 55.41806325130013,
+            "last_time_us": 200.01806325130363,
+            "last_mean_cm_s": 7.242790784049056,
+            "min_mean_cm_s": 6.048480875774867,
+            "max_mean_cm_s": 7.246744174342952
+          }
+        },
+        "reference_cm_s": 7.467003112153642,
+        "temperature_anchor_K": 780.8722452267356
+      },
+      {
+        "key": "phi115",
+        "label": "phi115",
+        "job": "124885098",
+        "csv": "124885098/front-tracking.csv",
+        "source": "02de163e8e97a2e761d36e60c59e50e7942a4d07",
+        "state": "COMPLETED",
+        "phi": 1.15,
+        "sha256": "ee2ca1b19cd0f9844863dace37e90fae792d21f90c9e1a95792a3c7d472ad4b8",
+        "latest_time_us": 200.02269539390386,
+        "status_counts": {
+          "warmup": 44,
+          "valid": 1304
+        },
+        "markers": {
+          "T": {
+            "valid_points": 326,
+            "first_time_us": 45.42269539390013,
+            "last_time_us": 200.02269539390386,
+            "last_mean_cm_s": 6.836986623686483,
+            "min_mean_cm_s": 6.166149176481007,
+            "max_mean_cm_s": 6.847880923087953
+          },
+          "OH": {
+            "valid_points": 326,
+            "first_time_us": 45.42269539390013,
+            "last_time_us": 200.02269539390386,
+            "last_mean_cm_s": 6.94726600518719,
+            "min_mean_cm_s": 5.426806026115353,
+            "max_mean_cm_s": 6.979755268544379
+          }
+        },
+        "reference_cm_s": 7.343496980167247,
+        "temperature_anchor_K": 769.9301534631155
+      },
+      {
+        "key": "phi120",
+        "label": "phi120",
+        "job": "124885116",
+        "csv": "124885116/front-tracking.csv",
+        "source": "02de163e8e97a2e761d36e60c59e50e7942a4d07",
+        "state": "COMPLETED",
+        "phi": 1.2,
+        "sha256": "1845221f8a54a729f594962fe9c37071aafdeee77a079381ac8a6a9a9b79e810",
+        "latest_time_us": 199.97751203810364,
+        "status_counts": {
+          "warmup": 44,
+          "valid": 1220
+        },
+        "markers": {
+          "T": {
+            "valid_points": 305,
+            "first_time_us": 55.42751203810013,
+            "last_time_us": 199.97751203810364,
+            "last_mean_cm_s": 6.555856755313863,
+            "min_mean_cm_s": 5.978853825315905,
+            "max_mean_cm_s": 6.556176551553122
+          },
+          "OH": {
+            "valid_points": 305,
+            "first_time_us": 55.42751203810013,
+            "last_time_us": 199.97751203810364,
+            "last_mean_cm_s": 6.660055248116578,
+            "min_mean_cm_s": 5.453377712212968,
+            "max_mean_cm_s": 6.6618551936258825
+          }
+        },
+        "reference_cm_s": 7.120380052909459,
+        "temperature_anchor_K": 759.1860630265394
+      },
+      {
+        "key": "phi125",
+        "label": "phi125",
+        "job": "124885130",
+        "csv": "124885130/front-tracking.csv",
+        "source": "02de163e8e97a2e761d36e60c59e50e7942a4d07",
+        "state": "COMPLETED",
+        "phi": 1.25,
+        "sha256": "1497b202fe7e7bf5033494b23a2c919526eabe8dd8e6c0075841bbc442c5c5f1",
+        "latest_time_us": 199.98356759350386,
+        "status_counts": {
+          "warmup": 44,
+          "valid": 1304
+        },
+        "markers": {
+          "T": {
+            "valid_points": 326,
+            "first_time_us": 45.43356759350013,
+            "last_time_us": 199.98356759350386,
+            "last_mean_cm_s": 6.24549729639585,
+            "min_mean_cm_s": 5.7484730792819985,
+            "max_mean_cm_s": 6.24549729639585
+          },
+          "OH": {
+            "valid_points": 326,
+            "first_time_us": 45.43356759350013,
+            "last_time_us": 199.98356759350386,
+            "last_mean_cm_s": 6.3599847438285515,
+            "min_mean_cm_s": 4.800380258089655,
+            "max_mean_cm_s": 6.3599847438285515
+          }
+        },
+        "reference_cm_s": 6.873698515469016,
+        "temperature_anchor_K": 748.6865412525168
+      },
+      {
+        "key": "phi130",
+        "label": "phi130",
+        "job": "124885159",
+        "csv": "124885159/front-tracking.csv",
+        "source": "02de163e8e97a2e761d36e60c59e50e7942a4d07",
+        "state": "COMPLETED",
+        "phi": 1.3,
+        "sha256": "22513408299b278cdbafd44e4bb15967c42e785c85e08c2a5adc32c92af090b9",
+        "latest_time_us": 199.98726483600387,
+        "status_counts": {
+          "warmup": 44,
+          "valid": 1304
+        },
+        "markers": {
+          "T": {
+            "valid_points": 326,
+            "first_time_us": 45.43726483600013,
+            "last_time_us": 199.98726483600387,
+            "last_mean_cm_s": 5.930537147623673,
+            "min_mean_cm_s": 5.561296378005379,
+            "max_mean_cm_s": 5.932776752811569
+          },
+          "OH": {
+            "valid_points": 326,
+            "first_time_us": 45.43726483600013,
+            "last_time_us": 199.98726483600387,
+            "last_mean_cm_s": 6.05294876114254,
+            "min_mean_cm_s": 4.5437659526660825,
+            "max_mean_cm_s": 6.05294876114254
+          }
+        },
+        "reference_cm_s": 6.619133757678313,
+        "temperature_anchor_K": 738.4331803230109
+      },
+      {
+        "key": "phi135",
+        "label": "phi135",
+        "job": "124885181",
+        "csv": "124885181/front-tracking.csv",
+        "source": "02de163e8e97a2e761d36e60c59e50e7942a4d07",
+        "state": "COMPLETED",
+        "phi": 1.35,
+        "sha256": "2a3efc5ed2aa25c4582285e925388ec2a34ab7cdd4667cbef499ad8052aedc8b",
+        "latest_time_us": 199.99009069420387,
+        "status_counts": {
+          "warmup": 44,
+          "valid": 1304
+        },
+        "markers": {
+          "T": {
+            "valid_points": 326,
+            "first_time_us": 45.44009069420014,
+            "last_time_us": 199.99009069420387,
+            "last_mean_cm_s": 5.688745573509365,
+            "min_mean_cm_s": 5.356629602760163,
+            "max_mean_cm_s": 5.70934577604585
+          },
+          "OH": {
+            "valid_points": 326,
+            "first_time_us": 45.44009069420014,
+            "last_time_us": 199.99009069420387,
+            "last_mean_cm_s": 5.797677223656661,
+            "min_mean_cm_s": 4.320999470165644,
+            "max_mean_cm_s": 5.799700897156271
+          }
+        },
+        "reference_cm_s": 6.3658559337846174,
+        "temperature_anchor_K": 728.4153979919608
+      },
+      {
+        "key": "phi140",
+        "label": "phi140",
+        "job": "124885196",
+        "csv": "124885196/front-tracking.csv",
+        "source": "02de163e8e97a2e761d36e60c59e50e7942a4d07",
+        "state": "COMPLETED",
+        "phi": 1.4,
+        "sha256": "ee77cc650e7559c8434a8bd847a58476a1c62ecefcc042826c3a78118af565fc",
+        "latest_time_us": 199.99266126210387,
+        "status_counts": {
+          "warmup": 44,
+          "valid": 1304
+        },
+        "markers": {
+          "T": {
+            "valid_points": 326,
+            "first_time_us": 45.44266126210013,
+            "last_time_us": 199.99266126210387,
+            "last_mean_cm_s": 5.457316089004931,
+            "min_mean_cm_s": 5.229808095311386,
+            "max_mean_cm_s": 5.537370846862403
+          },
+          "OH": {
+            "valid_points": 326,
+            "first_time_us": 45.44266126210013,
+            "last_time_us": 199.99266126210387,
+            "last_mean_cm_s": 5.5779769814096145,
+            "min_mean_cm_s": 4.144713389872328,
+            "max_mean_cm_s": 5.5779769814096145
+          }
+        },
+        "reference_cm_s": 6.121807950118492,
+        "temperature_anchor_K": 718.6193673285339
+      }
+    ],
+    "script_sha256": "d5992b3b87c48b14eb07805a081b13fabe5c6e7b9e67de25a6f4e09a9fa50f03"
+  },
+  "summary": {
+    "cases": [
+      {
+        "case": "native",
+        "state": "COMPLETED",
+        "time_us": 200.01806325130363,
+        "markers": {
+          "T": {
+            "latest_cm_s": 7.143441081664141,
+            "median_last_5us_cm_s": 7.1224585736481,
+            "median_10us_change_cm_s": 0.03769018966869986,
+            "slope_last_20us_cm_s_per_us": 0.004007912181260312
+          },
+          "OH": {
+            "latest_cm_s": 7.242790784049056,
+            "median_last_5us_cm_s": 7.23008838841865,
+            "median_10us_change_cm_s": 0.0315588322176481,
+            "slope_last_20us_cm_s_per_us": 0.0026661677088841316
+          }
+        }
+      },
+      {
+        "case": "energy",
+        "state": "RUNNING",
+        "time_us": 172.91806325130298,
+        "markers": {
+          "T": {
+            "latest_cm_s": 7.148932602497094,
+            "median_last_5us_cm_s": 7.148896246121238,
+            "median_10us_change_cm_s": 0.041966726702174384,
+            "slope_last_20us_cm_s_per_us": 0.004195326108128088
+          },
+          "OH": {
+            "latest_cm_s": 7.339151449566556,
+            "median_last_5us_cm_s": 7.313853145870046,
+            "median_10us_change_cm_s": 0.03971564655007409,
+            "slope_last_20us_cm_s_per_us": 0.0038192446998486654
+          }
+        }
+      },
+      {
+        "case": "stock",
+        "state": "COMPLETED",
+        "time_us": 198.929603628,
+        "markers": {
+          "T": {
+            "latest_cm_s": 6.6260447869167365,
+            "median_last_5us_cm_s": 6.626450475256978,
+            "median_10us_change_cm_s": 0.004496819487785686,
+            "slope_last_20us_cm_s_per_us": 0.0004326040838571232
+          },
+          "OH": {
+            "latest_cm_s": 6.609476291057341,
+            "median_last_5us_cm_s": 6.611494782864865,
+            "median_10us_change_cm_s": 0.009141911066524067,
+            "slope_last_20us_cm_s_per_us": 0.0009645899761859085
+          }
+        }
+      },
+      {
+        "case": "deepflame",
+        "state": "COMPLETED",
+        "time_us": 198.941249729,
+        "markers": {
+          "T": {
+            "latest_cm_s": 7.237348802848587,
+            "median_last_5us_cm_s": 7.233782843728171,
+            "median_10us_change_cm_s": 0.011040806349075893,
+            "slope_last_20us_cm_s_per_us": 0.001072336534925154
+          },
+          "OH": {
+            "latest_cm_s": 7.304692315201122,
+            "median_last_5us_cm_s": 7.299000549861008,
+            "median_10us_change_cm_s": 0.018337948423570616,
+            "slope_last_20us_cm_s_per_us": 0.001770561300764443
+          }
+        }
+      }
+    ],
+    "common_window": {
+      "start_us": 167.91806325130298,
+      "end_us": 172.91806325130298,
+      "cases": {
+        "native": {
+          "T": 6.996142209430387,
+          "OH": 7.132031415168551
+        },
+        "energy": {
+          "T": 7.148896246121238,
+          "OH": 7.313853145870046
+        },
+        "stock": {
+          "T": 6.616460617085031,
+          "OH": 6.5841918231580845
+        },
+        "deepflame": {
+          "T": 7.229059274817577,
+          "OH": 7.236184062633063
+        }
+      },
+      "energy_minus_native_cm_s": {
+        "T": 0.15275403669085108,
+        "OH": 0.1818217307014951
+      }
+    }
+  },
+  "status_log": "124884982           RUNNING   05:02:44   06:00:00      0:0 \n124896761         COMPLETED   01:43:08   06:00:00      0:0 \n124900963           RUNNING   02:18:51   06:00:00      0:0 \n124901315         COMPLETED   02:12:02   06:00:00      0:0 \n\nJOB 124900963\nTime = 0.000169168063251\nmin/max(T) = 297.998479389, 2223.04430417\nExecutionTime = 8162.52 s  ClockTime = 8196 s\nTime = 0.000169218063251\nmin/max(T) = 297.998479389, 2223.04430417\nExecutionTime = 8165.96 s  ClockTime = 8200 s\nTime = 0.000169268063251\nmin/max(T) = 297.998479389, 2223.04430417\nExecutionTime = 8169.39 s  ClockTime = 8203 s\nTime = 0.000169318063251\n\nJOB 124901315\nTime = 0.000199891249729\nmin/max(T) = 298.000404517, 2225.77155545\nExecutionTime = 7693.75 s  ClockTime = 7876 s\nTime = 0.000199941249729\nmin/max(T) = 298.000404046, 2225.77018265\nExecutionTime = 7695.73 s  ClockTime = 7878 s\nTime = 0.000199991249729\nmin/max(T) = 298.000403538, 2225.76881834\nExecutionTime = 7697.94 s  ClockTime = 7881 s\nEnd\n\nJOB 124896761\nTime = 0.000199879603628\nmin/max(T) = 297.999939895, 2229.64813507\nExecutionTime = 6033.85 s  ClockTime = 6142 s\nTime = 0.000199929603628\nmin/max(T) = 297.999941346, 2229.64816794\nExecutionTime = 6035.4 s  ClockTime = 6144 s\nTime = 0.000199979603628\nmin/max(T) = 297.999943189, 2229.64816881\nExecutionTime = 6037.13 s  ClockTime = 6146 s\nEnd\n\n",
+  "output_sha256": {
+    "ideal-openfoam-histories.png": "3c99eecbe94c0dd580fc29f99ea16d01e3e82e0e4d06c93ca593e60327b9a6b5",
+    "ideal-openfoam-histories.pdf": "7a4f9766b64578e9adf06a82a953fc848bfe2ee71769d2f23625703d1a7aa484",
+    "sweep-history.csv": "2599505f0e2b3aa996f9e975ef615d9cad05909c845f584aca03fc2c7bacbe9b",
+    "plotted-history.csv": "c259a093ec0558c21e1fe872fa258625ab1c394fad348c0a30e0050007e13a92",
+    "flame-speed-history.png": "d2203a05d9f13d5917764a6e8c58e098327eb31661bbd5cc8f1abf806749843a",
+    "flame-speed-history.pdf": "e35701efa4005a90bc620a1807181d0ae122fead16171e9c85a6992968529791",
+    "flame-speed-history-detail.png": "0efdbcb08d40c9139d0cce307db9353af029e27085818ba178d6896dea20d29e",
+    "all-flame-speed-histories.pdf": "2f8a017114d61765c0da319177500a8382224076c958a0d4ce4e1187f22c2000"
+  },
+  "plotting_source": "85db9b74494c7c43d8fa22ffc30ef4fdac399161",
+  "lark_section": "https://qcnwovvb1xop.feishu.cn/docx/KgobdGw8CoIfRCxI2BvcoFYEnCf#doxcntPoaMo7Iy7CYCbnMRWq4Tc",
+  "lark_pdf_token": "V3OUb1G0Do7ZgFxpDbscyGeQnwh"
+}
