@@ -178,3 +178,10 @@ limits separation of Cases 1/2; those references carry larger uncertainty.
 These are digitized image coordinates, not author numerical data. Extraction
 retains pixel coordinates, calibration and explicit uncertainty for audit.
 The paper marker near phi=1.02 is included in addition to the earlier sweep grid.
+
+`alpha-probe SPECIES.txt PROFILE.csv NEW_OUTPUT.csv` checks the existing SRK
+kernel at each in-flame zero of the Soave square-root factor. It freezes the
+nearest saved composition and evaluates departure enthalpy on both sides with
+shrinking temperature offsets. A finite limiting jump distinguishes a closure
+non-smoothness from ordinary heat capacity. This standalone C++17 diagnostic
+needs no Cantera SDK, changes no solver model and writes only the new output.
