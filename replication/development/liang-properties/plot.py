@@ -18,6 +18,32 @@ def read(path,delimiter=','):
     with path.open() as f:return list(csv.DictReader(f,delimiter=delimiter))
 
 
+def paper_critical_phi1(page):
+    """Read source vector curves, preserving axis-calibration uncertainty."""
+    curves={('H2','Tc'):[],('H2','Pc'):[],('CH4','Tc'):[],('CH4','Pc'):[]}
+    for drawing in page.get_drawings():
+        r=drawing['rect'];color=drawing['color']
+        if drawing['fill'] is not None or color is None:continue
+        quantity='Pc' if color[0]>.5 and color[1]<.1 else 'Tc'
+        if len(drawing['items'])==12 and r.width>100:
+            fuel='H2'
+        elif r.x0>=282.7 and r.x1<=434.1 and r.width>3 and r.height<1 and (
+            quantity=='Tc' and 77<r.y0<94 or quantity=='Pc' and 97<r.y0<114):
+            fuel='CH4'
+        else:continue
+        for item in drawing['items']:
+            if item[0]=='l':curves[fuel,quantity].extend([(p.x,p.y) for p in item[1:]])
+    target=282.737+.4*(434.058-282.737)/1.4;result={}
+    for (fuel,quantity),values in curves.items():
+        points=sorted(set(values));left=max(p for p in points if p[0]<=target)
+        right=min(p for p in points if p[0]>=target)
+        y=left[1]+(target-left[0])/(right[0]-left[0])*(right[1]-left[1])
+        value=60+(194.121-y)*100/(194.121-56.036) if quantity=='Tc' else 10+(188.808-y)*50/(188.808-56.037)
+        result.setdefault(fuel,{})[quantity+'_K' if quantity=='Tc' else quantity+'_atm']=value
+    return dict(phi=1,values=result,estimated_calibration_uncertainty={'Tc_K':.1,'Pc_atm':.05},
+                method='Source PDF vector paths with calibrated dual axes; not author raw data')
+
+
 def text(page,box,content,size=8,color=(0,0,0)):
     if page.insert_textbox(box,content,fontname='helv',fontsize=size,color=color)<0:
         raise ValueError('Text overflow: '+content)
@@ -85,6 +111,9 @@ def main():
     if digest(a.paper)!=PAPER_SHA:raise ValueError('Uncalibrated paper PDF')
     if a.output.exists():raise ValueError('Output already exists')
     oxygen=read(a.results/'oxygen.csv');critical=read(a.results/'critical.csv')
+    identity=dict(line.split('=',1) for line in (a.results.parent/'validation-inputs.txt').read_text().splitlines())
+    run_identity='Property job %s | source %s | library build %s' % (
+        a.results.parent.name.replace('job-',''),identity['source'][:7],identity['build_job'])
     nist=read(a.nist/'oxygen-100atm.tsv','\t')
     manifest=json.loads((a.nist/'manifest.json').read_text())
     assert digest(a.nist/'oxygen-100atm.tsv')==manifest['sha256']
@@ -95,7 +124,7 @@ def main():
     for number,clip,caption,overlay in [(1,FIG1,CAP1,lambda p,o:overlay1(p,o,oxygen,nist)),
                                         (2,FIG2,CAP2,lambda p,o:overlay2(p,o,critical))]:
         width=clip[2]-clip[0];height=clip[3]-clip[1]
-        page=doc.new_page(width=468,height=height+174)
+        page=doc.new_page(width=468,height=height+195)
         text(page,(18,12,450,35),'Liang Fig. %s: property-model comparison'%number,11)
         text(page,(18,35,222,49),'Original paper',8)
         text(page,(246,35,450,49),'Original + our computed data',8)
@@ -119,8 +148,8 @@ def main():
                   'Original black/red curves are Liang Tc/Pc. Computed curves differ, especially pressure;\n'
                   'the implementation checks do not establish a paper replication. No constants were fitted.\n'
                   'This pseudocritical construction does not establish the full mixture critical locus.')
-        text(page,(18,bottom+48,450,bottom+101),note,7.4)
-        text(page,(18,bottom+109,450,bottom+122),'Source: Liang, Li & Law, PCI 37 (2019), 1733-1739. doi:10.1016/j.proci.2018.06.070',6.7)
+        text(page,(18,bottom+53,450,bottom+122),note+'\n'+run_identity,7.4)
+        text(page,(18,bottom+127,450,bottom+140),'Source: Liang, Li & Law, PCI 37 (2019), 1733-1739. doi:10.1016/j.proci.2018.06.070',6.7)
         page.get_pixmap(matrix=fitz.Matrix(3,3)).save(a.output/f'liang-fig{number}-comparison.png')
         single=fitz.open();s=single.new_page(width=width,height=height+35)
         s.show_pdf_page(fitz.Rect(0,0,width,height),source,2,clip=fitz.Rect(clip));overlay(s,(0,0))
@@ -138,6 +167,7 @@ def main():
         input_sha256={p.name:digest(p) for p in a.results.glob('*.csv')},nist=manifest,
         source_page_index=2,figure_clips_pt=[FIG1,FIG2],caption_clips_pt=[CAP1,CAP2],
         checks=json.loads((a.results/'checks.json').read_text()),reference_errors=errors,
+        paper_critical_phi1=paper_critical_phi1(source[2]),
         scientific_acceptance=False)
     record['outputs']={p.name:digest(p) for p in a.output.iterdir()}
     (a.output/'manifest.json').write_text(json.dumps(record,indent=2)+'\n')

@@ -1,0 +1,160 @@
+{
+  "date": "2026-10-19",
+  "source": "e208396bdba48592aacbf6bb9a1c41b8eca3d9bb",
+  "job": "124887485",
+  "library_build": "124657926",
+  "library_source": "48506de20ce67f35279c5347b09dcd86865a4c39",
+  "binary_sha256": "7526904eb50e9303e3c85e7303d2d1f0727dfb5a99264025654ff94ce3eb926c",
+  "species_sha256": "a4d9a128cb77c69de64102f6a437000937f75182f7468cc0549880da40332e12",
+  "image_digest": "b307565bb6a8f65be82caa9c552e708eb2888e5e35f90f0b620e6f48b8bfa507",
+  "checks": {
+    "finite_oxygen_states": 901,
+    "critical_states": 282,
+    "max_normalized_derivative_residual": 1.801206356967579e-14,
+    "extrapolated_caloric_states": 100,
+    "scientific_acceptance": false
+  },
+  "phi1": [
+    {
+      "fuel": "H2",
+      "phi": "1",
+      "Tc_K": "105.1054753643602",
+      "Pc_atm": "31.68083341220189",
+      "vc_m3_kmol": "0.09074557354729548",
+      "dp_normalized": "-3.369941325449222e-15",
+      "d2p_normalized": "9.78583226875593e-15"
+    },
+    {
+      "fuel": "CH4",
+      "phi": "1",
+      "Tc_K": "136.6460996293649",
+      "Pc_atm": "37.14719655376903",
+      "vc_m3_kmol": "0.1006161981329358",
+      "dp_normalized": "7.966642987141397e-16",
+      "d2p_normalized": "-1.026013861438185e-14"
+    }
+  ],
+  "comparison_manifest": {
+    "source_pdf_sha256": "24163be0124e0fa6cd28ddb1d369b813e64e82bd7446e9f9218a340445aca6fe",
+    "plotter_sha256": "4e61ecaad00650529e1661d483386ec19e7c32001d78b9620a86c0f8b0ded844",
+    "input_sha256": {
+      "oxygen.csv": "f944acd7f8089ab38ae756190ff28a09f57c704e71ad37c516d1b37709e64d65",
+      "critical.csv": "f9665c641cc882c28bf77c9725b81a7890d5b025f99fd3c094bd13cb14ebe1bc",
+      "pure-critical.csv": "8a07a23e3e79f7b67c9bf80aea7e0acf58e2faf465b3d64c71ad0102718bbd87"
+    },
+    "nist": {
+      "url": "https://webbook.nist.gov/cgi/fluid.cgi?Action=Data&Wide=on&ID=C7782447&Type=IsoBar&Digits=12&P=100&TLow=100&THigh=1000&TInc=5&RefState=DEF&TUnit=K&PUnit=atm&DUnit=kg%2Fm3&HUnit=kJ%2Fkg&WUnit=m%2Fs&VisUnit=Pa*s&STUnit=N%2Fm",
+      "params": {
+        "Action": "Data",
+        "Wide": "on",
+        "ID": "C7782447",
+        "Type": "IsoBar",
+        "Digits": "12",
+        "P": "100",
+        "TLow": "100",
+        "THigh": "1000",
+        "TInc": "5",
+        "RefState": "DEF",
+        "TUnit": "K",
+        "PUnit": "atm",
+        "DUnit": "kg/m3",
+        "HUnit": "kJ/kg",
+        "WUnit": "m/s",
+        "VisUnit": "Pa*s",
+        "STUnit": "N/m"
+      },
+      "retrieved_utc": "2026-10-19T06:39:18.993150+00:00",
+      "sha256": "369a894d2de0d0807f3f5fdd4f540a738302dab2cad7a77d90579926cb5e7499",
+      "rows": 181,
+      "interpretation": "Current NIST reference-model evaluation, not digitized paper data"
+    },
+    "source_page_index": 2,
+    "figure_clips_pt": [
+      [
+        48,
+        53,
+        240,
+        384
+      ],
+      [
+        263,
+        53,
+        456,
+        210
+      ]
+    ],
+    "caption_clips_pt": [
+      [
+        48,
+        394,
+        240,
+        424
+      ],
+      [
+        263,
+        219,
+        456,
+        239
+      ]
+    ],
+    "checks": {
+      "finite_oxygen_states": 901,
+      "critical_states": 282,
+      "max_normalized_derivative_residual": 1.801206356967579e-14,
+      "extrapolated_caloric_states": 100,
+      "scientific_acceptance": false
+    },
+    "reference_errors": {
+      "rho_kg_m3": {
+        "NIST_300_1000K_RMS_percent": 0.6215514107050455,
+        "NIST_300_1000K_max_abs_percent": 1.370468368678457
+      },
+      "kappa_W_m_K": {
+        "NIST_300_1000K_RMS_percent": 9.264012525218643,
+        "NIST_300_1000K_max_abs_percent": 14.895115829363759
+      }
+    },
+    "paper_critical_phi1": {
+      "phi": 1,
+      "values": {
+        "H2": {
+          "Tc_K": 98.11730677526087,
+          "Pc_atm": 21.11362914196203
+        },
+        "CH4": {
+          "Tc_K": 138.1926635027262,
+          "Pc_atm": 40.61031369474516
+        }
+      },
+      "estimated_calibration_uncertainty": {
+        "Tc_K": 0.1,
+        "Pc_atm": 0.05
+      },
+      "method": "Source PDF vector paths with calibrated dual axes; not author raw data"
+    },
+    "scientific_acceptance": false,
+    "outputs": {
+      "liang-fig1-comparison.png": "27452c0140c9aaea537e88e98143a5c73352d8f6b475e09a6ce4130c53dfbdc2",
+      "liang-fig1-overlay.png": "e5fa36f6846812611f8c9f955684d2db610f0b4ba832aeab31c9307a062fe706",
+      "liang-fig2-comparison.png": "477b06d245195ba41cec630c1edfa2ca9c736e3e7b4a3e0fb2e7bdf635e4c394",
+      "liang-fig2-overlay.png": "25d205178ad958f27ff804ece846094cf002124457f17ab5e530bbaabaa1ee25",
+      "liang-figures-1-2.pdf": "3f75b00cf9a3ef87ad61794f7eae3446949dd4effd41c59fd2a4670e689e2629"
+    }
+  },
+  "failed_build_attempts": [
+    {
+      "job": "124885239",
+      "cause": "EOS template included before constants"
+    },
+    {
+      "job": "124885850",
+      "cause": "stock libspecie chosen by linker search order"
+    },
+    {
+      "job": "124886374",
+      "cause": "adding libraries did not change stock libspecie precedence"
+    }
+  ],
+  "first_qualified_job": "124886757",
+  "scientific_acceptance": false
+}

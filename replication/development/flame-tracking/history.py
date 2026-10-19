@@ -61,9 +61,11 @@ def main():
         ax.set_title('phi %.2f | job %s'%(row['phi'],row['job']),fontsize=8)
         ax.set_xlabel('Physical time (us)');ax.set_ylabel('Speed (cm/s)')
         ax.set_ylim(0,10);ax.grid(alpha=.15)
+        if not row['series']['left_T']:
+            ax.text(.03,.88,'Tracking window not yet complete',transform=ax.transAxes,fontsize=7)
     axes.flat[-1].axis('off');handles,labels=axes.flat[1].get_legend_handles_labels()
-    axes.flat[-1].legend(handles,labels,loc='center left',frameon=False)
-    axes.flat[-1].text(.02,.15,'Solid: left front; dashed: right front\nTracking: trailing 5-us fit\nTransient; no accepted steady CFD points',transform=axes.flat[-1].transAxes)
+    axes.flat[-1].legend(handles,labels,loc='upper left',frameon=False)
+    axes.flat[-1].text(.02,.17,'Solid: left front; dashed: right front\nTracking: trailing 5-us fit\nTransient; no accepted steady CFD points',transform=axes.flat[-1].transAxes)
     fig.suptitle('Ideal-gas OpenFOAM: three in-situ speed measures | '+manifest['timestamp_local'],fontsize=11)
     fig.tight_layout(rect=(0,0,1,.96));a.output.mkdir(parents=True)
     fig.savefig(a.output/'ideal-openfoam-histories.png',dpi=180)
