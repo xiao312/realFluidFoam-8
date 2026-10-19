@@ -2,6 +2,7 @@
 #define CanteraTransport_H
 #include "fvCFD.H"
 #include "bridge.h"
+#include "thermodynamicConstants.H"
 #include <dlfcn.h>
 #include <algorithm>
 #include <cmath>
@@ -104,11 +105,13 @@ public:
             if(weight(context_,k,&canteraWeight))
                 FatalErrorInFunction << error_(context_) << Foam::exit(Foam::FatalError);
             maximumWeightDifference=std::max(maximumWeightDifference,std::abs(canteraWeight/nativeWeights[k]-1));
-            const double nativeMolar=heats[k]*nativeWeights[k];
-            const double canteraMolar=enthalpies[k]*canteraWeight;
-            if(std::abs(nativeMolar-canteraMolar)>std::max(1e-3,1e-8*std::abs(nativeMolar)))
-                FatalErrorInFunction << "Molar formation enthalpy mismatch at species " << k
-                    << ": native=" << nativeMolar << " bridge=" << canteraMolar
+            // Compare the NASA polynomial itself; OF8 and Cantera use different
+            // CODATA gas constants (a measured 8.9583e-7 relative difference).
+            const double nativeNormalized=heats[k]*nativeWeights[k]/Foam::constant::thermodynamic::RR;
+            const double canteraNormalized=enthalpies[k]*canteraWeight/8314.46261815324;
+            if(std::abs(nativeNormalized-canteraNormalized)>std::max(1e-6,1e-8*std::abs(nativeNormalized)))
+                FatalErrorInFunction << "Formation enthalpy polynomial mismatch at species " << k
+                    << ": native h/R=" << nativeNormalized << " bridge h/R=" << canteraNormalized
                     << Foam::exit(Foam::FatalError);
         }
         // The independently audited legacy molecular weights differ by <=5.007e-5.
@@ -116,7 +119,8 @@ public:
         if(maximumWeightDifference>6e-5)
             FatalErrorInFunction << "Molecular weights exceed audited difference" << Foam::exit(Foam::FatalError);
         Foam::Info << "Cantera/native molar formation enthalpies verified; maximum MW relative difference="
-            << maximumWeightDifference << Foam::endl;
+            << maximumWeightDifference << "; native R=" << Foam::constant::thermodynamic::RR
+            << "; Cantera R=8314.46261815324" << Foam::endl;
     }
     void correctChemistry(const Foam::volScalarField& temperature,const Foam::volScalarField& pressure,
                           const Foam::volScalarField& density,const Foam::PtrList<Foam::volScalarField>& species,

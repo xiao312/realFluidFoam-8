@@ -49,8 +49,10 @@ is `Qdot=-sum(Hf_native*RR)` in W/m3, matching the native energy convention.
 The reactor's final T is diagnostic only; the CFD energy equation updates T.
 Pressure/transport/PIMPLE and thermodynamic property updates retain their placement.
 
-Only stage1/full is permitted. Molar formation enthalpies must match the bridge
-reference values before the first integration. Legacy native molecular weights
+Only stage1/full is permitted. Molar formation enthalpies divided by each
+library's gas constant must match before the first integration. OF8 uses an older
+CODATA gas constant, 8.9583e-7 higher than pinned Cantera3.2; startup records both
+values and compares the underlying NASA polynomial. Legacy native molecular weights
 differ from Cantera by at most 5.007e-5 relative; startup checks a 6e-5 ceiling
 and prints the measured maximum. Native mass-specific formation heats are used
 in Qdot. Frozen-state conversion predicts at most 0.000102 K equivalent energy
