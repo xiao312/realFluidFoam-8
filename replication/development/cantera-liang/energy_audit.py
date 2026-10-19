@@ -64,12 +64,16 @@ def main():
         values=[r['total_W_m2'] for r in rows];scale=max(abs(r['conductive_W_m2']) for r in rows)
         if scale<=0:raise ValueError('No conductive flux scale')
         pure_values=[r['pure_species_total_W_m2'] for r in rows]
+        upwind=[r['upwind_total_W_m2'] for r in rows]
+        upwind_pure=[r['upwind_pure_total_W_m2'] for r in rows]
         reports.append(dict(record,profile_sha256=digest(profile),
             input_sha256={p.name:digest(p) for p in inputs.iterdir() if p.is_file()},
             total_range_W_m2=max(values)-min(values),endpoint_difference_W_m2=values[-1]-values[0],
             peak_conductive_W_m2=scale,range_over_peak_conduction=(max(values)-min(values))/scale,
             pure_species_range_W_m2=max(pure_values)-min(pure_values),
             maximum_pure_minus_partial_W_m2=max(abs(r['pure_minus_partial_W_m2']) for r in rows),
+            upwind_partial_range_W_m2=max(upwind)-min(upwind),
+            upwind_pure_range_W_m2=max(upwind_pure)-min(upwind_pure),
             maximum_mass_diffusion_sum_kg_m2s=max(abs(r['mass_diffusion_sum_kg_m2s']) for r in rows)))
     result=dict(binary_sha256=checksum[0],manifest_sha256=digest(manifest),
                 audit_script_sha256=digest(Path(__file__)),profiles=reports,scientific_acceptance=False)

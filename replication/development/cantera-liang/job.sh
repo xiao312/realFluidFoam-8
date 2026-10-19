@@ -3,7 +3,7 @@ set -euo pipefail
 root=${1:?}; release=${2:?}; sdk=${3:?}; inputs=${4:?}; stage=${5:?}; build=${6:-}
 phi=${7:-1.10}
 variant=${8:-full}
-[[ $variant =~ ^(full|(dense-increment|bounded-takahashi|pressure-chemistry|fine-grid|smoothed-alpha|takahashi-table2|takahashi-high-t)(,(dense-increment|bounded-takahashi|pressure-chemistry|fine-grid|smoothed-alpha|takahashi-table2|takahashi-high-t))*)$ ]] || exit 2
+[[ $variant =~ ^(full|(dense-increment|bounded-takahashi|pressure-chemistry|fine-grid|smoothed-alpha|takahashi-table2|takahashi-high-t|total-enthalpy|pure-species-flux)(,(dense-increment|bounded-takahashi|pressure-chemistry|fine-grid|smoothed-alpha|takahashi-table2|takahashi-high-t|total-enthalpy|pure-species-flux))*)$ ]] || exit 2
 pressure=${9:-100}
 [[ $pressure =~ ^[0-9]+([.][0-9]+)?$ ]] || exit 2
 [[ -n ${SLURM_JOB_ID:-} ]] || exit 2

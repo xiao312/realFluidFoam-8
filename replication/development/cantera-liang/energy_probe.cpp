@@ -41,7 +41,7 @@ try {
     }
     if(rows.size()<3)throw std::runtime_error("Empty profile");
     std::ofstream out(argv[4]);out<<std::setprecision(16)
-        <<"x_mid_m,advective_W_m2,conductive_W_m2,species_enthalpy_W_m2,total_W_m2,mass_diffusion_sum_kg_m2s,pure_species_total_W_m2,pure_minus_partial_W_m2\n";
+        <<"x_mid_m,advective_W_m2,conductive_W_m2,species_enthalpy_W_m2,total_W_m2,mass_diffusion_sum_kg_m2s,pure_species_total_W_m2,pure_minus_partial_W_m2,upwind_total_W_m2,upwind_pure_total_W_m2\n";
     for(size_t j=0;j+1<rows.size();j++) {
         auto& a=rows[j];auto& b=rows[j+1];double dz=b[0]-a[0];
         if(!(dz>0))throw std::runtime_error("Nonmonotone grid");
@@ -67,9 +67,12 @@ try {
         }
         double conductive=-sol->transport()->thermalConductivity()*(b[1]-a[1])/dz;
         double advective=.5*(a[2]*a[3]*a[4]+b[2]*b[3]*b[4]);
+        double mdot=.5*(a[2]*a[3]+b[2]*b[3]);
+        double upwind=mdot*(mdot>=0?a[4]:b[4])+conductive+speciesFlux;
         out<<.5*(a[0]+b[0])<<','<<advective<<','<<conductive<<','<<speciesFlux<<','
            <<advective+conductive+speciesFlux<<','<<massFlux<<','
-           <<advective+conductive+speciesFlux+pureDifference<<','<<pureDifference<<'\n';
+           <<advective+conductive+speciesFlux+pureDifference<<','<<pureDifference<<','
+           <<upwind<<','<<upwind+pureDifference<<'\n';
     }
     std::cout<<"Energy flux reconstruction completed\n";
 } catch(const std::exception& e) {std::cerr<<e.what()<<'\n';return 1;}

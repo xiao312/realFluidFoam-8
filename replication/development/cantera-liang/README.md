@@ -239,6 +239,25 @@ thermodynamic API or a flame solution. In the ideal case both fluxes must agree.
 `pure_species_total_W_m2` and `pure_minus_partial_W_m2` expose this diagnostic;
 the existing `total_W_m2` remains the partial-molar reconstruction.
 
+`total-enthalpy` selects an experimental free-flame energy residual from the
+divergence of total enthalpy flux: upwind advective mixture enthalpy, centered
+heat conduction and face species diffusion enthalpy. Chemistry has no separate
+energy source in this total-enthalpy balance. The optional `pure-species-flux`
+changes only diffusion enthalpies to pure-species values; it requires
+`total-enthalpy`. Mixture enthalpy, Cp, equilibrium and kinetics retain their
+existing APIs. Neither option is a verified Liang implementation.
+
+This diagnostic follows the interpretation supported by Liang p.1734 and
+Jorda Juanos/Sirignano (2017), p.57, which evaluates species enthalpies with
+individual-species parameters. Source: https://doi.org/10.1016/j.combustflame.2017.01.030
+(author copy: https://sirignano.eng.uci.edu/theme/pdfs/39.pdf).
+The partial-molar total-enthalpy control separates this flux choice from changing
+the energy discretization. Pseudo-time stepping retains Cantera's T relaxation
+term solely to find a steady solution; it is not a physical transient reactor.
+Only free flames without radiation/two-point control are supported. Qualify with
+an ideal control, refinement, and the reconstructed upwind total-flux balance
+before comparing nonideal pilots. All options remain disabled by default.
+
 `takahashi-high-t` is a diagnostic that removes only the reduced-temperature
 upper clamp at 5, retaining the lower clamp at 1 and requiring both
 `bounded-takahashi` and `takahashi-table2`. This tests an implementation detail
