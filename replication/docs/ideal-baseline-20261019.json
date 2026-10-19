@@ -1,0 +1,832 @@
+{
+  "snapshot": "2026-10-19T13:32:36.795542+08:00",
+  "case_source": "128d13ddb4e40c8a539053f22a90fb452738597e",
+  "analysis_source": "9d863b6e4dee532558114e98bf56be267067169a",
+  "archive_sha256": "9165f3a076b95cc2d5fcbdd50f5460ba5fca8c9ab9e4ff24d83a5c5b49da3549",
+  "binary_build": 124870644,
+  "binary_sha256": "e3ef56491e44c2dfdd79826805f992ed8220901643ac14554c38ca8e81e6b385",
+  "library_build": 124657926,
+  "library_source": "48506de20ce67f35279c5347b09dcd86865a4c39",
+  "image_lock": "replication/environment/lock.json",
+  "remote_root": "/public/home/dfagent/FlamePilot/trials/realfluidfoam",
+  "jobs": [
+    {
+      "job": "124877695",
+      "key": "phi110-smoke",
+      "reserved_core_hours": 4,
+      "source": "128d13ddb4e40c8a539053f22a90fb452738597e",
+      "last_time_s": 1e-09,
+      "solver_end": true,
+      "last_temperature": [
+        "298,",
+        "2229.4889809"
+      ]
+    },
+    {
+      "job": "124878193",
+      "key": "phi110-full",
+      "reserved_core_hours": 48,
+      "source": "128d13ddb4e40c8a539053f22a90fb452738597e",
+      "last_time_s": 3.46806325134e-06,
+      "solver_end": false,
+      "last_temperature": [
+        "298,",
+        "2230.04409251"
+      ]
+    },
+    {
+      "job": "124878268",
+      "key": "phi100-full",
+      "reserved_core_hours": 48,
+      "source": "128d13ddb4e40c8a539053f22a90fb452738597e",
+      "last_time_s": 3.56626177906e-06,
+      "solver_end": false,
+      "last_temperature": [
+        "298,",
+        "2293.72139874"
+      ]
+    },
+    {
+      "job": "124878305",
+      "key": "phi120-full",
+      "reserved_core_hours": 48,
+      "source": "128d13ddb4e40c8a539053f22a90fb452738597e",
+      "last_time_s": 3.72751203813e-06,
+      "solver_end": false,
+      "last_temperature": [
+        "298,",
+        "2143.2173562"
+      ]
+    },
+    {
+      "job": "124878341",
+      "key": "phi090-full",
+      "reserved_core_hours": 48,
+      "source": "128d13ddb4e40c8a539053f22a90fb452738597e",
+      "last_time_s": 3.3546238782e-06,
+      "solver_end": false,
+      "last_temperature": [
+        "298,",
+        "2160.4937341"
+      ]
+    },
+    {
+      "job": "124878481",
+      "key": "phi095-full",
+      "reserved_core_hours": 48,
+      "source": "128d13ddb4e40c8a539053f22a90fb452738597e",
+      "last_time_s": 1.38575430708e-06,
+      "solver_end": false,
+      "last_temperature": [
+        "298,",
+        "2234.01705866"
+      ]
+    },
+    {
+      "job": "124878510",
+      "key": "phi105-full",
+      "reserved_core_hours": 48,
+      "source": "128d13ddb4e40c8a539053f22a90fb452738597e",
+      "last_time_s": 6.64082982324e-07,
+      "solver_end": false,
+      "last_temperature": [
+        "298,",
+        "2273.42356169"
+      ]
+    },
+    {
+      "job": "124878594",
+      "key": "phi115-full",
+      "reserved_core_hours": 48,
+      "source": "128d13ddb4e40c8a539053f22a90fb452738597e",
+      "last_time_s": 9.22695393937e-07,
+      "solver_end": false,
+      "last_temperature": [
+        "298,",
+        "2186.22312761"
+      ]
+    },
+    {
+      "job": "124878625",
+      "key": "phi125-full",
+      "reserved_core_hours": 48,
+      "source": "128d13ddb4e40c8a539053f22a90fb452738597e",
+      "last_time_s": 7.33567593466e-07,
+      "solver_end": false,
+      "last_temperature": [
+        "298,",
+        "2101.15181686"
+      ]
+    },
+    {
+      "job": "124878627",
+      "key": "phi130-full",
+      "reserved_core_hours": 48,
+      "source": "128d13ddb4e40c8a539053f22a90fb452738597e",
+      "last_time_s": 8.37264835993e-07,
+      "solver_end": false,
+      "last_temperature": [
+        "298,",
+        "2060.09228898"
+      ]
+    },
+    {
+      "job": "124878634",
+      "key": "phi135-full",
+      "reserved_core_hours": 48,
+      "source": "128d13ddb4e40c8a539053f22a90fb452738597e",
+      "last_time_s": 4.01881643746e-07,
+      "solver_end": false,
+      "last_temperature": [
+        "298,",
+        "2019.9934443"
+      ]
+    },
+    {
+      "job": "124878676",
+      "key": "phi140-full",
+      "reserved_core_hours": 48,
+      "source": "128d13ddb4e40c8a539053f22a90fb452738597e",
+      "last_time_s": 3.62783971349e-07,
+      "solver_end": false,
+      "last_temperature": [
+        "298,",
+        "1980.78221133"
+      ]
+    }
+  ],
+  "sacct": "124877695|COMPLETED|00:02:38|0:0\n124878193|RUNNING|00:06:50|0:0\n124878268|RUNNING|00:06:50|0:0\n124878305|RUNNING|00:06:35|0:0\n124878341|RUNNING|00:06:20|0:0\n124878481|RUNNING|00:04:29|0:0\n124878510|RUNNING|00:04:23|0:0\n124878594|RUNNING|00:03:50|0:0\n124878625|RUNNING|00:03:29|0:0\n124878627|RUNNING|00:03:27|0:0\n124878634|RUNNING|00:03:20|0:0\n124878676|RUNNING|00:03:03|0:0\n",
+  "startup_qualification": {
+    "expected_ideal_density_kg_m3": 112.55936952001967,
+    "relative_errors": {
+      "left": 8.95830059244318e-07,
+      "right": 8.95830059244318e-07
+    },
+    "probe": [
+      {
+        "patch": "left",
+        "rho_kg_m3": "112.559268685953",
+        "Cp_J_kg_K": "1083.166791139498",
+        "Cv_J_kg_K": "781.0887992575888"
+      },
+      {
+        "patch": "right",
+        "rho_kg_m3": "112.559268685953",
+        "Cp_J_kg_K": "1083.166791139498",
+        "Cv_J_kg_K": "781.0887992575888"
+      }
+    ],
+    "fields": {
+      "time_s": 1e-09,
+      "cells": 8000,
+      "species_sum_error": 8.388845174067683e-13,
+      "fields": {
+        "T": {
+          "min": 298.0,
+          "max": 2229.4889809
+        },
+        "p": {
+          "min": 10053538.6338,
+          "max": 10348362.3947
+        },
+        "rho": {
+          "min": 14.7519800046,
+          "max": 112.605127628
+        },
+        "CH4": {
+          "min": 1.66554754502e-11,
+          "max": 0.0603507267891
+        },
+        "OH": {
+          "min": 2.3400518901e-56,
+          "max": 0.000107311858729
+        }
+      }
+    },
+    "endpoint_s": 1e-09,
+    "rows": 126,
+    "valid_rows": 126,
+    "Qdot_max_W_m3": 686032167598.0,
+    "Qdot_net_W": 8.134350633396516e-05,
+    "scientific_acceptance": false,
+    "compared_fields": 1360,
+    "mismatches": []
+  },
+  "cantera": [
+    {
+      "phi": 1.1,
+      "Tu_K": 298,
+      "pressure_Pa": 10132500,
+      "speed_cm_s": 7.467003112153642,
+      "Tmax_K": 2229.2965345322455,
+      "refinements": [
+        {
+          "slope": 0.12,
+          "curve": 0.18,
+          "points": 102,
+          "speed_cm_s": 7.6912835632315435,
+          "width_m": 0.004
+        },
+        {
+          "slope": 0.06,
+          "curve": 0.1,
+          "points": 168,
+          "speed_cm_s": 7.587585589217573,
+          "width_m": 0.004
+        },
+        {
+          "slope": 0.03,
+          "curve": 0.05,
+          "points": 314,
+          "speed_cm_s": 7.519637504250285,
+          "width_m": 0.004
+        },
+        {
+          "slope": 0.015,
+          "curve": 0.025,
+          "points": 601,
+          "speed_cm_s": 7.486350328988406,
+          "width_m": 0.004
+        },
+        {
+          "slope": 0.0075,
+          "curve": 0.0125,
+          "points": 1142,
+          "speed_cm_s": 7.467003112153642,
+          "width_m": 0.004
+        }
+      ],
+      "last_refinement_relative_change": 0.0025843322826943904,
+      "wall_seconds": 13.453000000008615,
+      "refinement_wall_seconds": 19.828000000008615
+    },
+    {
+      "phi": 1.0,
+      "Tu_K": 298,
+      "pressure_Pa": 10132500,
+      "speed_cm_s": 6.91474179170129,
+      "Tmax_K": 2296.623909734438,
+      "refinements": [
+        {
+          "slope": 0.12,
+          "curve": 0.18,
+          "points": 101,
+          "speed_cm_s": 7.129112551450345,
+          "width_m": 0.004
+        },
+        {
+          "slope": 0.06,
+          "curve": 0.1,
+          "points": 185,
+          "speed_cm_s": 7.007382845406621,
+          "width_m": 0.004
+        },
+        {
+          "slope": 0.03,
+          "curve": 0.05,
+          "points": 333,
+          "speed_cm_s": 6.955636942747664,
+          "width_m": 0.004
+        },
+        {
+          "slope": 0.015,
+          "curve": 0.025,
+          "points": 620,
+          "speed_cm_s": 6.930293376254248,
+          "width_m": 0.004
+        },
+        {
+          "slope": 0.0075,
+          "curve": 0.0125,
+          "points": 1190,
+          "speed_cm_s": 6.91474179170129,
+          "width_m": 0.004
+        }
+      ],
+      "last_refinement_relative_change": 0.0022440008970245895,
+      "wall_seconds": 23.89100000000326,
+      "refinement_wall_seconds": 25.375
+    },
+    {
+      "phi": 1.2,
+      "Tu_K": 298,
+      "pressure_Pa": 10132500,
+      "speed_cm_s": 7.120380052909459,
+      "Tmax_K": 2148.041622986594,
+      "refinements": [
+        {
+          "slope": 0.12,
+          "curve": 0.18,
+          "points": 97,
+          "speed_cm_s": 7.413140559783185,
+          "width_m": 0.004
+        },
+        {
+          "slope": 0.06,
+          "curve": 0.1,
+          "points": 169,
+          "speed_cm_s": 7.238450001145388,
+          "width_m": 0.004
+        },
+        {
+          "slope": 0.03,
+          "curve": 0.05,
+          "points": 315,
+          "speed_cm_s": 7.174893272546506,
+          "width_m": 0.004
+        },
+        {
+          "slope": 0.015,
+          "curve": 0.025,
+          "points": 594,
+          "speed_cm_s": 7.140905774459995,
+          "width_m": 0.004
+        },
+        {
+          "slope": 0.0075,
+          "curve": 0.0125,
+          "points": 1141,
+          "speed_cm_s": 7.120380052909459,
+          "width_m": 0.004
+        }
+      ],
+      "last_refinement_relative_change": 0.0028743862751904325,
+      "wall_seconds": 12.764999999984866,
+      "refinement_wall_seconds": 21.469000000011874
+    },
+    {
+      "phi": 0.9,
+      "Tu_K": 298,
+      "pressure_Pa": 10132500,
+      "speed_cm_s": 5.705747444706062,
+      "Tmax_K": 2165.7436656409654,
+      "refinements": [
+        {
+          "slope": 0.12,
+          "curve": 0.18,
+          "points": 100,
+          "speed_cm_s": 5.864423214352067,
+          "width_m": 0.004
+        },
+        {
+          "slope": 0.06,
+          "curve": 0.1,
+          "points": 179,
+          "speed_cm_s": 5.778451476363379,
+          "width_m": 0.004
+        },
+        {
+          "slope": 0.03,
+          "curve": 0.05,
+          "points": 326,
+          "speed_cm_s": 5.73612015737547,
+          "width_m": 0.004
+        },
+        {
+          "slope": 0.015,
+          "curve": 0.025,
+          "points": 627,
+          "speed_cm_s": 5.717619258408954,
+          "width_m": 0.004
+        },
+        {
+          "slope": 0.0075,
+          "curve": 0.0125,
+          "points": 1202,
+          "speed_cm_s": 5.705747444706062,
+          "width_m": 0.004
+        }
+      ],
+      "last_refinement_relative_change": 0.0020763561136799558,
+      "wall_seconds": 18.89100000000326,
+      "refinement_wall_seconds": 28.875
+    },
+    {
+      "phi": 0.95,
+      "Tu_K": 298,
+      "pressure_Pa": 10132500,
+      "speed_cm_s": 6.382402399944982,
+      "Tmax_K": 2237.940296627887,
+      "refinements": [
+        {
+          "slope": 0.12,
+          "curve": 0.18,
+          "points": 102,
+          "speed_cm_s": 6.561923897612773,
+          "width_m": 0.004
+        },
+        {
+          "slope": 0.06,
+          "curve": 0.1,
+          "points": 185,
+          "speed_cm_s": 6.460167005753139,
+          "width_m": 0.004
+        },
+        {
+          "slope": 0.03,
+          "curve": 0.05,
+          "points": 331,
+          "speed_cm_s": 6.416135857144491,
+          "width_m": 0.004
+        },
+        {
+          "slope": 0.015,
+          "curve": 0.025,
+          "points": 615,
+          "speed_cm_s": 6.395994941046126,
+          "width_m": 0.004
+        },
+        {
+          "slope": 0.0075,
+          "curve": 0.0125,
+          "points": 1198,
+          "speed_cm_s": 6.382402399944982,
+          "width_m": 0.004
+        }
+      ],
+      "last_refinement_relative_change": 0.0021251644546987913,
+      "wall_seconds": 22.39100000000326,
+      "refinement_wall_seconds": 22.75
+    },
+    {
+      "phi": 1.05,
+      "Tu_K": 298,
+      "pressure_Pa": 10132500,
+      "speed_cm_s": 7.330248421544574,
+      "Tmax_K": 2273.634457755042,
+      "refinements": [
+        {
+          "slope": 0.12,
+          "curve": 0.18,
+          "points": 103,
+          "speed_cm_s": 7.573440325961016,
+          "width_m": 0.004
+        },
+        {
+          "slope": 0.06,
+          "curve": 0.1,
+          "points": 177,
+          "speed_cm_s": 7.449765572409536,
+          "width_m": 0.004
+        },
+        {
+          "slope": 0.03,
+          "curve": 0.05,
+          "points": 329,
+          "speed_cm_s": 7.385243934775396,
+          "width_m": 0.004
+        },
+        {
+          "slope": 0.015,
+          "curve": 0.025,
+          "points": 616,
+          "speed_cm_s": 7.349996639092322,
+          "width_m": 0.004
+        },
+        {
+          "slope": 0.0075,
+          "curve": 0.0125,
+          "points": 1186,
+          "speed_cm_s": 7.330248421544574,
+          "width_m": 0.004
+        }
+      ],
+      "last_refinement_relative_change": 0.002686833548020129,
+      "wall_seconds": 20.203000000008615,
+      "refinement_wall_seconds": 32.235000000015134
+    },
+    {
+      "phi": 1.15,
+      "Tu_K": 298,
+      "pressure_Pa": 10132500,
+      "speed_cm_s": 7.343496980167247,
+      "Tmax_K": 2186.150849754944,
+      "refinements": [
+        {
+          "slope": 0.12,
+          "curve": 0.18,
+          "points": 101,
+          "speed_cm_s": 7.573665200760997,
+          "width_m": 0.004
+        },
+        {
+          "slope": 0.06,
+          "curve": 0.1,
+          "points": 166,
+          "speed_cm_s": 7.46997106427291,
+          "width_m": 0.004
+        },
+        {
+          "slope": 0.03,
+          "curve": 0.05,
+          "points": 307,
+          "speed_cm_s": 7.400834215705982,
+          "width_m": 0.004
+        },
+        {
+          "slope": 0.015,
+          "curve": 0.025,
+          "points": 591,
+          "speed_cm_s": 7.364737741626431,
+          "width_m": 0.004
+        },
+        {
+          "slope": 0.0075,
+          "curve": 0.0125,
+          "points": 1122,
+          "speed_cm_s": 7.343496980167247,
+          "width_m": 0.004
+        }
+      ],
+      "last_refinement_relative_change": 0.002884116475611709,
+      "wall_seconds": 16.062000000005355,
+      "refinement_wall_seconds": 22.344000000011874
+    },
+    {
+      "phi": 1.25,
+      "Tu_K": 298,
+      "pressure_Pa": 10132500,
+      "speed_cm_s": 6.873698515469016,
+      "Tmax_K": 2113.7548208238495,
+      "refinements": [
+        {
+          "slope": 0.12,
+          "curve": 0.18,
+          "points": 97,
+          "speed_cm_s": 7.157033951341807,
+          "width_m": 0.004
+        },
+        {
+          "slope": 0.06,
+          "curve": 0.1,
+          "points": 168,
+          "speed_cm_s": 6.995468585130828,
+          "width_m": 0.004
+        },
+        {
+          "slope": 0.03,
+          "curve": 0.05,
+          "points": 318,
+          "speed_cm_s": 6.92831829999086,
+          "width_m": 0.004
+        },
+        {
+          "slope": 0.015,
+          "curve": 0.025,
+          "points": 610,
+          "speed_cm_s": 6.893470578414646,
+          "width_m": 0.004
+        },
+        {
+          "slope": 0.0075,
+          "curve": 0.0125,
+          "points": 1167,
+          "speed_cm_s": 6.873698515469016,
+          "width_m": 0.004
+        }
+      ],
+      "last_refinement_relative_change": 0.0028682305553811016,
+      "wall_seconds": 16.812000000005355,
+      "refinement_wall_seconds": 21.76600000000326
+    },
+    {
+      "phi": 1.3,
+      "Tu_K": 298,
+      "pressure_Pa": 10132500,
+      "speed_cm_s": 6.619133757678313,
+      "Tmax_K": 2082.0618065552467,
+      "refinements": [
+        {
+          "slope": 0.12,
+          "curve": 0.18,
+          "points": 96,
+          "speed_cm_s": 6.890675794037813,
+          "width_m": 0.004
+        },
+        {
+          "slope": 0.06,
+          "curve": 0.1,
+          "points": 170,
+          "speed_cm_s": 6.735548007982148,
+          "width_m": 0.004
+        },
+        {
+          "slope": 0.03,
+          "curve": 0.05,
+          "points": 324,
+          "speed_cm_s": 6.670359071809968,
+          "width_m": 0.004
+        },
+        {
+          "slope": 0.015,
+          "curve": 0.025,
+          "points": 613,
+          "speed_cm_s": 6.637930985861855,
+          "width_m": 0.004
+        },
+        {
+          "slope": 0.0075,
+          "curve": 0.0125,
+          "points": 1167,
+          "speed_cm_s": 6.619133757678313,
+          "width_m": 0.004
+        }
+      ],
+      "last_refinement_relative_change": 0.002831790240600429,
+      "wall_seconds": 14.437999999994645,
+      "refinement_wall_seconds": 21.67200000002049
+    },
+    {
+      "phi": 1.35,
+      "Tu_K": 298,
+      "pressure_Pa": 10132500,
+      "speed_cm_s": 6.3658559337846174,
+      "Tmax_K": 2052.4393545844036,
+      "refinements": [
+        {
+          "slope": 0.12,
+          "curve": 0.18,
+          "points": 95,
+          "speed_cm_s": 6.627419546009025,
+          "width_m": 0.004
+        },
+        {
+          "slope": 0.06,
+          "curve": 0.1,
+          "points": 167,
+          "speed_cm_s": 6.475483301017985,
+          "width_m": 0.004
+        },
+        {
+          "slope": 0.03,
+          "curve": 0.05,
+          "points": 317,
+          "speed_cm_s": 6.416276081113511,
+          "width_m": 0.004
+        },
+        {
+          "slope": 0.015,
+          "curve": 0.025,
+          "points": 612,
+          "speed_cm_s": 6.383867401551939,
+          "width_m": 0.004
+        },
+        {
+          "slope": 0.0075,
+          "curve": 0.0125,
+          "points": 1176,
+          "speed_cm_s": 6.3658559337846174,
+          "width_m": 0.004
+        }
+      ],
+      "last_refinement_relative_change": 0.002821403803428435,
+      "wall_seconds": 13.734000000025844,
+      "refinement_wall_seconds": 25.671999999991385
+    },
+    {
+      "phi": 1.4,
+      "Tu_K": 298,
+      "pressure_Pa": 10132500,
+      "speed_cm_s": 6.121807950118492,
+      "Tmax_K": 2024.7945063517498,
+      "refinements": [
+        {
+          "slope": 0.12,
+          "curve": 0.18,
+          "points": 96,
+          "speed_cm_s": 6.372109769717438,
+          "width_m": 0.004
+        },
+        {
+          "slope": 0.06,
+          "curve": 0.1,
+          "points": 168,
+          "speed_cm_s": 6.235213780111526,
+          "width_m": 0.004
+        },
+        {
+          "slope": 0.03,
+          "curve": 0.05,
+          "points": 321,
+          "speed_cm_s": 6.172018632698608,
+          "width_m": 0.004
+        },
+        {
+          "slope": 0.015,
+          "curve": 0.025,
+          "points": 615,
+          "speed_cm_s": 6.1393988950849625,
+          "width_m": 0.004
+        },
+        {
+          "slope": 0.0075,
+          "curve": 0.0125,
+          "points": 1189,
+          "speed_cm_s": 6.121807950118492,
+          "width_m": 0.004
+        }
+      ],
+      "last_refinement_relative_change": 0.0028652552582230095,
+      "wall_seconds": 15.155999999988126,
+      "refinement_wall_seconds": 30.875
+    }
+  ],
+  "image_comparison": [
+    {
+      "phi": 0.95,
+      "cantera_cm_s": 6.382402399944982,
+      "liang_image_cm_s": 6.3743188010899186,
+      "difference_cm_s": 0.008083598855063379
+    },
+    {
+      "phi": 1.0,
+      "cantera_cm_s": 6.91474179170129,
+      "liang_image_cm_s": 6.919277929155314,
+      "difference_cm_s": -0.004536137454024036
+    },
+    {
+      "phi": 1.05,
+      "cantera_cm_s": 7.330248421544574,
+      "liang_image_cm_s": 7.32799727520436,
+      "difference_cm_s": 0.0022511463402139498
+    },
+    {
+      "phi": 1.1,
+      "cantera_cm_s": 7.467003112153642,
+      "liang_image_cm_s": 7.464237057220709,
+      "difference_cm_s": 0.0027660549329331374
+    },
+    {
+      "phi": 1.15,
+      "cantera_cm_s": 7.343496980167247,
+      "liang_image_cm_s": 7.3467302452316074,
+      "difference_cm_s": -0.003233265064360502
+    },
+    {
+      "phi": 1.2,
+      "cantera_cm_s": 7.120380052909459,
+      "liang_image_cm_s": 7.12874659400545,
+      "difference_cm_s": -0.008366541095990776
+    },
+    {
+      "phi": 1.25,
+      "cantera_cm_s": 6.873698515469016,
+      "liang_image_cm_s": 6.883514986376022,
+      "difference_cm_s": -0.009816470907005659
+    },
+    {
+      "phi": 1.3,
+      "cantera_cm_s": 6.619133757678313,
+      "liang_image_cm_s": 6.631471389645776,
+      "difference_cm_s": -0.012337631967463736
+    },
+    {
+      "phi": 1.35,
+      "cantera_cm_s": 6.3658559337846174,
+      "liang_image_cm_s": 6.381982288828338,
+      "difference_cm_s": -0.01612635504372051
+    },
+    {
+      "phi": 1.4,
+      "cantera_cm_s": 6.121807950118492,
+      "liang_image_cm_s": 6.133344686648501,
+      "difference_cm_s": -0.011536736530008973
+    }
+  ],
+  "fresh_properties": {
+    "rho": {
+      "solver": 112.559268686,
+      "cantera": 112.56049132668254,
+      "relative_difference": -1.0862076632145445e-05
+    },
+    "Cp": {
+      "solver": 1083.16679114,
+      "cantera": 1083.1550256983558,
+      "relative_difference": 1.0862195498395621e-05
+    },
+    "mu": {
+      "solver": 1.83536662235e-05,
+      "cantera": 1.7880649884313026e-05,
+      "relative_difference": 0.02645409100045959
+    },
+    "kappa": {
+      "solver": 0.0287366152951,
+      "cantera": 0.026969221309297298,
+      "relative_difference": 0.06553374179896765
+    },
+    "Dimix_OH": {
+      "solver": 3.15860066674e-07,
+      "cantera": 3.164650432324137e-07,
+      "relative_difference": -0.0019116694603436013
+    }
+  },
+  "scientific_acceptance": false,
+  "artifacts": {
+    "state\\ideal-baseline-20261019\\cantera\\author-gri30.yaml": "c6e72c25dbf5af75a16b71042e071aed15ca4fd4a8a854fd8720a820ce1986c6",
+    "state\\ideal-baseline-20261019\\cantera\\mechanism.json": "e270f229e04b2387667837eebdcd555f26f08506ddb405c9bd81db31990e0b82",
+    "state\\ideal-baseline-20261019\\cantera-fine\\results.json": "49973a55fb0ddae699eea6660d5b91fd9152760c390ac7a703cbcacbce22d255",
+    "output\\ideal-baseline-20261019-v2\\ideal-comparison.png": "cbc3daa02808eb0feb51913531c07b3229e5becd2377ec7111087a52f04f99a4",
+    "output\\ideal-baseline-20261019-v2\\ideal-paper-overlay.png": "e601782335a99065d767ddd03f8b2e554f5cd66025204f6499cdea78aee1cd3e",
+    "output\\ideal-baseline-20261019-v2\\digitization.json": "f4f550afe6f9bf92a0e261c5ac470098aac8436274eba832c051031f17dba821"
+  }
+}
