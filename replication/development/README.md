@@ -35,8 +35,10 @@ separate subsequent drafts. PIMPLE changes must state their equations and placem
 5. Merge a reviewed cohesive draft with its evidence into `develop/reacting`.
    Incomplete/rejected drafts remain labelled; startup success is not acceptance.
 
-Keep central ignition as the paper-method premixed cross-check. The new
-inlet–outlet case is an explicit owner-selected adaptation. Do not tune physical
+As of 19 October 2026, central ignition is the owner-selected primary premixed
+replication experiment; the inlet–outlet case remains a comparison adaptation.
+See `premixed-paper/README.md` for the isolated draft and in-situ Eq.(40) checks.
+Do not tune physical
 models solely to fit a curve. The fork's source remains the authority for code;
 the Lark document records current decisions and comparisons.
 
