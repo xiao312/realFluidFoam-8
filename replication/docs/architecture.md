@@ -64,6 +64,13 @@ Its running-case assessment reuses the premixed-sensitivity CSV reader and
 kinematic tracking routines on local snapshots. It reports diagnostic gaps
 without changing running jobs or promoting transient speeds to accepted data.
 
+`development/liang-properties` consumes the qualified SRK library and author
+species data for density/critical-point probes, and owns an independent
+Ely–Hanley conductivity kernel. It supplies property CSV and original-scale
+Liang Figure 1/2 comparisons. It has no Cantera flame dependency and does not
+change production solver physics. Staged reacting closures depend on these
+property checks before promotion.
+
 `environment/` owns recipes, the image lock, contained execution, and job submission.
 `development/liang-panel-a` consumes the ideal-baseline Cantera profiles and
 local Liang PDF. It adds ideal-gas operating points and preserves the source
