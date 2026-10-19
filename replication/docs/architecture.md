@@ -1,5 +1,11 @@
 # Replication boundaries
 
+`development/solver-comparison/sampleHistory.C` consumes frozen stock/DeepFlame
+line profiles through the shared `flame-tracking/trackingCore.H`. Its CSVs and
+native in-situ tracking CSVs feed `plot_history.py` (NumPy/Matplotlib), which owns
+offline time-history PNG/PDF/CSV exports and provenance for the Lark comparison.
+This analysis path has no scheduler or solver mutation dependency.
+
 `development/flame-tracking` uses the premixed-paper generator, ideal-baseline
 donors and saved Cantera anchors to add read-only runtime OH/temperature tracking.
 It reuses the environment runner and adaptive field reader for isolated build,

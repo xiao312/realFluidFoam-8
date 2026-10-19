@@ -67,6 +67,29 @@ relative sample-directory columns in increasing time order. It expects the exact
 uses the existing 780.872245 K / OH=2e-5 markers and 5-us fit, not a new speed
 definition. Raw files must be stable snapshots. Partial/mismatched rows fail.
 
+`plot_history.py CONFIG OUTPUT_DIRECTORY` creates PNG/PDF speed histories, a
+plotted-data CSV and a JSON audit from local CSV snapshots. It never contacts the
+cluster or changes cases. CONFIG is JSON with `capture_utc`, `reference_cm_s`
+and `cases` (each: `key`, `label`, `csv`, `job`, `state`, `source`). CSV paths are
+relative to CONFIG. Optional `snapshot_sha256` records the raw archive identity.
+Inputs are native tracking CSVs or sampleHistory outputs, using only primary
+markers and valid 5-us fits. A point requires both fronts; their mean is drawn
+and their range shaded. Invalid observations remain gaps. Outputs include all
+observed speeds and a clearly labelled 4–10 cm/s zoom; no extra smoothing is used.
+Dependencies: Python, NumPy and Matplotlib in the local analysis environment;
+downstream: the existing Lark comparison and standalone research figures. No
+credentials or external services are used. Example:
+`python plot_history.py snapshot/plot-config.json snapshot/figures`.
+Verification: compile the script without bytecode, run on the frozen snapshot,
+check the audit's input hashes/coverage/status counts, and inspect both exports.
+Missing columns, duplicate observations and nonfinite valid speeds fail loudly.
+
+`plot_sweep.py TRACKING_SNAPSHOT OUTPUT_DIRECTORY` applies the same reader to all
+eleven native equivalence ratios in a flame-tracking snapshot.json. It checks the
+recorded file hashes and emits a separate small-multiple PNG/PDF, CSV and audit.
+Each panel uses its own fixed Cantera temperature anchor and reference speed.
+It preserves the full observed speed range and omits source-based estimates.
+
 Source packaging must preserve case. Export DeepFlame with `git archive REV`
 from Git objects and extract on Linux; never copy a Windows working tree as build
 input. Directory names can collide even when full file paths do not. Run
