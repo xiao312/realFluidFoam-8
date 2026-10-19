@@ -1,6 +1,7 @@
 #!/bin/bash
 set -o pipefail
 release=${1:?}; family=${2:?}; key=${3:?}
+end_us=${4:-200}
 . /opt/openfoam8/etc/bashrc
 set -euo pipefail
 job="/work/jobs/$RF_JOB_ID"
@@ -22,8 +23,8 @@ printf '%s  %s\n' "$expected" "$solver" | sha256sum -c - > "$job/binary-verified
 sha256sum "$solver" > "$job/solver-product.sha256"
 ldd "$solver" > "$job/solver-ldd.txt"
 ! grep -q 'not found' "$job/solver-ldd.txt"
-python3 -B "$module/prepare.py" plan "$family" "$key" "$job/case" > "$job/case-plan.json"
-python3 -B "$module/prepare.py" apply "$family" "$key" "$job/case" > "$job/prepare.log"
+python3 -B "$module/prepare.py" plan "$family" "$key" "$job/case" --end-us "$end_us" > "$job/case-plan.json"
+python3 -B "$module/prepare.py" apply "$family" "$key" "$job/case" --end-us "$end_us" > "$job/prepare.log"
 blockMesh -case "$job/case" > "$job/blockMesh.log" 2>&1
 checkMesh -case "$job/case" > "$job/checkMesh.log" 2>&1
 grep -q 'Mesh OK' "$job/checkMesh.log"

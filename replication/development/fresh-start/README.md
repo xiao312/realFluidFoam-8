@@ -20,6 +20,11 @@ flame-tracking instrumentation/checks, pinned OF8 container, Slurm and Python.
 Dependents: four-solver diagnosis and the native phi sweep. Every generated path
 is inside ROOT; credentials are external and the pinned binaries are read-only.
 The energy binary remains an experimental draft and shares unchanged libraries.
+Both families now support every declared phi. An optional final endpoint in
+microseconds (200, 300 or 400; default 200) creates a new original-zero run with
+that duration. It never extends or copies the completed 200-us case. The endpoint
+is part of ledger identity. Eight-hour scheduler limits remain unchanged except
+for native phi090; these limits do not authorize checkpoint continuation.
 
 Example: `bash submit.sh plan ROOT RELEASE native phi110` validates the request
 and prints placement; `apply` submits the same plan with a deduplicated ledger.
@@ -28,6 +33,11 @@ the original initial-state generator. `python prepare.py verify FAMILY CASE`
 must pass after decomposition and before execution: startTime=0, startFrom=startTime,
 no positive-time directories and complete original 0 fields for all eight ranks.
 No smoke checkpoint is used as a production initial state.
+
+Example longer fresh run: `bash submit.sh plan ROOT RELEASE energy phi110 300`.
+Preparation accepts the matching `--end-us 300`. Verify start-policy guards with
+`python3 -B test_policy.py /contained/project/test-state`; generated controls and provenance must
+agree on the chosen endpoint while the earliest time remains zero.
 
 Verification: Python compilation, shell syntax, start-policy negative checks,
 scheduled mesh/density checks, binary hashes, earliest runtime tracking time=0,

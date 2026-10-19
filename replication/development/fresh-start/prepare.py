@@ -32,6 +32,8 @@ def verify(family,case):
     config=json.loads((case/'fresh-start-inputs.json').read_text())
     if config['initialization']!='generated_original_zero' or config['family']!=family:
         raise ValueError('Initial-state provenance mismatch')
+    if abs(float(entry(control,'endTime'))-config['end_time_s'])>1e-12:
+        raise ValueError('Endpoint differs between controls and provenance')
     hashes={str(p.relative_to(case)):hashlib.sha256(p.read_bytes()).hexdigest()
             for name in ('0','constant','system') for p in sorted((case/name).rglob('*')) if p.is_file()}
     physics=dict(hashes)
@@ -44,12 +46,12 @@ def verify(family,case):
     print(json.dumps(config,indent=2))
 
 
-def prepare(action,family,key,case):
+def prepare(action,family,key,case,end_us=200):
     seeds=json.loads((HERE.parent/'ideal-baseline/seeds.json').read_text())
-    if key not in seeds or (family=='energy' and key!='phi110'): raise ValueError('Unsupported case')
+    if key not in seeds or end_us not in (200,300,400): raise ValueError('Unsupported case or endpoint')
     if case.exists(): raise ValueError('Refusing existing case')
     config=dict(family=family,key=key,phi=seeds[key]['phi'],initialization='generated_original_zero',
-                start_time_s=0,end_time_s=2e-4,restart_authorization=None)
+                start_time_s=0,end_time_s=end_us*1e-6,restart_authorization=None)
     print(json.dumps(config,indent=2))
     if action=='plan': return
     subprocess.run([sys.executable,'-B',str(HERE.parent/'ideal-baseline/prepare.py'),
@@ -61,6 +63,7 @@ def prepare(action,family,key,case):
     if entry(control,'startFrom')!='startTime' or float(entry(control,'startTime'))!=0:
         raise ValueError('Generator no longer provides original initialization')
     control=re.sub(r'\bapplication\s+[^;]+;','application '+solver+';',control)
+    control=re.sub(r'\bendTime\s+[^;]+;','endTime '+format(config['end_time_s'],'.10g')+';',control)
     path.write_text(control)
     temperatures=[anchor['temperature_anchor_K']]+anchor['sensitivity_temperatures_K']
     (case/'constant/frontTrackingProperties').write_text(
@@ -72,7 +75,7 @@ def prepare(action,family,key,case):
     path.write_text(re.sub(r'\binterval\s+[^;]+;','interval 10;',path.read_text()))
     config['temperature_anchor']=anchor
     (case/'fresh-start-inputs.json').write_text(json.dumps(config,indent=2)+'\n')
-    plan=dict(config,checkpoint='0',cases=['case'],controls={'startTime':'0','endTime':'0.0002'})
+    plan=dict(config,checkpoint='0',cases=['case'],controls={'startTime':'0','endTime':format(config['end_time_s'],'.10g')})
     (case/'tracking-inputs.json').write_text(json.dumps(plan,indent=2)+'\n')
     (case.parent/'tracking-plan.json').write_text(json.dumps(plan,indent=2)+'\n')
 
@@ -83,8 +86,9 @@ if __name__=='__main__':
     parser.add_argument('family',choices=['native','energy'])
     parser.add_argument('key_or_case')
     parser.add_argument('case',nargs='?',type=Path)
+    parser.add_argument('--end-us',type=int,choices=[200,300,400],default=200)
     args=parser.parse_args()
     if args.action=='verify': verify(args.family,Path(args.key_or_case))
     else:
         if args.case is None: parser.error('NEW_CASE is required')
-        prepare(args.action,args.family,args.key_or_case,args.case)
+        prepare(args.action,args.family,args.key_or_case,args.case,args.end_us)

@@ -1,6 +1,7 @@
 #!/bin/bash
 set -eo pipefail
 root=${1:?}; release=${2:?}; family=${3:?}; key=${4:?}
+end_us=${5:-200}
 [[ -n ${SLURM_JOB_ID:-} && $(realpath -e "$release") == "$root/releases/"* ]] || exit 2
 job="$root/jobs/$SLURM_JOB_ID"
 [[ $(realpath -m "$job") == "$root/jobs/"* ]] || exit 2
@@ -16,4 +17,4 @@ source_in="/work/${release#"$root/"}"
 exec apptainer exec --cleanenv --containall --underlay --no-eval --no-mount cwd,hostfs,bind-paths \
  --home "$job/home:/home/foam" --bind "$root:/work" --bind "$release:$source_in:ro" \
  --bind "$job/tmp:/tmp" --workdir "$job/apptainer" --pwd /work "$image" \
- /bin/bash "$source_in/replication/development/fresh-start/run.sh" "$source_in" "$family" "$key"
+ /bin/bash "$source_in/replication/development/fresh-start/run.sh" "$source_in" "$family" "$key" "$end_us"
