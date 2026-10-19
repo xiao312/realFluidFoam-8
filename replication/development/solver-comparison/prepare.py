@@ -42,7 +42,7 @@ def prepare(action, family, case):
         p = case/'constant/chemistryProperties'
         write('constant/chemistryProperties', p.read_text().replace('idKineticStandard', 'standard'))
         write('constant/thermophysicalTransport', header('thermophysicalTransport')+
-              'simulationType laminar;\nlaminar { model unityLewisFourier; }\n')
+              'simulationType laminar;\nlaminar { model Fourier; }\n')
         solver = 'reactingFoam'
     elif family == 'deep':
         write('constant/thermophysicalProperties', header('thermophysicalProperties'))
@@ -97,3 +97,4 @@ if __name__ == '__main__':
     parser.add_argument('case', type=Path)
     args = parser.parse_args()
     prepare(args.action, args.family, args.case)
+
