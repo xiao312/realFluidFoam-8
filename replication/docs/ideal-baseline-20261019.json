@@ -825,8 +825,9 @@
     "state\\ideal-baseline-20261019\\cantera\\author-gri30.yaml": "c6e72c25dbf5af75a16b71042e071aed15ca4fd4a8a854fd8720a820ce1986c6",
     "state\\ideal-baseline-20261019\\cantera\\mechanism.json": "e270f229e04b2387667837eebdcd555f26f08506ddb405c9bd81db31990e0b82",
     "state\\ideal-baseline-20261019\\cantera-fine\\results.json": "49973a55fb0ddae699eea6660d5b91fd9152760c390ac7a703cbcacbce22d255",
-    "output\\ideal-baseline-20261019-v2\\ideal-comparison.png": "cbc3daa02808eb0feb51913531c07b3229e5becd2377ec7111087a52f04f99a4",
-    "output\\ideal-baseline-20261019-v2\\ideal-paper-overlay.png": "e601782335a99065d767ddd03f8b2e554f5cd66025204f6499cdea78aee1cd3e",
-    "output\\ideal-baseline-20261019-v2\\digitization.json": "f4f550afe6f9bf92a0e261c5ac470098aac8436274eba832c051031f17dba821"
-  }
+    "output\\ideal-baseline-20261019-v3\\ideal-comparison.png": "157a78e67ec07272b45a4e7086c3f72c9c123a56afe62bd5912f36f0a035090e",
+    "output\\ideal-baseline-20261019-v3\\ideal-paper-overlay.png": "af9449c4d370d6b55fc26efbcff40c4a8ede3df128b0289847c202cd89a8fd6f",
+    "output\\ideal-baseline-20261019-v3\\digitization.json": "f4f550afe6f9bf92a0e261c5ac470098aac8436274eba832c051031f17dba821"
+  },
+  "plotting_source": "bdba2b10fc2d5dd0174841043b993a096f5cc04a"
 }
