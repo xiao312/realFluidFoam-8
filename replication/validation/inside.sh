@@ -61,7 +61,7 @@ cp -a "$release/replication/validation/properties" "$job/property-probe"
 wmake "$job/property-probe" > "$job/property-probe-build.log" 2>&1
 ldd "$FOAM_USER_APPBIN/rfPropertyProbe" > "$job/property-probe-ldd.txt"
 grep -F "$platform/lib/libspecie.so" "$job/property-probe-ldd.txt"
-if [[ "$stage" == properties || "$stage" == properties-nitrogen ]]; then
+if [[ "$stage" == properties || "$stage" == properties-nitrogen || "$stage" == properties-increments ]]; then
     inversion_failed=0
     for eos in SRK PR; do
         case_dir="$job/properties-$eos"
@@ -75,12 +75,17 @@ if [[ "$stage" == properties || "$stage" == properties-nitrogen ]]; then
             python3 -B "$release/replication/validation/properties/generate.py" \
                 "$release/replication/validation/inputs" "$case_dir" "$eos"
         fi
+        output_name=properties.csv
+        if [[ "$stage" == properties-increments ]]; then
+            probe_args=(-small-increments); expected_lines=145
+            output_name=inversion-increments.csv
+        fi
         blockMesh -case "$case_dir" > "$job/blockMesh-$eos.log" 2>&1
         probe_status=0
         rfPropertyProbe -case "$case_dir" "${probe_args[@]}" > "$job/properties-$eos.log" 2>&1 || probe_status=$?
         if [[ "$probe_status" == 3 ]]; then inversion_failed=1
         elif [[ "$probe_status" != 0 ]]; then exit "$probe_status"; fi
-        test "$(wc -l < "$case_dir/properties.csv")" == "$expected_lines"
+        test "$(wc -l < "$case_dir/$output_name")" == "$expected_lines"
     done
     if [[ "$inversion_failed" == 1 ]]; then
         echo 'CHECK_FAILED: inversion tolerance; SRK and PR finite property sweeps completed, reference comparison pending' | tee "$job/result.txt"
