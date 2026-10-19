@@ -19,6 +19,9 @@ Configuration is explicit C function arguments, not environment-dependent model
 selection. The header documents array lengths and ownership. Each MPI rank or
 thread owns its own context; concurrent calls on one context are unsupported.
 Errors return a code and message; C++ exceptions never cross the C boundary.
+The evaluation call permits null partial-enthalpy and source buffers to skip
+those calculations during a transport-only query. Mixture properties and
+diffusion buffers remain required; omitted chemistry is not evaluated.
 Inputs must be finite, sum(Y) within1e-8 of unity and Y>=-1e-9. Trace roundoff
 within that bound is passed without normalization, preserving the queried state.
 

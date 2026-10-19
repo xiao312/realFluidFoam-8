@@ -58,6 +58,11 @@ try {
         for(size_t k=0;k<53;k++){sum+=w[k];norm+=std::abs(w[k]);hmix+=row[k+7]*h[k];}
         massError=std::max(massError,std::abs(sum)/std::max(norm,1e-30));
         eulerError=std::max(eulerError,std::abs(hmix-properties.enthalpy)/std::max(1.,std::abs(properties.enthalpy)));
+        auto originalDiffusion=d;double originalConductivity=properties.conductivity;
+        if(evaluate(context,row[1],10132500,row.data()+7,53,&properties,nullptr,d.data(),nullptr))
+            throw std::runtime_error(error(context));
+        if(d!=originalDiffusion || properties.conductivity!=originalConductivity)
+            throw std::runtime_error("Transport-only query differs from complete evaluation");
         checked++;
     }
     auto y=std::vector<double>(rows[0].begin()+7,rows[0].end());y[0]=-.01;

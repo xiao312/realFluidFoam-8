@@ -1,5 +1,11 @@
 # Replication boundaries
 
+`development/cantera-cfd` depends on `cantera-bridge`, `flame-tracking` and
+`fresh-start`. It builds an isolated ideal-gas transport experiment using
+Cantera conductivity/diffusion and refreshed native species enthalpies.
+It consumes original-zero inputs; it does not replace production thermodynamics
+or chemistry. Its bridge binary must pass separate ABI/property qualification.
+
 `development/cantera-bridge` depends on the pinned Cantera3.2 SDK and
 `development/cantera-liang` adapters. It exposes state properties and net sources
 through a C ABI, with no Cantera/OpenFOAM C++ objects crossing the boundary.

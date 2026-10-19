@@ -12,6 +12,7 @@ typedef struct {
  * A null create result leaves an explanatory, terminated string in error.
  * Other calls return 0 on success, 1 on failure; query rf_ct_error(context).
  * n must equal rf_ct_species_count(context); all species arrays have n entries.
+ * partial_enthalpies and mass_sources may be null to skip those calculations.
  * Units and nonideal enthalpy conventions are specified in README.md. */
 rf_ct_context* rf_ct_create(const char* inputs,int stage,const char* options,
                             char* error,size_t error_capacity);

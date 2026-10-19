@@ -91,17 +91,19 @@ extern "C" int rf_ct_evaluate(rf_ct_context* context,double temperature,double p
     if(!context)return 1;
     try {
         validate(temperature,pressure,y,n,rf_ct_species_count(context));
-        if(!properties || !enthalpies || !diffusion || !sources)throw std::runtime_error("Null output buffer");
+        if(!properties || !diffusion)throw std::runtime_error("Null required output buffer");
         auto gas=context->solution->thermo();auto transport=context->solution->transport();
         gas->setTemperature(temperature);gas->setMassFractions_NoNorm(y);gas->setPressure(pressure);
         *properties={gas->density(),gas->enthalpy_mass(),gas->cp_mass(),transport->thermalConductivity(),
                      transport->viscosity(),gas->meanMolecularWeight()};
-        gas->getPartialMolarEnthalpies(enthalpies);
+        if(enthalpies)gas->getPartialMolarEnthalpies(enthalpies);
         transport->getMixDiffCoeffs(diffusion);
-        context->solution->kinetics()->getNetProductionRates(sources);
+        if(sources)context->solution->kinetics()->getNetProductionRates(sources);
         for(size_t k=0;k<n;k++) {
-            enthalpies[k]/=gas->molecularWeight(k);sources[k]*=gas->molecularWeight(k);
-            if(!std::isfinite(enthalpies[k]) || !std::isfinite(sources[k]) || !std::isfinite(diffusion[k]) || !(diffusion[k]>0))
+            if(enthalpies)enthalpies[k]/=gas->molecularWeight(k);
+            if(sources)sources[k]*=gas->molecularWeight(k);
+            if((enthalpies && !std::isfinite(enthalpies[k])) || (sources && !std::isfinite(sources[k]))
+               || !std::isfinite(diffusion[k]) || !(diffusion[k]>0))
                 throw std::runtime_error("Nonfinite species property or nonpositive diffusivity");
         }
         if(!(properties->density>0 && properties->cp>0 && properties->conductivity>0 && properties->viscosity>0)
