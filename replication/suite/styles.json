@@ -627,14 +627,14 @@
         {
           "x": 375,
           "y": 155,
-          "label": "Our OH: job 124780751",
+          "label": "Computed series 1; label comes from data",
           "color": "#165bbb",
           "marker": "s"
         },
         {
           "x": 375,
           "y": 165,
-          "label": "Our OH: job 124780755",
+          "label": "Computed series 2; label comes from data",
           "color": "#d47b00",
           "marker": "s"
         }
