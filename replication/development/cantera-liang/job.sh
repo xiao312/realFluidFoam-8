@@ -2,6 +2,8 @@
 set -euo pipefail
 root=${1:?}; release=${2:?}; sdk=${3:?}; inputs=${4:?}; stage=${5:?}; build=${6:-}
 phi=${7:-1.10}
+variant=${8:-full}
+[[ $variant == full || $variant == dense-increment ]] || exit 2
 [[ -n ${SLURM_JOB_ID:-} ]] || exit 2
 for path in "$release" "$sdk" "$inputs"; do
  [[ $(realpath -e "$path") == "$root/"* ]] || exit 2
@@ -37,5 +39,7 @@ else
  (cd "$build"; sha256sum -c binary.sha256)
  sha256sum "$inputs"/* > input-sha256.txt
  cp "$release/SOURCE_REVISION" source-revision.txt
- "$build/liang-flame" "$inputs" "$stage" "$phi" "$job/result" > flame.log 2>&1
+ extra=()
+ [[ $variant == full ]] || extra+=("$variant")
+ "$build/liang-flame" "$inputs" "$stage" "$phi" "$job/result" "${extra[@]}" > flame.log 2>&1
 fi

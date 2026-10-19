@@ -10,6 +10,21 @@
 #include <sstream>
 using namespace Cantera;
 namespace fs=std::filesystem;
+class ProbeTransport : public liang::StagedTransport {
+public:
+    void auditOH(std::ostream& out,double target) {
+        size_t i=m_thermo->speciesIndex("OH");double total=0;
+        for(size_t j=0;j<m_nsp;j++)if(i!=j)total+=m_molefracs[j]/(m_P_corr_ij(i,j)*m_bdiff(j,i));
+        for(size_t j=0;j<m_nsp;j++)if(i!=j && m_P_corr_ij(i,j)<1e-10) {
+            double xi=std::max(Tiny,m_molefracs[i]),xj=std::max(Tiny,m_molefracs[j]);
+            double sum=xi+xj;xi/=sum;xj/=sum;
+            out<<target<<','<<m_thermo->temperature()<<','<<m_thermo->pressure()/101325<<','<<m_thermo->speciesName(j)<<','
+               <<m_molefracs[i]<<','<<m_molefracs[j]<<','<<m_temp/(xi*m_Tcrit[i]+xj*m_Tcrit[j])<<','
+               <<m_thermo->pressure()/(xi*m_Pcrit[i]+xj*m_Pcrit[j])<<','<<m_P_corr_ij(i,j)<<','
+               <<m_molefracs[j]/(m_P_corr_ij(i,j)*m_bdiff(j,i))/total<<'\n';
+        }
+    }
+};
 
 std::vector<std::string> fields(const std::string& line) {
     std::stringstream stream(line);std::string value;std::vector<std::string> out;
@@ -22,7 +37,7 @@ std::vector<std::string> fields(const std::string& line) {
 
 int main(int argc,char** argv) {
 try {
-    if(argc!=4 || fs::exists(argv[3]))throw std::runtime_error("Usage: model-probe INPUTS SOLVED_PROFILE NEW_OUTPUT.csv");
+    if(argc!=4 || fs::exists(argv[3]) || fs::exists(std::string(argv[3])+".pairs.csv"))throw std::runtime_error("Usage: model-probe INPUTS SOLVED_PROFILE NEW_OUTPUT.csv");
     fs::path input=argv[1];std::ifstream table(input/"species.txt");
     std::vector<liang::Species> parameters;std::vector<std::string> names;
     liang::Species parameter;std::string name;
@@ -31,11 +46,11 @@ try {
     }
     if(names.size()!=53)throw std::runtime_error("Expected 53 species");
     ThermoFactory::factory()->reg("liang-srk",[](){auto* gas=new liang::SrkPhase;gas->stage=1;return gas;});
-    TransportFactory::factory()->reg("liang-staged",[&](){auto* tr=new liang::StagedTransport;tr->stage=4;tr->parameters=parameters;return tr;});
+    TransportFactory::factory()->reg("liang-staged",[&](){auto* tr=new ProbeTransport;tr->stage=4;tr->parameters=parameters;return tr;});
     auto real=newSolution((input/"srk.yaml").string(),"","liang-staged");
     auto ideal=newSolution((input/"ideal.yaml").string(),"","mixture-averaged");
     auto* gas=dynamic_cast<liang::SrkPhase*>(real->thermo().get());
-    auto* transport=dynamic_cast<liang::StagedTransport*>(real->transport().get());
+    auto* transport=dynamic_cast<ProbeTransport*>(real->transport().get());
     if(!gas || !transport)throw std::runtime_error("Custom adapter not selected");
     gas->parameters=parameters;gas->stage=3;
     std::ifstream profile(argv[2]);std::string line;std::getline(profile,line);auto header=fields(line);
@@ -48,7 +63,9 @@ try {
     }
     if(rows.empty())throw std::runtime_error("Empty profile");
     std::ofstream out(argv[3]);out<<std::setprecision(16)
-        <<"target_T,T,p_atm,rho_ideal,rho_srk,h_ideal,h_srk,lambda_mix_ideal,lambda_mix_srk,lambda_EH_molar,lambda_EH_mass,D_CH4_base,D_CH4_Taka,D_OH_base,D_OH_Taka,min_D_Taka,rate_L1_srk_over_ideal,concentration_srk_over_ideal\n";
+        <<"target_T,T,p_atm,rho_ideal,rho_srk,h_ideal,h_srk,lambda_mix_ideal,lambda_mix_srk,lambda_EH_molar,lambda_EH_mass,D_CH4_base,D_CH4_Taka,D_OH_base,D_OH_Taka,min_D_Taka,rate_L1_srk_over_ideal,concentration_srk_over_ideal,lambda_dense_increment\n";
+    std::ofstream pairs(std::string(argv[3])+".pairs.csv");pairs<<std::setprecision(16)
+        <<"target_T,T,p_atm,partner,X_OH,X_partner,Tr,Pr,pair_factor,denominator_share\n";
     for(double target:{298.,400.,600.,900.,1200.,1500.,1800.,2100.,2400.}) {
         const auto& row=*std::min_element(rows.begin(),rows.end(),[&](const auto& a,const auto& b){return std::abs(a[1]-target)<std::abs(b[1]-target);});
         std::vector<double> y(row.begin()+7,row.end());for(auto& v:y)v=std::max(0.,v);
@@ -61,6 +78,8 @@ try {
             for(size_t k=0;k<53;k++) {const auto& z=parameters[k];species.push_back({z.Tc,z.Pc,z.Vc,gas->molecularWeight(k),z.omega,cp[k]});}
             transport->stage=3;double base=transport->thermalConductivity();transport->getMixDiffCoeffs(d0.data());
             transport->stage=5;double eh=transport->thermalConductivity();transport->getMixDiffCoeffs(d1.data());
+            transport->auditOH(pairs,target);
+            transport->denseIncrementOnly=true;double dense=transport->thermalConductivity();transport->denseIncrementOnly=false;
             double shortcut=rfElyHanley::conductivity(T,1/gas->molarDensity(),species,x,v,rfElyHanley::DensityMapping::massDensityShortcut);
             real->kinetics()->getNetProductionRates(w1.data());ideal->kinetics()->getNetProductionRates(w0.data());
             double l0=0,l1=0;for(size_t k=0;k<53;k++){l0+=std::abs(w0[k]);l1+=std::abs(w1[k]);}
@@ -68,7 +87,7 @@ try {
             out<<target<<','<<T<<','<<atm<<','<<ideal->thermo()->density()<<','<<gas->density()<<','
                <<ideal->thermo()->enthalpy_mass()<<','<<gas->enthalpy_mass()<<','<<ideal->transport()->thermalConductivity()<<','<<base<<','<<eh<<','<<shortcut<<','
                <<d0[ch4]<<','<<d1[ch4]<<','<<d0[oh]<<','<<d1[oh]<<','<<*std::min_element(d1.begin(),d1.end())<<','
-               <<(l0>0?l1/l0:0)<<','<<gas->molarDensity()/ideal->thermo()->molarDensity()<<'\n';
+               <<(l0>0?l1/l0:0)<<','<<gas->molarDensity()/ideal->thermo()->molarDensity()<<','<<dense<<'\n';
         }
     }
     std::cout<<"Frozen-state probe completed\n";

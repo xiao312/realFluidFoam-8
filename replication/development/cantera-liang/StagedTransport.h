@@ -7,6 +7,7 @@ class StagedTransport : public Cantera::HighPressureGasTransport {
 public:
     StagedTransport() = default;
     int stage=2;
+    bool denseIncrementOnly=false;
     std::vector<Species> parameters;
     size_t conductivityCalls=0,diffusionCalls=0;
     size_t negativePartialVolumeCalls=0;
@@ -45,7 +46,14 @@ public:
         for(size_t k=0;k<m_nsp;k++) {
             const auto& p=parameters[k];s.push_back({p.Tc,p.Pc,p.Vc,m_thermo->molecularWeight(k),p.omega,cp[k]});
         }
-        return rfElyHanley::conductivity(m_thermo->temperature(),molarVolume,s,x,v);
+        double full=rfElyHanley::conductivity(m_thermo->temperature(),molarVolume,s,x,v);
+        if(!denseIncrementOnly)return full;
+        // Explicit diagnostic: retain the verified dilute transport baseline.
+        double diluteVolume=R*m_thermo->temperature(); // ideal molar volume at 1 Pa
+        std::vector<double> diluteVolumes(m_nsp,diluteVolume);
+        double dilute=rfElyHanley::conductivity(m_thermo->temperature(),diluteVolume,s,x,diluteVolumes);
+        double result=Cantera::MixTransport::thermalConductivity()+full-dilute;
+        rfElyHanley::positive(result,"Dense-increment conductivity");return result;
     }
     void getMixDiffCoeffs(double* d) override {
         diffusionCalls++;

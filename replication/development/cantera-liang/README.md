@@ -110,3 +110,11 @@ must not exist. Dependencies are the existing adapters and shared kernel.
 Expected verification: finite properties, unchanged temperature/composition
 across each comparison, and explicit ratios separating baseline/model changes
 from pressure corrections. Differences are diagnostic, not fitted corrections.
+
+An optional final argument `dense-increment` to the flame executable, job wrapper
+or submit wrapper keeps baseline conductivity and adds only
+`lambda_EH(T,rho,X) - lambda_EH(T,rho->0,X)`. The dilute evaluation uses 1 Pa
+and ideal molar/partial volumes. This is a named sensitivity experiment, not a
+claim about Liang's implementation. Default `full` preserves previous results.
+The mode is recorded in `model-variant.txt`. The frozen probe reports this
+variant and a separate CSV of OH pair contributions when Takahashi collapses.

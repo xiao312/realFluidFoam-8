@@ -22,7 +22,9 @@ std::vector<std::string> split(const std::string& line) {
 }
 int main(int argc,char** argv) {
 try {
-    if(argc!=5)throw std::runtime_error("Usage: liang-flame INPUTS CASE PHI NEW_OUTPUT");
+    if(argc!=5 && argc!=6)throw std::runtime_error("Usage: liang-flame INPUTS CASE PHI NEW_OUTPUT [full|dense-increment]");
+    std::string variant=argc==6?argv[5]:"full";
+    if(variant!="full" && variant!="dense-increment")throw std::runtime_error("Unknown model variant");
     fs::path input=argv[1],output=argv[4];int stage=std::stoi(argv[2]);double phi=std::stod(argv[3]);
     if(stage<1 || stage>5 || !(phi>0) || fs::exists(output))throw std::runtime_error("Invalid stage/phi or existing output");
     std::ifstream table(input/"species.txt");std::vector<liang::Species> parameters;
@@ -34,7 +36,8 @@ try {
         // Load reference thermo first; activate SRK only on the complete phase.
         auto* gas=new liang::SrkPhase;gas->stage=1;return gas;});
     TransportFactory::factory()->reg("liang-staged",[&](){
-        auto* tr=new liang::StagedTransport;tr->stage=stage;tr->parameters=parameters;return tr;});
+        auto* tr=new liang::StagedTransport;tr->stage=stage;tr->parameters=parameters;
+        tr->denseIncrementOnly=variant=="dense-increment";return tr;});
     auto sol=newSolution((input/(stage==1?"ideal.yaml":"srk.yaml")).string(),"",stage==1?"mixture-averaged":"liang-staged");
     auto gas=sol->thermo();
     for(size_t k=0;k<species.size();k++) if(gas->speciesName(k)!=species[k])throw std::runtime_error("Species order mismatch");
@@ -43,6 +46,7 @@ try {
     }
     gas->setEquivalenceRatio(phi,"CH4","O2:0.21,N2:0.79");gas->setState_TP(298,10132500);
     fs::create_directories(output);
+    std::ofstream(output/"model-variant.txt")<<variant<<'\n';
     propertyChecks(sol,(output/"property-checks.csv").string());
     if(stage!=2)equilibriumCheck(*gas,(output/"equilibrium.csv").string());
     std::vector<double> xin(gas->nSpecies());gas->getMoleFractions(xin.data());double rho=gas->density();
