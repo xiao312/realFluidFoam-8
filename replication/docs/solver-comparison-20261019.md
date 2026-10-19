@@ -91,7 +91,12 @@ with the ABI macro set. Build 124898712 clears these inherited include paths and
 uses GCC 11 explicitly (source d015691). Its ABI preflight passed, but final linking could not find libmpi.so.40.
 The site module retained the default HPC-X compiler wrapper on PATH. Clean build
 124899720 selects the installed OF7 OpenMPI 4.1.5 for headers, linking and runtime
-(source 4c9adb7); dependent flame job is 124899733. CPU/CVODE is enabled;
+(source 4c9adb7) and completed in 17 min 27 s. Binary/link/help checks passed.
+The active flame is job 124901315 (case/wrapper source 9957c2c), advancing with
+CPU CVODE and writing profiles on eight ranks. Job 124899733 first failed MPI
+slot allocation; 124900988 then rejected the legacy uniform sampled-set name.
+The current submission requests eight Slurm tasks and uses lineUniform.
+CPU/CVODE is enabled;
 DNN and GPU chemistry are disabled. DeepFlame uses an isothermal CV chemistry
 substep while the native OpenFOAM chemistry includes a temperature equation.
 
@@ -144,3 +149,22 @@ At 177.92 us the original native case has risen to 7.048 cm/s (temperature) and
 7.167 cm/s (OH), about 5.6% and 4.0% below Cantera. Continued relaxation is visible;
 no steady point is accepted. The confirmed cache defect still requires an isolated
 fixed-versus-original run before assigning it any flame-speed error.
+
+## Live energy-update control
+
+The isolated correction is running as job 124900963, source 34f879f on
+`draft/energy-update`. It changes only the solver's species-enthalpy reads to
+current composition.HE(i,p,T); the shared library remains unchanged. Its exact
+checkpoint, original file hashes, controls and tracking anchors match the native
+baseline 124885085. The eight-state, three-temperature-stage probe checks 1590
+cell/boundary values: the old accessor fails 1060; the new accessor has zero
+failures and zero measured error. The 8000-cell parallel smoke passed, with
+maximum species-sum error 1.21e-12, before the continuation started.
+
+Stock and DeepFlame start at the central-products initialization. The native
+old/fixed pair uses the same 50.018-us restart; the old enthalpy cache is reset on
+restart, so this history difference must remain explicit in cross-solver analysis.
+The correction's speed effect and restart/energy-balance qualification are pending.
+See the [energy draft evidence](https://github.com/xiao312/realFluidFoam-8/blob/77b0c6dc203b239487e61ef2007332de93899d7a/replication/docs/energy-update-20261019.md).
+The existing Lark comparison and energy paragraphs were replaced in place; paper
+images were not duplicated or changed by these startup observations.

@@ -6,8 +6,8 @@
   "stock_job": "124896761",
   "stock_source": "c18481dc5423c4447ca85c1e69978551a3442090",
   "deep_build_job": "124899720",
-  "deep_run_job": "124899733",
-  "deep_run_source": "4c9adb7e312cdfb0bec6acf442c3590d9d412a41",
+  "deep_run_job": "124901315",
+  "deep_run_source": "9957c2cfbea7dbcbb1af7deba91a004cbdf7fe1d",
   "reference": {
     "cantera_version": "3.2.0",
     "profile_sha256": "9304d6f5ea3861b5b0ea3783674932f23f036c1e600e5c479c5cc7a8eb48ff9f",
@@ -72,7 +72,7 @@
     "base": true,
     "tight": true
   },
-  "deep_status": "building with explicit OpenMPI 4.1.5; flame pending",
+  "deep_status": "build completed; eight-rank CPU CVODE flame advancing and writing profiles",
   "failed_deep_attempts": [
     {
       "build": "124897210",
@@ -169,5 +169,35 @@
     "realFluidThermophysicalModels-6": "61f86014ef3f4277d04a348c83777d6a20d24cf3",
     "same_constructor_only_cache_pattern": true,
     "OF6_runtime_probe": false
-  }
+  },
+  "deep_build_source": "4c9adb7e312cdfb0bec6acf442c3590d9d412a41",
+  "failed_deep_runs": [
+    {
+      "job": "124899733",
+      "reason": "MPI slot count; replaced with ntasks=8, cpus-per-task=1"
+    },
+    {
+      "job": "124900988",
+      "reason": "site OF7 requires lineUniform sampled-set type"
+    }
+  ],
+  "deep_product_sha256": {
+    "dfLowMachFoam": "f8f64308c150ffa534bd733c28b15b8cea60d01a3b5f255622957779c989403a",
+    "libcantera.so": "889bf3432fce5d9d6bb63c1a3521b89187afc76a0a3e3583de4190c7db9d5faf"
+  },
+  "energy_experiment": {
+    "job": "124900963",
+    "run_source": "34f879f5696a9b760a16897a6b3f48909f831ce5",
+    "branch": "draft/energy-update",
+    "probe_samples": 1590,
+    "legacy_failed_samples": 1060,
+    "corrected_failed_samples": 0,
+    "maximum_corrected_error_J_kg": 0,
+    "smoke_species_sum_error": 1.2092549184217205e-12,
+    "baseline_input_hashes_match": true,
+    "library_changed": false,
+    "status": "running after red/green probe and parallel smoke"
+  },
+  "lark_comparison_section": "https://qcnwovvb1xop.feishu.cn/docx/KgobdGw8CoIfRCxI2BvcoFYEnCf#doxcnWu6E53VgOF3CbYTLwvIdzb",
+  "lark_energy_section": "https://qcnwovvb1xop.feishu.cn/docx/KgobdGw8CoIfRCxI2BvcoFYEnCf#doxcn82dCpZuP5yM38TqoOunyzf"
 }
