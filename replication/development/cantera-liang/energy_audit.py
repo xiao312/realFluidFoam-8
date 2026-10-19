@@ -29,10 +29,17 @@ def main():
     for record in records:
         if not str(record['profile_job']).isdigit() or record['stage'] not in range(1,6):
             raise ValueError('Invalid profile job or stage')
-        contained(root/'jobs'/str(record['profile_job'])/'result/profile.csv')
+        profile=contained(root/'jobs'/str(record['profile_job'])/'result/profile.csv')
         contained(Path(record['inputs']))
         pressure=record['pressure_atm']
         if not math.isfinite(pressure) or not 1<=pressure<=100:raise ValueError('Pressure outside qualified range')
+        if (profile.parent/'model-variant.txt').read_text().strip()!=record['variant']:
+            raise ValueError('Profile model differs from audit manifest')
+        if abs(float((profile.parent/'pressure-Pa.txt').read_text())/101325-pressure)>1e-9:
+            raise ValueError('Profile pressure differs from audit manifest')
+        with (profile.parent/'refinement.csv').open() as stream:
+            stage=int(next(csv.DictReader(stream))['stage'])
+        if stage!=record['stage']:raise ValueError('Profile stage differs from audit manifest')
     print(json.dumps(dict(action=args.action,profiles=len(records),output=str(output),binary_sha256=checksum[0])))
     if args.action=='plan':return
     job=os.environ.get('SLURM_JOB_ID','')
