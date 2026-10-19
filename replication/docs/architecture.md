@@ -126,3 +126,11 @@ ledger before submission. The existing validation runner handles decomposition,
 contained single-node MPI, reconstruction and final field checks. It does not
 infer convergence from a successful run. Figure rendering consumes reconstructed
 case fields through an explicit case manifest, separately from job submission.
+
+`development/solver-comparison` consumes ideal-baseline seeds and Cantera profiles
+for isolated stock OF8 and DeepFlame OF7 runs and native chemistry probes. It owns
+its contained build/job wrappers and read-only sampling. Its outputs feed the
+flame diagnosis; it does not replace the production solver or its live cases.
+Its offline profile adapter depends on `development/flame-tracking/trackingCore.H`
+for the same marker and gas-relative speed definitions. Its read-only source audit
+compares the Linux build copy with the pinned Git archive, including path casing.
