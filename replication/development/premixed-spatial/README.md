@@ -41,3 +41,10 @@ with the live CSV at the same saved time to quantify reconstruction error.
 Example: bash submit.sh plan ROOT IMAGE RELEASE. Expected result: a bounded
 read-only plan; apply submits only that isolated analysis job. Scientific
 acceptance additionally requires time/marker/mesh and source-stage agreement.
+
+`analyze.py DOWNLOADED_JOB OUTPUT` creates spatial and OH-marker PNG/SVG plots,
+SI-term contour tables and input hashes. The speed plots use only the fresh-side
+rising OH flank with YOH>=1e-7 and gradient greater than max(1e-6,0.001 times the
+peak gradient); raw CSVs retain all cells. `python -B -m unittest discover -s
+replication/development/premixed-spatial` checks mass-source units, density
+weighting, both front signs and the single conversion to cm/s on analytic data.
