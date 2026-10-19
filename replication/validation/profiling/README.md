@@ -29,3 +29,24 @@ Short replays qualify section costs at those states, not whole-campaign averages
 shares, using steps 2–4 of each five-step replay. Step 1 and the forced final
 write are excluded. The command is read-only and requires all observed profiles
 to contain five timesteps.
+
+## Live CPU placement
+
+`python3 affinity.py plan|apply ROOT JOB_ID` inspects only the current allocation's
+named OpenFOAM solver processes. Run it in a short overlapping Slurm control step
+on that job's node. Plan prints rank/thread affinity and proposed distinct CPUs.
+Apply changes only those threads' CPU affinity; it neither stops nor restarts the
+solver, modifies a case, changes the allocation, nor copies a transient state.
+The older checkpoint profiling workflow above does not override the requirement
+for explicit owner permission before any new 1D checkpoint replay.
+
+Inputs are the project root, numeric job ID, its declared decomposition and the
+Linux `/proc` records of this user's processes. Output is a JSON receipt on stdout;
+save it under the project root. The script requires matching SLURM_JOB_ID, a
+complete unique rank set and exactly one allocated CPU per declared rank in the
+union of observed affinity masks. It fails without changes if these checks fail.
+It never widens placement beyond that observed union or prints process environment
+contents. Dependencies are standard Python/Linux affinity APIs and Slurm; no
+credentials are used. This is an operator diagnostic, not a solver dependency.
+Verify all thread masks after apply, then compare physical-time throughput using
+the same continuously running job. Record both plan and apply receipts.

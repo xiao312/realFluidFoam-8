@@ -1,5 +1,10 @@
 # Replication boundaries
 
+`validation/profiling/affinity.py` reads the current Slurm allocation's solver
+processes and can assign distinct CPUs inside their existing affinity union.
+It depends on Linux/Python process APIs only and changes no solver source, field,
+time history or scheduler allocation. Its JSON receipts feed performance reports.
+
 `development/cantera-liang` registers SRK thermo and staged transport with the
 pinned Cantera C++ SDK. It consumes ideal-baseline mechanisms/profiles and the
 liang-properties Ely–Hanley kernel. Its independent steady flames feed the
