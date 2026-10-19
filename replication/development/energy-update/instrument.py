@@ -1,5 +1,6 @@
 """Build a separate tracked solver with only species-enthalpy reads changed."""
 import argparse
+import json
 from pathlib import Path
 import shutil
 import subprocess
@@ -12,8 +13,10 @@ p.add_argument('output', type=Path)
 a = p.parse_args()
 module = Path(__file__).resolve().parent
 subprocess.run([sys.executable, '-B', str(module.parent/'flame-tracking/instrument.py'),
-                a.action, str(a.release), str(a.output)], check=True)
-print('Replace initial and timestep-end thermo.hei(i) with current composition.HE(i,p,T)')
+                a.action, str(a.release), str(a.output)], check=True, stdout=subprocess.PIPE)
+print(json.dumps({'source':str(a.release), 'output':str(a.output),
+                  'executable':'rfEnergyReactingFoam', 'physics_changes':True,
+                  'change':'Initial and timestep-end species enthalpy evaluated at current p,T'}))
 if a.action == 'apply':
     shutil.copy2(module/'CurrentSpeciesEnthalpy.H', a.output)
     for name in ['rfReactingFoam.C', 'createFields.H']:
