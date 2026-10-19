@@ -6,7 +6,7 @@ Runnable releases are a6d35b7 and 9a02703; their reacting binary SHA-256 is
 687a2f1494346bdfe9e64f52fdc1fd8cf6569dd9528538850e5401d3d13b6d8a.
 Library build 124657926 and the pinned OF8 environment remain common inputs.
 Actual submitted dictionaries and startup selection logs were inspected; the
-pending cooler case also derives from the same versioned generator.
+cooler case derives from the same versioned generator and is now running.
 
 ## Active model chain
 
@@ -84,6 +84,70 @@ The initial observer qualification job 124866913 failed compilation after 30 s:
 its Make options omitted the basic thermodynamics include directory required by
 basicChemistryModel.H. No live case was modified. The next revision adds the
 explicit thermodynamics include dependencies; a new qualification is required.
+
+Corrected qualification 124867177, source
+`2c48637bc0a7f99d8329dee3acc57c108a017baa`, completed in 3 min 4 s with exit 0.
+All 1,352 original field bodies matched, with no mismatches. Independently
+integrating the saved Qdot_used field reproduced net, positive and negative
+power and both extrema within the declared 1e-9 relative check. Species remained
+normalized (maximum error 7.68e-13). A PMIX NOT-FOUND message appeared during
+finalization after End; both replay exits and the field checks succeeded.
+
+Qualified observer library SHA-256:
+`892f170df9a8c5eb6fe988cec14f7324e715ef9a76a48ed89568ba07e0d9ceda`.
+Its directory in job 124867177 is retained as a live runtime dependency. The
+observer does not replace any solver executable or qualified library product.
+
+## Live source snapshot, 10:55 Asia/Shanghai
+
+All four production jobs were RUNNING, with attachment receipts and nonempty
+heat-release CSVs. Samples begin at attachment; earlier history is unavailable.
+
+| Initialization / job | Latest sampled time (us) | Qdot maximum (W/m3) | Net power / area (MW/m2) | Tmax (K) |
+| --- | ---: | ---: | ---: | ---: |
+| 1800 K, dt cap 100 ns / 124862517 | 6.58177 | 6.01737e13 | 404.541 | 3000 |
+| 1800 K, dt cap 50 ns / 124863132 | 6.14223 | 6.55640e13 | 433.087 | 3000 |
+| HP products / 124864929 | 50.5835 | 1.91876e12 | 37.0855 | 2233.935 |
+| 1400 K / 124865412 | 0.0224026 | 0.485730 | -0.0130680 | 1399.983 |
+
+The cooler case's initial net source is endothermic; its minimum Qdot is
+-4.53033e8 W/m3. The original hot cases also contain negative local sources,
+despite positive total power. The products case has negligible negative power
+(about -8e-36 W). Different sampled physical times preclude a controlled
+comparison of the initializations here. No source integral is interpreted as
+a single-front flame speed, and no steady flame has been accepted.
+
+The plotted CSVs and PNG/PDF/provenance are retained in the project workspace
+under output/heat-release-20261019-1055-v2. The versioned plotting script is
+development/heat-release/plot.py. Cooler startup 124864532 completed in 19 min
+4 s, exit 0; its production dependency released normally. Existing binaries
+and numerical settings remain unchanged by the live observer attachments.
+
+## Native solver output
+
+Source a2d2a19c39b342a0ba49261e196d24fe730b7536 on draft/heat-release adds
+registered Qdot to the generated rfPaperReactingFoam. It updates immediately
+after reaction->correct() and supplies the same field to EEqn. NO_READ avoids
+stale restart sources; AUTO_WRITE follows existing field output times. Initial
+Qdot is zero until chemistry is corrected. The custom library already provides
+the source, so no library kinetics or thermodynamics changes are required.
+
+Scheduled qualification 124868494 compares this new binary against the previous
+one on an identical one-step products-seed replay, including all original fields,
+the flame-speed CSV, native Qdot against the independent observer, and source
+integrals. It reserves at most four core-hours. Production jobs keep their
+existing binaries; this qualification is not a production restart or a merge
+into develop/reacting.
+
+Qualification completed in 2 min 7 s, exit 0. All 1,352 original numerical field
+bodies and the flame-speed CSV were identical to the old binary. Native Qdot
+matched Qdot_used cell by cell, and saved-field source reductions matched the
+CSV within the declared 1e-9 relative tolerance. New executable SHA-256:
+`a1f5630d29a57237f060551f683735e18c8f3d6fb98e393bbc3788ec5f8d93c4`.
+This one-step replay tests the output change, not long-time flame accuracy.
+The Lark record now includes this definition, the model audit and the heat-source
+snapshot/plot within the existing flame-speed section. All 27 comparison grids
+and prior image/attachment resources were retained.
 
 ## Source evidence
 
