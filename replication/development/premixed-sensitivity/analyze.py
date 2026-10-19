@@ -69,6 +69,8 @@ def analyze(inputs, output, reference=None):
                          'axes.linewidth': .7, 'lines.linewidth': 1.1})
     fig, axes = plt.subplots(2, 2, figsize=(10, 7))
     for key, rows in datasets.items():
+        label = {'dt100': '100 ns', 'dt50': '50 ns', 'dt25': '25 ns',
+                 'uninterrupted': 'Uninterrupted, 100 ns'}.get(key, key)
         gate = evaluate(rows, end=end)
         metrics = []
         for side in ['left', 'right']:
@@ -80,11 +82,11 @@ def analyze(inputs, output, reference=None):
                                  'sha256': hashlib.sha256(inputs[key].read_bytes()).hexdigest()}
         for ax, stage in zip(axes[0], STAGES):
             data = select(rows, stage, 'left', 2e-5, start, end)
-            ax.plot(data['time_s']*1e6, data['speed_m_s']*100, label=key)
+            ax.plot(data['time_s']*1e6, data['speed_m_s']*100, label=label)
         values = [gate['median_speeds_cm_s'][f'left|{STAGES[1]}|{level}'] for level in LEVELS]
-        axes[1, 0].plot(np.array(LEVELS)*1e6, values, 'o-', label=key)
+        axes[1, 0].plot(np.array(LEVELS)*1e6, values, 'o-', label=label)
         tracked = [r['local_density_weighted_cm_s'] for r in metrics if r['side'] == 'left']
-        axes[1, 1].plot(np.array(LEVELS)*1e6, tracked, 'o-', label=key)
+        axes[1, 1].plot(np.array(LEVELS)*1e6, tracked, 'o-', label=label)
     pairs = [('dt100', 'dt50'), ('dt50', 'dt25'), ('dt100', 'uninterrupted')]
     for a, b in pairs:
         if a not in summary['cases'] or b not in summary['cases']:

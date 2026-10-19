@@ -1,9 +1,62 @@
 # Controlled 1-D time-step study — 19 October 2026
 
-Three fixed-step segments are running from one equilibrium-products checkpoint.
+Three fixed-step segments completed from one equilibrium-products checkpoint.
 The aim is to separate time-step error from spatial resolution and chemistry
 integration effects before expanding the paper's operating-condition sweep.
 No flame speed is accepted. Original ignition jobs remain unchanged.
+
+## Completed results — 12:57 Asia/Shanghai
+
+All three solvers reached 99.9834968798 us. Elapsed times were 14m08s, 23m10s,
+and 43m22s for 100/50/25 ns. Their original Slurm jobs report FAILED (exit 1)
+because the known CSV endpoint check failed after normal solver termination.
+Independent verification job 124873486 completed in 55 s, exit 0, and passed
+all three operational checks. Do not erase the original scheduler failure records.
+
+Comparison window: 94.5834968798–99.5834968798 us. Values below are left-front
+medians at YOH=2e-5; tracking uses a fitted contour velocity over that window.
+
+| Step | Source used in OH solve (cm/s) | Instantaneous Eq.(40) (cm/s) | Tracked, density-weighted (cm/s) |
+|---|---:|---:|---:|
+| 100 ns restart | 5.763 | 22.726 | 5.988 |
+| 50 ns restart | 5.373 | 88.417 | 5.971 |
+| 25 ns restart | 5.283 | 77.160 | 5.940 |
+| Uninterrupted donor, 100 ns | 5.606 | 27.049 | 5.897 |
+
+The 50/25 ns instantaneous main-contour difference reaches 11.522 cm/s at matched
+physical times. Across both fronts and all three levels, the largest difference
+is 44.247 cm/s. These exceed the 0.5 cm/s diagnostic threshold.
+The 100 ns restart differs from the uninterrupted instantaneous main-contour
+history by as much as 5.317 cm/s; restart trajectory equality is not established.
+
+Tracking changes little, but the instantaneous quantity is not time-step converged.
+Marker spread decreases under refinement yet remains tens of cm/s. This is
+evidence of numerical/source-evaluation sensitivity, not proof of one root cause.
+The nonmonotonic main-contour response also prevents a simple extrapolation.
+Keep mesh refinement pending; the next controlled tests should separate a further
+step reduction from tighter chemistry tolerances and restart/source evaluation.
+No additional simulations were submitted during this status check.
+
+Final logged peak temperatures agree closely: 2234.558, 2234.566, 2234.568 K.
+Maximum Courant numbers across each run were 0.08365, 0.04206, 0.02115.
+Saved species sums differ from one by at most 1.46e-12; fields are finite and
+temperature, pressure and density are positive.
+
+The latest saved Qdot fields have peaks of 1.806e12–1.819e12 W/m³ and net
+volume integrals of 3.637–3.649 mW for the thin computational slice.
+These snapshots occur at 99.5835, 97.2835 and 98.6335 us respectively, so they
+are health checks rather than an exact-time heat-release convergence comparison.
+
+Artifacts: `output/sensitivity-completed-20261019-v2/time-step-comparison.png`,
+the matching SVG, and `analysis.json` with input hashes and both-front metrics.
+Raw histories and verification JSON are in `state/sensitivity-20261019/completed/`.
+The plot identifies every time step and retains the uninterrupted reference.
+
+The original products job 124864929 also terminated normally at 199.9835 us.
+Its strict endpoint check then failed against the requested 200 us value.
+At 12:57, the two original hot-seed jobs were still running at 40.43/36.64 us
+with Tmax=3000 K. The cooler seed was at 12.81 us, Tmax=1380.95 K, with no valid
+OH contour. None of these jobs was cancelled or changed.
 
 ## Inputs and job identity
 
@@ -116,8 +169,9 @@ and completion detection with inherited output phase.
 Shell syntax and whitespace checks passed. The plotting pipeline was exercised
 on a duplicate donor history; zero pair differences confirmed pipeline consistency only.
 
-Wait for the three equal-duration segments and the separate qualification receipt.
-If 50/25 ns still differ materially, halve the step before refining the mesh.
-If temporal changes are small but marker sensitivity remains large, qualify a
+The completed segments fail the temporal comparison despite passing field checks.
+Test a 12.5 ns segment and a separate tightened-ODE case before refining the mesh.
+Retain the restart discrepancy as a separate source-evaluation question.
+When temporal changes are small but marker sensitivity remains large, qualify a
 0.25 um mapped mesh at the selected step. Do not expand the phi sweep yet.
 No solver or library equation change is included in this study.
