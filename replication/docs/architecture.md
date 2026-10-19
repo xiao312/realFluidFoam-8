@@ -1,5 +1,10 @@
 # Replication boundaries
 
+`development/cantera-liang` registers SRK thermo and staged transport with the
+pinned Cantera C++ SDK. It consumes ideal-baseline mechanisms/profiles and the
+liang-properties Ely–Hanley kernel. Its independent steady flames feed the
+Liang comparison report; production OpenFOAM code has no dependency on it.
+
 `development/fresh-start` consumes ideal-baseline initial-state generation,
 premixed-paper boundary finalization and flame-tracking anchors/checks. It reuses
 qualified native/energy binaries with unchanged libraries and supplies time-0

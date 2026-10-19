@@ -1,8 +1,9 @@
 # Liang Figure 8(a): staged planar-flame comparison
 
 This module owns the ideal-gas operating-point sweep and paper-scale Figure
-8(a) comparison. The owner limited Cantera calculations to Case 1 on 19 October
-2026. Cases 2–5 remain original paper references, not new calculations.
+8(a) comparison. The owner's later 19 October instruction authorizes Cases 2–5.
+Their implementation belongs to `../cantera-liang`; existing plots still contain
+only calculated Case 1 results until qualified new data replace them.
 
 Inputs: the supplied Liang PDF, existing ideal-gas Cantera 3.2 profiles, pinned
 author GRI30 inputs. Outputs: independent

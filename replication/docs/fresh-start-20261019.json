@@ -1,0 +1,113 @@
+{
+  "jobs": [
+    {
+      "job": "124916221",
+      "family": "native",
+      "key": "phi110",
+      "minutes": 480,
+      "start_time_s": 0,
+      "physical_input_sha256": "74eb13eaa06937c65077d734707102fb3722c7de35884ee5b324d8be01a886d6",
+      "first_tracking_time_s": 0.0
+    },
+    {
+      "job": "124916226",
+      "family": "energy",
+      "key": "phi110",
+      "minutes": 480,
+      "start_time_s": 0,
+      "physical_input_sha256": "74eb13eaa06937c65077d734707102fb3722c7de35884ee5b324d8be01a886d6",
+      "first_tracking_time_s": 0.0
+    },
+    {
+      "job": "124916319",
+      "family": "native",
+      "key": "phi090",
+      "minutes": 2880,
+      "start_time_s": 0,
+      "physical_input_sha256": "a3c98acc660336521aa4bd246ee6316206b92f50a3ad8a663ae0976c5a0ff000",
+      "first_tracking_time_s": 0.0
+    },
+    {
+      "job": "124916334",
+      "family": "native",
+      "key": "phi095",
+      "minutes": 480,
+      "start_time_s": 0,
+      "physical_input_sha256": "28bd1b8853b7359f69f01a3c08351137b585ef957f40be1e2523f4713f6a1e23",
+      "first_tracking_time_s": 0.0
+    },
+    {
+      "job": "124916350",
+      "family": "native",
+      "key": "phi100",
+      "minutes": 480,
+      "start_time_s": 0,
+      "physical_input_sha256": "be8ed9c0d4831e7971709e4e4694d52360508a869325025a3654f864798d8ff9",
+      "first_tracking_time_s": 0.0
+    },
+    {
+      "job": "124916356",
+      "family": "native",
+      "key": "phi105",
+      "minutes": 480,
+      "start_time_s": 0,
+      "physical_input_sha256": "ab63ce5331f259bf2821a456ab5c222fa802f7967b6b35d4a28ad8067f9500e1",
+      "first_tracking_time_s": 0.0
+    },
+    {
+      "job": "124916361",
+      "family": "native",
+      "key": "phi115",
+      "minutes": 480,
+      "start_time_s": 0,
+      "physical_input_sha256": "f4447d3803f126da897a4d47d0d67fcb90fcd4932da61d0e6eebf5233442065b",
+      "first_tracking_time_s": 0.0
+    },
+    {
+      "job": "124916364",
+      "family": "native",
+      "key": "phi120",
+      "minutes": 480,
+      "start_time_s": 0,
+      "physical_input_sha256": "9c510588f503fa2e6ed0c5cfa6ea48977eed198f0c25c8b857ff7c6ad51c4f72",
+      "first_tracking_time_s": 0.0
+    },
+    {
+      "job": "124916369",
+      "family": "native",
+      "key": "phi125",
+      "minutes": 480,
+      "start_time_s": 0,
+      "physical_input_sha256": "165323aa6d7e4ac6fc603c8e6ccf8c40262ea760cd51bf50d0dcc426ff360e00",
+      "first_tracking_time_s": 0.0
+    },
+    {
+      "job": "124916375",
+      "family": "native",
+      "key": "phi130",
+      "minutes": 480,
+      "start_time_s": 0,
+      "physical_input_sha256": "41c1a19f4f33a34940524e2cc86cee6c52f4046b8e571f64af8c0e3ab9a976fe",
+      "first_tracking_time_s": 0.0
+    },
+    {
+      "job": "124916381",
+      "family": "native",
+      "key": "phi135",
+      "minutes": 480,
+      "start_time_s": 0,
+      "physical_input_sha256": "e19706a645b945fa7bbbd006aaf927a93c071995f05e008bc9b445011b568b9b",
+      "first_tracking_time_s": 0.0
+    },
+    {
+      "job": "124916387",
+      "family": "native",
+      "key": "phi140",
+      "minutes": 480,
+      "start_time_s": 0,
+      "physical_input_sha256": "5cfb1b6d1e870847312e4a9b196e7e0c3a7e56de8fa475622841355e07fbe360",
+      "first_tracking_time_s": 0.0
+    }
+  ],
+  "sacct": "124916221|RUNNING|00:02:18|0:0\n124916226|RUNNING|00:02:15|0:0\n124916319|RUNNING|00:01:09|0:0\n124916334|RUNNING|00:01:02|0:0\n124916350|RUNNING|00:00:59|0:0\n124916356|RUNNING|00:00:57|0:0\n124916361|RUNNING|00:00:57|0:0\n124916364|RUNNING|00:00:54|0:0\n124916369|RUNNING|00:00:53|0:0\n124916375|RUNNING|00:00:50|0:0\n124916381|RUNNING|00:00:50|0:0\n124916387|RUNNING|00:00:47|0:0\n"
+}

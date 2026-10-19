@@ -1,0 +1,73 @@
+#include "StagedTransport.h"
+#include "cantera/onedim.h"
+#include "cantera/oneD/DomainFactory.h"
+#include "cantera/thermo/ThermoFactory.h"
+#include "cantera/transport/TransportFactory.h"
+#include <filesystem>
+#include <fstream>
+#include <iomanip>
+#include <iostream>
+#include <sstream>
+using namespace Cantera;
+namespace fs=std::filesystem;
+std::vector<std::string> split(const std::string& line) {
+    std::stringstream in(line);std::string part;std::vector<std::string> out;
+    while(std::getline(in,part,','))out.push_back(part);return out;
+}
+int main(int argc,char** argv) {
+try {
+    if(argc!=5)throw std::runtime_error("Usage: liang-flame INPUTS CASE PHI NEW_OUTPUT");
+    fs::path input=argv[1],output=argv[4];int stage=std::stoi(argv[2]);double phi=std::stod(argv[3]);
+    if(stage<1 || stage>5 || !(phi>0) || fs::exists(output))throw std::runtime_error("Invalid stage/phi or existing output");
+    std::ifstream table(input/"species.txt");std::vector<liang::Species> parameters;
+    std::vector<std::string> species;std::string name;liang::Species row;
+    while(table>>name>>row.Tc>>row.Pc>>row.Vc>>row.W>>row.omega>>row.eos) {parameters.push_back(row);species.push_back(name);}
+    if(parameters.size()!=53)throw std::runtime_error("Expected 53 explicit species rows");
+    ThermoFactory::factory()->reg("liang-srk",[&](){
+        auto* gas=new liang::SrkPhase;gas->stage=stage;gas->parameters=parameters;return gas;});
+    TransportFactory::factory()->reg("liang-staged",[&](){
+        auto* tr=new liang::StagedTransport;tr->stage=stage;tr->parameters=parameters;return tr;});
+    auto sol=newSolution((input/(stage==1?"ideal.yaml":"srk.yaml")).string(),"",stage==1?"mixture-averaged":"liang-staged");
+    auto gas=sol->thermo();
+    for(size_t k=0;k<species.size();k++) if(gas->speciesName(k)!=species[k])throw std::runtime_error("Species order mismatch");
+    gas->setEquivalenceRatio(phi,"CH4","O2:0.21,N2:0.79");gas->setState_TP(298,10132500);
+    std::vector<double> xin(gas->nSpecies());gas->getMoleFractions(xin.data());double rho=gas->density();
+    std::ifstream file(input/"guess.csv");std::string line;std::getline(file,line);auto columns=split(line);
+    std::vector<std::vector<double>> values(columns.size());
+    while(std::getline(file,line)) {auto fields=split(line);if(fields.size()!=columns.size())throw std::runtime_error("CSV width");
+        for(size_t k=0;k<fields.size();k++)values[k].push_back(std::stod(fields[k]));}
+    if(values[0].size()<10 || columns[0]!="x_m")throw std::runtime_error("Invalid initial profile");
+    auto flow=newDomain<Flow1D>("gas-flow",sol,"flow");flow->setFreeFlow();flow->setPressure(10132500);
+    flow->setupGrid(values[0].size(),values[0].data());flow->setSteadyTolerances(1e-5,1e-11);
+    flow->setFluxGradientBasis(ThermoBasis::molar);flow->enableSoret(false);
+    auto inlet=newDomain<Inlet1D>("inlet",sol);inlet->setTemperature(298);inlet->setMoleFractions(xin.data());
+    inlet->setMdot(rho*values[2][0]);auto outlet=newDomain<Outlet1D>("outlet",sol);
+    Sim1D flame({inlet,flow,outlet});flame.setMaxGridPoints(1,6000);
+    auto loc=values[0];for(auto& x:loc)x=(x-values[0][0])/(values[0].back()-values[0][0]);
+    flow->setProfile("T",loc,values[1]);flow->setProfile("velocity",loc,values[2]);
+    for(size_t k=5;k<columns.size();k++)flow->setProfile(columns[k],loc,values[k]);
+    flame.setFixedTemperature(298+.3*(values[1].back()-298));flow->setEnergyEnabled(true);
+    fs::create_directories(output);
+    std::ofstream results(output/"refinement.csv");results<<"stage,phi,slope,curve,points,speed_cm_s\n"<<std::setprecision(16);
+    for(auto level:std::vector<std::pair<double,double>>{{.015,.025},{.0075,.0125}}) {
+        flow->setRefineCriteria(3,level.first,level.second,0);flame.solve(1,true);
+        results<<stage<<','<<phi<<','<<level.first<<','<<level.second<<','<<flow->nPoints()<<','<<100*flow->values("velocity")[0]<<'\n';results.flush();
+    }
+    // Save numerical fields explicitly; custom factories must also be registered on reload.
+    flame.save((output/"flame.yaml").string(),"flame","Staged SRK, concentration-law kinetics",true);
+    auto grid=flow->grid(),T=flow->values("T"),u=flow->values("velocity");
+    std::vector<std::vector<double>> ys;for(auto& n:species)ys.push_back(flow->values(n));
+    std::ofstream csv(output/"profile.csv");csv<<std::setprecision(16)<<"x_m,T_K,U_m_s,rho_kg_m3,h_J_kg,cp_J_kgK,lambda_W_mK";
+    for(auto& n:species)csv<<",Y_"<<n;csv<<'\n';
+    std::vector<double> y(species.size());
+    for(size_t j=0;j<grid.size();j++) {
+        for(size_t k=0;k<y.size();k++)y[k]=ys[k][j];gas->setState_TPY(T[j],10132500,y.data());
+        csv<<grid[j]<<','<<T[j]<<','<<u[j]<<','<<gas->density()<<','<<gas->enthalpy_mass()<<','<<gas->cp_mass()<<','<<sol->transport()->thermalConductivity();
+        for(auto v:y)csv<<','<<v;csv<<'\n';
+    }
+    std::ofstream counters(output/"callbacks.txt");
+    if(auto* g=dynamic_cast<liang::SrkPhase*>(gas.get()))counters<<"eos "<<g->eosCalls<<" cp "<<g->cpCalls<<" partial_enthalpy "<<g->partialCalls<<'\n';
+    if(auto* t=dynamic_cast<liang::StagedTransport*>(sol->transport().get()))counters<<"conductivity "<<t->conductivityCalls<<" diffusion "<<t->diffusionCalls<<'\n';
+    std::cout<<"COMPLETED stage="<<stage<<" phi="<<phi<<" speed_cm_s="<<100*u[0]<<std::endl;
+} catch(const std::exception& e) {std::cerr<<e.what()<<std::endl;return 1;}
+}
