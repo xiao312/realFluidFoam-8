@@ -1,5 +1,11 @@
 # Replication boundaries
 
+`development/flame-tracking` uses the premixed-paper generator, ideal-baseline
+donors and saved Cantera anchors to add read-only runtime OH/temperature tracking.
+It reuses the environment runner and adaptive field reader for isolated build,
+qualification and continuations. The species-solve source remains a separate
+measure. It does not depend on Cantera at CFD runtime or alter the library.
+
 `development/premixed-sensitivity` consumes the qualified spatial diagnostic
 executable and identical products checkpoints. The validation runner dispatches
 three isolated fixed-step segments. It supplies time-step and restart comparisons

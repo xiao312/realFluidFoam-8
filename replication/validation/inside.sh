@@ -17,6 +17,13 @@ printf 'source=%s\nbuild_job=%s\nstage=%s\n' "$(cat "$release/SOURCE_REVISION")"
 ldd "$platform/bin/realFluidReactingFoam" > "$job/solver-ldd.txt"
 grep -F "$platform/lib/libspecie.so" "$job/solver-ldd.txt"
 if grep -q 'not found' "$job/solver-ldd.txt"; then exit 1; fi
+if [[ "$stage" == flame-tracking-* ]]; then
+    selector=${stage#flame-tracking-}
+    if [[ "$selector" == qualify ]]; then
+        exec bash "$release/replication/development/flame-tracking/run.sh" "$release" "$job" qualify
+    fi
+    exec bash "$release/replication/development/flame-tracking/run.sh" "$release" "$job" "${selector%-*}" "${selector##*-}"
+fi
 if [[ "$stage" == premixed-sensitivity-check ]]; then
     exec python3 -B "$release/replication/development/premixed-sensitivity/qualify.py" "$job"
 fi

@@ -12,6 +12,9 @@ to the scientific code and never enter Git.
 Dependencies: `environment/` for contained Slurm execution; the compiled real-fluid
 libraries; Python 3 for deterministic case generation and numerical summaries.
 Later application studies depend on the resulting evidence, not merely exit codes.
+The `flame-tracking-*` dispatcher uses the isolated development/flame-tracking
+runner for observer qualification and ideal-case continuations. It reuses the
+same pinned library and environment; no existing binary or live case is edited.
 The runtime, build ID, source SHA, input hashes, commands, and scheduler limits
 must accompany each result. Build products are reused read-only.
 
