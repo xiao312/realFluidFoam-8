@@ -36,8 +36,9 @@ def render(config, inputs, output):
         for ax,name,title in zip(ha,["OH_speed_cm_s","temperature_speed_cm_s"],["OH displacement","Temperature-front displacement"]):
             ax.plot([r["end_s"]*1000 for r in estimates],[r[name] for r in estimates],color=color,label=label,lw=.9,marker="o",ms=2)
             ax.set(xlabel="Fit end time [ms]",ylabel="Speed [cm/s]",title=title)
-    for ax in [axes[0,0],aa[0],ha[0]]:
+    for ax in [axes[0,0],aa[0]]:
         ax.legend(ncol=2,fontsize=6.8,frameon=False)
+    history.legend(*ha[0].get_legend_handles_labels(),loc="outside lower center",ncol=6,fontsize=7,frameon=False)
     fig.suptitle("Completed Liang-inlet sweep: spatial fields at 1 ms",fontsize=11)
     aligned.suptitle(f"Profiles relative to OH={level:g}; diagnostic alignment only",fontsize=11)
     history.suptitle(f"Final {window*1e6:g}-microsecond fits; convergence unproved",fontsize=11)
