@@ -44,7 +44,7 @@ finite. These checks establish startup health and diagnostic noninterference.
 
 Case/runner source: `128d13ddb4e40c8a539053f22a90fb452738597e`.
 Cantera analysis implementation: `9d863b6e4dee532558114e98bf56be267067169a`.
-Plotting revision: dba2b1 (running-state labels updated).
+Plotting revision: bdba2b1 (running-state labels updated).
 Solver build 124870644, binary SHA-256
 `e3ef56491e44c2dfdd79826805f992ed8220901643ac14554c38ca8e81e6b385`.
 Library build 124657926 and the locked OF8 container remain unchanged.
