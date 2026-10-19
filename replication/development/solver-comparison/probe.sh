@@ -23,7 +23,7 @@ for family in native stock; do
  sha256sum "$build/rfChemistryCompare" > "$build/binary.sha256"
  for tolerance in base tight; do
   case="$job/$family-$tolerance"
-  python3 -B "$module/probe_case.py" "$family" "$tolerance" /work/cache/solver-comparison/chemistry-states.json "$case" > "$job/$family-$tolerance-prepare.log"
+  python3 -B "$module/probe_case.py" "$family" "$tolerance" "$module/chemistry-states.json" "$case" > "$job/$family-$tolerance-prepare.log"
   blockMesh -case "$case" > "$job/$family-$tolerance-mesh.log" 2>&1
   if "$build/rfChemistryCompare" -case "$case" > "$job/$family-$tolerance.log" 2>&1; then
    printf '%s %s 0\n' "$family" "$tolerance" >> "$job/probe-exits.txt"

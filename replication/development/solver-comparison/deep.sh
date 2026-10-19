@@ -55,6 +55,21 @@ else
  python3 -B "$module_path/prepare.py" plan deep "$job/case" > "$job/case-plan.json"
  python3 -B "$module_path/prepare.py" apply deep "$job/case" > "$job/prepare.log"
  cp "$root/cache/solver-comparison/author-gri30.yaml" "$job/case/constant/author-gri30.yaml"
+ python3 - "$job/case/constant/author-gri30.yaml" <<'PY'
+from pathlib import Path
+import sys, hashlib, json
+p=Path(sys.argv[1]); original=p.read_bytes()
+text=original.decode().replace('kinetics: bulk','kinetics: gas').replace('transport: mixture-averaged','transport: Mix')
+text=text.replace('name: ""','name: gas').replace('T: 1.0e-03','T: 298.0')
+p.write_text(text)
+p.with_suffix('.compatibility.json').write_text(json.dumps({
+    'original_sha256':hashlib.sha256(original).hexdigest(),
+    'compatible_sha256':hashlib.sha256(p.read_bytes()).hexdigest(),
+    'changes':'Cantera 2.6 type names and unused default phase state; coefficients unchanged'},indent=2))
+PY
+ g++ -std=c++14 -I"$build/cantera/include" "$module_path/mechanismCheck.C" \
+  -L"$build/cantera/lib" -lcantera -o "$job/mechanism-check" > "$job/mechanism-check-build.log" 2>&1
+ "$job/mechanism-check" "$job/case/constant/author-gri30.yaml" > "$job/mechanism-check.txt" 2>&1
  blockMesh -case "$job/case" > "$job/blockMesh.log" 2>&1
  decomposePar -case "$job/case" > "$job/decompose.log" 2>&1
  cd "$job/case"

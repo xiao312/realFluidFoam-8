@@ -35,3 +35,26 @@ submission and placement; `apply` submits it. Modes select build/probe/flame job
 Verification: Python compilation without bytecode, bash syntax, git diff --check,
 case input equality, scheduled startup, library dependency receipts and finite
 fields. A chemistry discrepancy needs a reproducible state and tolerance study.
+
+`chemistry-states.json` freezes eight sampled phi110 flame states, with the source
+profile/mechanism hashes and any clipped negative roundoff recorded. `probe.sh`
+builds the same executable separately against stock and qualified native libraries.
+It records failed integrations without preventing the other cases from running.
+Baseline SEULEX tolerances are 1e-8 absolute / 1e-6 relative; the qualified tighter
+pair is 1e-12 / 1e-8. An earlier 1e-14 / 1e-10 attempt exceeded the stock step limit.
+
+`cantera_probe.py PROFILE MECHANISM NEW_OUTPUT [--reference-pressure 100000]`
+uses CVODE for physical adiabatic CP, isothermal CV, and the native concentration/
+Cp-temperature ODE. The optional reference-pressure change is a diagnostic; it
+does not replace the published Cantera flame curve. `analyze.py SNAPSHOT REFERENCE
+OUTPUT_JSON --assert-cache-refresh` must fail on the unchanged native library:
+its species enthalpy cache does not refresh after a 100 K temperature increment.
+Source-vector comparisons normalize by the L1 norm of reference mass sources;
+small net rates near equilibrium need separate interpretation.
+
+DeepFlame dependency URLs and hashes are locked in `dependencies-lock.json`.
+Packages are staged offline; the first cluster attempt failed because compute
+nodes could not resolve the package host. Upstream CRLF shell files are normalized
+in the private build copy. A small executable checks the converted mechanism with
+native Cantera 2.6 before the flame run. Only YAML type names/default phase state
+change for compatibility; NASA coefficients and reactions remain unchanged.

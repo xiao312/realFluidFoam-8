@@ -51,7 +51,7 @@ def prepare(action, family, case):
               'dimensions [0 1 -2 0 0 0 0]; value (0 0 0);\n')
         write('constant/CanteraTorchProperties', header('CanteraTorchProperties')+'''
 chemistry on;
-CanteraMechanismFile "author-gri30.yaml";
+CanteraMechanismFile "constant/author-gri30.yaml";
 transportModel "Mix";
 odeCoeffs {relTol 1e-9; absTol 1e-15;}
 inertSpecie "N2";

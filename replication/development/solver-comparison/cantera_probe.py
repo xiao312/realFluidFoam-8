@@ -40,9 +40,18 @@ class ConcentrationReactor(ct.ExtensibleReactor):
         rhs[-1] = -np.dot(gas.partial_molar_enthalpies, rates)/np.dot(c, gas.partial_molar_cp)
 
 
-def run(profile, mechanism, output):
+def run(profile, mechanism, output, reference_pressure=None):
     output.mkdir(exist_ok=False)
     gas = ct.Solution(str(mechanism))
+    original_pressure = gas.reference_pressure
+    if reference_pressure is not None:
+        species = gas.species()
+        for item in species:
+            thermo = item.thermo
+            item.thermo = ct.NasaPoly2(thermo.min_temp, thermo.max_temp,
+                                      reference_pressure, thermo.coeffs)
+        gas = ct.Solution(thermo='ideal-gas', kinetics='gas', species=species,
+                          reactions=gas.reactions(), transport_model='mixture-averaged')
     with profile.open() as stream:
         rows = list(csv.DictReader(stream))
     indices = [min(range(len(rows)), key=lambda i: abs(float(rows[i]['T_K'])-t))
@@ -57,7 +66,10 @@ def run(profile, mechanism, output):
                        'Y': dict(zip(gas.species_names, ys.tolist())),
                        'clipped_negative_mass_fraction': float(-np.minimum(raw, 0).sum())})
     record = {'cantera_version': ct.__version__, 'profile_sha256': hashlib.sha256(profile.read_bytes()).hexdigest(),
-              'mechanism_sha256': hashlib.sha256(mechanism.read_bytes()).hexdigest(), 'states': states}
+              'mechanism_sha256': hashlib.sha256(mechanism.read_bytes()).hexdigest(), 'states': states,
+              'original_reference_pressure_Pa': original_pressure,
+              'reference_pressure_Pa': gas.reference_pressure,
+              'reference_pressure_override_is_diagnostic': reference_pressure is not None}
     (output/'chemistry-states.json').write_text(json.dumps(record, indent=2)+'\n')
     with (output/'cantera-probe.csv').open('w', newline='') as stream:
         writer = csv.writer(stream)
@@ -100,4 +112,5 @@ def run(profile, mechanism, output):
 if __name__ == '__main__':
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument('profile',type=Path);p.add_argument('mechanism',type=Path);p.add_argument('output',type=Path)
-    a = p.parse_args();run(a.profile,a.mechanism,a.output)
+    p.add_argument('--reference-pressure',type=float)
+    a = p.parse_args();run(a.profile,a.mechanism,a.output,a.reference_pressure)
