@@ -1,5 +1,45 @@
 # Paper figure comparisons
 
+For new comparisons, use [the manifest-driven suite](../../suite/README.md).
+It reuses this module's field readers and curve extractors with explicit input
+paths, measured panel coordinates and current run identities. The dated scripts
+below remain historical entrypoints; do not treat their hardcoded jobs or status
+strings as the current campaign. Their files are retained to reproduce old evidence.
+
+`extract_inlet_profiles.py ROOT JOB...` reads stable saved 1-D development
+checkpoints and emits JSON on stdout; it never writes remotely. It reconstructs
+global ordering through cellProcAddressing, validates the declared uniform mesh,
+hashes each source field, and omits the newest common time for unfinished jobs.
+A PASS receipt and matching endpoint-check time allow a finished job to include its
+latest saved state. The export retains those receipts and validation inputs.
+Run over SSH stdin and save stdout under the local project state directory.
+`plot_inlet_profiles.py PROJECT SNAPSHOT OUTPUT` produces diagnostic profiles,
+fixed-OH-isoline displacement estimates, a Figure 12 comparison and a PDF.
+These use the existing analysis dependencies. The paper has no corresponding
+premixed spatial profiles; only its Figure 12 speed at phi=1.10 is compared.
+The speed estimate is rho/rho_u times (U - dx_front/dt), on the rising OH edge.
+It is a finite-time kinematic diagnostic, not an evaluation of the paper's
+discrete chemical/diffusive source expression or a converged flame speed.
+Verification checks addressing coverage, field finiteness, stable file hashes,
+marker uniqueness, timestep sensitivity and PDF rendering. No solver is changed.
+`temperature_speed.py SNAPSHOT OUTPUT_JSON` independently tracks the maximum
+positive temperature gradient using a three-point subcell fit, actual saved
+times and measured cold-stream velocity. It adapts DeepFlame's concept rather
+than its hardcoded sampling interval. Compare its 50/100-us fits with the OH
+estimate; do not assume agreement during thermal relaxation.
+
+`collect_counterflow.py ROOT oxy-1:JOB oxy-200:JOB air-100:JOB` streams a tar.gz
+of stable decomposed checkpoints, global mesh and source hashes to stdout without
+remote writes. Preserve that archive locally. `plot_paper2022.py` also accepts
+manifest case entries `{path, time, ranks}` for these decomposed snapshots and
+an optional output directory, plus per-case `case_status` labels. Real mesh
+edges are used in contours; only displayed streamlines are interpolated onto a
+regular grid. A failed case's earlier smoke must be explicitly identified.
+After rendering, run `counterflow_report.py PROJECT SNAPSHOT_DIR OUTPUT_DIR`
+to compare the same fields with the existing temperature digitization, export
+near-axis CSVs and create the five-page original/replication PDF. Inspect all
+pages and check `data/summary.json` for sample times, radii and qualifications.
+
 This module inventories all numbered figures in the two supplied papers and
 renders comparable plots from verified results. It does not fabricate absent
 LES statistics, steady flames, or burning velocities. Original figures and
@@ -74,7 +114,8 @@ to the archived startup runs; a JSON manifest can supply new case paths under
 the project root and an explicit status label. Numerical status is always printed
 inside the figure. Values outside paper axes are counted, not silently hidden;
 the wider-range diagnostic plots remain available from `plot_flames.py`.
-This renderer does not generate missing flame-speed results or reference curves.
+This renderer does not generate missing flame-speed results. A manifest can supply
+`paper_curves`, a project-relative JSON produced by `counterflow_paper_curves.py`.
 
 `plot_interim.py PROJECT_ROOT SNAPSHOT_ROOT OUTPUT_DIR` reads the saved 10/20 ms
 processor fields for jobs 124672685, 124674723 and 124674728 using global cell
@@ -93,3 +134,21 @@ times, cell counts and nearest-axis radii. The atlas reads this record to update
 its counterflow captions and summary, avoiding stale one-microsecond descriptions
 when a new case manifest is rendered. Such updates retain a developing-flow
 qualification until temporal and grid convergence are separately established.
+
+## Both published counterflow series
+
+Run `python -B counterflow_paper_curves.py PDF OUTPUT_JSON` before rendering
+Figures 9–11. The extractor checks the supplied PDF SHA-256, uses inspected
+vector paths and separate axis calibrations, and records every path/group.
+Expected result: 50 curves, two series for each of 25 published quantities.
+OH values are stored as actual mass fractions; display scaling is applied once.
+The plot manifest selects this JSON with `paper_curves`. Dash-dot denotes the
+published benchmark, dashed denotes Nguyen, and solid denotes our saved fields.
+Species colours identify species; other panels use black/red/blue by dataset.
+Partial reference ranges remain partial, and no curve alignment is applied.
+Figure 11 has three published species; no H2O reference is invented.
+
+Verify both series against the original crops, including the separate viscosity
+and conductivity axes. Render and inspect all five comparison PDF pages. These
+are approximate digitizations, not original author tables. Quantitative summary
+metrics still use Nguyen's temperature curve only. No dependency has changed.

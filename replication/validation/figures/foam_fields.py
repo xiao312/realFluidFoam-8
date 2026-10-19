@@ -66,3 +66,22 @@ def read_case(case):
     fields = {name: field(latest/name, len(xyz)) for name in names}
     fields["U"] = field(latest/"U", len(xyz), vector=True)
     return xyz, fields, float(latest.name)
+
+
+def read_decomposed(case, time, ranks=8):
+    """Reassemble saved fields through global addresses, without OpenFOAM writes."""
+    case = Path(case)
+    xyz = centres(case)
+    names = ('T', 'p', 'rho', 'Cp', 'mu', 'kappa', 'CH4', 'O2', 'CO2', 'H2O', 'OH', 'U')
+    arrays = {n: np.full((len(xyz), 3) if n == 'U' else len(xyz), np.nan) for n in names}
+    seen = np.zeros(len(xyz), dtype=int)
+    for rank in range(ranks):
+        proc = case / f'processor{rank}'
+        count, text = list_body(proc / 'constant/polyMesh/cellProcAddressing')
+        ids = np.fromstring(text, sep=' ', dtype=int)
+        assert len(ids) == count and ids.min() >= 0 and ids.max() < len(xyz)
+        seen[ids] += 1
+        for name in names:
+            arrays[name][ids] = field(proc / str(time) / name, count, vector=name == 'U')
+    assert np.all(seen == 1) and all(np.isfinite(v).all() for v in arrays.values())
+    return xyz, arrays, float(time)

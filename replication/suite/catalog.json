@@ -1,0 +1,73 @@
+{
+  "schema_version": 1,
+  "environment_lock": "environment/lock.json",
+  "dockerfile": "environment/Dockerfile",
+  "integration_branch": "develop/reacting",
+  "suite_branch": "draft/replication-suite",
+  "automation": "manual preparation/submission; automated local analysis and rendering",
+  "families": [
+    {
+      "id": "methane",
+      "figures": "2022-fig06",
+      "guide": "validation/properties/README.md",
+      "entrypoint": "validation/submit.sh",
+      "plan_example": "bash replication/validation/submit.sh plan ROOT IMAGE RELEASE BUILD properties PARTITION",
+      "coverage": "225 states per EOS; SRK and PR; 5 pressures x 45 temperatures",
+      "checks": "positive finite properties, NIST errors, paper errors, enthalpy inversion <1e-6"
+    },
+    {
+      "id": "nitrogen",
+      "figures": "2025-fig06",
+      "guide": "validation/properties/README.md",
+      "entrypoint": "validation/submit.sh",
+      "plan_example": "bash replication/validation/submit.sh plan ROOT IMAGE RELEASE BUILD properties-nitrogen PARTITION",
+      "coverage": "901 states per EOS; 3.98 MPa; 100-325 K",
+      "checks": "same independent property/inversion gates; not a turbulent solver validation"
+    },
+    {
+      "id": "counterflow-paper",
+      "figures": "2022-fig08..11",
+      "guide": "development/counterflow/README.md",
+      "entrypoint": "development/counterflow/prepare.py",
+      "plan_example": "python replication/development/counterflow/prepare.py plan oxy-1 paper OUTPUT",
+      "coverage": "oxy-1, oxy-200, air-100; tutorial versus paper meshes remain separate",
+      "checks": "mesh, exact molar feed, runtime momentum matching, finite species, steady metrics, mesh/time independence, paper curves"
+    },
+    {
+      "id": "premixed-single-front",
+      "figures": "2022-fig12",
+      "guide": "development/premixed-inlet/README.md",
+      "entrypoint": "development/premixed-inlet/prepare.py",
+      "plan_example": "python replication/development/premixed-inlet/prepare.py plan phi-110-liang OUTPUT smoke",
+      "coverage": "phi 0.90..1.40 every 0.05; half unburned / half equilibrium seed",
+      "checks": "OH gas-relative speed, temperature-front speed, source-based paper method pending; seed/inlet/mesh/time/domain independence"
+    },
+    {
+      "id": "premixed-two-front",
+      "figures": "2022-fig12",
+      "guide": "validation/flames/paper-campaign/README.md",
+      "entrypoint": "validation/flames/paper-campaign/prepare.py",
+      "plan_example": "python replication/validation/flames/paper-campaign/prepare.py plan CASE OUTPUT smoke",
+      "coverage": "historical central ignition; retain as separate topology",
+      "checks": "two-front paper method; not interchangeable with one-front diagnostic"
+    },
+    {
+      "id": "solver-equivalence",
+      "figures": "none",
+      "guide": "development/README.md",
+      "entrypoint": "development/premixed-inlet/compare.py",
+      "plan_example": "see replication/development/README.md",
+      "coverage": "renamed draft versus upstream startup",
+      "checks": "require matched inputs and field tolerance before numerical changes"
+    },
+    {
+      "id": "LES",
+      "figures": "2025-fig08..15",
+      "guide": "validation/figures/README.md",
+      "entrypoint": "validation/figures/inventory.json",
+      "plan_example": "reference inventory only",
+      "coverage": "not run",
+      "checks": "no fabricated statistics; needs separate campaign"
+    }
+  ]
+}
