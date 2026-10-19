@@ -22,6 +22,9 @@ flowchart LR
 `development/` owns the single `develop/reacting` integration line and isolated
 draft experiments. Its named solver depends on the pinned OF8/library build;
 benchmark runners depend on that solver or the unchanged upstream executable.
+`development/counterflow` prepares separate tutorial and paper-informed mesh
+variants through the existing author/paper generators. It depends on their input
+manifests and runtime density finalization; it does not modify solver numerics.
 `validation/` owns case generation, property probes, and scientific comparisons;
 it uses contained execution from `environment/` and a completed isolated build.
 `validation/properties` owns library probes and NIST comparisons; its optional
@@ -65,3 +68,19 @@ ledger before submission. The existing validation runner handles decomposition,
 contained single-node MPI, reconstruction and final field checks. It does not
 infer convergence from a successful run. Figure rendering consumes reconstructed
 case fields through an explicit case manifest, separately from job submission.
+
+`development/counterflow` owns paper-setting reconstruction and bounded refinement
+qualification. It depends on author/paper case preparation, the runtime density
+probe, OF8 mapFields and adaptive field checks. Private donor copies are read
+from pinned coarse checkpoints; original jobs remain unchanged. Its output is
+a fine-grid qualification, followed separately by developed-flow assessment.
+
+The counterflow replay path depends on a prior fine-grid job's checked mapped
+initial fields and executable. It copies those immutable inputs, records hashes
+and changes checkpoint controls; it does not depend on a completed reacting run.
+
+The counterflow steady continuation depends on a successful replay checkpoint,
+its verified solver executable and adaptive field parsing. Its scheduled watcher
+compares physical-time field changes and mass flux, saves convergence evidence,
+and requests a checkpointed stop on a candidate or wall-time boundary. It does
+not submit additional batches or equate a physical time limit with convergence.

@@ -1,0 +1,46 @@
+{
+  "observed_at": "2026-10-18T23:44:10+08:00",
+  "runner_source_revision": "a244ce46c7dbc098cbf554cd437b0cd04ae2d0c8",
+  "solver_source_revision": "8d9ecd2a6091b0453350049cd61a23a23adf938c",
+  "archive_sha256": "e54465701aefa71c2efa7f8820a0a36f874e011f272d722ac71638a3bb004583",
+  "library_build": 124657926,
+  "max_reserved_core_hours": 192,
+  "target_time_s": 1e-05,
+  "checkpoint_interval_s": 1e-06,
+  "purge_write": 2,
+  "run_time_modifiable": true,
+  "max_co": 0.2,
+  "max_delta_t_s": 1e-06,
+  "jobs": [
+    {
+      "job": 124805217,
+      "case": "oxy-1",
+      "cells": 888000,
+      "ranks": 32,
+      "wall_minutes": 180,
+      "mapped_input_job": 124802872,
+      "start_time_s": 0,
+      "state": "RUNNING",
+      "stage": "Copied-file hashes and initial checks passed; solver initializing on 32 MPI ranks",
+      "copy_hash_check_passed": true,
+      "mapped_field_check_passed": true,
+      "solver_log_ranks": 32,
+      "checkpoint_control_verified": true
+    },
+    {
+      "job": 124805218,
+      "case": "oxy-200",
+      "cells": 816000,
+      "ranks": 32,
+      "wall_minutes": 180,
+      "mapped_input_job": 124802875,
+      "start_time_s": 0,
+      "state": "RUNNING",
+      "stage": "Copied-file hashes and initial checks passed; solver initializing on 32 MPI ranks",
+      "copy_hash_check_passed": true,
+      "mapped_field_check_passed": true,
+      "solver_log_ranks": 32,
+      "checkpoint_control_verified": true
+    }
+  ]
+}

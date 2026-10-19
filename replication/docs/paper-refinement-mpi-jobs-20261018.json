@@ -1,0 +1,115 @@
+{
+  "observed_at": "2026-10-18T22:58:21.741988+08:00",
+  "source_revision": "8d9ecd2a6091b0453350049cd61a23a23adf938c",
+  "archive_sha256": "6062ca54e2f236074a98319752d15e1c560c6f0b6783efab648c3330b6c7da63",
+  "library_build": 124657926,
+  "max_reserved_core_hours": 64,
+  "qualification": "10-us fine-grid warm-start checks; no steady-flow or grid-convergence acceptance",
+  "jobs": [
+    {
+      "job": 124802872,
+      "case": "oxy-1",
+      "cells": 888000,
+      "ranks": 32,
+      "wall_minutes": 60,
+      "donor_job": 124767586,
+      "donor_time_s": 0.07,
+      "state": "CANCELLED",
+      "replaces_job": 124802435,
+      "stage": "Completed 1.466964 us; no nonzero checkpoint; wall limit insufficient",
+      "full_probe_log_ranks": 32,
+      "probe-serial-parallel-check": {
+        "ranks": 4,
+        "relative_tolerance": 1e-12,
+        "max_relative_difference": 1.1080025785759062e-13,
+        "passed": true
+      },
+      "replacement_job": 124805217,
+      "cancelled_elapsed_seconds": 2820,
+      "reason": "Scheduler denied wall-time increase; replay mapped initial state with intermediate checkpoints"
+    },
+    {
+      "job": 124802875,
+      "case": "oxy-200",
+      "cells": 816000,
+      "ranks": 32,
+      "wall_minutes": 60,
+      "donor_job": 124767667,
+      "donor_time_s": 0.058,
+      "state": "CANCELLED",
+      "replaces_job": 124802436,
+      "stage": "Completed 1.466964 us; no nonzero checkpoint; wall limit insufficient",
+      "full_probe_log_ranks": 32,
+      "probe-serial-parallel-check": {
+        "ranks": 4,
+        "relative_tolerance": 1e-12,
+        "max_relative_difference": 1.0724754417879012e-13,
+        "passed": true
+      },
+      "parallel-inlets-check": {
+        "ranks": 32,
+        "relative_tolerance": 1e-12,
+        "max_relative_difference": 1.0724754417879012e-13,
+        "passed": true
+      },
+      "full_probe_seconds": {
+        "wall": 85.698,
+        "user": 2603.893,
+        "system": 11.117
+      },
+      "replacement_job": 124805218,
+      "cancelled_elapsed_seconds": 2820,
+      "reason": "Scheduler denied wall-time increase; replay mapped initial state with intermediate checkpoints"
+    }
+  ],
+  "release": "releases/dev-refine-mpi-8d9ecd2",
+  "attempts": [
+    {
+      "source_revision": "21d360e69665f2510af3a10ae41c6a4a8853e96d",
+      "archive_sha256": "add79d763e4f5fe831ea946a6925e225cc7eace881e5d05429a707979ede639f",
+      "jobs": [
+        {
+          "job": 124802435,
+          "case": "oxy-1",
+          "cells": 888000,
+          "ranks": 32,
+          "wall_minutes": 60,
+          "donor_job": 124767586,
+          "donor_time_s": 0.07,
+          "state": "FAILED",
+          "replaces_job": 124799488,
+          "stage": "Small serial/MPI checks passed; stopped before full probe: /usr/bin/time absent",
+          "small_serial_mpi_check": {
+            "cells": 112,
+            "ranks": 4,
+            "relative_tolerance": 1e-12,
+            "max_relative_difference": 1.1080025785759062e-13,
+            "passed": true
+          },
+          "replacement_job": 124802872
+        },
+        {
+          "job": 124802436,
+          "case": "oxy-200",
+          "cells": 816000,
+          "ranks": 32,
+          "wall_minutes": 60,
+          "donor_job": 124767667,
+          "donor_time_s": 0.058,
+          "state": "FAILED",
+          "replaces_job": 124799489,
+          "stage": "Small serial/MPI checks passed; stopped before full probe: /usr/bin/time absent",
+          "small_serial_mpi_check": {
+            "cells": 112,
+            "ranks": 4,
+            "relative_tolerance": 1e-12,
+            "max_relative_difference": 1.0724754417879012e-13,
+            "passed": true
+          },
+          "replacement_job": 124802875
+        }
+      ]
+    }
+  ],
+  "last_checked_at": "2026-10-18T23:40:08+08:00"
+}
