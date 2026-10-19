@@ -38,6 +38,19 @@ class MeasurementTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "density disagree"):
             measure(rows, 2e-5, cold_cells=1)
 
+    def test_provisional_report_retains_failure(self):
+        rows = front(); rows[2]["rhoSaved"] = 9.
+        result = measure(rows, 2e-5, cold_cells=1, report_density_mismatch=True)
+        self.assertFalse(result["density_check_passed"])
+        self.assertEqual(result["density_relative_tolerance"], 1e-7)
+
+    def test_ambiguous_rising_crossing(self):
+        rows = front()
+        for row, value in zip(rows, [0., 3e-5, 1e-5, 4e-5, 5e-5]):
+            row["YOH"] = value
+        with self.assertRaisesRegex(ValueError, "crossing"):
+            measure(rows, 2e-5, cold_cells=1)
+
 
 if __name__ == "__main__":
     unittest.main()

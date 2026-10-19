@@ -47,3 +47,8 @@ for estimator/discretization/source-splitting tests, not permission to tune phys
 Example: `python3 -B prepare.py plan /work /work/jobs/NEW`.
 Run `python3 -B -m unittest discover -s replication/validation/flame-speed -p 'test_*.py'`.
 Expected: analytic diagnostic tests pass; scientific agreement remains measured.
+
+For failure analysis only, `analyze.py CASE --report-density-mismatch` emits
+provisional numbers with explicit per-snapshot failure flags and still exits 3
+if any density check fails. It does not relax the 1e-7 criterion or convert a
+failed scheduler job into a passed qualification. Standard analysis stays strict.
