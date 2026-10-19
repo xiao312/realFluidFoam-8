@@ -20,8 +20,10 @@ The reference density uses methane's mass per corresponding molar volume.
 All inputs must be finite; nonpositive shape factors or mixture volume fail.
 Partial molar volumes can be negative. The shape correlation bounds their
 reduced values to [0.5,2], as it does for other out-of-range values.
-Atomic-H NASA fits undershoot Cp/R=2.5 by about 1.2e-8 at flame temperatures.
-An undershoot below 1e-7 gives zero internal conductivity; larger violations fail.
+The author NASA fits undershoot Cp/R=2.5: atomic H by about 1.2e-8 and atomic N
+by 0.00136233 near 2115 K. A 1-K audit over 200–3500 K found these minima.
+Undershoots below 0.002 give zero internal conductivity; larger violations fail.
+This transport-only correction leaves thermodynamic Cp, enthalpy and kinetics unchanged.
 
 The explicit `massDensityShortcut` mapping is a diagnostic variant only. It
 reproduces the omitted molecular-weight factor in the Cantera 3.2 formula,

@@ -10,6 +10,8 @@ int main() {
     if(!(shape.f>0 && shape.h>0))throw std::runtime_error("signed partial-volume shape");
     double lambda=rfElyHanley::conductivity(1800.,1.,{{33.18,1.3e6,.064935,2.016,-.216,2.5-2e-8}}, {1.},{1.});
     if(!(lambda>0))throw std::runtime_error("NASA-fit internal heat capacity tolerance");
+    lambda=rfElyHanley::conductivity(2115.,1.,{{126.2,3.4e6,.09,14.007,0,2.498637672358062}}, {1.},{1.});
+    if(!(lambda>0))throw std::runtime_error("atomic-N NASA-fit correction");
     std::vector<liang::Species> s={{190.56,4.5992e6,.0986,16.04,.011},
         {154.58,5.043e6,.0734,32,.022},{126.2,3.3958e6,.0895,28,.0372}};
     std::vector<double> x={.1,.2,.7};

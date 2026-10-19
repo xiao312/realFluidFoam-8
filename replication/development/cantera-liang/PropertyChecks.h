@@ -8,7 +8,7 @@ inline void propertyChecks(const std::shared_ptr<Cantera::Solution>& sol,
     auto gas=sol->thermo();std::vector<double> x(gas->nSpecies()),h(x.size()),rates(x.size()),diff(x.size());
     gas->getMoleFractions(x.data());
     std::ofstream csv(output);csv<<std::setprecision(16)<<"T_K,rho,cp,cp_finite_difference,h_euler_error,lambda,D_CH4\n";
-    for(double T:{298.,900.,1800.,2400.}) {
+    for(double T:{298.,900.,1800.,2115.,2400.}) {
         gas->setState_TPX(T,10132500,x.data());
         double cp=gas->cp_mole(),hmix=gas->enthalpy_mole(),rho=gas->density();
         gas->getPartialMolarEnthalpies(h.data());
