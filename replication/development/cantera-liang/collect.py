@@ -36,6 +36,10 @@ def main():
         if not job['scheduler'] or job['scheduler'][0] != 'COMPLETED':
             continue
         output = contained(root/'jobs'/identifier/'result', root)
+        variant = (output/'model-variant.txt').read_text().strip() if (output/'model-variant.txt').exists() else 'full'
+        pressure = float((output/'pressure-Pa.txt').read_text())/101325 if (output/'pressure-Pa.txt').exists() else 100
+        if variant != job.get('variant', 'full') or abs(pressure-job.get('pressure_atm', 100)) > 1e-9:
+            raise ValueError('Recorded model/pressure differs from job output: '+identifier)
         check = subprocess.run([sys.executable, str(Path(__file__).with_name('check.py')),
                                 str(output)], capture_output=True, universal_newlines=True)
         job['screen_passed'] = check.returncode == 0

@@ -159,3 +159,13 @@ The additional `fine-grid` option appends a third mesh level (slope 0.001875,
 curve 0.003125) under the existing 6000-point cap. It changes no model closure.
 Use a labelled converged steady guess and compare energy-flux variation with
 the two-level result; this is independent of OpenFOAM's original-zero rule.
+
+The sweep accepts `--variant OPTIONS --pressure-atm ATM` (defaults full/100).
+Its qualification pilot must match stage, options and pressure. Ledger identity
+includes all four of stage, phi, options and pressure; different model curves
+cannot silently satisfy each other's entries. The collector verifies the recorded
+options and pressure before screening or plotting each completed result.
+
+Verify sweep qualification and duplicate guards on Linux with
+`python3 -B -m unittest test_sweep -v` from this module. Tests mock scheduler
+submission and require no cluster access; both guards must pass.
