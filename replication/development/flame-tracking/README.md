@@ -1,5 +1,10 @@
 # In-situ planar flame tracking
 
+Owner rule, 19 October 2026: new realFluidFoam-based runs start from original
+time-0 initialization. The checkpoint generator now rejects plan/apply without
+`--restart-authorization` recording actual explicit owner permission. Existing
+checkpoint launchers therefore fail closed. Use `../fresh-start` for new cases.
+
 `history.py SNAPSHOT OUTPUT` verifies local snapshot hashes and plots all three
 retained measures with the ideal Cantera reference. It uses matplotlib and
 does not contact or change running jobs. The output directory must be new;

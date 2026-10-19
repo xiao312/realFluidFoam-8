@@ -14,6 +14,10 @@ Read `replication/docs/writing.md` before project reports or work-log entries.
 - Keep raw output outside Git. Commit small evidence summaries and input manifests.
 - Record failures. A build or help check does not establish scientific validation.
 - Do not modify unrelated jobs, software, or historical project directories.
+- All new realFluidFoam-based simulation runs must start from the original time-0
+  initialization. Never continue from a saved intermediate state, use latestTime,
+  or relabel saved fields as time 0 unless the owner explicitly authorizes that
+  particular restart. Record the authorization with the run inputs.
 
 Windows checkouts use sparse checkout for replication files. Build from a full
 Git checkout on a case-sensitive Linux filesystem; upstream has case collisions.

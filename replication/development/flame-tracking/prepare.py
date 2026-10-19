@@ -37,7 +37,9 @@ def choose_checkpoint(donor,mode):
     return ordered[-2]
 
 
-def prepare(action,job,key,mode,root):
+def prepare(action,job,key,mode,root,restart_authorization=None):
+    if not restart_authorization:
+        raise ValueError('Intermediate-state restart requires explicit owner authorization; use fresh-start for time-0 runs')
     root=root.resolve();job=job.resolve()
     if job.parent!=root/'jobs':raise ValueError('Expected ROOT/jobs/JOB')
     donor=root/'jobs'/DONORS[key]/'case'
@@ -68,7 +70,7 @@ def prepare(action,job,key,mode,root):
         'writeInterval':'1' if mode=='qualify' else '1e-5','runTimeModifiable':'no'}
     for name in names:
         if (job/name).exists():raise ValueError('Refusing existing '+name)
-    plan={'donor_job':DONORS[key],'checkpoint':time,'cases':names,'controls':controls,
+    plan={'restart_authorization':restart_authorization,'donor_job':DONORS[key],'checkpoint':time,'cases':names,'controls':controls,
           'phi':anchor['phi'],'temperature_anchor':anchor,'copied_files':len(files),
           'donor_case_source':'128d13ddb4e40c8a539053f22a90fb452738597e'}
     print(json.dumps(plan))
@@ -103,4 +105,5 @@ if __name__=='__main__':
     p=argparse.ArgumentParser(description=__doc__);p.add_argument('action',choices=['plan','apply'])
     p.add_argument('job',type=Path);p.add_argument('key',choices=list(DONORS));p.add_argument('mode',choices=['qualify','full'])
     p.add_argument('--root',type=Path,default=Path('/work'))
-    a=p.parse_args();prepare(a.action,a.job,a.key,a.mode,a.root)
+    p.add_argument('--restart-authorization',help='Record the actual explicit owner permission for this restart; never invent it')
+    a=p.parse_args();prepare(a.action,a.job,a.key,a.mode,a.root,a.restart_authorization)

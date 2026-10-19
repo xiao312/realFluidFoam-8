@@ -1,5 +1,10 @@
 # Replication boundaries
 
+`development/fresh-start` consumes ideal-baseline initial-state generation,
+premixed-paper boundary finalization and flame-tracking anchors/checks. It reuses
+qualified native/energy binaries with unchanged libraries and supplies time-0
+histories to solver-comparison. It has no dependency on donor checkpoints.
+
 `development/solver-comparison/sampleHistory.C` consumes frozen stock/DeepFlame
 line profiles through the shared `flame-tracking/trackingCore.H`. Its CSVs and
 native in-situ tracking CSVs feed `plot_history.py` (NumPy/Matplotlib), which owns
