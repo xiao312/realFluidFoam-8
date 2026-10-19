@@ -88,7 +88,7 @@ diagnostic text. Run from a contained control directory with Python 3.8+ and
 Slurm's `sacct`; the ledger and all referenced jobs must resolve below ROOT.
 
 `sweep.py plan|apply ROOT RELEASE SDK BUILD INPUTS LEDGER STAGE PILOT` submits
-the 12 prepared points only after PILOT passes `check.py`. Plan is read-only and
+the conditions declared in INPUTS/plan.json only after PILOT passes `check.py`. Plan is read-only and
 can run while the pilot is unfinished. Apply locks the ledger, skips already
 recorded stage/phi pairs, records each successful submission immediately, and
 fails if submission output is ambiguous. On Linux it uses `fcntl` and Slurm.
@@ -169,3 +169,12 @@ options and pressure before screening or plotting each completed result.
 Verify sweep qualification and duplicate guards on Linux with
 `python3 -B -m unittest test_sweep -v` from this module. Tests mock scheduler
 submission and require no cluster access; both guards must pass.
+
+`paper_reference.py plan|apply PAPER NEW_JSON` extracts raster figure coordinates
+from the pinned Liang PDF using PyMuPDF and NumPy. The affine calibration
+uses measured axis tick centers; red/up and blue/down triangle centers give
+Cases 3/4. The connected blue curve gives Case 5. Black curve/diamond overlap
+limits separation of Cases 1/2; those references carry larger uncertainty.
+These are digitized image coordinates, not author numerical data. Extraction
+retains pixel coordinates, calibration and explicit uncertainty for audit.
+The paper marker near phi=1.02 is included in addition to the earlier sweep grid.

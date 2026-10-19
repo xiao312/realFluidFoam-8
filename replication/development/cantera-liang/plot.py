@@ -9,6 +9,13 @@ COLORS=[(0,.48,.27),(.6,.2,.7),(0,.55,.7),(.9,.45,0),(.45,.28,.1)]
 LABELS=['1: Ideal gas','2: + SRK density','3: + SRK enthalpy','4: + Ely-Hanley conductivity','5: + Takahashi diffusion']
 
 
+def panel_coordinates(phi, speed):
+    # Least-squares calibration of major axis tick centers in the 6x raster.
+    # Recorded by paper_reference.py; units here are PDF points relative to crop.
+    return ((phi-.8370101953358334)/.0005190759397456971/6,
+            (speed-8.131536327598571)/-.0033901555452226523/6)
+
+
 def main():
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument('action',choices=['plan','apply'])
@@ -38,7 +45,7 @@ def main():
     excluded=[r for r in rows if r not in plotted]
     for stage in range(1,6):
         group=sorted([r for r in plotted if r['stage']==stage],key=lambda r:r['phi'])
-        points=[f.Point(246+(157.5+(r['phi']-1)*385/.4)/3,52+(94.5+(7.5-r['speed_cm_s'])*367/2.5)/3) for r in group]
+        points=[f.Point(246+panel_coordinates(r['phi'],r['speed_cm_s'])[0],52+panel_coordinates(r['phi'],r['speed_cm_s'])[1]) for r in group]
         # Fail instead of silently clipping an unexpected model result.
         if any(not f.Rect(246,52,450,227).contains(pt) for pt in points):raise ValueError('Point outside original panel')
         color=COLORS[stage-1]
@@ -49,8 +56,7 @@ def main():
         text((260,y,450,y+14),LABELS[stage-1]+(' (pending)' if not group else ''),7,color)
     diagnostic_colors=[(.8,0,.25),(0,.25,.8),(.2,.2,.2),(.4,.3,.7),(.2,.5,.4),(.8,.2,.5)]
     for index,row in enumerate(diagnostics):
-        color=diagnostic_colors[index];px=246+(157.5+(row['phi']-1)*385/.4)/3
-        py=52+(94.5+(7.5-row['speed_cm_s'])*367/2.5)/3
+        color=diagnostic_colors[index];dx,dy=panel_coordinates(row['phi'],row['speed_cm_s']);px=246+dx;py=52+dy
         if not f.Rect(246,52,450,227).contains(f.Point(px,py)):raise ValueError('Diagnostic outside panel')
         page.draw_rect(f.Rect(px-1.7,py-1.7,px+1.7,py+1.7),color=color,fill=(1,1,1),width=.7)
         y=296+12*index
@@ -59,7 +65,7 @@ def main():
     page.show_pdf_page(f.Rect(18,235,222,264),source,5,clip=f.Rect(28,424,232,453))
     text((18,273,222,305),'Original curves remain visible. New open circles and dashed lines are our calculations; lines only connect solved conditions.',7.3)
     text((18,309+extra,450,370+extra),'Cantera 3.2 custom SRK/transport adapters; author GRI30; Tu=298 K (assumed).\n'
-         'Molar reference-density mapping; concentration-law kinetics; no Soret.\n'
+         +data.get('model_description','Molar reference-density mapping; concentration-law kinetics; no Soret.')+'\n'
          'Phi=1.44 is outside the printed axes; retained in the data, omitted here.\n'
          'Squares: labelled sensitivity tests, not verified Liang implementations.\n'
          'Publication parameter identity and domain independence remain unqualified.',7.5)

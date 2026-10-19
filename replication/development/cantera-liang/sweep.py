@@ -29,15 +29,16 @@ def main():
     if (a.variant != 'full' and (not set(a.variant.split(',')) <= allowed or
             len(set(a.variant.split(','))) != len(a.variant.split(',')))) or not 1 <= a.pressure_atm <= 100:
         raise ValueError('Invalid diagnostic options or pressure')
-    phis = [.92, .95, 1., 1.05, 1.1, 1.15, 1.2, 1.25, 1.3, 1.35, 1.4, 1.44]
-    guesses = {row['phi']: row['guess_phi'] for row in json.loads((a.inputs/'plan.json').read_text())}
-    if set(guesses) != set(phis):
-        raise ValueError('Prepared plan must match the declared sweep conditions')
+    plan = json.loads((a.inputs/'plan.json').read_text())
+    guesses = {row['phi']: row['guess_phi'] for row in plan}
+    phis = sorted(guesses)
+    if not phis or len(guesses) != len(plan) or any(not .5 <= phi <= 2 or abs(phi*100-round(phi*100))>1e-8 for phi in phis):
+        raise ValueError('Expected unique declared phi values with two decimal places in [0.5,2]')
     for phi in phis:
         (a.inputs/f'phi{round(phi*100):03d}'/'guess.csv').resolve(strict=True).relative_to(root)
     print(json.dumps({'stage': a.stage, 'conditions': phis, 'pilot': a.pilot,
                       'variant': a.variant, 'pressure_atm': a.pressure_atm,
-                      'maximum_new_core_hours': 48, 'action': a.action}), flush=True)
+                      'maximum_new_core_hours': 4*len(phis), 'action': a.action}), flush=True)
     if a.action == 'plan':
         return
     pilot = (root/'jobs'/a.pilot/'result').resolve(strict=True)
