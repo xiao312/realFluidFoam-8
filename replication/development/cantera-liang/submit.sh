@@ -15,4 +15,4 @@ printf 'Cantera stage=%s; 1 core; 4 hours; release=%s; sdk=%s; inputs=%s; build=
 [[ $action == apply ]] || exit 0
 sbatch --parsable --partition=kshcnormal --job-name="rf-liang-$stage" --cpus-per-task=1 --time=04:00:00 \
  --chdir="$root" --output="$root/logs/liang-$stage-%j.out" --error="$root/logs/liang-$stage-%j.err" \
- "$release/replication/development/cantera-liang/job.sh" "$root" "$release" "$sdk" "$inputs" "$stage" "$build"
+ "$release/replication/development/cantera-liang/job.sh" "$root" "$release" "$sdk" "$inputs" "$stage" "${build:-none}"

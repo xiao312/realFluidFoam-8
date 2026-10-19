@@ -47,7 +47,8 @@ inline State evaluate(double T,double p,const std::vector<double>& x,
     z.pt=R/(v-b)-at/(v*(v+b));
     if(!(z.pv<0)) throw std::domain_error("SRK unstable gas root");
     const double vt=-z.pt/z.pv,L=std::log1p(b/v),C=T*at-a;
-    z.h=p*v-R*T+C*L/b;
+    // EOS identity avoids cancellation of p*v and R*T in the dilute limit.
+    z.h=R*T*b/(v-b)-a/(v+b)+C*L/b;
     z.cp=p*vt-R+T*z.att*L/b-C*vt/(v*(v+b));
     z.s=R*std::log(p*(v-b)/(R*T))+at*L/b;
     std::vector<double> hx(n),vx(n);double hxmean=0,vxmean=0;
