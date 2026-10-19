@@ -9,7 +9,9 @@ strings as the current campaign. Their files are retained to reproduce old evide
 `extract_inlet_profiles.py ROOT JOB...` reads stable saved 1-D development
 checkpoints and emits JSON on stdout; it never writes remotely. It reconstructs
 global ordering through cellProcAddressing, validates the declared uniform mesh,
-hashes each source field, and omits the newest common time to avoid active writes.
+hashes each source field, and omits the newest common time for unfinished jobs.
+A PASS receipt and matching endpoint-check time allow a finished job to include its
+latest saved state. The export retains those receipts and validation inputs.
 Run over SSH stdin and save stdout under the local project state directory.
 `plot_inlet_profiles.py PROJECT SNAPSHOT OUTPUT` produces diagnostic profiles,
 fixed-OH-isoline displacement estimates, a Figure 12 comparison and a PDF.

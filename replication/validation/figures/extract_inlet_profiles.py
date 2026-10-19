@@ -54,7 +54,14 @@ def extract(root, job):
         common = times if common is None else common & times
     assert sorted(i for ids in addresses for i in ids) == list(range(cfg['cells']))
     saved = sorted((t for t in common if float(t) > 0), key=float)
-    stable = saved[:-1]
+    directory = root / 'jobs' / job
+    receipt = directory / 'result.txt'
+    endpoint_path = directory / 'endpoint-check.json'
+    finished = receipt.exists() and receipt.read_text().startswith('PASS:')
+    endpoint = json.loads(endpoint_path.read_text()) if endpoint_path.exists() else None
+    if finished:
+        assert endpoint and abs(endpoint['time_s']-float(saved[-1])) < 1e-12
+    stable = saved if finished else saved[:-1]
     assert len(stable) >= 3
     selected = sorted(set(stable[-11:] + [min(stable, key=lambda t: abs(float(t)-v)) for v in [.0001, .0002, .0003]]), key=float)
     samples = []
@@ -72,7 +79,9 @@ def extract(root, job):
         assert hashlib.sha256(Path(name).read_bytes()).hexdigest() == digest
     runtime = json.loads((root / 'jobs' / job / 'runtime-state.json').read_text())
     return {'job': job, 'case': str(case), 'metadata': meta, 'runtime': runtime,
-            'newest_excluded_time': saved[-1], 'samples': samples, 'source_hashes': hashes,
+            'newest_excluded_time': None if finished else saved[-1], 'finished': finished,
+            'endpoint_check': endpoint, 'result': receipt.read_text() if receipt.exists() else None,
+            'validation_inputs': (directory / 'validation-inputs.txt').read_text(), 'samples': samples, 'source_hashes': hashes,
             'binary_sha256': (root / 'jobs' / job / 'solver-product.sha256').read_text().strip()}
 
 
