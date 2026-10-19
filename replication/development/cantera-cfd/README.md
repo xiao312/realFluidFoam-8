@@ -44,7 +44,7 @@ constant-pressure reactor. The default `native` preserves the transport-only
 experiment. The CP mode is a separate physical closure, not solely a switch from
 SEULEX to CVODE. For each cell and PIMPLE iteration, the supplied current TPY
 starts an independent integration of duration deltaT. Integrated species sources
-are `rho_start*(Y_final-Y_start)/deltaT` in kg/(m3 s). The sensible-enthalpy source
+are `rho_start*(Y_final-Y_start)/deltaT` in kg/(m3 s). Species source assembly
 uses the native `fvMatrix += volScalarField` assembly convention: the stored
 matrix source is negative cell-volume times RR when the matrix is on the RHS.
 Directly assigning positive V*RR reverses chemistry; failed smoke 124949326
@@ -78,5 +78,5 @@ smoke receipt with the same chemistry mode. No reactor checkpoint is reused.
 `runtimeProfiling true` writes rank-local `cantera-runtime.csv` with wall seconds
 per step for chemistry, diffusion-pair corrections, linear solves, flow equations
 and property updates. This read-only observer uses the standard C++ clock and
-does not change solver fields. Smoke tests enable it; compare all ranks because
+does not change solver fields. Generated smoke and full cases enable it; compare all ranks because
 rank-zero time alone cannot establish load balance or CPU cost.
