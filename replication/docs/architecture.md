@@ -1,5 +1,11 @@
 # Replication boundaries
 
+`development/premixed-sensitivity` consumes the qualified spatial diagnostic
+executable and identical products checkpoints. The validation runner dispatches
+three isolated fixed-step segments. It supplies time-step and restart comparisons
+to analysis without changing solver source or the active donor. The module keeps
+temporal, marker, and source-stage agreement as separate acceptance checks.
+
 `development/premixed-paper` depends on the named baseline solver, flame input
 generator, property probe, field reader and contained environment. It creates
 central-ignition two-front cases and an isolated diagnostic solver, then supplies

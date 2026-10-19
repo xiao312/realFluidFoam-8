@@ -17,6 +17,9 @@ printf 'source=%s\nbuild_job=%s\nstage=%s\n' "$(cat "$release/SOURCE_REVISION")"
 ldd "$platform/bin/realFluidReactingFoam" > "$job/solver-ldd.txt"
 grep -F "$platform/lib/libspecie.so" "$job/solver-ldd.txt"
 if grep -q 'not found' "$job/solver-ldd.txt"; then exit 1; fi
+if [[ "$stage" == premixed-sensitivity-* ]]; then
+    exec bash "$release/replication/development/premixed-sensitivity/run.sh" "$release" "$job" "${stage#premixed-sensitivity-}"
+fi
 if [[ "$stage" == premixed-spatial ]]; then
     exec bash "$release/replication/development/premixed-spatial/run.sh" "$release" "$job"
 fi

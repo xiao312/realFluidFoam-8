@@ -1,0 +1,14 @@
+{
+  "parent_integration": "bfa3bfdbf95df845e2a1ca1b7c95a469a77db045",
+  "donor_job": "124864929",
+  "checkpoint": "7.99834968798e-05",
+  "duration_s": 0.00002,
+  "diagnostic_interval_s": 0.0000005,
+  "field_interval_s": 0.000005,
+  "ranks": 8,
+  "binary_job": "124870644",
+  "binary_source": "a438f6414a1d2820cbc3de3c0a4d3336afa434db",
+  "binary_sha256": "e3ef56491e44c2dfdd79826805f992ed8220901643ac14554c38ca8e81e6b385",
+  "library_build": "124657926",
+  "cases": {"dt100": 1e-7, "dt50": 5e-8, "dt25": 2.5e-8}
+}
