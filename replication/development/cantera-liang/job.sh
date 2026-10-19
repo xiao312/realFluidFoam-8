@@ -25,6 +25,9 @@ if [[ $stage == build ]]; then
  ./test-srk > kernel-check.txt
  "$compiler" -std=c++17 -O2 -D_GLIBCXX_USE_CXX11_ABI=1 "$module_path/flame.cpp" \
    $flags -Wl,-rpath,"$sdk/lib" -o liang-flame > compile.log 2>&1
+ "$compiler" -std=c++17 -O2 -D_GLIBCXX_USE_CXX11_ABI=1 "$module_path/model_probe.cpp" \
+   $flags -Wl,-rpath,"$sdk/lib" -o model-probe > compile-probe.log 2>&1
+ sha256sum model-probe > probe-binary.sha256
  sha256sum liang-flame > binary.sha256
  ldd liang-flame > dependencies.txt
  touch build-passed.txt

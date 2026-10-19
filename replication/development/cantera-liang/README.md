@@ -94,3 +94,19 @@ recorded stage/phi pairs, records each successful submission immediately, and
 fails if submission output is ambiguous. On Linux it uses `fcntl` and Slurm.
 It may run in a short scheduler job with `afterok:PILOT` dependency; failed
 qualification prevents submission. No automatic extension of flame jobs occurs.
+
+`paper_stage_check.py RESULTS.json [--require-paper-agreement]` replays the
+phi=1.10 comparison from completed, screened results. It checks conservative
+visual bounds from Liang Fig.8(a), not exact author data. A failing result is a
+publication discrepancy, not proof of an implementation bug. It writes nothing.
+Expected for the initial extension: the conductivity increment check fails.
+
+`model-probe INPUTS SOLVED_PROFILE OUTPUT.csv` evaluates identical frozen flame
+states at 1 and 100 atm. It compares dilute transport, full Ely–Hanley transport,
+the reference-density diagnostic, Takahashi diffusion, SRK concentrations and
+reaction rates. It does not solve or alter a flame. Compile `model_probe.cpp`
+against the same pinned SDK in a scheduler job. Inputs are read-only; output
+must not exist. Dependencies are the existing adapters and shared kernel.
+Expected verification: finite properties, unchanged temperature/composition
+across each comparison, and explicit ratios separating baseline/model changes
+from pressure corrections. Differences are diagnostic, not fitted corrections.
