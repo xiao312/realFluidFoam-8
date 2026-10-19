@@ -81,8 +81,10 @@ ABI, whereas the selected OF7 and Cantera libraries use the new ABI. Dependent
 flame job 124897805 was cancelled automatically. Job 124898271 then caught an ABI
 preflight failure: inherited CPLUS_INCLUDE_PATH forced old compiler headers even
 with the ABI macro set. Build 124898712 clears these inherited include paths and
-uses GCC 11 explicitly (source d015691). Its ABI preflight passed; dependent
-flame 124898785 waits for build success. CPU/CVODE is enabled;
+uses GCC 11 explicitly (source d015691). Its ABI preflight passed, but final linking could not find libmpi.so.40.
+The site module retained the default HPC-X compiler wrapper on PATH. Clean build
+124899720 selects the installed OF7 OpenMPI 4.1.5 for headers, linking and runtime
+(source 4c9adb7); dependent flame job is 124899733. CPU/CVODE is enabled;
 DNN and GPU chemistry are disabled. DeepFlame uses an isothermal CV chemistry
 substep while the native OpenFOAM chemistry includes a temperature equation.
 
@@ -103,6 +105,9 @@ DeepFlame is exported directly from Git objects with git archive and extracted o
 Linux. The Windows sparse working tree is not a build input. A read-only audit of
 build 124898712 checked all 554 archived files and every path component. It passed:
 `src/dfCombustionModels/CombustionModel` and `combustionModel` remain distinct.
+The native cache files heThermo.C and psiThermo/hePsiThermo.C also match Git
+objects at build source b1153ea9, byte for byte. The cache defect is present in the
+pinned source; it is not a changed Windows copy.
 Only four documented CRLF-to-LF shell/configuration entry conversions differ from
 the archive. No C/C++ content differences were found. A comparison of full file
 paths alone would have missed this directory collision. Archive SHA256 and the
@@ -113,3 +118,22 @@ The stock profile adapter reuses the existing trackingCore. At 47.43 us, its las
 5.880/5.872 cm/s for OH. Marker disagreement shows that these are early transient
 observations. They must not be compared as matched-age values with the native
 161-us observation. Both histories need the same physical-time window.
+
+## Matched-age observation
+
+A later stable stock snapshot covers 55.43-74.93 us. The same trackingCore processes
+its sampled T, U, rho and OH. The native in-situ output supplies the primary markers.
+Over 69.93-74.93 us, medians pool both sides (22 valid samples for each entry):
+
+| Solver | Temperature marker, cm/s | OH marker, cm/s |
+| --- | ---: | ---: |
+| Native ideal solver | 6.470 | 6.409 |
+| Stock OF8 reactingFoam | 6.576 | 6.285 |
+
+Both remain below Cantera's 7.467 cm/s. Native uses species-dependent transport;
+stock uses unity-Lewis transport, and its fields pass through line sampling. This
+is a full-solver diagnostic, not an isolated test of chemistry or transport.
+At 177.92 us the original native case has risen to 7.048 cm/s (temperature) and
+7.167 cm/s (OH), about 5.6% and 4.0% below Cantera. Continued relaxation is visible;
+no steady point is accepted. The confirmed cache defect still requires an isolated
+fixed-versus-original run before assigning it any flame-speed error.

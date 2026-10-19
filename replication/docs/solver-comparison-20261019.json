@@ -5,9 +5,9 @@
   "library_build": "124657926",
   "stock_job": "124896761",
   "stock_source": "c18481dc5423c4447ca85c1e69978551a3442090",
-  "deep_build_job": "124898712",
-  "deep_run_job": "124898785",
-  "deep_run_source": "d015691143dfda5fa4ac1ad844cc34f958b85d9a",
+  "deep_build_job": "124899720",
+  "deep_run_job": "124899733",
+  "deep_run_source": "4c9adb7e312cdfb0bec6acf442c3590d9d412a41",
   "reference": {
     "cantera_version": "3.2.0",
     "profile_sha256": "9304d6f5ea3861b5b0ea3783674932f23f036c1e600e5c479c5cc7a8eb48ff9f",
@@ -72,7 +72,7 @@
     "base": true,
     "tight": true
   },
-  "deep_status": "build running, flame pending build success",
+  "deep_status": "building with explicit OpenMPI 4.1.5; flame pending",
   "failed_deep_attempts": [
     {
       "build": "124897210",
@@ -83,6 +83,11 @@
       "build": "124898271",
       "run": "124898345",
       "reason": "ABI preflight rejected inherited old compiler headers"
+    },
+    {
+      "build": "124898712",
+      "run": "124898785",
+      "reason": "site module retained default HPC-X compiler wrapper; final link could not find libmpi.so.40"
     }
   ],
   "source_archive_audit": {
@@ -114,5 +119,49 @@
     "OH_left_cm_s": 5.8802689,
     "OH_right_cm_s": 5.8722524,
     "qualification": "transient; not a matched-age comparison with native 161 us"
+  },
+  "matched_age": {
+    "window_s": [
+      6.99296036276e-05,
+      7.49296036276e-05
+    ],
+    "method": "same trackingCore; median of valid density-weighted primary-marker samples; both sides pooled",
+    "data": {
+      "native": {
+        "T": {
+          "count": 22,
+          "median_cm_s": 6.470008773022536
+        },
+        "OH": {
+          "count": 22,
+          "median_cm_s": 6.40898819860673
+        }
+      },
+      "stock": {
+        "T": {
+          "count": 22,
+          "median_cm_s": 6.575893850960323
+        },
+        "OH": {
+          "count": 22,
+          "median_cm_s": 6.285069499336949
+        }
+      }
+    },
+    "native_latest_time_s": 0.0001779180632513031,
+    "native_latest_cm_s": {
+      "T": 7.048415097854593,
+      "OH": 7.167238144175327
+    },
+    "snapshot_sha256": "4dc61c344bec89403dd0f5a3c3e1dcd75b116c970ec13b9bb8f98ee25d573782"
+  },
+  "native_cache_source_audit": {
+    "build": "124657926",
+    "source": "b1153ea9c64b9abf55f7be6c488549024c081279",
+    "file_sha256": {
+      "src/thermophysicalModels/basic/heThermo/heThermo.C": "049bbdb74adde6954b85a7684479098e6ab59732216ef2dbb6460f3f2a8c1bc2",
+      "src/thermophysicalModels/basic/psiThermo/hePsiThermo.C": "0ccb5f23759b8ce90f27d708ac71afcf22173ef6bbe2a96efdf1c5bea9114d50"
+    },
+    "matches_git_objects": true
   }
 }
