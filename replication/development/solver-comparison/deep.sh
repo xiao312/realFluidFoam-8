@@ -35,6 +35,16 @@ export FOAM_JOB_DIR="$job/jobControl" FOAM_RUN="$job/run"
 export LD_LIBRARY_PATH="$build/cantera/lib:$LD_LIBRARY_PATH"
 export WM_NCOMPPROCS="${SLURM_CPUS_PER_TASK:-8}"
 mkdir -p "$FOAM_USER_APPBIN" "$FOAM_USER_LIBBIN" "$FOAM_JOB_DIR" "$FOAM_RUN"
+# This installed OF7 and the locked Cantera both export the C++11 string ABI.
+# SCNet's default devtoolset compiler instead defaults to ABI=0; make it explicit.
+compiler=$(command -v g++)
+mkdir -p "$job/compiler"
+printf '#!/bin/sh\nexec "%s" -D_GLIBCXX_USE_CXX11_ABI=1 "$@"\n' "$compiler" > "$job/compiler/g++"
+chmod +x "$job/compiler/g++"
+export PATH="$job/compiler:$PATH"
+g++ --version > "$job/compiler-version.txt"
+g++ -dM -E -x c++ -include string /dev/null | grep _GLIBCXX_USE_CXX11_ABI > "$job/compiler-abi.txt"
+grep -q '_GLIBCXX_USE_CXX11_ABI 1' "$job/compiler-abi.txt"
 cd "$build/deepflame"
 if [[ $mode == deep-build ]]; then
  . ./configure.sh --libcantera_dir "$build/cantera" > "$job/configure.log" 2>&1
