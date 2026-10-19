@@ -150,3 +150,10 @@ flame diagnosis; it does not replace the production solver or its live cases.
 Its offline profile adapter depends on `development/flame-tracking/trackingCore.H`
 for the same marker and gas-relative speed definitions. Its read-only source audit
 compares the Linux build copy with the pinned Git archive, including path casing.
+
+`development/cantera-liang` owns staged steady-flame diagnostics against Liang.
+It depends on the pinned Cantera SDK, `ideal-baseline` inputs and the shared
+`liang-properties` conductivity kernel. Its optional pressure-chemistry source
+adapter owns a separate ideal Cantera phase; the SRK flow phase remains separate.
+Frozen-state and energy-flux probes qualify these diagnostic options before
+figure comparisons. Production OpenFOAM solvers do not depend on this module.

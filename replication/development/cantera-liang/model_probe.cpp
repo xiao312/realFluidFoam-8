@@ -1,4 +1,5 @@
 #include "StagedTransport.h"
+#include "PressureChemistry.h"
 #include "cantera/base/Solution.h"
 #include "cantera/kinetics/Kinetics.h"
 #include "cantera/thermo/ThermoFactory.h"
@@ -12,6 +13,17 @@ using namespace Cantera;
 namespace fs=std::filesystem;
 class ProbeTransport : public liang::StagedTransport {
 public:
+    void verifyBoundedPairs() {
+        boundedTakahashi=false;updateCorrectionFactors();auto baseline=m_P_corr_ij;
+        boundedTakahashi=true;updateCorrectionFactors();
+        for(size_t i=0;i<m_nsp;i++)for(size_t j=0;j<m_nsp;j++) {
+            double xi=std::max(Tiny,m_molefracs[i]),xj=std::max(Tiny,m_molefracs[j]);
+            double tr=m_temp*(xi+xj)/(xi*m_Tcrit[i]+xj*m_Tcrit[j]);
+            if(tr>=1 && tr<=5 && std::abs(baseline(i,j)-m_P_corr_ij(i,j))>1e-12)
+                throw std::runtime_error("In-range Takahashi changed");
+        }
+        boundedTakahashi=false;
+    }
     void auditOH(std::ostream& out,double target) {
         size_t i=m_thermo->speciesIndex("OH");double total=0;
         for(size_t j=0;j<m_nsp;j++)if(i!=j)total+=m_molefracs[j]/(m_P_corr_ij(i,j)*m_bdiff(j,i));
@@ -49,6 +61,10 @@ try {
     TransportFactory::factory()->reg("liang-staged",[&](){auto* tr=new ProbeTransport;tr->stage=4;tr->parameters=parameters;return tr;});
     auto real=newSolution((input/"srk.yaml").string(),"","liang-staged");
     auto ideal=newSolution((input/"ideal.yaml").string(),"","mixture-averaged");
+    auto pressureModel=newSolution((input/"srk.yaml").string(),"","liang-staged");
+    auto* pressureGas=dynamic_cast<liang::SrkPhase*>(pressureModel->thermo().get());
+    pressureGas->parameters=parameters;pressureGas->stage=3;
+    liang::usePressureChemistry(pressureModel,(input/"ideal.yaml").string());
     auto* gas=dynamic_cast<liang::SrkPhase*>(real->thermo().get());
     auto* transport=dynamic_cast<ProbeTransport*>(real->transport().get());
     if(!gas || !transport)throw std::runtime_error("Custom adapter not selected");
@@ -63,7 +79,7 @@ try {
     }
     if(rows.empty())throw std::runtime_error("Empty profile");
     std::ofstream out(argv[3]);out<<std::setprecision(16)
-        <<"target_T,T,p_atm,rho_ideal,rho_srk,h_ideal,h_srk,lambda_mix_ideal,lambda_mix_srk,lambda_EH_molar,lambda_EH_mass,D_CH4_base,D_CH4_Taka,D_OH_base,D_OH_Taka,min_D_Taka,rate_L1_srk_over_ideal,concentration_srk_over_ideal,lambda_dense_increment\n";
+        <<"target_T,T,p_atm,rho_ideal,rho_srk,h_ideal,h_srk,lambda_mix_ideal,lambda_mix_srk,lambda_EH_molar,lambda_EH_mass,D_CH4_base,D_CH4_Taka,D_OH_base,D_OH_Taka,min_D_Taka,rate_L1_srk_over_ideal,concentration_srk_over_ideal,lambda_dense_increment,D_OH_bounded,min_D_bounded,pressure_rate_relative_error\n";
     std::ofstream pairs(std::string(argv[3])+".pairs.csv");pairs<<std::setprecision(16)
         <<"target_T,T,p_atm,partner,X_OH,X_partner,Tr,Pr,pair_factor,denominator_share\n";
     for(double target:{298.,400.,600.,900.,1200.,1500.,1800.,2100.,2400.}) {
@@ -83,11 +99,22 @@ try {
             double shortcut=rfElyHanley::conductivity(T,1/gas->molarDensity(),species,x,v,rfElyHanley::DensityMapping::massDensityShortcut);
             real->kinetics()->getNetProductionRates(w1.data());ideal->kinetics()->getNetProductionRates(w0.data());
             double l0=0,l1=0;for(size_t k=0;k<53;k++){l0+=std::abs(w0[k]);l1+=std::abs(w1[k]);}
+            std::vector<double> bounded(53),pressureRates(53);
+            transport->boundedTakahashi=true;transport->getMixDiffCoeffs(bounded.data());transport->boundedTakahashi=false;
+            transport->verifyBoundedPairs();
+            for(auto d:bounded)if(!(d>0 && std::isfinite(d)))throw std::runtime_error("Bounded diffusion failed");
+            pressureGas->setState_TPY(T,p,y.data());double physicalDensity=pressureGas->density();
+            pressureModel->kinetics()->getNetProductionRates(pressureRates.data());
+            double rateError=0;
+            for(size_t k=0;k<53;k++)rateError+=std::abs(pressureRates[k]-w0[k]);
+            rateError/=std::max(1e-100,l0);
+            if(rateError>1e-8 || physicalDensity!=pressureGas->density())throw std::runtime_error("Pressure chemistry parity failed");
             auto ch4=gas->speciesIndex("CH4"),oh=gas->speciesIndex("OH");
             out<<target<<','<<T<<','<<atm<<','<<ideal->thermo()->density()<<','<<gas->density()<<','
                <<ideal->thermo()->enthalpy_mass()<<','<<gas->enthalpy_mass()<<','<<ideal->transport()->thermalConductivity()<<','<<base<<','<<eh<<','<<shortcut<<','
                <<d0[ch4]<<','<<d1[ch4]<<','<<d0[oh]<<','<<d1[oh]<<','<<*std::min_element(d1.begin(),d1.end())<<','
-               <<(l0>0?l1/l0:0)<<','<<gas->molarDensity()/ideal->thermo()->molarDensity()<<','<<dense<<'\n';
+               <<(l0>0?l1/l0:0)<<','<<gas->molarDensity()/ideal->thermo()->molarDensity()<<','<<dense<<','
+               <<bounded[oh]<<','<<*std::min_element(bounded.begin(),bounded.end())<<','<<rateError<<'\n';
         }
     }
     std::cout<<"Frozen-state probe completed\n";

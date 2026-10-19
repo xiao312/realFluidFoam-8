@@ -3,7 +3,9 @@ set -euo pipefail
 root=${1:?}; release=${2:?}; sdk=${3:?}; inputs=${4:?}; stage=${5:?}; build=${6:-}
 phi=${7:-1.10}
 variant=${8:-full}
-[[ $variant == full || $variant == dense-increment ]] || exit 2
+[[ $variant =~ ^(full|(dense-increment|bounded-takahashi|pressure-chemistry)(,(dense-increment|bounded-takahashi|pressure-chemistry))*)$ ]] || exit 2
+pressure=${9:-100}
+[[ $pressure =~ ^[0-9]+([.][0-9]+)?$ ]] || exit 2
 [[ -n ${SLURM_JOB_ID:-} ]] || exit 2
 for path in "$release" "$sdk" "$inputs"; do
  [[ $(realpath -e "$path") == "$root/"* ]] || exit 2
@@ -30,6 +32,9 @@ if [[ $stage == build ]]; then
  "$compiler" -std=c++17 -O2 -D_GLIBCXX_USE_CXX11_ABI=1 "$module_path/model_probe.cpp" \
    $flags -Wl,-rpath,"$sdk/lib" -o model-probe > compile-probe.log 2>&1
  sha256sum model-probe > probe-binary.sha256
+ "$compiler" -std=c++17 -O2 -D_GLIBCXX_USE_CXX11_ABI=1 "$module_path/energy_probe.cpp" \
+   $flags -Wl,-rpath,"$sdk/lib" -o energy-probe > compile-energy.log 2>&1
+ sha256sum energy-probe > energy-binary.sha256
  sha256sum liang-flame > binary.sha256
  ldd liang-flame > dependencies.txt
  touch build-passed.txt
@@ -40,6 +45,6 @@ else
  sha256sum "$inputs"/* > input-sha256.txt
  cp "$release/SOURCE_REVISION" source-revision.txt
  extra=()
- [[ $variant == full ]] || extra+=("$variant")
+ [[ $variant == full && $pressure == 100 ]] || extra+=("$variant" "$pressure")
  "$build/liang-flame" "$inputs" "$stage" "$phi" "$job/result" "${extra[@]}" > flame.log 2>&1
 fi

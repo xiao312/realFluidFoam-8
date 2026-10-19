@@ -2,12 +2,16 @@
 #include "SrkPhase.h"
 #include "../liang-properties/ElyHanley.H"
 #include "cantera/transport/HighPressureGasTransport.h"
+// Exported by the pinned Cantera 3.2 SDK, but not declared in its header.
+namespace Cantera {double takahashiCorrectionFactor(double Pr,double Tr);}
 namespace liang {
 class StagedTransport : public Cantera::HighPressureGasTransport {
 public:
     StagedTransport() = default;
     int stage=2;
     bool denseIncrementOnly=false;
+    bool boundedTakahashi=false;
+    size_t boundedPairCalls=0;
     std::vector<Species> parameters;
     size_t conductivityCalls=0,diffusionCalls=0;
     size_t negativePartialVolumeCalls=0;
@@ -24,6 +28,24 @@ public:
         m_P_corr_ij.resize(m_nsp,m_nsp);
     }
     double viscosity() override {return Cantera::GasTransport::viscosity();}
+    void updateCorrectionFactors() override {
+        if(!boundedTakahashi) {
+            Cantera::HighPressureGasTransportBase::updateCorrectionFactors();return;
+        }
+        const double p=m_thermo->pressure();
+        for(size_t i=0;i<m_nsp;i++)for(size_t j=0;j<m_nsp;j++) {
+            double xi=std::max(Cantera::Tiny,m_molefracs[i]);
+            double xj=std::max(Cantera::Tiny,m_molefracs[j]);
+            double sum=xi+xj;xi/=sum;xj/=sum;
+            double tr=m_temp/(xi*m_Tcrit[i]+xj*m_Tcrit[j]);
+            double bounded=std::clamp(tr,1.,5.);
+            if(bounded!=tr)boundedPairCalls++;
+            double pr=p/(xi*m_Pcrit[i]+xj*m_Pcrit[j]);
+            double factor=Cantera::takahashiCorrectionFactor(pr,bounded);
+            if(!(factor>0 && std::isfinite(factor)))throw std::runtime_error("Invalid bounded Takahashi factor");
+            m_P_corr_ij(i,j)=factor;
+        }
+    }
     double thermalConductivity() override {
         conductivityCalls++;
         if(stage<4)return Cantera::MixTransport::thermalConductivity();

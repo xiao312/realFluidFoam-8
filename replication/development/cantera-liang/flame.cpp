@@ -1,4 +1,6 @@
 #include "StagedTransport.h"
+#include "DiagnosticOptions.h"
+#include "PressureChemistry.h"
 #include "PropertyChecks.h"
 #include "EquilibriumCheck.h"
 #include "cantera/onedim.h"
@@ -22,9 +24,11 @@ std::vector<std::string> split(const std::string& line) {
 }
 int main(int argc,char** argv) {
 try {
-    if(argc!=5 && argc!=6)throw std::runtime_error("Usage: liang-flame INPUTS CASE PHI NEW_OUTPUT [full|dense-increment]");
-    std::string variant=argc==6?argv[5]:"full";
-    if(variant!="full" && variant!="dense-increment")throw std::runtime_error("Unknown model variant");
+    if(argc<5 || argc>7)throw std::runtime_error("Usage: liang-flame INPUTS CASE PHI NEW_OUTPUT [OPTIONS] [PRESSURE_ATM]");
+    std::string variant=argc>=6?argv[5]:"full";
+    liang::DiagnosticOptions options(variant);
+    double pressure=(argc==7?std::stod(argv[6]):100.)*101325.;
+    if(!std::isfinite(pressure) || pressure<101325 || pressure>10132500)throw std::runtime_error("Pressure must be 1--100 atm");
     fs::path input=argv[1],output=argv[4];int stage=std::stoi(argv[2]);double phi=std::stod(argv[3]);
     if(stage<1 || stage>5 || !(phi>0) || fs::exists(output))throw std::runtime_error("Invalid stage/phi or existing output");
     std::ifstream table(input/"species.txt");std::vector<liang::Species> parameters;
@@ -37,17 +41,19 @@ try {
         auto* gas=new liang::SrkPhase;gas->stage=1;return gas;});
     TransportFactory::factory()->reg("liang-staged",[&](){
         auto* tr=new liang::StagedTransport;tr->stage=stage;tr->parameters=parameters;
-        tr->denseIncrementOnly=variant=="dense-increment";return tr;});
+        tr->denseIncrementOnly=options.dense;tr->boundedTakahashi=options.bounded;return tr;});
     auto sol=newSolution((input/(stage==1?"ideal.yaml":"srk.yaml")).string(),"",stage==1?"mixture-averaged":"liang-staged");
     auto gas=sol->thermo();
     for(size_t k=0;k<species.size();k++) if(gas->speciesName(k)!=species[k])throw std::runtime_error("Species order mismatch");
     if(auto* model=dynamic_cast<liang::SrkPhase*>(gas.get())) {
-        model->parameters=parameters;model->stage=stage;model->setState_TP(298,10132500);
+        model->parameters=parameters;model->stage=stage;model->setState_TP(298,pressure);
     }
-    gas->setEquivalenceRatio(phi,"CH4","O2:0.21,N2:0.79");gas->setState_TP(298,10132500);
+    gas->setEquivalenceRatio(phi,"CH4","O2:0.21,N2:0.79");gas->setState_TP(298,pressure);
+    if(options.pressureChemistry)liang::usePressureChemistry(sol,(input/"ideal.yaml").string());
     fs::create_directories(output);
+    std::ofstream(output/"pressure-Pa.txt")<<std::setprecision(16)<<pressure<<'\n';
     std::ofstream(output/"model-variant.txt")<<variant<<'\n';
-    propertyChecks(sol,(output/"property-checks.csv").string());
+    propertyChecks(sol,(output/"property-checks.csv").string(),pressure);
     if(stage!=2)equilibriumCheck(*gas,(output/"equilibrium.csv").string());
     std::vector<double> xin(gas->nSpecies());gas->getMoleFractions(xin.data());double rho=gas->density();
     std::ifstream file(input/"guess.csv");std::string line;std::getline(file,line);auto columns=split(line);
@@ -55,7 +61,7 @@ try {
     while(std::getline(file,line)) {auto fields=split(line);if(fields.size()!=columns.size())throw std::runtime_error("CSV width");
         for(size_t k=0;k<fields.size();k++)values[k].push_back(std::stod(fields[k]));}
     if(values[0].size()<10 || columns[0]!="x_m")throw std::runtime_error("Invalid initial profile");
-    auto flow=newDomain<Flow1D>("gas-flow",sol,"flow");flow->setFreeFlow();flow->setPressure(10132500);
+    auto flow=newDomain<Flow1D>("gas-flow",sol,"flow");flow->setFreeFlow();flow->setPressure(pressure);
     flow->setupGrid(values[0].size(),values[0].data());flow->setSteadyTolerances(1e-5,1e-11);
     flow->setFluxGradientBasis(ThermoBasis::molar);flow->enableSoret(false);
     auto inlet=newDomain<Inlet1D>("inlet",sol);inlet->setTemperature(298);inlet->setMoleFractions(xin.data());
@@ -79,13 +85,14 @@ try {
     for(auto& n:species)csv<<",Y_"<<n;csv<<'\n';
     std::vector<double> y(species.size());
     for(size_t j=0;j<grid.size();j++) {
-        for(size_t k=0;k<y.size();k++)y[k]=ys[k][j];gas->setState_TPY(T[j],10132500,y.data());
+        for(size_t k=0;k<y.size();k++)y[k]=ys[k][j];gas->setState_TPY(T[j],pressure,y.data());
         csv<<grid[j]<<','<<T[j]<<','<<u[j]<<','<<gas->density()<<','<<gas->enthalpy_mass()<<','<<gas->cp_mass()<<','<<sol->transport()->thermalConductivity();
         for(auto v:y)csv<<','<<v;csv<<'\n';
     }
     std::ofstream counters(output/"callbacks.txt");
     if(auto* g=dynamic_cast<liang::SrkPhase*>(gas.get()))counters<<"eos "<<g->eosCalls<<" cp "<<g->cpCalls<<" partial_enthalpy "<<g->partialCalls<<'\n';
-    if(auto* t=dynamic_cast<liang::StagedTransport*>(sol->transport().get()))counters<<"conductivity "<<t->conductivityCalls<<" diffusion "<<t->diffusionCalls<<" negative_partial_volume_calls "<<t->negativePartialVolumeCalls<<" projected_composition_calls "<<t->projectedCompositionCalls<<'\n';
+    if(auto* t=dynamic_cast<liang::StagedTransport*>(sol->transport().get()))counters<<"conductivity "<<t->conductivityCalls<<" diffusion "<<t->diffusionCalls<<" negative_partial_volume_calls "<<t->negativePartialVolumeCalls<<" bounded_pair_calls "<<t->boundedPairCalls<<" projected_composition_calls "<<t->projectedCompositionCalls<<'\n';
+    if(auto* k=dynamic_cast<liang::PressureChemistry*>(sol->kinetics().get()))counters<<"pressure_chemistry_calls "<<k->calls<<'\n';
     std::cout<<"COMPLETED stage="<<stage<<" phi="<<phi<<" speed_cm_s="<<100*u[0]<<std::endl;
 } catch(const std::exception& e) {std::cerr<<e.what()<<std::endl;return 1;}
 }

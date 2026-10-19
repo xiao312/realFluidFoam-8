@@ -118,3 +118,21 @@ and ideal molar/partial volumes. This is a named sensitivity experiment, not a
 claim about Liang's implementation. Default `full` preserves previous results.
 The mode is recorded in `model-variant.txt`. The frozen probe reports this
 variant and a separate CSV of OH pair contributions when Takahashi collapses.
+
+Diagnostic options are comma-separated: `dense-increment`, `bounded-takahashi`,
+and `pressure-chemistry`; `full` selects the unchanged baseline. An optional
+following pressure argument is in atm (default 100). The bounded variant limits
+pair reduced temperature to [1,5], retaining Cantera's pressure interpolation.
+It is an extrapolation sensitivity, not a verified Liang closure. Pressure
+chemistry delegates net production rates to a separate ideal phase at identical
+T,p,Y, including third bodies and falloff. Only this net-source API is used by
+Flow1D; other rate-query APIs on the adapter are not a diagnostic interface.
+SRK density, calorics and transport are unchanged. Frozen-state tests compare
+every species source with standalone ideal chemistry before flame submission.
+
+`energy-probe INPUTS CASE PROFILE OUTPUT VARIANT ATM` reconstructs midpoint
+mixture-averaged diffusion with Flow1D's molar-gradient/mass-correction rule and
+writes advective, conductive and species-enthalpy fluxes in W/m2. This continuous
+flux reconstruction is a conservation diagnostic, not the exact discrete energy
+residual. Compare its variation under grid refinement and against ideal controls.
+No source or equilibrium result is fitted to a paper curve.
