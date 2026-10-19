@@ -37,7 +37,9 @@ export WM_NCOMPPROCS="${SLURM_CPUS_PER_TASK:-8}"
 mkdir -p "$FOAM_USER_APPBIN" "$FOAM_USER_LIBBIN" "$FOAM_JOB_DIR" "$FOAM_RUN"
 # This installed OF7 and the locked Cantera both export the C++11 string ABI.
 # SCNet's default devtoolset compiler instead defaults to ABI=0; make it explicit.
-compiler=$(command -v g++)
+unset CPLUS_INCLUDE_PATH C_INCLUDE_PATH CPATH LIBRARY_PATH
+compiler=/public/software/compiler/gcc/11.2.0/bin/g++
+test -x "$compiler"
 mkdir -p "$job/compiler"
 printf '#!/bin/sh\nexec "%s" -D_GLIBCXX_USE_CXX11_ABI=1 "$@"\n' "$compiler" > "$job/compiler/g++"
 chmod +x "$job/compiler/g++"
