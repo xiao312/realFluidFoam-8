@@ -12,6 +12,11 @@ through a C ABI, with no Cantera/OpenFOAM C++ objects crossing the boundary.
 Its independent ABI client consumes saved FreeFlame profiles for parity checks.
 No production CFD solver depends on this draft yet.
 
+`development/cantera-bridge` also exposes an experimental closed constant-pressure
+chemistry step through Cantera ReactorNet/CVODES. It depends on the same SDK and
+model adapters; current CFD experiments do not consume this integration API.
+Frozen Python reactor references qualify the ideal closure before coupling.
+
 `development/cantera-liang` registers SRK thermo and staged transport with the
 pinned Cantera C++ SDK. It consumes ideal-baseline mechanisms/profiles and the
 liang-properties Ely–Hanley kernel. Its independent steady flames feed the

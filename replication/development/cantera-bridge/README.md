@@ -48,3 +48,32 @@ qualification allocation; `apply` submits one core for at most20 minutes.
 `probe.cpp` consumes the module's 100-atm profile schema. The initial job tests
 ideal, smooth-SRK and bounded-diffusion contexts, including ABI0 caller/ABI1
 library linkage, then repeats with the OF8 core library loaded in its container.
+
+The experimental `rf_ct_advance_cp` call integrates a closed, adiabatic,
+constant-pressure homogeneous reactor with Cantera CVODES. Its independent
+variables are mass, total enthalpy and species mass fractions. Each call resets
+the supplied TPY state and time to zero; it never continues another cell's ODE
+history. A context reuses the reactor and integrator allocation, with explicit
+reinitialization. Inputs add duration (s), relative tolerance and absolute
+tolerance. Outputs are final T (K) and Y. The call does not choose a CFD energy
+source or return an ambiguously normalized integrated source.
+
+This closure is distinct from the native solver's concentration ODE and from
+DeepFlame's isothermal integration. It is not a test of the ODE integrator alone.
+For nonideal stages with departure calorics, `smoothed-alpha` is required because
+the original high-temperature alpha extension has enthalpy jumps. No active CFD
+solver calls this function yet. On integration failure, the context discards its
+reactor state; the next call starts independently.
+
+Qualification uses frozen ideal-flame states and independent Python Cantera3.2
+`ConstPressureReactor` calculations at 50 ns, 500 ns and 5 us. Compare T, every Y,
+mass and elemental conservation, and specific enthalpy. Repeat states in reversed
+order to detect history leakage. Nonideal tests establish conservation only;
+they do not independently validate the custom thermodynamic closure.
+
+Prepare references with `python reactor_reference.py plan|apply IDEAL_YAML
+PROFILE NEW_JSON` using the pinned Python Cantera environment. Submit the C ABI
+test with `bash reactor-submit.sh plan|apply ROOT RELEASE SDK BUILD INPUTS
+REFERENCE`. It verifies the built library hash and records each result and input
+hash; the test script itself imports no Cantera package. The expected result is
+ideal-reference parity, conservation for both models and order-independent calls.

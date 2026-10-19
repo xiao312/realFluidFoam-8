@@ -3,6 +3,8 @@
 #include "../cantera-liang/DiagnosticOptions.h"
 #include "../cantera-liang/PressureChemistry.h"
 #include "cantera/thermo/ThermoFactory.h"
+#include "cantera/zeroD/ConstPressureReactor.h"
+#include "cantera/zeroD/ReactorNet.h"
 #include <cstring>
 #include <filesystem>
 #include <fstream>
@@ -11,6 +13,9 @@
 
 struct rf_ct_context {
     std::shared_ptr<Cantera::Solution> solution;
+    std::shared_ptr<Cantera::ConstPressureReactor> reactor;
+    std::shared_ptr<Cantera::ReactorNet> network;
+    bool supportsConstantPressureIntegration=false;
     std::string error;
 };
 namespace {
@@ -63,6 +68,7 @@ extern "C" rf_ct_context* rf_ct_create(const char* inputs,int stage,const char* 
             transport->init(gas.get());solution->setTransport(transport);
         }
         if(options.pressureChemistry)liang::usePressureChemistry(solution,(directory/"ideal.yaml").string());
+        context->supportsConstantPressureIntegration=stage<3 || options.smoothedAlpha;
         context->solution=solution;message(error,capacity,"");return context.release();
     }catch(const std::exception& e){message(error,capacity,e.what());}
     catch(...){message(error,capacity,"Unknown bridge initialization error");}
@@ -113,4 +119,39 @@ extern "C" int rf_ct_evaluate(rf_ct_context* context,double temperature,double p
         context->error.clear();return 0;
     }catch(const std::exception& e){context->error=e.what();return 1;}
     catch(...){context->error="Unknown state-evaluation error";return 1;}
+}
+
+extern "C" int rf_ct_advance_cp(rf_ct_context* context,double temperature,double pressure,
+                                 const double* y,size_t n,double duration,
+                                 double relativeTolerance,double absoluteTolerance,
+                                 double* finalTemperature,double* finalY) {
+    if(!context)return 1;
+    try {
+        validate(temperature,pressure,y,n,rf_ct_species_count(context));
+        if(!context->supportsConstantPressureIntegration)
+            throw std::runtime_error("Departure calorics require smoothed-alpha for CP integration");
+        if(!finalTemperature || !finalY || !std::isfinite(duration) || duration<=0
+           || !std::isfinite(relativeTolerance) || relativeTolerance<=0 || relativeTolerance>1e-3
+           || !std::isfinite(absoluteTolerance) || absoluteTolerance<=0 || absoluteTolerance>1e-6)
+            throw std::runtime_error("Invalid reactor outputs, duration or tolerances");
+        auto gas=context->solution->thermo();
+        gas->setTemperature(temperature);gas->setMassFractions_NoNorm(y);gas->setPressure(pressure);
+        if(!context->reactor) {
+            context->reactor=std::make_shared<Cantera::ConstPressureReactor>(context->solution,false);
+            context->network=std::make_shared<Cantera::ReactorNet>(context->reactor);
+        }
+        context->reactor->setInitialVolume(1.0);
+        context->reactor->syncState();
+        context->network->setTolerances(relativeTolerance,absoluteTolerance);
+        context->network->setMaxSteps(20000);
+        context->network->setInitialTime(0.0);
+        context->network->advance(duration);
+        *finalTemperature=gas->temperature();gas->getMassFractions(finalY);
+        if(std::abs(gas->pressure()/pressure-1)>1e-10)
+            throw std::runtime_error("Constant-pressure reactor pressure drift");
+        validate(*finalTemperature,pressure,finalY,n,n);
+        context->error.clear();return 0;
+    }catch(const std::exception& e){context->error=e.what();}
+    catch(...){context->error="Unknown constant-pressure integration error";}
+    context->network.reset();context->reactor.reset();return 1;
 }

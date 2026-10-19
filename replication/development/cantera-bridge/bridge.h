@@ -23,6 +23,13 @@ const char* rf_ct_error(const rf_ct_context* context);
 int rf_ct_evaluate(rf_ct_context* context,double temperature,double pressure,
                    const double* mass_fractions,size_t n,rf_ct_properties* properties,
                    double* partial_enthalpies,double* diffusion,double* mass_sources);
+/* Closed adiabatic constant-pressure reactor. Fresh TPY and t=0 on every call.
+ * Both output buffers are required; final_mass_fractions has n entries.
+ * Outputs are valid only on success. No CFD source normalization is implied. */
+int rf_ct_advance_cp(rf_ct_context* context,double temperature,double pressure,
+                     const double* mass_fractions,size_t n,double duration,
+                     double relative_tolerance,double absolute_tolerance,
+                     double* final_temperature,double* final_mass_fractions);
 #ifdef __cplusplus
 }
 #endif
