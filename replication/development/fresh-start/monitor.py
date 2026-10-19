@@ -29,14 +29,30 @@ def heat_release(case):
                 '(000.00001)(0.00400.00001)(0.0040.000010.00001)(00.000010.00001))']
     if not all(token in compact for token in required):
         raise ValueError('Heat-release integral requires the declared 4-mm uniform mesh')
+    declaration = (case/'system/decomposeParDict').read_text()
+    match = re.search(r'\bnumberOfSubdomains\s+(\d+)\s*;', declaration)
+    if not match or int(match[1]) not in (8, 32):
+        raise ValueError('Heat-release monitor supports declared 8- or 32-rank cases')
+    ranks = int(match[1])
+    actual = {p.name for p in case.glob('processor[0-9]*') if p.is_dir()}
+    if actual != {f'processor{i}' for i in range(ranks)}:
+        raise ValueError('Processor directories differ from the declared rank count')
     counts = []
-    for rank in range(8):
+    addresses = []
+    for rank in range(ranks):
         address = (case/f'processor{rank}/constant/polyMesh/cellProcAddressing').read_text()
-        counts.append(int(re.search(r'\n\s*(\d+)\s*\(', address)[1]))
-    if sum(counts) != 8000:
-        raise ValueError('Expected exactly 8000 cells')
+        match = re.search(r'\n\s*(\d+)\s*\((.*?)\)', address, re.S)
+        if not match:
+            raise ValueError('Invalid cell addressing')
+        values = list(map(int, match[2].split()))
+        if len(values) != int(match[1]):
+            raise ValueError('Cell addressing count mismatch')
+        counts.append(len(values))
+        addresses.extend(values)
+    if sorted(addresses) != list(range(8000)):
+        raise ValueError('Cell addressing must cover all 8000 cells exactly once')
     results, incomplete = [], []
-    for time in times(case, 8):
+    for time in times(case, ranks):
         if float(time) <= 0:
             continue
         values = []
@@ -56,7 +72,7 @@ def heat_release(case):
         except (OSError, ValueError) as error:
             incomplete.append(dict(time_s=float(time), error=str(error)))
     return dict(saved=results, incomplete=incomplete,
-                mesh_sha256=hashlib.sha256(mesh.encode()).hexdigest(), fronts=2)
+                mesh_sha256=hashlib.sha256(mesh.encode()).hexdigest(), fronts=2, mpi_ranks=ranks)
 
 
 def tracking(case):

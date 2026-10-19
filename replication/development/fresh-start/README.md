@@ -46,8 +46,9 @@ finite-field/tracking check and does not establish steady convergence.
 
 `python monitor.py ROOT JOB_ID [JOB_ID ...]` reads scheduler state, tracking
 endpoints and saved Qdot fields without modifying jobs. It supports only the
-declared uniform 8000-cell, 4-mm one-dimensional mesh and eight ranks, checking
-that mesh before integrating Qdot over x. Outputs are JSON: first/latest tracking
+declared uniform 8000-cell, 4-mm one-dimensional mesh and either eight or 32 ranks,
+checking the mesh and declared processor count before integrating Qdot over x.
+Outputs are JSON: first/latest tracking
 times, primary-marker speeds, and saved heat-release extrema (W/m3) and integral
 (W/m2). Incomplete checkpoints are reported and skipped, never called healthy.
 The integral covers both fronts. Qdot is the solver's chemistry energy source,
