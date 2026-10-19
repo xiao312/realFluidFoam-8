@@ -8,7 +8,9 @@ bash "$release/replication/environment/workspace.sh" plan "$root" >/dev/null
 minutes=360; cpus=8
 [[ $mode != deep-build ]] || { minutes=120; cpus=16; }
 [[ $mode != probe ]] || { minutes=30; cpus=2; }
-args=(--parsable --partition=kshcnormal --nodes=1 --ntasks=1 --cpus-per-task="$cpus"
+tasks=1; cpus_per_task=$cpus
+[[ $mode != deep ]] || { tasks=8; cpus_per_task=1; }
+args=(--parsable --partition=kshcnormal --nodes=1 --ntasks="$tasks" --cpus-per-task="$cpus_per_task"
  --time="$minutes" --chdir="$root" --job-name="rf-compare-$mode"
  --output="$root/logs/compare-$mode-%j.out" --error="$root/logs/compare-$mode-%j.err")
 if [[ -n $dependency ]]; then
