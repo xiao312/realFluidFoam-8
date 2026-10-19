@@ -43,3 +43,8 @@ frozen-state thermodynamic checks before interpreting nonideal flames. Require
 Euler identities, pressure-root and finite-difference derivative checks.
 Report grid/domain and initial-guess sensitivity separately from model activation.
 Successful compilation is not scientific acceptance.
+
+`python check.py RESULT [--ideal-reference-cm-s 7.467003112153642]` reads completed
+qualification output. Gates: ideal parity within 0.1%, last grid change below 0.3%,
+mass-flux relative range below 0.1%, and species-sum error below 1e-7. These
+are numerical screening limits, not evidence of publication agreement.
