@@ -17,6 +17,10 @@ The premixed draft solver now owns a registered `Qdot` energy-source field;
 heat-release qualification depends on its generator and compares the new binary
 against the previous executable plus the qualified observer. Existing running
 jobs retain their executable and load only the observer.
+`development/premixed-spatial` depends on the premixed generator, qualified native
+solver/library and immutable donor checkpoints. Its isolated replay exports local
+source/diffusion/gradient fields to spatial analysis; it never replaces a live
+binary. Paper-Fick and deployed corrected diffusion remain distinct outputs.
 
 ```mermaid
 flowchart LR
