@@ -60,3 +60,14 @@ the declared 12-condition phi=0.92–1.44 sweep. Earlier directories win exact
 profile ties; the nearest saved phi supplies a numerical guess when necessary.
 `plan.json` records target phi and guess phi separately. The inlet uses target phi.
 Each stage uses `submit.sh plan|apply ROOT RELEASE SDK INPUTS STAGE BUILD PHI`.
+
+`equilibrium_guess.py plan|apply BASE_INPUTS HP_CSV OUTPUT` builds a separate
+temperature/composition ramp from the supplied HP products. It needs Python
+Cantera 3.2 for molecular weights. The copied ideal velocity is only a numerical
+guess. The generated Qdot column is a placeholder, never a computed heat-release field.
+Run this input separately to test initial-guess dependence; retain both results.
+
+`plot.py plan|apply PAPER.pdf RESULTS.json OUTPUT` uses PyMuPDF to preserve the
+original panel's physical size, typography and graphics. Its JSON input has a
+`results` list with stage, phi and speed_cm_s. It plots only completed points.
+The added-data legend identifies all five stages; pending stages remain labelled.
