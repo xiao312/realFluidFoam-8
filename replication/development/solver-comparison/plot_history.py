@@ -13,7 +13,9 @@ from matplotlib.backends.backend_pdf import PdfPages
 import numpy as np
 
 STYLES = [('#0072B2', '-', 'o'), ('#D55E00', '--', 's'),
-          ('#009E73', '-.', '^'), ('#CC79A7', ':', 'D')]
+          ('#009E73', '-.', '^'), ('#CC79A7', ':', 'D'),
+          ('#56B4E9', '--', 'v'), ('#8C564B', '-.', 'P'),
+          ('#9467BD', '-', 'X'), ('#595959', ':', '*')]
 
 
 def read_case(case, base):
@@ -76,8 +78,9 @@ def read_case(case, base):
 def figure(config, all_rows, zoom):
     plt.rcParams.update({'font.family': 'serif', 'font.serif': ['Times New Roman', 'DejaVu Serif'],
                          'font.size': 10, 'axes.linewidth': .8, 'pdf.fonttype': 42})
-    fig, axes = plt.subplots(1, 2, figsize=(10.6, 5.5), sharex=True, sharey=True)
-    fig.subplots_adjust(left=.075, right=.98, top=.73, bottom=.25, wspace=.10)
+    expanded = len(config['cases']) > 4
+    fig, axes = plt.subplots(1, 2, figsize=(11.2, 6.4) if expanded else (10.6, 5.5), sharex=True, sharey=True)
+    fig.subplots_adjust(left=.075, right=.98, top=.66 if expanded else .73, bottom=.25, wspace=.10)
     for ax, marker, title in zip(axes, ('T', 'OH'),
                                 ('(a) Temperature front: 780.872 K', r'(b) OH front: $Y_{OH}=2\times10^{-5}$')):
         for case, (color, style, symbol) in zip(config['cases'], STYLES):
@@ -125,7 +128,7 @@ def main():
     args = parser.parse_args()
     config = json.loads(args.config.read_text(encoding='utf8'))
     if not 1 <= len(config['cases']) <= len(STYLES):
-        raise ValueError('Supply one to four named comparison cases')
+        raise ValueError('Supply one to eight named comparison cases')
     if len({c['key'] for c in config['cases']}) != len(config['cases']):
         raise ValueError('Case keys must be unique')
     rows, audits = [], []

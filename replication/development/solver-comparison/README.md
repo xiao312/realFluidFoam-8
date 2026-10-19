@@ -87,6 +87,11 @@ credentials or external services are used. Example:
 Verification: compile the script without bytecode, run on the frozen snapshot,
 check the audit's input hashes/coverage/status counts, and inspect both exports.
 Missing columns, duplicate observations and nonfinite valid speeds fail loudly.
+The history plot accepts up to eight explicitly named runs, with distinct
+styles and a larger legend area for more than four. Completed 200-us controls
+and independent 300-us runs must remain separate labelled traces; never splice
+their histories. The sweep snapshot may set `family_label` for the plot title
+(default: Native ideal-gas) and must contain exactly eleven unique conditions.
 
 `plot_sweep.py TRACKING_SNAPSHOT OUTPUT_DIRECTORY` applies the same reader to all
 eleven native equivalence ratios in a flame-tracking snapshot.json. It checks the

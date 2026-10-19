@@ -15,6 +15,8 @@ def main():
     parser.add_argument('output', type=Path)
     args = parser.parse_args()
     manifest = json.loads((args.snapshot/'snapshot.json').read_text())
+    if len(manifest['jobs']) != 11 or len({item['key'] for item in manifest['jobs']}) != 11:
+        raise ValueError('Expected exactly eleven unique sweep conditions')
     states = {line.split('|')[0]: line.split('|')[1]
               for line in manifest['sacct'].splitlines() if '|' in line}
     plt.rcParams.update({'font.family': 'serif', 'font.size': 9, 'pdf.fonttype': 42})
@@ -61,7 +63,7 @@ def main():
     if all_values:
         lower, upper = min(0, min(all_values)), max(10, max(all_values))
         axes.flat[0].set_ylim(lower-.03*(upper-lower), upper+.03*(upper-lower))
-    fig.suptitle('Native ideal-gas flame-speed histories: 100 atm, 298 K\nSnapshot '+manifest['timestamp_local']+' CST', fontsize=12)
+    fig.suptitle(manifest.get('family_label','Native ideal-gas')+' flame-speed histories: 100 atm, 298 K\nSnapshot '+manifest['timestamp_local']+' CST', fontsize=12)
     fig.tight_layout(rect=(0,0,1,.94))
     args.output.mkdir(parents=True, exist_ok=True)
     fig.savefig(args.output/'ideal-openfoam-histories.png', dpi=220)
