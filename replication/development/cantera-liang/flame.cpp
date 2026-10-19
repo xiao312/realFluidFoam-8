@@ -1,5 +1,6 @@
 #include "StagedTransport.h"
 #include "PropertyChecks.h"
+#include "EquilibriumCheck.h"
 #include "cantera/onedim.h"
 #include "cantera/oneD/DomainFactory.h"
 #include "cantera/thermo/ThermoFactory.h"
@@ -34,6 +35,7 @@ try {
     gas->setEquivalenceRatio(phi,"CH4","O2:0.21,N2:0.79");gas->setState_TP(298,10132500);
     fs::create_directories(output);
     propertyChecks(sol,(output/"property-checks.csv").string());
+    if(stage!=2)equilibriumCheck(*gas,(output/"equilibrium.csv").string());
     std::vector<double> xin(gas->nSpecies());gas->getMoleFractions(xin.data());double rho=gas->density();
     std::ifstream file(input/"guess.csv");std::string line;std::getline(file,line);auto columns=split(line);
     std::vector<std::vector<double>> values(columns.size());

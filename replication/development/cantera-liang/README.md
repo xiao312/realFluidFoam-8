@@ -17,6 +17,12 @@ ideal calorics and is not a consistent equilibrium model.
 An ideal flame supplies a labelled steady-solver guess, not a transient restart.
 No OpenFOAM run is resumed by this module.
 
+Cases 1 and 3–5 also calculate HP equilibrium with VCS, checking enthalpy and
+element conservation. This diagnostic uses SRK fugacity for the nonideal cases;
+it remains distinct from the concentration-law flame kinetics. It does not
+replace the saved ideal-profile numerical guess. Equilibrium and flame endpoints
+can differ when their chemical equilibrium conventions differ.
+
 Dependencies: pinned Cantera 3.2 C++ SDK, C++17 compiler, `ideal-baseline`, and
 `liang-properties/ElyHanley.H`. The latter owns the molar reference-density mapping.
 The author critical table approximates Liang's unprovided table.

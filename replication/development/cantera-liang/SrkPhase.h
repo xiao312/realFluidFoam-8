@@ -89,6 +89,13 @@ public:
         if(!fugacityKinetics) {getConcentrations(c);return;}
         for(size_t k=0;k<nSpecies();k++) c[k]=moleFraction(k)*pressure()/RT()*std::exp(state().lnphi[k]);
     }
+    void getActivities(double* a) const override {
+        getActivityCoefficients(a);
+        for(size_t k=0;k<nSpecies();k++)a[k]*=moleFraction(k);
+    }
+    void getdlnActCoeffdlnN(const size_t ld,double* const values) override {
+        getdlnActCoeffdlnN_numderiv(ld,values);
+    }
     void setToEquilState(const double*) override {
         throw std::runtime_error("Use VCS equilibrium for SRK; ideal element-potential setter is disabled");
     }
