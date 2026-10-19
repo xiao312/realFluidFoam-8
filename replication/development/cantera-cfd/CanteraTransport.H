@@ -3,15 +3,22 @@
 #include "fvCFD.H"
 #include "bridge.h"
 #include <dlfcn.h>
+#include <algorithm>
+#include <cmath>
 #include <vector>
 
-// One rank-local context. Only conductivity and Dimix are replaced.
+// One rank-local context. CP chemistry is explicit opt-in, ideal gas only.
 class CanteraTransport {
     void* library_;
     rf_ct_context* context_;
     decltype(&rf_ct_destroy) destroy_;
     decltype(&rf_ct_evaluate) evaluate_;
     decltype(&rf_ct_error) error_;
+    decltype(&rf_ct_advance_cp) advance_=nullptr;
+    bool integrate_=false;
+    double relativeTolerance_=0,absoluteTolerance_=0;
+    Foam::PtrList<Foam::volScalarField> sources_;
+    Foam::scalarField formationHeats_;
     std::vector<double> y_, diffusion_;
     rf_ct_properties properties_;
     template<class T>T symbol(const char* name) {
@@ -54,11 +61,65 @@ public:
                 FatalErrorInFunction << "Species ordering mismatch at " << k
                     << Foam::exit(Foam::FatalError);
         }
+        const Foam::word chemistryMode=config.lookupOrDefault<Foam::word>("chemistryMode","native");
+        if(chemistryMode!="native" && chemistryMode!="adiabaticCP")
+            FatalErrorInFunction << "Unknown chemistryMode" << Foam::exit(Foam::FatalError);
+        integrate_=chemistryMode=="adiabaticCP";
+        if(integrate_) {
+            relativeTolerance_=Foam::readScalar(config.lookup("chemistryRtol"));
+            absoluteTolerance_=Foam::readScalar(config.lookup("chemistryAtol"));
+            if(!(relativeTolerance_>0 && relativeTolerance_<=1e-3 && absoluteTolerance_>0 && absoluteTolerance_<=1e-6))
+                FatalErrorInFunction << "Invalid chemistry tolerances" << Foam::exit(Foam::FatalError);
+            advance_=symbol<decltype(&rf_ct_advance_cp)>("rf_ct_advance_cp");
+            sources_.setSize(names.size());
+            forAll(names,k) sources_.set(k,new Foam::volScalarField
+            (
+                Foam::IOobject("canteraRR_"+names[k],mesh.time().timeName(),mesh,
+                    Foam::IOobject::NO_READ,Foam::IOobject::NO_WRITE),mesh,
+                Foam::dimensionedScalar("zero",Foam::dimMass/Foam::dimVolume/Foam::dimTime,0)
+            ));
+        }
         Foam::Info << "Cantera conductivity and diffusion enabled: " << path << Foam::endl;
+        Foam::Info << "Chemistry mode: " << chemistryMode << Foam::endl;
     }
     ~CanteraTransport(){if(context_)destroy_(context_);if(library_)dlclose(library_);}
     CanteraTransport(const CanteraTransport&)=delete;
     void operator=(const CanteraTransport&)=delete;
+    bool integratesChemistry() const {return integrate_;}
+    const Foam::volScalarField& source(Foam::label k) const {return sources_[k];}
+    void setFormationHeats(const Foam::scalarField& heats) {
+        if(!integrate_)return;
+        formationHeats_=heats;
+        std::fill(y_.begin(),y_.end(),0.);y_[0]=1.;
+        std::vector<double> enthalpies(y_.size());
+        if(evaluate_(context_,298.15,101325,y_.data(),y_.size(),&properties_,
+                     enthalpies.data(),diffusion_.data(),nullptr))
+            FatalErrorInFunction << error_(context_) << Foam::exit(Foam::FatalError);
+        forAll(heats,k) if(std::abs(heats[k]-enthalpies[k])>std::max(1e-3,1e-8*std::abs(heats[k])))
+            FatalErrorInFunction << "Formation enthalpy mismatch at species " << k
+                << ": native=" << heats[k] << " bridge=" << enthalpies[k]
+                << Foam::exit(Foam::FatalError);
+        Foam::Info << "Cantera/native formation enthalpies verified" << Foam::endl;
+    }
+    void correctChemistry(const Foam::volScalarField& temperature,const Foam::volScalarField& pressure,
+                          const Foam::volScalarField& density,const Foam::PtrList<Foam::volScalarField>& species,
+                          Foam::scalar duration,Foam::volScalarField& heatRelease) {
+        if(!integrate_ || formationHeats_.size()!=species.size())
+            FatalErrorInFunction << "CP chemistry context not initialized" << Foam::exit(Foam::FatalError);
+        heatRelease*=0.;
+        std::vector<double> finalY(y_.size());double finalTemperature=0;
+        forAll(temperature,cell) {
+            forAll(species,k)y_[k]=species[k][cell];
+            if(advance_(context_,temperature[cell],pressure[cell],y_.data(),y_.size(),duration,
+                        relativeTolerance_,absoluteTolerance_,&finalTemperature,finalY.data()))
+                FatalErrorInFunction << "Cell " << cell << ": " << error_(context_)
+                    << Foam::exit(Foam::FatalError);
+            forAll(species,k) {
+                sources_[k][cell]=density[cell]*(finalY[k]-y_[k])/duration;
+                heatRelease[cell]-=formationHeats_[k]*sources_[k][cell];
+            }
+        }
+    }
     void update(const Foam::volScalarField& temperature,const Foam::volScalarField& pressure,
                 const Foam::PtrList<Foam::volScalarField>& species,
                 Foam::volScalarField& conductivity,Foam::PtrList<Foam::volScalarField>& diffusion) {

@@ -13,6 +13,7 @@ from fields import inspect,times
 p=argparse.ArgumentParser(description=__doc__)
 p.add_argument('action',choices=['configure','check'])
 p.add_argument('job',type=Path);p.add_argument('bridge_job');p.add_argument('mode',choices=['build','full'])
+p.add_argument('--chemistry-mode',choices=['native','adiabaticCP'],default='native')
 a=p.parse_args();case=a.job/'case'
 if not a.bridge_job.isdigit():raise ValueError('Numeric bridge job required')
 if a.action=='configure':
@@ -20,9 +21,10 @@ if a.action=='configure':
         'FoamFile {version 2.0; format ascii; class dictionary; object canteraBridge;}\n'
         f'libraryPath "/work/jobs/{a.bridge_job}/librfcantera.so";\n'
         'inputDirectory "/work/cache/cantera-liang-20261019/inputs";\n'
-        'stage 1; options full;\n')
+        'stage 1; options full;\n'
+        f'chemistryMode {a.chemistry_mode};\nchemistryRtol 1e-10; chemistryAtol 1e-18;\n')
     control=case/'system/controlDict';text=control.read_text()
-    text=re.sub(r'\bapplication\s+[^;]+;','application rfCanteraTransportFoam;',text)
+    text=re.sub(r'\bapplication\s+[^;]+;','application rfCanteraBridgeFoam;',text)
     if a.mode=='build':
         for key,value in [('endTime','1e-7'),('writeControl','adjustableRunTime'),('writeInterval','1e-7')]:
             text,n=re.subn(r'\b'+key+r'\s+[^;]+;',key+' '+value+';',text)
@@ -35,13 +37,18 @@ if a.action=='configure':
     control.write_text(text)
     (a.job/'bridge-inputs.json').write_text(json.dumps(dict(bridge_job=a.bridge_job,
         model_stage=1,model_options='full',changed_coefficients=['kappa','Dimix'],
-        current_native_species_enthalpy=True,chemistry_changed=False,
+        current_native_species_enthalpy=True,chemistry_changed=a.chemistry_mode!='native',
+        chemistry_mode=a.chemistry_mode,chemistry_rtol=1e-10,chemistry_atol=1e-18,
         initialization='generated_original_zero',mode=a.mode),indent=2)+'\n')
 else:
     latest=times(case,8)[-1];data,_=inspect(case,8,latest)
     rows=list(csv.DictReader((case/'processor0/front-tracking.csv').open()))
     if not rows or min(float(row['time_s']) for row in rows)!=0:raise ValueError('Not an original-zero trace')
     expected=json.loads((case/'fresh-start-inputs.json').read_text())['end_time_s']
+    metadata=json.loads((a.job/'bridge-inputs.json').read_text())
+    if metadata['chemistry_mode']!=a.chemistry_mode:raise ValueError('Chemistry mode mismatch')
+    if a.chemistry_mode=='adiabaticCP' and 'Cantera/native formation enthalpies verified' not in (a.job/'case.log').read_text():
+        raise ValueError('Missing formation-enthalpy qualification')
     if abs(float(latest)-expected)>2.6e-8:raise ValueError('Endpoint mismatch')
     data.update(first_time_s=0,latest_time_s=float(latest),scientific_acceptance=False)
     print(json.dumps(data,indent=2))

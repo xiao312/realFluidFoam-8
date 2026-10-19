@@ -14,8 +14,10 @@ No production CFD solver depends on this draft yet.
 
 `development/cantera-bridge` also exposes an experimental closed constant-pressure
 chemistry step through Cantera ReactorNet/CVODES. It depends on the same SDK and
-model adapters; current CFD experiments do not consume this integration API.
-Frozen Python reactor references qualify the ideal closure before coupling.
+model adapters. Frozen Python reactor references qualify the ideal closure before
+coupling. `cantera-cfd` has a separately configured adiabatic-CP experiment that
+converts integrated mass-fraction changes into species and sensible-energy
+sources. Transport-only mode remains the default; no nonideal CFD is enabled.
 
 `development/cantera-liang` registers SRK thermo and staged transport with the
 pinned Cantera C++ SDK. It consumes ideal-baseline mechanisms/profiles and the
