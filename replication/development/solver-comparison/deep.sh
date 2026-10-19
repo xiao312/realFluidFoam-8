@@ -29,6 +29,15 @@ else
  test -f "$build/deep-build-passed.txt"
 fi
 module load openfoam-v7-gcc9.3.0_openmpi4.1.5
+# The site module leaves the default HPC-X mpicc on PATH. Select the MPI that
+# supplies the installed OF7 libPstream dependency, for both headers and runtime.
+export MPI_ARCH_PATH=/public/software/mpi/openmpi/openmpi-4.1.5
+test -x "$MPI_ARCH_PATH/bin/mpirun"
+unset OPAL_PREFIX
+export PATH="$MPI_ARCH_PATH/bin:$PATH"
+export LD_LIBRARY_PATH="$MPI_ARCH_PATH/lib:$LD_LIBRARY_PATH"
+mpirun --version > "$job/mpi-version.txt"
+mpicc --showme > "$job/mpi-wrapper.txt"
 # Redirect user outputs after the read-only module has selected the installed OF7.
 export WM_PROJECT_USER_DIR="$job/openfoam-user"
 export FOAM_USER_APPBIN="$WM_PROJECT_USER_DIR/platforms/$WM_OPTIONS/bin"
@@ -43,7 +52,17 @@ unset CPLUS_INCLUDE_PATH C_INCLUDE_PATH CPATH LIBRARY_PATH
 compiler=/public/software/compiler/gcc/11.2.0/bin/g++
 test -x "$compiler"
 mkdir -p "$job/compiler"
-printf '#!/bin/sh\nexec "%s" -D_GLIBCXX_USE_CXX11_ABI=1 "$@"\n' "$compiler" > "$job/compiler/g++"
+cat > "$job/compiler/g++" <<EOF
+#!/bin/sh
+link=yes
+for arg in "\$@"; do
+ case "\$arg" in -c|-E|-S|--version) link=no ;; esac
+done
+if [ "\$link" = yes ]; then
+ exec "$compiler" -D_GLIBCXX_USE_CXX11_ABI=1 "\$@" -L"$MPI_ARCH_PATH/lib" -Wl,-rpath-link,"$MPI_ARCH_PATH/lib" -lmpi
+fi
+exec "$compiler" -D_GLIBCXX_USE_CXX11_ABI=1 "\$@"
+EOF
 chmod +x "$job/compiler/g++"
 export PATH="$job/compiler:$PATH"
 g++ --version > "$job/compiler-version.txt"
