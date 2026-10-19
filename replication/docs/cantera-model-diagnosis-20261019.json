@@ -1,0 +1,109 @@
+{
+  "source": "d9393b13b46f15de00408c4c7e5447c20cee7923",
+  "build_job": "124931898",
+  "probe_job": "124932004",
+  "profile_job": "124919531",
+  "raw_csv_sha256": "bc30a3c7231a417f6a55816779eeb260e0037bdc4ce8ca2c9d6a9bffff72120f",
+  "frozen_composition": true,
+  "rows": [
+    {
+      "T_K": 298.0,
+      "lambda_baseline": 0.02696922130939963,
+      "lambda_EH_1atm": 0.02849562803841444,
+      "lambda_EH_100atm": 0.03483008713687137,
+      "dilute_model_change_percent": 5.659810164718437,
+      "pressure_change_percent": 22.22958234125445,
+      "OH_diffusion_ratio_100atm": 4.224574829764936e-09,
+      "CH4_diffusion_ratio_100atm": 0.9842624675036964,
+      "rate_L1_ratio_100atm": 1.008159203808757
+    },
+    {
+      "T_K": 399.2771673430472,
+      "lambda_baseline": 0.03500070275461271,
+      "lambda_EH_1atm": 0.03599437335540622,
+      "lambda_EH_100atm": 0.04072167551343492,
+      "dilute_model_change_percent": 2.839001855934331,
+      "pressure_change_percent": 13.133447584575531,
+      "OH_diffusion_ratio_100atm": 1.2006595992650703e-15,
+      "CH4_diffusion_ratio_100atm": 1.020424393522663,
+      "rate_L1_ratio_100atm": 0.9378524243209718
+    },
+    {
+      "T_K": 599.73926597383,
+      "lambda_baseline": 0.04993604372962515,
+      "lambda_EH_1atm": 0.05014292625516896,
+      "lambda_EH_100atm": 0.05346159818838489,
+      "dilute_model_change_percent": 0.41429498633083206,
+      "pressure_change_percent": 6.618424932617151,
+      "OH_diffusion_ratio_100atm": 1.0305278798111304,
+      "CH4_diffusion_ratio_100atm": 1.0355992473285192,
+      "rate_L1_ratio_100atm": 0.9217293586993878
+    },
+    {
+      "T_K": 900.0906710498688,
+      "lambda_baseline": 0.07169023507016543,
+      "lambda_EH_1atm": 0.07509329270558807,
+      "lambda_EH_100atm": 0.07753246322030488,
+      "dilute_model_change_percent": 4.746891444967294,
+      "pressure_change_percent": 3.2481869243367267,
+      "OH_diffusion_ratio_100atm": 1.0379542136030517,
+      "CH4_diffusion_ratio_100atm": 1.0395782412451369,
+      "rate_L1_ratio_100atm": 0.9311979027427819
+    },
+    {
+      "T_K": 1200.949727086093,
+      "lambda_baseline": 0.09278796052228339,
+      "lambda_EH_1atm": 0.1031697123042758,
+      "lambda_EH_100atm": 0.1051804965987326,
+      "dilute_model_change_percent": 11.188684096035484,
+      "pressure_change_percent": 1.9490063988222284,
+      "OH_diffusion_ratio_100atm": 1.039799721724587,
+      "CH4_diffusion_ratio_100atm": 1.0401535504388615,
+      "rate_L1_ratio_100atm": 0.9451283171927715
+    },
+    {
+      "T_K": 1499.479201723306,
+      "lambda_baseline": 0.1129661059891806,
+      "lambda_EH_1atm": 0.1298635263862997,
+      "lambda_EH_100atm": 0.1316134288622296,
+      "dilute_model_change_percent": 14.957955971977533,
+      "pressure_change_percent": 1.3474934222289292,
+      "OH_diffusion_ratio_100atm": 1.0403312640587683,
+      "CH4_diffusion_ratio_100atm": 1.0401490185122764,
+      "rate_L1_ratio_100atm": 0.9489505508957536
+    },
+    {
+      "T_K": 1800.306348069611,
+      "lambda_baseline": 0.132520687671668,
+      "lambda_EH_1atm": 0.1540256215265404,
+      "lambda_EH_100atm": 0.1555948107678076,
+      "dilute_model_change_percent": 16.227605087707374,
+      "pressure_change_percent": 1.0187845539690432,
+      "OH_diffusion_ratio_100atm": 1.0403834195377601,
+      "CH4_diffusion_ratio_100atm": 1.0398979773387562,
+      "rate_L1_ratio_100atm": 0.9577714616085388
+    },
+    {
+      "T_K": 2099.834642084142,
+      "lambda_baseline": 0.1512806531159052,
+      "lambda_EH_1atm": 0.1758736676316617,
+      "lambda_EH_100atm": 0.177310744522841,
+      "dilute_model_change_percent": 16.256549670574415,
+      "pressure_change_percent": 0.8171074786414545,
+      "OH_diffusion_ratio_100atm": 1.040096062884747,
+      "CH4_diffusion_ratio_100atm": 1.039823760985157,
+      "rate_L1_ratio_100atm": 0.9756627547576234
+    },
+    {
+      "T_K": 2210.128288252169,
+      "lambda_baseline": 0.1581223612470777,
+      "lambda_EH_1atm": 0.1833634518861515,
+      "lambda_EH_100atm": 0.184751657587702,
+      "dilute_model_change_percent": 15.963011455181064,
+      "pressure_change_percent": 0.7570787347592312,
+      "OH_diffusion_ratio_100atm": 1.0399067223156426,
+      "CH4_diffusion_ratio_100atm": 1.0396219413155745,
+      "rate_L1_ratio_100atm": 0.1029892403148771
+    }
+  ]
+}
