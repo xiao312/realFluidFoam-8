@@ -3,6 +3,7 @@ set -o pipefail
 release=${1:?}; bridge_job=${2:?}; key=${3:?}; mode=${4:?}; build_job=${5:?}
 chemistry=${6:-native}
 execution=${7:-uniform8}
+numerics=${8:-standard}
 ranks=8; [[ $execution == bands32 ]] && ranks=32
 . /opt/openfoam8/etc/bashrc
 set -euo pipefail
@@ -34,7 +35,7 @@ ldd "$solver" > "$job/solver-ldd.txt"
 fresh=$release/replication/development/fresh-start
 python3 -B "$fresh/prepare.py" plan energy "$key" "$job/case" --end-us 300 > "$job/case-plan.json"
 python3 -B "$fresh/prepare.py" apply energy "$key" "$job/case" --end-us 300 > "$job/prepare.log"
-python3 -B "$module/case.py" configure "$job" "$bridge_job" "$mode" --chemistry-mode "$chemistry" --execution-profile "$execution"
+python3 -B "$module/case.py" configure "$job" "$bridge_job" "$mode" --chemistry-mode "$chemistry" --execution-profile "$execution" --numerical-profile "$numerics"
 blockMesh -case "$job/case" > "$job/blockMesh.log" 2>&1
 checkMesh -case "$job/case" > "$job/checkMesh.log" 2>&1
 grep -q 'Mesh OK' "$job/checkMesh.log"
@@ -50,7 +51,7 @@ decomposePar -case "$job/case" > "$job/decompose.log" 2>&1
 python3 -B "$fresh/prepare.py" verify energy "$job/case" > "$job/initial-state-verified.json"
 mpirun --mca btl self,vader,tcp -np "$ranks" "$solver" -case "$job/case" -parallel > "$job/case.log" 2>&1
 grep -q '^End' "$job/case.log"
-python3 -B "$module/case.py" check "$job" "$bridge_job" "$mode" --chemistry-mode "$chemistry" --execution-profile "$execution" > "$job/endpoint-check.json"
+python3 -B "$module/case.py" check "$job" "$bridge_job" "$mode" --chemistry-mode "$chemistry" --execution-profile "$execution" --numerical-profile "$numerics" > "$job/endpoint-check.json"
 if [[ $mode == build ]]; then
  printf 'PASS: ideal Cantera transport + %s chemistry original-zero smoke; steady speed unqualified\n' "$chemistry" > "$job/qualification-passed.txt"
 else

@@ -15,9 +15,17 @@ p.add_argument('action',choices=['configure','check'])
 p.add_argument('job',type=Path);p.add_argument('bridge_job');p.add_argument('mode',choices=['build','full'])
 p.add_argument('--chemistry-mode',choices=['native','adiabaticCP'],default='native')
 p.add_argument('--execution-profile',choices=['uniform8','bands32'],default='uniform8')
+p.add_argument('--numerical-profile',choices=['standard','strict'],default='standard')
 a=p.parse_args();case=a.job/'case'
 if not a.bridge_job.isdigit():raise ValueError('Numeric bridge job required')
 if a.action=='configure':
+    if a.numerical_profile=='strict':
+        path=case/'system/fvSolution';text=path.read_text()
+        text,n=re.subn(r'\btolerance\s+[^;]+;','tolerance 1e-10;',text)
+        if n!=2:raise ValueError('Unexpected linear-solver tolerance declarations')
+        text,n=re.subn(r'\brelTol\s+[^;]+;','relTol 0;',text)
+        if n!=4:raise ValueError('Unexpected linear-solver relative tolerance declarations')
+        path.write_text(text)
     (case/'constant/canteraBridge').write_text(
         'FoamFile {version 2.0; format ascii; class dictionary; object canteraBridge;}\n'
         f'libraryPath "/work/jobs/{a.bridge_job}/librfcantera.so";\n'
@@ -42,6 +50,7 @@ if a.action=='configure':
         current_native_species_enthalpy=True,chemistry_changed=a.chemistry_mode!='native',
         chemistry_mode=a.chemistry_mode,chemistry_rtol=1e-10,chemistry_atol=1e-18,
         initialization='generated_original_zero',mode=a.mode,execution_profile=a.execution_profile,
+        numerical_profile=a.numerical_profile,
         mpi_ranks=32 if a.execution_profile=='bands32' else 8),indent=2)+'\n')
 else:
     ranks=32 if a.execution_profile=='bands32' else 8
@@ -52,6 +61,7 @@ else:
     metadata=json.loads((a.job/'bridge-inputs.json').read_text())
     if metadata['chemistry_mode']!=a.chemistry_mode:raise ValueError('Chemistry mode mismatch')
     if metadata['execution_profile']!=a.execution_profile:raise ValueError('Execution profile mismatch')
+    if metadata['numerical_profile']!=a.numerical_profile:raise ValueError('Numerical profile mismatch')
     if a.chemistry_mode=='adiabaticCP' and 'Cantera/native molar formation enthalpies verified' not in (a.job/'case.log').read_text():
         raise ValueError('Missing formation-enthalpy qualification')
     if abs(float(latest)-expected)>2.6e-8:raise ValueError('Endpoint mismatch')

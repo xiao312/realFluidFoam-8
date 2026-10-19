@@ -106,3 +106,10 @@ Inputs must be completed original-zero smoke cases; output is a JSON report.
 Thresholds are explicit in the script and are numerical smoke screens, not
 steady-flame accuracy limits. A failed comparison exits nonzero after printing
 the evidence. This uses the existing ASCII reader and standard Python only.
+
+The optional final launcher argument `strict` sets all linear-solver absolute
+tolerances to 1e-10 and relative tolerances to zero. The default `standard`
+retains the original dictionaries. This isolates decomposition sensitivity to
+linear solves; it does not change the physical fields, timestep controls or
+PIMPLE corrector counts. The selected profile is recorded in `bridge-inputs.json`
+and a full run must use a smoke with the same numerical profile.

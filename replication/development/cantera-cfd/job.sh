@@ -4,6 +4,7 @@ root=${1:?}; release=${2:?}; bridge_job=${3:?}; key=${4:?}; mode=${5:?}; build_j
 chemistry=${7:-native}
 reactor_job=${8:-none}
 execution=${9:-uniform8}
+numerics=${10:-standard}
 [[ -n ${SLURM_JOB_ID:-} && $(realpath -e "$release") == "$root/releases/"* ]] || exit 2
 job=$root/jobs/$SLURM_JOB_ID
 mkdir -p "$job"/{home,tmp,cache,config,apptainer}
@@ -27,4 +28,4 @@ source_in=/work/${release#"$root/"}
 exec apptainer exec --cleanenv --containall --underlay --no-eval --no-mount cwd,hostfs,bind-paths \
  --home "$job/home:/home/foam" --bind "$root:/work" --bind "$release:$source_in:ro" \
  --bind "$job/tmp:/tmp" --workdir "$job/apptainer" --pwd /work "$image" \
- /bin/bash "$source_in/replication/development/cantera-cfd/run.sh" "$source_in" "$bridge_job" "$key" "$mode" "$build_job" "$chemistry" "$execution"
+ /bin/bash "$source_in/replication/development/cantera-cfd/run.sh" "$source_in" "$bridge_job" "$key" "$mode" "$build_job" "$chemistry" "$execution" "$numerics"
