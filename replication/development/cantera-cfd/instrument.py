@@ -66,8 +66,8 @@ replace('YEqn.H','    volScalarField Yt(0.0*Y[0]);',
         '    runtimeTimers.stop("chemistry");\n    volScalarField Yt(0.0*Y[0]);')
 replace('YEqn.H','        // calculate correction term',
         '        runtimeTimers.start("diffusion_pairs");\n        // calculate correction term')
-replace('YEqn.H','        if (i != inertIndex && composition.active(i))',
-        '        runtimeTimers.stop("diffusion_pairs");\n        if (i != inertIndex && composition.active(i))')
+species_branch='        if (i != inertIndex && composition.active(i))\n        {\n            volScalarField& Yi'
+replace('YEqn.H',species_branch,'        runtimeTimers.stop("diffusion_pairs");\n'+species_branch)
 replace('YEqn.H','            YiEqn.solve("Yi");',
         '            runtimeTimers.start("species_linear");\n            YiEqn.solve("Yi");\n'
         '            runtimeTimers.stop("species_linear");')
