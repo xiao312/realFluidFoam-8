@@ -74,3 +74,37 @@ Startup job 124877695 passed on release 128d13d. All 1,360 common field bodies
 matched with diagnostics enabled/disabled. The ideal-density identity differed
 by 8.96e-7 relatively; normalized finite fields and native Qdot passed.
 This qualifies startup and diagnostic noninterference, not flame speed.
+
+## Running-case assessment
+
+`history.py SNAPSHOT_DIR CANTERA_RESULTS_JSON NEW_OUTPUT_DIR` reads immutable
+local copies of `flame-speed.csv`, `paper-case.json` and a job snapshot register.
+It writes a JSON assessment and a history plot. It never modifies jobs or
+selects a time window to obtain agreement with a reference value. The default
+window is the last 5 microseconds covered by both sides at the primary OH
+marker. Incomplete final CSV lines are discarded and counted. Invalid contours
+remain gaps. Each window must have at least three valid samples.
+
+The module reuses the `premixed-sensitivity` CSV reader and tracking formula.
+Primary speed is density-weighted front tracking; the source used in the OH
+species solve is a cross-check. Per the owner's 19 October decision,
+instantaneous-source speeds are excluded from plots and acceptance criteria.
+End-step rows still supply position, velocity and density for tracking, without
+using their instantaneous chemistry rates. Missing secondary OH markers are
+reported separately. No CFD point is declared converged or
+added to the paper speed-versus-phi curve by this command. Transport, domain,
+time-step and mesh independence remain separate requirements.
+
+Verification: run the existing sensitivity unit tests and inspect the full
+histories and reported window bounds. Cantera's solved inlet velocity is the
+steady reference; density-weighted tracking uses local gas velocity, not raw
+front motion in the laboratory frame.
+
+`anchors.py plan|apply PROFILES MECHANISM OUTPUT_JSON` restores each completed
+Cantera solution and exports its actual fixed-temperature anchor. It also
+checks that density-weighted velocity there agrees with the solved inlet speed.
+The reference coordinate is metadata only: CFD tracks the same temperature
+at its own evolving position. Additional fixed temperatures at 20%, 50% and
+80% of the reference temperature rise check marker independence. Do not update
+these temperatures from the CFD's instantaneous peak temperature; doing so
+would add threshold motion to the measured front speed.

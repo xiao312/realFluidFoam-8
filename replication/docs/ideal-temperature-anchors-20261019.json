@@ -1,0 +1,183 @@
+{
+  "cantera_version": "3.2.0",
+  "mechanism_sha256": "c6e72c25dbf5af75a16b71042e071aed15ca4fd4a8a854fd8720a820ce1986c6",
+  "definition": "Track fixed temperature, not the Cantera coordinate. Additional temperatures are fixed from this reference, never rescaled by instantaneous CFD Tmax.",
+  "conditions": [
+    {
+      "phi": 0.9,
+      "temperature_anchor_K": 763.4723992894018,
+      "cantera_anchor_location_m": 0.0014,
+      "Tu_K": 298.0,
+      "Tb_K": 2164.650340483265,
+      "sensitivity_temperatures_K": [
+        671.3300680966531,
+        1231.3251702416326,
+        1791.3202723866123
+      ],
+      "speed_cm_s": 5.705747444706062,
+      "anchor_mass_flux_speed_cm_s": 5.705747444855818,
+      "anchor_mass_flux_relative_error": 2.62465604805584e-11,
+      "profile_sha256": "4996fbe095cb969efd92b2c9b819e70bb15a5255759553a2c27bef632714b220"
+    },
+    {
+      "phi": 0.95,
+      "temperature_anchor_K": 781.8439466361449,
+      "cantera_anchor_location_m": 0.0014,
+      "Tu_K": 298.0,
+      "Tb_K": 2236.246658956885,
+      "sensitivity_temperatures_K": [
+        685.649331791377,
+        1267.1233294784424,
+        1848.597327165508
+      ],
+      "speed_cm_s": 6.382402399944982,
+      "anchor_mass_flux_speed_cm_s": 6.3824023999484085,
+      "anchor_mass_flux_relative_error": 5.369038547087257e-13,
+      "profile_sha256": "c07e3efcaad3525f5c369eda6f8f84c71643a54ed146917970a1fb7573292b54"
+    },
+    {
+      "phi": 1.0,
+      "temperature_anchor_K": 796.774000467596,
+      "cantera_anchor_location_m": 0.0014,
+      "Tu_K": 298.0,
+      "Tb_K": 2294.380542335155,
+      "sensitivity_temperatures_K": [
+        697.276108467031,
+        1296.1902711675775,
+        1895.104433868124
+      ],
+      "speed_cm_s": 6.91474179170129,
+      "anchor_mass_flux_speed_cm_s": 6.914741791708447,
+      "anchor_mass_flux_relative_error": 1.034949903555571e-12,
+      "profile_sha256": "6ba5681f700dff15a0ff997c7c67e0baf5f46595e8b0c8d0a66fc084e95d3dbe"
+    },
+    {
+      "phi": 1.05,
+      "temperature_anchor_K": 791.7025261312986,
+      "cantera_anchor_location_m": 0.0014,
+      "Tu_K": 298.0,
+      "Tb_K": 2272.921760734491,
+      "sensitivity_temperatures_K": [
+        692.9843521468981,
+        1285.4608803672454,
+        1877.9374085875927
+      ],
+      "speed_cm_s": 7.330248421544574,
+      "anchor_mass_flux_speed_cm_s": 7.3302484215248915,
+      "anchor_mass_flux_relative_error": 2.6849633627534786e-12,
+      "profile_sha256": "0d6cb90c61ff6d4ce437ffc8e9fd6f9388984e893cc381b372177abf369b21ca"
+    },
+    {
+      "phi": 1.1,
+      "temperature_anchor_K": 780.8722452267356,
+      "cantera_anchor_location_m": 0.0014,
+      "Tu_K": 298.0,
+      "Tb_K": 2229.153736453598,
+      "sensitivity_temperatures_K": [
+        684.2307472907196,
+        1263.576868226799,
+        1842.9229891628784
+      ],
+      "speed_cm_s": 7.467003112153642,
+      "anchor_mass_flux_speed_cm_s": 7.467003112148081,
+      "anchor_mass_flux_relative_error": 7.44737604918555e-13,
+      "profile_sha256": "09e68ec67e08f76ecac77e14e32e60d5fefc0a8ce6798869d6b49f10a0d24fa8"
+    },
+    {
+      "phi": 1.15,
+      "temperature_anchor_K": 769.9301534631155,
+      "cantera_anchor_location_m": 0.0014,
+      "Tu_K": 298.0,
+      "Tb_K": 2185.240698116049,
+      "sensitivity_temperatures_K": [
+        675.4481396232097,
+        1241.6203490580244,
+        1807.7925584928391
+      ],
+      "speed_cm_s": 7.343496980167247,
+      "anchor_mass_flux_speed_cm_s": 7.343496980043889,
+      "anchor_mass_flux_relative_error": 1.6798340496393394e-11,
+      "profile_sha256": "e57f498529e2486cf4d7d86b8bfe40836d3c899bdbdbc0fbcf3b6c370948bd5c"
+    },
+    {
+      "phi": 1.2,
+      "temperature_anchor_K": 759.1860630265394,
+      "cantera_anchor_location_m": 0.0014,
+      "Tu_K": 298.0,
+      "Tb_K": 2142.220206261234,
+      "sensitivity_temperatures_K": [
+        666.8440412522468,
+        1220.110103130617,
+        1773.3761650089873
+      ],
+      "speed_cm_s": 7.120380052909459,
+      "anchor_mass_flux_speed_cm_s": 7.120380052858002,
+      "anchor_mass_flux_relative_error": 7.2265526895876064e-12,
+      "profile_sha256": "60e1c62989161a0f2673812b5195c6a6c69e558efec31d4864905872b3750685"
+    },
+    {
+      "phi": 1.25,
+      "temperature_anchor_K": 748.6865412525168,
+      "cantera_anchor_location_m": 0.0014,
+      "Tu_K": 298.0,
+      "Tb_K": 2100.22622900615,
+      "sensitivity_temperatures_K": [
+        658.4452458012299,
+        1199.113114503075,
+        1739.78098320492
+      ],
+      "speed_cm_s": 6.873698515469016,
+      "anchor_mass_flux_speed_cm_s": 6.873698515278837,
+      "anchor_mass_flux_relative_error": 2.7667756974381064e-11,
+      "profile_sha256": "b40f0bbe4ff01279c4adecd6c7900aae7b912eef4e24be99170d1f4a4c5ba837"
+    },
+    {
+      "phi": 1.3,
+      "temperature_anchor_K": 738.4331803230109,
+      "cantera_anchor_location_m": 0.0014,
+      "Tu_K": 298.0,
+      "Tb_K": 2059.213531501232,
+      "sensitivity_temperatures_K": [
+        650.2427063002465,
+        1178.606765750616,
+        1706.9708252009857
+      ],
+      "speed_cm_s": 6.619133757678313,
+      "anchor_mass_flux_speed_cm_s": 6.619133757477001,
+      "anchor_mass_flux_relative_error": 3.0413560558884e-11,
+      "profile_sha256": "bdf2d01a1d384de6f0d08c0e9bcaebb50d011b872c2690758368b6038e1e4a6c"
+    },
+    {
+      "phi": 1.35,
+      "temperature_anchor_K": 728.4153979919608,
+      "cantera_anchor_location_m": 0.0014,
+      "Tu_K": 298.0,
+      "Tb_K": 2019.135572455598,
+      "sensitivity_temperatures_K": [
+        642.2271144911197,
+        1158.567786227799,
+        1674.9084579644787
+      ],
+      "speed_cm_s": 6.3658559337846174,
+      "anchor_mass_flux_speed_cm_s": 6.365855933583581,
+      "anchor_mass_flux_relative_error": 3.158040495776504e-11,
+      "profile_sha256": "88138fc64230ea6ea0e890482363cd634da45a2ea72b37d31681a12a48331715"
+    },
+    {
+      "phi": 1.4,
+      "temperature_anchor_K": 718.6193673285339,
+      "cantera_anchor_location_m": 0.0014,
+      "Tu_K": 298.0,
+      "Tb_K": 1980.348507531936,
+      "sensitivity_temperatures_K": [
+        634.4697015063873,
+        1139.174253765968,
+        1643.878806025549
+      ],
+      "speed_cm_s": 6.121807950118492,
+      "anchor_mass_flux_speed_cm_s": 6.121807950976853,
+      "anchor_mass_flux_relative_error": 1.4021361849358982e-10,
+      "profile_sha256": "caa2f02a87307994acaff379d1ec3cb9e8f3084c6bfc653621a41baed0fa5e4c"
+    }
+  ]
+}

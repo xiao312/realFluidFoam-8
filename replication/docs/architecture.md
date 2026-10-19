@@ -54,6 +54,9 @@ runner. Its separate Cantera adapter reads author NASA7/reaction inputs and
 supplies equilibrium seeds and independent steady flame profiles. Cantera is
 not a CFD runtime dependency. Comparison plotting consumes both result sets
 and a locally held Liang figure crop; it does not submit work.
+Its running-case assessment reuses the premixed-sensitivity CSV reader and
+kinematic tracking routines on local snapshots. It reports diagnostic gaps
+without changing running jobs or promoting transient speeds to accepted data.
 
 `environment/` owns recipes, the image lock, contained execution, and job submission.
 `development/liang-panel-a` consumes the ideal-baseline Cantera profiles and
