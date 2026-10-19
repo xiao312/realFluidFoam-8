@@ -56,6 +56,11 @@ would help resolve the remaining variant choices.
 
 ## Figure 2: fixed-composition SRK critical points
 
+The [subsequent critical-point audit](liang-critical-audit-20261019.md) confirms
+the native results independently. It also shows that the paper's paired curves
+imply covolumes outside the H2/O2/N2 species bounds and opposite composition
+trends. The disagreement remains unresolved; no EOS coefficients were changed.
+
 The paper defines a P–v inflection. Our calculation satisfies that definition
 for the fork's coefficients and assumed 21/79 molar O2/N2 air, but does not
 match the published curves. At phi=1:

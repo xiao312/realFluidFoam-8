@@ -70,6 +70,9 @@ Ely–Hanley conductivity kernel. It supplies property CSV and original-scale
 Liang Figure 1/2 comparisons. It has no Cantera flame dependency and does not
 change production solver physics. Staged reacting closures depend on these
 property checks before promotion.
+Its offline critical audit uses NumPy for independent pressure-derivative solves
+and PyMuPDF for calibrated source-curve extraction. It reads the native probe CSV
+and species dictionary; it never supplies fitted coefficients to a reacting run.
 
 `environment/` owns recipes, the image lock, contained execution, and job submission.
 `development/liang-panel-a` consumes the ideal-baseline Cantera profiles and

@@ -2,6 +2,10 @@
 
 2026-10-19. Read-only research; no solver changes or jobs were made by this audit.
 
+Follow-up: the [Figure 2 coefficient and inflection audit](../../docs/liang-critical-audit-20261019.md)
+tests the native critical construction independently and records the unresolved
+incompatibility between the paper's paired curves and the specified mixing rule.
+
 The fork already contains SRK thermodynamics, nonideal mixture enthalpy, and a
 Takahashi diffusion correction. The missing work is chiefly independent model
 selection, Ely–Hanley conductivity, and verification of the energy/diffusion

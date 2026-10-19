@@ -1,0 +1,307 @@
+{
+  "input_sha256": {
+    "species": "a4d9a128cb77c69de64102f6a437000937f75182f7468cc0549880da40332e12",
+    "native": "f9665c641cc882c28bf77c9725b81a7890d5b025f99fd3c094bd13cb14ebe1bc",
+    "paper": "24163be0124e0fa6cd28ddb1d369b813e64e82bd7446e9f9218a340445aca6fe"
+  },
+  "code_sha256": {
+    "critical_audit.py": "0c0bc7808ba28c18e0708a4ec046c82943a01431abacb64b4573879968f0b068",
+    "critical_math.py": "38158ece6d6af8f1a7ca92d8487c49e693e2063d4c357e3d57c34729ac332310"
+  },
+  "species_inputs": {
+    "H2": {
+      "Tc": 33.18,
+      "Pc": 1300000.0,
+      "omega": -0.216,
+      "molWeight": 2.01594,
+      "Vc": 64.935
+    },
+    "CH4": {
+      "Tc": 190.6,
+      "Pc": 4610000.0,
+      "omega": 0.011,
+      "molWeight": 16.043,
+      "Vc": 98.6
+    },
+    "O2": {
+      "Tc": 154.58,
+      "Pc": 5043000.0,
+      "omega": 0.025,
+      "molWeight": 31.9988,
+      "Vc": 73.529
+    },
+    "N2": {
+      "Tc": 126.19,
+      "Pc": 3398000.0,
+      "omega": 0.039,
+      "molWeight": 28.0134,
+      "Vc": 89.445
+    }
+  },
+  "max_native_difference": 1.9895196601282805e-13,
+  "inverse_b_fit_diagnostic_only": {
+    "H2": {
+      "inferred_fuel_b": 65.60910330825915,
+      "inferred_air_b": 19.880151379244822,
+      "max_residual_cm3_mol": 0.8118164154005498
+    },
+    "CH4": {
+      "inferred_fuel_b": 13.227813964112686,
+      "inferred_air_b": 25.353489219947555,
+      "max_residual_cm3_mol": 0.019759678333649333
+    }
+  },
+  "paper_reading_tolerance": {
+    "Tc_K": 0.1,
+    "Pc_atm": 0.05
+  },
+  "sensitivity": [
+    {
+      "variant": "baseline",
+      "fuel": "H2",
+      "Tc_K": 105.10547536436026,
+      "Pc_atm": 31.680833412201874,
+      "b_cm3_mol": 23.586663620064275,
+      "vc_cm3_mol": 90.74549225468296,
+      "A": 0.45772668951118006,
+      "C": 0.013540838187934584
+    },
+    {
+      "variant": "rounded_paper_constants",
+      "fuel": "H2",
+      "Tc_K": 104.4151474809136,
+      "Pc_atm": 30.77315747620372,
+      "b_cm3_mol": 24.122883390809278,
+      "vc_cm3_mol": 92.80850243012615,
+      "A": 0.460836004002352,
+      "C": 0.01364087267551196
+    },
+    {
+      "variant": "air_N2_O2_3.76",
+      "fuel": "H2",
+      "Tc_K": 105.09906182924752,
+      "Pc_atm": 31.68009813670655,
+      "b_cm3_mol": 23.585771760551946,
+      "vc_cm3_mol": 90.74206098386941,
+      "A": 0.4576936224292438,
+      "C": 0.013539563040014581
+    },
+    {
+      "variant": "mass_fractions_used_as_mole",
+      "fuel": "H2",
+      "Tc_K": 129.45992414053998,
+      "Pc_atm": 36.1556175946123,
+      "b_cm3_mol": 25.456420389884947,
+      "vc_cm3_mol": 97.93904880032214,
+      "A": 0.5627313825025011,
+      "C": 0.017141939922208152
+    },
+    {
+      "variant": "mole_fractions_converted_again",
+      "fuel": "H2",
+      "Tc_K": 48.22553405982073,
+      "Pc_atm": 17.622102139881232,
+      "b_cm3_mol": 19.456158795084253,
+      "vc_cm3_mol": 74.85410974968526,
+      "A": 0.23701352091987737,
+      "C": 0.005878233743873422
+    },
+    {
+      "variant": "original_soave_alpha",
+      "fuel": "H2",
+      "Tc_K": 105.23197617327719,
+      "Pc_atm": 31.718963215049094,
+      "b_cm3_mol": 23.586663620064275,
+      "vc_cm3_mol": 90.74549225468296,
+      "A": 0.4560913596558366,
+      "C": 0.013354578800723261
+    },
+    {
+      "variant": "constant_attraction_alpha_1",
+      "fuel": "H2",
+      "Tc_K": 98.78094460280495,
+      "Pc_atm": 29.774496898594123,
+      "b_cm3_mol": 23.586663620064275,
+      "vc_cm3_mol": 90.74549225468296,
+      "A": 0.30916110915728834,
+      "C": 0.0
+    },
+    {
+      "variant": "b_from_measured_Vc",
+      "fuel": "H2",
+      "Tc_K": 114.81006479075371,
+      "Pc_atm": 39.331999219481304,
+      "b_cm3_mol": 20.752561552808594,
+      "vc_cm3_mol": 79.84178873239435,
+      "A": 0.45772668951118006,
+      "C": 0.013540838187934584
+    },
+    {
+      "variant": "baseline",
+      "fuel": "CH4",
+      "Tc_K": 136.64609962936493,
+      "Pc_atm": 37.147196553769064,
+      "b_cm3_mol": 26.152244427155587,
+      "vc_cm3_mol": 100.61610799792108,
+      "A": 0.5883857169004448,
+      "C": 0.017579849894237547
+    },
+    {
+      "variant": "rounded_paper_constants",
+      "fuel": "CH4",
+      "Tc_K": 136.2395253387865,
+      "Pc_atm": 36.746510678480426,
+      "b_cm3_mol": 26.358748485987856,
+      "vc_cm3_mol": 101.4105956275909,
+      "A": 0.5898373321291075,
+      "C": 0.017650200938946717
+    },
+    {
+      "variant": "air_N2_O2_3.76",
+      "fuel": "CH4",
+      "Tc_K": 136.65003218920637,
+      "Pc_atm": 37.148574058692425,
+      "b_cm3_mol": 26.15202728842585,
+      "vc_cm3_mol": 100.61527259528697,
+      "A": 0.5883905345551969,
+      "C": 0.01757967372611812
+    },
+    {
+      "variant": "mass_fractions_used_as_mole",
+      "fuel": "CH4",
+      "Tc_K": 134.95660129579187,
+      "Pc_atm": 37.057830439071246,
+      "b_cm3_mol": 25.89118412791947,
+      "vc_cm3_mol": 99.61172493875097,
+      "A": 0.5822683760681941,
+      "C": 0.017531243824764252
+    },
+    {
+      "variant": "mole_fractions_converted_again",
+      "fuel": "CH4",
+      "Tc_K": 139.77421077611015,
+      "Pc_atm": 37.51293964840105,
+      "b_cm3_mol": 26.49010750987572,
+      "vc_cm3_mol": 101.91597610347382,
+      "A": 0.5980382263771947,
+      "C": 0.01761897435438738
+    },
+    {
+      "variant": "original_soave_alpha",
+      "fuel": "CH4",
+      "Tc_K": 136.6426190397587,
+      "Pc_atm": 37.146250356646895,
+      "b_cm3_mol": 26.152244427155587,
+      "vc_cm3_mol": 100.61610799792108,
+      "A": 0.5867132214275761,
+      "C": 0.017437413281338077
+    },
+    {
+      "variant": "constant_attraction_alpha_1",
+      "fuel": "CH4",
+      "Tc_K": 136.7424191063093,
+      "Pc_atm": 37.173380971412264,
+      "b_cm3_mol": 26.152244427155587,
+      "vc_cm3_mol": 100.61610799792108,
+      "A": 0.3830197119045935,
+      "C": 0.0
+    },
+    {
+      "variant": "b_from_measured_Vc",
+      "fuel": "CH4",
+      "Tc_K": 149.70889056885497,
+      "Pc_atm": 46.91141803311888,
+      "b_cm3_mol": 22.6885531376307,
+      "vc_cm3_mol": 87.29017194570135,
+      "A": 0.5883857169004448,
+      "C": 0.017579849894237547
+    }
+  ],
+  "source_base": "a6b3f75c2ae17895b61b1aba530030fe332b1f3a",
+  "native_source": "e208396bdba48592aacbf6bb9a1c41b8eca3d9bb",
+  "native_job": 124887485,
+  "library_build": 124657926,
+  "native_states": 282,
+  "numerical_checks": 18,
+  "max_numerical_difference_K_or_atm": 5.438718275740939e-07,
+  "comparison": [
+    {
+      "fuel": "H2",
+      "phi": 0.6,
+      "Tc_K": 108.59975804376822,
+      "Pc_atm": 25.853236515097002,
+      "implied_b_cm3_mol": 29.864256627074187,
+      "computed_Tc_K": 113.7816575371173,
+      "computed_Pc_atm": 33.31044294108615,
+      "computed_b_cm3_mol": 24.28452532266825,
+      "minimum_species_b_cm3_mol": 18.38593236018224,
+      "maximum_species_b_cm3_mol": 26.751873029332362
+    },
+    {
+      "fuel": "H2",
+      "phi": 1.0,
+      "Tc_K": 98.11730677526087,
+      "Pc_atm": 21.11362914196203,
+      "implied_b_cm3_mol": 33.038513605207875,
+      "computed_Tc_K": 105.10547536436026,
+      "computed_Pc_atm": 31.680833412201874,
+      "computed_b_cm3_mol": 23.586663620064275,
+      "minimum_species_b_cm3_mol": 18.38593236018224,
+      "maximum_species_b_cm3_mol": 26.751873029332362
+    },
+    {
+      "fuel": "H2",
+      "phi": 1.9,
+      "Tc_K": 81.71857037845109,
+      "Pc_atm": 14.174414111715844,
+      "implied_b_cm3_mol": 40.987687282606124,
+      "computed_Tc_K": 90.93249812547411,
+      "computed_Pc_atm": 28.74112806794807,
+      "computed_b_cm3_mol": 22.493295201690856,
+      "minimum_species_b_cm3_mol": 18.38593236018224,
+      "maximum_species_b_cm3_mol": 26.751873029332362
+    },
+    {
+      "fuel": "CH4",
+      "phi": 0.6,
+      "Tc_K": 135.36735507243006,
+      "Pc_atm": 39.03495199814792,
+      "implied_b_cm3_mol": 24.654605868067097,
+      "computed_Tc_K": 134.62748465575345,
+      "computed_Pc_atm": 36.80032275109647,
+      "computed_b_cm3_mol": 26.00877361701792,
+      "minimum_species_b_cm3_mol": 22.080909790676984,
+      "maximum_species_b_cm3_mol": 29.783422312306605
+    },
+    {
+      "fuel": "CH4",
+      "phi": 1.0,
+      "Tc_K": 138.1926635027262,
+      "Pc_atm": 40.61031369474516,
+      "implied_b_cm3_mol": 24.192815517020065,
+      "computed_Tc_K": 136.64609962936493,
+      "computed_Pc_atm": 37.147196553769064,
+      "computed_b_cm3_mol": 26.152244427155587,
+      "minimum_species_b_cm3_mol": 22.080909790676984,
+      "maximum_species_b_cm3_mol": 29.783422312306605
+    },
+    {
+      "fuel": "CH4",
+      "phi": 1.9,
+      "Tc_K": 143.9346498988911,
+      "Pc_atm": 43.81652458609707,
+      "implied_b_cm3_mol": 23.354210955393953,
+      "computed_Tc_K": 140.69846317478982,
+      "computed_Pc_atm": 37.834960749696826,
+      "computed_b_cm3_mol": 26.43831888330129,
+      "minimum_species_b_cm3_mol": 22.080909790676984,
+      "maximum_species_b_cm3_mol": 29.783422312306605
+    }
+  ],
+  "scientific_acceptance": false,
+  "solver_changed": false,
+  "artifacts": {
+    "state/liang-critical-audit-20261019-v1/audit.json": "4f99b4bdbb2578d3ad20ddf50d524ebdc46b4d028a32863c738905e1bc225be6",
+    "output/liang-critical-audit-20261019/critical-covolume-check.png": "3194e70d9041527a17f47383bdeee85b2cc8a0419e58b5f1dcf24ea852dcb585"
+  }
+}
