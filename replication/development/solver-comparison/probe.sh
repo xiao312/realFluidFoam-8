@@ -8,7 +8,7 @@ for family in stock native; do
  mkdir "$build"
  cp "$module/chemistryProbe.C" "$build/"
  cp -r "$module/Make" "$build/"
- export CHEM_SRC="$LIB_SRC" CHEM_LIB="$FOAM_LIBBIN" LD_LIBRARY_PATH="$stock_ld"
+ export CHEM_SRC="$WM_PROJECT_DIR/src" CHEM_LIB="$FOAM_LIBBIN" LD_LIBRARY_PATH="$stock_ld"
  if [[ $family == native ]]; then
   export CHEM_SRC="/work/builds/124657926/src"
   export CHEM_LIB="/work/jobs/124657926/openfoam-user/platforms/$WM_OPTIONS/lib"

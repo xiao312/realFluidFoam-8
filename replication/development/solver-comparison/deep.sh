@@ -7,7 +7,7 @@ if [[ $mode == deep-build ]]; then
  export MAMBA_ROOT_PREFIX="$job/mamba" CONDA_PKGS_DIRS="$job/cache/conda"
  tool="$root/cache/solver-comparison/micromamba-linux-64"
  printf '%s  %s\n' 9689782d863c05a1bf5d2d371ba527104e7a4eb4310c1637d8653b751aed9c82 "$tool" | sha256sum -c -
- "$tool" create -y --no-rc -p "$job/cantera" -c cantera -c conda-forge 'libcantera-devel=2.6.0' 'python=3.10' 'cantera=2.6.0' > "$job/dependencies.log" 2>&1
+ "$tool" create -y --offline --no-rc -p "$job/cantera" -f "$root/cache/solver-comparison/dependencies-explicit.txt" > "$job/dependencies.log" 2>&1
  "$tool" list --no-rc -p "$job/cantera" --explicit > "$job/environment-explicit.txt"
  mkdir "$job/deepflame"
  tar -xzf "$root/cache/solver-comparison/deepflame-7cb3294.tar.gz" -C "$job/deepflame"

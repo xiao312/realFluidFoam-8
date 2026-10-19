@@ -83,6 +83,8 @@ functions
     }
 }
 '''
+    if family == 'stock':
+        text = text.replace('type uniform;', 'type lineUniform;')
     write('system/controlDict', text)
     plan['input_sha256'] = {str(p.relative_to(case)): hashlib.sha256(p.read_bytes()).hexdigest()
                             for sub in ['0', 'constant', 'system']
