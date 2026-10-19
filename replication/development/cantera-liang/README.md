@@ -227,3 +227,11 @@ read-only. The apply path verifies the energy binary hash, rejects existing
 output, and records profile/input hashes, flux range, endpoint difference and
 diffusive mass-flux closure. This is a reconstructed face flux, not the exact
 discrete Flow1D residual. Compare identical models across refinement levels.
+
+`takahashi-high-t` is a diagnostic that removes only the reduced-temperature
+upper clamp at 5, retaining the lower clamp at 1 and requiring both
+`bounded-takahashi` and `takahashi-table2`. This tests an implementation detail
+not specified by Liang. Takahashi's fitted data mostly cover Tr=0.95–5; using
+the correlation above that range is extrapolation, not an accepted correction.
+The frozen-state probe reports H2, OH and CH4 diffusivities with and without
+this upper clamp before any flame comparison. All other models remain fixed.

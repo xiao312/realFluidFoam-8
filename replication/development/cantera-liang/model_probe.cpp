@@ -79,7 +79,7 @@ try {
     }
     if(rows.empty())throw std::runtime_error("Empty profile");
     std::ofstream out(argv[3]);out<<std::setprecision(16)
-        <<"target_T,T,p_atm,rho_ideal,rho_srk,h_ideal,h_srk,lambda_mix_ideal,lambda_mix_srk,lambda_EH_molar,lambda_EH_mass,D_CH4_base,D_CH4_Taka,D_OH_base,D_OH_Taka,min_D_Taka,rate_L1_srk_over_ideal,concentration_srk_over_ideal,lambda_dense_increment,D_OH_bounded,min_D_bounded,pressure_rate_relative_error\n";
+        <<"target_T,T,p_atm,rho_ideal,rho_srk,h_ideal,h_srk,lambda_mix_ideal,lambda_mix_srk,lambda_EH_molar,lambda_EH_mass,D_CH4_base,D_CH4_Taka,D_OH_base,D_OH_Taka,min_D_Taka,rate_L1_srk_over_ideal,concentration_srk_over_ideal,lambda_dense_increment,D_OH_bounded,min_D_bounded,pressure_rate_relative_error,D_H2_table2,D_H2_highT,D_OH_table2,D_OH_highT,D_CH4_table2,D_CH4_highT\n";
     std::ofstream pairs(std::string(argv[3])+".pairs.csv");pairs<<std::setprecision(16)
         <<"target_T,T,p_atm,partner,X_OH,X_partner,Tr,Pr,pair_factor,denominator_share\n";
     for(double target:{298.,400.,600.,900.,1200.,1500.,1800.,2100.,2400.}) {
@@ -109,12 +109,19 @@ try {
             for(size_t k=0;k<53;k++)rateError+=std::abs(pressureRates[k]-w0[k]);
             rateError/=std::max(1e-100,l0);
             if(rateError>1e-8 || physicalDensity!=pressureGas->density())throw std::runtime_error("Pressure chemistry parity failed");
-            auto ch4=gas->speciesIndex("CH4"),oh=gas->speciesIndex("OH");
+            std::vector<double> primary(53),high(53);
+            transport->boundedTakahashi=true;transport->table2=true;
+            transport->getMixDiffCoeffs(primary.data());transport->highTemperature=true;
+            transport->getMixDiffCoeffs(high.data());
+            transport->boundedTakahashi=false;transport->table2=false;transport->highTemperature=false;
+            for(auto d:high)if(!(d>0 && std::isfinite(d)))throw std::runtime_error("High-temperature extrapolation invalid");
+            auto ch4=gas->speciesIndex("CH4"),oh=gas->speciesIndex("OH"),h2=gas->speciesIndex("H2");
             out<<target<<','<<T<<','<<atm<<','<<ideal->thermo()->density()<<','<<gas->density()<<','
                <<ideal->thermo()->enthalpy_mass()<<','<<gas->enthalpy_mass()<<','<<ideal->transport()->thermalConductivity()<<','<<base<<','<<eh<<','<<shortcut<<','
                <<d0[ch4]<<','<<d1[ch4]<<','<<d0[oh]<<','<<d1[oh]<<','<<*std::min_element(d1.begin(),d1.end())<<','
                <<(l0>0?l1/l0:0)<<','<<gas->molarDensity()/ideal->thermo()->molarDensity()<<','<<dense<<','
-               <<bounded[oh]<<','<<*std::min_element(bounded.begin(),bounded.end())<<','<<rateError<<'\n';
+               <<bounded[oh]<<','<<*std::min_element(bounded.begin(),bounded.end())<<','<<rateError<<','
+               <<primary[h2]<<','<<high[h2]<<','<<primary[oh]<<','<<high[oh]<<','<<primary[ch4]<<','<<high[ch4]<<'\n';
         }
     }
     std::cout<<"Frozen-state probe completed\n";
