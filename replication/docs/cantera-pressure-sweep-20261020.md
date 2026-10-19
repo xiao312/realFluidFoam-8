@@ -58,8 +58,13 @@ Source/build 8a0c8d0/124940280 passed on SCNet. Case 5 correction pilots:
 
 The correction gives 7.049275 cm/s at phi=1.10 and 5.762399 cm/s at phi=1.40,
 slightly higher than the corresponding legacy values 7.036205 and 5.754747.
-Ten corrected-table sweep conditions have completed; phi=0.92, 0.95 and 1.00
-are still running at this snapshot. Smooth-alpha pilots reduce those two
+Twelve corrected-table sweep conditions have completed as of 03:32 CST;
+only phi=1.00 remains running. The completed lean values are 5.63654545 cm/s
+at phi=0.92 (124942489) and 6.00985335 at phi=0.95 (124942493).
+Independent Case 4 guesses give 5.63650031 and 6.00977336, respectively,
+differences below 0.000081 cm/s. An additional phi=1.00 trial124954912 uses
+the completed phi=1.02 Case 5 profile only as a steady numerical guess.
+Smooth-alpha pilots reduce the phi=1.10 and 1.40
 completed values to 7.018570 and 5.733852, respectively. They do not close the
 rich-end gap. The full retained pressure sweep
 uses cf40834/build124937336. Added phi=1.02 conditions use a10cd1b/build124938314.
@@ -123,3 +128,11 @@ Case 5, phi=1.40). Within each pair, only the diffusion enthalpy choice differs.
 The partial-molar total-enthalpy case also controls for changing the discretized
 energy equation. Ideal parity, refinement and total-flux balance must pass
 before interpreting these pilots.
+
+The ideal pair completed with byte-identical saved profiles and speeds
+7.45755238 cm/s. This is 0.03833% above the stock fine-grid ideal control
+(7.45469524); the last refinement changes speed by 0.12175%. Audit124953754
+finds an upwind total-flux range of 2806.89 W/m2, 0.02156% of peak conduction,
+for both definitions. Their pure-minus-partial flux difference is exactly zero.
+These are numerical controls, not a nonideal replication result. The four
+nonideal total-enthalpy pilots remain running at this snapshot.
