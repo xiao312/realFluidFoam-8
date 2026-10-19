@@ -39,8 +39,11 @@ inputs_in=/work/${inputs#"$root/"}
 apptainer exec --cleanenv --containall --underlay --no-eval --no-mount cwd,hostfs,bind-paths \
  --home "$job/home:/home/foam" --bind "$root:/work" --bind "$job/tmp:/tmp" \
  --workdir "$job/apptainer" --pwd "$job_in" "$image" /bin/bash -c '
- set -eo pipefail
+ # OpenFOAM initialization probes optional shell tools and is not errexit-safe.
  . /opt/openfoam8/etc/bashrc
+ set -euo pipefail
+ test "$WM_PROJECT_VERSION" = 8
+ test -f "$FOAM_LIBBIN/libOpenFOAM.so"
  export LD_LIBRARY_PATH="$1/lib:$LD_LIBRARY_PATH" CANTERA_DATA="$1/share/cantera/data"
  export LD_PRELOAD="$FOAM_LIBBIN/libOpenFOAM.so"
  ./bridge-probe "$2/librfcantera.so" "$3" 3 pressure-chemistry,smoothed-alpha /work/jobs/124939652/result/profile.csv
