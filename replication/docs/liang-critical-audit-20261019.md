@@ -1,5 +1,9 @@
 # Liang Figure 2: critical-point audit
 
+Owner decision, 19 October 2026: defer this discrepancy and return to the
+flame-speed campaign. Preserve the failed comparison and audit; do not fit
+physical coefficients to force agreement. This is not scientific acceptance.
+
 19 October 2026. This audit narrows the disagreement but does not reproduce
 Liang's Figure 2. No reacting solver, library coefficient, or running job changed.
 
