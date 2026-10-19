@@ -1,0 +1,126 @@
+{
+  "captured_at": "2026-10-19T09:58:50.214175+08:00",
+  "source_revision": "a6d35b7c721728b8694aa05845773a28984056ac",
+  "library_build": "124657926",
+  "jobs": {
+    "124862114": {
+      "key": "phi110-dt100",
+      "mode": "smoke",
+      "endpoint-check.json": {
+        "time_s": 1e-09,
+        "cells": 8000,
+        "species_sum_error": 9.741096818061123e-13,
+        "fields": {
+          "T": {
+            "min": 298.0,
+            "max": 1799.97683739
+          },
+          "p": {
+            "min": 10132500.0,
+            "max": 10132500.9888
+          },
+          "rho": {
+            "min": 18.3292945073,
+            "max": 112.799848885
+          },
+          "CH4": {
+            "min": 0.0603505653525,
+            "max": 0.0603507267891
+          },
+          "OH": {
+            "min": 2.35054574533e-56,
+            "max": 4.77454550459e-09
+          }
+        },
+        "diagnostic_rows": 120,
+        "valid_rows": 0,
+        "status": "finite normalized endpoint; flame convergence not established",
+        "compared_fields": 1352,
+        "mismatches": []
+      },
+      "validation-inputs.txt": "source=a6d35b7c721728b8694aa05845773a28984056ac\nbuild_job=124657926\nstage=paper-premixed-phi110-dt100-smoke\n",
+      "solver-product.sha256": "687a2f1494346bdfe9e64f52fdc1fd8cf6569dd9528538850e5401d3d13b6d8a  /work/jobs/124862114/openfoam-user/platforms/linux64GccDPInt32Opt/bin/rfPaperReactingFoam\n",
+      "sampling-test.txt": "PASS: mirrored fronts, interpolation, diffusion sign, missing level, signed speed\n",
+      "history": {
+        "rows": 120,
+        "valid_rows": 0,
+        "last_time_s": 9.999999999999999e-10,
+        "sha256": "4ad6b691642b089003666a67776cc9edcca4b95f9727a017463b22261f9cdd15"
+      }
+    },
+    "124862348": {
+      "key": "phi110-dt050",
+      "mode": "smoke",
+      "endpoint-check.json": {
+        "time_s": 1e-09,
+        "cells": 8000,
+        "species_sum_error": 9.741096818061123e-13,
+        "fields": {
+          "T": {
+            "min": 298.0,
+            "max": 1799.97683739
+          },
+          "p": {
+            "min": 10132500.0,
+            "max": 10132500.9888
+          },
+          "rho": {
+            "min": 18.3292945073,
+            "max": 112.799848885
+          },
+          "CH4": {
+            "min": 0.0603505653525,
+            "max": 0.0603507267891
+          },
+          "OH": {
+            "min": 2.35054574533e-56,
+            "max": 4.77454550459e-09
+          }
+        },
+        "diagnostic_rows": 120,
+        "valid_rows": 0,
+        "status": "finite normalized endpoint; flame convergence not established",
+        "compared_fields": 1352,
+        "mismatches": []
+      },
+      "validation-inputs.txt": "source=a6d35b7c721728b8694aa05845773a28984056ac\nbuild_job=124657926\nstage=paper-premixed-phi110-dt050-smoke\n",
+      "solver-product.sha256": "687a2f1494346bdfe9e64f52fdc1fd8cf6569dd9528538850e5401d3d13b6d8a  /work/jobs/124862348/openfoam-user/platforms/linux64GccDPInt32Opt/bin/rfPaperReactingFoam\n",
+      "sampling-test.txt": "PASS: mirrored fronts, interpolation, diffusion sign, missing level, signed speed\n",
+      "history": {
+        "rows": 120,
+        "valid_rows": 0,
+        "last_time_s": 9.999999999999999e-10,
+        "sha256": "4ad6b691642b089003666a67776cc9edcca4b95f9727a017463b22261f9cdd15"
+      }
+    },
+    "124862517": {
+      "key": "phi110-dt100",
+      "mode": "full",
+      "validation-inputs.txt": "source=a6d35b7c721728b8694aa05845773a28984056ac\nbuild_job=124657926\nstage=paper-premixed-phi110-dt100-full\n",
+      "solver-product.sha256": "687a2f1494346bdfe9e64f52fdc1fd8cf6569dd9528538850e5401d3d13b6d8a  /work/jobs/124862517/openfoam-user/platforms/linux64GccDPInt32Opt/bin/rfPaperReactingFoam\n",
+      "sampling-test.txt": "PASS: mirrored fronts, interpolation, diffusion sign, missing level, signed speed\n",
+      "history": {
+        "rows": 72,
+        "valid_rows": 20,
+        "last_time_s": 2.3577498717233454e-06,
+        "sha256": "c85419ea87d814ab8b9a27f405e24705008abbd3f82dfba51baad2be011146c0"
+      }
+    },
+    "124863132": {
+      "key": "phi110-dt050",
+      "mode": "full",
+      "validation-inputs.txt": "source=a6d35b7c721728b8694aa05845773a28984056ac\nbuild_job=124657926\nstage=paper-premixed-phi110-dt050-full\n",
+      "sampling-test.txt": "PASS: mirrored fronts, interpolation, diffusion sign, missing level, signed speed\n",
+      "solver-product.sha256": "687a2f1494346bdfe9e64f52fdc1fd8cf6569dd9528538850e5401d3d13b6d8a  /work/jobs/124863132/openfoam-user/platforms/linux64GccDPInt32Opt/bin/rfPaperReactingFoam\n"
+    }
+  },
+  "scheduler": "JobID|State|Elapsed|ExitCode\n124862114|COMPLETED|00:03:16|0:0\n124862114.batch|COMPLETED|00:03:16|0:0\n124862114.extern|COMPLETED|00:03:37|0:0\n124862348|COMPLETED|00:03:24|0:0\n124862348.batch|COMPLETED|00:03:24|0:0\n124862348.extern|COMPLETED|00:03:25|0:0\n124862517|RUNNING|00:05:17|0:0\n124862517.batch|RUNNING|00:05:17|0:0\n124862517.extern|RUNNING|00:05:17|0:0\n124863132|RUNNING|00:01:21|0:0\n124863132.batch|RUNNING|00:01:21|0:0\n124863132.extern|RUNNING|00:01:21|0:0\n",
+  "production_snapshot_scheduler": "JobID|State|Elapsed|ExitCode\n124862114|COMPLETED|00:03:16|0:0\n124862114.batch|COMPLETED|00:03:16|0:0\n124862114.extern|COMPLETED|00:03:37|0:0\n124862348|COMPLETED|00:03:24|0:0\n124862348.batch|COMPLETED|00:03:24|0:0\n124862348.extern|COMPLETED|00:03:25|0:0\n124862517|RUNNING|00:07:56|0:0\n124862517.batch|RUNNING|00:07:56|0:0\n124862517.extern|RUNNING|00:07:56|0:0\n124863132|RUNNING|00:04:00|0:0\n124863132.batch|RUNNING|00:04:00|0:0\n124863132.extern|RUNNING|00:04:00|0:0\n",
+  "plotted_history": {
+    "job": "124862517",
+    "last_time_s": 2.5589897957999145e-06,
+    "sha256": "f3fc5a134187be26580d862f11c1ba0c568edf8e3dfe25d24fd89005edd28d02",
+    "rows": 84,
+    "valid_rows": 32
+  }
+}

@@ -35,13 +35,17 @@ def plot(csv_path,output,job):
     rows=load(csv_path);output.mkdir(parents=True,exist_ok=False)
     plt.rcParams.update({"font.family":"serif","font.size":9,"axes.linewidth":.7,
                          "lines.linewidth":1.1,"savefig.dpi":220})
-    fig,axes=plt.subplots(1,2,figsize=(9,4.2))
+    end_us=max(float(r["time_s"]) for r in rows)*1e6
+    fig,axes=plt.subplots(1,2,figsize=(9,4.2),sharey=True)
     for ax,(stage,title) in zip(axes,STAGES.items()):
         for level,color in COLORS.items():
             for side,style in [("left","-"),("right","--")]:
                 t,speed=series(rows,stage,side,level,"speed_m_s",100.)
-                ax.plot(t,speed,color=color,ls=style,label=f"{side}, OH={level:.0e}")
+                ax.plot(t,speed,color=color,ls=style,marker="o" if side=="left" else "x",
+                        markersize=2.5,label=f"{side}, OH={level:.0e}")
         ax.set(title=title,xlabel="Time (µs)",ylabel="Density-weighted displacement speed (cm/s)")
+        ax.set_xlim(0,end_us*1.02)
+        ax.tick_params(labelleft=True)
         ax.set_yscale("symlog",linthresh=10)
         ax.axhline(0,color="0.65",lw=.6)
         ax.axhline(6.8,color="black",ls=":",lw=.8,label="Nguyen ≈6.8 cm/s (digitized)")
@@ -55,13 +59,16 @@ def plot(csv_path,output,job):
     fig.subplots_adjust(top=.82,bottom=.29,wspace=.3)
     for ext in ["png","pdf","svg"]:fig.savefig(output/("flame-speed-history."+ext))
     plt.close(fig)
-    fig,axes=plt.subplots(1,2,figsize=(9,3.8))
+    fig,axes=plt.subplots(1,2,figsize=(9,3.8),sharey=True)
     for ax,(stage,title) in zip(axes,STAGES.items()):
         for side,style in [("left","-"),("right","--")]:
             for field,color,label in [("chemistry_m_s","#b66118","chemistry"),("diffusion_m_s","#1767a0","diffusion"),("speed_m_s","#303030","sum")]:
                 t,y=series(rows,stage,side,2e-5,field,100.)
-                ax.plot(t,y,color=color,ls=style,label=f"{side}: {label}")
+                ax.plot(t,y,color=color,ls=style,marker="o" if side=="left" else "x",
+                        markersize=2.5,label=f"{side}: {label}")
         ax.set(title=title,xlabel="Time (µs)",ylabel="Contribution at OH=2e-5 (cm/s)")
+        ax.set_xlim(0,end_us*1.02)
+        ax.tick_params(labelleft=True)
         ax.set_yscale("symlog",linthresh=10);ax.axhline(0,color=".65",lw=.6);ax.grid(alpha=.15)
     handles,labels=axes[0].get_legend_handles_labels()
     fig.legend(handles,labels,loc="lower center",ncol=3,frameon=False,fontsize=8)

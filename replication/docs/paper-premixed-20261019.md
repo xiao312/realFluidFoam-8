@@ -80,3 +80,38 @@ Judge improvement using both-front consistency, stage/level sensitivity, travell
 profile evolution and comparison with the previous inlet case at comparable
 relaxation. Do not infer successful replication from proximity of one sample
 to Nguyen's approximately 6.8-cm/s digitized point.
+
+## Launched jobs and first history
+
+Both startup checks passed on 19 October: 124862114 (dt100 configuration) and
+124862348 (dt050). Each compared 1,352 numerical field bodies with diagnostics
+enabled/disabled and found no mismatches. Both passed manufactured sampling,
+build/link, mesh and finite normalized endpoint checks. The 1-ns endpoint has
+no OH contour above 1e-5; invalid samples correctly retain that status.
+
+Production jobs 124862517 (maximum dt=1e-7 s) and 124863132 (5e-8 s) are running.
+Their runnable source is a6d35b7, regardless of later analysis commits.
+[Job evidence](paper-premixed-jobs-20261019.json) records source, binary hashes,
+qualification results and the initial scheduler snapshot. Status is dated
+evidence, not a live scheduler view.
+
+The first plotted snapshot from 124862517 reaches 2.55899 microseconds: 84 rows
+across both stages/fronts/levels, including 32 valid contour samples. CSV SHA-256:
+`f3fc5a134187be26580d862f11c1ba0c568edf8e3dfe25d24fd89005edd28d02`.
+Left/right curves nearly overlap. Large stage/level differences during this hot
+kernel transient prevent interpreting the samples as a laminar burning speed.
+There is no established improvement relative to the completed inlet case yet.
+
+The existing Lark flame-speed section contains the first history and signed
+contribution plot, with legends and an attached PDF. The history has a shared
+symmetric-log speed axis, explicitly linear within +/-10 cm/s, and the full
+recorded time extent including the period without valid contours. Markers keep
+isolated samples visible. This diagnostic is not a replica of a paper time
+history (none is supplied); Figure 12 retains the labelled inlet sweep.
+
+At the next status check, job 124862517 reached 2.77554 microseconds and the
+Courant controller reduced dt to 2.64 ns during ignition (peak T about 2851 K).
+Thus the two maximum-dt settings alone are not a guaranteed twofold temporal
+refinement: actual dt histories must be compared, and a maxCo refinement may
+be required once the ignition response is understood. Do not extrapolate an
+end time from the first few microseconds or call the cap comparison converged.
