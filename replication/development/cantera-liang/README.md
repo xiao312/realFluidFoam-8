@@ -71,3 +71,26 @@ Run this input separately to test initial-guess dependence; retain both results.
 original panel's physical size, typography and graphics. Its JSON input has a
 `results` list with stage, phi and speed_cm_s. It plots only completed points.
 The added-data legend identifies all five stages; pending stages remain labelled.
+The phi=1.44 endpoint lies outside the printed axes and is retained in the manifest.
+
+`converged_guess.py plan|apply BASE_INPUTS SOLVED_PROFILE OUTPUT` converts this
+module's completed profile into another steady numerical guess. It copies the
+same mechanism and species table and records hashes of the source profile and
+inputs. It does not restart a transient simulation or alter OpenFOAM fields.
+Use it for model continuation, retaining the independent ideal-seeded solve.
+Verification: the plan must report 53 species and the same inlet composition;
+the subsequent solve must pass `check.py` and be compared with independent seeds.
+
+`python collect.py ROOT LEDGER.jsonl` reads scheduler state and completed outputs
+without modifying jobs. JSON on stdout contains every job and only numerically
+screened points in `results`, ready for `plot.py`. Failed screens retain the
+diagnostic text. Run from a contained control directory with Python 3.8+ and
+Slurm's `sacct`; the ledger and all referenced jobs must resolve below ROOT.
+
+`sweep.py plan|apply ROOT RELEASE SDK BUILD INPUTS LEDGER STAGE PILOT` submits
+the 12 prepared points only after PILOT passes `check.py`. Plan is read-only and
+can run while the pilot is unfinished. Apply locks the ledger, skips already
+recorded stage/phi pairs, records each successful submission immediately, and
+fails if submission output is ambiguous. On Linux it uses `fcntl` and Slurm.
+It may run in a short scheduler job with `afterok:PILOT` dependency; failed
+qualification prevents submission. No automatic extension of flame jobs occurs.

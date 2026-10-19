@@ -1,7 +1,10 @@
 # Cantera extension for Liang Figure 8(a)
 
-19 October 2026. Status: source audit completed; extension strategy proposed,
-not yet compiled or scientifically qualified by this audit. The owner's latest
+19 October 2026. Status: adapters compiled and executed in FreeFlame. Cases 1–4
+have passed numerical screening at phi=1.10; Case 5 qualification is running.
+See the [implementation results](cantera-liang-results-20261019.md) for job and
+source identities. This audit explains the design, not scientific acceptance.
+The owner's latest
 instruction supersedes the earlier restriction to ideal-gas Cantera calculations.
 The target is all five cumulative model cases, with GRI30 held fixed.
 
@@ -12,8 +15,8 @@ thermodynamic and transport classes and run the existing freely propagating flam
 solver. A complete Cantera or Python-binding rebuild is not required by the API.
 `Factory<T>::reg` is public, and both `ThermoFactory` and `TransportFactory`
 inherit that interface. Registration must happen before `newSolution` loads the
-phase. This is a source-supported implementation route, not a completed binary
-compatibility test. See [FactoryBase.h](https://github.com/Cantera/cantera/blob/v3.2.0/include/cantera/base/FactoryBase.h),
+phase. The subsequent C++ SDK builds and flame runs verified this route.
+See [FactoryBase.h](https://github.com/Cantera/cantera/blob/v3.2.0/include/cantera/base/FactoryBase.h),
 [ThermoFactory.h](https://github.com/Cantera/cantera/blob/v3.2.0/include/cantera/thermo/ThermoFactory.h)
 and [TransportFactory.h](https://github.com/Cantera/cantera/blob/v3.2.0/include/cantera/transport/TransportFactory.h).
 
