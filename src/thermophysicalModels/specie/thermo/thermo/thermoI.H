@@ -130,11 +130,9 @@ inline Foam::scalar Foam::species::thermo<Thermo, Type>::T
         if (iter > maxIter_){break;}
     } while (mag(Tnew - Test) > Ttol);
 
-    if (mag(Tnew - Test) < Ttol)
-    {
-       Tnew = Test;
-    }
-    else
+    // Retain the converged Newton update. Returning Test discards small
+    // energy increments when the first update is below the tolerance.
+    if (mag(Tnew - Test) > Ttol)
     {
        // Nam, using Bisection method
         // Info << "   Warning!!! Newton method failed, Max. # of iterations exceeded " << maxIter_ << endl;

@@ -10,6 +10,16 @@ solver build's headers/libraries through `LIB_rfFoam8_SRC` and `FOAM_USER_LIBBIN
 The validation runner sets those paths and compiles the utility in its own job.
 No credentials or network access are required. Outputs stay in that job's case.
 
+`rfPropertyProbe -case CASE -small-increments` tests the loaded library's
+enthalpy-to-temperature conversion at 1 and 100 atm. It uses nine temperatures
+from 300 to 2800 K and eight signed temperature increments from 0.001 to 1 K.
+It creates each target enthalpy with the same library, restores the starting
+temperature, and calls `thermo.correct()`. The CSV records target and recovered
+temperatures, requested and recovered enthalpy, and errors. Each absolute
+temperature error must be at most 0.00001 K. Exit 3 records criterion failures.
+This regression detects discarded Newton updates; it does not validate an EOS
+against experimental data. Compile and run against each isolated library build.
+
 Example after loading the isolated build environment: `wmake` then
 `rfPropertyProbe -case CASE`. Expected result: 225 data rows, all positive/finite
 bulk properties. The declared inversion criterion remains relative error below

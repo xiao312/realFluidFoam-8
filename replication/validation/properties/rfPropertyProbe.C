@@ -10,11 +10,45 @@ int main(int argc, char *argv[])
 {
     argList::addBoolOption("initial", "Write initial boundary densities without a sweep");
     argList::addBoolOption("nitrogen", "2025 Figure 6: 3.98 MPa, 100 to 325 K, step 0.25 K");
+    argList::addBoolOption("small-increments", "Check signed sub-tolerance enthalpy updates");
     #include "setRootCase.H"
     #include "createTime.H"
     #include "createMesh.H"
     autoPtr<psiReactionThermo> model(psiReactionThermo::New(mesh));
     psiReactionThermo& thermo = model();
+    if (args.optionFound("small-increments"))
+    {
+        std::ofstream increments((runTime.path()/"inversion-increments.csv").c_str());
+        increments << std::setprecision(16)
+            << "p_atm,T_start_K,delta_T_K,T_target_K,T_recovered_K,error_K,he_target_J_kg,he_recovered_J_kg\n";
+        label failures = 0;
+        for (const scalar pressure : {scalar(1), scalar(100)})
+        for (const scalar start : {scalar(300), scalar(500), scalar(800),
+                 scalar(990), scalar(1010), scalar(1200), scalar(1500),
+                 scalar(2000), scalar(2800)})
+        for (const scalar delta : {scalar(-1), scalar(-0.1), scalar(-0.01),
+                 scalar(-0.001), scalar(0.001), scalar(0.01), scalar(0.1), scalar(1)})
+        {
+            thermo.p() = dimensionedScalar("p", dimPressure, pressure*101325.0);
+            thermo.T() = dimensionedScalar("T", dimTemperature, start + delta);
+            thermo.he() = thermo.he(thermo.p(), thermo.T());
+            const scalar targetHe = thermo.he()[0];
+            thermo.T().primitiveFieldRef() = start;
+            thermo.correct();
+            const scalar recovered = thermo.T()[0];
+            const scalar recoveredHe = thermo.he(thermo.p(), thermo.T())()[0];
+            const scalar error = recovered - (start + delta);
+            if (!std::isfinite(recovered + recoveredHe) || mag(error) > 1e-5)
+                ++failures;
+            increments << pressure << ',' << start << ',' << delta << ','
+                << start + delta << ',' << recovered << ',' << error << ','
+                << targetHe << ',' << recoveredHe << '\n';
+        }
+        increments.close();
+        if (!increments) return 1;
+        Info << "Small-increment inversion failures: " << failures << "/144" << nl;
+        return failures ? 3 : 0;
+    }
     if (args.optionFound("initial"))
     {
         tmp<volScalarField> density = thermo.rho();
