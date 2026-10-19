@@ -1,4 +1,4 @@
-"""Review surfaces keep scientific status and added-data keys outside paper frames."""
+"""Review surfaces retain scientific status and explicit keys inside computed images."""
 from html import escape
 from PIL import Image, ImageDraw
 from reportlab.pdfgen import canvas
@@ -42,7 +42,7 @@ def build(inventory, config, metrics, output):
         else: paragraph("No computed comparison. Reference retained for scope and implementation context.",650,500,450)
         paragraph("Original paper and caption",30,185,550)
         picture(output/"captions"/(key+".png"),30,65,550,100)
-        paragraph("Computed data on the exact source frame. Original legends identify original data; the added-data key is above. Figure dimensions are preserved in the individual PNG/SVG files.",610,180,540)
+        paragraph("Computed data on the exact source frame. Original legends identify original data; our added-data key is inside each computed image. Figure dimensions are preserved in the individual PNG/SVG files.",610,180,540)
         paragraph("Interim data and failed checks remain explicit. Figure styling does not establish replication acceptance. See provenance.json and data/metrics.json for source identities and numerical evidence.",610,110,540)
         pdf.showPage()
     pdf.save()

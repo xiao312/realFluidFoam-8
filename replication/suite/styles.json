@@ -96,7 +96,16 @@
           }
         }
       },
-      "source_sha256": "716602f37f6b27f62791986770788e450225bc688686c54049849ecfe8414a60"
+      "source_sha256": "716602f37f6b27f62791986770788e450225bc688686c54049849ecfe8414a60",
+      "legend": [
+        {
+          "x": 350,
+          "y": 56,
+          "label": "Our SRK (all pressures)",
+          "color": "#165bbb",
+          "marker": "^"
+        }
+      ]
     },
     "2022-fig09": {
       "measurement": "PDF vector frame / major-tick calibration; reference inset retained without new data",
@@ -239,7 +248,51 @@
           }
         }
       },
-      "source_sha256": "716602f37f6b27f62791986770788e450225bc688686c54049849ecfe8414a60"
+      "source_sha256": "716602f37f6b27f62791986770788e450225bc688686c54049849ecfe8414a60",
+      "legend": [
+        {
+          "x": 170,
+          "y": 55,
+          "label": "Our T / properties",
+          "color": "#165bbb",
+          "marker": null
+        },
+        {
+          "x": 270,
+          "y": 55,
+          "label": "Our CH4",
+          "color": "#333333",
+          "marker": null
+        },
+        {
+          "x": 315,
+          "y": 55,
+          "label": "O2",
+          "color": "#0080ff",
+          "marker": null
+        },
+        {
+          "x": 345,
+          "y": 55,
+          "label": "CO2",
+          "color": "#00bcbc",
+          "marker": null
+        },
+        {
+          "x": 380,
+          "y": 55,
+          "label": "H2O",
+          "color": "#00ba00",
+          "marker": null
+        },
+        {
+          "x": 415,
+          "y": 55,
+          "label": "OH",
+          "color": "#ff00bc",
+          "marker": null
+        }
+      ]
     },
     "2022-fig10": {
       "measurement": "PDF vector frame / major-tick calibration; reference inset retained without new data",
@@ -382,7 +435,51 @@
           }
         }
       },
-      "source_sha256": "716602f37f6b27f62791986770788e450225bc688686c54049849ecfe8414a60"
+      "source_sha256": "716602f37f6b27f62791986770788e450225bc688686c54049849ecfe8414a60",
+      "legend": [
+        {
+          "x": 170,
+          "y": 422,
+          "label": "Our T / properties",
+          "color": "#165bbb",
+          "marker": null
+        },
+        {
+          "x": 270,
+          "y": 422,
+          "label": "Our CH4",
+          "color": "#333333",
+          "marker": null
+        },
+        {
+          "x": 315,
+          "y": 422,
+          "label": "O2",
+          "color": "#0080ff",
+          "marker": null
+        },
+        {
+          "x": 345,
+          "y": 422,
+          "label": "CO2",
+          "color": "#00bcbc",
+          "marker": null
+        },
+        {
+          "x": 380,
+          "y": 422,
+          "label": "H2O",
+          "color": "#00ba00",
+          "marker": null
+        },
+        {
+          "x": 415,
+          "y": 422,
+          "label": "OH",
+          "color": "#ff00bc",
+          "marker": null
+        }
+      ]
     },
     "2022-fig11": {
       "measurement": "PDF vector frames / major ticks",
@@ -458,7 +555,44 @@
           }
         }
       },
-      "source_sha256": "716602f37f6b27f62791986770788e450225bc688686c54049849ecfe8414a60"
+      "source_sha256": "716602f37f6b27f62791986770788e450225bc688686c54049849ecfe8414a60",
+      "legend": [
+        {
+          "x": 82,
+          "y": 56,
+          "label": "Our T / rho",
+          "color": "#165bbb",
+          "marker": null
+        },
+        {
+          "x": 142,
+          "y": 56,
+          "label": "CH4",
+          "color": "#333333",
+          "marker": null
+        },
+        {
+          "x": 176,
+          "y": 56,
+          "label": "O2",
+          "color": "#0080ff",
+          "marker": null
+        },
+        {
+          "x": 205,
+          "y": 56,
+          "label": "CO2",
+          "color": "#00bcbc",
+          "marker": null
+        },
+        {
+          "x": 240,
+          "y": 56,
+          "label": "H2O",
+          "color": "#00ba00",
+          "marker": null
+        }
+      ]
     },
     "2022-fig12": {
       "measurement": "PDF vector frame 533; original square side approximately 3.7 pt",
@@ -488,7 +622,23 @@
           }
         }
       },
-      "source_sha256": "716602f37f6b27f62791986770788e450225bc688686c54049849ecfe8414a60"
+      "source_sha256": "716602f37f6b27f62791986770788e450225bc688686c54049849ecfe8414a60",
+      "legend": [
+        {
+          "x": 375,
+          "y": 155,
+          "label": "Our OH: job 124780751",
+          "color": "#165bbb",
+          "marker": "s"
+        },
+        {
+          "x": 375,
+          "y": 165,
+          "label": "Our OH: job 124780755",
+          "color": "#d47b00",
+          "marker": "s"
+        }
+      ]
     },
     "2025-fig06": {
       "measurement": "Embedded 1285x997 image; frame edges measured to +/-1 source pixel (0.24 pt); c/d bounds use major-tick calibration",
@@ -584,7 +734,23 @@
           }
         }
       },
-      "source_sha256": "723f59ebb2b530513115f1a5ab0f1e4202d99ec0febee9f5b796002fb3ae3d78"
+      "source_sha256": "723f59ebb2b530513115f1a5ab0f1e4202d99ec0febee9f5b796002fb3ae3d78",
+      "legend": [
+        {
+          "x": 335,
+          "y": 322,
+          "label": "Our PR",
+          "color": "#165bbb",
+          "marker": "o"
+        },
+        {
+          "x": 335,
+          "y": 334,
+          "label": "Our SRK density",
+          "color": "#009688",
+          "marker": "o"
+        }
+      ]
     },
     "2022-fig08": {
       "measurement": "Embedded 661x1406 image; axes edges +/-1 pixel (0.24 pt); original colourbar retained",
@@ -644,7 +810,16 @@
           ]
         }
       },
-      "source_sha256": "716602f37f6b27f62791986770788e450225bc688686c54049849ecfe8414a60"
+      "source_sha256": "716602f37f6b27f62791986770788e450225bc688686c54049849ecfe8414a60",
+      "legend": [
+        {
+          "x": 111,
+          "y": 54,
+          "label": "Our temperature field / streamlines",
+          "color": "#a1eded",
+          "marker": null
+        }
+      ]
     }
   }
 }

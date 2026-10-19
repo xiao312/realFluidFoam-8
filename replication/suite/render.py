@@ -162,9 +162,32 @@ def standalone(plt, crop, style, layers):
             fields=[k for k,v in panel["y"].items() if v==cal]
             axis.set_ylabel("Mass fraction" if name=="species" else units.get(fields[0],fields[0]))
         ax.text(-.12,1.01,chr(97+index)+")",transform=ax.transAxes,fontweight="bold",fontsize=8)
-        if name in {"species","speed","rho","a","b"}:
+        if name in {"species","rho","a","b"}:
             ax.legend(fontsize=4.8,frameon=False,loc="best",handlelength=2)
     return fig
+
+
+def data_legend(fig, ax, style, crop):
+    """Place explicit data keys in inspected blank space; measure the painted bounds."""
+    from matplotlib.transforms import Bbox
+    artists=[]
+    for entry in style["legend"]:
+        x,y=entry["x"],entry["y"]
+        marker=entry["marker"]
+        line,=ax.plot([x,x+10] if not marker else [x+5], [y,y] if not marker else [y],
+                     color=entry["color"],ls="none" if marker else "-",lw=style["line_width_pt"],
+                     marker=marker,ms=style["marker_size_pt"],mfc="none",mew=.5,zorder=20)
+        label=ax.text(x+13,y,entry["label"],fontsize=5.5,va="center",color="#222222",zorder=20)
+        artists.extend([line,label])
+    fig.canvas.draw()
+    renderer=fig.canvas.get_renderer()
+    bounds=Bbox.union([a.get_window_extent(renderer) for a in artists])
+    (l,b),(r,t)=ax.transData.inverted().transform(bounds.get_points())
+    # Include antialiasing and line caps in the frame-verification exclusion.
+    rect=[float(l-1),float(t-1),float(r+1),float(b+1)]
+    if not (crop[0]<=rect[0]<rect[2]<=crop[2] and crop[1]<=rect[1]<rect[3]<=crop[3]):
+        raise ValueError(f"Legend leaves figure canvas: {rect}, crop {crop}")
+    return rect
 
 
 def render_all(inventory, styles, layers, contours, output, dpi):
@@ -179,6 +202,7 @@ def render_all(inventory, styles, layers, contours, output, dpi):
         fig,ax=canvas(plt,crop)
         clipped=curves(ax,selected,style)
         if key=="2022-fig08": field_layer(fig,style,crop,contours,original)
+        legend_rect=data_legend(fig,ax,style,crop)
         for suffix in ("png","svg"):
             fig.savefig(output/"layers"/(key+"."+suffix),dpi=dpi,transparent=True)
         ax.imshow(original,extent=(crop[0],crop[2],crop[3],crop[1]),zorder=-10,aspect="auto")
@@ -187,6 +211,9 @@ def render_all(inventory, styles, layers, contours, output, dpi):
         plt.close(fig)
         if selected:
             fig=standalone(plt,crop,style,selected)
+            legend_ax=fig.add_axes((0,0,1,1),zorder=99,frameon=False)
+            legend_ax.set(xlim=(crop[0],crop[2]),ylim=(crop[3],crop[1]));legend_ax.set_axis_off()
+            data_legend(fig,legend_ax,style,crop)
             for suffix in ("png","svg"): fig.savefig(output/"standalone"/(key+"."+suffix),dpi=dpi)
             plt.close(fig)
         expected=(round((crop[2]-crop[0])*dpi/72),round((crop[3]-crop[1])*dpi/72))
@@ -195,16 +222,17 @@ def render_all(inventory, styles, layers, contours, output, dpi):
         source_pixels=np.asarray(original.convert("RGB"))
         overlay_pixels=np.asarray(Image.open(output/"overlays"/(key+".png")).convert("RGB"))
         mask=np.ones(source_pixels.shape[:2],dtype=bool)
-        for panel in style["panels"].values():
-            l,t,r,b=panel["rect"]
+        for rect in [p["rect"] for p in style["panels"].values()]+[legend_rect]:
+            l,t,r,b=rect
             x0=int((l-crop[0])*dpi/72)-3;x1=int((r-crop[0])*dpi/72)+4
             y0=int((t-crop[1])*dpi/72)-3;y1=int((b-crop[1])*dpi/72)+4
             mask[y0:y1,x0:x1]=False
         unchanged=float(np.mean(np.all(source_pixels[mask]==overlay_pixels[mask],axis=1)))
-        if unchanged!=1: raise ValueError(f"Original frame changed outside data panels: {key}")
+        if unchanged!=1: raise ValueError(f"Original frame changed outside data panels and legend: {key}")
         records[key]={"size_pt":[crop[2]-crop[0],crop[3]-crop[1]],"pixels":list(actual),"standalone_font":family,
                       "unchanged_frame_pixel_fraction":unchanged,
-                      "frame":"original PDF; published legends label published data only","clipping":clipped,
+                      "legend":style["legend"],"legend_bounds_pt":legend_rect,
+                      "frame":"original PDF outside data panels and added legend; published legends label published data only","clipping":clipped,
                       "overlay_sha256":digest(output/"overlays"/(key+".png"))}
     write_json(output/"data/rendering.json",records)
     return records

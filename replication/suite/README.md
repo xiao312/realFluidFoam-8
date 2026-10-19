@@ -42,10 +42,14 @@ Run `plan`, then `render`. No scheduler submission occurs in either command.
 The original PDF supplies the exact figure frame, labels, fonts, ticks, annotations and reference data.
 New data are mapped through physical axis limits; no fitted coordinate shifts or value scaling are allowed.
 The renderer uses the original crop dimensions, without tight-layout or automatic bounding-box changes.
-Transparent PNG/SVG layers contain only computed data. Overlays retain the original published curves.
+Transparent PNG/SVG layers contain computed data and an explicit in-image legend. Overlays retain the original published curves.
 Standalone plots use the same panel geometry and physical size, with explicit computed-data labels.
 
-Original legend labels describe original data only. The gallery supplies the added-data key and run status.
+Original legend labels describe original data only. Every computed image includes a separate
+legend for our markers, lines or fields. The gallery also supplies run status.
+Legend positions are recorded in PDF points in `styles.json`; measured legend bounds
+are excluded from the original-frame pixel comparison, alongside data panels.
+The renderer checks that each legend remains inside the unchanged figure canvas.
 Counterflow additions use solid lines, keeping species colours. Property additions use open blue markers.
 Figure 8 replaces only the field interiors, with the original axes and colour bars retained.
 Streamlines are interpolated for display; temperature uses the actual nonuniform mesh edges.
