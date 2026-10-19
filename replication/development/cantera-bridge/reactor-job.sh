@@ -9,6 +9,7 @@ done
 job=$root/jobs/$SLURM_JOB_ID
 mkdir -p "$job"/{home,tmp,cache}
 export HOME=$job/home TMPDIR=$job/tmp XDG_CACHE_HOME=$job/cache OMP_NUM_THREADS=1
+export OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1
 export LD_LIBRARY_PATH="$sdk/lib:${LD_LIBRARY_PATH:-}" CANTERA_DATA="$sdk/share/cantera/data"
 cd "$job"
 (cd "$build"; sha256sum -c binary.sha256) > binary-verified.txt

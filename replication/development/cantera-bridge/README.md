@@ -51,7 +51,10 @@ library linkage, then repeats with the OF8 core library loaded in its container.
 
 The experimental `rf_ct_advance_cp` call integrates a closed, adiabatic,
 constant-pressure homogeneous reactor with Cantera CVODES. Its independent
-variables are mass, total enthalpy and species mass fractions. Each call resets
+variables are mass, total enthalpy and species mass fractions for nonideal models.
+Stage 1 uses Cantera's equivalent ideal-gas temperature formulation to avoid
+repeated HP inversions; the independent Python reference retains total enthalpy.
+Each call resets
 the supplied TPY state and time to zero; it never continues another cell's ODE
 history. A context reuses the reactor and integrator allocation, with explicit
 reinitialization. Inputs add duration (s), relative tolerance and absolute

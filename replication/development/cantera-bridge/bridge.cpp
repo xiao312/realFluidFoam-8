@@ -4,6 +4,7 @@
 #include "../cantera-liang/PressureChemistry.h"
 #include "cantera/thermo/ThermoFactory.h"
 #include "cantera/zeroD/ConstPressureReactor.h"
+#include "cantera/zeroD/IdealGasConstPressureReactor.h"
 #include "cantera/zeroD/ReactorNet.h"
 #include <cstring>
 #include <filesystem>
@@ -16,6 +17,7 @@ struct rf_ct_context {
     std::shared_ptr<Cantera::ConstPressureReactor> reactor;
     std::shared_ptr<Cantera::ReactorNet> network;
     bool supportsConstantPressureIntegration=false;
+    bool idealGas=false;
     std::string error;
 };
 namespace {
@@ -69,6 +71,7 @@ extern "C" rf_ct_context* rf_ct_create(const char* inputs,int stage,const char* 
         }
         if(options.pressureChemistry)liang::usePressureChemistry(solution,(directory/"ideal.yaml").string());
         context->supportsConstantPressureIntegration=stage<3 || options.smoothedAlpha;
+        context->idealGas=stage==1;
         context->solution=solution;message(error,capacity,"");return context.release();
     }catch(const std::exception& e){message(error,capacity,e.what());}
     catch(...){message(error,capacity,"Unknown bridge initialization error");}
@@ -137,7 +140,10 @@ extern "C" int rf_ct_advance_cp(rf_ct_context* context,double temperature,double
         auto gas=context->solution->thermo();
         gas->setTemperature(temperature);gas->setMassFractions_NoNorm(y);gas->setPressure(pressure);
         if(!context->reactor) {
-            context->reactor=std::make_shared<Cantera::ConstPressureReactor>(context->solution,false);
+            if(context->idealGas)
+                context->reactor=std::make_shared<Cantera::IdealGasConstPressureReactor>(context->solution,false);
+            else
+                context->reactor=std::make_shared<Cantera::ConstPressureReactor>(context->solution,false);
             context->network=std::make_shared<Cantera::ReactorNet>(context->reactor);
         }
         context->reactor->setInitialVolume(1.0);
