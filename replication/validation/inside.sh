@@ -20,6 +20,10 @@ if grep -q 'not found' "$job/solver-ldd.txt"; then exit 1; fi
 if [[ "$stage" == premixed-sensitivity-check ]]; then
     exec python3 -B "$release/replication/development/premixed-sensitivity/qualify.py" "$job"
 fi
+if [[ "$stage" == ideal-baseline-* ]]; then
+    selector=${stage#ideal-baseline-}; mode=${selector##*-}; key=${selector%-*}
+    exec bash "$release/replication/development/ideal-baseline/run.sh" "$release" "$job" "$key" "$mode"
+fi
 if [[ "$stage" == premixed-sensitivity-* ]]; then
     exec bash "$release/replication/development/premixed-sensitivity/run.sh" "$release" "$job" "${stage#premixed-sensitivity-}"
 fi

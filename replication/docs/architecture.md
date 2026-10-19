@@ -48,6 +48,13 @@ flowchart LR
   E --> L[Lark work log]
 ```
 
+`development/ideal-baseline` depends on the premixed-paper setup, the qualified
+spatial diagnostic binary, the ideal runtime library family and environment
+runner. Its separate Cantera adapter reads author NASA7/reaction inputs and
+supplies equilibrium seeds and independent steady flame profiles. Cantera is
+not a CFD runtime dependency. Comparison plotting consumes both result sets
+and a locally held Liang figure crop; it does not submit work.
+
 `environment/` owns recipes, the image lock, contained execution, and job submission.
 `docs/` owns the scientific plan, writing rules, and reviewed result summaries.
 `development/` owns the single `develop/reacting` integration line and isolated
