@@ -11,6 +11,7 @@ public:
     int stage=2;
     bool denseIncrementOnly=false;
     bool boundedTakahashi=false;
+    bool smoothedAlpha=false;
     size_t boundedPairCalls=0;
     std::vector<Species> parameters;
     size_t conductivityCalls=0,diffusionCalls=0;
@@ -59,7 +60,7 @@ public:
         if(projected || std::abs(sum-1)>1e-12) {
             if(!(sum>0))throw std::runtime_error("Invalid transport composition");
             for(auto& value:x)value/=sum;
-            auto z=evaluate(m_thermo->temperature(),m_thermo->pressure(),x,parameters);
+            auto z=evaluate(m_thermo->temperature(),m_thermo->pressure(),x,parameters,smoothedAlpha);
             v=z.vb;molarVolume=z.v;projectedCompositionCalls++;
         }
         if(*std::min_element(v.begin(),v.end())<0)negativePartialVolumeCalls++;

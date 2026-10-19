@@ -12,11 +12,11 @@ struct State {
     std::vector<double> hb,vb,lnphi;
 };
 inline State evaluate(double T,double p,const std::vector<double>& x,
-                      const std::vector<Species>& species) {
+                      const std::vector<Species>& species,bool smoothedAlpha=false) {
     if (!(T>0 && p>0) || x.size()!=species.size()) throw std::domain_error("SRK state");
     const size_t n=x.size();
     std::vector<double> si(n),sti(n),bi(n);
-    double q=0,qt=0,b=0;
+    double q=0,qt=0,qtt=0,b=0;
     for(size_t i=0;i<n;i++) {
         const auto& z=species[i];
         if(!z.eos) continue;
@@ -26,11 +26,23 @@ inline State evaluate(double T,double p,const std::vector<double>& x,
         double sign=bracket<0?-1:1;
         si[i]=c*std::abs(bracket);
         sti[i]=-sign*c*m/(2*std::sqrt(T*z.Tc));
+        double stti=-sti[i]/(2*T);
+        if(smoothedAlpha && bracket<1) {
+            // Giovangigli et al. (2024), section 5.2: C4 continuation above Tc.
+            // Keep sqrt(a) positive and decreasing, with no fitted parameter.
+            double x=bracket-1,base=1+std::pow(x,4);
+            double xt=-m/(2*std::sqrt(T*z.Tc));
+            double first=std::pow(base,-1.25);
+            double second=-5*x*x*x*std::pow(base,-2.25);
+            si[i]=c*(1+x/std::pow(base,.25));
+            sti[i]=c*first*xt;
+            stti=c*(second*xt*xt-first*xt/(2*T));
+        }
         bi[i]=.08664*R*z.Tc/z.Pc;
-        q+=x[i]*si[i]; qt+=x[i]*sti[i]; b+=x[i]*bi[i];
+        q+=x[i]*si[i]; qt+=x[i]*sti[i]; qtt+=x[i]*stti; b+=x[i]*bi[i];
     }
     State z{}; z.T=T;z.p=p;z.b=b;z.a=q*q;z.at=2*q*qt;
-    z.att=2*qt*qt-q*qt/T;z.hb.resize(n);z.vb.resize(n);z.lnphi.resize(n);
+    z.att=2*qt*qt+2*q*qtt;z.hb.resize(n);z.vb.resize(n);z.lnphi.resize(n);
     if(b<1e-30) {z.v=R*T/p;z.pv=-p/z.v;z.pt=p/T;
         std::fill(z.vb.begin(),z.vb.end(),z.v);return z;}
     const double A=z.a*p/std::pow(R*T,2),B=b*p/(R*T);

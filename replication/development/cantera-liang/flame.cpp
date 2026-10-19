@@ -41,12 +41,12 @@ try {
         auto* gas=new liang::SrkPhase;gas->stage=1;return gas;});
     TransportFactory::factory()->reg("liang-staged",[&](){
         auto* tr=new liang::StagedTransport;tr->stage=stage;tr->parameters=parameters;
-        tr->denseIncrementOnly=options.dense;tr->boundedTakahashi=options.bounded;return tr;});
+        tr->smoothedAlpha=options.smoothedAlpha;tr->denseIncrementOnly=options.dense;tr->boundedTakahashi=options.bounded;return tr;});
     auto sol=newSolution((input/(stage==1?"ideal.yaml":"srk.yaml")).string(),"",stage==1?"mixture-averaged":"liang-staged");
     auto gas=sol->thermo();
     for(size_t k=0;k<species.size();k++) if(gas->speciesName(k)!=species[k])throw std::runtime_error("Species order mismatch");
     if(auto* model=dynamic_cast<liang::SrkPhase*>(gas.get())) {
-        model->parameters=parameters;model->stage=stage;model->setState_TP(298,pressure);
+        model->smoothedAlpha=options.smoothedAlpha;model->parameters=parameters;model->stage=stage;model->setState_TP(298,pressure);
     }
     gas->setEquivalenceRatio(phi,"CH4","O2:0.21,N2:0.79");gas->setState_TP(298,pressure);
     if(options.pressureChemistry)liang::usePressureChemistry(sol,(input/"ideal.yaml").string());

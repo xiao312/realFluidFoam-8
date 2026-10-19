@@ -185,3 +185,11 @@ nearest saved composition and evaluates departure enthalpy on both sides with
 shrinking temperature offsets. A finite limiting jump distinguishes a closure
 non-smoothness from ordinary heat capacity. This standalone C++17 diagnostic
 needs no Cantera SDK, changes no solver model and writes only the new output.
+
+`smoothed-alpha` selects the separately labelled Giovangigli high-temperature
+extension documented in `docs/cantera-alpha-discontinuity-20261020.md`. It changes
+SRK attraction and all its derivatives consistently, including transport-only
+projected states. It is not a verified Liang closure. `test_alpha.cpp` checks
+enthalpy integrability across the original species crossings; the legacy model
+must reproduce the failing control. `test_srk.cpp` checks both variants' EOS,
+Cp, partial enthalpy and fugacity identities away from and at smooth crossings.

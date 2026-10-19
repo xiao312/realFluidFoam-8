@@ -6,6 +6,7 @@ class SrkPhase : public Cantera::IdealGasPhase {
 public:
     int stage=2;
     bool fugacityKinetics=false;
+    bool smoothedAlpha=false; // Set once, before the first SRK state evaluation.
     std::vector<Species> parameters;
     mutable size_t eosCalls=0,enthalpyCalls=0,cpCalls=0,partialCalls=0;
     std::string type() const override {return "liang-srk";}
@@ -15,10 +16,10 @@ public:
         // composition setters. Pressure is queried inside every Takahashi pair.
         if(cachedT!=temperature() || cachedRho!=density() || cachedComposition!=stateMFNumber()) {
             std::vector<double> x(nSpecies());getMoleFractions(x.data());
-            auto c=evaluate(temperature(),1e5,x,parameters);
+            auto c=evaluate(temperature(),1e5,x,parameters,smoothedAlpha);
             double v=1/molarDensity();
             double p=R*temperature()/(v-c.b)-c.a/(v*(v+c.b));
-            cached=evaluate(temperature(),p,x,parameters);
+            cached=evaluate(temperature(),p,x,parameters,smoothedAlpha);
             cachedT=temperature();cachedRho=density();cachedComposition=stateMFNumber();
         }
         return cached;
@@ -30,7 +31,7 @@ public:
     void setPressure(double p) override {
         if(parameters.empty()) {IdealGasPhase::setPressure(p);return;}
         std::vector<double> x(nSpecies());getMoleFractions(x.data());
-        cached=evaluate(temperature(),p,x,parameters);eosCalls++;
+        cached=evaluate(temperature(),p,x,parameters,smoothedAlpha);eosCalls++;
         setDensity(meanMolecularWeight()/cached.v);
         cachedT=temperature();cachedRho=density();cachedComposition=stateMFNumber();
     }
@@ -86,8 +87,8 @@ public:
         if(stage<3)return;
         std::vector<double> x(nSpecies());getMoleFractions(x.data());
         double dt=temperature()*1e-5;
-        auto hi=evaluate(temperature()+dt,pressure(),x,parameters);
-        auto lo=evaluate(temperature()-dt,pressure(),x,parameters);
+        auto hi=evaluate(temperature()+dt,pressure(),x,parameters,smoothedAlpha);
+        auto lo=evaluate(temperature()-dt,pressure(),x,parameters,smoothedAlpha);
         for(size_t k=0;k<nSpecies();k++) cp[k]+=(hi.hb[k]-lo.hb[k])/(2*dt);
     }
     void getActivityConcentrations(double* c) const override {

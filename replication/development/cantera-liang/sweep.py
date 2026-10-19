@@ -25,7 +25,7 @@ def main():
         setattr(a, name, path)
     if not a.pilot.isdigit() or not (a.build/'build-passed.txt').is_file():
         raise ValueError('Expected a numeric pilot and a successful build')
-    allowed = {'dense-increment', 'bounded-takahashi', 'pressure-chemistry', 'fine-grid'}
+    allowed = {'dense-increment', 'bounded-takahashi', 'pressure-chemistry', 'fine-grid', 'smoothed-alpha'}
     if (a.variant != 'full' and (not set(a.variant.split(',')) <= allowed or
             len(set(a.variant.split(','))) != len(a.variant.split(',')))) or not 1 <= a.pressure_atm <= 100:
         raise ValueError('Invalid diagnostic options or pressure')
