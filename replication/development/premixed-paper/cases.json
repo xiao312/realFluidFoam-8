@@ -1,0 +1,4 @@
+{
+  "phi110-dt100": {"phi": 1.1, "length_m": 0.004, "cells": 8000, "kernel_width_m": 0.0002, "kernel_temperature_K": 1800, "max_delta_t_s": 1e-7},
+  "phi110-dt050": {"phi": 1.1, "length_m": 0.004, "cells": 8000, "kernel_width_m": 0.0002, "kernel_temperature_K": 1800, "max_delta_t_s": 5e-8}
+}

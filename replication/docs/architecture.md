@@ -1,5 +1,11 @@
 # Replication boundaries
 
+`development/premixed-paper` depends on the named baseline solver, flame input
+generator, property probe, field reader and contained environment. It creates
+central-ignition two-front cases and an isolated diagnostic solver, then supplies
+stage-labelled in-situ Eq.(40) histories to plotting. It changes no library
+physics. The instrumented solver must match diagnostics-off fields before use.
+
 ```mermaid
 flowchart LR
   U[Upstream source pin] --> R[Fork revision]
