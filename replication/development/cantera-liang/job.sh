@@ -47,7 +47,7 @@ else
  (cd "$build"; sha256sum -c binary.sha256)
  sha256sum "$inputs"/* > input-sha256.txt
  cp "$release/SOURCE_REVISION" source-revision.txt
- extra=()
- [[ $variant == full && $pressure == 100 ]] || extra+=("$variant" "$pressure")
- "$build/liang-flame" "$inputs" "$stage" "$phi" "$job/result" "${extra[@]}" > flame.log 2>&1
+ # Always pass defaults explicitly: older site Bash treats an empty array as
+ # unbound under nounset, preventing the default ideal control from starting.
+ "$build/liang-flame" "$inputs" "$stage" "$phi" "$job/result" "$variant" "$pressure" > flame.log 2>&1
 fi
