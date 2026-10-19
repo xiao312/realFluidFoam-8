@@ -2,13 +2,14 @@
 #include <iostream>
 void check(double a,double b,double tol,const char* label) {
     if(std::abs(a-b)>tol*std::max({1.,std::abs(a),std::abs(b)}))
-        throw std::runtime_error(label);
+        throw std::runtime_error(std::string(label)+" analytical="+std::to_string(a)+" numerical="+std::to_string(b));
 }
 int main() {
     std::vector<liang::Species> s={{190.56,4.5992e6,.0986,16.04,.011},
         {154.58,5.043e6,.0734,32,.022},{126.2,3.3958e6,.0895,28,.0372}};
     std::vector<double> x={.1,.2,.7};
     for(double T:{298.,500.,1000.,1800.,2500.}) for(double p:{1e3,101325.,10132500.}) {
+        std::cout<<"T="<<T<<" p="<<p<<std::endl;
         auto z=liang::evaluate(T,p,x,s);
         check(p,liang::R*T/(z.v-z.b)-z.a/(z.v*(z.v+z.b)),1e-10,"pressure root");
         double dt=T*1e-5;
