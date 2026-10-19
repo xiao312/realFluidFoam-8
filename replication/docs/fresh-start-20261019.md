@@ -16,6 +16,10 @@ First attempts 124916032 and 124916036 failed before simulation because a
 checksum path had CRLF contamination. Source 1a0bcfb fixes the checksum command.
 The successful jobs use the same pinned native/energy binaries and library build.
 
-The local cleanup plan identifies 326,364,553 bytes of byte-identical extracted
-profiles. Automatic approval review rejected the combined move/delete command;
-no deletion occurred. Canonical raw archives and all run/build outputs are retained.
+Local cleanup verified 758 extracted profile files against retained canonical
+copies, then moved 326,364,553 bytes into the project task trash. Automatic
+approval review rejected permanent deletion with "blocked by policy". Those files
+remain recoverable in `.trash/cleanup-20261019`; local trash was not emptied.
+Remote cleanup moved two verified redundant source archives through task trash,
+then deleted them: 2,152,593 bytes. Their immutable extracted releases remain intact.
+Canonical raw archives and all run/build outputs are retained.

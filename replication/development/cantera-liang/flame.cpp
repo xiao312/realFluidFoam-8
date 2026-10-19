@@ -14,7 +14,11 @@ using namespace Cantera;
 namespace fs=std::filesystem;
 std::vector<std::string> split(const std::string& line) {
     std::stringstream in(line);std::string part;std::vector<std::string> out;
-    while(std::getline(in,part,','))out.push_back(part);return out;
+    while(std::getline(in,part,',')) {
+        if(!part.empty() && part.back()=='\r')part.pop_back();
+        out.push_back(part);
+    }
+    return out;
 }
 int main(int argc,char** argv) {
 try {
