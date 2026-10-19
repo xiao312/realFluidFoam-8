@@ -97,3 +97,12 @@ smoke with the same execution profile. Compare reconstructed global field values
 with the qualified uniform-eight-rank smoke before launching a full case.
 Fresh-start verification reads the declared rank count and checks every rank
 for original zero fields and absence of positive-time directories.
+
+`python3 decomposition_parity.py REFERENCE_CASE CANDIDATE_CASE` reconstructs
+global cell order from each mesh's addressing without modifying either case.
+It checks the declared rank count, bijective 8000-cell coverage, exact original
+T/p/U/species values, common final physical time and endpoint differences.
+Inputs must be completed original-zero smoke cases; output is a JSON report.
+Thresholds are explicit in the script and are numerical smoke screens, not
+steady-flame accuracy limits. A failed comparison exits nonzero after printing
+the evidence. This uses the existing ASCII reader and standard Python only.
