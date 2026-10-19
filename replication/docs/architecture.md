@@ -56,6 +56,10 @@ not a CFD runtime dependency. Comparison plotting consumes both result sets
 and a locally held Liang figure crop; it does not submit work.
 
 `environment/` owns recipes, the image lock, contained execution, and job submission.
+`development/liang-panel-a` consumes the ideal-baseline Cantera profiles and
+local Liang PDF. It adds ideal-gas operating points and preserves the source
+panel's size and graphics in a calibrated overlay. Cases 2–5 remain paper
+references. This module has no solver, scheduler or real-gas Cantera dependency.
 `docs/` owns the scientific plan, writing rules, and reviewed result summaries.
 `development/` owns the single `develop/reacting` integration line and isolated
 draft experiments. Its named solver depends on the pinned OF8/library build;

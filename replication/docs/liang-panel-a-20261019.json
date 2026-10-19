@@ -1,0 +1,556 @@
+{
+  "computed_case": "Case 1 ideal gas only",
+  "points": 11,
+  "phi_range": [
+    0.9,
+    1.4
+  ],
+  "panel_size_pt": [
+    204,
+    175
+  ],
+  "source_pdf_sha256": "24163be0124e0fa6cd28ddb1d369b813e64e82bd7446e9f9218a340445aca6fe",
+  "results_sha256": "49973a55fb0ddae699eea6660d5b91fd9152760c390ac7a703cbcacbce22d255",
+  "plotter_sha256": "ba194bf4bdfc89ffdd909225fb703c804905283cf95843227b2d4c906ae62d81",
+  "visible_computed_points": 10,
+  "rows": [
+    {
+      "phi": 0.9,
+      "Tu_K": 298,
+      "pressure_Pa": 10132500,
+      "speed_cm_s": 5.705747444706062,
+      "Tmax_K": 2165.7436656409654,
+      "refinements": [
+        {
+          "slope": 0.12,
+          "curve": 0.18,
+          "points": 100,
+          "speed_cm_s": 5.864423214352067,
+          "width_m": 0.004
+        },
+        {
+          "slope": 0.06,
+          "curve": 0.1,
+          "points": 179,
+          "speed_cm_s": 5.778451476363379,
+          "width_m": 0.004
+        },
+        {
+          "slope": 0.03,
+          "curve": 0.05,
+          "points": 326,
+          "speed_cm_s": 5.73612015737547,
+          "width_m": 0.004
+        },
+        {
+          "slope": 0.015,
+          "curve": 0.025,
+          "points": 627,
+          "speed_cm_s": 5.717619258408954,
+          "width_m": 0.004
+        },
+        {
+          "slope": 0.0075,
+          "curve": 0.0125,
+          "points": 1202,
+          "speed_cm_s": 5.705747444706062,
+          "width_m": 0.004
+        }
+      ],
+      "last_refinement_relative_change": 0.0020763561136799558,
+      "wall_seconds": 18.89100000000326,
+      "refinement_wall_seconds": 28.875
+    },
+    {
+      "phi": 0.95,
+      "Tu_K": 298,
+      "pressure_Pa": 10132500,
+      "speed_cm_s": 6.382402399944982,
+      "Tmax_K": 2237.940296627887,
+      "refinements": [
+        {
+          "slope": 0.12,
+          "curve": 0.18,
+          "points": 102,
+          "speed_cm_s": 6.561923897612773,
+          "width_m": 0.004
+        },
+        {
+          "slope": 0.06,
+          "curve": 0.1,
+          "points": 185,
+          "speed_cm_s": 6.460167005753139,
+          "width_m": 0.004
+        },
+        {
+          "slope": 0.03,
+          "curve": 0.05,
+          "points": 331,
+          "speed_cm_s": 6.416135857144491,
+          "width_m": 0.004
+        },
+        {
+          "slope": 0.015,
+          "curve": 0.025,
+          "points": 615,
+          "speed_cm_s": 6.395994941046126,
+          "width_m": 0.004
+        },
+        {
+          "slope": 0.0075,
+          "curve": 0.0125,
+          "points": 1198,
+          "speed_cm_s": 6.382402399944982,
+          "width_m": 0.004
+        }
+      ],
+      "last_refinement_relative_change": 0.0021251644546987913,
+      "wall_seconds": 22.39100000000326,
+      "refinement_wall_seconds": 22.75
+    },
+    {
+      "phi": 1.0,
+      "Tu_K": 298,
+      "pressure_Pa": 10132500,
+      "speed_cm_s": 6.91474179170129,
+      "Tmax_K": 2296.623909734438,
+      "refinements": [
+        {
+          "slope": 0.12,
+          "curve": 0.18,
+          "points": 101,
+          "speed_cm_s": 7.129112551450345,
+          "width_m": 0.004
+        },
+        {
+          "slope": 0.06,
+          "curve": 0.1,
+          "points": 185,
+          "speed_cm_s": 7.007382845406621,
+          "width_m": 0.004
+        },
+        {
+          "slope": 0.03,
+          "curve": 0.05,
+          "points": 333,
+          "speed_cm_s": 6.955636942747664,
+          "width_m": 0.004
+        },
+        {
+          "slope": 0.015,
+          "curve": 0.025,
+          "points": 620,
+          "speed_cm_s": 6.930293376254248,
+          "width_m": 0.004
+        },
+        {
+          "slope": 0.0075,
+          "curve": 0.0125,
+          "points": 1190,
+          "speed_cm_s": 6.91474179170129,
+          "width_m": 0.004
+        }
+      ],
+      "last_refinement_relative_change": 0.0022440008970245895,
+      "wall_seconds": 23.89100000000326,
+      "refinement_wall_seconds": 25.375
+    },
+    {
+      "phi": 1.05,
+      "Tu_K": 298,
+      "pressure_Pa": 10132500,
+      "speed_cm_s": 7.330248421544574,
+      "Tmax_K": 2273.634457755042,
+      "refinements": [
+        {
+          "slope": 0.12,
+          "curve": 0.18,
+          "points": 103,
+          "speed_cm_s": 7.573440325961016,
+          "width_m": 0.004
+        },
+        {
+          "slope": 0.06,
+          "curve": 0.1,
+          "points": 177,
+          "speed_cm_s": 7.449765572409536,
+          "width_m": 0.004
+        },
+        {
+          "slope": 0.03,
+          "curve": 0.05,
+          "points": 329,
+          "speed_cm_s": 7.385243934775396,
+          "width_m": 0.004
+        },
+        {
+          "slope": 0.015,
+          "curve": 0.025,
+          "points": 616,
+          "speed_cm_s": 7.349996639092322,
+          "width_m": 0.004
+        },
+        {
+          "slope": 0.0075,
+          "curve": 0.0125,
+          "points": 1186,
+          "speed_cm_s": 7.330248421544574,
+          "width_m": 0.004
+        }
+      ],
+      "last_refinement_relative_change": 0.002686833548020129,
+      "wall_seconds": 20.203000000008615,
+      "refinement_wall_seconds": 32.235000000015134
+    },
+    {
+      "phi": 1.1,
+      "Tu_K": 298,
+      "pressure_Pa": 10132500,
+      "speed_cm_s": 7.467003112153642,
+      "Tmax_K": 2229.2965345322455,
+      "refinements": [
+        {
+          "slope": 0.12,
+          "curve": 0.18,
+          "points": 102,
+          "speed_cm_s": 7.6912835632315435,
+          "width_m": 0.004
+        },
+        {
+          "slope": 0.06,
+          "curve": 0.1,
+          "points": 168,
+          "speed_cm_s": 7.587585589217573,
+          "width_m": 0.004
+        },
+        {
+          "slope": 0.03,
+          "curve": 0.05,
+          "points": 314,
+          "speed_cm_s": 7.519637504250285,
+          "width_m": 0.004
+        },
+        {
+          "slope": 0.015,
+          "curve": 0.025,
+          "points": 601,
+          "speed_cm_s": 7.486350328988406,
+          "width_m": 0.004
+        },
+        {
+          "slope": 0.0075,
+          "curve": 0.0125,
+          "points": 1142,
+          "speed_cm_s": 7.467003112153642,
+          "width_m": 0.004
+        }
+      ],
+      "last_refinement_relative_change": 0.0025843322826943904,
+      "wall_seconds": 13.453000000008615,
+      "refinement_wall_seconds": 19.828000000008615
+    },
+    {
+      "phi": 1.15,
+      "Tu_K": 298,
+      "pressure_Pa": 10132500,
+      "speed_cm_s": 7.343496980167247,
+      "Tmax_K": 2186.150849754944,
+      "refinements": [
+        {
+          "slope": 0.12,
+          "curve": 0.18,
+          "points": 101,
+          "speed_cm_s": 7.573665200760997,
+          "width_m": 0.004
+        },
+        {
+          "slope": 0.06,
+          "curve": 0.1,
+          "points": 166,
+          "speed_cm_s": 7.46997106427291,
+          "width_m": 0.004
+        },
+        {
+          "slope": 0.03,
+          "curve": 0.05,
+          "points": 307,
+          "speed_cm_s": 7.400834215705982,
+          "width_m": 0.004
+        },
+        {
+          "slope": 0.015,
+          "curve": 0.025,
+          "points": 591,
+          "speed_cm_s": 7.364737741626431,
+          "width_m": 0.004
+        },
+        {
+          "slope": 0.0075,
+          "curve": 0.0125,
+          "points": 1122,
+          "speed_cm_s": 7.343496980167247,
+          "width_m": 0.004
+        }
+      ],
+      "last_refinement_relative_change": 0.002884116475611709,
+      "wall_seconds": 16.062000000005355,
+      "refinement_wall_seconds": 22.344000000011874
+    },
+    {
+      "phi": 1.2,
+      "Tu_K": 298,
+      "pressure_Pa": 10132500,
+      "speed_cm_s": 7.120380052909459,
+      "Tmax_K": 2148.041622986594,
+      "refinements": [
+        {
+          "slope": 0.12,
+          "curve": 0.18,
+          "points": 97,
+          "speed_cm_s": 7.413140559783185,
+          "width_m": 0.004
+        },
+        {
+          "slope": 0.06,
+          "curve": 0.1,
+          "points": 169,
+          "speed_cm_s": 7.238450001145388,
+          "width_m": 0.004
+        },
+        {
+          "slope": 0.03,
+          "curve": 0.05,
+          "points": 315,
+          "speed_cm_s": 7.174893272546506,
+          "width_m": 0.004
+        },
+        {
+          "slope": 0.015,
+          "curve": 0.025,
+          "points": 594,
+          "speed_cm_s": 7.140905774459995,
+          "width_m": 0.004
+        },
+        {
+          "slope": 0.0075,
+          "curve": 0.0125,
+          "points": 1141,
+          "speed_cm_s": 7.120380052909459,
+          "width_m": 0.004
+        }
+      ],
+      "last_refinement_relative_change": 0.0028743862751904325,
+      "wall_seconds": 12.764999999984866,
+      "refinement_wall_seconds": 21.469000000011874
+    },
+    {
+      "phi": 1.25,
+      "Tu_K": 298,
+      "pressure_Pa": 10132500,
+      "speed_cm_s": 6.873698515469016,
+      "Tmax_K": 2113.7548208238495,
+      "refinements": [
+        {
+          "slope": 0.12,
+          "curve": 0.18,
+          "points": 97,
+          "speed_cm_s": 7.157033951341807,
+          "width_m": 0.004
+        },
+        {
+          "slope": 0.06,
+          "curve": 0.1,
+          "points": 168,
+          "speed_cm_s": 6.995468585130828,
+          "width_m": 0.004
+        },
+        {
+          "slope": 0.03,
+          "curve": 0.05,
+          "points": 318,
+          "speed_cm_s": 6.92831829999086,
+          "width_m": 0.004
+        },
+        {
+          "slope": 0.015,
+          "curve": 0.025,
+          "points": 610,
+          "speed_cm_s": 6.893470578414646,
+          "width_m": 0.004
+        },
+        {
+          "slope": 0.0075,
+          "curve": 0.0125,
+          "points": 1167,
+          "speed_cm_s": 6.873698515469016,
+          "width_m": 0.004
+        }
+      ],
+      "last_refinement_relative_change": 0.0028682305553811016,
+      "wall_seconds": 16.812000000005355,
+      "refinement_wall_seconds": 21.76600000000326
+    },
+    {
+      "phi": 1.3,
+      "Tu_K": 298,
+      "pressure_Pa": 10132500,
+      "speed_cm_s": 6.619133757678313,
+      "Tmax_K": 2082.0618065552467,
+      "refinements": [
+        {
+          "slope": 0.12,
+          "curve": 0.18,
+          "points": 96,
+          "speed_cm_s": 6.890675794037813,
+          "width_m": 0.004
+        },
+        {
+          "slope": 0.06,
+          "curve": 0.1,
+          "points": 170,
+          "speed_cm_s": 6.735548007982148,
+          "width_m": 0.004
+        },
+        {
+          "slope": 0.03,
+          "curve": 0.05,
+          "points": 324,
+          "speed_cm_s": 6.670359071809968,
+          "width_m": 0.004
+        },
+        {
+          "slope": 0.015,
+          "curve": 0.025,
+          "points": 613,
+          "speed_cm_s": 6.637930985861855,
+          "width_m": 0.004
+        },
+        {
+          "slope": 0.0075,
+          "curve": 0.0125,
+          "points": 1167,
+          "speed_cm_s": 6.619133757678313,
+          "width_m": 0.004
+        }
+      ],
+      "last_refinement_relative_change": 0.002831790240600429,
+      "wall_seconds": 14.437999999994645,
+      "refinement_wall_seconds": 21.67200000002049
+    },
+    {
+      "phi": 1.35,
+      "Tu_K": 298,
+      "pressure_Pa": 10132500,
+      "speed_cm_s": 6.3658559337846174,
+      "Tmax_K": 2052.4393545844036,
+      "refinements": [
+        {
+          "slope": 0.12,
+          "curve": 0.18,
+          "points": 95,
+          "speed_cm_s": 6.627419546009025,
+          "width_m": 0.004
+        },
+        {
+          "slope": 0.06,
+          "curve": 0.1,
+          "points": 167,
+          "speed_cm_s": 6.475483301017985,
+          "width_m": 0.004
+        },
+        {
+          "slope": 0.03,
+          "curve": 0.05,
+          "points": 317,
+          "speed_cm_s": 6.416276081113511,
+          "width_m": 0.004
+        },
+        {
+          "slope": 0.015,
+          "curve": 0.025,
+          "points": 612,
+          "speed_cm_s": 6.383867401551939,
+          "width_m": 0.004
+        },
+        {
+          "slope": 0.0075,
+          "curve": 0.0125,
+          "points": 1176,
+          "speed_cm_s": 6.3658559337846174,
+          "width_m": 0.004
+        }
+      ],
+      "last_refinement_relative_change": 0.002821403803428435,
+      "wall_seconds": 13.734000000025844,
+      "refinement_wall_seconds": 25.671999999991385
+    },
+    {
+      "phi": 1.4,
+      "Tu_K": 298,
+      "pressure_Pa": 10132500,
+      "speed_cm_s": 6.121807950118492,
+      "Tmax_K": 2024.7945063517498,
+      "refinements": [
+        {
+          "slope": 0.12,
+          "curve": 0.18,
+          "points": 96,
+          "speed_cm_s": 6.372109769717438,
+          "width_m": 0.004
+        },
+        {
+          "slope": 0.06,
+          "curve": 0.1,
+          "points": 168,
+          "speed_cm_s": 6.235213780111526,
+          "width_m": 0.004
+        },
+        {
+          "slope": 0.03,
+          "curve": 0.05,
+          "points": 321,
+          "speed_cm_s": 6.172018632698608,
+          "width_m": 0.004
+        },
+        {
+          "slope": 0.015,
+          "curve": 0.025,
+          "points": 615,
+          "speed_cm_s": 6.1393988950849625,
+          "width_m": 0.004
+        },
+        {
+          "slope": 0.0075,
+          "curve": 0.0125,
+          "points": 1189,
+          "speed_cm_s": 6.121807950118492,
+          "width_m": 0.004
+        }
+      ],
+      "last_refinement_relative_change": 0.0028652552582230095,
+      "wall_seconds": 15.155999999988126,
+      "refinement_wall_seconds": 30.875
+    }
+  ],
+  "pdf_page_index": 5,
+  "panel_clip_pt": [
+    28,
+    50,
+    232,
+    225
+  ],
+  "calibration": {
+    "raster_scale": 3,
+    "phi_1_x": 157.5,
+    "phi_1_4_x": 542.5,
+    "speed_7_5_y": 94.5,
+    "speed_5_y": 461.5
+  },
+  "other_curves": "Unmodified source paper; no new Cases 2-5 calculations",
+  "outputs": {
+    "liang-panel-a-comparison.pdf": "c93db673a357d70effce5d143e4198e41f4e0d3f06eff1c87ac348ab5371cfdb",
+    "liang-panel-a-comparison.png": "2e2fde9fbd2b52bf88687c2dcdc649cbce9aa6d30e4d735cd128fef8cc703fd1",
+    "liang-panel-a-overlay.png": "1242b006e41409b88bafafb4d1603ebe32d57ca95aad3c1cc5776d8fb88bdd49"
+  },
+  "artifact_directory": "output/liang-panel-a-20261019-v2"
+}
