@@ -134,3 +134,9 @@ flame diagnosis; it does not replace the production solver or its live cases.
 Its offline profile adapter depends on `development/flame-tracking/trackingCore.H`
 for the same marker and gas-relative speed definitions. Its read-only source audit
 compares the Linux build copy with the pinned Git archive, including path casing.
+
+`development/energy-update` consumes solver-comparison frozen states and the
+flame-tracking solver/checkpoint tooling. It changes only solver-owned species
+enthalpy reads, preserving the qualified library and baseline inputs. Its shared
+accessor is used by both the separately named solver and a red/green runtime
+probe; adaptive field inspection gates the continuation after a parallel smoke.
