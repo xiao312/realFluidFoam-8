@@ -43,6 +43,7 @@ try {
     TransportFactory::factory()->reg("liang-staged",[&](){
         auto* tr=new liang::StagedTransport;tr->stage=stage;tr->parameters=parameters;
         tr->highTemperature=options.highTemperature;
+        tr->bulkTakahashi=options.bulkTakahashi;
         tr->table2=options.table2;tr->smoothedAlpha=options.smoothedAlpha;tr->denseIncrementOnly=options.dense;tr->boundedTakahashi=options.bounded;return tr;});
     auto sol=newSolution((input/(stage==1?"ideal.yaml":"srk.yaml")).string(),"",stage==1?"mixture-averaged":"liang-staged");
     auto gas=sol->thermo();
@@ -68,7 +69,8 @@ try {
     else flow=newDomain<Flow1D>("gas-flow",sol,"flow");
     flow->setFreeFlow();flow->setPressure(pressure);
     flow->setupGrid(values[0].size(),values[0].data());flow->setSteadyTolerances(1e-5,1e-11);
-    flow->setFluxGradientBasis(ThermoBasis::molar);flow->enableSoret(false);
+    flow->setFluxGradientBasis(options.massGradient?ThermoBasis::mass:ThermoBasis::molar);
+    flow->enableSoret(false);
     auto inlet=newDomain<Inlet1D>("inlet",sol);inlet->setTemperature(298);inlet->setMoleFractions(xin.data());
     inlet->setMdot(rho*values[2][0]);auto outlet=newDomain<Outlet1D>("outlet",sol);
     std::vector<std::shared_ptr<Domain1D>> domains{inlet,flow,outlet};

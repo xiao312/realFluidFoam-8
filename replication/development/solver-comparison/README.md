@@ -52,6 +52,15 @@ its species enthalpy cache does not refresh after a 100 K temperature increment.
 Source-vector comparisons normalize by the L1 norm of reference mass sources;
 small net rates near equilibrium need separate interpretation.
 
+`source_averaging.py cantera-probe.csv [--closure openfoam-concentration-cp]`
+reads the existing frozen CVODE experiment and writes JSON to stdout. It compares
+each interval with the same state's instantaneous source across all 53 species.
+Outputs include vector L1 differences and signed radical rates with units.
+Dependencies are the Python standard library and `cantera_probe.py` output.
+It does not integrate chemistry, modify inputs, or estimate a CFD speed error.
+Verification: run on the frozen eight-state probe; require matching species and
+initial temperatures. Inspect 50-ns changes separately from SEULEX/CVODE parity.
+
 DeepFlame dependency URLs and hashes are locked in `dependencies-lock.json`.
 Packages are staged offline; the first cluster attempt failed because compute
 nodes could not resolve the package host. Upstream CRLF shell files are normalized
@@ -72,6 +81,8 @@ plotted-data CSV and a JSON audit from local CSV snapshots. It never contacts th
 cluster or changes cases. CONFIG is JSON with `capture_utc`, `reference_cm_s`
 and `cases` (each: `key`, `label`, `csv`, `job`, `state`, `source`). CSV paths are
 relative to CONFIG. Optional `snapshot_sha256` records the raw archive identity.
+Optional `time_limit_us` sets the horizontal extent for short diagnostic runs.
+It must be positive and include every recorded time; truncated histories fail.
 Optional per-case `expected_start_time_s` asserts the first recorded time. The
 plot derives start annotations from the CSV, including initial invalid fit rows;
 it never assumes an old restart time. A zero-time trace alone does not prove the

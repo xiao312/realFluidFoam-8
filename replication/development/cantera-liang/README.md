@@ -4,6 +4,11 @@ This module runs Liang Figure 8(a) model stages with Cantera 3.2 FreeFlame.
 It owns C++ thermodynamic and transport adapters. It does not claim to reproduce
 unpublished PREMIX inputs or resolve the Figure 2 discrepancy.
 
+Plot input JSON can include `stage_labels`: five nonempty strings in stage order.
+Use explicit labels when a displayed curve changes model variants, such as the
+corrected Takahashi Table 2 coefficient. The plot manifest records these labels.
+This presentation option does not change calculated data or comparison criteria.
+
 Inputs: author GRI30 YAML, author species critical data, an ideal flame profile,
 case number 1–5, and an explicit output directory. Pressure is 100 atm and
 unburned temperature is 298 K. The article does not specify Tu numerically.
@@ -16,6 +21,48 @@ SRK chemical potentials support equilibrium checks. Case 2 deliberately retains
 ideal calorics and is not a consistent equilibrium model.
 An ideal flame supplies a labelled steady-solver guess, not a transient restart.
 No OpenFOAM run is resumed by this module.
+
+Case 5 diffusion diagnostics add two opt-in choices. `takahashi-bulk` uses
+whole-mixture mole-weighted critical temperature and pressure for every binary
+pair, instead of Cantera's pair-normalized mole weights. It requires the bounded
+and Table 2 options. This tests the base-gas interpretation of Takahashi's
+correlation; it is not established as Liang's implementation. `mass-gradient`
+selects Cantera's mass-fraction-gradient mixture diffusion formulation, including
+its corresponding coefficients. Default flames retain mole-fraction gradients.
+Neither option changes chemistry, calorics, or conductivity.
+
+`diffusion-probe INPUTS PROFILE NEW_OUTPUT.csv` audits frozen profile states with
+pair and bulk critical-property averaging. It independently reconstructs
+`D_i = (1-Y_i)/sum(j!=i, X_j/D_ij)` from the returned binary matrix, checks matrix
+symmetry, and writes species diffusivities and corrected fluxes for both gradient
+bases. It uses the existing SDK and adapters, has no new dependencies or secrets,
+and never changes the input profile. Compile it with the existing build job.
+For example, run `diffusion-probe inputs result/profile.csv diffusion.csv` in a
+compute allocation. Expected: reconstruction error below 1e-10 and zero net
+diffusive mass flux to floating-point accuracy. Passing these checks validates
+the conversion, not agreement with Liang. The energy probe supports the same
+options so a diagnostic flame cannot silently be analysed with another closure.
+
+The diffusion probe also reports a frozen-state nonideal-driving-force
+diagnostic. At each face it evaluates the two composition states at the same
+midpoint T and fixed p, then adds `X_i*d(log(phi_i))/dx` to `dX_i/dx` before
+the usual zero-mass-flux correction. This follows the constant-temperature
+chemical-potential derivative in [Giovangigli et al. (2011), Section 4.2](https://www.cmap.polytechnique.fr/~giovangi/688.pdf); it
+does not introduce a temperature-gradient/Soret term. New columns report the
+corrected flux and its difference from the baseline. Both retain zero net mass
+flux. No flame equation or baseline model changes. The cited full transport
+model is not evidence that Liang used this closure with Takahashi coefficients.
+The SRK unit check includes the constant-TP Gibbs–Duhem constraint on these
+composition derivatives.
+
+`figure_gallery.py` accepts an optional `--diagnostics FILE`. This JSON contains `diagnostics`
+and `baseline_sha256`, which must match the baseline Cantera input file.
+Each entry must identify stage, phi, speed, label, 100-atm pressure, a completed
+job and a passed numerical screen. These appear only in the corresponding
+per-case panel as unconnected squares. Baseline overview curves remain the
+declared 65-point calculation; a sensitivity point cannot replace a curve.
+The legacy `diagnostics` member in the baseline JSON belongs to `plot.py` and
+does not silently add experiments to this seven-panel gallery.
 
 Cases 1 and 3–5 also calculate HP equilibrium with VCS, checking enthalpy and
 element conservation. This diagnostic uses SRK fugacity for the nonideal cases;
@@ -275,3 +322,16 @@ not specified by Liang. Takahashi's fitted data mostly cover Tr=0.95–5; using
 the correlation above that range is extrapolation, not an accepted correction.
 The frozen-state probe reports H2, OH and CH4 diffusivities with and without
 this upper clamp before any flame comparison. All other models remain fixed.
+## Figure 8(a) comparison gallery
+
+`figure_gallery.py plan|apply PAPER CANTERA REFERENCE CFD_AUDIT SWEEP_AUDIT OUTPUT`
+creates seven separate comparisons: Cantera overview, developed-solver CFD
+overview, and one comparison for each Case 1–5. Each has the original 204 by
+175 point paper panel and caption beside the computed panel. Inputs are frozen
+JSON results, digitized paper data, and validated front-history audit summaries.
+Outputs are PNG/PDF pages, a combined PDF, and an input-hash manifest. The
+renderer uses PyMuPDF and the existing axis calibration. It submits no jobs.
+Missing CFD stages remain explicitly pending. CFD markers are latest valid
+temperature-front estimates, not accepted steady flame speeds. Other OpenFOAM
+solvers appear only in the individual Case 1 comparison. Verify the seven-page
+count, series inclusion rules, source hashes, and rendered labels before upload.

@@ -3,7 +3,7 @@ set -euo pipefail
 root=${1:?}; release=${2:?}; sdk=${3:?}; inputs=${4:?}; stage=${5:?}; build=${6:-}
 phi=${7:-1.10}
 variant=${8:-full}
-[[ $variant =~ ^(full|(dense-increment|bounded-takahashi|pressure-chemistry|fine-grid|smoothed-alpha|takahashi-table2|takahashi-high-t|total-enthalpy|pure-species-flux)(,(dense-increment|bounded-takahashi|pressure-chemistry|fine-grid|smoothed-alpha|takahashi-table2|takahashi-high-t|total-enthalpy|pure-species-flux))*)$ ]] || exit 2
+[[ $variant =~ ^(full|(dense-increment|bounded-takahashi|pressure-chemistry|fine-grid|smoothed-alpha|takahashi-table2|takahashi-high-t|takahashi-bulk|mass-gradient|total-enthalpy|pure-species-flux)(,(dense-increment|bounded-takahashi|pressure-chemistry|fine-grid|smoothed-alpha|takahashi-table2|takahashi-high-t|takahashi-bulk|mass-gradient|total-enthalpy|pure-species-flux))*)$ ]] || exit 2
 pressure=${9:-100}
 [[ $pressure =~ ^[0-9]+([.][0-9]+)?$ ]] || exit 2
 [[ -n ${SLURM_JOB_ID:-} ]] || exit 2
@@ -38,6 +38,9 @@ if [[ $stage == build ]]; then
  "$compiler" -std=c++17 -O2 -D_GLIBCXX_USE_CXX11_ABI=1 "$module_path/model_probe.cpp" \
    $flags -Wl,-rpath,"$sdk/lib" -o model-probe > compile-probe.log 2>&1
  sha256sum model-probe > probe-binary.sha256
+ "$compiler" -std=c++17 -O2 -D_GLIBCXX_USE_CXX11_ABI=1 "$module_path/diffusion_probe.cpp" \
+   $flags -Wl,-rpath,"$sdk/lib" -o diffusion-probe > compile-diffusion.log 2>&1
+ sha256sum diffusion-probe > diffusion-binary.sha256
  "$compiler" -std=c++17 -O2 -D_GLIBCXX_USE_CXX11_ABI=1 "$module_path/energy_probe.cpp" \
    $flags -Wl,-rpath,"$sdk/lib" -o energy-probe > compile-energy.log 2>&1
  sha256sum energy-probe > energy-binary.sha256
