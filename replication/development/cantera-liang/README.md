@@ -14,6 +14,17 @@ case number 1–5, and an explicit output directory. Pressure is 100 atm and
 unburned temperature is 298 K. The article does not specify Tu numerically.
 Outputs: solved profiles, speed versus refinement, property checks and callback counts.
 
+The flame executable accepts optional trailing `STEADY_RTOL STEADY_ATOL`
+after `PRESSURE_ATM`. Defaults remain `1e-5 1e-11`; allowed ranges are
+`[1e-9,1e-5]` and `[1e-16,1e-11]`. The scheduler wrappers forward these values
+and record them in the escaped command and `result/numerics.txt`, together
+with the profile/flux export precision. This numerical control changes no
+transport, chemistry, boundary conditions or refinement criteria.
+Example: `liang-flame inputs 5 1.10 new-result OPTIONS 100 1e-7 1e-13`.
+Compare an unchanged-input default/tight pair with the native flux audit;
+rejected parameters must fail before creating the output directory.
+Do not relax audit tolerances or normalize saved profiles to conceal a failure.
+
 Cases add SRK density, SRK calorics, Ely–Hanley conductivity, then Takahashi diffusion.
 Default kinetics use physical concentrations and NASA reverse constants.
 This preserves concentration-law chemistry; fugacity kinetics is a separate option.

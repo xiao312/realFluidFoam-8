@@ -5,7 +5,9 @@ phi=${7:-1.10}
 variant=${8:-full}
 [[ $variant =~ ^(full|(dense-increment|bounded-takahashi|pressure-chemistry|fine-grid|smoothed-alpha|takahashi-table2|takahashi-high-t|takahashi-bulk|mass-gradient|total-enthalpy|pure-species-flux|soret|manual-soret)(,(dense-increment|bounded-takahashi|pressure-chemistry|fine-grid|smoothed-alpha|takahashi-table2|takahashi-high-t|takahashi-bulk|mass-gradient|total-enthalpy|pure-species-flux|soret|manual-soret))*)$ ]] || exit 2
 pressure=${9:-100}
+steady_rtol=${10:-1e-5}; steady_atol=${11:-1e-11}
 [[ $pressure =~ ^[0-9]+([.][0-9]+)?$ ]] || exit 2
+[[ $steady_rtol =~ ^[0-9.eE+-]+$ && $steady_atol =~ ^[0-9.eE+-]+$ ]] || exit 2
 [[ -n ${SLURM_JOB_ID:-} ]] || exit 2
 for path in "$release" "$sdk" "$inputs"; do
  [[ $(realpath -e "$path") == "$root/"* ]] || exit 2
@@ -61,9 +63,9 @@ else
  test "$(cat "$build/source-revision.txt")" = "$(cat source-revision.txt)"
  printf '%s\n' "$build" > build-path.txt
  cp "$build/binary.sha256" executable.sha256
- printf '%q ' "$build/liang-flame" "$inputs" "$stage" "$phi" "$job/result" "$variant" "$pressure" > command.txt
+ printf '%q ' "$build/liang-flame" "$inputs" "$stage" "$phi" "$job/result" "$variant" "$pressure" "$steady_rtol" "$steady_atol" > command.txt
  printf '\n' >> command.txt
  # Always pass defaults explicitly: older site Bash treats an empty array as
  # unbound under nounset, preventing the default ideal control from starting.
- "$build/liang-flame" "$inputs" "$stage" "$phi" "$job/result" "$variant" "$pressure" > flame.log 2>&1
+ "$build/liang-flame" "$inputs" "$stage" "$phi" "$job/result" "$variant" "$pressure" "$steady_rtol" "$steady_atol" > flame.log 2>&1
 fi

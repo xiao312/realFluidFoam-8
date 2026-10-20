@@ -17,6 +17,13 @@
 #include <sstream>
 using namespace Cantera;
 namespace fs=std::filesystem;
+double toleranceArgument(const std::string& value) {
+    size_t consumed=0;
+    double result=std::stod(value,&consumed);
+    if(consumed!=value.size())
+        throw std::runtime_error("Steady tolerance must be one complete numeric value");
+    return result;
+}
 std::vector<std::string> split(const std::string& line) {
     std::stringstream in(line);std::string part;std::vector<std::string> out;
     while(std::getline(in,part,',')) {
@@ -27,11 +34,16 @@ std::vector<std::string> split(const std::string& line) {
 }
 int main(int argc,char** argv) {
 try {
-    if(argc<5 || argc>7)throw std::runtime_error("Usage: liang-flame INPUTS CASE PHI NEW_OUTPUT [OPTIONS] [PRESSURE_ATM]");
+    if(argc<5 || argc>9)throw std::runtime_error("Usage: liang-flame INPUTS CASE PHI NEW_OUTPUT [OPTIONS] [PRESSURE_ATM] [STEADY_RTOL] [STEADY_ATOL]");
     std::string variant=argc>=6?argv[5]:"full";
     liang::DiagnosticOptions options(variant);
-    double pressure=(argc==7?std::stod(argv[6]):100.)*101325.;
+    double pressure=(argc>=7?std::stod(argv[6]):100.)*101325.;
     if(!std::isfinite(pressure) || pressure<101325 || pressure>10132500)throw std::runtime_error("Pressure must be 1--100 atm");
+    double steadyRtol=argc>=8?toleranceArgument(argv[7]):1e-5;
+    double steadyAtol=argc>=9?toleranceArgument(argv[8]):1e-11;
+    if(!std::isfinite(steadyRtol) || steadyRtol<1e-9 || steadyRtol>1e-5 ||
+       !std::isfinite(steadyAtol) || steadyAtol<1e-16 || steadyAtol>1e-11)
+        throw std::runtime_error("Steady tolerances require rtol in [1e-9,1e-5] and atol in [1e-16,1e-11]");
     fs::path input=argv[1],output=argv[4];int stage=std::stoi(argv[2]);double phi=std::stod(argv[3]);
     if(stage<1 || stage>5 || !(phi>0) || fs::exists(output))throw std::runtime_error("Invalid stage/phi or existing output");
     std::ifstream table(input/"species.txt");std::vector<liang::Species> parameters;
@@ -60,6 +72,9 @@ try {
     fs::create_directories(output);
     std::ofstream(output/"pressure-Pa.txt")<<std::setprecision(16)<<pressure<<'\n';
     std::ofstream(output/"model-variant.txt")<<variant<<'\n';
+    std::ofstream(output/"numerics.txt")<<std::setprecision(17)
+        <<"steady_rtol "<<steadyRtol<<"\nsteady_atol "<<steadyAtol
+        <<"\noutput_significant_digits "<<std::numeric_limits<double>::max_digits10<<'\n';
     propertyChecks(sol,(output/"property-checks.csv").string(),pressure);
     if(stage!=2)equilibriumCheck(*gas,(output/"equilibrium.csv").string());
     std::vector<double> xin(gas->nSpecies());gas->getMoleFractions(xin.data());double rho=gas->density();
@@ -76,7 +91,7 @@ try {
     else if(options.totalEnthalpy)flow=std::make_shared<liang::TotalEnthalpyFlow>(sol,options.pureSpeciesFlux);
     else flow=newDomain<Flow1D>("gas-flow",sol,"flow");
     flow->setFreeFlow();flow->setPressure(pressure);
-    flow->setupGrid(values[0].size(),values[0].data());flow->setSteadyTolerances(1e-5,1e-11);
+    flow->setupGrid(values[0].size(),values[0].data());flow->setSteadyTolerances(steadyRtol,steadyAtol);
     flow->setFluxGradientBasis(options.massGradient?ThermoBasis::mass:ThermoBasis::molar);
     flow->enableSoret(options.soret);
     auto inlet=newDomain<Inlet1D>("inlet",sol);inlet->setTemperature(298);inlet->setMoleFractions(xin.data());
