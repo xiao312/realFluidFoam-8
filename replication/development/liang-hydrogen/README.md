@@ -338,6 +338,22 @@ bridged by a connecting line. Run `python -B test_plot_geometry.py`: expect
 vector tick residuals below 0.02 point, raster residuals below 0.12 point, and
 5 micrometres mapped to approximately 18.5079 PDF points in Figure 7.
 
+`compare_structure.py plan|apply PAPER MANIFEST SPECIES_TXT NEW_OUTPUT`
+repeats the quantitative Figure 7 check for explicitly selected completed
+stoichiometric profiles. It reads the pinned PDF's original vector paths using
+`figure7-calibration.json`, converts saved mass fractions to mole fractions,
+and aligns only the 1500 K crossing. It reports transition/FWHM widths, minor
+species peaks, finite-window temperature and species at fixed temperatures.
+Graphical bounds retain the original 0.4-point reading allowance. The manifest
+may contain different cases, grids or diagnostic variants; unique job IDs are
+required and labels retain those distinctions. No model is selected by its score.
+Outputs are metrics, aligned profiles, paper vectors and a source/hash record.
+Dependencies are NumPy, PyMuPDF and the existing profile checks; no network,
+secrets, solver mutation or scheduler operation is used. A source-compatible
+comparison does not establish native conservation or identify the paper's case.
+Verify the source extraction against the archived Figure 7 reading, use the
+native balance/Soret audits separately, and inspect any subsequent plot.
+
 `digitize.py plan|apply PAPER NEW_OUTPUT` extracts hash-pinned original vector
 paths for Figures 3/4/5. It writes raw vertices, native marker centers, tick
 calibration, uncertainty bounds and PNG verification overlays. It does not fit

@@ -48,6 +48,9 @@ The hash-pinned vector digitizer consumes only the local paper, independently
 of simulation results, and supplies reading uncertainties to comparison screens.
 The comparison screen consumes its reference JSON and completed profile snapshots;
 it preserves separate transport variants and reports numerical conservation.
+The Figure 7 structure comparator consumes the same pinned PDF, its independent
+calibration and explicitly selected profiles. It supplies spatial/profile metrics
+without a new model, alignment scale factor or acceptance decision.
 The all-species diffusion replay additionally depends on Cantera Python 3.2 and
 `validation/diffusion`'s independent table, with parity against frozen C++ output.
 
