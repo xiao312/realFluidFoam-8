@@ -4,6 +4,7 @@
 #include "PropertyChecks.h"
 #include "EquilibriumCheck.h"
 #include "TotalEnthalpyFlow.h"
+#include "SoretCompatibleFlow.h"
 #include "cantera/onedim.h"
 #include "cantera/oneD/DomainFactory.h"
 #include "cantera/thermo/ThermoFactory.h"
@@ -65,12 +66,16 @@ try {
         for(size_t k=0;k<fields.size();k++)values[k].push_back(std::stod(fields[k]));}
     if(values[0].size()<10 || columns[0]!="x_m")throw std::runtime_error("Invalid initial profile");
     std::shared_ptr<Flow1D> flow;
-    if(options.totalEnthalpy)flow=std::make_shared<liang::TotalEnthalpyFlow>(sol,options.pureSpeciesFlux);
+    if(options.soret && options.totalEnthalpy)
+        flow=std::make_shared<liang::SoretCompatibleFlow<liang::TotalEnthalpyFlow>>(sol,options.pureSpeciesFlux);
+    else if(options.soret)
+        flow=std::make_shared<liang::SoretCompatibleFlow<Flow1D>>(sol,"flow");
+    else if(options.totalEnthalpy)flow=std::make_shared<liang::TotalEnthalpyFlow>(sol,options.pureSpeciesFlux);
     else flow=newDomain<Flow1D>("gas-flow",sol,"flow");
     flow->setFreeFlow();flow->setPressure(pressure);
     flow->setupGrid(values[0].size(),values[0].data());flow->setSteadyTolerances(1e-5,1e-11);
     flow->setFluxGradientBasis(options.massGradient?ThermoBasis::mass:ThermoBasis::molar);
-    flow->enableSoret(false);
+    flow->enableSoret(options.soret);
     auto inlet=newDomain<Inlet1D>("inlet",sol);inlet->setTemperature(298);inlet->setMoleFractions(xin.data());
     inlet->setMdot(rho*values[2][0]);auto outlet=newDomain<Outlet1D>("outlet",sol);
     std::vector<std::shared_ptr<Domain1D>> domains{inlet,flow,outlet};
@@ -85,6 +90,11 @@ try {
     for(auto level:levels) {
         flow->setRefineCriteria(3,level.first,level.second,0);flame.solve(1,true);
         results<<stage<<','<<phi<<','<<level.first<<','<<level.second<<','<<flow->nPoints()<<','<<100*flow->values("velocity")[0]<<'\n';results.flush();
+    }
+    if(options.soret) {
+        auto* exporter=dynamic_cast<liang::SoretOutput*>(flow.get());
+        if(!exporter)throw std::runtime_error("Missing Soret diagnostic output");
+        exporter->writeSoretFluxes((output/"soret-flux.csv").string());
     }
     // Save numerical fields explicitly; custom factories must also be registered on reload.
     flame.save((output/"flame.yaml").string(),"flame","Staged SRK, concentration-law kinetics",true);

@@ -31,6 +31,38 @@ selects Cantera's mass-fraction-gradient mixture diffusion formulation, includin
 its corresponding coefficients. Default flames retain mole-fraction gradients.
 Neither option changes chemistry, calorics, or conductivity.
 
+`soret` selects an additional methane sensitivity control using Cantera 3.2's
+inherited mixture-averaged thermal-diffusion coefficient. It is not the older
+PREMIX light-species approximation or an identified Liang setting. Case 5
+passes the Takahashi-corrected mixture coefficient into this calculation while
+its collision terms retain dilute binary coefficients. This hybrid closure
+requires a distinct model label; it never replaces the no-Soret baseline.
+
+`SoretCompatibleFlow` retains the true `liang-staged` identifier and native
+Cantera transport, flux and energy routines. Its only compatibility adaptation
+is the pinned `_finalize` identifier check. For an explicitly verified
+`StagedTransport` instance, it disables the flag during that setup-only method
+and restores it on every exit. It rejects unsupported custom transports.
+There is no SDK patch, transport-name substitution, extra enthalpy flux, or
+change to coefficients. The saved flow still records Soret as enabled.
+
+`test-soret INPUTS SOLVED_PROFILE` independently reconstructs thermal
+coefficients from viscosity, binary diffusion and collision integrals. It
+checks the Case 5 projection, dilute pressure independence, zero summed
+coefficient, actual Flow1D flux direction and mass closure, and the custom
+finalization path. The build must pass these checks before a Soret flame.
+The existing SDK, compiler and immutable input table are its dependencies.
+Inputs and output logs follow the same project-root boundary; no credentials
+or new service is involved. See the
+[source audit](../../docs/liang-soret-control-audit-20261021.md) for equations
+and limits. Example: `test-soret inputs result/profile.csv`; expect all checks
+to pass with relative coefficient errors below `1e-10`.
+The test accepts either the named initial-profile schema or an exported solved
+profile. Soret solves also write `soret-flux.csv` with each face's actual native
+coefficient, ordinary flux, thermal flux, total flux and partial enthalpy.
+Units are explicit in the column names. New jobs retain observed executable,
+source, command, build and SDK records, with an explicit 3072 MiB allocation.
+
 `diffusion-probe INPUTS PROFILE NEW_OUTPUT.csv` audits frozen profile states with
 pair and bulk critical-property averaging. It independently reconstructs
 `D_i = (1-Y_i)/sum(j!=i, X_j/D_ij)` from the returned binary matrix, checks matrix

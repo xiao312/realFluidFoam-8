@@ -3,7 +3,7 @@ set -euo pipefail
 root=${1:?}; release=${2:?}; sdk=${3:?}; inputs=${4:?}; stage=${5:?}; build=${6:-}
 phi=${7:-1.10}
 variant=${8:-full}
-[[ $variant =~ ^(full|(dense-increment|bounded-takahashi|pressure-chemistry|fine-grid|smoothed-alpha|takahashi-table2|takahashi-high-t|takahashi-bulk|mass-gradient|total-enthalpy|pure-species-flux)(,(dense-increment|bounded-takahashi|pressure-chemistry|fine-grid|smoothed-alpha|takahashi-table2|takahashi-high-t|takahashi-bulk|mass-gradient|total-enthalpy|pure-species-flux))*)$ ]] || exit 2
+[[ $variant =~ ^(full|(dense-increment|bounded-takahashi|pressure-chemistry|fine-grid|smoothed-alpha|takahashi-table2|takahashi-high-t|takahashi-bulk|mass-gradient|total-enthalpy|pure-species-flux|soret)(,(dense-increment|bounded-takahashi|pressure-chemistry|fine-grid|smoothed-alpha|takahashi-table2|takahashi-high-t|takahashi-bulk|mass-gradient|total-enthalpy|pure-species-flux|soret))*)$ ]] || exit 2
 pressure=${9:-100}
 [[ $pressure =~ ^[0-9]+([.][0-9]+)?$ ]] || exit 2
 [[ -n ${SLURM_JOB_ID:-} ]] || exit 2
@@ -17,6 +17,9 @@ export OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1
 export LD_LIBRARY_PATH="$sdk/lib:${LD_LIBRARY_PATH:-}"
 export CANTERA_DATA="$sdk/share/cantera/data" PKG_CONFIG_PATH="$sdk/lib/pkgconfig"
 cd "$job"
+cp "$release/SOURCE_REVISION" source-revision.txt
+printf '%s\n' "$sdk" > sdk-path.txt
+printf 'cpus=%s memory_MiB=%s\n' "${SLURM_CPUS_PER_TASK:-unknown}" "${SLURM_MEM_PER_NODE:-unknown}" > resources.txt
 module_path="$release/replication/development/cantera-liang"
 if [[ $stage == build ]]; then
  unset CPLUS_INCLUDE_PATH C_INCLUDE_PATH CPATH LIBRARY_PATH
@@ -33,6 +36,9 @@ if [[ $stage == build ]]; then
  ./test-takahashi > takahashi-check.txt
  if ./test-takahashi legacy > takahashi-legacy-control.txt; then exit 1; fi
  if ./test-alpha legacy > alpha-legacy-control.txt; then exit 1; fi
+ "$compiler" -std=c++17 -O2 -D_GLIBCXX_USE_CXX11_ABI=1 "$module_path/test_soret.cpp" \
+   $flags -Wl,-rpath,"$sdk/lib" -o test-soret > compile-soret.log 2>&1
+ ./test-soret "$inputs" "$inputs/guess.csv" > soret-check.txt
  "$compiler" -std=c++17 -O2 -D_GLIBCXX_USE_CXX11_ABI=1 "$module_path/flame.cpp" \
    $flags -Wl,-rpath,"$sdk/lib" -o liang-flame > compile.log 2>&1
  "$compiler" -std=c++17 -O2 -D_GLIBCXX_USE_CXX11_ABI=1 "$module_path/model_probe.cpp" \
@@ -52,7 +58,11 @@ else
  test -f "$build/build-passed.txt"
  (cd "$build"; sha256sum -c binary.sha256)
  sha256sum "$inputs"/* > input-sha256.txt
- cp "$release/SOURCE_REVISION" source-revision.txt
+ test "$(cat "$build/source-revision.txt")" = "$(cat source-revision.txt)"
+ printf '%s\n' "$build" > build-path.txt
+ cp "$build/binary.sha256" executable.sha256
+ printf '%q ' "$build/liang-flame" "$inputs" "$stage" "$phi" "$job/result" "$variant" "$pressure" > command.txt
+ printf '\n' >> command.txt
  # Always pass defaults explicitly: older site Bash treats an empty array as
  # unbound under nounset, preventing the default ideal control from starting.
  "$build/liang-flame" "$inputs" "$stage" "$phi" "$job/result" "$variant" "$pressure" > flame.log 2>&1

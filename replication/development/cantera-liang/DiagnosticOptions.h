@@ -11,6 +11,7 @@ struct DiagnosticOptions {
     bool highTemperature=false;
     bool bulkTakahashi=false,massGradient=false;
     bool totalEnthalpy=false,pureSpeciesFlux=false;
+    bool soret=false;
     explicit DiagnosticOptions(const std::string& text) {
         if(text=="full")return;
         std::stringstream stream(text);std::string item;std::set<std::string> seen;
@@ -27,6 +28,7 @@ struct DiagnosticOptions {
             else if(item=="mass-gradient")massGradient=true;
             else if(item=="total-enthalpy")totalEnthalpy=true;
             else if(item=="pure-species-flux")pureSpeciesFlux=true;
+            else if(item=="soret")soret=true;
             else throw std::runtime_error("Unknown diagnostic option: "+item);
         }
         if(seen.empty() || text.back()==',')throw std::runtime_error("Empty diagnostic option");
