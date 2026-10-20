@@ -39,6 +39,15 @@ It also changes third-body and falloff concentrations; standard reverse
 equilibrium constants remain those of the inherited ideal reference phase.
 This is a distinct kinetic diagnostic, not an energy correction or an identified
 Liang closure. It must precede any `midpoint-` and `smooth-` prefixes.
+Alternatively, the outer prefix `activity-` enables symmetric fugacity-based
+mass action, `c_activity = X*p*phi_fugacity/(R*T)`, for both forward and reverse
+rates. Third-body/falloff collisions retain physical SRK concentrations.
+Standard-state reverse equilibrium constants remain ideal; applying a second
+fugacity correction there would double count it. This is a named interpretation
+of Liang reference 10, not an identified Liang/Burke collider implementation.
+It supports Case 1 parity and thermodynamically complete Cases 3–5; Case 2
+is rejected because its density-only ablation lacks consistent activities.
+`activity-` and `concentration-` are mutually exclusive.
 The configuration records the selected law and the completed run records the
 pressure-adapter callback count (zero when the adapter is not installed).
 Soret and radiation are disabled; the paper does not specify them.
@@ -139,6 +148,10 @@ checks CP against finite differences and the partial-enthalpy Euler identity.
 The chemistry-law check compares six reactive frozen states against independent
 ideal-phase evaluations at physical p and p/Z. It includes third-body/falloff
 terms and requires the chemistry adapter to preserve physical SRK density.
+The activity check separately verifies forward/reverse mass action against
+the factor `product((Z*phi_fugacity)^stoichiometry)` at fixed physical states,
+and tests elemental conservation and detailed balance after VCS TP equilibrium.
+No additional fugacity correction is applied to kinetic prefactors.
 The ideal control must also agree with a separately solved stock Cantera flame
 before treating discrepancies as nonideal model effects.
 `stock_control.py plan|apply MECHANISM OUTPUT --phi 1.4` supplies that independent

@@ -20,7 +20,9 @@ try {
     const double width=argc>=7?std::stod(argv[6]):.01,Tu=argc>=8?std::stod(argv[7]):298.;
     const std::string requestedVariant=argc>=9?argv[8]:"baseline";
     const bool concentration=requestedVariant.rfind("concentration-",0)==0;
-    const std::string fluxVariant=concentration?requestedVariant.substr(14):requestedVariant;
+    const bool activity=requestedVariant.rfind("activity-",0)==0;
+    const std::string fluxVariant=concentration?requestedVariant.substr(14):
+                                  activity?requestedVariant.substr(9):requestedVariant;
     const bool midpoint=fluxVariant.rfind("midpoint-",0)==0;
     const std::string alphaVariant=midpoint?fluxVariant.substr(9):fluxVariant;
     const bool smooth=alphaVariant.rfind("smooth-",0)==0;
@@ -37,6 +39,7 @@ try {
         throw std::runtime_error("Unknown model variant");
     if(stage<1 || stage>5 || !(phi>=.6 && phi<=3) || !(width>0 && width<=.1)
        || !(Tu>=280 && Tu<=350) || fs::exists(output))throw std::runtime_error("Invalid input or existing output");
+    if(activity && stage==2)throw std::runtime_error("Activity chemistry requires complete thermodynamics");
     std::ifstream table(input/"species.txt");std::vector<liang::Species> parameters;
     std::vector<std::string> names;std::string name;liang::Species row;
     while(table>>name>>row.Tc>>row.Pc>>row.Vc>>row.W>>row.omega>>row.eos) {
@@ -61,6 +64,7 @@ try {
     auto activate=[&](std::shared_ptr<Solution> s,int modelStage) {
         if(auto* g=dynamic_cast<liang::SrkPhase*>(s->thermo().get())) {
             g->parameters=parameters;g->stage=modelStage;g->smoothedAlpha=smooth;
+            g->fugacityKinetics=activity;
             g->setState_TP(Tu,pressure);
         }
     };
@@ -79,14 +83,17 @@ try {
                          "hydrogen-staged");
     activate(sol,stage);auto gas=sol->thermo();
     gas->setEquivalenceRatio(phi,"H2","O2:0.21,N2:0.79");gas->setState_TP(Tu,pressure);
-    if(stage>1 && !concentration)liang::usePressureChemistry(sol,(input/"ideal.yaml").string());
+    if(stage>1 && !concentration && !activity)
+        liang::usePressureChemistry(sol,(input/"ideal.yaml").string());
     std::vector<double> xin(names.size()),partial(names.size());
     gas->getMoleFractions(xin.data());const double rho=gas->density();
     fs::create_directories(output);
     std::ofstream config(output/"configuration.txt");
     config<<std::setprecision(16)<<"case "<<label<<"\nphi "<<phi<<"\npressure_Pa "<<pressure
           <<"\nTu_K "<<Tu<<"\nwidth_m "<<guess.x.back()-guess.x.front()
-          <<"\nkinetics "<<(concentration?"Burke2012-N2-actual-concentration":"Burke2012-N2-pressure")
+          <<"\nkinetics "<<(activity?"Burke2012-N2-activity":
+                            concentration?"Burke2012-N2-actual-concentration":"Burke2012-N2-pressure")
+          <<"\ncollider_concentration "<<(activity || concentration?"physical":"pressure-based")
           <<"\ntransport author-pair-count "<<pairs.size()
           <<"\nmodel_variant "<<requestedVariant<<"\nalpha "<<(smooth?"C4-continuation":"original-Soave")
           <<"\nflux_correction "<<(midpoint?"midpoint":"left-node")

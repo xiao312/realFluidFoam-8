@@ -37,6 +37,9 @@ if [[ $action == build ]]; then
  "$compiler" -std=c++17 -O2 -D_GLIBCXX_USE_CXX11_ABI=1 "$module/test_chemistry.cpp" \
   $flags -Wl,-rpath,"$sdk/lib" -o test-chemistry > compile-chemistry.log 2>&1
  ./test-chemistry "$inputs" > chemistry-check.txt
+ "$compiler" -std=c++17 -O2 -D_GLIBCXX_USE_CXX11_ABI=1 "$module/test_activity.cpp" \
+  $flags -Wl,-rpath,"$sdk/lib" -o test-activity > compile-activity.log 2>&1
+ ./test-activity "$inputs" > activity-check.txt
  "$compiler" -std=c++17 -O2 -D_GLIBCXX_USE_CXX11_ABI=1 "$module/flame.cpp" \
   $flags -Wl,-rpath,"$sdk/lib" -o hydrogen-flame > compile.log 2>&1
  sha256sum hydrogen-flame > binary.sha256
