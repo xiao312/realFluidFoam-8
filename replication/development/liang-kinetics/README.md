@@ -45,6 +45,17 @@ Apply requires a new output directory and passes the frozen-state rate check
 before writing the input and its provenance. This does not establish that the
 removed pathways are dynamically negligible in a flame.
 
+`prompt_off.py plan|apply FIXED_HP_YAML FIXED_HP_QUALIFICATION NEW_OUTPUT`
+isolates the baseline-versus-prompt distinction in Zhao et al. (2017), Liang's
+reference 15. It removes exactly the three negative HCO correction channels and
+their three positive direct H+CO partners (author reactions 46/47, 49/50, 52/53),
+retains parent reactions 45/48/51, and clears only their now-unpaired duplicate
+flags. Other H+CO pathways remain. Input hash and author-to-specialized reaction
+mapping must match the qualified 100-atm input. It uses the same offline Python
+dependencies and verifies every retained forward/reverse rate before writing.
+This is a source-supported prompt-off diagnostic, not an identified Liang
+methane subset. It remains restricted to 100 atm and 298–3500 K.
+
 Optional `PAIRS_TXT` supplies named binary diffusion polynomials, one whitespace
 row `species_a species_b d0 d1 d2 d3` per author pair. Its explicit formula is
 `D[m2/s] = 1e-4*(101325/p[Pa])*exp(sum(d_i*ln(T[K])^i))`.
