@@ -9,6 +9,19 @@ PAPER_SHA='24163be0124e0fa6cd28ddb1d369b813e64e82bd7446e9f9218a340445aca6fe'
 GREEN=(0,.48,.27); PURPLE=(.60,.1,.65); BLUE=(0,.4,.75); ORANGE=(.75,.35,0)
 FIG1=(48,53,240,384); CAP1=(48,394,240,424)
 FIG2=(263,53,456,210); CAP2=(263,219,456,239)
+CALIBRATION_PATH=Path(__file__).with_name('figure1-calibration.json')
+CALIBRATION=json.loads(CALIBRATION_PATH.read_text(encoding='utf-8'))
+
+
+def figure1_point(quantity, temperature, value):
+    """Map physical coordinates through the independently measured source pixels."""
+    rect=CALIBRATION['image_rect_points'];size=CALIBRATION['image_size_px']
+    coords=[]
+    for i,v in enumerate((temperature,value)):
+        mapping=CALIBRATION['calibration'][quantity+('_x' if i==0 else '_y')]
+        pixel=(v-mapping['value_intercept'])/mapping['value_per_pixel']
+        coords.append(rect[i]+pixel*(rect[i+2]-rect[i])/size[i])
+    return tuple(coords)
 
 
 def digest(path):return hashlib.sha256(path.read_bytes()).hexdigest()
@@ -58,14 +71,11 @@ def curve(page,data,transform,color,dash=False,marker_every=50):
 
 def overlay1(page,origin,oxygen,nist):
     ox,oy=origin;ox-=FIG1[0];oy-=FIG1[1]
-    # Calibration uses the embedded 775 x 1371-pixel image at 186 x 328.95 pt.
-    # Embedded raster tick centres: density T400/1000 x242/746, rho0/200 y603.5/80.5;
-    # conductivity T200/1000 x153/750, k.02/.14 y1273/755. Preserve its slight margins.
-    sx=186/775;sy=328.95/1371
-    a=lambda t,r:(ox+50.733+sx*(242+(t-400)*504/600),
-                  oy+54.012+sy*(603.5-r*523/200))
-    b=lambda t,k:(ox+50.733+sx*(153+(t-200)*597/800),
-                  oy+54.012+sy*(1273-(k-.02)*518/.12))
+    def calibrated_point(quantity,t,value):
+        x,y=figure1_point(quantity,t,value)
+        return ox+x,oy+y
+    a=lambda t,r:calibrated_point('density',t,r)
+    b=lambda t,k:calibrated_point('conductivity',t,k)
     curve(page,[(float(r['T_K']),float(r['rho_kg_m3'])) for r in oxygen if 225<=float(r['T_K'])<=1000],a,GREEN)
     curve(page,[(float(r['T_K']),float(r['kappa_W_m_K'])) for r in oxygen
                 if float(r['T_K'])>=120 and .011<float(r['kappa_W_m_K'])<.149],b,GREEN)
@@ -164,6 +174,7 @@ def main():
         errors[key]={'NIST_300_1000K_RMS_percent':(sum(v*v for v in selected)/len(selected))**.5,
                      'NIST_300_1000K_max_abs_percent':max(map(abs,selected))}
     record=dict(source_pdf_sha256=PAPER_SHA,plotter_sha256=digest(Path(__file__)),
+        figure1_calibration_sha256=digest(CALIBRATION_PATH),
         input_sha256={p.name:digest(p) for p in a.results.glob('*.csv')},nist=manifest,
         source_page_index=2,figure_clips_pt=[FIG1,FIG2],caption_clips_pt=[CAP1,CAP2],
         checks=json.loads((a.results/'checks.json').read_text()),reference_errors=errors,

@@ -84,7 +84,9 @@ try {
     for(size_t k=0;k<n;k++)ys[k]=flow->values(gas->speciesName(k));
     std::ofstream csv(output/"profile.csv");
     csv<<std::setprecision(16)<<"x_m,T_K,U_m_s,rho_kg_m3,h_J_kg,cp_J_kgK,lambda_W_mK";
-    for(const auto& name:gas->speciesNames())csv<<",Y_"<<name;csv<<'\n';
+    for(const auto& name:gas->speciesNames())
+        csv<<','<<kinetics_control::csvField("Y_"+name);
+    csv<<'\n';
     std::vector<double> y(n);
     for(size_t j=0;j<grid.size();j++) {
         for(size_t k=0;k<n;k++)y[k]=ys[k][j];

@@ -21,6 +21,29 @@ and the new mechanism. A supplied guess skips the otherwise used fixed-temperatu
 preparation solve. Both paths solve the full energy equation for reported results.
 Inputs require increasing x, finite fields and at least ten points. No transient
 CFD checkpoint is consumed.
+Profile headers use CSV quoting, including species names containing commas.
+The reader supports quoted fields and doubled quotes and rejects malformed
+records. Historical USC profiles have unquoted comma-bearing species names;
+they require an explicit mechanism-order audit before positional recovery.
+The driver does not silently reinterpret such malformed historical files.
+
+`subset.py plan|apply INPUT_YAML NEW_OUTPUT --max-carbon 2` prepares a labelled
+structural sensitivity input. It retains all species with at most two carbon
+atoms, all reactions whose participating species are retained, and only retained
+third-body efficiencies. It preserves C2 methane-recombination pathways.
+This is not an author-supplied methane subset and is never selected by agreement
+with the paper. The JSON record lists removed species/reactions and verifies
+retained forward/reverse progress rates against the full mechanism with omitted
+species set to zero. Cantera Python 3.2, NumPy and ruamel.yaml are its offline
+dependencies. Source YAML scalars/units are retained; the native Cantera writer
+fails for the signed HP representation, so the preparer checks the serialized
+YAML through a fresh Cantera load instead.
+The fixed-100-atm HP input remains qualified only at 100 atm and 298–3500 K.
+No model rates, thermochemistry or transport coefficients are fitted or repaired.
+Plan performs discovery and reports the selection without writing files.
+Apply requires a new output directory and passes the frozen-state rate check
+before writing the input and its provenance. This does not establish that the
+removed pathways are dynamically negligible in a flame.
 
 Optional `PAIRS_TXT` supplies named binary diffusion polynomials, one whitespace
 row `species_a species_b d0 d1 d2 d3` per author pair. Its explicit formula is
@@ -75,3 +98,20 @@ is blocked until a source-supported resolution exists.
 Builds with a supplied pair table run binary-formula, symmetry, mixture-reduction,
 and unchanged-thermal-conductivity checks at ten prescribed states before
 qualifying the executable.
+Every build also checks CSV round trips for the actual comma-bearing USC names,
+ordinary profile headers, embedded quotes, empty fields and malformed records.
+
+`plot.py plan|apply PAPER MANIFEST REFERENCE_JSON NEW_OUTPUT [--gri-sweep JSON]`
+overlays completed ideal mechanism controls on the original Figure 8(b) panel,
+preserving its physical scale and caption. Each manifest row supplies `job`,
+`mechanism`, `transport` and a collected `result` directory. Duplicate displayed
+mechanism/transport/phi points fail; select a declared run rather than silently
+averaging repeated pilots. Incomplete runs are retained in the evidence record
+but not plotted. The optional GRI sweep is the earlier versioned Case 1-5 result
+summary; only its screened ideal points are used and its hash is recorded.
+The independent reference JSON supplies pixel calibration and reading bounds.
+Outputs are PNG/PDF, a comparison CSV and input/result identities. This offline
+renderer uses PyMuPDF and the standard library, with no solver, scheduler or
+network dependency. It cannot establish the unprovided Liang methane subsets.
+Verify the original axes, marker legends, reported selected jobs and missing
+reference points before publishing. No curve is fitted to the paper.

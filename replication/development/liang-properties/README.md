@@ -55,6 +55,11 @@ Verification: `python3 -B check.py OUTPUT_DIR`, `git diff --check`, and
 critical derivative residuals below 1e-10, pure-fluid critical recovery within
 the truncation error of upstream SRK constants, and recorded extrapolation.
 Reference disagreement is reported separately from implementation checks.
+The Figure 1 renderer uses `figure1-calibration.json`, measured from the original
+embedded raster. It records the calibration hash with the artifact. Its line and
+triangle readings remain distinct comparison targets; agreement with one does
+not imply agreement with the other. `python -B test_plot_geometry.py` checks
+the original axis ticks against the retained source-pixel positions.
 
 ## Independent critical-point audit
 
@@ -100,3 +105,8 @@ the C++ kernel. Verification checks pure-fluid recovery of the coupled map,
 fixed-volume derivative step sensitivity, and parity with saved baseline
 conductivity where a matching profile is supplied. Property or paper agreement
 is reported separately from those implementation checks.
+`--pure-species O2` replaces the fresh-H2 sampling with pure oxygen at 100 atm,
+200–1000 K in 5 K increments, for an independently labelled Figure 1 comparison.
+It cannot be combined with `--profile`. The input mechanism still determines
+the ideal Cp and dilute conductivity; its identity must not be conflated with
+the earlier native-library input. Sub-200 K caloric extrapolation is excluded.

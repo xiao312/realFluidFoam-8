@@ -31,6 +31,10 @@ if [[ $action == build ]]; then
  "$compiler" --version > compiler.txt
  flags=$("$sdk/bin/pkg-config" --cflags --libs cantera)
  printf '%s\n' "$flags" > compiler-flags.txt
+ "$compiler" -std=c++17 -O2 \
+  "$release/replication/development/liang-kinetics/test_csv.cpp" \
+  -o test-csv > compile-csv.log 2>&1
+ ./test-csv > csv-check.txt
  "$compiler" -std=c++17 -O2 -D_GLIBCXX_USE_CXX11_ABI=1 \
   "$release/replication/development/liang-kinetics/flame.cpp" $flags \
   -Wl,-rpath,"$sdk/lib" -o kinetics-flame > compile.log 2>&1

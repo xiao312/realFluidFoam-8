@@ -11,6 +11,12 @@ It is independent of transient CFD restarts and does not supply boundary data.
 An optional author binary-polynomial table modifies only the ideal driver's
 mixture-averaged mass diffusion. It uses the Cantera SDK directly, without a
 dependency on hydrogen-specific or SRK adapters, and records its own input hash.
+Its offline Figure 8(b) renderer depends on PyMuPDF, collected result snapshots
+and independently digitized paper calibration. The optional earlier GRI summary
+is an explicit data input; it does not introduce a runtime solver dependency.
+Its offline carbon-count subset preparer uses Cantera Python, NumPy and ruamel.yaml to
+preserve and verify retained rates. The output is a labelled structural
+sensitivity input, not an inferred author mechanism or a production dependency.
 
 `development/liang-hydrogen` consumes the author Burke 2012 mechanism and
 qualified species parameters, reusing `cantera-liang` SRK, transport,

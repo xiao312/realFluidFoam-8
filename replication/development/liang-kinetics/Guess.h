@@ -1,19 +1,10 @@
 #pragma once
 #include "cantera/thermo/ThermoPhase.h"
+#include "Csv.h"
 #include <fstream>
-#include <sstream>
 #include <unordered_map>
 
 namespace kinetics_control {
-inline std::vector<std::string> split(const std::string& line) {
-    std::stringstream stream(line);std::string field;std::vector<std::string> result;
-    while(std::getline(stream,field,',')) {
-        if(!field.empty() && field.back()=='\r')field.pop_back();
-        result.push_back(field);
-    }
-    return result;
-}
-
 // This maps a steady numerical guess, not the physical boundary composition.
 inline double readGuess(const std::string& file,const Cantera::ThermoPhase& gas,
                         std::vector<double>& grid,std::vector<double>& location,

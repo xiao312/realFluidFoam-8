@@ -14,7 +14,10 @@ def main():
     parser.add_argument("inputs", type=Path)
     parser.add_argument("output", type=Path)
     parser.add_argument("--profile", type=Path)
+    parser.add_argument("--pure-species", choices=["O2"])
     args = parser.parse_args()
+    if args.profile and args.pure_species:
+        parser.error("Choose a saved profile or pure-species scan")
     paths = [args.inputs/"ideal.yaml", args.inputs/"species.txt"]
     if args.profile:
         paths.append(args.profile)
@@ -59,11 +62,16 @@ def main():
                              derivative_step_relative_change=abs(
                                  fine["lambda_W_mK"]/value["lambda_W_mK"]-1)))
 
-    for t in (298., 300., 500., 800., 1200., 2000.):
-        for phi in (1., 1.4, 2.1):
-            for p in (ct.one_atm, 100*ct.one_atm):
-                gas.set_equivalence_ratio(phi, "H2", "O2:0.21,N2:0.79")
-                evaluate(f"fresh-phi{phi}", t, p, gas.Y.copy())
+    if args.pure_species:
+        for t in range(200, 1001, 5):
+            gas.TPX = t, 100*ct.one_atm, {args.pure_species: 1.}
+            evaluate("scan-"+args.pure_species, t, gas.P, gas.Y.copy())
+    else:
+        for t in (298., 300., 500., 800., 1200., 2000.):
+            for phi in (1., 1.4, 2.1):
+                for p in (ct.one_atm, 100*ct.one_atm):
+                    gas.set_equivalence_ratio(phi, "H2", "O2:0.21,N2:0.79")
+                    evaluate(f"fresh-phi{phi}", t, p, gas.Y.copy())
 
     # In a pure mixture the coupled reduced states reduce exactly to T/Tc,v/Vc.
     for name in ("H2", "O2", "N2", "H2O"):

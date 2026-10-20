@@ -1,0 +1,124 @@
+{
+  "paper_sha256": "24163be0124e0fa6cd28ddb1d369b813e64e82bd7446e9f9218a340445aca6fe",
+  "image_sha256": "b28ef871c4ad92031d7eeaf24e8a20d0fde6e83f9842c88c0f98ea645068c9ea",
+  "image_size_px": [
+    775,
+    1371
+  ],
+  "image_rect_points": [
+    50.733001708984375,
+    54.011993408203125,
+    236.73300170898438,
+    382.9620056152344
+  ],
+  "calibration": {
+    "density_x": {
+      "value_per_pixel": 1.1901205125379157,
+      "value_intercept": 111.93170174220258,
+      "ticks": [
+        {
+          "value": 400,
+          "pixel": 242.0
+        },
+        {
+          "value": 600,
+          "pixel": 410.0
+        },
+        {
+          "value": 800,
+          "pixel": 578.5
+        },
+        {
+          "value": 1000,
+          "pixel": 746.0
+        }
+      ]
+    },
+    "density_y": {
+      "value_per_pixel": -0.3819707472853522,
+      "value_intercept": 230.5957984968619,
+      "ticks": [
+        {
+          "value": 0,
+          "pixel": 603.5
+        },
+        {
+          "value": 50,
+          "pixel": 473.0
+        },
+        {
+          "value": 100,
+          "pixel": 342.0
+        },
+        {
+          "value": 150,
+          "pixel": 211.0
+        },
+        {
+          "value": 200,
+          "pixel": 80.0
+        }
+      ]
+    },
+    "conductivity_x": {
+      "value_per_pixel": 1.3404807672006276,
+      "value_intercept": -4.4227779307631225,
+      "ticks": [
+        {
+          "value": 200,
+          "pixel": 152.5
+        },
+        {
+          "value": 400,
+          "pixel": 302.0
+        },
+        {
+          "value": 600,
+          "pixel": 450.5
+        },
+        {
+          "value": 800,
+          "pixel": 600.0
+        },
+        {
+          "value": 1000,
+          "pixel": 749.5
+        }
+      ]
+    },
+    "conductivity_y": {
+      "value_per_pixel": -0.0002315473027635365,
+      "value_intercept": 0.314788965002226,
+      "ticks": [
+        {
+          "value": 0.02,
+          "pixel": 1273.0
+        },
+        {
+          "value": 0.04,
+          "pixel": 1187.0
+        },
+        {
+          "value": 0.06,
+          "pixel": 1100.5
+        },
+        {
+          "value": 0.08,
+          "pixel": 1013.5
+        },
+        {
+          "value": 0.1,
+          "pixel": 927.5
+        },
+        {
+          "value": 0.12,
+          "pixel": 842.0
+        },
+        {
+          "value": 0.14,
+          "pixel": 754.5
+        }
+      ]
+    }
+  }
+}
