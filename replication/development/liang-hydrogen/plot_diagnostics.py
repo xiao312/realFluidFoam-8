@@ -10,10 +10,11 @@ def load(path):
     rows = json.loads(path.read_text(encoding="utf-8"))["diagnostics"]
     seen, styles = set(), {}
     for row in rows:
-        expected = {3: "speed_cm_s", 5: "Tb_K"}
-        if row["figure"] not in expected or row["quantity"] != expected[row["figure"]]:
-            raise ValueError("Diagnostics support only declared Figure 3/5 quantities")
-        key = (row["figure"], row["case"], row["phi"], row["label"])
+        expected = {3: {"speed_cm_s"}, 4: {"density_g_cm3", "massflux_g_cm2_s"},
+                    5: {"Tb_K"}}
+        if row["figure"] not in expected or row["quantity"] not in expected[row["figure"]]:
+            raise ValueError("Diagnostics support only declared Figure 3/4/5 quantities")
+        key = (row["figure"], row["quantity"], row["case"], row["phi"], row["label"])
         if key in seen or row["numerical_screen_passed"] is not True:
             raise ValueError("Duplicate or numerically unscreened diagnostic point")
         if row["case"] not in ("1", "2", "3", "3star", "4", "5"):
@@ -53,14 +54,16 @@ def marker(page, point, style, color):
 
 def draw(page, rows, figure, colors, axis, crop):
     bounds = {3: (52.709, 55.026, 220.09, 207.764),
+              4: (272.693, 56.879, 418.153, 189.616),
               5: (73.946, 54.434, 230.882, 197.642)}
     outside = 0
     for row in (r for r in rows if r["figure"] == figure):
         x = axis(f"{figure}_x", row["phi"])
-        y = axis("3_speed_cm_s" if figure == 3 else "5_Tb_K", row["value"])
+        y = axis(f"{figure}_{row['quantity']}", row["value"])
         left, top, right, bottom = bounds[figure]
         if not (left-.02 <= x <= right+.02 and top-.02 <= y <= bottom+.02):
             outside += 1
             continue
-        marker(page, (270+x-crop.x0, 56+y-crop.y0), row["marker"], colors[row["case"]])
+        color = colors.get((row["quantity"], row["case"]), colors[row["case"]])
+        marker(page, (270+x-crop.x0, 56+y-crop.y0), row["marker"], color)
     return outside

@@ -130,7 +130,6 @@ def main():
                 "Native mass/element/energy and Soret audits remain separate requirements",
                 "Fixed-temperature sampling omits unobserved tails; no extrapolation"])
     args.output.mkdir(parents=True)
-    (args.output/"summary.json").write_text(json.dumps(report, indent=2)+"\n", encoding="utf-8")
     write_csv(args.output/"raw-vector-points.csv", raw)
     write_csv(args.output/"aligned-profiles.csv", aligned)
     write_csv(args.output/"species-at-temperature.csv", fixed_temperature)
@@ -138,6 +137,9 @@ def main():
         dict(label="Paper; case unspecified", **paper_metrics)] + [
         dict(label=record["label"], job=record["job"], **record["metrics"])
         for record, _ in evaluations])
+    report["outputs_sha256"] = {name: digest(args.output/name) for name in (
+        "raw-vector-points.csv", "aligned-profiles.csv", "species-at-temperature.csv", "metrics.csv")}
+    (args.output/"summary.json").write_text(json.dumps(report, indent=2)+"\n", encoding="utf-8")
 
 
 if __name__ == "__main__":

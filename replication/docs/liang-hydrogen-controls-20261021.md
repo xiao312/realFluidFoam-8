@@ -99,6 +99,54 @@ These residuals are far too small to account for percent-level speed errors.
 The reported strict failures remain visible, and no solver coefficient,
 normalization rule, scientific tolerance or baseline was changed to remove them.
 
+### Qualified full-precision controls
+
+The six rich Case 1/3 off/native/manual controls from source `3169490`,
+build `125099135`, now pass every unchanged strict native-flux check.
+The driver writes 17 significant digits, preserving each binary double on
+readback. It uses the tighter 1e-7/1e-13 steady tolerances already tested in
+the preceding `fcd1150` cohort.
+
+For each pair, refinement and thermodynamic-check files are byte-identical.
+Parsed profile and transport differences remain below 6e-15 relative, accounted
+for by the different decimal precision. All four enabled runs reconstruct the
+native thermal flux exactly in the offline calculation. A deliberate 100 ppm
+thermal-flux corruption still fails. The
+[qualification record](liang-hydrogen-export17-20261021.json) retains the
+matched controls, original hashes, all residuals and negative test.
+
+This separates two numerical issues: tighter convergence resolves the
+composition/projection residual; full-precision output resolves cancellation
+when subtracting adjacent saved coordinates. Neither changes the scientific
+speed discrepancy. Further Case 4/5 full-precision controls are recorded
+separately while they complete.
+
+## Figure 7 structure controls
+
+The [structure record](liang-hydrogen-structure-controls-20261021.json) covers
+twenty completed stoichiometric profiles. Its portable comparator reproduces
+the original six-profile metrics to below 1e-9, with identical paper vectors
+and graphical bounds. Alignment is a translation at 1500 K only; neither
+distance nor species concentration is rescaled.
+
+| Control | Job | 500–2000 K width, µm | HO2 peak error | H2O2 peak error |
+| --- | ---: | ---: | ---: | ---: |
+| Case 5, conservative | 125097175 | 4.8194 | +5.967% | +7.356% |
+| Case 3, Cantera 3.2 Soret | 125097214 | 4.6572 | +2.754% | +3.252% |
+| Case 3, manual Soret | 125097216 | 4.6876 | +1.909% | +0.480% |
+
+The two Case 3 Soret controls lie inside all seven existing width, peak and
+peak-location reading intervals. That does not establish an entire-profile
+match. At a fixed 2300 K, the native/manual controls still overpredict H2
+by 9.36/9.14% and HO2 by 11.16/11.05%. These sampled errors have no new
+acceptance threshold and are distinct from errors at a fixed translated
+distance. The paper does not identify Figure 7's case or Soret setting.
+
+The selected profiles are rendered in
+`output/pdf/liang-figure7-controls-20261021-0555/`, one original/overlay pair
+per control, with matching physical scale, original captions and legends.
+Improved minor-species peaks alone do not override the Figure 3 failures.
+
 ## Reproduction
 
 From `replication/development/liang-hydrogen`, run:
@@ -111,6 +159,8 @@ python -B analyze_soret.py apply RICH_MANIFEST REFERENCE_JSON soret-report
 python -B soret_roundtrip.py plan ALL_SORET_MANIFEST roundtrip.json
 python -B soret_roundtrip.py apply ALL_SORET_MANIFEST roundtrip.json
 python -B test_soret_roundtrip.py ALL_SORET_MANIFEST new-fixture-directory
+python -B compare_structure.py apply PAPER STOICH_MANIFEST SPECIES_TXT structure-report
+python -B plot_structure.py plan PAPER structure-report structure-plots --jobs JOB,JOB
 ```
 
 The ordinary methane six-run analyzer was rerun after exposing its inspection

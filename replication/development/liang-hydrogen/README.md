@@ -316,7 +316,9 @@ records when present; it does not invent them for historical jobs.
 The renderer uses NumPy/PyMuPDF, preserves source panels at publication scale,
 adds open-symbol legends, and exports six PNGs, a PDF and evidence JSON.
 Optional `--diagnostics JSON` overlays screened discrete controls on Figures
-3/5 only. Each row declares figure/quantity, case, phi, value, label, marker,
+3/4/5. Quantities are `speed_cm_s`, Figure 4 `density_g_cm3` or
+`massflux_g_cm2_s`, and Figure 5 `Tb_K`. Each row declares
+figure/quantity, case, phi, value, label, marker,
 job, source and profile hash, with `numerical_screen_passed=true`. Native-flux
 qualification limits remain in the diagnostic evidence; the renderer cannot
 promote a sensitivity to paper acceptance. It uses case colors and distinct
@@ -353,6 +355,15 @@ secrets, solver mutation or scheduler operation is used. A source-compatible
 comparison does not establish native conservation or identify the paper's case.
 Verify the source extraction against the archived Figure 7 reading, use the
 native balance/Soret audits separately, and inspect any subsequent plot.
+
+`plot_structure.py plan|apply PAPER COMPARISON_DIRECTORY NEW_OUTPUT --jobs ID,ID`
+renders explicitly selected profiles from that comparator. It verifies the
+paper and aligned-data hashes, preserves the original axes/caption dimensions,
+and draws one original/overlay pair per selected job. Every species has a
+legend; the page identifies the case, numerical variant, job and source.
+Outputs are PNG pages, one PDF and a hash manifest. It uses the same plotting
+geometry and NumPy/PyMuPDF dependencies as the main gallery, with no remote
+access or model selection. Run the geometry check and inspect each output page.
 
 `digitize.py plan|apply PAPER NEW_OUTPUT` extracts hash-pinned original vector
 paths for Figures 3/4/5. It writes raw vertices, native marker centers, tick

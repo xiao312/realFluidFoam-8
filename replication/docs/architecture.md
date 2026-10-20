@@ -51,6 +51,8 @@ it preserves separate transport variants and reports numerical conservation.
 The Figure 7 structure comparator consumes the same pinned PDF, its independent
 calibration and explicitly selected profiles. It supplies spatial/profile metrics
 without a new model, alignment scale factor or acceptance decision.
+Its structure renderer consumes the comparator's hashed aligned-data export
+and explicit job selection, retaining the paper geometry and each run's identity.
 The all-species diffusion replay additionally depends on Cantera Python 3.2 and
 `validation/diffusion`'s independent table, with parity against frozen C++ output.
 

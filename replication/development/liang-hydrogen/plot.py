@@ -224,8 +224,13 @@ def main():
             else:
                 text(page, (270, 224, 480, 240), "Case 5 stoichiometric profile pending", 8)
         if extra_legends:
+            diagnostic_colors = dict(zip(CASES, COLORS))
+            diagnostic_colors.update({
+                ("massflux_g_cm2_s", "1"): COLORS[3],
+                ("massflux_g_cm2_s", "2"): COLORS[4],
+            })
             omitted += plot_diagnostics.draw(page, diagnostics, number,
-                                               dict(zip(CASES, COLORS)), axis, crop)
+                                               diagnostic_colors, axis, crop)
         for i, (color, label) in enumerate(legends):
             x = 18+(i % 2)*242
             y = legend_y+(i//2)*14
