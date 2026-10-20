@@ -37,7 +37,15 @@ Verification checked seven pages, all series inclusion rules, nonempty series,
 the original PDF hash, legends and rendered individual cases. Lark was fetched
 after publication to verify each of the seven images occurs once.
 
-## Temperature-inversion qualification and queued runs
+## Temperature-inversion qualification: submission history
+
+20 October, 17:30 CST amendment: build 125018291 completed and its small-increment
+check passed, but property check 125018498 failed one of 450 states. Both startup
+jobs and all eleven flames listed below were cancelled before execution. They
+are historical submissions. The subsequent bisection fix passed 288 increment
+and 450 property checks; two new short diagnostics use the qualified library.
+See [the diffusion and inversion record](liang-diffusion-and-inversion-20261020.md)
+for the current jobs, model variants and updated per-case figure inputs.
 
 The first correction retained the final Newton update. Build 124957984 compiled,
 but corrected-library checks 125003821 and 125003825 failed their unchanged

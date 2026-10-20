@@ -42,6 +42,14 @@ compute allocation. Expected: reconstruction error below 1e-10 and zero net
 diffusive mass flux to floating-point accuracy. Passing these checks validates
 the conversion, not agreement with Liang. The energy probe supports the same
 options so a diagnostic flame cannot silently be analysed with another closure.
+`figure_gallery.py` accepts an optional `--diagnostics FILE`. This JSON contains `diagnostics`
+and `baseline_sha256`, which must match the baseline Cantera input file.
+Each entry must identify stage, phi, speed, label, 100-atm pressure, a completed
+job and a passed numerical screen. These appear only in the corresponding
+per-case panel as unconnected squares. Baseline overview curves remain the
+declared 65-point calculation; a sensitivity point cannot replace a curve.
+The legacy `diagnostics` member in the baseline JSON belongs to `plot.py` and
+does not silently add experiments to this seven-panel gallery.
 
 Cases 1 and 3–5 also calculate HP equilibrium with VCS, checking enthalpy and
 element conservation. This diagnostic uses SRK fugacity for the nonideal cases;

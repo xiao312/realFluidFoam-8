@@ -1,5 +1,5 @@
 """Render the seven agreed Figure 8(a) comparisons from frozen evidence."""
-import argparse,hashlib,json
+import argparse,hashlib,json,math
 from pathlib import Path
 from plot import PAPER_SHA,COLORS,panel_coordinates
 
@@ -10,11 +10,26 @@ def main():
     p.add_argument('action',choices=['plan','apply'])
     for name in ['paper','cantera','reference','cfd_audit','sweep_audit','output']:
         p.add_argument(name,type=Path)
+    p.add_argument('--diagnostics',type=Path)
     a=p.parse_args()
     hashes={n:hashlib.sha256(getattr(a,n).read_bytes()).hexdigest()
             for n in ['paper','cantera','reference','cfd_audit','sweep_audit']}
     if hashes['paper']!=PAPER_SHA:raise ValueError('Unexpected paper PDF')
     ct=json.loads(a.cantera.read_text(encoding='utf-8-sig'))
+    diagnostics=[]
+    if a.diagnostics:
+        diagnostic_data=json.loads(a.diagnostics.read_text())
+        if diagnostic_data['baseline_sha256']!=hashes['cantera']:
+            raise ValueError('Diagnostic record belongs to another baseline')
+        diagnostics=diagnostic_data['diagnostics']
+        hashes['diagnostics']=hashlib.sha256(a.diagnostics.read_bytes()).hexdigest()
+    for row in diagnostics:
+        if (row.get('stage') not in range(1,6) or row.get('screen_passed') is not True
+            or row.get('pressure_atm')!=100 or not row.get('label')
+            or not str(row.get('job','')).isdigit()
+            or not math.isfinite(row.get('speed_cm_s',math.nan)) or row['speed_cm_s']<=0
+            or not math.isfinite(row.get('phi',math.nan))):
+            raise ValueError('Only screened, labelled 100-atm diagnostic jobs may be plotted')
     ref=json.loads(a.reference.read_text())
     cfd=json.loads(a.cfd_audit.read_text());sweep=json.loads(a.sweep_audit.read_text())
     if ref['paper_sha256']!=PAPER_SHA or len(ct['results'])!=65:raise ValueError('Unexpected reference coverage')
@@ -45,12 +60,18 @@ def main():
         rows=[r for r in ref['rows'] if r['stage']==s]
         items=[series('Liang Case '+str(s)+' (digitized)',rows,(0,0,0),'line' if s in [1,5] else 'square',s in [1,5]),
                series('Cantera Case '+str(s),[r for r in ct['results'] if r['stage']==s],COLORS[s-1],connect=True)]
+        for index,row in enumerate(r for r in diagnostics if r['stage']==s):
+            color=(.3,.3,.3) if s==1 else [(.7,0,.2),(.2,.3,.8),(.3,.5,.2),(.5,.2,.6)][index%4]
+            items.append(series(row['label'],[row],color,'square'))
         if s==1:
             items+=ours+[series('Stock reactingFoam',point('stock'),(.8,0,.2),'square'),
                          series('DeepFlame dfLowMachFoam',point('deepflame'),(.9,.45,0),'square')]
         figures.append(('case-'+str(s),'Case '+str(s)+': '+LABELS[s-1],items,True,s))
     for name,title,items,clear,stage in figures:
-        doc=f.open();page=doc.new_page(width=468,height=420)
+        legend_bottom=234+12*len(items)
+        pending_y=max(274,legend_bottom+10)
+        footer_y=max(346,pending_y+52 if stage and stage>1 else legend_bottom+15)
+        doc=f.open();page=doc.new_page(width=468,height=footer_y+74)
         def text(rect,value,size=8,color=(0,0,0)):
             if page.insert_textbox(f.Rect(rect),value,fontsize=size,fontname='helv',color=color)<0:
                 raise ValueError('Text overflow: '+value)
@@ -69,7 +90,9 @@ def main():
             for i in range(94,143,2):
                 x=246+panel_coordinates(i/100,6)[0]
                 page.draw_line(f.Point(x,208.8),f.Point(x,208.8-(3.5 if i%10==0 else 1.8)),width=.5)
-            text((282,62,435,76),'Methane/Air 100 atm',8)
+            # Restore the original panel label and title at their exact size
+            # and position. This strip ends above every paper data curve.
+            page.show_pdf_page(f.Rect(272,56,437.5,78),source,5,clip=f.Rect(54,56,219.5,78))
         plotted=[];excluded=[]
         for index,item in enumerate(items):
             rows=sorted(item['rows'],key=lambda r:r['phi']);points=[]
@@ -97,8 +120,8 @@ def main():
               if clear else 'Original paper curves remain visible. New open symbols and dashed lines are our calculations.')
         text((18,270,222,318),note,7.4)
         if stage and stage>1:
-            text((246,274,450,317),'OpenFOAM results pending: matching staged CFD models are not yet qualified. No CFD curve is inferred.',8)
-        text((18,346,450,406),'Cantera: 13 conditions per case; Case 5 uses corrected Takahashi Table 2.\n'
+            text((246,pending_y,450,pending_y+43),'OpenFOAM results pending: matching staged CFD models are not yet qualified. No CFD curve is inferred.',8)
+        text((18,footer_y,450,footer_y+60),'Cantera: 13 conditions per case; Case 5 uses corrected Takahashi Table 2.\n'
              'CFD: latest valid temperature-front speed relative to gas; endpoints differ and are not steady-state acceptance.\n'
              'CFD capture: '+cfd['capture_utc']+'. Paper digitization uncertainty is retained in the reference JSON.\n'
              'Points outside the printed equivalence-ratio range are omitted and listed in the manifest.',7.3)
