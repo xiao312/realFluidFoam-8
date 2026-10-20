@@ -46,13 +46,17 @@ adapter's Pr<0.1 unity value, Pr>5 cap, and Tr clamp to [1,5] are policies to
 report, not experimental claims. Paper curve agreement alone cannot identify
 Liang's unpublished transport parameters.
 
-`prepare.py INPUTS [--output NEW.csv]` plans/generates 756 prescribed states
+`prepare.py INPUTS [--output NEW.csv]` plans/generates 798 prescribed states
 for CH4-N2, H2-N2 and trace OH-N2. `property_probe.cpp` evaluates the actual
 adapter and `check.py REQUESTS.csv SAMPLES.csv` checks factors to 1e-10 relative,
 symmetry to 1e-12, and mixture reconstruction to 1e-7. The latter limit accounts
 for subtractive cancellation in the near-pure bath; the existing ordinary flame
 state reconstruction retains its 1e-10 limit. The probe also reports actual Pr/Tr
 so floating-point crossings of the discontinuous Pr=0.1 policy are explicit.
+Exactly-on-boundary samples are reported separately and must match either limiting
+branch to the same factor tolerance. Additional Pr=0.09999999/0.10000001 samples
+strictly check each side. This accounts for pair-normalization roundoff, without
+changing the adapter or loosening any off-boundary comparison.
 Prescribed correlation states can extend below a mechanism's fitted temperature
 range; their dimensional dilute coefficients are not accepted property predictions.
 
@@ -77,6 +81,15 @@ python -B replication/validation/diffusion/dilute.py INPUTS/ideal.yaml --output 
 The first command is a deterministic saved-result replay and is expected to
 exit 1 until the Case 5 discrepancy is resolved. The second prints the dilute
 benchmark plan; the third performs the calculation and writes its evidence.
+For a new screened flame dataset, pass `flame_gate.py --results RESULTS.json`;
+it must include phi=1.30/1.35/1.40 so omitted failures cannot yield a passing gate.
 Run `git diff --check`. For the C++ probe use `job.sh plan` before scheduler
 submission; its documented positional inputs are ROOT RELEASE SDK INPUTS PYTHON.
 The probe never solves a flame or changes an input file.
+
+`plot.py DILUTE_REPORT REQUESTS.csv SAMPLES.csv [--output NEW_DIRECTORY]` adds an
+optional NumPy/Matplotlib reporting dependency. Without `--output` it is read-only.
+It produces PNG/PDF panels of measured dilute residuals and Table 2 versus actual
+adapter output. Verify it only after the matching `check.py` report passes;
+plotting alone does not establish correctness. It does not replace the Liang
+flame comparison image.

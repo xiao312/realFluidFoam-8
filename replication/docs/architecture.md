@@ -6,7 +6,8 @@ prescribed-state C++ probe uses the actual `cantera-liang/StagedTransport.h`;
 independent Python calculations verify its correlation and compare dilute
 transport with measurements. It supplies the Case 5 investigation with property
 gates, without changing model parameters or solving flames. Production solvers
-have no dependency on this module.
+have no dependency on this module. Its optional NumPy/Matplotlib renderer consumes
+the gate artifacts and supplies a property-comparison PNG/PDF to the report.
 
 `development/cantera-wave` consumes a screened ideal Cantera profile and the
 `fresh-start` case generator. Its Python generator produces mirrored original-zero

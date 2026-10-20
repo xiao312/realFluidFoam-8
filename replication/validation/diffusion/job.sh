@@ -45,11 +45,15 @@ ldd property-probe > dependencies.txt
 "$python" -B "$module_path/prepare.py" "$inputs"
 "$python" -B "$module_path/prepare.py" "$inputs" --output requests.csv
 ./property-probe "$inputs" requests.csv corrected > corrected.csv 2> corrected.log
+set +e
 "$python" -B "$module_path/check.py" requests.csv corrected.csv > corrected-report.json
+corrected_status=$?
+set -e
 ./property-probe "$inputs" requests.csv legacy > legacy.csv 2> legacy.log
 set +e
 "$python" -B "$module_path/check.py" requests.csv legacy.csv > legacy-report.json
 legacy_status=$?
 set -e
 [[ $legacy_status == 1 ]] || { echo "Legacy control did not fail as expected"; exit 1; }
+[[ $corrected_status == 0 ]] || { echo "Corrected adapter verification failed"; exit 1; }
 touch verification-passed.txt

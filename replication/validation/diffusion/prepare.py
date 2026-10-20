@@ -29,7 +29,7 @@ def requests(inputs):
         species[name] = (float(tc), float(pc))
     pressures = [r[0] for r in table]
     pressures += [(a[0]+b[0])/2 for a, b in zip(table, table[1:])]
-    pressures += [.05, .099, 5.5]
+    pressures += [.05, .099, .09999999, .10000001, 5.5]
     rows = []
     # Unequal pair fractions test pair normalization; trace limit tests bath mapping.
     for first, second, fraction in [("CH4", "N2", .5), ("H2", "N2", .2),

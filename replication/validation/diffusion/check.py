@@ -19,7 +19,7 @@ def main():
         actual = list(csv.DictReader(stream))
     if not expected or len(expected) != len(actual):
         raise ValueError("Missing or extra property samples")
-    failures, errors, mixture, symmetry = [], [], [], []
+    failures, errors, mixture, symmetry, boundaries = [], [], [], [], []
     table = json.loads(Path(__file__).with_name("references.json").read_text())["takahashi"]["table2"]
     for index, (request, sample) in enumerate(zip(expected, actual)):
         if int(sample["row"]) != index:
@@ -31,6 +31,14 @@ def main():
         # Evaluate at the actual state: roundoff across Pr=0.1 can select the
         # adapter's discontinuous unity policy. Do not disguise this as table error.
         error = abs(factor/correction(pr, tr, table)-1)
+        if abs(pr-.1) < 1e-12:
+            # Pair normalization and the thermo state can round independently
+            # across this discontinuity. Check both limiting branches and report
+            # these samples separately; do not relax off-boundary tolerances.
+            right_limit = correction(.1, tr, table)
+            error = min(abs(factor-1), abs(factor/right_limit-1))
+            boundaries.append(dict(row=index, actual_Pr=pr, actual_Tr=tr,
+                                   factor=factor, right_limit=right_limit))
         mix = float(sample["max_mix_relative_error"])
         sym = float(sample["symmetry_relative_error"])
         if not all(math.isfinite(value) for value in (factor, error, mix, sym)):
@@ -42,6 +50,7 @@ def main():
     # Trace species complement subtraction loses precision near a pure bath;
     # mixture tolerance here is 1e-7. Ordinary flame-state gate remains 1e-10.
     report = dict(samples=len(actual), failures=failures,
+                  boundary_policy_samples=boundaries,
                   maximum_factor_relative_error=max(errors),
                   maximum_mixture_relative_error=max(mixture),
                   maximum_symmetry_relative_error=max(symmetry),
