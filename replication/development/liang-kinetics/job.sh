@@ -15,6 +15,9 @@ export OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1
 export LD_LIBRARY_PATH="$sdk/lib:${LD_LIBRARY_PATH:-}"
 export CANTERA_DATA="$sdk/share/cantera/data" PKG_CONFIG_PATH="$sdk/lib/pkgconfig"
 cd "$job"
+printf 'job=%s\ncpus=%s\nmemory_per_node_MiB=%s\n' \
+ "$SLURM_JOB_ID" "${SLURM_CPUS_PER_TASK:-unset}" "${SLURM_MEM_PER_NODE:-unset}" \
+ > resources.txt
 cp "$release/SOURCE_REVISION" source-revision.txt
 sha256sum "$mechanism" > input-sha256.txt
 if [[ $action == build ]]; then

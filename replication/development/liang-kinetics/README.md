@@ -40,6 +40,11 @@ outside public Git.
 plans or submits one build or ideal flame. `BUILD` is `-` for compilation,
 otherwise a passed immutable build.
 One CPU and two hours bound each scheduler job. Plan is read-only.
+The launcher requests 16384 MiB for flame jobs and 4096 MiB for builds.
+The 111-species USC pilots exceeded the site's implicit 3569 MiB allocation
+while constructing the inherited fine-grid problem. Memory is an explicit
+resource setting; it changes neither the mechanism nor the numerical criteria.
+`job.sh` records the actual Slurm allocation before loading the mechanism.
 
 Example:
 `bash submit.sh plan ROOT RELEASE SDK MECHANISM flame BUILD kshcnormal 1.1`.
