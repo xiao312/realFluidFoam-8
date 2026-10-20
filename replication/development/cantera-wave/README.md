@@ -37,6 +37,11 @@ chemistry, transport and boundary dictionaries retain the fresh-start choices.
 The normal runtime boundary-density finalizer must still run before execution.
 The source has no submission side effect.
 
+The runtime saves its arguments in named variables, then clears positional
+arguments before sourcing OF8 bashrc. OF8 otherwise sources existing argument
+files as shell settings. Initial attempts 125031691/125031693 exposed this with
+the CSV/JSON inputs and were cancelled; they are excluded from comparisons.
+
 `submit.sh plan|apply ROOT RELEASE LIBRARY INCREMENT_TEST PROPERTY_TEST
 PROFILE RESULTS VELOCITY` submits one eight-rank, 20-microsecond diagnostic.
 Both property receipts must pass and identify the same library. The job builds

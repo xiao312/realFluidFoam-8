@@ -1,6 +1,9 @@
 #!/bin/bash
 set -o pipefail
 release=${1:?}; library=${2:?}; profile=${3:?}; results=${4:?}; velocity=${5:?}
+# OF8 bashrc treats existing positional file arguments as extra shell settings.
+# Keep data paths in named variables and never expose them to that mechanism.
+set --
 . /opt/openfoam8/etc/bashrc
 set -euo pipefail
 job=/work/jobs/$RF_JOB_ID
