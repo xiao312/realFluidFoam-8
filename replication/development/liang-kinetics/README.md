@@ -39,8 +39,11 @@ outside public Git.
 `submit.sh plan|apply ROOT RELEASE SDK MECHANISM build|flame BUILD PARTITION PHI [GUESS|-]`
 plans or submits one build or ideal flame. `BUILD` is `-` for compilation,
 otherwise a passed immutable build.
-One CPU and two hours bound each scheduler job. Plan is read-only.
-The launcher requests 16384 MiB for flame jobs and 4096 MiB for builds.
+One compute thread and two hours bound each scheduler job. Plan is read-only.
+The launcher requests 16384 MiB and five allocated CPUs for flame jobs,
+or 3072 MiB and one CPU for builds. SCNet requires memory per allocated CPU
+to stay below its 3569 MiB limit; the additional CPUs secure memory allocation.
+OpenMP and OpenBLAS remain fixed to one thread.
 The 111-species USC pilots exceeded the site's implicit 3569 MiB allocation
 while constructing the inherited fine-grid problem. Memory is an explicit
 resource setting; it changes neither the mechanism nor the numerical criteria.

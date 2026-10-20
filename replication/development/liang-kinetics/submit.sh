@@ -24,12 +24,12 @@ if [[ $action == flame ]]; then
  [[ $(realpath -e "$build") == "$root/jobs/"* ]] || exit 2
  test -f "$build/build-passed.txt"
 fi
-memory_mb=16384
-[[ $action != build ]] || memory_mb=4096
-printf 'PLAN %s phi=%s; 100 atm, 298 K, 1 CPU, 2 hours, %s MiB; mechanism_sha=%s; source=%s\n' \
- "$action" "$phi" "$memory_mb" "$sha" "$(cat "$release/SOURCE_REVISION")"
+memory_mb=16384; cpus=5
+if [[ $action == build ]]; then memory_mb=3072; cpus=1; fi
+printf 'PLAN %s phi=%s; 100 atm, 298 K, 1 compute thread, %s allocated CPUs, 2 hours, %s MiB; mechanism_sha=%s; source=%s\n' \
+ "$action" "$phi" "$cpus" "$memory_mb" "$sha" "$(cat "$release/SOURCE_REVISION")"
 [[ $mode == apply ]] || exit 0
-sbatch --parsable --partition="$partition" --nodes=1 --ntasks=1 --cpus-per-task=1 \
+sbatch --parsable --partition="$partition" --nodes=1 --ntasks=1 --cpus-per-task="$cpus" \
  --time=02:00:00 --mem="${memory_mb}M" --job-name="liang-kinetics-$phi" --chdir="$root" \
  --output="$root/logs/%j-kinetics.out" --error="$root/logs/%j-kinetics.err" \
  "$release/replication/development/liang-kinetics/job.sh" \
