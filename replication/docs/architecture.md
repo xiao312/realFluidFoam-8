@@ -1,5 +1,12 @@
 # Replication boundaries
 
+`development/temperature-inversion` consumes an isolated full native library
+build and generates original-zero ideal flames through `fresh-start`.
+It uses `flame-tracking`, `premixed-paper`, the `cantera-cfd` static partitioner
+and the adaptive field reader. Its solver has no Cantera runtime dependency.
+Explicit CPU assignments and global-field parity qualify 32-rank execution.
+Its front and heat-release histories feed the comparison gallery.
+
 `validation/profiling/affinity.py` reads the current Slurm allocation's solver
 processes and can assign distinct CPUs inside their existing affinity union.
 It depends on Linux/Python process APIs only and changes no solver source, field,
