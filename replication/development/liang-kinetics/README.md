@@ -7,12 +7,20 @@ Liang's unpublished methane subset, or repair invalid rates by clipping.
 
 ## Interface and boundaries
 
-`kinetics-flame MECHANISM PHI NEW_OUTPUT` uses 100 atm, 298 K, CH4 and
+`kinetics-flame MECHANISM PHI NEW_OUTPUT [GUESS_CSV|-]` uses 100 atm, 298 K, CH4 and
 21/79 molar O2/N2, mixture-averaged mole-gradient diffusion, no Soret/radiation,
 and a 1-cm domain. A numerical initial guess comes from that mechanism's own
 ideal HP equilibrium. It is not a transient CFD restart. The current interface
 supports ideal Case 1 only; nonideal Case 3 needs an explicit complete species
 critical-parameter table and separate qualification before implementation.
+An optional named-species profile supplies only a steady numerical guess.
+The reader maps `Y_<species>` columns explicitly, sets absent species to zero,
+normalizes each row and records the maximum discarded mass fraction. It preserves
+the supplied domain length and grid; the inlet composition still comes from PHI
+and the new mechanism. A supplied guess skips the otherwise used fixed-temperature
+preparation solve. Both paths solve the full energy equation for reported results.
+Inputs require increasing x, finite fields and at least ten points. No transient
+CFD checkpoint is consumed.
 
 Outputs are refinement/speed/temperature CSVs, a named-species profile, a saved
 steady solution, input/binary hashes and source revision. The fixed-100-atm HP
@@ -28,7 +36,7 @@ outside public Git.
 
 ## Execution and verification
 
-`submit.sh plan|apply ROOT RELEASE SDK MECHANISM build|flame BUILD PARTITION PHI`
+`submit.sh plan|apply ROOT RELEASE SDK MECHANISM build|flame BUILD PARTITION PHI [GUESS|-]`
 plans or submits one build or ideal flame. `BUILD` is `-` for compilation,
 otherwise a passed immutable build.
 One CPU and two hours bound each scheduler job. Plan is read-only.

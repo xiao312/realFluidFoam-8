@@ -2,6 +2,7 @@
 set -euo pipefail
 mode=${1:?}; root=${2:?}; release=${3:?}; sdk=${4:?}; mechanism=${5:?}
 action=${6:?}; build=${7:?}; partition=${8:?}; phi=${9:-1.1}
+guess=${10:--}
 [[ $mode == plan || $mode == apply ]] || exit 2
 [[ $action == build || $action == flame ]] || exit 2
 [[ $partition =~ ^[a-zA-Z0-9_-]+$ ]] || exit 2
@@ -15,6 +16,10 @@ sha=$(sha256sum "$mechanism" | cut -d' ' -f1)
 if [[ $(basename "$mechanism") == hp-2017-fixed-100atm.yaml ]]; then
  [[ $sha == cc34fbe54bfe71c79edabc6763934bdfbe4d1046ae5e33f67ca1efae02aa9afb ]] || exit 2
 fi
+if [[ $guess != - ]]; then
+ [[ $(realpath -e "$guess") == "$root/"* ]] || exit 2
+ test -f "$guess"
+fi
 if [[ $action == flame ]]; then
  [[ $(realpath -e "$build") == "$root/jobs/"* ]] || exit 2
  test -f "$build/build-passed.txt"
@@ -26,4 +31,4 @@ sbatch --parsable --partition="$partition" --nodes=1 --ntasks=1 --cpus-per-task=
  --time=02:00:00 --job-name="liang-kinetics-$phi" --chdir="$root" \
  --output="$root/logs/%j-kinetics.out" --error="$root/logs/%j-kinetics.err" \
  "$release/replication/development/liang-kinetics/job.sh" \
- "$root" "$release" "$sdk" "$mechanism" "$action" "$build" "$phi" "$sha"
+ "$root" "$release" "$sdk" "$mechanism" "$action" "$build" "$phi" "$sha" "$guess"

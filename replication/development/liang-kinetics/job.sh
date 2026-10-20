@@ -2,6 +2,7 @@
 set -euo pipefail
 root=${1:?}; release=${2:?}; sdk=${3:?}; mechanism=${4:?}
 action=${5:?}; build=${6:?}; phi=${7:?}; expected_sha=${8:?}
+guess=${9:--}
 [[ -n ${SLURM_JOB_ID:-} ]] || exit 2
 for path in "$release" "$sdk" "$mechanism"; do
  [[ $(realpath -e "$path") == "$root/"* ]] || exit 2
@@ -33,5 +34,9 @@ else
  test -f "$build/build-passed.txt"
  (cd "$build"; sha256sum -c binary.sha256)
  cmp "$build/source-revision.txt" "$release/SOURCE_REVISION"
- "$build/kinetics-flame" "$mechanism" "$phi" "$job/result" > flame.log 2>&1
+ if [[ $guess != - ]]; then
+  [[ $(realpath -e "$guess") == "$root/"* ]] || exit 2
+  sha256sum "$guess" > guess-sha256.txt
+ fi
+ "$build/kinetics-flame" "$mechanism" "$phi" "$job/result" "$guess" > flame.log 2>&1
 fi

@@ -5,6 +5,9 @@ and the pinned Cantera 3.2 SDK for Figure 8(b)'s ideal methane controls. It has
 no SRK or OpenFOAM dependency in this initial stage. Input hashes and the
 fixed-100-atm HP contract qualify the mechanism representation separately from
 the flame solve; output profiles feed the paper comparison gallery.
+An optional named-species steady-profile guess is an explicit data input; the
+kinetics driver maps it by species name and records discarded guess mass.
+It is independent of transient CFD restarts and does not supply boundary data.
 
 `development/liang-hydrogen` consumes the author Burke 2012 mechanism and
 qualified species parameters, reusing `cantera-liang` SRK, transport,

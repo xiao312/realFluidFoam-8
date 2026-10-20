@@ -1,5 +1,6 @@
 #include "cantera/onedim.h"
 #include "cantera/oneD/DomainFactory.h"
+#include "Guess.h"
 #include <filesystem>
 #include <fstream>
 #include <iomanip>
@@ -9,7 +10,7 @@ namespace fs=std::filesystem;
 
 int main(int argc,char** argv) {
 try {
-    if(argc!=4)throw std::runtime_error("Usage: kinetics-flame MECHANISM PHI NEW_OUTPUT");
+    if(argc<4 || argc>5)throw std::runtime_error("Usage: kinetics-flame MECHANISM PHI NEW_OUTPUT [GUESS|-]");
     const double phi=std::stod(argv[2]),pressure=100*OneAtm,Tu=298.,width=.01;
     const fs::path output=argv[3];
     if(phi<.8 || phi>1.5 || fs::exists(output))
@@ -33,13 +34,16 @@ try {
         temperatures.push_back(Tu+q*(Tb-Tu));velocities.push_back(uu+q*(ub-uu));
         for(size_t k=0;k<n;k++)ys[k].push_back(yu[k]+q*(yb[k]-yu[k]));
     }
+    const bool suppliedGuess=argc==5 && std::string(argv[4])!="-";
+    const double discarded=suppliedGuess?kinetics_control::readGuess(
+        argv[4],*gas,grid,loc,temperatures,velocities,ys):0.;
     auto flow=newDomain<Flow1D>("gas-flow",sol,"flow");
     flow->setFreeFlow();flow->setPressure(pressure);
     flow->setupGrid(grid.size(),grid.data());
     flow->setSteadyTolerances(1e-5,1e-11);
     flow->setFluxGradientBasis(ThermoBasis::molar);flow->enableSoret(false);
     auto inlet=newDomain<Inlet1D>("inlet",sol);
-    inlet->setTemperature(Tu);inlet->setMoleFractions(xin.data());inlet->setMdot(rhou*uu);
+    inlet->setTemperature(Tu);inlet->setMoleFractions(xin.data());inlet->setMdot(rhou*velocities[0]);
     auto outlet=newDomain<Outlet1D>("outlet",sol);
     std::vector<std::shared_ptr<Domain1D>> domains{inlet,flow,outlet};
     Sim1D flame(domains);flame.setMaxGridPoints(1,6000);
@@ -49,15 +53,17 @@ try {
     fs::create_directories(output);
     std::ofstream config(output/"configuration.txt");
     config<<std::setprecision(16)<<"case 1\nfuel CH4\nphi "<<phi<<"\npressure_Pa "<<pressure
-          <<"\nTu_K "<<Tu<<"\nwidth_m "<<width<<"\nspecies "<<n
+          <<"\nTu_K "<<Tu<<"\nwidth_m "<<grid.back()-grid.front()<<"\nspecies "<<n
           <<"\nreactions "<<sol->kinetics()->nReactions()
-          <<"\ntransport mixture-averaged-molar\nSoret off\nradiation off\n";
+          <<"\ntransport mixture-averaged-molar\nSoret off\nradiation off"
+          <<"\nsupplied_steady_guess "<<suppliedGuess<<"\nmaximum_discarded_guess_mass_fraction "<<discarded<<'\n';
+    config.flush();
     std::ofstream results(output/"refinement.csv");
     results<<"case,phi,slope,curve,points,speed_cm_s,Tb_K\n"<<std::setprecision(16);
     // The fixed-temperature solve prepares a numerical species/velocity guess;
     // all reported levels solve the complete energy equation.
     flow->setRefineCriteria(3,.08,.1,0);
-    flow->setEnergyEnabled(false);flame.solve(1,true);
+    if(!suppliedGuess){flow->setEnergyEnabled(false);flame.solve(1,true);}
     flow->setEnergyEnabled(true);
     for(auto level:std::vector<std::pair<double,double>>{{.08,.1},{.03,.05},{.015,.025},{.0075,.0125},{.00375,.00625}}) {
         flow->setRefineCriteria(3,level.first,level.second,0);flame.solve(1,true);
