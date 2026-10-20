@@ -43,10 +43,12 @@ try {
         auto* gas=new liang::SrkPhase;gas->stage=1;return gas;});
     TransportFactory::factory()->reg("liang-staged",[&](){
         auto* tr=new liang::StagedTransport;tr->stage=stage;tr->parameters=parameters;
+        tr->manualSoret=options.manualSoret;
         tr->highTemperature=options.highTemperature;
         tr->bulkTakahashi=options.bulkTakahashi;
         tr->table2=options.table2;tr->smoothedAlpha=options.smoothedAlpha;tr->denseIncrementOnly=options.dense;tr->boundedTakahashi=options.bounded;return tr;});
-    auto sol=newSolution((input/(stage==1?"ideal.yaml":"srk.yaml")).string(),"",stage==1?"mixture-averaged":"liang-staged");
+    auto sol=newSolution((input/(stage==1?"ideal.yaml":"srk.yaml")).string(),"",
+                         stage==1 && !options.manualSoret?"mixture-averaged":"liang-staged");
     auto gas=sol->thermo();
     for(size_t k=0;k<species.size();k++) if(gas->speciesName(k)!=species[k])throw std::runtime_error("Species order mismatch");
     if(auto* model=dynamic_cast<liang::SrkPhase*>(gas.get())) {

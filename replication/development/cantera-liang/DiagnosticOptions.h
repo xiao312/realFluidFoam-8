@@ -11,7 +11,7 @@ struct DiagnosticOptions {
     bool highTemperature=false;
     bool bulkTakahashi=false,massGradient=false;
     bool totalEnthalpy=false,pureSpeciesFlux=false;
-    bool soret=false;
+    bool soret=false,manualSoret=false;
     explicit DiagnosticOptions(const std::string& text) {
         if(text=="full")return;
         std::stringstream stream(text);std::string item;std::set<std::string> seen;
@@ -29,6 +29,7 @@ struct DiagnosticOptions {
             else if(item=="total-enthalpy")totalEnthalpy=true;
             else if(item=="pure-species-flux")pureSpeciesFlux=true;
             else if(item=="soret")soret=true;
+            else if(item=="manual-soret") {soret=true;manualSoret=true;}
             else throw std::runtime_error("Unknown diagnostic option: "+item);
         }
         if(seen.empty() || text.back()==',')throw std::runtime_error("Empty diagnostic option");
@@ -36,6 +37,8 @@ struct DiagnosticOptions {
         if(highTemperature && !(bounded && table2))throw std::runtime_error("takahashi-high-t requires bounded-takahashi,takahashi-table2");
         if(bulkTakahashi && !(bounded && table2))throw std::runtime_error("takahashi-bulk requires bounded-takahashi,takahashi-table2");
         if(pureSpeciesFlux && !totalEnthalpy)throw std::runtime_error("pure-species-flux requires total-enthalpy");
+        if(manualSoret && seen.count("soret"))
+            throw std::runtime_error("Select either soret or manual-soret");
     }
 };
 }

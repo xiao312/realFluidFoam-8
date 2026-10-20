@@ -104,6 +104,10 @@ sources. Transport-only mode remains the default; no nonideal CFD is enabled.
 pinned Cantera C++ SDK. It consumes ideal-baseline mechanisms/profiles and the
 liang-properties Ely–Hanley kernel. Its independent steady flames feed the
 Liang comparison report; production OpenFOAM code has no dependency on it.
+Its optional light-species Soret control uses an internal algebraic kernel and
+the same SDK transport data. Its offline Soret analyzer consumes hashed
+profiles and native face fluxes with NumPy. Neither path introduces a
+production CFD dependency or changes the no-Soret baseline.
 
 `development/fresh-start` consumes ideal-baseline initial-state generation,
 premixed-paper boundary finalization and flame-tracking anchors/checks. It reuses

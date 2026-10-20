@@ -103,6 +103,70 @@ void fluxChecks(Flow& flow,const std::vector<double>& y) {
     require(std::abs(net)<1e-11*scale,"Thermal mass-flux closure");
 }
 
+void manualChecks(const std::shared_ptr<Solution>& sol,CoefficientProbe& transport,
+                  liang::SrkPhase& gas) {
+    // Independently evaluated source-formula fixtures; no flame target enters.
+    const double temperatures[]={298.,1000.,3000.};
+    const double qExpected[]={-.4231890148511275,-.47590044927061853,-.4927708434650581};
+    const double wellDepth=60.87807487100754;
+    const size_t light=gas.speciesIndex("H2"),partner=gas.speciesIndex("N2"),n=gas.nSpecies();
+    transport.manualSoret=true;transport.stage=4;gas.stage=1;
+    double maximum=0;
+    std::vector<double> binaryY;
+    for(size_t row=0;row<3;row++) {
+        const auto ratios=liang::lightSpeciesCollisionRatios(std::log(temperatures[row]/wellDepth));
+        const double q=liang::lightSpeciesPairFactor(ratios,2.016,28.014);
+        require(std::abs(q-qExpected[row])<1e-13,"Published manual pair fixture");
+        require(liang::lightSpeciesPairFactor(ratios,2.016,2.016)==0,"Self-pair limit");
+        require(std::abs(q+liang::lightSpeciesPairFactor(ratios,28.014,2.016))<1e-15,
+                "Pair permutation");
+        std::vector<double> first;
+        for(double pressure:{OneAtm,100*OneAtm}) {
+            gas.setState_TPX(temperatures[row],pressure,"H2:0.01,N2:0.99");
+            std::vector<double> dt(n),matrix(n*n),y(n),x(n),expected(n,0.);
+            gas.getMassFractions(y.data());gas.getMoleFractions(x.data());
+            transport.getThermalDiffCoeffs(dt.data());
+            transport.getBinaryDiffCoeffs(n,matrix.data());
+            const double dm=(1-y[light])*matrix[light+n*partner]/x[partner];
+            const double raw=gas.density()*dm*gas.molecularWeight(light)/gas.meanMolecularWeight()
+                             *x[light]*x[partner]*qExpected[row];
+            expected[light]=raw;
+            for(size_t k=0;k<n;k++)expected[k]-=y[k]*raw;
+            maximum=std::max(maximum,relative(dt,expected));
+            require(dt[light]<0 && dt[partner]>0,"Published hotward sign");
+            if(pressure==OneAtm)first=dt;
+            else maximum=std::max(maximum,relative(first,dt));
+            binaryY=y;
+        }
+    }
+    require(maximum<1e-10,"Manual binary coefficient/pressure qualification");
+    // Density scaling and selected corrected diffusivity are independent choices.
+    gas.stage=4;
+    gas.setState_TPX(1000,100*OneAtm,"H2:0.01,N2:0.99");
+    for(int stage:{4,5}) {
+        transport.stage=stage;
+        std::vector<double> dt(n),matrix(n*n),y(n),expected(n,0.);
+        gas.getMassFractions(y.data());transport.getThermalDiffCoeffs(dt.data());
+        transport.getBinaryDiffCoeffs(n,matrix.data());
+        const double dm=(1-y[light])*matrix[light+n*partner]/.99;
+        const double raw=gas.density()*dm*gas.molecularWeight(light)/gas.meanMolecularWeight()
+                         *.01*.99*qExpected[1];
+        expected[light]=raw;
+        for(size_t k=0;k<n;k++)expected[k]-=y[k]*raw;
+        require(relative(dt,expected)<1e-10,"Selected-stage manual coefficient");
+    }
+    gas.setState_TPX(1000,100*OneAtm,"N2:1");
+    std::vector<double> absent(n);transport.getThermalDiffCoeffs(absent.data());
+    require(std::all_of(absent.begin(),absent.end(),[](double value){return value==0;}),
+            "Absent-light-species limit");
+    FlowProbe<Flow1D> flow(sol,"flow");fluxChecks(flow,binaryY);
+    require(flow.face(600,1200,binaryY,true)[light]>0,"Native hotward thermal mass flux");
+    FlowProbe<liang::TotalEnthalpyFlow> enthalpy(sol,false);fluxChecks(enthalpy,binaryY);
+    transport.manualSoret=false;
+    std::cout<<std::setprecision(16)<<"manual_soret_binary_error "<<maximum
+             <<" selected_stage_and_native_flux_checks passed\n";
+}
+
 int main(int argc,char** argv) {
 try {
     require(argc==3,"Usage: test-soret INPUTS SOLVED_PROFILE");
@@ -177,6 +241,7 @@ try {
     FlowProbe<liang::TotalEnthalpyFlow> enthalpy(sol,false);fluxChecks(enthalpy,testY);
     // Native mixture transport must retain its original finalize path too.
     FlowProbe<Flow1D> stockFlow(ideal,"flow");fluxChecks(stockFlow,testY);
+    manualChecks(sol,*tr,*gas);
     std::cout<<std::setprecision(16)<<"states "<<checked<<" coefficient_error "<<maxError
         <<" pressure_error "<<maxPressure<<" stock_error "<<maxStock
         <<" projection_error "<<maxProjection<<" native_and_custom_flux_checks passed\n";

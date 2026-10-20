@@ -1,6 +1,7 @@
 #pragma once
 #include "SrkPhase.h"
 #include "TakahashiTable.h"
+#include "LightSpeciesSoret.h"
 #include "../liang-properties/ElyHanley.H"
 #include "cantera/transport/HighPressureGasTransport.h"
 // Exported by the pinned Cantera 3.2 SDK, but not declared in its header.
@@ -17,6 +18,7 @@ public:
     bool table2=false;
     bool highTemperature=false;
     bool bulkTakahashi=false;
+    bool manualSoret=false;
     size_t boundedPairCalls=0;
     std::vector<Species> parameters;
     size_t conductivityCalls=0,diffusionCalls=0;
@@ -34,6 +36,37 @@ public:
         m_P_corr_ij.resize(m_nsp,m_nsp);
     }
     double viscosity() override {return Cantera::GasTransport::viscosity();}
+    void getThermalDiffCoeffs(double* output) override {
+        if(!manualSoret) {
+            Cantera::MixTransport::getThermalDiffCoeffs(output);return;
+        }
+        std::vector<double> x(m_nsp),y(m_nsp),diffusion(m_nsp),theta(m_nsp,0.);
+        m_thermo->getMoleFractions(x.data());
+        // Transport-only projection follows the existing treatment of Newton
+        // iterates. Final flame composition remains independently screened.
+        double sum=0;
+        for(auto& value:x) {value=std::max(0.,value);sum+=value;}
+        if(!(sum>0))throw std::runtime_error("Empty Soret composition");
+        const auto& weights=m_thermo->molecularWeights();
+        double meanWeight=0;
+        for(size_t k=0;k<m_nsp;k++) {x[k]/=sum;meanWeight+=x[k]*weights[k];}
+        for(size_t k=0;k<m_nsp;k++)y[k]=x[k]*weights[k]/meanWeight;
+        getMixDiffCoeffs(diffusion.data());
+        for(size_t k=0;k<m_nsp;k++) {
+            if(weights[k]>=5 || x[k]==0)continue;
+            for(size_t j=0;j<m_nsp;j++) {
+                if(j==k || x[j]==0)continue;
+                // GasTransport's epsilon includes the same polar/nonpolar
+                // effective-well-depth correction as the reviewed formula.
+                const auto collision=lightSpeciesCollisionRatios(
+                    std::log(Cantera::Boltzmann*m_thermo->temperature()/m_epsilon(k,j)));
+                theta[k]+=x[k]*x[j]*lightSpeciesPairFactor(collision,weights[k],weights[j]);
+            }
+        }
+        const auto result=projectLightSpeciesSoret(m_thermo->density(),meanWeight,
+                                                  weights,x,y,diffusion,theta);
+        std::copy(result.begin(),result.end(),output);
+    }
     void updateCorrectionFactors() override {
         if(!boundedTakahashi) {
             Cantera::HighPressureGasTransportBase::updateCorrectionFactors();return;

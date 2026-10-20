@@ -67,6 +67,40 @@ diffusion term. Use the recorded native face flux for a Soret energy audit.
 Applying its no-Soret reconstruction would omit both thermal mass flux and
 the associated diffusive enthalpy flux.
 
+`analyze_soret.py plan|apply OBSERVATION.json FLUX_DIRECTORY NEW_OUTPUT`
+compares the six completed methane controls: Cases 1, 4 and 5 with Soret off/on.
+The observation must include passed numerical screens, output hashes and
+the local profile snapshot. The flux directory contains each on-run's
+`jobs/JOB/result/soret-flux.csv`. It validates hashes, face coordinates,
+species order, mass-flux closure and thermal/ordinary decomposition.
+Output contains paired speeds, per-species flux summaries and native
+face enthalpy-flux components. These are diagnostic fluxes on each solved
+profile; they do not isolate the full speed response at a frozen state.
+It uses Python, NumPy and collected files only. No remote writes, model changes,
+credentials or plotting dependencies are involved. The comparison report consumes
+its output. Run `plan`, then `apply` to a new directory; expect all native
+flux identities to pass. Scientific agreement is reported separately.
+
+The additional `manual-soret` diagnostic uses the published CHEMKIN
+light-species formula, with direct evaluation of the fixed TRANFIT collision
+polynomials. It enables Soret and replaces only the thermal coefficient.
+It is mutually exclusive with `soret`, which keeps Cantera 3.2's formula.
+The model selects molecular weights below 5 kg/kmol and applies a zero-total-
+mass-flux projection. It uses the selected stage's mixture diffusivity and
+physical density. That dense thermal closure is a declared sensitivity
+assumption, not a high-pressure thermal-diffusion validation.
+The ordinary diffusion stencil, chemistry and energy equation remain unchanged.
+No source coefficient is fitted to a paper flame speed.
+This first methane control has no Burke author-pair override.
+The archived preprocessor sign disagrees with the published manual; this
+diagnostic follows the manual's sign and does not claim exact historical
+PREMIX equivalence. See the
+[source review](../../docs/liang-legacy-soret-implementation-review-20261021.md).
+Its dependencies are the existing transport adapter and pinned SDK.
+The build checks the binary light-species sign, permutation, absent-species
+limit, zero coefficient sum, pressure scaling and native-flow flux direction
+before any diagnostic flame can run.
+
 `diffusion-probe INPUTS PROFILE NEW_OUTPUT.csv` audits frozen profile states with
 pair and bulk critical-property averaging. It independently reconstructs
 `D_i = (1-Y_i)/sum(j!=i, X_j/D_ij)` from the returned binary matrix, checks matrix
