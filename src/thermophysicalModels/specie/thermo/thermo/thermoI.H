@@ -141,7 +141,9 @@ inline Foam::scalar Foam::species::thermo<Thermo, Type>::T
         // Info << "   Start using Bisection method" << endl;
         // FatalErrorInFunction << abort(FatalError);
 
-        scalar biTol = 1e-3; 
+        // The former 1e-3 K bracket width failed the existing 190 K
+        // round-trip check even after Newton convergence was tightened.
+        scalar biTol = 1e-6;
         scalar x1 = 50; // lower bound
         scalar x2 = 4000; //uper bound
         int n = 0;

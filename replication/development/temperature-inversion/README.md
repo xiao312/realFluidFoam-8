@@ -4,8 +4,12 @@ This module tests a selected native library build with fresh ideal-gas flames.
 The second inversion draft tightens the Newton temperature-step tolerance to
 1e-9 relative. The first draft retained the final Newton update but failed
 the existing nonideal increment and property checks (125003821, 125003825).
-The bisection fallback and physical property models remain unchanged. These
-checks must pass before the draft is used for the flame comparison sweep.
+Build 125018291 passed all 288 small-increment checks, but its property check
+125018498 failed the SRK state at 50 atm and 190 K. The recovered temperature,
+189.99964594841 K, is exactly the midpoint obtained with the old 1e-3 K
+bisection stopping width. The next draft tightens that width to 1e-6 K while
+retaining the original bracket and physical models. Re-run both existing
+regressions without changing their limits before any flame qualification.
 It preserves the native chemistry and transport models. Species enthalpy fields
 use current pressure and temperature, as in the existing energy-corrected draft.
 It does not change the PIMPLE equations or infer scientific convergence.
