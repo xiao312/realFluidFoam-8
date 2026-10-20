@@ -36,6 +36,9 @@ Its conservative numerical control reuses `cantera-liang/TotalEnthalpyFlow`
 and applies the same face-advection/divergence construction to species.
 Stock boundary equations and property/chemistry adapters remain dependencies;
 the control neither patches Cantera nor changes production CFD.
+Its offline conservation audit consumes native node/face CSVs, uses Cantera
+Python only for species/element metadata, and shares a NumPy-only profile
+reader. Figure extraction is not a dependency of that numerical audit.
 Its read-only collector retrieves selected small job artifacts. The independent
 NumPy/PyMuPDF renderer overlays those profiles on the locally supplied paper
 panels and exports PNG/PDF evidence; it never changes models or submits jobs.

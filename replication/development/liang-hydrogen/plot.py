@@ -5,6 +5,7 @@ import hashlib
 import json
 import math
 from pathlib import Path
+import plot_diagnostics
 
 PAPER_SHA = "24163be0124e0fa6cd28ddb1d369b813e64e82bd7446e9f9218a340445aca6fe"
 PANELS = {
@@ -88,10 +89,12 @@ def main():
     for field in ("paper", "manifest", "critical", "species", "output"):
         p.add_argument(field, type=Path)
     p.add_argument("--transport", choices=["lj", "pairs"], default="lj")
+    p.add_argument("--diagnostics", type=Path)
     a = p.parse_args()
     if hashlib.sha256(a.paper.read_bytes()).hexdigest() != PAPER_SHA:
         raise ValueError("Uncalibrated source PDF")
     runs = [r for r in load_runs(a.manifest) if r["transport"] == a.transport]
+    diagnostics = plot_diagnostics.load(a.diagnostics)
     if a.output.exists():
         raise ValueError("Choose a new artifact directory")
     print(json.dumps({"figures": list(PANELS), "completed_runs": len(runs), "output": str(a.output)}))
@@ -107,7 +110,9 @@ def main():
     molecular_weights = np.array([float(row[4]) for row in species_rows])
     clipped = {}
     for number, (page_index, box, caption) in PANELS.items():
-        page = report.new_page(width=500, height=420)
+        extra_legends = plot_diagnostics.legends(diagnostics, number)
+        extra_height = 14*math.ceil(len(extra_legends)/2)
+        page = report.new_page(width=500, height=420+extra_height)
         crop = fitz.Rect(box)
         text(page, (18, 9, 482, 35), f"Liang Figure {number}: {caption}", 11)
         for x, title in [(18, "Original paper"), (270, "Paper + our calculation (open symbols)")]:
@@ -218,12 +223,19 @@ def main():
                         line(points, color, name+" mole fraction", bounds, max(1, len(points)//30))
             else:
                 text(page, (270, 224, 480, 240), "Case 5 stoichiometric profile pending", 8)
+        if extra_legends:
+            omitted += plot_diagnostics.draw(page, diagnostics, number,
+                                               dict(zip(CASES, COLORS)), axis, crop)
         for i, (color, label) in enumerate(legends):
             x = 18+(i % 2)*242
             y = legend_y+(i//2)*14
             page.draw_line((x, y+4), (x+17, y+4), color=color, width=.65, dashes="[2 2] 0")
             page.draw_circle((x+8.5, y+4), 1.35, color=color, fill=(1, 1, 1), width=.65)
             text(page, (x+22, y, x+237, y+13), label, 7)
+        for i, (label, style) in enumerate(extra_legends, start=len(legends)):
+            x, y = 18+(i % 2)*242, legend_y+(i//2)*14
+            plot_diagnostics.marker(page, (x+8.5, y+4), style, (0, 0, 0))
+            text(page, (x+22, y, x+237, y+13), label+" (case colors)", 7)
         notes = [
             "Computed: Burke 2012 N2 bath-gas kinetics; 100 atm; Tu=298 K assumed; "+a.transport+" transport.",
             "3*: partial-T control, not verified paper 3*. Cases 3-5: total-H equation; partial-molar diffusion enthalpies.",
@@ -239,8 +251,10 @@ def main():
             notes.append("Case 5 shown; x translated to the paper's 1500 K crossing; vector tick scale verified.")
         if omitted:
             notes.append(f"{omitted} samples outside the original axes are omitted, never clipped to the boundary.")
-        text(page, (18, 332, 482, 396), "\n".join(notes), 7)
-        text(page, (18, 405, 482, 420), "Source: Liang et al., Proc. Combust. Inst. 37 (2019) 1733-1739, Fig. "+str(number), 7)
+        if extra_legends:
+            notes.append("Additional symbols are sensitivity controls; archived qualification limits still apply.")
+        text(page, (18, 332+extra_height, 482, 396+extra_height), "\n".join(notes), 7)
+        text(page, (18, 405+extra_height, 482, 420+extra_height), "Source: Liang et al., Proc. Combust. Inst. 37 (2019) 1733-1739, Fig. "+str(number), 7)
         page.get_pixmap(matrix=fitz.Matrix(3, 3)).save(a.output/f"figure-{number}.png")
         clipped[str(number)] = omitted
     report.save(a.output/"liang-hydrogen-figures-2-7.pdf")
@@ -255,6 +269,11 @@ def main():
               "axes_2_6_calibration_sha256": hashlib.sha256(CALIBRATION_PATH.read_bytes()).hexdigest(),
               "frame_tolerance_points": .02,
               "plot_script_sha256": hashlib.sha256(Path(__file__).read_bytes()).hexdigest()}
+    if a.diagnostics:
+        record["diagnostics"] = diagnostics
+        record["diagnostics_sha256"] = hashlib.sha256(a.diagnostics.read_bytes()).hexdigest()
+        record["diagnostic_renderer_sha256"] = hashlib.sha256(
+            Path(plot_diagnostics.__file__).read_bytes()).hexdigest()
     (a.output/"evidence.json").write_text(json.dumps(record, indent=2)+"\n", encoding="utf-8", newline="\n")
 
 

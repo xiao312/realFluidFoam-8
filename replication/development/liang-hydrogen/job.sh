@@ -4,6 +4,7 @@ root=${1:?}; release=${2:?}; sdk=${3:?}; inputs=${4:?}; action=${5:?}
 build=${6:?}; phi=${7:-1.0}; guess=${8:--}; width=${9:-0.01}; tu=${10:-298}
 variant=${11:-baseline}
 grid_factor=${12:-1}
+steady_rtol=${13:-1e-5}; steady_atol=${14:-1e-11}
 [[ -n ${SLURM_JOB_ID:-} ]] || exit 2
 for path in "$release" "$sdk" "$inputs"; do
  [[ $(realpath -e "$path") == "$root/"* ]] || exit 2
@@ -77,7 +78,7 @@ else
   sha256sum "$guess" > guess-sha256.txt
  fi
  printf '%q ' "$build/hydrogen-flame" "$inputs" "$action" "$phi" "$job/result" \
-  "$guess" "$width" "$tu" "$variant" "$grid_factor" > command.txt
+  "$guess" "$width" "$tu" "$variant" "$grid_factor" "$steady_rtol" "$steady_atol" > command.txt
  printf '\n' >> command.txt
- "$build/hydrogen-flame" "$inputs" "$action" "$phi" "$job/result" "$guess" "$width" "$tu" "$variant" "$grid_factor" > flame.log 2>&1
+ "$build/hydrogen-flame" "$inputs" "$action" "$phi" "$job/result" "$guess" "$width" "$tu" "$variant" "$grid_factor" "$steady_rtol" "$steady_atol" > flame.log 2>&1
 fi

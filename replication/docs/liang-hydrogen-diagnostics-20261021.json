@@ -1,0 +1,146 @@
+{
+  "diagnostics": [
+    {
+      "figure": 3,
+      "quantity": "speed_cm_s",
+      "value": 72.97810297765032,
+      "case": "1",
+      "phi": 1.4,
+      "job": 125094796,
+      "source": "6bbf38848f008fe0d2a1f0f2c78059f2de1fff95",
+      "profile_sha256": "ba0c7260b1dc058c0d803bb087ad5a36c51649a8425595c3608bfdc0258e99a6",
+      "numerical_screen_passed": true,
+      "label": "Soret: Cantera 3.2",
+      "marker": "square",
+      "strict_native_failures": [
+        "thermal_definition",
+        "thermal_mass_closure",
+        "coefficient_projection"
+      ]
+    },
+    {
+      "figure": 3,
+      "quantity": "speed_cm_s",
+      "value": 72.37961647472478,
+      "case": "1",
+      "phi": 1.4,
+      "job": 125094797,
+      "source": "6bbf38848f008fe0d2a1f0f2c78059f2de1fff95",
+      "profile_sha256": "bb1187ced656cd1cd7adc378b675a1a9a33fddc8759ea71c1cfa0f927b1f3477",
+      "numerical_screen_passed": true,
+      "label": "Soret: manual formula",
+      "marker": "diamond",
+      "strict_native_failures": [
+        "thermal_definition"
+      ]
+    },
+    {
+      "figure": 3,
+      "quantity": "speed_cm_s",
+      "value": 72.4792259491676,
+      "case": "3",
+      "phi": 1.4,
+      "job": 125094802,
+      "source": "6bbf38848f008fe0d2a1f0f2c78059f2de1fff95",
+      "profile_sha256": "d0fd7c572d52effa87d169965405188a1fe316957023bfab5e32678a27a35a35",
+      "numerical_screen_passed": true,
+      "label": "Soret: Cantera 3.2",
+      "marker": "square",
+      "strict_native_failures": [
+        "thermal_definition",
+        "thermal_mass_closure",
+        "coefficient_projection"
+      ]
+    },
+    {
+      "figure": 3,
+      "quantity": "speed_cm_s",
+      "value": 71.92827232679309,
+      "case": "3",
+      "phi": 1.4,
+      "job": 125094803,
+      "source": "6bbf38848f008fe0d2a1f0f2c78059f2de1fff95",
+      "profile_sha256": "193b2b989bd5e8535c3c5b433231b9e2432238a319af36ba99861a94c736e16e",
+      "numerical_screen_passed": true,
+      "label": "Soret: manual formula",
+      "marker": "diamond",
+      "strict_native_failures": [
+        "thermal_definition"
+      ]
+    },
+    {
+      "figure": 3,
+      "quantity": "speed_cm_s",
+      "value": 73.23220592904318,
+      "case": "4",
+      "phi": 1.4,
+      "job": 125094810,
+      "source": "6bbf38848f008fe0d2a1f0f2c78059f2de1fff95",
+      "profile_sha256": "61e37bd345ef6476bbca13dc2b7c8ff8c9a37d151f48fb27fa74fb4d6b954752",
+      "numerical_screen_passed": true,
+      "label": "Soret: Cantera 3.2",
+      "marker": "square",
+      "strict_native_failures": [
+        "thermal_definition",
+        "thermal_mass_closure",
+        "coefficient_projection"
+      ]
+    },
+    {
+      "figure": 3,
+      "quantity": "speed_cm_s",
+      "value": 72.6796901364432,
+      "case": "4",
+      "phi": 1.4,
+      "job": 125094811,
+      "source": "6bbf38848f008fe0d2a1f0f2c78059f2de1fff95",
+      "profile_sha256": "ea7a6746e9442fdf5cb1263ab34069334e84a2712ec465f8593b8295b31b21b9",
+      "numerical_screen_passed": true,
+      "label": "Soret: manual formula",
+      "marker": "diamond",
+      "strict_native_failures": [
+        "thermal_definition"
+      ]
+    },
+    {
+      "figure": 3,
+      "quantity": "speed_cm_s",
+      "value": 72.2981847161151,
+      "case": "5",
+      "phi": 1.4,
+      "job": 125094817,
+      "source": "6bbf38848f008fe0d2a1f0f2c78059f2de1fff95",
+      "profile_sha256": "536c03bfbaaa84a867a98f1d993e1b7e0647e07669231374ae3ae956c9b3b9e1",
+      "numerical_screen_passed": true,
+      "label": "Soret: Cantera 3.2",
+      "marker": "square",
+      "strict_native_failures": [
+        "thermal_mass_closure",
+        "coefficient_projection"
+      ]
+    },
+    {
+      "figure": 3,
+      "quantity": "speed_cm_s",
+      "value": 71.74361485035847,
+      "case": "5",
+      "phi": 1.4,
+      "job": 125094818,
+      "source": "6bbf38848f008fe0d2a1f0f2c78059f2de1fff95",
+      "profile_sha256": "240b963e6cf63a4c0d88597ae44d321fa077a0f9b517392f8fd4769b82ade340",
+      "numerical_screen_passed": true,
+      "label": "Soret: manual formula",
+      "marker": "diamond",
+      "strict_native_failures": [
+        "thermal_definition"
+      ]
+    }
+  ],
+  "evidence": "liang-hydrogen-fine-soret-20261021.json",
+  "limits": [
+    "Sensitivity controls, not recovered Liang Soret settings",
+    "Strict native audit failures remain reported",
+    "Thermal-flux reconstruction differences fit saved-decimal rounding bounds",
+    "No baseline curve is replaced"
+  ]
+}

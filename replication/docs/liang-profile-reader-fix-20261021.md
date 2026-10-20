@@ -31,6 +31,12 @@ input hashes and qualification outputs remain under their job directories.
 Local receipts are under `state/liang-hydrogen-20261020/` in the operator
 project. The fixed regression is now part of every hydrogen build.
 
-This qualification covers numeric input handling. A newly committed driver
-must still pass its full model build checks before the matched finer-grid
-controls are resubmitted. Paper agreement is assessed separately.
+Full build `125094660` subsequently passed all model checks from source
+`6bbf38848f008fe0d2a1f0f2c78059f2de1fff95`. Its driver SHA256 is
+`92e061f03bc7bbe205de9b9804ea87258c32f2595bd5a5d57c76e23dc5048c89`.
+The same 24 fine-grid controls were resubmitted with their original numerical
+guesses and settings. Fifteen completed old/new pairs available at the
+04:35 snapshot had byte-identical `profile.csv`, `refinement.csv`,
+`property-checks.csv` and `transport.csv`. Failed or unfinished old attempts
+are excluded from that comparison. This qualifies reader parity for those
+completed controls; paper agreement remains separate.

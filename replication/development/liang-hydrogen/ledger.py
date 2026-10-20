@@ -87,8 +87,8 @@ def main():
             if key in config:
                 raise ValueError(f"Duplicate configuration field in job {row['job']}: {key}")
             config[key] = value
-        for key in ("width_m", "Tu_K", "grid_factor"):
-            if key in row and abs(float(config[key])-float(row[key])) > 1e-12:
+        for key in ("width_m", "Tu_K", "grid_factor", "steady_rtol", "steady_atol"):
+            if key in row and abs(float(config[key])-float(row[key])) > 1e-12*abs(float(row[key])):
                 raise ValueError(f"Declared {key} differs from job {row['job']}")
         observed_variant = next((line.split(maxsplit=1)[1] for line in
                                  configuration.splitlines() if line.startswith("model_variant ")),
@@ -114,13 +114,19 @@ def main():
             record["sha256"]["soret-flux.csv"] = digest(directory/"soret-flux.csv")
         elif config.get("Soret", "off") != "off":
             raise ValueError(f"Missing native Soret flux output for job {row['job']}")
+        for name in ("balance-nodes.csv", "balance-faces.csv"):
+            exists = (directory/name).is_file()
+            if exists != (observed_variant == "conservative"):
+                raise ValueError(f"Conservation output/configuration mismatch in job {row['job']}: {name}")
+            if exists:
+                record["sha256"][name] = digest(directory/name)
         if str(levels[-1]["case"]) != str(row["case"]):
             raise ValueError(f"Case mismatch in job {row['job']}.")
         if abs(record["final"]["phi"]-float(row["phi"])) > 1e-10:
             raise ValueError(f"Equivalence-ratio mismatch in job {row['job']}.")
         result.append(record)
     document = {
-        "schema": "liang-hydrogen-completed-ledger-v3",
+        "schema": "liang-hydrogen-completed-ledger-v4",
         "manifest_sha256": digest(args.manifest),
         "script_sha256": digest(Path(__file__)),
         "build_identity_basis": (

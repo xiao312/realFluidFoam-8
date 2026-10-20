@@ -63,6 +63,8 @@ Both Soret modes require a build that passed this additional test.
 The completed-run ledger's v3 schema includes observed configuration fields
 and hashes the native thermal-flux CSV when Soret is enabled.
 It rejects missing or unexpectedly enabled thermal-flux output.
+Version 4 also requires and hashes both native balance tables for the
+`conservative` variant, and rejects them for other variants.
 Existing no-Soret configurations remain readable.
 Example: `flame inputs 3 1.4 new-result - .01 298 manual-soret-baseline 1`.
 Use the same source and inputs with `baseline` for its paired no-Soret control.
@@ -137,8 +139,28 @@ this test before qualifying the driver. Completed pilots additionally require
 elemental/mass/energy flux checks and an explicit grid comparison; fixture
 success alone does not establish a flame solution or paper agreement.
 
-`flame INPUT CASE PHI OUTPUT [GUESS|-] [WIDTH_M] [TU_K] [VARIANT] [GRID_FACTOR]`
+`conservation.py plan|apply MANIFEST IDEAL_YAML NEW_JSON` audits completed
+`conservative` runs against their observed source/build/input records. It uses
+NumPy, Cantera Python 3.2 for molecular/element weights, and the existing
+profile/identity readers. It independently assembles species and energy flux
+balances from native outputs; it does not solve flames or change inputs.
+The declared additional screens are relative identity errors below 1e-10,
+elemental face-flux span below 1e-6 of each active inlet element flux,
+feed/first-face error below 1e-7 of mass flow and energy-flux span below 0.05 K
+equivalent. These numerical qualification limits do not replace paper-reading
+limits. Results retain every measured error and failed check. Run `plan`, then
+`apply`; only an empty failure list establishes this conservation qualification.
+`test_conservation.py MANIFEST IDEAL_YAML NEW_FIXTURES` copies one captured run,
+injects separate species/energy face-flux errors and requires the independent
+identities to detect both. It rechecks that the original run remains unchanged.
+Expected result: `PASS`, without promoting its existing failed balance screens.
+
+`flame INPUT CASE PHI OUTPUT [GUESS|-] [WIDTH_M] [TU_K] [VARIANT] [GRID_FACTOR] [STEADY_RTOL] [STEADY_ATOL]`
 runs 100-atm H2/air.
+Default steady tolerances remain 1e-5 relative and 1e-11 absolute. Explicit
+tighter controls accept relative values from 1e-9 to 1e-5 and absolute values
+from 1e-16 to 1e-11. The configuration records both. Submit/job wrappers pass
+them after grid factor; no tolerance is inferred from a variant or result.
 Cases are `1`, `2`, `3`, `3star`, `4`, and `5`. Cases 3–5 initially use the existing
 total-enthalpy residual; baseline 3star uses stock Cantera's partial-enthalpy
 temperature residual and is not established as Liang's Case 3* implementation.
@@ -287,6 +309,13 @@ and numerical-guess hash into the job directory. The collector retains these
 records when present; it does not invent them for historical jobs.
 The renderer uses NumPy/PyMuPDF, preserves source panels at publication scale,
 adds open-symbol legends, and exports six PNGs, a PDF and evidence JSON.
+Optional `--diagnostics JSON` overlays screened discrete controls on Figures
+3/5 only. Each row declares figure/quantity, case, phi, value, label, marker,
+job, source and profile hash, with `numerical_screen_passed=true`. Native-flux
+qualification limits remain in the diagnostic evidence; the renderer cannot
+promote a sensitivity to paper acceptance. It uses case colors and distinct
+square/diamond/triangle markers, without connecting diagnostic points.
+Additional legend space enlarges the report page, never the paper axes.
 Original caption crops remain beneath the original panels at their publication
 scale. Their measured PDF rectangles are recorded with the figure evidence;
 report page height can change without resizing either scientific panel.

@@ -15,7 +15,7 @@ namespace fs=std::filesystem;
 
 int main(int argc,char** argv) {
 try {
-    if(argc<5 || argc>10)throw std::runtime_error("Usage: flame INPUT CASE PHI NEW_OUTPUT [GUESS|-] [WIDTH_M] [TU_K] [VARIANT] [GRID_FACTOR]");
+    if(argc<5 || argc>12)throw std::runtime_error("Usage: flame INPUT CASE PHI NEW_OUTPUT [GUESS|-] [WIDTH_M] [TU_K] [VARIANT] [GRID_FACTOR] [STEADY_RTOL] [STEADY_ATOL]");
     fs::path input=argv[1],output=argv[4];std::string label=argv[2];
     const int stage=label=="3star"?3:std::stoi(label);
     const double phi=std::stod(argv[3]),pressure=100*OneAtm;
@@ -34,6 +34,11 @@ try {
     const bool signedAlpha=alphaVariant.rfind("signed-",0)==0;
     const std::string variant=(smooth || signedAlpha)?alphaVariant.substr(7):alphaVariant;
     const int gridFactor=argc>=10?std::stoi(argv[9]):1;
+    const double steadyRtol=argc>=11?std::stod(argv[10]):1e-5;
+    const double steadyAtol=argc>=12?std::stod(argv[11]):1e-11;
+    if(!(steadyRtol>=1e-9 && steadyRtol<=1e-5) ||
+       !(steadyAtol>=1e-16 && steadyAtol<=1e-11))
+        throw std::runtime_error("Steady tolerances are outside the supported diagnostic range");
     if(gridFactor!=1 && gridFactor!=2 && gridFactor!=4)
         throw std::runtime_error("GRID_FACTOR must be 1, 2 or 4");
     const bool pureFlux=variant=="pure-flux" || variant=="pure-flux-full-conductivity" || variant=="pure-flux-matched-energy";
@@ -114,6 +119,7 @@ try {
               signedAlpha?"signed-Soave-factors":"original-Soave")
           <<"\nflux_correction "<<(midpoint?"midpoint":"left-node")
           <<"\ngrid_factor "<<gridFactor<<"\ninitial_grid_points "<<grid.size()
+          <<"\nsteady_rtol "<<steadyRtol<<"\nsteady_atol "<<steadyAtol
           <<"\nconductivity "<<(fullConductivity?"full-Ely-Hanley":"dense-increment-diagnostic")
           <<"\nTakahashi bounded-Table2"
           <<"\nSoret "<<(manualSoret?"manual-author-pairs":soret?"cantera-3.2":"off")
@@ -152,7 +158,7 @@ try {
         flow=hydrogen::makeFlow<liang::TotalEnthalpyFlow>(midpoint,sol,pureFlux);
     else flow=hydrogen::makeFlow<Flow1D>(midpoint,sol,"flow");
     flow->setFreeFlow();flow->setPressure(pressure);
-    flow->setupGrid(grid.size(),grid.data());flow->setSteadyTolerances(1e-5,1e-11);
+    flow->setupGrid(grid.size(),grid.data());flow->setSteadyTolerances(steadyRtol,steadyAtol);
     flow->setFluxGradientBasis(ThermoBasis::molar);flow->enableSoret(soret);
     auto inlet=newDomain<Inlet1D>("inlet",sol);inlet->setTemperature(Tu);
     inlet->setMoleFractions(xin.data());inlet->setMdot(rho*guess.u[0]);
