@@ -1,0 +1,587 @@
+{
+  "observation": {
+    "observed_utc": "2026-10-20T20:01:12.213636+00:00",
+    "snapshot": "state/liang-hydrogen-20261020/monitor-snapshots/manual-observation-0404",
+    "jobs": [
+      {
+        "stage": 1,
+        "phi": 1.4,
+        "soret": false,
+        "variant": "full",
+        "build": 125089213,
+        "source": "d0cbc70ff405d7e5a78b1029b74c3d1bdc4c90f2",
+        "pressure_atm": 100,
+        "thermal_model": "off",
+        "job": 125089458,
+        "scheduler": [
+          "COMPLETED",
+          "00:03:15",
+          "0:0"
+        ],
+        "screen_passed": true,
+        "levels": [
+          {
+            "stage": "1",
+            "phi": "1.4",
+            "slope": "0.0075",
+            "curve": "0.0125",
+            "points": "1191",
+            "speed_cm_s": "6.124448387876014"
+          },
+          {
+            "stage": "1",
+            "phi": "1.4",
+            "slope": "0.00375",
+            "curve": "0.00625",
+            "points": "2267",
+            "speed_cm_s": "6.116619431452803"
+          }
+        ],
+        "executable_sha256": "59c1bef01d1d6f36d2dd6fbbf2fca513422a0bf3b9a6800e28a148e08302760e",
+        "screen": {
+          "stage": 1,
+          "phi": 1.4,
+          "speed_cm_s": 6.116619431452803,
+          "last_refinement_relative_change": 0.0012783120907197132,
+          "mass_flux_relative_range": 1.8157960408432182e-09,
+          "maximum_species_sum_error": 1.7852264111439808e-10,
+          "minimum_mass_fraction": -4.122322066773991e-12,
+          "points": 2267,
+          "scientific_acceptance": false,
+          "remaining": [
+            "domain sensitivity",
+            "initial-guess sensitivity",
+            "publication parameter uncertainty"
+          ]
+        },
+        "output_sha256": {
+          "profile.csv": "97a17e04e79c367d1d4118753432806c5cc66b12206994b9325a040172e6adce",
+          "refinement.csv": "06056456fd24e1400a10b354808492201fe8cc57f684bfe35210b5302df23220",
+          "property-checks.csv": "446317feefef116a5632be0fb0179cda8ee294dad216d4dee5c27339cf7ca085",
+          "flame.yaml": "6d14df66c5e3dd1a7a7ba428e54efebd00df6481212e4e738a32e713bc9d0e9c"
+        },
+        "record_sha256": {
+          "source-revision.txt": "396f6f3c914471df90eba39d6d7a5992640f6cd600740eaace811704679d21c7",
+          "build-path.txt": "14dcdf9c2ac8eea5df1a1d033ce02736183d5cfe98c59e5000e3fa80509a88b0",
+          "command.txt": "6d4dc86cfed4fa861d911b11cb8d43f91c509bb7dab0916d677edd99bc75ec85",
+          "input-sha256.txt": "8028512f5c42ef2163d94af5d7f2d8e342328d08c61d999d4ec9c41b9e2ac585",
+          "executable.sha256": "bd3f4effd382ec4ac0623d276f4df30d2c57464878d3645daffbffd215109b44"
+        }
+      },
+      {
+        "stage": 1,
+        "phi": 1.4,
+        "soret": true,
+        "variant": "manual-soret",
+        "build": 125089213,
+        "source": "d0cbc70ff405d7e5a78b1029b74c3d1bdc4c90f2",
+        "pressure_atm": 100,
+        "thermal_model": "manual-light-species",
+        "job": 125089460,
+        "scheduler": [
+          "COMPLETED",
+          "00:03:38",
+          "0:0"
+        ],
+        "screen_passed": true,
+        "levels": [
+          {
+            "stage": "1",
+            "phi": "1.4",
+            "slope": "0.0075",
+            "curve": "0.0125",
+            "points": "1199",
+            "speed_cm_s": "6.004502535313012"
+          },
+          {
+            "stage": "1",
+            "phi": "1.4",
+            "slope": "0.00375",
+            "curve": "0.00625",
+            "points": "2191",
+            "speed_cm_s": "5.999656221094127"
+          }
+        ],
+        "executable_sha256": "59c1bef01d1d6f36d2dd6fbbf2fca513422a0bf3b9a6800e28a148e08302760e",
+        "screen": {
+          "stage": 1,
+          "phi": 1.4,
+          "speed_cm_s": 5.999656221094127,
+          "last_refinement_relative_change": 0.0008071133604130587,
+          "mass_flux_relative_range": 1.8592323474966354e-10,
+          "maximum_species_sum_error": 8.465428358306326e-11,
+          "minimum_mass_fraction": -4.038939298824245e-13,
+          "points": 2191,
+          "scientific_acceptance": false,
+          "remaining": [
+            "domain sensitivity",
+            "initial-guess sensitivity",
+            "publication parameter uncertainty"
+          ]
+        },
+        "output_sha256": {
+          "profile.csv": "7da9923f720cdfee334e4e16db576531d60092021e20f4ad91cb5d0834f1e1ed",
+          "refinement.csv": "d42e736d3873a527b53479c328c578ba577af2c94c458923397a88308e1c5099",
+          "property-checks.csv": "446317feefef116a5632be0fb0179cda8ee294dad216d4dee5c27339cf7ca085",
+          "flame.yaml": "fed850f0f74f6770abc0c4ab5ef01625126643b73542aa64fab2dc5dd936942d"
+        },
+        "record_sha256": {
+          "source-revision.txt": "396f6f3c914471df90eba39d6d7a5992640f6cd600740eaace811704679d21c7",
+          "build-path.txt": "14dcdf9c2ac8eea5df1a1d033ce02736183d5cfe98c59e5000e3fa80509a88b0",
+          "command.txt": "241041d82ab37d37e3389ebfc72690657f1fbff9be0a6be19091d18cdc8f472f",
+          "input-sha256.txt": "8028512f5c42ef2163d94af5d7f2d8e342328d08c61d999d4ec9c41b9e2ac585",
+          "executable.sha256": "bd3f4effd382ec4ac0623d276f4df30d2c57464878d3645daffbffd215109b44"
+        },
+        "soret_flux_sha256": "e6ef58fd550d87fc463f55e624ce0eeed3194e6221ba8b73b96104d6c28e5a4c",
+        "saved_soret_enabled": true
+      },
+      {
+        "stage": 4,
+        "phi": 1.4,
+        "soret": false,
+        "variant": "dense-increment,bounded-takahashi,pressure-chemistry,takahashi-table2",
+        "build": 125089213,
+        "source": "d0cbc70ff405d7e5a78b1029b74c3d1bdc4c90f2",
+        "pressure_atm": 100,
+        "thermal_model": "off",
+        "job": 125089462,
+        "scheduler": [
+          "COMPLETED",
+          "00:10:45",
+          "0:0"
+        ],
+        "screen_passed": true,
+        "levels": [
+          {
+            "stage": "4",
+            "phi": "1.4",
+            "slope": "0.0075",
+            "curve": "0.0125",
+            "points": "1216",
+            "speed_cm_s": "5.81641624775407"
+          },
+          {
+            "stage": "4",
+            "phi": "1.4",
+            "slope": "0.00375",
+            "curve": "0.00625",
+            "points": "2199",
+            "speed_cm_s": "5.807094458287362"
+          }
+        ],
+        "executable_sha256": "59c1bef01d1d6f36d2dd6fbbf2fca513422a0bf3b9a6800e28a148e08302760e",
+        "screen": {
+          "stage": 4,
+          "phi": 1.4,
+          "speed_cm_s": 5.807094458287362,
+          "last_refinement_relative_change": 0.0016026689063575184,
+          "mass_flux_relative_range": 1.6768459121925022e-10,
+          "maximum_species_sum_error": 6.335998392614783e-11,
+          "minimum_mass_fraction": -8.741006769328679e-13,
+          "points": 2199,
+          "scientific_acceptance": false,
+          "remaining": [
+            "domain sensitivity",
+            "initial-guess sensitivity",
+            "publication parameter uncertainty"
+          ]
+        },
+        "output_sha256": {
+          "profile.csv": "e17fca0f35c7b22ed671142e5410a3c8c19ed39ad768fef9f86b69bfdd57af84",
+          "refinement.csv": "6c44fee4f6fd82321ca9484e3cf19da617f0acabe6243f8058c639c24fc8a112",
+          "property-checks.csv": "ddba46b16162dee966dc1ce512e8bbec9036e5e66503275256ae2472370ccda3",
+          "flame.yaml": "d915807fe599f04faeaf64276ab12096eb478c3629fde33168ce965258e2f1ae"
+        },
+        "record_sha256": {
+          "source-revision.txt": "396f6f3c914471df90eba39d6d7a5992640f6cd600740eaace811704679d21c7",
+          "build-path.txt": "14dcdf9c2ac8eea5df1a1d033ce02736183d5cfe98c59e5000e3fa80509a88b0",
+          "command.txt": "857f0c60b67b310ebac92cda2a7490224d6e161b24f81c4b9e92b1f42ed7feb8",
+          "input-sha256.txt": "8028512f5c42ef2163d94af5d7f2d8e342328d08c61d999d4ec9c41b9e2ac585",
+          "executable.sha256": "bd3f4effd382ec4ac0623d276f4df30d2c57464878d3645daffbffd215109b44"
+        }
+      },
+      {
+        "stage": 4,
+        "phi": 1.4,
+        "soret": true,
+        "variant": "dense-increment,bounded-takahashi,pressure-chemistry,takahashi-table2,manual-soret",
+        "build": 125089213,
+        "source": "d0cbc70ff405d7e5a78b1029b74c3d1bdc4c90f2",
+        "pressure_atm": 100,
+        "thermal_model": "manual-light-species",
+        "job": 125089463,
+        "scheduler": [
+          "COMPLETED",
+          "00:11:55",
+          "0:0"
+        ],
+        "screen_passed": true,
+        "levels": [
+          {
+            "stage": "4",
+            "phi": "1.4",
+            "slope": "0.0075",
+            "curve": "0.0125",
+            "points": "1221",
+            "speed_cm_s": "5.704414401880031"
+          },
+          {
+            "stage": "4",
+            "phi": "1.4",
+            "slope": "0.00375",
+            "curve": "0.00625",
+            "points": "2151",
+            "speed_cm_s": "5.698481939956417"
+          }
+        ],
+        "executable_sha256": "59c1bef01d1d6f36d2dd6fbbf2fca513422a0bf3b9a6800e28a148e08302760e",
+        "screen": {
+          "stage": 4,
+          "phi": 1.4,
+          "speed_cm_s": 5.698481939956417,
+          "last_refinement_relative_change": 0.0010399773764085962,
+          "mass_flux_relative_range": 5.960130249208258e-09,
+          "maximum_species_sum_error": 7.57334195355952e-11,
+          "minimum_mass_fraction": -3.583625698527424e-13,
+          "points": 2151,
+          "scientific_acceptance": false,
+          "remaining": [
+            "domain sensitivity",
+            "initial-guess sensitivity",
+            "publication parameter uncertainty"
+          ]
+        },
+        "output_sha256": {
+          "profile.csv": "e270410bf32add6af6a07a06c1b257f64ddeb0a6ee561f068cdbc4325dbe1327",
+          "refinement.csv": "fb5b4fc5d907d12188ad88ed62b12416ba7f8ebaf844cab91afe47ccd707f74b",
+          "property-checks.csv": "ddba46b16162dee966dc1ce512e8bbec9036e5e66503275256ae2472370ccda3",
+          "flame.yaml": "08b68543bb457aa17ea929a45c173b993df71377684cbd626e4f6198d046d576"
+        },
+        "record_sha256": {
+          "source-revision.txt": "396f6f3c914471df90eba39d6d7a5992640f6cd600740eaace811704679d21c7",
+          "build-path.txt": "14dcdf9c2ac8eea5df1a1d033ce02736183d5cfe98c59e5000e3fa80509a88b0",
+          "command.txt": "7d78c5305593e9c6da1c6fd3b86fc9788a7ae3a801deedfbf7f51040d91bb446",
+          "input-sha256.txt": "8028512f5c42ef2163d94af5d7f2d8e342328d08c61d999d4ec9c41b9e2ac585",
+          "executable.sha256": "bd3f4effd382ec4ac0623d276f4df30d2c57464878d3645daffbffd215109b44"
+        },
+        "soret_flux_sha256": "0ecdaf4815d9b0df4fb94381099167615f437fb4e445b7237b7020565bcf46cd",
+        "saved_soret_enabled": true
+      },
+      {
+        "stage": 5,
+        "phi": 1.4,
+        "soret": false,
+        "variant": "dense-increment,bounded-takahashi,pressure-chemistry,takahashi-table2",
+        "build": 125089213,
+        "source": "d0cbc70ff405d7e5a78b1029b74c3d1bdc4c90f2",
+        "pressure_atm": 100,
+        "thermal_model": "off",
+        "job": 125089466,
+        "scheduler": [
+          "COMPLETED",
+          "00:42:57",
+          "0:0"
+        ],
+        "screen_passed": true,
+        "levels": [
+          {
+            "stage": "5",
+            "phi": "1.4",
+            "slope": "0.0075",
+            "curve": "0.0125",
+            "points": "1225",
+            "speed_cm_s": "5.770863469681827"
+          },
+          {
+            "stage": "5",
+            "phi": "1.4",
+            "slope": "0.00375",
+            "curve": "0.00625",
+            "points": "2196",
+            "speed_cm_s": "5.7623993647663"
+          }
+        ],
+        "executable_sha256": "59c1bef01d1d6f36d2dd6fbbf2fca513422a0bf3b9a6800e28a148e08302760e",
+        "screen": {
+          "stage": 5,
+          "phi": 1.4,
+          "speed_cm_s": 5.7623993647663,
+          "last_refinement_relative_change": 0.0014666964415280814,
+          "mass_flux_relative_range": 2.1598888248131973e-10,
+          "maximum_species_sum_error": 1.0707656983299785e-10,
+          "minimum_mass_fraction": -1.124557098834789e-13,
+          "points": 2196,
+          "scientific_acceptance": false,
+          "remaining": [
+            "domain sensitivity",
+            "initial-guess sensitivity",
+            "publication parameter uncertainty"
+          ]
+        },
+        "output_sha256": {
+          "profile.csv": "2daa38da8fc55cb11e9ea89b6d70d15ef314b4a52850349317904eaff93e27d8",
+          "refinement.csv": "63a6800c3572eb75408ca96a4db7b7a6371b6bd3b7d68f8ac553c5542b9207c3",
+          "property-checks.csv": "7904e1b5f966dedfeb6188910740da67f8caf51270471657821265b51597a608",
+          "flame.yaml": "a8761dcd76f8c9fbacab72518a0a51508b2238206a207a6ebf62655e523a31dc"
+        },
+        "record_sha256": {
+          "source-revision.txt": "396f6f3c914471df90eba39d6d7a5992640f6cd600740eaace811704679d21c7",
+          "build-path.txt": "14dcdf9c2ac8eea5df1a1d033ce02736183d5cfe98c59e5000e3fa80509a88b0",
+          "command.txt": "9d476de54909c2447a8c90526e2916523b1fcad09015379416b788efbab9ea9a",
+          "input-sha256.txt": "8028512f5c42ef2163d94af5d7f2d8e342328d08c61d999d4ec9c41b9e2ac585",
+          "executable.sha256": "bd3f4effd382ec4ac0623d276f4df30d2c57464878d3645daffbffd215109b44"
+        }
+      },
+      {
+        "stage": 5,
+        "phi": 1.4,
+        "soret": true,
+        "variant": "dense-increment,bounded-takahashi,pressure-chemistry,takahashi-table2,manual-soret",
+        "build": 125089213,
+        "source": "d0cbc70ff405d7e5a78b1029b74c3d1bdc4c90f2",
+        "pressure_atm": 100,
+        "thermal_model": "manual-light-species",
+        "job": 125089471,
+        "scheduler": [
+          "COMPLETED",
+          "00:21:15",
+          "0:0"
+        ],
+        "screen_passed": true,
+        "levels": [
+          {
+            "stage": "5",
+            "phi": "1.4",
+            "slope": "0.0075",
+            "curve": "0.0125",
+            "points": "1227",
+            "speed_cm_s": "5.658809984076034"
+          },
+          {
+            "stage": "5",
+            "phi": "1.4",
+            "slope": "0.00375",
+            "curve": "0.00625",
+            "points": "2131",
+            "speed_cm_s": "5.653425318727961"
+          }
+        ],
+        "executable_sha256": "59c1bef01d1d6f36d2dd6fbbf2fca513422a0bf3b9a6800e28a148e08302760e",
+        "screen": {
+          "stage": 5,
+          "phi": 1.4,
+          "speed_cm_s": 5.653425318727961,
+          "last_refinement_relative_change": 0.0009515543662405035,
+          "mass_flux_relative_range": 1.9041188522392853e-10,
+          "maximum_species_sum_error": 9.095679764925535e-11,
+          "minimum_mass_fraction": -4.048263423164841e-13,
+          "points": 2131,
+          "scientific_acceptance": false,
+          "remaining": [
+            "domain sensitivity",
+            "initial-guess sensitivity",
+            "publication parameter uncertainty"
+          ]
+        },
+        "output_sha256": {
+          "profile.csv": "e852e265f85fd89108e54dc6dc92977fb2040b9b42de46612f262a0c4be92463",
+          "refinement.csv": "24a0cdea5154d9f1b305fe93066051545af4ab92b6af9a810f87c5ca34a3b89f",
+          "property-checks.csv": "7904e1b5f966dedfeb6188910740da67f8caf51270471657821265b51597a608",
+          "flame.yaml": "22f4ed9ec26afabef5f1e9c1f15ee691b52b93defbe68e3f2bab1376a4c93df7"
+        },
+        "record_sha256": {
+          "source-revision.txt": "396f6f3c914471df90eba39d6d7a5992640f6cd600740eaace811704679d21c7",
+          "build-path.txt": "14dcdf9c2ac8eea5df1a1d033ce02736183d5cfe98c59e5000e3fa80509a88b0",
+          "command.txt": "495c0c72bdb17a089e95612d9aaddebbd83d01933debdad54cd9db5b30191c97",
+          "input-sha256.txt": "8028512f5c42ef2163d94af5d7f2d8e342328d08c61d999d4ec9c41b9e2ac585",
+          "executable.sha256": "bd3f4effd382ec4ac0623d276f4df30d2c57464878d3645daffbffd215109b44"
+        },
+        "soret_flux_sha256": "a73b4b8b08ad2091d0c47333e8146d5c71b3f7cc546c8447d58f5ccf01dcb550",
+        "saved_soret_enabled": true
+      }
+    ]
+  },
+  "native_analysis": {
+    "observation_sha256": "3d2611e1fd9267ddc087dd5c334bfb634be99fc9f3b5521c74258e8411e6d67c",
+    "script_sha256": "e22ed897e69777e5ce20750a668483eba4556fb95e1b2b44a63aac529aa878aa",
+    "source_revision": "d0cbc70ff405d7e5a78b1029b74c3d1bdc4c90f2",
+    "executable_sha256": "59c1bef01d1d6f36d2dd6fbbf2fca513422a0bf3b9a6800e28a148e08302760e",
+    "thermal_model": "manual-light-species",
+    "input_record_sha256": "8028512f5c42ef2163d94af5d7f2d8e342328d08c61d999d4ec9c41b9e2ac585",
+    "phi": 1.4,
+    "pressure_atm": 100,
+    "Tu_K": 298,
+    "pairs": [
+      {
+        "stage": 1,
+        "off_cm_s": 6.116619431452803,
+        "on_cm_s": 5.999656221094127,
+        "change_cm_s": -0.1169632103586764,
+        "change_pct": -1.9122198408687896
+      },
+      {
+        "stage": 4,
+        "off_cm_s": 5.807094458287362,
+        "on_cm_s": 5.698481939956417,
+        "change_cm_s": -0.1086125183309452,
+        "change_pct": -1.870341857035629
+      },
+      {
+        "stage": 5,
+        "off_cm_s": 5.7623993647663,
+        "on_cm_s": 5.653425318727961,
+        "change_cm_s": -0.10897404603833927,
+        "change_pct": -1.8911227622412263
+      }
+    ],
+    "runs": [
+      {
+        "stage": 1,
+        "soret": false,
+        "job": 125089458,
+        "speed_cm_s": 6.116619431452803,
+        "final_temperature_K": 1980.562542476826
+      },
+      {
+        "stage": 1,
+        "soret": true,
+        "job": 125089460,
+        "speed_cm_s": 5.999656221094127,
+        "final_temperature_K": 1980.701161339748,
+        "native_flux_sha256": "e6ef58fd550d87fc463f55e624ce0eeed3194e6221ba8b73b96104d6c28e5a4c",
+        "native_flux_checks": {
+          "decomposition": 1.373873813570914e-16,
+          "thermal_definition": 2.0981843814411673e-13,
+          "total_mass_closure": 4.594788772706483e-12,
+          "thermal_mass_closure": 5.096541913462459e-18,
+          "coefficient_projection": 5.053325743876618e-16
+        },
+        "maximum_absolute_thermal_enthalpy_flux_W_m2": 178304.83693901217
+      },
+      {
+        "stage": 4,
+        "soret": false,
+        "job": 125089462,
+        "speed_cm_s": 5.807094458287362,
+        "final_temperature_K": 1961.05305415921
+      },
+      {
+        "stage": 4,
+        "soret": true,
+        "job": 125089463,
+        "speed_cm_s": 5.698481939956417,
+        "final_temperature_K": 1961.17933652236,
+        "native_flux_sha256": "0ecdaf4815d9b0df4fb94381099167615f437fb4e445b7237b7020565bcf46cd",
+        "native_flux_checks": {
+          "decomposition": 1.438766379813693e-16,
+          "thermal_definition": 2.0131713762296255e-13,
+          "total_mass_closure": 4.446620111194436e-12,
+          "thermal_mass_closure": 8.15895325712864e-18,
+          "coefficient_projection": 6.114807971894026e-16
+        },
+        "maximum_absolute_thermal_enthalpy_flux_W_m2": 163884.0020614042
+      },
+      {
+        "stage": 5,
+        "soret": false,
+        "job": 125089466,
+        "speed_cm_s": 5.7623993647663,
+        "final_temperature_K": 1961.000237357661
+      },
+      {
+        "stage": 5,
+        "soret": true,
+        "job": 125089471,
+        "speed_cm_s": 5.653425318727961,
+        "final_temperature_K": 1961.1200971537,
+        "native_flux_sha256": "a73b4b8b08ad2091d0c47333e8146d5c71b3f7cc546c8447d58f5ccf01dcb550",
+        "native_flux_checks": {
+          "decomposition": 1.4358636818743375e-16,
+          "thermal_definition": 2.0928386224419346e-13,
+          "total_mass_closure": 6.618091388251795e-12,
+          "thermal_mass_closure": 7.822510643748585e-18,
+          "coefficient_projection": 5.031356879586621e-16
+        },
+        "maximum_absolute_thermal_enthalpy_flux_W_m2": 168772.30779882273
+      }
+    ],
+    "case4_minus_case5_without_soret_cm_s": 0.044695093521061935,
+    "case4_minus_case5_with_soret_cm_s": 0.045056621228455995,
+    "change_in_case4_minus_case5_cm_s": 0.00036152770739406037,
+    "scientific_acceptance": false,
+    "limits": [
+      "manual-light-species Soret sensitivity, not recovered Liang settings",
+      "Case 5 uses corrected mixture diffusion and physical density in the manual thermal closure",
+      "Native thermal enthalpy contribution is evaluated on each solved profile"
+    ]
+  },
+  "paper_screen": {
+    "criteria": "abs(error) <= max(0.05 cm/s, 1% reference) + digitization uncertainty",
+    "rows": [
+      {
+        "stage": 1,
+        "phi": 1.4,
+        "job": 125089460,
+        "computed_cm_s": 5.999656221094127,
+        "paper_cm_s": 6.116682100188833,
+        "image_uncertainty_cm_s": 0.04,
+        "error_cm_s": -0.1170258790947063,
+        "error_percent": -1.9132248035433048,
+        "limit_cm_s": 0.10116682100188834,
+        "within_screen": false
+      },
+      {
+        "stage": 4,
+        "phi": 1.4,
+        "job": 125089463,
+        "computed_cm_s": 5.698481939956417,
+        "paper_cm_s": 5.795719156940164,
+        "image_uncertainty_cm_s": 0.03,
+        "error_cm_s": -0.09723721698374721,
+        "error_percent": -1.6777420428888306,
+        "limit_cm_s": 0.08795719156940164,
+        "within_screen": false
+      },
+      {
+        "stage": 5,
+        "phi": 1.4,
+        "job": 125089471,
+        "computed_cm_s": 5.653425318727961,
+        "paper_cm_s": 5.642738222985565,
+        "image_uncertainty_cm_s": 0.015,
+        "error_cm_s": 0.010687095742396124,
+        "error_percent": 0.18939556151767745,
+        "limit_cm_s": 0.07142738222985565,
+        "within_screen": true
+      }
+    ],
+    "excluded": [],
+    "stages": {
+      "1": {
+        "points": 1,
+        "rms_cm_s": 0.1170258790947063,
+        "max_abs_cm_s": 0.1170258790947063,
+        "failed_points": 1
+      },
+      "4": {
+        "points": 1,
+        "rms_cm_s": 0.09723721698374721,
+        "max_abs_cm_s": 0.09723721698374721,
+        "failed_points": 1
+      },
+      "5": {
+        "points": 1,
+        "rms_cm_s": 0.010687095742396124,
+        "max_abs_cm_s": 0.010687095742396124,
+        "failed_points": 0
+      }
+    },
+    "scientific_acceptance": false
+  },
+  "inputs_sha256": {
+    "manual-observation-0404.json": "3d2611e1fd9267ddc087dd5c334bfb634be99fc9f3b5521c74258e8411e6d67c",
+    "summary.json": "d450565dd189283f300210b4111ddc53aa8af93d314aa54d491a11906aa33aa7",
+    "liang-figure8a-digitized-v2.json": "4beac428ce44b910b63aafbd464870211c8a3c48701b869d477e941bf503e115"
+  },
+  "scientific_acceptance": false
+}

@@ -81,14 +81,27 @@ Executable SHA-256:
 
 Matched Case 1/4/5 off/on jobs are `125089458`, `125089460`,
 `125089462`, `125089463`, `125089466` and `125089471`.
-Their completed results will be recorded separately.
+All six completed and passed the existing numerical screens. All three on-runs
+also pass the unchanged strict native-face audit.
+The [completed manual-control record](liang-manual-soret-controls-20261021.json)
+contains the numerical, native-flux and paper comparisons with input hashes.
+
+| Case | Manual Soret, cm/s | Change from off | Error against Liang | Paper screen |
+|---|---:|---:|---:|---|
+| 1 | 5.999656221 | −1.9122% | −1.9132% | Fail |
+| 4 | 5.698481940 | −1.8703% | −1.6777% | Fail |
+| 5 | 5.653425319 | −1.8911% | +0.1894% | Pass |
+
+The Case 4–5 separation is 0.045056621 cm/s, still much smaller than Liang's
+0.152980934 cm/s. Improving Case 5 alone while moving already matching controls
+outside their screen does not establish the missing model.
 This manual formula follows the published sign convention.
 It is not established as Liang's historical PREMIX implementation.
 
 ## Comparison figures
 
-The per-case gallery now contains the eight completed earlier diagnostics and
-the three completed Cantera 3.2 Soret points.
+The per-case gallery now contains the eight completed earlier diagnostics,
+three completed Cantera 3.2 Soret points and three manual-formula points.
 Each diagnostic has a distinct color/marker combination and a matching legend.
 The 65-point baseline and frozen CFD capture remain separate inputs.
 The original panel and caption retain their publication dimensions.
@@ -96,5 +109,8 @@ The original panel and caption retain their publication dimensions.
 Input record:
 [Figure 8(a) diagnostics](liang-figure8a-diffusion-diagnostics-20261021.json).
 Rendered output:
-`output/pdf/liang-figure8a-soret-20261021-0330-v2/`.
+`output/pdf/liang-figure8a-manual-soret-20261021-0415/`.
 No diagnostic point replaces a baseline curve.
+Both overview PNGs and the Case 2/3 PNGs are byte-identical to the previous
+gallery. The combined PDF retains seven pages. Multiple operating points with
+the same diagnostic label now share a legend; they remain unconnected.

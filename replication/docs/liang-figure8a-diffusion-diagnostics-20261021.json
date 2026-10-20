@@ -1,6 +1,6 @@
 {
   "baseline_sha256": "79da2c0f01c053b619135ec1ee766aa9d75877230b938e1582e8a9d4225f0d9d",
-  "observed_utc": "2026-10-20T19:26:12.413763+00:00",
+  "observed_utc": "2026-10-20T20:01:12.213636+00:00",
   "diagnostics": [
     {
       "stage": 4,
@@ -314,6 +314,96 @@
           "publication parameter uncertainty"
         ]
       }
+    },
+    {
+      "stage": 1,
+      "phi": 1.4,
+      "pressure_atm": 100,
+      "speed_cm_s": 5.999656221094127,
+      "label": "Cantera: Soret (manual formula)",
+      "job": "125089460",
+      "screen_passed": true,
+      "source": "d0cbc70ff405d7e5a78b1029b74c3d1bdc4c90f2",
+      "build": 125089213,
+      "variant": "manual-soret",
+      "executable_sha256": "59c1bef01d1d6f36d2dd6fbbf2fca513422a0bf3b9a6800e28a148e08302760e",
+      "profile_sha256": "7da9923f720cdfee334e4e16db576531d60092021e20f4ad91cb5d0834f1e1ed",
+      "screen": {
+        "stage": 1,
+        "phi": 1.4,
+        "speed_cm_s": 5.999656221094127,
+        "last_refinement_relative_change": 0.0008071133604130587,
+        "mass_flux_relative_range": 1.8592323474966354e-10,
+        "maximum_species_sum_error": 8.465428358306326e-11,
+        "minimum_mass_fraction": -4.038939298824245e-13,
+        "points": 2191,
+        "scientific_acceptance": false,
+        "remaining": [
+          "domain sensitivity",
+          "initial-guess sensitivity",
+          "publication parameter uncertainty"
+        ]
+      }
+    },
+    {
+      "stage": 4,
+      "phi": 1.4,
+      "pressure_atm": 100,
+      "speed_cm_s": 5.698481939956417,
+      "label": "Cantera: Soret (manual formula)",
+      "job": "125089463",
+      "screen_passed": true,
+      "source": "d0cbc70ff405d7e5a78b1029b74c3d1bdc4c90f2",
+      "build": 125089213,
+      "variant": "dense-increment,bounded-takahashi,pressure-chemistry,takahashi-table2,manual-soret",
+      "executable_sha256": "59c1bef01d1d6f36d2dd6fbbf2fca513422a0bf3b9a6800e28a148e08302760e",
+      "profile_sha256": "e270410bf32add6af6a07a06c1b257f64ddeb0a6ee561f068cdbc4325dbe1327",
+      "screen": {
+        "stage": 4,
+        "phi": 1.4,
+        "speed_cm_s": 5.698481939956417,
+        "last_refinement_relative_change": 0.0010399773764085962,
+        "mass_flux_relative_range": 5.960130249208258e-09,
+        "maximum_species_sum_error": 7.57334195355952e-11,
+        "minimum_mass_fraction": -3.583625698527424e-13,
+        "points": 2151,
+        "scientific_acceptance": false,
+        "remaining": [
+          "domain sensitivity",
+          "initial-guess sensitivity",
+          "publication parameter uncertainty"
+        ]
+      }
+    },
+    {
+      "stage": 5,
+      "phi": 1.4,
+      "pressure_atm": 100,
+      "speed_cm_s": 5.653425318727961,
+      "label": "Cantera: Soret (manual formula)",
+      "job": "125089471",
+      "screen_passed": true,
+      "source": "d0cbc70ff405d7e5a78b1029b74c3d1bdc4c90f2",
+      "build": 125089213,
+      "variant": "dense-increment,bounded-takahashi,pressure-chemistry,takahashi-table2,manual-soret",
+      "executable_sha256": "59c1bef01d1d6f36d2dd6fbbf2fca513422a0bf3b9a6800e28a148e08302760e",
+      "profile_sha256": "e852e265f85fd89108e54dc6dc92977fb2040b9b42de46612f262a0c4be92463",
+      "screen": {
+        "stage": 5,
+        "phi": 1.4,
+        "speed_cm_s": 5.653425318727961,
+        "last_refinement_relative_change": 0.0009515543662405035,
+        "mass_flux_relative_range": 1.9041188522392853e-10,
+        "maximum_species_sum_error": 9.095679764925535e-11,
+        "minimum_mass_fraction": -4.048263423164841e-13,
+        "points": 2131,
+        "scientific_acceptance": false,
+        "remaining": [
+          "domain sensitivity",
+          "initial-guess sensitivity",
+          "publication parameter uncertainty"
+        ]
+      }
     }
   ],
   "independent_seed_check": {
@@ -351,5 +441,6 @@
     "profile_sha256": "0c18409beddda7fd87bc798976f60f09ca77a794f19b846e562bf6b506782a70",
     "refinement": "stage,phi,slope,curve,points,speed_cm_s\n1,1.1,0.0075,0.0125,2133,7.461783729146212\n1,1.1,0.00375,0.00625,2133,7.461820426150887\n"
   },
-  "thermal_diffusion_record": "liang-soret-controls-20261021.json"
+  "thermal_diffusion_record": "liang-soret-controls-20261021.json",
+  "manual_thermal_diffusion_record": "liang-manual-soret-controls-20261021.json"
 }

@@ -66,11 +66,17 @@ def main():
         rows=[r for r in ref['rows'] if r['stage']==s]
         items=[series('Liang Case '+str(s)+' (digitized)',rows,(0,0,0),'line' if s in [1,5] else 'square',s in [1,5]),
                series('Cantera Case '+str(s),[r for r in ct['results'] if r['stage']==s],COLORS[s-1],connect=True)]
-        for index,row in enumerate(r for r in diagnostics if r['stage']==s):
+        grouped={}
+        for row in (r for r in diagnostics if r['stage']==s):
+            group=grouped.setdefault(row['label'],[])
+            if any(abs(other['phi']-row['phi'])<1e-10 for other in group):
+                raise ValueError('Ambiguous diagnostic label and operating condition')
+            group.append(row)
+        for index,(label,rows) in enumerate(grouped.items()):
             if index>=len(DIAGNOSTIC_STYLES):
                 raise ValueError('Too many diagnostic series for distinct legend markers')
             color,marker=DIAGNOSTIC_STYLES[index]
-            items.append(series(row['label'],[row],color,marker))
+            items.append(series(label,rows,color,marker))
         if s==1:
             items+=ours+[series('Stock reactingFoam',point('stock'),(.8,0,.2),'square'),
                          series('DeepFlame dfLowMachFoam',point('deepflame'),(.9,.45,0),'square')]

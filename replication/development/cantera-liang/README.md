@@ -415,6 +415,9 @@ overview, and one comparison for each Case 1–5. Each has the original 204 by
 JSON results, digitized paper data, and validated front-history audit summaries.
 Outputs are PNG/PDF pages, a combined PDF, and an input-hash manifest. The
 renderer uses PyMuPDF and the existing axis calibration. It submits no jobs.
+Diagnostic points with the same case and label share one marker and legend;
+different operating conditions remain unconnected. Duplicate points at the same
+case, label and equivalence ratio fail as ambiguous input.
 Missing CFD stages remain explicitly pending. CFD markers are latest valid
 temperature-front estimates, not accepted steady flame speeds. Other OpenFOAM
 solvers appear only in the individual Case 1 comparison. Verify the seven-page
