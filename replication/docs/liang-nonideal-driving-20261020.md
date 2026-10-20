@@ -48,4 +48,15 @@ under ROOT. Use `check.py` on each completed result. Compare the ideal control
 with 7.461703 cm/s before interpreting nonideal flames. Compare Cases 4 and 5
 together; a uniform shift cannot explain the missing stage separation.
 
-No result from these three flames is included in a baseline comparison yet.
+All three flames completed and passed `check.py`. The ideal control gives
+7.461820 cm/s on 2133 points, within 0.0016% of the independent baseline.
+The frozen ideal flux is exactly unchanged; the full steady solve differs
+slightly because its warm numerical guess produces six extra grid points.
+
+Case 4 gives 5.807463 cm/s on 2202 points, and Case 5 gives 5.762672 cm/s
+on 2200 points. Last refinement changes are 0.000793% and 0.000365%.
+Their separation is 0.044791 cm/s, versus baseline 0.044695 and Liang 0.152981.
+Case 5 changes by only +0.000273 cm/s. This tested closure therefore does not
+explain the missing stage separation. The code remains an isolated draft,
+not a baseline correction. Completed diagnostic squares can be plotted with
+separate labels; no baseline curve is replaced.
