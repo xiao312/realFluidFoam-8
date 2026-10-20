@@ -136,7 +136,7 @@ as a source disagreement. All 10-atm terms match exactly.
 
 At 100 atm, Cantera selects the highest authored PLOG endpoint, 10 atm,
 as documented in its
-[PLOG implementation](https://cantera.org/3.2/reference/kinetics/rate-constants.html).
+[versioned PLOG documentation](https://github.com/Cantera/cantera/blob/v3.2.0/doc/sphinx/reference/kinetics/rate-constants.md#pressure-dependent-arrhenius-rate-expressions-p-log).
 Therefore the 1-atm document discrepancy does not affect this 100-atm
 comparison. This endpoint behavior is an extrapolation convention; it does
 not establish experimental validation of these prompt rates at 100 atm.
@@ -160,6 +160,24 @@ This is specifically a **CH2O prompt-off diagnostic on the full publisher
 mechanism**. It is not the recovered 2015 HP release, not a methane-subset
 extraction, and not demonstrated to be Liang's input. The source supports
 testing the distinction; agreement with a figure would not establish identity.
+
+## Review of the prepared control
+
+The separately prepared `liang-kinetics/prompt_off.py` control was checked
+against this contract. Its output retains the same 92 species and has
+610 reactions. A parsed-YAML comparison confirms that only the specified
+six reactions, the three unpaired duplicate flags and the description
+change. All species, phase settings, thermo, transport and other reaction
+records remain exactly equal to the fixed-100-atm parent.
+
+The preparation's qualification records 24 forward/reverse rate checks
+at 298, 500, 1000, 1800, 2500 and 3500 K, with two positive all-species
+compositions. Every retained rate agrees exactly at these frozen states.
+The output SHA-256 is
+`aec705319b232278613acbc3f5784a61f9c5ace9e9a21578a0343d309f9d8caf`.
+This verifies the control's content, not its agreement with Liang or
+experimental validity above the author's pressure range. The flame runner
+must retain the fixed-100-atm restriction.
 
 ## Reproduction and evidence
 

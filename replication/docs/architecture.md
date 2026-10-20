@@ -192,6 +192,10 @@ local Liang PDF. It adds ideal-gas operating points and preserves the source
 panel's size and graphics in a calibrated overlay. Cases 2–5 remain paper
 references. This module has no solver, scheduler or real-gas Cantera dependency.
 `docs/` owns the scientific plan, writing rules, and reviewed result summaries.
+The offline `validation/figures/liang_atlas.py` assembler consumes explicit
+property, hydrogen, Figure 8(a) and mechanism comparison PDF pages and evidence
+files. It preserves page dimensions and hashes inputs; it neither reruns models
+nor changes scientific acceptance.
 `development/` owns the single `develop/reacting` integration line and isolated
 draft experiments. Its named solver depends on the pinned OF8/library build;
 benchmark runners depend on that solver or the unchanged upstream executable.

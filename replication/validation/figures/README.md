@@ -1,5 +1,21 @@
 # Paper figure comparisons
 
+`liang_atlas.py plan|apply PROJECT_ROOT MANIFEST NEW_OUTPUT` assembles the current
+Liang Figures 1–8 without changing their physical page or plot dimensions.
+The JSON manifest has `captured_at`, `source_revision`, `summary`, and ordered
+`figures`; each figure has `id`, `title`, `status`, `pdf` (project-relative),
+`page` (zero-based), and `evidence` (project-relative). Required IDs are exactly
+1–7, 8a and 8b, once each. It copies the selected PDF pages, adds a concise status
+cover and bookmarks, and hashes every source PDF/evidence file. It performs no
+simulation, source digitization, model selection, or Lark update. Missing or
+out-of-root paths, duplicate figures, and existing output directories fail.
+Dependencies are PyMuPDF and the standard library; input plots come from the
+Liang property/hydrogen/Cantera/kinetics modules. The output is consumed by the
+project record, with no solver dependency or secret handling.
+Example: `python -B liang_atlas.py plan PROJECT manifest.local.json output/pdf/new-atlas`.
+Verify nine figure pages plus the cover, source-page dimensions, bookmarks,
+input hashes, and rendered cover/representative pages before publication.
+
 `extract_inlet_profiles.py ROOT JOB...` reads stable saved 1-D development
 checkpoints and emits JSON on stdout; it never writes remotely. It reconstructs
 global ordering through cellProcAddressing, validates the declared uniform mesh,
