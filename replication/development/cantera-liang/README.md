@@ -4,6 +4,11 @@ This module runs Liang Figure 8(a) model stages with Cantera 3.2 FreeFlame.
 It owns C++ thermodynamic and transport adapters. It does not claim to reproduce
 unpublished PREMIX inputs or resolve the Figure 2 discrepancy.
 
+Plot input JSON can include `stage_labels`: five nonempty strings in stage order.
+Use explicit labels when a displayed curve changes model variants, such as the
+corrected Takahashi Table 2 coefficient. The plot manifest records these labels.
+This presentation option does not change calculated data or comparison criteria.
+
 Inputs: author GRI30 YAML, author species critical data, an ideal flame profile,
 case number 1–5, and an explicit output directory. Pressure is 100 atm and
 unburned temperature is 298 K. The article does not specify Tu numerically.

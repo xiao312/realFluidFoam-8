@@ -24,6 +24,9 @@ def main():
     if hashlib.sha256(a.paper.read_bytes()).hexdigest()!=PAPER_SHA:raise ValueError('Unexpected source PDF')
     data=json.loads(a.results.read_text(encoding='utf-8-sig'));rows=data['results']
     diagnostics=data.get('diagnostics',[])
+    labels=data.get('stage_labels',LABELS)
+    if len(labels)!=5 or any(not isinstance(v,str) or not v for v in labels):
+        raise ValueError('Expected five explicit stage labels')
     if a.output.exists():raise ValueError('Output exists')
     if not rows or any(not 1<=r['stage']<=5 or r['speed_cm_s']<=0 for r in rows):raise ValueError('Invalid results')
     if len(diagnostics)>6 or any(r.get('pressure_atm')!=100 or not r.get('label') or
@@ -53,7 +56,7 @@ def main():
         for pt in points:page.draw_circle(pt,1.3,color=color,fill=(1,1,1),width=.65)
         y=236+(stage-1)*12
         page.draw_circle(f.Point(251,y+4),1.3,color=color,fill=(1,1,1),width=.65)
-        text((260,y,450,y+14),LABELS[stage-1]+(' (pending)' if not group else ''),7,color)
+        text((260,y,450,y+14),labels[stage-1]+(' (pending)' if not group else ''),7,color)
     diagnostic_colors=[(.8,0,.25),(0,.25,.8),(.2,.2,.2),(.4,.3,.7),(.2,.5,.4),(.8,.2,.5)]
     for index,row in enumerate(diagnostics):
         color=diagnostic_colors[index];dx,dy=panel_coordinates(row['phi'],row['speed_cm_s']);px=246+dx;py=52+dy
@@ -74,7 +77,7 @@ def main():
     page.get_pixmap(matrix=f.Matrix(4,4),clip=f.Rect(242,32,454,300+extra)).save(a.output/'liang-staged-overlay.png')
     manifest={'paper_sha256':PAPER_SHA,'results_sha256':hashlib.sha256(a.results.read_bytes()).hexdigest(),
               'plotter_sha256':hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),'results':rows,'diagnostics':diagnostics,
-              'panel_size_pt':[204,175],'excluded_outside_printed_phi_axis':excluded,
+              'panel_size_pt':[204,175],'stage_labels':labels,'excluded_outside_printed_phi_axis':excluded,
               'publication_agreement':'not established'}
     (a.output/'manifest.json').write_text(json.dumps(manifest,indent=2)+'\n')
 
