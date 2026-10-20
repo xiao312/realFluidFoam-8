@@ -1,5 +1,6 @@
 #pragma once
 #include "cantera/transport/MixTransport.h"
+#include "cantera/thermo/ThermoPhase.h"
 #include <algorithm>
 #include <array>
 #include <cmath>
