@@ -64,6 +64,16 @@ Native execution depends on `temperature-inversion`, the qualified native
 library, OF8 and Slurm. Only this optional variant adds `cantera-cfd`,
 `cantera-bridge` and the pinned Cantera runtime as dependencies.
 
+A further final argument selects the maximum time step in nanoseconds: `50`
+(default) or `5`. The generator accepts the same choice through
+`--max-delta-t-ns`. The 5-ns diagnostic retains the 20-microsecond endpoint and
+all original fields. It reserves eight hours on eight distinct CPUs, at most
+64 core-hours; the 50-ns run retains its one-hour cap. This changes both Euler
+time discretization and the native chemistry averaging interval, so it cannot
+attribute any resulting difference to chemistry alone. The chosen ceiling is
+recorded in the case, run receipt and ledger identity. Verification rejects
+control/manifest mismatch and confirms identical original fields across steps.
+
 The small-increment C++ probe reports cell 0 only. `increment_case.py plan|apply
 CASE NEW_PROBE_CASE` copies its original-zero fresh-mixture state to a separate
 one-cell test mesh, retaining the registered thermo dictionaries and all 144

@@ -85,6 +85,8 @@ def verify(case):
         raise ValueError('Original-zero start policy is required')
     if abs(float(setting('endTime'))-record['end_time_s'])>1e-12:
         raise ValueError('Endpoint differs from initialization manifest')
+    if abs(float(setting('maxDeltaT'))-record.get('max_delta_t_s',5e-8))>1e-16:
+        raise ValueError('Time-step ceiling differs from initialization manifest')
     if digest(Path(record['profile_path']))!=record['profile_sha256']:
         raise ValueError('Reference profile changed after preparation')
     for directory in [case,*case.glob('processor[0-9]*')]:
@@ -126,6 +128,7 @@ def prepare(args):
         result_manifest_sha256=digest(args.results),cells=n,length_m=length,radius_m=radius,
         species=names,velocity_recipe=args.velocity,pressure_Pa=10132500,Tu_K=298,
         end_time_s=args.end_us*1e-6,initialization='generated_original_zero',
+        max_delta_t_s=args.max_delta_t_ns*1e-9,
         reference_speed_m_s=rows[0]['U_m_s'],centre_rest_wave_speed_m_s=centre['U_m_s'],
         half_temperature_K=.5*(rows[0]['T_K']+rows[-1]['T_K']),
         reference_roundoff_negative_species_clipped=True)
@@ -148,10 +151,14 @@ def prepare(args):
     for path in [args.case/'fresh-start-inputs.json',args.case/'tracking-inputs.json',args.case.parent/'tracking-plan.json']:
         data=json.loads(path.read_text());data['end_time_s']=record['end_time_s']
         data['initialization_recipe']='screened_cantera_paired_profiles'
-        if 'controls' in data:data['controls']['endTime']=format(record['end_time_s'],'.10g')
+        data['max_delta_t_s']=record['max_delta_t_s']
+        if 'controls' in data:
+            data['controls']['endTime']=format(record['end_time_s'],'.10g')
+            data['controls']['maxDeltaT']=format(record['max_delta_t_s'],'.10g')
         path.write_text(json.dumps(data,indent=2)+'\n')
     path=args.case/'system/controlDict';text=path.read_text()
-    for key,value in [('endTime',format(record['end_time_s'],'.10g')),('writeInterval','5e-6')]:
+    for key,value in [('endTime',format(record['end_time_s'],'.10g')),('writeInterval','5e-6'),
+                      ('maxDeltaT',format(record['max_delta_t_s'],'.10g'))]:
         text,count=re.subn(r'\b'+key+r'\s+[^;]+;',key+' '+value+';',text)
         if count!=1:raise ValueError('Unexpected control '+key)
     path.write_text(text)
@@ -178,6 +185,7 @@ if __name__=='__main__':
         for name in ['profile','results','case']:command.add_argument(name,type=Path)
         command.add_argument('--velocity',choices=['travelling','zero'],default='travelling')
         command.add_argument('--end-us',type=int,choices=[20,50,100],default=20)
+        command.add_argument('--max-delta-t-ns',type=int,choices=[5,50],default=50)
     args=parser.parse_args()
     if args.action=='verify':verify(args.case)
     else:prepare(args)

@@ -2,6 +2,8 @@
 set -o pipefail
 release=${1:?}; library=${2:?}; profile=${3:?}; results=${4:?}; velocity=${5:?}
 family=${6:-native}; bridge=${7:-none}
+step_ns=${8:-50}
+[[ $step_ns == 5 || $step_ns == 50 ]] || exit 2
 [[ ( $family == native && $bridge == none ) || ( $family == cantera && $bridge =~ ^[0-9]+$ ) ]] || exit 2
 # OF8 bashrc treats existing positional file arguments as extra shell settings.
 # Keep data paths in named variables and never expose them to that mechanism.
@@ -40,19 +42,20 @@ wmake "$job/property-probe" > "$job/probe-build.log" 2>&1
 probe=$FOAM_USER_APPBIN/rfPropertyProbe
 for action in plan apply; do
  python3 -B "$module/prepare.py" "$action" phi110 "$profile" "$results" "$job/case" \
-  --velocity "$velocity" --end-us 20 > "$job/case-$action.log"
+  --velocity "$velocity" --end-us 20 --max-delta-t-ns "$step_ns" > "$job/case-$action.log"
 done
 python3 -B "$thermo_module/case.py" configure "$job" "$library" 8 full
 if [[ $family == cantera ]]; then
  python3 -B "$release/replication/development/cantera-cfd/case.py" configure "$job" "$bridge" full \
   --chemistry-mode native --execution-profile uniform8 --numerical-profile strict12
 fi
-python3 - "$job" "$family" "$bridge" "$library" <<'PY'
+python3 - "$job" "$family" "$bridge" "$library" "$step_ns" <<'PY'
 import json,sys
 from pathlib import Path
-job=Path(sys.argv[1]);family,bridge,library=sys.argv[2:]
+job=Path(sys.argv[1]);family,bridge,library,step_ns=sys.argv[2:]
 record=dict(solver_family=family,bridge_job=None if bridge=='none' else bridge,
-    library_job=library,chemistry='native',transport=family,initialization='generated_original_zero')
+    library_job=library,chemistry='native',transport=family,max_delta_t_s=int(step_ns)*1e-9,
+    initialization='generated_original_zero')
 (job/'wave-run-inputs.json').write_text(json.dumps(record,indent=2)+'\n')
 path=job/'thermo-inputs.json';data=json.loads(path.read_text())
 data.update(transport=family,solver_family=family,bridge_job=record['bridge_job'])

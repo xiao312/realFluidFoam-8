@@ -2,6 +2,8 @@
 set -euo pipefail
 root=${1:?}; release=${2:?}; library=${3:?}; profile=${4:?}; results=${5:?}; velocity=${6:?}
 family=${7:-native}; bridge=${8:-none}
+step_ns=${9:-50}
+[[ $step_ns == 5 || $step_ns == 50 ]] || exit 2
 [[ ( $family == native && $bridge == none ) || ( $family == cantera && $bridge =~ ^[0-9]+$ ) ]] || exit 2
 [[ -n ${SLURM_JOB_ID:-} && $library =~ ^[0-9]+$ ]] || exit 2
 [[ $(realpath -e "$release") == "$root/releases/"* ]] || exit 2
@@ -28,4 +30,4 @@ exec apptainer exec --cleanenv --containall --underlay --no-eval --no-mount cwd,
  --home "$job/home:/home/foam" --bind "$root:/work" --bind "$release:$source_in:ro" \
  --bind "$job/tmp:/tmp" --workdir "$job/apptainer" --pwd /work "$image" \
  /bin/bash "$source_in/replication/development/cantera-wave/run.sh" "$source_in" "$library" \
- "/work/${profile#"$root/"}" "/work/${results#"$root/"}" "$velocity" "$family" "$bridge"
+ "/work/${profile#"$root/"}" "/work/${results#"$root/"}" "$velocity" "$family" "$bridge" "$step_ns"
