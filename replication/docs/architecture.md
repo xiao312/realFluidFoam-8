@@ -67,6 +67,9 @@ The `liang-properties` conductivity diagnostic consumes a Cantera ideal phase,
 an explicit species table and optional frozen flame profiles. Its independent
 NumPy SRK/mapping equations qualify baseline parity and prescribed-volume
 mapping alternatives without changing the compiled flame transport adapter.
+Its measurement probe consumes an explicit local JSON fixture and the same
+kernel, retaining unqualified composition interpretations separately. It supplies
+only offline property evidence; no flame input or model depends on its scores.
 Its cold-oxygen Cp probe consumes the native property CSV, original species
 dictionary and paper-reading CSV. It uses the same independent mathematics
 to isolate a published Shomate-Cp substitution. It supplies only diagnostic

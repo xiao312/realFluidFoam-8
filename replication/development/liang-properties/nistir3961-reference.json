@@ -1,0 +1,72 @@
+{
+  "schema_version": 1,
+  "status": "Provisional: composition basis and full uncertainty budget remain unqualified",
+  "source": {
+    "title": "Experimental thermal conductivity, thermal diffusivity, and specific heat values for mixtures of nitrogen, oxygen, and argon",
+    "authors": ["R. A. Perkins", "M. T. Cieszkiewicz"],
+    "report": "NISTIR 3961",
+    "doi": "10.6028/NIST.IR.3961",
+    "url": "https://www.govinfo.gov/content/pkg/GOVPUB-C13-374e8d83887744b1c1a2c07a26ccccd2/pdf/GOVPUB-C13-374e8d83887744b1c1a2c07a26ccccd2.pdf",
+    "pdf_sha256": "f30d6632e95f88bd13182f7b25f4e810d949ef28fac29738af23f0760e85b800",
+    "table": 2,
+    "printed_page": 40,
+    "pdf_page_1based": 46,
+    "method": "transient hot wire",
+    "row_selection": "Four repeated measurements at one pressure, with distinct wire powers",
+    "visually_verified": true,
+    "page_render_sha256": "363ad33bc478ca3c4967239b1a377d658075a222b3b352bb058c8f28b82953fb"
+  },
+  "composition": {
+    "reported_percent": {"N2": 49.998, "O2": 50.002},
+    "reported_basis": null,
+    "basis_status": "Gravimetric preparation is specified; percentage basis is not explicitly labelled in the inspected text",
+    "composition_uncertainty": null,
+    "source_printed_page": 23
+  },
+  "uncertainty": {
+    "STAT": "Relative two-sigma slope-fit precision, not a complete measurement-accuracy budget",
+    "conductivity_full_measurement_uncertainty": null,
+    "pressure_full_measurement_uncertainty": null,
+    "temperature_full_measurement_uncertainty": null,
+    "conductivity_rounding_half_width_W_mK": 0.000005,
+    "pressure_rounding_half_width_Pa": 500,
+    "temperature_rounding_half_width_K": 0.0005,
+    "rounding_interpretation": "Half the printed decimal step; not an experimental confidence interval"
+  },
+  "rows": [
+    {
+      "run_point": 1213,
+      "pressure_Pa": 1935000,
+      "conductivity_temperature_K": 304.078,
+      "thermal_conductivity_W_per_m_K": 0.02757,
+      "STAT_relative_2sigma_fit_precision": 0.001
+    },
+    {
+      "run_point": 1214,
+      "pressure_Pa": 1935000,
+      "conductivity_temperature_K": 303.523,
+      "thermal_conductivity_W_per_m_K": 0.02747,
+      "STAT_relative_2sigma_fit_precision": 0.001
+    },
+    {
+      "run_point": 1215,
+      "pressure_Pa": 1935000,
+      "conductivity_temperature_K": 303.006,
+      "thermal_conductivity_W_per_m_K": 0.02735,
+      "STAT_relative_2sigma_fit_precision": 0.001
+    },
+    {
+      "run_point": 1216,
+      "pressure_Pa": 1935000,
+      "conductivity_temperature_K": 302.542,
+      "thermal_conductivity_W_per_m_K": 0.02742,
+      "STAT_relative_2sigma_fit_precision": 0.001
+    }
+  ],
+  "limits": [
+    "Evaluate conductivity at the reported conductivity temperature, not the cell temperature",
+    "The tabulated density is a DDMIX calculation, not an independent measurement",
+    "These N2/O2 data do not qualify a dilute hydrogen-mixture rule",
+    "No experimental acceptance threshold is inferred from STAT alone"
+  ]
+}

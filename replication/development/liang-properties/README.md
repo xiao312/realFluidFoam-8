@@ -50,6 +50,20 @@ Verification: run `plan`, then `apply` with the same inputs. Expect native
 conductivity agreement within `1e-10` relative and the analytical Cp-only
 increment within `2e-16 W/(m K)` of direct re-evaluation.
 
+`conductivity_measurements.py plan|apply INPUTS REFERENCE.json NEW_OUTPUT.json`
+evaluates a frozen measurement fixture with Cantera 3.2 and the independent
+conductivity kernel. `INPUTS` contains `ideal.yaml` and ordered `species.txt`.
+The JSON fixture supplies reported species percentages, composition basis
+(`mole`, `mass`, or null), SI pressure, conductivity temperature and measured
+conductivity. A null basis produces both explicitly unqualified interpretations.
+The four-row `nistir3961-reference.json` retains source and uncertainty limits.
+Outputs contain each prediction, signed residual, basis-separated RMS errors
+and input/code hashes. The script neither selects a model nor fits coefficients.
+Its only dependent is the property report; no network, secrets or remote writes
+are used. Run the plan and then apply to a new output. Expect eight states for
+the bundled fixture, finite positive predictions, and scientific acceptance
+remaining false while composition basis and full accuracy are unqualified.
+
 Outputs are CSV sweeps, derivative residuals, input/product hashes, NIST
 snapshots and local PDF/PNG comparisons. Raw data and copyrighted paper crops
 stay outside Git. No credentials or network are needed by the compiled probe.

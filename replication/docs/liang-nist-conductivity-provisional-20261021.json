@@ -1,0 +1,588 @@
+{
+  "rows": [
+    {
+      "run_point": 1213,
+      "basis_interpretation": "mole",
+      "T_K": 304.078,
+      "pressure_Pa": 1935000,
+      "mole_fractions": {
+        "N2": 0.49998,
+        "O2": 0.5000200000000001
+      },
+      "reference_W_mK": 0.02757,
+      "evaluated_W_mK": {
+        "Cantera_dilute": 0.026774539628701126,
+        "EH_partial_native": 0.029702692114863094,
+        "EH_dense_increment": 0.028308954307365235,
+        "EH_coupled_TN1039": 0.02920269665729876
+      },
+      "signed_error_percent": {
+        "Cantera_dilute": -2.885238923826172,
+        "EH_partial_native": 7.735553554091745,
+        "EH_dense_increment": 2.680284031067215,
+        "EH_coupled_TN1039": 5.9220045603872284
+      },
+      "srk_molar_density_mol_L": 0.7684348205705148,
+      "mapping": {
+        "partial": {
+          "lambda_W_mK": 0.029702692114863094,
+          "internal_W_mK": 0.007359642853722543,
+          "translational_W_mK": 0.02234304926114055,
+          "CORT": 1.0,
+          "f": 0.7261587661087038,
+          "h": 0.8145938041682914,
+          "df_dT_fixed_v": 0.0,
+          "T0_K": 418.74864587736784,
+          "rho0_g_cm3": 0.010040434389652382,
+          "effective_W": 29.372346247267252,
+          "iterations": 1,
+          "mapping_residual": 0.0
+        },
+        "coupled": {
+          "lambda_W_mK": 0.02920269665729876,
+          "internal_W_mK": 0.007391268094760859,
+          "translational_W_mK": 0.022431602499110845,
+          "CORT": 0.9723526691150343,
+          "f": 0.7256060716547782,
+          "h": 0.8095180894225117,
+          "df_dT_fixed_v": 0.0,
+          "T0_K": 419.06760689934146,
+          "rho0_g_cm3": 0.00997973886587872,
+          "effective_W": 29.371000497211405,
+          "iterations": 33,
+          "mapping_residual": 7.667977364178569e-12
+        }
+      }
+    },
+    {
+      "run_point": 1214,
+      "basis_interpretation": "mole",
+      "T_K": 303.523,
+      "pressure_Pa": 1935000,
+      "mole_fractions": {
+        "N2": 0.49998,
+        "O2": 0.5000200000000001
+      },
+      "reference_W_mK": 0.02747,
+      "evaluated_W_mK": {
+        "Cantera_dilute": 0.026736795459844878,
+        "EH_partial_native": 0.029662414493429327,
+        "EH_dense_increment": 0.028273685094586616,
+        "EH_coupled_TN1039": 0.029163362193509575
+      },
+      "signed_error_percent": {
+        "Cantera_dilute": -2.669110084292403,
+        "EH_partial_native": 7.981123019400527,
+        "EH_dense_increment": 2.9256829071227397,
+        "EH_coupled_TN1039": 6.164405509681736
+      },
+      "srk_molar_density_mol_L": 0.7699119111205366,
+      "mapping": {
+        "partial": {
+          "lambda_W_mK": 0.029662414493429327,
+          "internal_W_mK": 0.00734649446010014,
+          "translational_W_mK": 0.022315920033329186,
+          "CORT": 1.0,
+          "f": 0.7261640933284002,
+          "h": 0.8146052220512754,
+          "df_dT_fixed_v": 0.0,
+          "T0_K": 417.9812838291013,
+          "rho0_g_cm3": 0.010059875183624995,
+          "effective_W": 29.37249417668297,
+          "iterations": 1,
+          "mapping_residual": 0.0
+        },
+        "coupled": {
+          "lambda_W_mK": 0.029163362193509575,
+          "internal_W_mK": 0.007378154465118457,
+          "translational_W_mK": 0.022404636116460142,
+          "CORT": 0.9723526691150343,
+          "f": 0.7256060716547782,
+          "h": 0.8095180894225117,
+          "df_dT_fixed_v": 0.0,
+          "T0_K": 418.3027290659266,
+          "rho0_g_cm3": 0.0099989219866534,
+          "effective_W": 29.371000497211405,
+          "iterations": 33,
+          "mapping_residual": 7.667977364178569e-12
+        }
+      }
+    },
+    {
+      "run_point": 1215,
+      "basis_interpretation": "mole",
+      "T_K": 303.006,
+      "pressure_Pa": 1935000,
+      "mole_fractions": {
+        "N2": 0.49998,
+        "O2": 0.5000200000000001
+      },
+      "reference_W_mK": 0.02735,
+      "evaluated_W_mK": {
+        "Cantera_dilute": 0.026701641265005335,
+        "EH_partial_native": 0.029624869328724896,
+        "EH_dense_increment": 0.02824084503528026,
+        "EH_coupled_TN1039": 0.029126695790227974
+      },
+      "signed_error_percent": {
+        "Cantera_dilute": -2.3705986654283917,
+        "EH_partial_native": 8.317620945977676,
+        "EH_dense_increment": 3.257203054041158,
+        "EH_coupled_TN1039": 6.496145485294247
+      },
+      "srk_molar_density_mol_L": 0.7712932708578798,
+      "mapping": {
+        "partial": {
+          "lambda_W_mK": 0.029624869328724896,
+          "internal_W_mK": 0.007334242473785446,
+          "translational_W_mK": 0.02229062685493945,
+          "CORT": 1.0,
+          "f": 0.7261690591109641,
+          "h": 0.8146158769130223,
+          "df_dT_fixed_v": 0.0,
+          "T0_K": 417.26647011229704,
+          "rho0_g_cm3": 0.010078056216919958,
+          "effective_W": 29.372632220091077,
+          "iterations": 1,
+          "mapping_residual": 0.0
+        },
+        "coupled": {
+          "lambda_W_mK": 0.029126695790227974,
+          "internal_W_mK": 0.007365934743666138,
+          "translational_W_mK": 0.022379494331379705,
+          "CORT": 0.9723526691150343,
+          "f": 0.7256060716547782,
+          "h": 0.8095180894225117,
+          "df_dT_fixed_v": 0.0,
+          "T0_K": 417.59022124633105,
+          "rho0_g_cm3": 0.01001686184191437,
+          "effective_W": 29.371000497211405,
+          "iterations": 33,
+          "mapping_residual": 7.667977364178569e-12
+        }
+      }
+    },
+    {
+      "run_point": 1216,
+      "basis_interpretation": "mole",
+      "T_K": 302.542,
+      "pressure_Pa": 1935000,
+      "mole_fractions": {
+        "N2": 0.49998,
+        "O2": 0.5000200000000001
+      },
+      "reference_W_mK": 0.02742,
+      "evaluated_W_mK": {
+        "Cantera_dilute": 0.02667009562125819,
+        "EH_partial_native": 0.029591152262727204,
+        "EH_dense_increment": 0.028211383427514655,
+        "EH_coupled_TN1039": 0.02909376754684425
+      },
+      "signed_error_percent": {
+        "Cantera_dilute": -2.734881031151759,
+        "EH_partial_native": 7.918133707976671,
+        "EH_dense_increment": 2.8861540026063226,
+        "EH_coupled_TN1039": 6.104185072371449
+      },
+      "srk_molar_density_mol_L": 0.7725374852799376,
+      "mapping": {
+        "partial": {
+          "lambda_W_mK": 0.029591152262727204,
+          "internal_W_mK": 0.007323243315269871,
+          "translational_W_mK": 0.02226790894745733,
+          "CORT": 1.0,
+          "f": 0.7261735185406982,
+          "h": 0.8146254549430745,
+          "df_dT_fixed_v": 0.0,
+          "T0_K": 416.6249419394713,
+          "rho0_g_cm3": 0.010094432354524235,
+          "effective_W": 29.372756311890015,
+          "iterations": 1,
+          "mapping_residual": 0.0
+        },
+        "coupled": {
+          "lambda_W_mK": 0.02909376754684425,
+          "internal_W_mK": 0.007354964444233186,
+          "translational_W_mK": 0.022356912047555917,
+          "CORT": 0.9723526691150343,
+          "f": 0.7256060716547782,
+          "h": 0.8095180894225117,
+          "df_dT_fixed_v": 0.0,
+          "T0_K": 416.95075581443103,
+          "rho0_g_cm3": 0.010033020577428305,
+          "effective_W": 29.371000497211405,
+          "iterations": 33,
+          "mapping_residual": 7.667977364178569e-12
+        }
+      }
+    },
+    {
+      "run_point": 1213,
+      "basis_interpretation": "mass",
+      "T_K": 304.078,
+      "pressure_Pa": 1935000,
+      "mole_fractions": {
+        "N2": 0.5331734494187979,
+        "O2": 0.4668265505812021
+      },
+      "reference_W_mK": 0.02757,
+      "evaluated_W_mK": {
+        "Cantera_dilute": 0.02677076668505603,
+        "EH_partial_native": 0.02969070186958267,
+        "EH_dense_increment": 0.02830284958060468,
+        "EH_coupled_TN1039": 0.029186127541701596
+      },
+      "signed_error_percent": {
+        "Cantera_dilute": -2.8989238844540077,
+        "EH_partial_native": 7.692063364463797,
+        "EH_dense_increment": 2.6581413877572624,
+        "EH_coupled_TN1039": 5.861906208565815
+      },
+      "srk_molar_density_mol_L": 0.7681877405370474,
+      "mapping": {
+        "partial": {
+          "lambda_W_mK": 0.02969070186958267,
+          "internal_W_mK": 0.007351403385601145,
+          "translational_W_mK": 0.022339298483981525,
+          "CORT": 1.0,
+          "f": 0.7211656183059276,
+          "h": 0.8196127513683615,
+          "df_dT_fixed_v": 0.0,
+          "T0_K": 421.6479436641782,
+          "rho0_g_cm3": 0.010099048140127792,
+          "effective_W": 29.245698065806124,
+          "iterations": 1,
+          "mapping_residual": 0.0
+        },
+        "coupled": {
+          "lambda_W_mK": 0.029186127541701596,
+          "internal_W_mK": 0.007382929067252699,
+          "translational_W_mK": 0.02242766348191626,
+          "CORT": 0.9721564839792215,
+          "f": 0.7206196340271092,
+          "h": 0.814513053355087,
+          "df_dT_fixed_v": 0.0,
+          "T0_K": 421.9674092151655,
+          "rho0_g_cm3": 0.010038088128026486,
+          "effective_W": 29.24436670546006,
+          "iterations": 33,
+          "mapping_residual": 7.667977364178569e-12
+        }
+      }
+    },
+    {
+      "run_point": 1214,
+      "basis_interpretation": "mass",
+      "T_K": 303.523,
+      "pressure_Pa": 1935000,
+      "mole_fractions": {
+        "N2": 0.5331734494187979,
+        "O2": 0.4668265505812021
+      },
+      "reference_W_mK": 0.02747,
+      "evaluated_W_mK": {
+        "Cantera_dilute": 0.02673322716080659,
+        "EH_partial_native": 0.029650664796720544,
+        "EH_dense_increment": 0.028267780249657447,
+        "EH_coupled_TN1039": 0.029147015703324283
+      },
+      "signed_error_percent": {
+        "Cantera_dilute": -2.682099887853706,
+        "EH_partial_native": 7.9383501882800855,
+        "EH_dense_increment": 2.9041872939841396,
+        "EH_coupled_TN1039": 6.104898810790971
+      },
+      "srk_molar_density_mol_L": 0.7696635600782007,
+      "mapping": {
+        "partial": {
+          "lambda_W_mK": 0.029650664796720544,
+          "internal_W_mK": 0.007338401393853276,
+          "translational_W_mK": 0.02231226340286727,
+          "CORT": 1.0,
+          "f": 0.7211705916662577,
+          "h": 0.8196234335154156,
+          "df_dT_fixed_v": 0.0,
+          "T0_K": 420.8754537518135,
+          "rho0_g_cm3": 0.010118582007798409,
+          "effective_W": 29.245844414576162,
+          "iterations": 1,
+          "mapping_residual": 0.0
+        },
+        "coupled": {
+          "lambda_W_mK": 0.029147015703324283,
+          "internal_W_mK": 0.007369956583660161,
+          "translational_W_mK": 0.02240077547035069,
+          "CORT": 0.9721564839792215,
+          "f": 0.7206196340271092,
+          "h": 0.814513053355087,
+          "df_dT_fixed_v": 0.0,
+          "T0_K": 421.1972386927522,
+          "rho0_g_cm3": 0.010057373005711209,
+          "effective_W": 29.24436670546006,
+          "iterations": 33,
+          "mapping_residual": 7.667977364178569e-12
+        }
+      }
+    },
+    {
+      "run_point": 1215,
+      "basis_interpretation": "mass",
+      "T_K": 303.006,
+      "pressure_Pa": 1935000,
+      "mole_fractions": {
+        "N2": 0.5331734494187979,
+        "O2": 0.4668265505812021
+      },
+      "reference_W_mK": 0.02735,
+      "evaluated_W_mK": {
+        "Cantera_dilute": 0.02669826339962794,
+        "EH_partial_native": 0.02961334352203408,
+        "EH_dense_increment": 0.028235126168839823,
+        "EH_coupled_TN1039": 0.02911055651850926
+      },
+      "signed_error_percent": {
+        "Cantera_dilute": -2.3829491786912516,
+        "EH_partial_native": 8.275479056797375,
+        "EH_dense_increment": 3.2362931219006352,
+        "EH_coupled_TN1039": 6.437135351039336
+      },
+      "srk_molar_density_mol_L": 0.7710437273993322,
+      "mapping": {
+        "partial": {
+          "lambda_W_mK": 0.02961334352203408,
+          "internal_W_mK": 0.007326285509514779,
+          "translational_W_mK": 0.0222870580125193,
+          "CORT": 1.0,
+          "f": 0.7211752276332462,
+          "h": 0.8196334018048788,
+          "df_dT_fixed_v": 0.0,
+          "T0_K": 420.1558628052235,
+          "rho0_g_cm3": 0.010136850019387196,
+          "effective_W": 29.245980983138566,
+          "iterations": 1,
+          "mapping_residual": 0.0
+        },
+        "coupled": {
+          "lambda_W_mK": 0.02911055651850926,
+          "internal_W_mK": 0.00735786807716326,
+          "translational_W_mK": 0.022375706791882007,
+          "CORT": 0.9721564839792215,
+          "f": 0.7206196340271092,
+          "h": 0.814513053355087,
+          "df_dT_fixed_v": 0.0,
+          "T0_K": 420.47980056646793,
+          "rho0_g_cm3": 0.010075407973558074,
+          "effective_W": 29.24436670546006,
+          "iterations": 33,
+          "mapping_residual": 7.667977364178569e-12
+        }
+      }
+    },
+    {
+      "run_point": 1216,
+      "basis_interpretation": "mass",
+      "T_K": 302.542,
+      "pressure_Pa": 1935000,
+      "mole_fractions": {
+        "N2": 0.5331734494187979,
+        "O2": 0.4668265505812021
+      },
+      "reference_W_mK": 0.02742,
+      "evaluated_W_mK": {
+        "Cantera_dilute": 0.02666688850092561,
+        "EH_partial_native": 0.029579827235905548,
+        "EH_dense_increment": 0.028205831292383552,
+        "EH_coupled_TN1039": 0.02907781411283243
+      },
+      "signed_error_percent": {
+        "Cantera_dilute": -2.746577312452192,
+        "EH_partial_native": 7.8768316407934025,
+        "EH_dense_increment": 2.8659055156220026,
+        "EH_coupled_TN1039": 6.0460033290752335
+      },
+      "srk_molar_density_mol_L": 0.7722868646576075,
+      "mapping": {
+        "partial": {
+          "lambda_W_mK": 0.029579827235905548,
+          "internal_W_mK": 0.007315408272618996,
+          "translational_W_mK": 0.022264418963286552,
+          "CORT": 1.0,
+          "f": 0.7211793909074204,
+          "h": 0.8196423626482547,
+          "df_dT_fixed_v": 0.0,
+          "T0_K": 419.5100467573373,
+          "rho0_g_cm3": 0.010153304447458397,
+          "effective_W": 29.246103749287165,
+          "iterations": 1,
+          "mapping_residual": 0.0
+        },
+        "coupled": {
+          "lambda_W_mK": 0.02907781411283243,
+          "internal_W_mK": 0.007347015320685613,
+          "translational_W_mK": 0.02235319020164174,
+          "CORT": 0.9721564839792215,
+          "f": 0.7206196340271092,
+          "h": 0.814513053355087,
+          "df_dT_fixed_v": 0.0,
+          "T0_K": 419.83591025583763,
+          "rho0_g_cm3": 0.01009165233765724,
+          "effective_W": 29.24436670546006,
+          "iterations": 33,
+          "mapping_residual": 7.667977364178569e-12
+        }
+      }
+    }
+  ],
+  "summary": [
+    {
+      "basis_interpretation": "mole",
+      "model": "Cantera_dilute",
+      "signed_bias_percent": -2.6649571761746813,
+      "rms_error_percent": 2.671519444843963,
+      "maximum_absolute_error_percent": 2.885238923826172
+    },
+    {
+      "basis_interpretation": "mole",
+      "model": "EH_partial_native",
+      "signed_bias_percent": 7.988107806861655,
+      "rms_error_percent": 7.990881882767843,
+      "maximum_absolute_error_percent": 8.317620945977676
+    },
+    {
+      "basis_interpretation": "mole",
+      "model": "EH_dense_increment",
+      "signed_bias_percent": 2.937330998709359,
+      "rms_error_percent": 2.944605220663698,
+      "maximum_absolute_error_percent": 3.257203054041158
+    },
+    {
+      "basis_interpretation": "mole",
+      "model": "EH_coupled_TN1039",
+      "signed_bias_percent": 6.171685156933664,
+      "rms_error_percent": 6.175172363280901,
+      "maximum_absolute_error_percent": 6.496145485294247
+    },
+    {
+      "basis_interpretation": "mass",
+      "model": "Cantera_dilute",
+      "signed_bias_percent": -2.6776375658627893,
+      "rms_error_percent": 2.6841923001987578,
+      "maximum_absolute_error_percent": 2.8989238844540077
+    },
+    {
+      "basis_interpretation": "mass",
+      "model": "EH_partial_native",
+      "signed_bias_percent": 7.945681062583664,
+      "rms_error_percent": 7.948478987070241,
+      "maximum_absolute_error_percent": 8.275479056797375
+    },
+    {
+      "basis_interpretation": "mass",
+      "model": "EH_dense_increment",
+      "signed_bias_percent": 2.9161318298160097,
+      "rms_error_percent": 2.9234836698355697,
+      "maximum_absolute_error_percent": 3.2362931219006352
+    },
+    {
+      "basis_interpretation": "mass",
+      "model": "EH_coupled_TN1039",
+      "signed_bias_percent": 6.112485924867839,
+      "rms_error_percent": 6.1160158941669005,
+      "maximum_absolute_error_percent": 6.437135351039336
+    }
+  ],
+  "cantera_version": "3.2.0",
+  "input_sha256": {
+    "ideal.yaml": "1ae5fe0b232390d6434764bdc2002e1a2da9f1606f11473909ebb8476c483076",
+    "species.txt": "b093c29ac896bef71f36f5fbfc1f799bdc200f259efcf9b383138076253c3346",
+    "nistir3961-reference.json": "432d7a9646f78384b9b0cc48370e8e8c8576ea833b4a564acecd2d5b1249c01e",
+    "conductivity_measurements.py": "871d1efd9031065444dfdbde239a574df2f6d924a59c50d9878131ec6e479706",
+    "conductivity_math.py": "b5eee120c13740addc62104921d5535d6c0abeef987530b608f89aece4186450"
+  },
+  "source_measurement": {
+    "schema_version": 1,
+    "status": "Provisional: composition basis and full uncertainty budget remain unqualified",
+    "source": {
+      "title": "Experimental thermal conductivity, thermal diffusivity, and specific heat values for mixtures of nitrogen, oxygen, and argon",
+      "authors": [
+        "R. A. Perkins",
+        "M. T. Cieszkiewicz"
+      ],
+      "report": "NISTIR 3961",
+      "doi": "10.6028/NIST.IR.3961",
+      "url": "https://www.govinfo.gov/content/pkg/GOVPUB-C13-374e8d83887744b1c1a2c07a26ccccd2/pdf/GOVPUB-C13-374e8d83887744b1c1a2c07a26ccccd2.pdf",
+      "pdf_sha256": "f30d6632e95f88bd13182f7b25f4e810d949ef28fac29738af23f0760e85b800",
+      "table": 2,
+      "printed_page": 40,
+      "pdf_page_1based": 46,
+      "method": "transient hot wire",
+      "row_selection": "Four repeated measurements at one pressure, with distinct wire powers",
+      "visually_verified": true,
+      "page_render_sha256": "363ad33bc478ca3c4967239b1a377d658075a222b3b352bb058c8f28b82953fb"
+    },
+    "composition": {
+      "reported_percent": {
+        "N2": 49.998,
+        "O2": 50.002
+      },
+      "reported_basis": null,
+      "basis_status": "Gravimetric preparation is specified; percentage basis is not explicitly labelled in the inspected text",
+      "composition_uncertainty": null,
+      "source_printed_page": 23
+    },
+    "uncertainty": {
+      "STAT": "Relative two-sigma slope-fit precision, not a complete measurement-accuracy budget",
+      "conductivity_full_measurement_uncertainty": null,
+      "pressure_full_measurement_uncertainty": null,
+      "temperature_full_measurement_uncertainty": null,
+      "conductivity_rounding_half_width_W_mK": 5e-06,
+      "pressure_rounding_half_width_Pa": 500,
+      "temperature_rounding_half_width_K": 0.0005,
+      "rounding_interpretation": "Half the printed decimal step; not an experimental confidence interval"
+    },
+    "rows": [
+      {
+        "run_point": 1213,
+        "pressure_Pa": 1935000,
+        "conductivity_temperature_K": 304.078,
+        "thermal_conductivity_W_per_m_K": 0.02757,
+        "STAT_relative_2sigma_fit_precision": 0.001
+      },
+      {
+        "run_point": 1214,
+        "pressure_Pa": 1935000,
+        "conductivity_temperature_K": 303.523,
+        "thermal_conductivity_W_per_m_K": 0.02747,
+        "STAT_relative_2sigma_fit_precision": 0.001
+      },
+      {
+        "run_point": 1215,
+        "pressure_Pa": 1935000,
+        "conductivity_temperature_K": 303.006,
+        "thermal_conductivity_W_per_m_K": 0.02735,
+        "STAT_relative_2sigma_fit_precision": 0.001
+      },
+      {
+        "run_point": 1216,
+        "pressure_Pa": 1935000,
+        "conductivity_temperature_K": 302.542,
+        "thermal_conductivity_W_per_m_K": 0.02742,
+        "STAT_relative_2sigma_fit_precision": 0.001
+      }
+    ],
+    "limits": [
+      "Evaluate conductivity at the reported conductivity temperature, not the cell temperature",
+      "The tabulated density is a DDMIX calculation, not an independent measurement",
+      "These N2/O2 data do not qualify a dilute hydrogen-mixture rule",
+      "No experimental acceptance threshold is inferred from STAT alone"
+    ]
+  },
+  "scientific_acceptance": false,
+  "limits": [
+    "Composition and complete measurement-accuracy qualification remain separate",
+    "No interpretation or model is selected by its residual",
+    "A property score does not validate hydrogen flame transport",
+    "SRK prescribed-volume EH hybrid, not the full TRAPP reference EOS",
+    "No empirical coefficient, model or flame input changed"
+  ]
+}
