@@ -55,6 +55,14 @@ species enthalpies to their pure values. `pure-temperature` implements the
 pure-species temperature approximation in Liang reference 8, including
 Cp=sum(Y Cp_pure). Each energy variant is also usable with ideal Case 1 for
 parity and grid tests. `EnergyFlows.h` owns these isolated energy residuals.
+`cp-only-temperature` tests the narrower wording of Liang's dissertation,
+Chapter 8, page 169: Case 3* updates heat capacities. It retains the SRK mixture
+Cp in the temperature residual but uses ideal-reference species enthalpies for
+reaction and diffusion terms. Density and pressure-based chemistry remain as
+configured. This is an explicitly inconsistent thermodynamic approximation,
+not a new phase model or an asserted reconstruction of the unpublished code.
+Reported profile enthalpy remains the actual SRK phase value. Qualify the
+ideal Case 1 parity control before interpreting nonideal pilot differences.
 Prefix any variant with `smooth-` to select the already tested C4 continuation
 of the Soave alpha function. This is a separately named diagnostic, not Liang's
 reported model. It sets both phase and transport SRK evaluations consistently.
@@ -184,3 +192,14 @@ The partial-temperature control is not eligible as a reconstructed paper Case 3*
 LJ and author-pair curves remain separate; duplicate points fail explicitly.
 It uses NumPy and the local digitizer, with no new solver or remote writes.
 Run the plan first and inspect the resulting CSV and failed-point list.
+
+`ledger.py plan|apply MANIFEST PROJECT_ROOT NEW_JSON` creates a compact,
+shareable identity ledger from an already collected snapshot. It records each
+completed point, refinement change, source revision and result-file SHA256.
+Snapshot references are relative to the supplied project root. Historical build
+identity is explicitly a source-to-build registry association when the original
+job did not record its build path; it is never represented as a directly
+observed job field. The script uses only the Python standard library and reads
+no secrets, network, scheduler or simulation state beyond its supplied snapshot.
+Its output is a reviewed evidence summary, not a scientific acceptance decision.
+Verify unique job IDs, complete input coverage and the recorded file hashes.

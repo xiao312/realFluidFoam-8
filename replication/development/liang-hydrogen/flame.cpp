@@ -32,7 +32,8 @@ try {
     const bool fullConductivity=variant=="full-conductivity" || variant=="pure-flux-full-conductivity";
     const bool matchedEnergy=variant=="matched-energy" || variant=="pure-flux-matched-energy";
     const bool pureTemperature=variant=="pure-temperature";
-    if(variant!="baseline" && !pureFlux && !fullConductivity && !matchedEnergy && !pureTemperature)
+    const bool cpOnlyTemperature=variant=="cp-only-temperature";
+    if(variant!="baseline" && !pureFlux && !fullConductivity && !matchedEnergy && !pureTemperature && !cpOnlyTemperature)
         throw std::runtime_error("Unknown model variant");
     if(stage<1 || stage>5 || !(phi>=.6 && phi<=3) || !(width>0 && width<=.1)
        || !(Tu>=280 && Tu<=350) || fs::exists(output))throw std::runtime_error("Invalid input or existing output");
@@ -92,7 +93,7 @@ try {
           <<"\ngrid_factor "<<gridFactor<<"\ninitial_grid_points "<<grid.size()
           <<"\nconductivity "<<(fullConductivity?"full-Ely-Hanley":"dense-increment-diagnostic")
           <<"\nTakahashi bounded-Table2"
-          <<"\nSoret off\nenergy "<<(pureTemperature?"pure-temperature":
+          <<"\nSoret off\nenergy "<<(cpOnlyTemperature?"cp-only-temperature":pureTemperature?"pure-temperature":
               matchedEnergy?"matched-total-enthalpy":
               stage>=3 && label!="3star"?"legacy-total-enthalpy":"partial-temperature")<<'\n';
     config.flush();
@@ -112,7 +113,8 @@ try {
     }
     gas->setState_TPX(Tu,pressure,xin.data());
     std::shared_ptr<Flow1D> flow;
-    if(pureTemperature)flow=hydrogen::makeFlow<hydrogen::PureTemperatureFlow>(midpoint,sol);
+    if(cpOnlyTemperature)flow=hydrogen::makeFlow<hydrogen::CpOnlyTemperatureFlow>(midpoint,sol);
+    else if(pureTemperature)flow=hydrogen::makeFlow<hydrogen::PureTemperatureFlow>(midpoint,sol);
     else if(matchedEnergy)flow=hydrogen::makeFlow<hydrogen::EnthalpyFlow>(midpoint,sol,pureFlux);
     else if(stage>=3 && label!="3star")flow=hydrogen::makeFlow<liang::TotalEnthalpyFlow>(midpoint,sol,pureFlux);
     else flow=hydrogen::makeFlow<Flow1D>(midpoint,sol,"flow");

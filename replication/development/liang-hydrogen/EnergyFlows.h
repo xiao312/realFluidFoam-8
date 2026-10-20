@@ -3,6 +3,34 @@
 #include "cantera/oneD/Flow1D.h"
 
 namespace hydrogen {
+// Dissertation Chapter 8, p169 describes Case 3* as updating heat capacities.
+// Test that narrower approximation without changing the thermodynamic phase:
+// SRK mixture Cp, but ideal-reference h_k in reaction and diffusion terms.
+class CpOnlyTemperatureFlow : public Cantera::Flow1D {
+public:
+    explicit CpOnlyTemperatureFlow(std::shared_ptr<Cantera::Solution> sol)
+        : Cantera::Flow1D(sol,"flow") {}
+protected:
+    void evalEnergy(double* x,double* residual,int* diagonal,double inverseTime,
+                    size_t first,size_t last) override {
+        if(!m_isFree || m_twoPointControl || m_do_radiation)
+            throw std::runtime_error("Cp-only diagnostic requires adiabatic free flow");
+        const size_t begin=first>0?first-1:0,end=std::min(last+1,m_points-1);
+        std::vector<double> saved((end-begin+1)*m_nsp),h0(m_nsp);
+        for(size_t j=begin;j<=end;j++) {
+            setGas(x,j);m_thermo->getEnthalpy_RT_ref(h0.data());
+            for(size_t k=0;k<m_nsp;k++) {
+                saved[(j-begin)*m_nsp+k]=m_hk(k,j);
+                m_hk(k,j)=Cantera::GasConstant*T(x,j)*h0[k];
+            }
+        }
+        // Flow1D recomputes grad_hk from these same node enthalpies.
+        Cantera::Flow1D::evalEnergy(x,residual,diagonal,inverseTime,first,last);
+        for(size_t j=begin;j<=end;j++)
+            for(size_t k=0;k<m_nsp;k++)m_hk(k,j)=saved[(j-begin)*m_nsp+k];
+    }
+};
+
 // Match Flow1D's species-advection stencil. The steady free-flame mass flux is
 // constant; only conductive and species-enthalpy fluxes use dual-cell divergence.
 class EnthalpyFlow : public Cantera::Flow1D {
