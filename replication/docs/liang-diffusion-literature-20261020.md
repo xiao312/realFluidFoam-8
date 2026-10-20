@@ -37,11 +37,14 @@ to be followed through the cited sources.
 | 5 | [Pons et al. (2009), Mass transfer and combustion in transcritical non-premixed counterflows](https://doi.org/10.1080/13647830802368821), p. 63 and Appendix B, p. 80 | Uses CHEMKIN/TRANSPORT dilute binary coefficients multiplied by Takahashi. Appendix B explicitly omits binary-diffusion comparisons because experimental/reference data were lacking. Figures 17-19 validate other properties. |
 | 6 | [Huo, Wang and Yang (2014), oxygen/hydrogen counterflow flames](https://doi.org/10.1016/j.combustflame.2014.06.005), Section 2.2 and Figure 5 | Uses Takahashi. Figure 5 checks oxygen density/compressibility, Cp, conductivity and viscosity at 100 atm, not diffusion. Refers onward to Yang (2000) and Meng et al. (2005) for property methods. |
 | 7 | [Wang, Huo and Yang (2015), oxygen/n-alkane counterflow flames](https://doi.org/10.1080/00102202.2014.973955), Figures 2-3 | Oxygen and methane property comparisons at 20, 50, 100, 150 and 200 atm; no binary-diffusion panel. Useful later flame benchmark, but its methane mechanism differs from our GRI30. |
-| 8 | [Jorda Juanos and Sirignano (2017), Pressure effects on real-gas laminar counterflow](https://doi.org/10.1016/j.combustflame.2017.01.030), Eq. (7), p. 56 | Uses multicomponent diffusion and states that its pressure effect is neglected. This does not independently validate the Takahashi addition in Liang Case 5. |
+| 8 | [Jorda Juanos and Sirignano (2017), Pressure effects on real-gas laminar counterflow](https://doi.org/10.1016/j.combustflame.2017.01.030), Eq. (7), p. 56, and case table | Uses CHEMKIN multicomponent diffusion. Its listed transport correction changes viscosity and conductivity; it does not document a Takahashi binary-diffusion correction. |
 | 10 | [Giovangigli, Matuszewski and Dupoirieux (2011), Detailed modeling of planar transcritical H2-O2-N2 flames](https://doi.org/10.1080/13647830.2010.527016), Sections 3.3 and 4.2 | Uses dense-gas kinetic theory, Stefan-Maxwell transport and thermodynamic driving forces. Eq. (48) uses a concentration ratio and collision free-volume factor, not Takahashi. Useful as an independent model; not the same implementation. |
 
 The citation chain supports high-pressure modeling generally. It does not supply
 six independent validations of one shared mass-diffusion implementation.
+Reference 8's comment about neglected pressure effects accompanies the diffusion
+velocity equation. Do not use that wording alone to distinguish pressure-gradient
+diffusion from pressure-dependent coefficients.
 
 Takahashi's journal volume is **7**, not the **31** printed in Liang's reference 19.
 The scanned issue says 1974; J-STAGE gives publication on 31 January 1975.
