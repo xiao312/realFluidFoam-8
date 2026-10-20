@@ -29,6 +29,9 @@ sidecar from the same transport source as its binary coefficients. A protected
 collision-ratio hook extends only the existing manual-Soret coefficient.
 The shared native-flow wrapper supplies thermal and enthalpy fluxes and records
 face diagnostics. No-Soret inputs have no dependency on that sidecar.
+Its offline thermal-diffusion comparison reuses the native-face audit from
+`cantera-liang/analyze_soret.py` and the local hydrogen digitizer/profile checks.
+This analysis dependency does not change either runtime model.
 Its read-only collector retrieves selected small job artifacts. The independent
 NumPy/PyMuPDF renderer overlays those profiles on the locally supplied paper
 panels and exports PNG/PDF evidence; it never changes models or submits jobs.

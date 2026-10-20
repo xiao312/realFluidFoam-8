@@ -79,6 +79,17 @@ def main():
         revision = source_path.read_text().strip()
         record = {k: row[k] for k in ("job", "case", "phi", "transport")}
         configuration = (directory/"configuration.txt").read_text()
+        config = {}
+        for line in configuration.splitlines():
+            if not line.strip():
+                continue
+            key, value = line.split(maxsplit=1)
+            if key in config:
+                raise ValueError(f"Duplicate configuration field in job {row['job']}: {key}")
+            config[key] = value
+        for key in ("width_m", "Tu_K", "grid_factor"):
+            if key in row and abs(float(config[key])-float(row[key])) > 1e-12:
+                raise ValueError(f"Declared {key} differs from job {row['job']}")
         observed_variant = next((line.split(maxsplit=1)[1] for line in
                                  configuration.splitlines() if line.startswith("model_variant ")),
                                 "baseline")
@@ -86,6 +97,7 @@ def main():
             raise ValueError(f"Variant declaration differs from job {row['job']}")
         record.update(
             variant=observed_variant,
+            configuration=config,
             source_revision=revision,
             build_identity=identity(directory, row, revision),
             snapshot_result=relative,
@@ -96,13 +108,19 @@ def main():
                 "configuration.txt", "refinement.csv", "profile.csv",
                 "property-checks.csv", "transport.csv", "callbacks.txt")},
         )
+        if (directory/"soret-flux.csv").is_file():
+            if config.get("Soret", "off") == "off":
+                raise ValueError(f"Unexpected Soret flux output in disabled job {row['job']}")
+            record["sha256"]["soret-flux.csv"] = digest(directory/"soret-flux.csv")
+        elif config.get("Soret", "off") != "off":
+            raise ValueError(f"Missing native Soret flux output for job {row['job']}")
         if str(levels[-1]["case"]) != str(row["case"]):
             raise ValueError(f"Case mismatch in job {row['job']}.")
         if abs(record["final"]["phi"]-float(row["phi"])) > 1e-10:
             raise ValueError(f"Equivalence-ratio mismatch in job {row['job']}.")
         result.append(record)
     document = {
-        "schema": "liang-hydrogen-completed-ledger-v2",
+        "schema": "liang-hydrogen-completed-ledger-v3",
         "manifest_sha256": digest(args.manifest),
         "script_sha256": digest(Path(__file__)),
         "build_identity_basis": (

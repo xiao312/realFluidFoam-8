@@ -1,0 +1,648 @@
+{
+  "manifest_sha256": "a257e59731d05bbebf57dd59c0eda8eb0488d830dc9821fec01258daa1ba3e6a",
+  "script_sha256": "ab61b2549d73378d2869ccb095199e7408a3c06c5c04e77f64fbc437e25d8b73",
+  "groups": [
+    {
+      "case": "1",
+      "phi": 1.0,
+      "transport": "pairs",
+      "variant": "baseline",
+      "jobs": [
+        125090082,
+        125090086,
+        125090090
+      ],
+      "widths_m": [
+        0.005,
+        0.01,
+        0.02
+      ],
+      "speed_span_cm_s": 0.0002791532363062288,
+      "speed_span_percent": 0.000661845180800024,
+      "endpoint_temperature_span_K": 0.002140119667728868,
+      "maximum_grid_change": 0.004487279304260072
+    },
+    {
+      "case": "1",
+      "phi": 1.4,
+      "transport": "pairs",
+      "variant": "baseline",
+      "jobs": [
+        125090101,
+        125090102,
+        125090103
+      ],
+      "widths_m": [
+        0.005,
+        0.01,
+        0.02
+      ],
+      "speed_span_cm_s": 6.581046818610048e-11,
+      "speed_span_percent": 8.644245432463553e-11,
+      "endpoint_temperature_span_K": 1.854896891018143e-05,
+      "maximum_grid_change": 0.0019886920659377694
+    },
+    {
+      "case": "3",
+      "phi": 1.0,
+      "transport": "pairs",
+      "variant": "baseline",
+      "jobs": [
+        125091501,
+        125091506,
+        125091511
+      ],
+      "widths_m": [
+        0.005,
+        0.01,
+        0.02
+      ],
+      "speed_span_cm_s": 1.4779850516788429e-06,
+      "speed_span_percent": 3.56332238125781e-06,
+      "endpoint_temperature_span_K": 1.030890098263626e-05,
+      "maximum_grid_change": 3.01931615993567e-05
+    },
+    {
+      "case": "3",
+      "phi": 1.4,
+      "transport": "pairs",
+      "variant": "baseline",
+      "jobs": [
+        125091513,
+        125091516,
+        125091520
+      ],
+      "widths_m": [
+        0.005,
+        0.01,
+        0.02
+      ],
+      "speed_span_cm_s": 3.3486458050902e-10,
+      "speed_span_percent": 4.4324764788322265e-10,
+      "endpoint_temperature_span_K": 9.376390153192915e-08,
+      "maximum_grid_change": 1.7861016621822934e-05
+    }
+  ],
+  "runs": [
+    {
+      "job": 125090082,
+      "case": "1",
+      "phi": 1.0,
+      "transport": "pairs",
+      "variant": "baseline",
+      "width_m": 0.005,
+      "Tu_K": 298.0,
+      "pressure_Pa": 10132500.0,
+      "source": "615f3f70d1e698cce22b87c719f05fdff8351b2c",
+      "build_identity": {
+        "basis": "observed-job-records",
+        "job": 125083598,
+        "binary_sha256": "6bccddd543f7869b0223017c436366cd9b5ca0dee7d831ed5577275740905316",
+        "record_sha256": {
+          "build-path.txt": "cb725848a5d34df9cae64a5efe638b7f8e1abba003c58b70276c16dc3db4e1f2",
+          "executable.sha256": "df3d30bbec435215e64d904f9d799e377933a25a849c2847877635a799fd4b99",
+          "source-revision.txt": "658dcc0bd7249b4e8f9cb0a0abeca24f8dfa85e1d7a479f670915f5db5fd09da",
+          "input-sha256.txt": "99ae3e051d4d086213e60b955d8e1d70ac5c87d3440caf2242b2e995ef55cb7e",
+          "command.txt": "78d6af1a6af604dd1dd59abb0d514aad03c93507f49a0ee9e3fdb1d48150ef72"
+        }
+      },
+      "speed_cm_s": 42.17774743128825,
+      "Tb_K": 2481.683748247422,
+      "grid_change": 0.0044806377842285805,
+      "first_interval_temperature_change_K": -3.7402969610411674e-11,
+      "last_interval_temperature_change_K": 0.0,
+      "diagnostics": {
+        "points": 1832,
+        "min_temperature_K": 297.9999999999609,
+        "max_temperature_K": 2481.683748247422,
+        "max_species_sum_error": 6.355183046480306e-11,
+        "minimum_mass_fraction": -4.971048573320982e-15,
+        "max_relative_massflux_change": 2.1148816031768547e-10,
+        "inlet_outlet_enthalpy_difference_J_kg": -1519.9847852415744
+      },
+      "sha256": {
+        "profile.csv": "daa61af331c30b7640a140f5ae40754e7631767c252784b2635324ca2d45d4ba",
+        "refinement.csv": "fd75230fe6e59da9117c2816a5f423f0461b69d5585048aa6f95043c7eb6ba65",
+        "configuration.txt": "35229b40874df0b1fdc6e7628c4c1cf12b49653ce14df0fe842051bd2343e8cc",
+        "property-checks.csv": "c5646646cb00e8c71473d16ed254316fea564b0a0137bda87c186e4cfb1ce807"
+      }
+    },
+    {
+      "job": 125090086,
+      "case": "1",
+      "phi": 1.0,
+      "transport": "pairs",
+      "variant": "baseline",
+      "width_m": 0.01,
+      "Tu_K": 298.0,
+      "pressure_Pa": 10132500.0,
+      "source": "615f3f70d1e698cce22b87c719f05fdff8351b2c",
+      "build_identity": {
+        "basis": "observed-job-records",
+        "job": 125083598,
+        "binary_sha256": "6bccddd543f7869b0223017c436366cd9b5ca0dee7d831ed5577275740905316",
+        "record_sha256": {
+          "build-path.txt": "cb725848a5d34df9cae64a5efe638b7f8e1abba003c58b70276c16dc3db4e1f2",
+          "executable.sha256": "df3d30bbec435215e64d904f9d799e377933a25a849c2847877635a799fd4b99",
+          "source-revision.txt": "658dcc0bd7249b4e8f9cb0a0abeca24f8dfa85e1d7a479f670915f5db5fd09da",
+          "input-sha256.txt": "99ae3e051d4d086213e60b955d8e1d70ac5c87d3440caf2242b2e995ef55cb7e",
+          "command.txt": "52fe4d97717448bc72cfbe6ca815c25909770ed2abc37d10d11223e86ab8328a"
+        }
+      },
+      "speed_cm_s": 42.17774766959314,
+      "Tb_K": 2481.683757536193,
+      "grid_change": 0.004480636829012008,
+      "first_interval_temperature_change_K": -8.338929546880536e-11,
+      "last_interval_temperature_change_K": 0.0,
+      "diagnostics": {
+        "points": 1842,
+        "min_temperature_K": 297.9999999999155,
+        "max_temperature_K": 2481.683757536193,
+        "max_species_sum_error": 6.355227455401291e-11,
+        "minimum_mass_fraction": -1.130182131836639e-14,
+        "max_relative_massflux_change": 2.1149615392346277e-10,
+        "inlet_outlet_enthalpy_difference_J_kg": -1519.9712417363235
+      },
+      "sha256": {
+        "profile.csv": "49d681b5ac7848f585da2004217780e064deb0fe003fb6a03b70e7f9a200e4d0",
+        "refinement.csv": "88444c62cc1fe4a41146ea1883b42cea749666607e1f9f1cbf4c7cec43ab3b31",
+        "configuration.txt": "b2ec44a3d6d96995c833ebb99d15eae0a65613ed8e4a0d585a94eda34a1a1d5f",
+        "property-checks.csv": "c5646646cb00e8c71473d16ed254316fea564b0a0137bda87c186e4cfb1ce807"
+      }
+    },
+    {
+      "job": 125090090,
+      "case": "1",
+      "phi": 1.0,
+      "transport": "pairs",
+      "variant": "baseline",
+      "width_m": 0.02,
+      "Tu_K": 298.0,
+      "pressure_Pa": 10132500.0,
+      "source": "615f3f70d1e698cce22b87c719f05fdff8351b2c",
+      "build_identity": {
+        "basis": "observed-job-records",
+        "job": 125083598,
+        "binary_sha256": "6bccddd543f7869b0223017c436366cd9b5ca0dee7d831ed5577275740905316",
+        "record_sha256": {
+          "build-path.txt": "cb725848a5d34df9cae64a5efe638b7f8e1abba003c58b70276c16dc3db4e1f2",
+          "executable.sha256": "df3d30bbec435215e64d904f9d799e377933a25a849c2847877635a799fd4b99",
+          "source-revision.txt": "658dcc0bd7249b4e8f9cb0a0abeca24f8dfa85e1d7a479f670915f5db5fd09da",
+          "input-sha256.txt": "99ae3e051d4d086213e60b955d8e1d70ac5c87d3440caf2242b2e995ef55cb7e",
+          "command.txt": "7a7167d2095ad897cbe78b49a3283054d71a3120628d8308bd95161bf3bcaa2e"
+        }
+      },
+      "speed_cm_s": 42.17802658452456,
+      "Tb_K": 2481.68588836709,
+      "grid_change": 0.004487279304260072,
+      "first_interval_temperature_change_K": -5.587708074017428e-11,
+      "last_interval_temperature_change_K": 0.0,
+      "diagnostics": {
+        "points": 1850,
+        "min_temperature_K": 297.9999999999438,
+        "max_temperature_K": 2481.68588836709,
+        "max_species_sum_error": 9.322675964540394e-11,
+        "minimum_mass_fraction": -3.490442265462564e-16,
+        "max_relative_massflux_change": 1.8723556038935385e-10,
+        "inlet_outlet_enthalpy_difference_J_kg": -1515.2358476099203
+      },
+      "sha256": {
+        "profile.csv": "4c6a3864acb8baf2af1321af9758cc2142969e3d594f736a1612dfc49f8939e2",
+        "refinement.csv": "a20cfa1aae5155d952f8cc1d2447d0236f6e208e6c44d1919e30f4c29b7ad2f3",
+        "configuration.txt": "2eb3f63b8c505190079e47b176dee186c37ce9630df33716e59dacfabf7076f2",
+        "property-checks.csv": "c5646646cb00e8c71473d16ed254316fea564b0a0137bda87c186e4cfb1ce807"
+      }
+    },
+    {
+      "job": 125090101,
+      "case": "1",
+      "phi": 1.4,
+      "transport": "pairs",
+      "variant": "baseline",
+      "width_m": 0.005,
+      "Tu_K": 298.0,
+      "pressure_Pa": 10132500.0,
+      "source": "615f3f70d1e698cce22b87c719f05fdff8351b2c",
+      "build_identity": {
+        "basis": "observed-job-records",
+        "job": 125083598,
+        "binary_sha256": "6bccddd543f7869b0223017c436366cd9b5ca0dee7d831ed5577275740905316",
+        "record_sha256": {
+          "build-path.txt": "cb725848a5d34df9cae64a5efe638b7f8e1abba003c58b70276c16dc3db4e1f2",
+          "executable.sha256": "df3d30bbec435215e64d904f9d799e377933a25a849c2847877635a799fd4b99",
+          "source-revision.txt": "658dcc0bd7249b4e8f9cb0a0abeca24f8dfa85e1d7a479f670915f5db5fd09da",
+          "input-sha256.txt": "99ae3e051d4d086213e60b955d8e1d70ac5c87d3440caf2242b2e995ef55cb7e",
+          "command.txt": "48caabb542832bb13fda96bc2c7bb7f90751010ac3904e8baef5cdaea475f370"
+        }
+      },
+      "speed_cm_s": 76.13211436467454,
+      "Tb_K": 2313.542026601384,
+      "grid_change": 0.0019886920653071627,
+      "first_interval_temperature_change_K": -1.7394086171407253e-11,
+      "last_interval_temperature_change_K": 0.0,
+      "diagnostics": {
+        "points": 1801,
+        "min_temperature_K": 297.9999999999826,
+        "max_temperature_K": 2313.542032101783,
+        "max_species_sum_error": 3.9562109144242186e-10,
+        "minimum_mass_fraction": -1.389225438726835e-15,
+        "max_relative_massflux_change": 2.638502749618965e-10,
+        "inlet_outlet_enthalpy_difference_J_kg": -289.1496958057618
+      },
+      "sha256": {
+        "profile.csv": "c52f835432440de567369e5cd1ef31745af35fc26f1cbcb97ee713c33231553d",
+        "refinement.csv": "da6e0ccd859be09cf1170c10cd7d9e0ada1c5843f09de537da59e8dca8e260a5",
+        "configuration.txt": "41ffc9d25525d718f606da282f36ba46ac8ad98f61925a4982d1bdaceaab4c7e",
+        "property-checks.csv": "84e0b540f9d3e282778eda7b94b72cdd955303960cf2c4f21d2e742b90085d89"
+      }
+    },
+    {
+      "job": 125090102,
+      "case": "1",
+      "phi": 1.4,
+      "transport": "pairs",
+      "variant": "baseline",
+      "width_m": 0.01,
+      "Tu_K": 298.0,
+      "pressure_Pa": 10132500.0,
+      "source": "615f3f70d1e698cce22b87c719f05fdff8351b2c",
+      "build_identity": {
+        "basis": "observed-job-records",
+        "job": 125083598,
+        "binary_sha256": "6bccddd543f7869b0223017c436366cd9b5ca0dee7d831ed5577275740905316",
+        "record_sha256": {
+          "build-path.txt": "cb725848a5d34df9cae64a5efe638b7f8e1abba003c58b70276c16dc3db4e1f2",
+          "executable.sha256": "df3d30bbec435215e64d904f9d799e377933a25a849c2847877635a799fd4b99",
+          "source-revision.txt": "658dcc0bd7249b4e8f9cb0a0abeca24f8dfa85e1d7a479f670915f5db5fd09da",
+          "input-sha256.txt": "99ae3e051d4d086213e60b955d8e1d70ac5c87d3440caf2242b2e995ef55cb7e",
+          "command.txt": "c201aaa6b9e786e6bb6e08267833d84660d1c6b93afda2ee5ecb4bfb89c08741"
+        }
+      },
+      "speed_cm_s": 76.13211436474035,
+      "Tb_K": 2313.542020490109,
+      "grid_change": 0.0019886920659377694,
+      "first_interval_temperature_change_K": -9.492850949754938e-12,
+      "last_interval_temperature_change_K": 0.0,
+      "diagnostics": {
+        "points": 1810,
+        "min_temperature_K": 297.9999999999898,
+        "max_temperature_K": 2313.542032256822,
+        "max_species_sum_error": 3.9562109144242186e-10,
+        "minimum_mass_fraction": -8.052456207602799e-15,
+        "max_relative_massflux_change": 2.6385749141155657e-10,
+        "inlet_outlet_enthalpy_difference_J_kg": -289.16144437284015
+      },
+      "sha256": {
+        "profile.csv": "9be93b4071912ee06e466f63554e28df07b16d89ffb30bdc8189238cdbc78a24",
+        "refinement.csv": "d03d33dabfa4bb81246cd5869b0e85493c2ad3d724522200793217b1b7900b44",
+        "configuration.txt": "0e504c9602e2365d6b4e82b038fb4928ae6664eafd9aa27eed890265f9f5439c",
+        "property-checks.csv": "84e0b540f9d3e282778eda7b94b72cdd955303960cf2c4f21d2e742b90085d89"
+      }
+    },
+    {
+      "job": 125090103,
+      "case": "1",
+      "phi": 1.4,
+      "transport": "pairs",
+      "variant": "baseline",
+      "width_m": 0.02,
+      "Tu_K": 298.0,
+      "pressure_Pa": 10132500.0,
+      "source": "615f3f70d1e698cce22b87c719f05fdff8351b2c",
+      "build_identity": {
+        "basis": "observed-job-records",
+        "job": 125083598,
+        "binary_sha256": "6bccddd543f7869b0223017c436366cd9b5ca0dee7d831ed5577275740905316",
+        "record_sha256": {
+          "build-path.txt": "cb725848a5d34df9cae64a5efe638b7f8e1abba003c58b70276c16dc3db4e1f2",
+          "executable.sha256": "df3d30bbec435215e64d904f9d799e377933a25a849c2847877635a799fd4b99",
+          "source-revision.txt": "658dcc0bd7249b4e8f9cb0a0abeca24f8dfa85e1d7a479f670915f5db5fd09da",
+          "input-sha256.txt": "99ae3e051d4d086213e60b955d8e1d70ac5c87d3440caf2242b2e995ef55cb7e",
+          "command.txt": "cda561cca7ad690ef6cfe36874b548f32869d85420d2b26c557f372319f23d70"
+        }
+      },
+      "speed_cm_s": 76.13211436471781,
+      "Tb_K": 2313.542008052415,
+      "grid_change": 0.001988692065233,
+      "first_interval_temperature_change_K": 2.3419488570652902e-11,
+      "last_interval_temperature_change_K": 0.0,
+      "diagnostics": {
+        "points": 1818,
+        "min_temperature_K": 298.0,
+        "max_temperature_K": 2313.542032256694,
+        "max_species_sum_error": 3.956212024647243e-10,
+        "minimum_mass_fraction": -1.861110574277445e-14,
+        "max_relative_massflux_change": 2.638623763928649e-10,
+        "inlet_outlet_enthalpy_difference_J_kg": -289.1854390398476
+      },
+      "sha256": {
+        "profile.csv": "1797f1edae782c38443f23a83057e48fa8eab8baf7854df9b0bcf7e9eb6b9cc6",
+        "refinement.csv": "acc2c56d1561896df817d4544fb77558f73bdfe016e4133fd40c7399d6956cbd",
+        "configuration.txt": "fc626272134356903aa4c963031926c8c3a4c10a90d712992a923524d91c57b2",
+        "property-checks.csv": "84e0b540f9d3e282778eda7b94b72cdd955303960cf2c4f21d2e742b90085d89"
+      }
+    },
+    {
+      "job": 125091501,
+      "case": "3",
+      "phi": 1.0,
+      "transport": "pairs",
+      "variant": "baseline",
+      "width_m": 0.005,
+      "Tu_K": 298.0,
+      "pressure_Pa": 10132500.0,
+      "source": "615f3f70d1e698cce22b87c719f05fdff8351b2c",
+      "build_identity": {
+        "basis": "observed-job-records",
+        "job": 125083598,
+        "binary_sha256": "6bccddd543f7869b0223017c436366cd9b5ca0dee7d831ed5577275740905316",
+        "record_sha256": {
+          "build-path.txt": "cb725848a5d34df9cae64a5efe638b7f8e1abba003c58b70276c16dc3db4e1f2",
+          "executable.sha256": "df3d30bbec435215e64d904f9d799e377933a25a849c2847877635a799fd4b99",
+          "source-revision.txt": "658dcc0bd7249b4e8f9cb0a0abeca24f8dfa85e1d7a479f670915f5db5fd09da",
+          "input-sha256.txt": "99ae3e051d4d086213e60b955d8e1d70ac5c87d3440caf2242b2e995ef55cb7e",
+          "guess-sha256.txt": "28408f4387cc8a5e34a3b12172fe3b5861e677ad0c791522700ce1e1cad5552f",
+          "command.txt": "59d7ba93ecc9b72359ecba17e4d420065d55cdcd2f0d0e57a61aa1afa8cf278a"
+        }
+      },
+      "speed_cm_s": 41.47772334008577,
+      "Tb_K": 2470.217800778353,
+      "grid_change": 3.0188943990649975e-05,
+      "first_interval_temperature_change_K": 4.96243046654854e-11,
+      "last_interval_temperature_change_K": 0.0,
+      "diagnostics": {
+        "points": 1845,
+        "min_temperature_K": 298.0,
+        "max_temperature_K": 2470.217801089903,
+        "max_species_sum_error": 1.8917289956732475e-10,
+        "minimum_mass_fraction": -6.669819124721837e-14,
+        "max_relative_massflux_change": 2.7143443048771587e-10,
+        "inlet_outlet_enthalpy_difference_J_kg": 41.488270589190506
+      },
+      "sha256": {
+        "profile.csv": "b78472ec0df4ae27b901c5535079d656a7c0cf6dbdb618f7152e229cdc73350a",
+        "refinement.csv": "de5a396fc1beee0e8f937509185ef5726e46f5d08b87305970a414763f03ddcf",
+        "configuration.txt": "5a11ce6762ff702689bb4c204e30dac8df243d39db40ef3b511fb7707aecbe0c",
+        "property-checks.csv": "ece59becf5238725b7ac25940a176e57ff2e54909ac19f61aea0bf6221c382a7"
+      }
+    },
+    {
+      "job": 125091506,
+      "case": "3",
+      "phi": 1.0,
+      "transport": "pairs",
+      "variant": "baseline",
+      "width_m": 0.01,
+      "Tu_K": 298.0,
+      "pressure_Pa": 10132500.0,
+      "source": "615f3f70d1e698cce22b87c719f05fdff8351b2c",
+      "build_identity": {
+        "basis": "observed-job-records",
+        "job": 125083598,
+        "binary_sha256": "6bccddd543f7869b0223017c436366cd9b5ca0dee7d831ed5577275740905316",
+        "record_sha256": {
+          "build-path.txt": "cb725848a5d34df9cae64a5efe638b7f8e1abba003c58b70276c16dc3db4e1f2",
+          "executable.sha256": "df3d30bbec435215e64d904f9d799e377933a25a849c2847877635a799fd4b99",
+          "source-revision.txt": "658dcc0bd7249b4e8f9cb0a0abeca24f8dfa85e1d7a479f670915f5db5fd09da",
+          "input-sha256.txt": "99ae3e051d4d086213e60b955d8e1d70ac5c87d3440caf2242b2e995ef55cb7e",
+          "guess-sha256.txt": "c269b9b28a61c7ffe8efe80273abcdc63f6d10ff885824d86f1ff3eb37fc2f3f",
+          "command.txt": "b9bca63113f8b1b8688f2e968ee75fa4bb62615d7e4cbb1db592a9a63032f391"
+        }
+      },
+      "speed_cm_s": 41.47772363027754,
+      "Tb_K": 2470.217803710866,
+      "grid_change": 3.0188935282282614e-05,
+      "first_interval_temperature_change_K": -1.5973000699887052e-11,
+      "last_interval_temperature_change_K": 0.0,
+      "diagnostics": {
+        "points": 1855,
+        "min_temperature_K": 297.9999999999765,
+        "max_temperature_K": 2470.217804074411,
+        "max_species_sum_error": 1.8917356570113952e-10,
+        "minimum_mass_fraction": -3.961045407949936e-15,
+        "max_relative_massflux_change": 2.714382052459996e-10,
+        "inlet_outlet_enthalpy_difference_J_kg": 41.48812633124908
+      },
+      "sha256": {
+        "profile.csv": "100d751eb37951f484a94e1d1ce303c2e6ae2f7898db921e2cf4f7403d6497e1",
+        "refinement.csv": "94c6c11ac2f3e91fcd0afb47e7615a73f07fcadfd3c8f60ea7050a7be2cfd7cc",
+        "configuration.txt": "09c79b71cad851ad607edd52144e1824281d8827026f4a74317a6528f179169c",
+        "property-checks.csv": "ece59becf5238725b7ac25940a176e57ff2e54909ac19f61aea0bf6221c382a7"
+      }
+    },
+    {
+      "job": 125091511,
+      "case": "3",
+      "phi": 1.0,
+      "transport": "pairs",
+      "variant": "baseline",
+      "width_m": 0.02,
+      "Tu_K": 298.0,
+      "pressure_Pa": 10132500.0,
+      "source": "615f3f70d1e698cce22b87c719f05fdff8351b2c",
+      "build_identity": {
+        "basis": "observed-job-records",
+        "job": 125083598,
+        "binary_sha256": "6bccddd543f7869b0223017c436366cd9b5ca0dee7d831ed5577275740905316",
+        "record_sha256": {
+          "build-path.txt": "cb725848a5d34df9cae64a5efe638b7f8e1abba003c58b70276c16dc3db4e1f2",
+          "executable.sha256": "df3d30bbec435215e64d904f9d799e377933a25a849c2847877635a799fd4b99",
+          "source-revision.txt": "658dcc0bd7249b4e8f9cb0a0abeca24f8dfa85e1d7a479f670915f5db5fd09da",
+          "input-sha256.txt": "99ae3e051d4d086213e60b955d8e1d70ac5c87d3440caf2242b2e995ef55cb7e",
+          "guess-sha256.txt": "a63c7f366c09d449d2ce77a4b39c7d1756302944962f01c97ac5d38969cd2db3",
+          "command.txt": "27eea1fb96bbba1fefe87cffd963ea65f3aa5a96d103f1c253e3d23fd4b408fd"
+        }
+      },
+      "speed_cm_s": 41.47772481807082,
+      "Tb_K": 2470.217811087254,
+      "grid_change": 3.01931615993567e-05,
+      "first_interval_temperature_change_K": 8.321876521222293e-11,
+      "last_interval_temperature_change_K": 0.0,
+      "diagnostics": {
+        "points": 1863,
+        "min_temperature_K": 298.0,
+        "max_temperature_K": 2470.217811510461,
+        "max_species_sum_error": 1.891724554781149e-10,
+        "minimum_mass_fraction": -1.113684916645266e-14,
+        "max_relative_massflux_change": 2.7147151193673835e-10,
+        "inlet_outlet_enthalpy_difference_J_kg": 41.50077461434921
+      },
+      "sha256": {
+        "profile.csv": "f8b3edaa68434858572f8a35db8e75e385fa90193e4056bb041aa9701ea79202",
+        "refinement.csv": "25ab13f386ccf512ba5f6ef05ab0e26807d28712085df110ab1a0d3ce3304181",
+        "configuration.txt": "eed0216edac74c4dcb2934c96794a03f9b9fcb3f1781243b19932e732caf846e",
+        "property-checks.csv": "ece59becf5238725b7ac25940a176e57ff2e54909ac19f61aea0bf6221c382a7"
+      }
+    },
+    {
+      "job": 125091513,
+      "case": "3",
+      "phi": 1.4,
+      "transport": "pairs",
+      "variant": "baseline",
+      "width_m": 0.005,
+      "Tu_K": 298.0,
+      "pressure_Pa": 10132500.0,
+      "source": "615f3f70d1e698cce22b87c719f05fdff8351b2c",
+      "build_identity": {
+        "basis": "observed-job-records",
+        "job": 125083598,
+        "binary_sha256": "6bccddd543f7869b0223017c436366cd9b5ca0dee7d831ed5577275740905316",
+        "record_sha256": {
+          "build-path.txt": "cb725848a5d34df9cae64a5efe638b7f8e1abba003c58b70276c16dc3db4e1f2",
+          "executable.sha256": "df3d30bbec435215e64d904f9d799e377933a25a849c2847877635a799fd4b99",
+          "source-revision.txt": "658dcc0bd7249b4e8f9cb0a0abeca24f8dfa85e1d7a479f670915f5db5fd09da",
+          "input-sha256.txt": "99ae3e051d4d086213e60b955d8e1d70ac5c87d3440caf2242b2e995ef55cb7e",
+          "guess-sha256.txt": "800329adca6dca72ff461aeab144677bb78a18373c903c89c766add9d83d2da1",
+          "command.txt": "5de387ad7bf199e4c140778af1232de1082cc5d893ad4f8f3a304235f578a5d3"
+        }
+      },
+      "speed_cm_s": 75.54796559140651,
+      "Tb_K": 2301.471965081193,
+      "grid_change": 1.786101566980669e-05,
+      "first_interval_temperature_change_K": 3.927880243281834e-11,
+      "last_interval_temperature_change_K": 0.0,
+      "diagnostics": {
+        "points": 1809,
+        "min_temperature_K": 298.0,
+        "max_temperature_K": 2301.471965081193,
+        "max_species_sum_error": 1.3269407794780363e-10,
+        "minimum_mass_fraction": -2.044341482634267e-18,
+        "max_relative_massflux_change": 1.2957057649032322e-10,
+        "inlet_outlet_enthalpy_difference_J_kg": 26.334968085699074
+      },
+      "sha256": {
+        "profile.csv": "45c139e52e6dada7284ed2f48dd03eac0ee7d352405d48d5c979867ab02ce584",
+        "refinement.csv": "e8967c952f38302ec48d1e6c60bca6a7abd759b099c5d17cf410349bdf588df9",
+        "configuration.txt": "671c5d25cd2fa78fc1356c9d9a2aea70789e266bb4ecf75f8b139968c95b31b3",
+        "property-checks.csv": "27f9b4e7e62c23925b2bd7b8f95c5420a2ed5ce16246b8a2f0bd3603c56e0eb6"
+      }
+    },
+    {
+      "job": 125091516,
+      "case": "3",
+      "phi": 1.4,
+      "transport": "pairs",
+      "variant": "baseline",
+      "width_m": 0.01,
+      "Tu_K": 298.0,
+      "pressure_Pa": 10132500.0,
+      "source": "615f3f70d1e698cce22b87c719f05fdff8351b2c",
+      "build_identity": {
+        "basis": "observed-job-records",
+        "job": 125083598,
+        "binary_sha256": "6bccddd543f7869b0223017c436366cd9b5ca0dee7d831ed5577275740905316",
+        "record_sha256": {
+          "build-path.txt": "cb725848a5d34df9cae64a5efe638b7f8e1abba003c58b70276c16dc3db4e1f2",
+          "executable.sha256": "df3d30bbec435215e64d904f9d799e377933a25a849c2847877635a799fd4b99",
+          "source-revision.txt": "658dcc0bd7249b4e8f9cb0a0abeca24f8dfa85e1d7a479f670915f5db5fd09da",
+          "input-sha256.txt": "99ae3e051d4d086213e60b955d8e1d70ac5c87d3440caf2242b2e995ef55cb7e",
+          "guess-sha256.txt": "58c0aa14c6873d1cdbb3dd38917e98ae29cec2c02976c2fcde45c72a5bb97b70",
+          "command.txt": "0499d0645b3bd2eb56dcb59f586710ac31e3e5fdd20762e6ad80ec03a7ef9d31"
+        }
+      },
+      "speed_cm_s": 75.54796559163182,
+      "Tb_K": 2301.47196511486,
+      "grid_change": 1.7861016096354376e-05,
+      "first_interval_temperature_change_K": -4.6213699533836916e-11,
+      "last_interval_temperature_change_K": 0.0,
+      "diagnostics": {
+        "points": 1818,
+        "min_temperature_K": 297.9999999999449,
+        "max_temperature_K": 2301.47196511486,
+        "max_species_sum_error": 1.326956322600381e-10,
+        "minimum_mass_fraction": -1.248955265142514e-14,
+        "max_relative_massflux_change": 1.2957857009610052e-10,
+        "inlet_outlet_enthalpy_difference_J_kg": 26.335084770389585
+      },
+      "sha256": {
+        "profile.csv": "f1713dfde36b63aedf109b5d69b37550433c174aa7c7a8ddc4665f689a6aff28",
+        "refinement.csv": "87cde4995e510c720c0c62038a34a3228f85021cc8e1b5fecd4c02fb6981ef81",
+        "configuration.txt": "09ab4092ef9f2be174f7cc0b5d3946f45004137bb7d0b17a5f570fecdcd7ae92",
+        "property-checks.csv": "27f9b4e7e62c23925b2bd7b8f95c5420a2ed5ce16246b8a2f0bd3603c56e0eb6"
+      }
+    },
+    {
+      "job": 125091520,
+      "case": "3",
+      "phi": 1.4,
+      "transport": "pairs",
+      "variant": "baseline",
+      "width_m": 0.02,
+      "Tu_K": 298.0,
+      "pressure_Pa": 10132500.0,
+      "source": "615f3f70d1e698cce22b87c719f05fdff8351b2c",
+      "build_identity": {
+        "basis": "observed-job-records",
+        "job": 125083598,
+        "binary_sha256": "6bccddd543f7869b0223017c436366cd9b5ca0dee7d831ed5577275740905316",
+        "record_sha256": {
+          "build-path.txt": "cb725848a5d34df9cae64a5efe638b7f8e1abba003c58b70276c16dc3db4e1f2",
+          "executable.sha256": "df3d30bbec435215e64d904f9d799e377933a25a849c2847877635a799fd4b99",
+          "source-revision.txt": "658dcc0bd7249b4e8f9cb0a0abeca24f8dfa85e1d7a479f670915f5db5fd09da",
+          "input-sha256.txt": "99ae3e051d4d086213e60b955d8e1d70ac5c87d3440caf2242b2e995ef55cb7e",
+          "guess-sha256.txt": "f4bab71764bee20c85e960c1e7f02b5d3a3ac5f344141829a9b3d6d2b9eed2b5",
+          "command.txt": "962d1dfc7b369b9fa7550be827821b664482f9830b7c08286c956c613fec48e8"
+        }
+      },
+      "speed_cm_s": 75.54796559174137,
+      "Tb_K": 2301.471965174957,
+      "grid_change": 1.7861016621822934e-05,
+      "first_interval_temperature_change_K": -9.600853445590474e-11,
+      "last_interval_temperature_change_K": 0.0,
+      "diagnostics": {
+        "points": 1826,
+        "min_temperature_K": 297.9999999998898,
+        "max_temperature_K": 2301.471965174957,
+        "max_species_sum_error": 1.326956322600381e-10,
+        "minimum_mass_fraction": -2.528978722869851e-14,
+        "max_relative_massflux_change": 1.2957457329321187e-10,
+        "inlet_outlet_enthalpy_difference_J_kg": 26.3352016582503
+      },
+      "sha256": {
+        "profile.csv": "deabc6cd396498ffa326e0c2878f14e1e39bb3dcc32bf03ce2deb07b0d586db5",
+        "refinement.csv": "217e3edce243a27174b9da1249a9dc1026e9d31a63126f9eef89339063f95f2b",
+        "configuration.txt": "b43fffcc4188bb3c93870c5ca565d3a27c0a208516f5a973a8ad26e1197ea4da",
+        "property-checks.csv": "27f9b4e7e62c23925b2bd7b8f95c5420a2ed5ce16246b8a2f0bd3603c56e0eb6"
+      }
+    }
+  ],
+  "scientific_acceptance": false,
+  "limits": [
+    "Observed domain sensitivity, not an asymptotic error estimate",
+    "Existing numerical screens do not establish paper agreement",
+    "Failed startup attempts are retained in the separate campaign record"
+  ],
+  "failed_startups": [
+    {
+      "job": 125090092,
+      "log_sha256": "c3d410210814818beb6b2a64127e6d6287637f8961d86b8fc69bbcfeca532553",
+      "outcome": "minimum pseudo-time step before any converged grid"
+    },
+    {
+      "job": 125090097,
+      "log_sha256": "f62b9d329cd9fb0a8522dbb8e6fe3b166d0fae9d16c0a451bed7e8269e77c0a6",
+      "outcome": "minimum pseudo-time step before any converged grid"
+    },
+    {
+      "job": 125090099,
+      "log_sha256": "91e4237a743466ce996a270f4a4face76cac65d1a59bf154a884d1344c426160",
+      "outcome": "minimum pseudo-time step before any converged grid"
+    },
+    {
+      "job": 125090105,
+      "log_sha256": "7c6fbccff08b247edd357bf94c0a6efdf68c5e0c598b3d35ef810986e7642429",
+      "outcome": "minimum pseudo-time step before any converged grid"
+    },
+    {
+      "job": 125090106,
+      "log_sha256": "d1cff4d827fe9c7e5d3b479875e6c7a1a0957897ecc08a89772538cee765f735",
+      "outcome": "minimum pseudo-time step before any converged grid"
+    },
+    {
+      "job": 125090109,
+      "log_sha256": "40ab969814dbb407444210b153bc75d497f4c8ae8fc468bca55fb3dee3b515a3",
+      "outcome": "minimum pseudo-time step before any converged grid"
+    }
+  ]
+}

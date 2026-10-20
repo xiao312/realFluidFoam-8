@@ -69,6 +69,10 @@ the associated diffusive enthalpy flux.
 
 `analyze_soret.py plan|apply OBSERVATION.json FLUX_DIRECTORY NEW_OUTPUT`
 compares the six completed methane controls: Cases 1, 4 and 5 with Soret off/on.
+Its `inspect_native_fluxes` helper exposes measured residuals after validating
+file structure, coordinates and finite data. The hydrogen diagnostic uses it
+to preserve failed strict checks for investigation. The existing `native_fluxes`
+entry point and methane CLI retain all original strict tolerances.
 The observation must include passed numerical screens, output hashes and
 the local profile snapshot. The flux directory contains each on-run's
 `jobs/JOB/result/soret-flux.csv`. It validates hashes, face coordinates,

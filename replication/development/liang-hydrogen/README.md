@@ -60,9 +60,44 @@ H2/O2, H/O2 and H2/Ar at 298, 1000 and 2500 K.
 The [fixture source record](../../docs/liang-hydrogen-soret-integration-review-20261021.md)
 pins raw data, mechanism weights and the independent evaluation script.
 Both Soret modes require a build that passed this additional test.
+The completed-run ledger's v3 schema includes observed configuration fields
+and hashes the native thermal-flux CSV when Soret is enabled.
+It rejects missing or unexpectedly enabled thermal-flux output.
+Existing no-Soret configurations remain readable.
 Example: `flame inputs 3 1.4 new-result - .01 298 manual-soret-baseline 1`.
 Use the same source and inputs with `baseline` for its paired no-Soret control.
 Preparation supports `plan`; Slurm still owns compilation and flame solves.
+
+`analyze_soret.py plan|apply MANIFEST REFERENCE_JSON NEW_OUTPUT` requires complete
+off/native/manual triples at each case and equivalence ratio. It verifies
+matched source, executable, input records, domain and inlet conditions, applies
+the existing numerical checks, and audits native thermal flux using the shared
+`cantera-liang/analyze_soret.py` reader. Its CSV and JSON report changes in speed,
+the unchanged Figure 3 comparison screen, and source/output hashes. Missing
+paper points remain missing; no extrapolation or parameter fitting is performed.
+It depends on NumPy and these local analysis modules, with no network, secrets
+or solver mutations. Run `plan` before `apply`; numerical checks must pass.
+Strict native-flux residuals and their failures remain explicit in the result,
+with no tolerance change. Paper agreement remains a separate outcome.
+`soret_roundtrip.py plan|apply MANIFEST NEW_JSON` investigates those failures
+using the writers' 16-significant-digit decimal rounding bounds. It reports
+whether thermal-flux reconstruction differences fit that bound, plus measured
+face composition and coefficient sums. It neither changes the strict audit nor
+normalizes saved data. The manifest must contain completed Soret runs; NumPy
+and the shared native reader are the only analysis dependencies.
+`test_soret_roundtrip.py MANIFEST NEW_FIXTURE_DIRECTORY` uses the captured rich
+Case 3 manual control: expect its reconstruction error to fit the decimal bound
+and an injected 100 ppm flux error to be detected. Fixtures stay outside Git.
+
+`compare_domains.py plan|apply MANIFEST.json NEW_OUTPUT` reads completed,
+matched source/input runs at three or more domain lengths. It verifies actual
+profile lengths against configuration and the existing numerical screens.
+It writes speed, endpoint-temperature and boundary-tail spans with input hashes.
+Group identity includes case, phi, transport and model variant.
+This offline diagnostic uses the existing NumPy profile checks and run records.
+It makes no remote writes, modifies no inputs and does not introduce a new
+paper acceptance tolerance. Expected result: all numerical checks pass, with
+observed domain sensitivity reported separately from paper agreement.
 
 `flame INPUT CASE PHI OUTPUT [GUESS|-] [WIDTH_M] [TU_K] [VARIANT] [GRID_FACTOR]`
 runs 100-atm H2/air.

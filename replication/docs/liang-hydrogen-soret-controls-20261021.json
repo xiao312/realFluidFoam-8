@@ -1,0 +1,4345 @@
+{
+  "schema": "liang-hydrogen-completed-ledger-v3",
+  "manifest_sha256": "a13fcbaaef9a1bed5b162f19c7a042f635a119b9deff32edaa058faed462df59",
+  "script_sha256": "a206dfc9bbd0709022a3dfa27d10d80213fff9690461a9fcf7b1cc9b244b1b1f",
+  "build_identity_basis": "Each run declares observed job records or a named historical source-to-build registry association. No identity is inferred from current HEAD.",
+  "scientific_acceptance": false,
+  "completed": 24,
+  "runs": [
+    {
+      "job": 125091687,
+      "case": "1",
+      "phi": 1.0,
+      "transport": "pairs",
+      "variant": "baseline",
+      "configuration": {
+        "case": "1",
+        "phi": "1",
+        "pressure_Pa": "10132500",
+        "Tu_K": "298",
+        "width_m": "0.01",
+        "kinetics": "Burke2012-N2-pressure",
+        "collider_concentration": "pressure-based",
+        "transport": "author-pair-count 10",
+        "model_variant": "baseline",
+        "alpha": "original-Soave",
+        "flux_correction": "left-node",
+        "grid_factor": "1",
+        "initial_grid_points": "1842",
+        "conductivity": "dense-increment-diagnostic",
+        "Takahashi": "bounded-Table2",
+        "Soret": "off",
+        "thermal_collision_pair_count": "0",
+        "energy": "partial-temperature"
+      },
+      "source_revision": "ae10e5c32ea9e794a2ab584f1f03eb72af4788cd",
+      "build_identity": {
+        "basis": "observed-job-records",
+        "job": 125091444,
+        "binary_sha256": "34d8c6f84618dbacd3b71820f92b5640904334999c391ba25a3382a4e0463e1f",
+        "record_sha256": {
+          "build-path.txt": "6627102e54893d24e383aa59067cc535fe417ea9cbd46bcc50d39768c4334d24",
+          "executable.sha256": "f80cb345b65f3b83ffeca08b08218ae321e6b69932d8da9a5a603034ae86fd66",
+          "source-revision.txt": "5d8b91a89bf8ac0ffe030daf5abd952bd16462eced1ff2bf1c926d42f43ae187",
+          "input-sha256.txt": "3243c9e4edbeaee0227b15e77081c1e98aade088e145671b2f7e598a8228e74e",
+          "guess-sha256.txt": "a6a2ed09e68b1bcac1c464a7334f78e4dbd867eff45369664d415aee3993d4a1",
+          "command.txt": "6e22155e4f6ee253d9ad1da18a320ee9c7429979b27a66a7d4672efab81ac3fd"
+        }
+      },
+      "snapshot_result": "state/liang-hydrogen-20261020/snapshot-hydrogen-soret-0405/jobs/125091687/result",
+      "final": {
+        "phi": 1.0,
+        "slope": 0.00375,
+        "curve": 0.00625,
+        "points": 1843.0,
+        "speed_cm_s": 42.1789212696957,
+        "Tb_K": 2481.692052451579,
+        "rhou_kg_m3": 85.5255080145302,
+        "massflux_kg_m2s": 36.07373669095598
+      },
+      "last_speed_relative_change": 5.313317058552869e-06,
+      "sha256": {
+        "configuration.txt": "aa6fa36b3845fc9838a9e1cbbb4a1d08ee42865d1a98cacc7596507376737983",
+        "refinement.csv": "b82cf178bfd7329eb3458306b3ca188acab1bb9b969e00e2320c969fc7ad7d05",
+        "profile.csv": "420ee79fc3d811500d8a252e1358e25290de9e76a160c3d5d58b5689c436659b",
+        "property-checks.csv": "c5646646cb00e8c71473d16ed254316fea564b0a0137bda87c186e4cfb1ce807",
+        "transport.csv": "041ce6453e7caec4be08bc8db11e168869c6ef35864c622a5a21ac5f6b848b4f",
+        "callbacks.txt": "3ff3177155b7e0c5f6f6281a1346317edd1caab7c6132d45b8dda53e375c2d33"
+      }
+    },
+    {
+      "job": 125091691,
+      "case": "1",
+      "phi": 1.0,
+      "transport": "pairs",
+      "variant": "soret-baseline",
+      "configuration": {
+        "case": "1",
+        "phi": "1",
+        "pressure_Pa": "10132500",
+        "Tu_K": "298",
+        "width_m": "0.01",
+        "kinetics": "Burke2012-N2-pressure",
+        "collider_concentration": "pressure-based",
+        "transport": "author-pair-count 10",
+        "model_variant": "soret-baseline",
+        "alpha": "original-Soave",
+        "flux_correction": "left-node",
+        "grid_factor": "1",
+        "initial_grid_points": "1842",
+        "conductivity": "dense-increment-diagnostic",
+        "Takahashi": "bounded-Table2",
+        "Soret": "cantera-3.2",
+        "thermal_collision_pair_count": "0",
+        "energy": "partial-temperature"
+      },
+      "source_revision": "ae10e5c32ea9e794a2ab584f1f03eb72af4788cd",
+      "build_identity": {
+        "basis": "observed-job-records",
+        "job": 125091444,
+        "binary_sha256": "34d8c6f84618dbacd3b71820f92b5640904334999c391ba25a3382a4e0463e1f",
+        "record_sha256": {
+          "build-path.txt": "6627102e54893d24e383aa59067cc535fe417ea9cbd46bcc50d39768c4334d24",
+          "executable.sha256": "f80cb345b65f3b83ffeca08b08218ae321e6b69932d8da9a5a603034ae86fd66",
+          "source-revision.txt": "5d8b91a89bf8ac0ffe030daf5abd952bd16462eced1ff2bf1c926d42f43ae187",
+          "input-sha256.txt": "3243c9e4edbeaee0227b15e77081c1e98aade088e145671b2f7e598a8228e74e",
+          "guess-sha256.txt": "a6a2ed09e68b1bcac1c464a7334f78e4dbd867eff45369664d415aee3993d4a1",
+          "command.txt": "916494bc1e6a79cd63e88534d8fda2682db8b6bbdb725905a171dd52f43a5f94"
+        }
+      },
+      "snapshot_result": "state/liang-hydrogen-20261020/snapshot-hydrogen-soret-0405/jobs/125091691/result",
+      "final": {
+        "phi": 1.0,
+        "slope": 0.00375,
+        "curve": 0.00625,
+        "points": 1946.0,
+        "speed_cm_s": 40.70252119863703,
+        "Tb_K": 2481.595510697134,
+        "rhou_kg_m3": 85.5255080145302,
+        "massflux_kg_m2s": 34.81103802985616
+      },
+      "last_speed_relative_change": 0.005654709082964615,
+      "sha256": {
+        "configuration.txt": "2b6b5bf2a0256e20615eeeee9db659b55f8798525359d06a6d2673fb27325a65",
+        "refinement.csv": "386379a236387133fda74284fcbcfbe3c7f45af74429b2a0d2d9265a26bd92c9",
+        "profile.csv": "bd067fda847c16aab177dfc8ddad6fa3d3a38a9407642ee9df4c40308037d0f5",
+        "property-checks.csv": "c5646646cb00e8c71473d16ed254316fea564b0a0137bda87c186e4cfb1ce807",
+        "transport.csv": "178873afb49754f79717035fd6d9d90f12e6f780abe57f76de21dd67343e2c41",
+        "callbacks.txt": "0b35d5867b90bf15decf9d0ae718a50431aa7b96be523b7c163ea889b51fcbba",
+        "soret-flux.csv": "9afd64a6786e1c616382956d70a3b045d9d07bee35e8d9d9741a7c169c2baea8"
+      }
+    },
+    {
+      "job": 125091694,
+      "case": "1",
+      "phi": 1.0,
+      "transport": "pairs",
+      "variant": "manual-soret-baseline",
+      "configuration": {
+        "case": "1",
+        "phi": "1",
+        "pressure_Pa": "10132500",
+        "Tu_K": "298",
+        "width_m": "0.01",
+        "kinetics": "Burke2012-N2-pressure",
+        "collider_concentration": "pressure-based",
+        "transport": "author-pair-count 10",
+        "model_variant": "manual-soret-baseline",
+        "alpha": "original-Soave",
+        "flux_correction": "left-node",
+        "grid_factor": "1",
+        "initial_grid_points": "1842",
+        "conductivity": "dense-increment-diagnostic",
+        "Takahashi": "bounded-Table2",
+        "Soret": "manual-author-pairs",
+        "thermal_collision_pair_count": "10",
+        "energy": "partial-temperature"
+      },
+      "source_revision": "ae10e5c32ea9e794a2ab584f1f03eb72af4788cd",
+      "build_identity": {
+        "basis": "observed-job-records",
+        "job": 125091444,
+        "binary_sha256": "34d8c6f84618dbacd3b71820f92b5640904334999c391ba25a3382a4e0463e1f",
+        "record_sha256": {
+          "build-path.txt": "6627102e54893d24e383aa59067cc535fe417ea9cbd46bcc50d39768c4334d24",
+          "executable.sha256": "f80cb345b65f3b83ffeca08b08218ae321e6b69932d8da9a5a603034ae86fd66",
+          "source-revision.txt": "5d8b91a89bf8ac0ffe030daf5abd952bd16462eced1ff2bf1c926d42f43ae187",
+          "input-sha256.txt": "3243c9e4edbeaee0227b15e77081c1e98aade088e145671b2f7e598a8228e74e",
+          "guess-sha256.txt": "a6a2ed09e68b1bcac1c464a7334f78e4dbd867eff45369664d415aee3993d4a1",
+          "command.txt": "5c5899ec1db14024e156e092f7f3689cbf863795a25fe4333a4b15840d2e02db"
+        }
+      },
+      "snapshot_result": "state/liang-hydrogen-20261020/snapshot-hydrogen-soret-0405/jobs/125091694/result",
+      "final": {
+        "phi": 1.0,
+        "slope": 0.00375,
+        "curve": 0.00625,
+        "points": 1935.0,
+        "speed_cm_s": 40.23969206120878,
+        "Tb_K": 2481.78013789577,
+        "rhou_kg_m3": 85.5255080145302,
+        "massflux_kg_m2s": 34.41520105883139
+      },
+      "last_speed_relative_change": 0.005802183897791746,
+      "sha256": {
+        "configuration.txt": "7ec59b31113079ac6c6ba5a58e03b76d214596597acb4e3f82a9d7d756650704",
+        "refinement.csv": "a3a145f04803833952600ab7eb508c694836e932c38fcf88436d36888274d1e4",
+        "profile.csv": "41bf633c523c1c39191f228cb5ee1152572f71a45d4c95e021d863ef41f7be96",
+        "property-checks.csv": "c5646646cb00e8c71473d16ed254316fea564b0a0137bda87c186e4cfb1ce807",
+        "transport.csv": "dfae20e94e2c8ed2c93f2c7aa3b28bf5f4be6492dcc2d799e5486d5e298e7e37",
+        "callbacks.txt": "2b54d94e6f919349e6c48610b9a53cd4ee06cc557118454ad99f1bccf1029d2f",
+        "soret-flux.csv": "0fb235e74a3e57ba8ee409f94bb43bdcc5e926e1c03621fcc1859a2d70127527"
+      }
+    },
+    {
+      "job": 125091702,
+      "case": "3",
+      "phi": 1.0,
+      "transport": "pairs",
+      "variant": "baseline",
+      "configuration": {
+        "case": "3",
+        "phi": "1",
+        "pressure_Pa": "10132500",
+        "Tu_K": "298",
+        "width_m": "0.01",
+        "kinetics": "Burke2012-N2-pressure",
+        "collider_concentration": "pressure-based",
+        "transport": "author-pair-count 10",
+        "model_variant": "baseline",
+        "alpha": "original-Soave",
+        "flux_correction": "left-node",
+        "grid_factor": "1",
+        "initial_grid_points": "1855",
+        "conductivity": "dense-increment-diagnostic",
+        "Takahashi": "bounded-Table2",
+        "Soret": "off",
+        "thermal_collision_pair_count": "0",
+        "energy": "legacy-total-enthalpy"
+      },
+      "source_revision": "ae10e5c32ea9e794a2ab584f1f03eb72af4788cd",
+      "build_identity": {
+        "basis": "observed-job-records",
+        "job": 125091444,
+        "binary_sha256": "34d8c6f84618dbacd3b71820f92b5640904334999c391ba25a3382a4e0463e1f",
+        "record_sha256": {
+          "build-path.txt": "6627102e54893d24e383aa59067cc535fe417ea9cbd46bcc50d39768c4334d24",
+          "executable.sha256": "f80cb345b65f3b83ffeca08b08218ae321e6b69932d8da9a5a603034ae86fd66",
+          "source-revision.txt": "5d8b91a89bf8ac0ffe030daf5abd952bd16462eced1ff2bf1c926d42f43ae187",
+          "input-sha256.txt": "3243c9e4edbeaee0227b15e77081c1e98aade088e145671b2f7e598a8228e74e",
+          "guess-sha256.txt": "c508e90ecc4cd983875dfd81ad6e9ca72589d6021fe604e8fd47091c2a5daa80",
+          "command.txt": "748bf6ae03779eeacd2f19b3ec7b20bf0b7e20625554b03d517d56be4e425b70"
+        }
+      },
+      "snapshot_result": "state/liang-hydrogen-20261020/snapshot-hydrogen-soret-0405/jobs/125091702/result",
+      "final": {
+        "phi": 1.0,
+        "slope": 0.00375,
+        "curve": 0.00625,
+        "points": 1855.0,
+        "speed_cm_s": 41.47772079083797,
+        "Tb_K": 2470.217325707236,
+        "rhou_kg_m3": 83.12873257157612,
+        "massflux_kg_m2s": 34.47990359300073
+      },
+      "last_speed_relative_change": 7.165999155955838e-06,
+      "sha256": {
+        "configuration.txt": "c92dc888308f0c16397e3235d0e3b93788f99c387f361b2947b2bf2c241dcf5d",
+        "refinement.csv": "6252743a2cec7c5cf06ef0b270670c01762f28d710cea1cb4f80b7e000dae988",
+        "profile.csv": "60bb2d7df93e6e8ef40053894460ccc6eb0187cf13155d13adbb06602d1b0361",
+        "property-checks.csv": "ece59becf5238725b7ac25940a176e57ff2e54909ac19f61aea0bf6221c382a7",
+        "transport.csv": "3789950bf69462f38cd04a1701ffbe188453c656c2979c532b5b7a6b28b01e42",
+        "callbacks.txt": "103b4a6fedf5691a89a45895c339bd56a0b4fa463537ff4606c759ca9c0ceda1"
+      }
+    },
+    {
+      "job": 125091706,
+      "case": "3",
+      "phi": 1.0,
+      "transport": "pairs",
+      "variant": "soret-baseline",
+      "configuration": {
+        "case": "3",
+        "phi": "1",
+        "pressure_Pa": "10132500",
+        "Tu_K": "298",
+        "width_m": "0.01",
+        "kinetics": "Burke2012-N2-pressure",
+        "collider_concentration": "pressure-based",
+        "transport": "author-pair-count 10",
+        "model_variant": "soret-baseline",
+        "alpha": "original-Soave",
+        "flux_correction": "left-node",
+        "grid_factor": "1",
+        "initial_grid_points": "1855",
+        "conductivity": "dense-increment-diagnostic",
+        "Takahashi": "bounded-Table2",
+        "Soret": "cantera-3.2",
+        "thermal_collision_pair_count": "0",
+        "energy": "legacy-total-enthalpy"
+      },
+      "source_revision": "ae10e5c32ea9e794a2ab584f1f03eb72af4788cd",
+      "build_identity": {
+        "basis": "observed-job-records",
+        "job": 125091444,
+        "binary_sha256": "34d8c6f84618dbacd3b71820f92b5640904334999c391ba25a3382a4e0463e1f",
+        "record_sha256": {
+          "build-path.txt": "6627102e54893d24e383aa59067cc535fe417ea9cbd46bcc50d39768c4334d24",
+          "executable.sha256": "f80cb345b65f3b83ffeca08b08218ae321e6b69932d8da9a5a603034ae86fd66",
+          "source-revision.txt": "5d8b91a89bf8ac0ffe030daf5abd952bd16462eced1ff2bf1c926d42f43ae187",
+          "input-sha256.txt": "3243c9e4edbeaee0227b15e77081c1e98aade088e145671b2f7e598a8228e74e",
+          "guess-sha256.txt": "c508e90ecc4cd983875dfd81ad6e9ca72589d6021fe604e8fd47091c2a5daa80",
+          "command.txt": "52bc22793db44237b28dc788d2b494962ea33fe5728a18d62d4a67b181bdccb9"
+        }
+      },
+      "snapshot_result": "state/liang-hydrogen-20261020/snapshot-hydrogen-soret-0405/jobs/125091706/result",
+      "final": {
+        "phi": 1.0,
+        "slope": 0.00375,
+        "curve": 0.00625,
+        "points": 1967.0,
+        "speed_cm_s": 40.06138639182188,
+        "Tb_K": 2470.216120754074,
+        "rhou_kg_m3": 83.12873257157612,
+        "massflux_kg_m2s": 33.3025227581234
+      },
+      "last_speed_relative_change": 0.006689392935602889,
+      "sha256": {
+        "configuration.txt": "6c8ef77ff5d308ed9b51b2c21ccd590bc2c5755ec8b8ec54a72bef0ad664f9f8",
+        "refinement.csv": "5a64891a7c411845ece42ba2acd97666aa3d1a30245ef70713c9e677680b9b77",
+        "profile.csv": "10d53e6042843e61ef5dba33bf1e75d0968570d7e7fcc0c3c65e089d6990e1cd",
+        "property-checks.csv": "ece59becf5238725b7ac25940a176e57ff2e54909ac19f61aea0bf6221c382a7",
+        "transport.csv": "ef0d432bb9d15217e6663f8e5278986228ff0b97e82141ef772beb82810ecbbb",
+        "callbacks.txt": "a14a70f75d0a4a1bf5fa12f568fa02ad6e3a5f8b7e244dc4d3c8c62bc5d49034",
+        "soret-flux.csv": "0f2407f87ec0645e4488d25ecf6cb91f2f28bf42be6a346afcb965522ddce816"
+      }
+    },
+    {
+      "job": 125091712,
+      "case": "3",
+      "phi": 1.0,
+      "transport": "pairs",
+      "variant": "manual-soret-baseline",
+      "configuration": {
+        "case": "3",
+        "phi": "1",
+        "pressure_Pa": "10132500",
+        "Tu_K": "298",
+        "width_m": "0.01",
+        "kinetics": "Burke2012-N2-pressure",
+        "collider_concentration": "pressure-based",
+        "transport": "author-pair-count 10",
+        "model_variant": "manual-soret-baseline",
+        "alpha": "original-Soave",
+        "flux_correction": "left-node",
+        "grid_factor": "1",
+        "initial_grid_points": "1855",
+        "conductivity": "dense-increment-diagnostic",
+        "Takahashi": "bounded-Table2",
+        "Soret": "manual-author-pairs",
+        "thermal_collision_pair_count": "10",
+        "energy": "legacy-total-enthalpy"
+      },
+      "source_revision": "ae10e5c32ea9e794a2ab584f1f03eb72af4788cd",
+      "build_identity": {
+        "basis": "observed-job-records",
+        "job": 125091444,
+        "binary_sha256": "34d8c6f84618dbacd3b71820f92b5640904334999c391ba25a3382a4e0463e1f",
+        "record_sha256": {
+          "build-path.txt": "6627102e54893d24e383aa59067cc535fe417ea9cbd46bcc50d39768c4334d24",
+          "executable.sha256": "f80cb345b65f3b83ffeca08b08218ae321e6b69932d8da9a5a603034ae86fd66",
+          "source-revision.txt": "5d8b91a89bf8ac0ffe030daf5abd952bd16462eced1ff2bf1c926d42f43ae187",
+          "input-sha256.txt": "3243c9e4edbeaee0227b15e77081c1e98aade088e145671b2f7e598a8228e74e",
+          "guess-sha256.txt": "c508e90ecc4cd983875dfd81ad6e9ca72589d6021fe604e8fd47091c2a5daa80",
+          "command.txt": "58772493723704b5dad7bb86f1811cf8420194d9b0d722f4240b01be005255be"
+        }
+      },
+      "snapshot_result": "state/liang-hydrogen-20261020/snapshot-hydrogen-soret-0405/jobs/125091712/result",
+      "final": {
+        "phi": 1.0,
+        "slope": 0.00375,
+        "curve": 0.00625,
+        "points": 1952.0,
+        "speed_cm_s": 39.61510744121269,
+        "Tb_K": 2470.379804676655,
+        "rhou_kg_m3": 83.12873257157612,
+        "massflux_kg_m2s": 32.93153672274824
+      },
+      "last_speed_relative_change": 0.00600763294855744,
+      "sha256": {
+        "configuration.txt": "717e118951dac3218bd32b09d181e7832db25bcd491a03459bb0d91cb80984bd",
+        "refinement.csv": "83255f7052cfcbc4321ceacf5c439027c2c83845a774ac6886359e2d78e89f6e",
+        "profile.csv": "88d4a4e456b1b0be3fa8dd3981b84900b2d81e88c6e6337041a302f76796ff34",
+        "property-checks.csv": "ece59becf5238725b7ac25940a176e57ff2e54909ac19f61aea0bf6221c382a7",
+        "transport.csv": "bff7829ea8ec88f8d73affe548ec6d2a456da0ad5210852765f4c5b0fc0505c3",
+        "callbacks.txt": "058846ba68a9063e8c73d51f3c31425c684128465b29bf955a4f66fcd4bc33f8",
+        "soret-flux.csv": "1a8bc186c7eb17cb0465b33ef8883346b94830feba43c109685a45e9dd8e5c7d"
+      }
+    },
+    {
+      "job": 125091718,
+      "case": "4",
+      "phi": 1.0,
+      "transport": "pairs",
+      "variant": "baseline",
+      "configuration": {
+        "case": "4",
+        "phi": "1",
+        "pressure_Pa": "10132500",
+        "Tu_K": "298",
+        "width_m": "0.01",
+        "kinetics": "Burke2012-N2-pressure",
+        "collider_concentration": "pressure-based",
+        "transport": "author-pair-count 10",
+        "model_variant": "baseline",
+        "alpha": "original-Soave",
+        "flux_correction": "left-node",
+        "grid_factor": "1",
+        "initial_grid_points": "1862",
+        "conductivity": "dense-increment-diagnostic",
+        "Takahashi": "bounded-Table2",
+        "Soret": "off",
+        "thermal_collision_pair_count": "0",
+        "energy": "legacy-total-enthalpy"
+      },
+      "source_revision": "ae10e5c32ea9e794a2ab584f1f03eb72af4788cd",
+      "build_identity": {
+        "basis": "observed-job-records",
+        "job": 125091444,
+        "binary_sha256": "34d8c6f84618dbacd3b71820f92b5640904334999c391ba25a3382a4e0463e1f",
+        "record_sha256": {
+          "build-path.txt": "6627102e54893d24e383aa59067cc535fe417ea9cbd46bcc50d39768c4334d24",
+          "executable.sha256": "f80cb345b65f3b83ffeca08b08218ae321e6b69932d8da9a5a603034ae86fd66",
+          "source-revision.txt": "5d8b91a89bf8ac0ffe030daf5abd952bd16462eced1ff2bf1c926d42f43ae187",
+          "input-sha256.txt": "3243c9e4edbeaee0227b15e77081c1e98aade088e145671b2f7e598a8228e74e",
+          "guess-sha256.txt": "990d5080c9820b98380e338c76be80db1ac67ff98dede2b46c5a76197ef43a03",
+          "command.txt": "e9de074f462f6577ebb3c3f625c481984f20446a764ee6e0f621fbda78ef64e3"
+        }
+      },
+      "snapshot_result": "state/liang-hydrogen-20261020/snapshot-hydrogen-soret-0405/jobs/125091718/result",
+      "final": {
+        "phi": 1.0,
+        "slope": 0.00375,
+        "curve": 0.00625,
+        "points": 1862.0,
+        "speed_cm_s": 42.0571270441613,
+        "Tb_K": 2470.257495258126,
+        "rhou_kg_m3": 83.12873257157612,
+        "massflux_kg_m2s": 34.96155666782886
+      },
+      "last_speed_relative_change": 7.269343479276991e-06,
+      "sha256": {
+        "configuration.txt": "adf35a27b4d88ec4cd5aca747a6eb3aee98eb62aff3db65a3f3a88ccc4c2b39a",
+        "refinement.csv": "7701816e3640cbfa9616acc14fa9e1219d3adab4e2a2f9b5864e42cb107bc520",
+        "profile.csv": "42e422ae4d519ce64f62071edf8ba70b6840cdbc80ce0a496375d23bdbeac9ed",
+        "property-checks.csv": "ece59becf5238725b7ac25940a176e57ff2e54909ac19f61aea0bf6221c382a7",
+        "transport.csv": "3bdfa9d1af2765756ad2bd671625c2c88cc22d7c3820fc617417601c73d07900",
+        "callbacks.txt": "d1d7627491e3bb81978f9ddf46c2c5a274334c5366177c255e9362bc3a027cb9"
+      }
+    },
+    {
+      "job": 125091750,
+      "case": "4",
+      "phi": 1.0,
+      "transport": "pairs",
+      "variant": "soret-baseline",
+      "configuration": {
+        "case": "4",
+        "phi": "1",
+        "pressure_Pa": "10132500",
+        "Tu_K": "298",
+        "width_m": "0.01",
+        "kinetics": "Burke2012-N2-pressure",
+        "collider_concentration": "pressure-based",
+        "transport": "author-pair-count 10",
+        "model_variant": "soret-baseline",
+        "alpha": "original-Soave",
+        "flux_correction": "left-node",
+        "grid_factor": "1",
+        "initial_grid_points": "1862",
+        "conductivity": "dense-increment-diagnostic",
+        "Takahashi": "bounded-Table2",
+        "Soret": "cantera-3.2",
+        "thermal_collision_pair_count": "0",
+        "energy": "legacy-total-enthalpy"
+      },
+      "source_revision": "ae10e5c32ea9e794a2ab584f1f03eb72af4788cd",
+      "build_identity": {
+        "basis": "observed-job-records",
+        "job": 125091444,
+        "binary_sha256": "34d8c6f84618dbacd3b71820f92b5640904334999c391ba25a3382a4e0463e1f",
+        "record_sha256": {
+          "build-path.txt": "6627102e54893d24e383aa59067cc535fe417ea9cbd46bcc50d39768c4334d24",
+          "executable.sha256": "f80cb345b65f3b83ffeca08b08218ae321e6b69932d8da9a5a603034ae86fd66",
+          "source-revision.txt": "5d8b91a89bf8ac0ffe030daf5abd952bd16462eced1ff2bf1c926d42f43ae187",
+          "input-sha256.txt": "3243c9e4edbeaee0227b15e77081c1e98aade088e145671b2f7e598a8228e74e",
+          "guess-sha256.txt": "990d5080c9820b98380e338c76be80db1ac67ff98dede2b46c5a76197ef43a03",
+          "command.txt": "125f4f1c408566b3f753ba46a123792326ff828a95e2964337c1b630410d7c29"
+        }
+      },
+      "snapshot_result": "state/liang-hydrogen-20261020/snapshot-hydrogen-soret-0405/jobs/125091750/result",
+      "final": {
+        "phi": 1.0,
+        "slope": 0.00375,
+        "curve": 0.00625,
+        "points": 1969.0,
+        "speed_cm_s": 40.63810057855234,
+        "Tb_K": 2470.352938395098,
+        "rhou_kg_m3": 83.12873257157612,
+        "massflux_kg_m2s": 33.78193795211291
+      },
+      "last_speed_relative_change": 0.005448625373411398,
+      "sha256": {
+        "configuration.txt": "9f3e715a14a39ffe2faec526f75c7e2c54ab2fb5b8f0eee8ff92cb33021e7935",
+        "refinement.csv": "e9f7191607f9bcdd00a2549979c2cb2910a994a50940cfb47f2a6db6d28e0a10",
+        "profile.csv": "239fca798a5fd354ca3024eeba896d3e73485533af36ac1355d7798221bd5076",
+        "property-checks.csv": "ece59becf5238725b7ac25940a176e57ff2e54909ac19f61aea0bf6221c382a7",
+        "transport.csv": "6e69ab2cfdd5efa9609ef2e0d0e5f29b2ed219040af8c729195495e34c171fa0",
+        "callbacks.txt": "4a1fec9626fcb53a5332a5fd0c048eaa32f2b93cd9f249744cdd8c2e29d6c78d",
+        "soret-flux.csv": "0d0507ba3114d52eb5cc410b4f5c324d2cd7f8984d51fd9d5a4c68bbda38d603"
+      }
+    },
+    {
+      "job": 125091762,
+      "case": "4",
+      "phi": 1.0,
+      "transport": "pairs",
+      "variant": "manual-soret-baseline",
+      "configuration": {
+        "case": "4",
+        "phi": "1",
+        "pressure_Pa": "10132500",
+        "Tu_K": "298",
+        "width_m": "0.01",
+        "kinetics": "Burke2012-N2-pressure",
+        "collider_concentration": "pressure-based",
+        "transport": "author-pair-count 10",
+        "model_variant": "manual-soret-baseline",
+        "alpha": "original-Soave",
+        "flux_correction": "left-node",
+        "grid_factor": "1",
+        "initial_grid_points": "1862",
+        "conductivity": "dense-increment-diagnostic",
+        "Takahashi": "bounded-Table2",
+        "Soret": "manual-author-pairs",
+        "thermal_collision_pair_count": "10",
+        "energy": "legacy-total-enthalpy"
+      },
+      "source_revision": "ae10e5c32ea9e794a2ab584f1f03eb72af4788cd",
+      "build_identity": {
+        "basis": "observed-job-records",
+        "job": 125091444,
+        "binary_sha256": "34d8c6f84618dbacd3b71820f92b5640904334999c391ba25a3382a4e0463e1f",
+        "record_sha256": {
+          "build-path.txt": "6627102e54893d24e383aa59067cc535fe417ea9cbd46bcc50d39768c4334d24",
+          "executable.sha256": "f80cb345b65f3b83ffeca08b08218ae321e6b69932d8da9a5a603034ae86fd66",
+          "source-revision.txt": "5d8b91a89bf8ac0ffe030daf5abd952bd16462eced1ff2bf1c926d42f43ae187",
+          "input-sha256.txt": "3243c9e4edbeaee0227b15e77081c1e98aade088e145671b2f7e598a8228e74e",
+          "guess-sha256.txt": "990d5080c9820b98380e338c76be80db1ac67ff98dede2b46c5a76197ef43a03",
+          "command.txt": "8cfab48f7e55254addbda7c4d6eda90b3c52868df40780c4b87b55c543883d3d"
+        }
+      },
+      "snapshot_result": "state/liang-hydrogen-20261020/snapshot-hydrogen-soret-0405/jobs/125091762/result",
+      "final": {
+        "phi": 1.0,
+        "slope": 0.00375,
+        "curve": 0.00625,
+        "points": 1960.0,
+        "speed_cm_s": 40.16764902851632,
+        "Tb_K": 2470.380899216404,
+        "rhou_kg_m3": 83.12873257157612,
+        "massflux_kg_m2s": 33.39085754120462
+      },
+      "last_speed_relative_change": 0.006275569189269525,
+      "sha256": {
+        "configuration.txt": "541336bddcba417592cc8b29f40f26eefdee7873ba5beb7a3494deb9ae8a464c",
+        "refinement.csv": "acdb8ccf6e9ea1ca79a80529217206b34a7a38716cfd9ff030a10cad584dc632",
+        "profile.csv": "26830fbb3755508d16ef53eaf76e92e611eb56b97d1153c06a9da44a552f08df",
+        "property-checks.csv": "ece59becf5238725b7ac25940a176e57ff2e54909ac19f61aea0bf6221c382a7",
+        "transport.csv": "8fde37a63ce368446e073f5a81a7584a6fdeab0958ccf2e521d0f4a953b244d0",
+        "callbacks.txt": "0b901b03e93b72ddeeda9ce2804b9d3116abe7c1b1a99daea8b6e6df1a5ee91d",
+        "soret-flux.csv": "5037480db6300a639071b82f05ba445f644844218239112b3bf109eb8de14396"
+      }
+    },
+    {
+      "job": 125091763,
+      "case": "5",
+      "phi": 1.0,
+      "transport": "pairs",
+      "variant": "baseline",
+      "configuration": {
+        "case": "5",
+        "phi": "1",
+        "pressure_Pa": "10132500",
+        "Tu_K": "298",
+        "width_m": "0.01",
+        "kinetics": "Burke2012-N2-pressure",
+        "collider_concentration": "pressure-based",
+        "transport": "author-pair-count 10",
+        "model_variant": "baseline",
+        "alpha": "original-Soave",
+        "flux_correction": "left-node",
+        "grid_factor": "1",
+        "initial_grid_points": "1878",
+        "conductivity": "dense-increment-diagnostic",
+        "Takahashi": "bounded-Table2",
+        "Soret": "off",
+        "thermal_collision_pair_count": "0",
+        "energy": "legacy-total-enthalpy"
+      },
+      "source_revision": "ae10e5c32ea9e794a2ab584f1f03eb72af4788cd",
+      "build_identity": {
+        "basis": "observed-job-records",
+        "job": 125091444,
+        "binary_sha256": "34d8c6f84618dbacd3b71820f92b5640904334999c391ba25a3382a4e0463e1f",
+        "record_sha256": {
+          "build-path.txt": "6627102e54893d24e383aa59067cc535fe417ea9cbd46bcc50d39768c4334d24",
+          "executable.sha256": "f80cb345b65f3b83ffeca08b08218ae321e6b69932d8da9a5a603034ae86fd66",
+          "source-revision.txt": "5d8b91a89bf8ac0ffe030daf5abd952bd16462eced1ff2bf1c926d42f43ae187",
+          "input-sha256.txt": "3243c9e4edbeaee0227b15e77081c1e98aade088e145671b2f7e598a8228e74e",
+          "guess-sha256.txt": "3d5870424442325c54c3b9843d0bf3c826c0017b9b88801158e27132c7836874",
+          "command.txt": "11e7e493cc2d250421c12a53e0fe697f7027d5a0c72d2593ab7bd3dc0413ca02"
+        }
+      },
+      "snapshot_result": "state/liang-hydrogen-20261020/snapshot-hydrogen-soret-0405/jobs/125091763/result",
+      "final": {
+        "phi": 1.0,
+        "slope": 0.00375,
+        "curve": 0.00625,
+        "points": 1883.0,
+        "speed_cm_s": 41.18872501504399,
+        "Tb_K": 2470.192686482355,
+        "rhou_kg_m3": 83.12873257157612,
+        "massflux_kg_m2s": 34.23966506739779
+      },
+      "last_speed_relative_change": 5.7290945558730044e-06,
+      "sha256": {
+        "configuration.txt": "107b7e1d0834c4ae932d3a1040fdd9c0fa8752b0c430ab3b8a7d271f004b1304",
+        "refinement.csv": "e7ba9a7a6d9b3fbe4188410a3f41c26f7c30d5fc1e534b0c9f298e809d312165",
+        "profile.csv": "18fb65667a90a8e462aaae1b868b0a4425b0472f09f44819664b87df24e20770",
+        "property-checks.csv": "ece59becf5238725b7ac25940a176e57ff2e54909ac19f61aea0bf6221c382a7",
+        "transport.csv": "149b526d975e7fbe5b8abee488144d880482c6f208a5dc6d1372ccb7d084694f",
+        "callbacks.txt": "fe0609afc2c75db675c994d8f56c64671574499346615234f3ab59a8d7124fe6"
+      }
+    },
+    {
+      "job": 125091765,
+      "case": "5",
+      "phi": 1.0,
+      "transport": "pairs",
+      "variant": "soret-baseline",
+      "configuration": {
+        "case": "5",
+        "phi": "1",
+        "pressure_Pa": "10132500",
+        "Tu_K": "298",
+        "width_m": "0.01",
+        "kinetics": "Burke2012-N2-pressure",
+        "collider_concentration": "pressure-based",
+        "transport": "author-pair-count 10",
+        "model_variant": "soret-baseline",
+        "alpha": "original-Soave",
+        "flux_correction": "left-node",
+        "grid_factor": "1",
+        "initial_grid_points": "1878",
+        "conductivity": "dense-increment-diagnostic",
+        "Takahashi": "bounded-Table2",
+        "Soret": "cantera-3.2",
+        "thermal_collision_pair_count": "0",
+        "energy": "legacy-total-enthalpy"
+      },
+      "source_revision": "ae10e5c32ea9e794a2ab584f1f03eb72af4788cd",
+      "build_identity": {
+        "basis": "observed-job-records",
+        "job": 125091444,
+        "binary_sha256": "34d8c6f84618dbacd3b71820f92b5640904334999c391ba25a3382a4e0463e1f",
+        "record_sha256": {
+          "build-path.txt": "6627102e54893d24e383aa59067cc535fe417ea9cbd46bcc50d39768c4334d24",
+          "executable.sha256": "f80cb345b65f3b83ffeca08b08218ae321e6b69932d8da9a5a603034ae86fd66",
+          "source-revision.txt": "5d8b91a89bf8ac0ffe030daf5abd952bd16462eced1ff2bf1c926d42f43ae187",
+          "input-sha256.txt": "3243c9e4edbeaee0227b15e77081c1e98aade088e145671b2f7e598a8228e74e",
+          "guess-sha256.txt": "3d5870424442325c54c3b9843d0bf3c826c0017b9b88801158e27132c7836874",
+          "command.txt": "4b5af161844290572f799d6c66cf9d403c96298b91a5a4d61496505ae1085a5d"
+        }
+      },
+      "snapshot_result": "state/liang-hydrogen-20261020/snapshot-hydrogen-soret-0405/jobs/125091765/result",
+      "final": {
+        "phi": 1.0,
+        "slope": 0.00375,
+        "curve": 0.00625,
+        "points": 1990.0,
+        "speed_cm_s": 39.77288032921246,
+        "Tb_K": 2470.179260820638,
+        "rhou_kg_m3": 83.12873257157612,
+        "massflux_kg_m2s": 33.06269132488404
+      },
+      "last_speed_relative_change": 0.006318508098174247,
+      "sha256": {
+        "configuration.txt": "bd6babc95b53d470a16fe8a00bdebaeba480b28cfa6c8b5443d7afee948eb532",
+        "refinement.csv": "2b3a3465d268b1e8b9a504b81b92b140521f175a14b0d75f0c6c902f9d9bd2b1",
+        "profile.csv": "a46ffc23c478f2f4cdaffb1a1ea951e2b1bea61e0738515b9efb77ba5b4da8d7",
+        "property-checks.csv": "ece59becf5238725b7ac25940a176e57ff2e54909ac19f61aea0bf6221c382a7",
+        "transport.csv": "90c61482f3adab013d06466d0173f659d0c2db23ea4b9c2da98435828451da65",
+        "callbacks.txt": "567692ed3d9f41ce906b466abc9ece0040e6c7a25e85914b7b0df5b10f9c2c92",
+        "soret-flux.csv": "5dde33e02ae0cd887e8dd9cc5563eb88b7e13d52af22939e50862befdb05418c"
+      }
+    },
+    {
+      "job": 125091767,
+      "case": "5",
+      "phi": 1.0,
+      "transport": "pairs",
+      "variant": "manual-soret-baseline",
+      "configuration": {
+        "case": "5",
+        "phi": "1",
+        "pressure_Pa": "10132500",
+        "Tu_K": "298",
+        "width_m": "0.01",
+        "kinetics": "Burke2012-N2-pressure",
+        "collider_concentration": "pressure-based",
+        "transport": "author-pair-count 10",
+        "model_variant": "manual-soret-baseline",
+        "alpha": "original-Soave",
+        "flux_correction": "left-node",
+        "grid_factor": "1",
+        "initial_grid_points": "1878",
+        "conductivity": "dense-increment-diagnostic",
+        "Takahashi": "bounded-Table2",
+        "Soret": "manual-author-pairs",
+        "thermal_collision_pair_count": "10",
+        "energy": "legacy-total-enthalpy"
+      },
+      "source_revision": "ae10e5c32ea9e794a2ab584f1f03eb72af4788cd",
+      "build_identity": {
+        "basis": "observed-job-records",
+        "job": 125091444,
+        "binary_sha256": "34d8c6f84618dbacd3b71820f92b5640904334999c391ba25a3382a4e0463e1f",
+        "record_sha256": {
+          "build-path.txt": "6627102e54893d24e383aa59067cc535fe417ea9cbd46bcc50d39768c4334d24",
+          "executable.sha256": "f80cb345b65f3b83ffeca08b08218ae321e6b69932d8da9a5a603034ae86fd66",
+          "source-revision.txt": "5d8b91a89bf8ac0ffe030daf5abd952bd16462eced1ff2bf1c926d42f43ae187",
+          "input-sha256.txt": "3243c9e4edbeaee0227b15e77081c1e98aade088e145671b2f7e598a8228e74e",
+          "guess-sha256.txt": "3d5870424442325c54c3b9843d0bf3c826c0017b9b88801158e27132c7836874",
+          "command.txt": "987bb242b1257a377bc5ac1a04fe6c68b77831bc8dc606219da89d6862fb59f1"
+        }
+      },
+      "snapshot_result": "state/liang-hydrogen-20261020/snapshot-hydrogen-soret-0405/jobs/125091767/result",
+      "final": {
+        "phi": 1.0,
+        "slope": 0.00375,
+        "curve": 0.00625,
+        "points": 1976.0,
+        "speed_cm_s": 39.30295233321417,
+        "Tb_K": 2470.169998806511,
+        "rhou_kg_m3": 83.12873257157612,
+        "massflux_kg_m2s": 32.67204613781165
+      },
+      "last_speed_relative_change": 0.007149251755532271,
+      "sha256": {
+        "configuration.txt": "4dd9d66761620f400d2ef571f108dddc39180e6bdeea76e14cc4023612ff8583",
+        "refinement.csv": "2ac61e74543800b608ed2d7f21070ffc3027eaeabc9cfe9063be7759055b6901",
+        "profile.csv": "5c7dc99c9538d15617360ca35bef6c5d1c30c1ce36e4b04d185a278052542efe",
+        "property-checks.csv": "ece59becf5238725b7ac25940a176e57ff2e54909ac19f61aea0bf6221c382a7",
+        "transport.csv": "e702fc8010cb1c20946de4f09c4b87265264de3a922e7a9da0916db8c7c5b56d",
+        "callbacks.txt": "60f7ecab5d4651bbda45db25ea84aeb88d2878ec9f660873cefcaa07625e002b",
+        "soret-flux.csv": "e6900540c93c262fbe907cae15e6433617ddf6a4683b226865ce9c3b16aec1ec"
+      }
+    },
+    {
+      "job": 125091771,
+      "case": "1",
+      "phi": 1.4,
+      "transport": "pairs",
+      "variant": "baseline",
+      "configuration": {
+        "case": "1",
+        "phi": "1.4",
+        "pressure_Pa": "10132500",
+        "Tu_K": "298",
+        "width_m": "0.01",
+        "kinetics": "Burke2012-N2-pressure",
+        "collider_concentration": "pressure-based",
+        "transport": "author-pair-count 10",
+        "model_variant": "baseline",
+        "alpha": "original-Soave",
+        "flux_correction": "left-node",
+        "grid_factor": "1",
+        "initial_grid_points": "1810",
+        "conductivity": "dense-increment-diagnostic",
+        "Takahashi": "bounded-Table2",
+        "Soret": "off",
+        "thermal_collision_pair_count": "0",
+        "energy": "partial-temperature"
+      },
+      "source_revision": "ae10e5c32ea9e794a2ab584f1f03eb72af4788cd",
+      "build_identity": {
+        "basis": "observed-job-records",
+        "job": 125091444,
+        "binary_sha256": "34d8c6f84618dbacd3b71820f92b5640904334999c391ba25a3382a4e0463e1f",
+        "record_sha256": {
+          "build-path.txt": "6627102e54893d24e383aa59067cc535fe417ea9cbd46bcc50d39768c4334d24",
+          "executable.sha256": "f80cb345b65f3b83ffeca08b08218ae321e6b69932d8da9a5a603034ae86fd66",
+          "source-revision.txt": "5d8b91a89bf8ac0ffe030daf5abd952bd16462eced1ff2bf1c926d42f43ae187",
+          "input-sha256.txt": "3243c9e4edbeaee0227b15e77081c1e98aade088e145671b2f7e598a8228e74e",
+          "guess-sha256.txt": "9488c263ba95d551a8a3563126b2fd80fd07d2ef1a472f91848240181868f1a0",
+          "command.txt": "882ed938fb3f942d828f2c557577ca4dccf7795e01ac3ab47eb3fad48aace60f"
+        }
+      },
+      "snapshot_result": "state/liang-hydrogen-20261020/snapshot-hydrogen-soret-0405/jobs/125091771/result",
+      "final": {
+        "phi": 1.4,
+        "slope": 0.00375,
+        "curve": 0.00625,
+        "points": 1811.0,
+        "speed_cm_s": 76.13228207477538,
+        "Tb_K": 2313.524379893529,
+        "rhou_kg_m3": 77.34966816290843,
+        "massflux_kg_m2s": 58.88806754968817
+      },
+      "last_speed_relative_change": 1.6514342227047507e-07,
+      "sha256": {
+        "configuration.txt": "bae3a9ec9773d388e78b0980b2da7cc57a5f9d2e47cdd2f643f0e73297afbee3",
+        "refinement.csv": "39b5917c62782f280300f15f3c7730bb4a6208f40efa3d1d9a49a2f6af762333",
+        "profile.csv": "e0de1315fc9806209c887944c96c729aee1d12d9bc4d735e3337b173928f9182",
+        "property-checks.csv": "84e0b540f9d3e282778eda7b94b72cdd955303960cf2c4f21d2e742b90085d89",
+        "transport.csv": "e20a4b93c87b5f1e3aa2778313a4a57805e940334272f1d8aa47244ee9ac8ee3",
+        "callbacks.txt": "5ed6841949d5816410718efd037aaff3597785aaca741d9bff4a27c828cf1aaa"
+      }
+    },
+    {
+      "job": 125091777,
+      "case": "1",
+      "phi": 1.4,
+      "transport": "pairs",
+      "variant": "soret-baseline",
+      "configuration": {
+        "case": "1",
+        "phi": "1.4",
+        "pressure_Pa": "10132500",
+        "Tu_K": "298",
+        "width_m": "0.01",
+        "kinetics": "Burke2012-N2-pressure",
+        "collider_concentration": "pressure-based",
+        "transport": "author-pair-count 10",
+        "model_variant": "soret-baseline",
+        "alpha": "original-Soave",
+        "flux_correction": "left-node",
+        "grid_factor": "1",
+        "initial_grid_points": "1810",
+        "conductivity": "dense-increment-diagnostic",
+        "Takahashi": "bounded-Table2",
+        "Soret": "cantera-3.2",
+        "thermal_collision_pair_count": "0",
+        "energy": "partial-temperature"
+      },
+      "source_revision": "ae10e5c32ea9e794a2ab584f1f03eb72af4788cd",
+      "build_identity": {
+        "basis": "observed-job-records",
+        "job": 125091444,
+        "binary_sha256": "34d8c6f84618dbacd3b71820f92b5640904334999c391ba25a3382a4e0463e1f",
+        "record_sha256": {
+          "build-path.txt": "6627102e54893d24e383aa59067cc535fe417ea9cbd46bcc50d39768c4334d24",
+          "executable.sha256": "f80cb345b65f3b83ffeca08b08218ae321e6b69932d8da9a5a603034ae86fd66",
+          "source-revision.txt": "5d8b91a89bf8ac0ffe030daf5abd952bd16462eced1ff2bf1c926d42f43ae187",
+          "input-sha256.txt": "3243c9e4edbeaee0227b15e77081c1e98aade088e145671b2f7e598a8228e74e",
+          "guess-sha256.txt": "9488c263ba95d551a8a3563126b2fd80fd07d2ef1a472f91848240181868f1a0",
+          "command.txt": "1604cec0f46bf273d53ed2ca4fa7fcb357f0ce859907e9cc1458970b27ac6e11"
+        }
+      },
+      "snapshot_result": "state/liang-hydrogen-20261020/snapshot-hydrogen-soret-0405/jobs/125091777/result",
+      "final": {
+        "phi": 1.4,
+        "slope": 0.00375,
+        "curve": 0.00625,
+        "points": 1956.0,
+        "speed_cm_s": 73.03060507511118,
+        "Tb_K": 2313.355264409788,
+        "rhou_kg_m3": 77.34966816290843,
+        "massflux_kg_m2s": 56.48893068296267
+      },
+      "last_speed_relative_change": 0.0008141865179945862,
+      "sha256": {
+        "configuration.txt": "813c7cbda8b9e30c74bfd74cd86c7a9630f3a223cfd1dc505cc9f3f2ad48a927",
+        "refinement.csv": "1a6c2ce0a9e146df9c84fc3f1ef4797e509dca15b045dbd1727efa32fe671d3c",
+        "profile.csv": "856cccadfbdfad08fdf4695a01068bf14daadc5c5c5f1f36b8c25cbf6a2b737e",
+        "property-checks.csv": "84e0b540f9d3e282778eda7b94b72cdd955303960cf2c4f21d2e742b90085d89",
+        "transport.csv": "78f5c944f86703d10abcb0f998b64a38c586cedba3f5552013ae2cb1e61ee322",
+        "callbacks.txt": "16e327b77c7fbf862a9ab24e47f48cf62a17e1b0d72d9f1d13b406217d94a8b2",
+        "soret-flux.csv": "0020506def01c440c9d84dd2c8d093c61aa6b5e939bb93c96817fa8d0bb97721"
+      }
+    },
+    {
+      "job": 125091779,
+      "case": "1",
+      "phi": 1.4,
+      "transport": "pairs",
+      "variant": "manual-soret-baseline",
+      "configuration": {
+        "case": "1",
+        "phi": "1.4",
+        "pressure_Pa": "10132500",
+        "Tu_K": "298",
+        "width_m": "0.01",
+        "kinetics": "Burke2012-N2-pressure",
+        "collider_concentration": "pressure-based",
+        "transport": "author-pair-count 10",
+        "model_variant": "manual-soret-baseline",
+        "alpha": "original-Soave",
+        "flux_correction": "left-node",
+        "grid_factor": "1",
+        "initial_grid_points": "1810",
+        "conductivity": "dense-increment-diagnostic",
+        "Takahashi": "bounded-Table2",
+        "Soret": "manual-author-pairs",
+        "thermal_collision_pair_count": "10",
+        "energy": "partial-temperature"
+      },
+      "source_revision": "ae10e5c32ea9e794a2ab584f1f03eb72af4788cd",
+      "build_identity": {
+        "basis": "observed-job-records",
+        "job": 125091444,
+        "binary_sha256": "34d8c6f84618dbacd3b71820f92b5640904334999c391ba25a3382a4e0463e1f",
+        "record_sha256": {
+          "build-path.txt": "6627102e54893d24e383aa59067cc535fe417ea9cbd46bcc50d39768c4334d24",
+          "executable.sha256": "f80cb345b65f3b83ffeca08b08218ae321e6b69932d8da9a5a603034ae86fd66",
+          "source-revision.txt": "5d8b91a89bf8ac0ffe030daf5abd952bd16462eced1ff2bf1c926d42f43ae187",
+          "input-sha256.txt": "3243c9e4edbeaee0227b15e77081c1e98aade088e145671b2f7e598a8228e74e",
+          "guess-sha256.txt": "9488c263ba95d551a8a3563126b2fd80fd07d2ef1a472f91848240181868f1a0",
+          "command.txt": "32e45fe884cf3d0f5c36970c5362908400c1a3493e7a0a764f0834b18adc7d02"
+        }
+      },
+      "snapshot_result": "state/liang-hydrogen-20261020/snapshot-hydrogen-soret-0405/jobs/125091779/result",
+      "final": {
+        "phi": 1.4,
+        "slope": 0.00375,
+        "curve": 0.00625,
+        "points": 1946.0,
+        "speed_cm_s": 72.4288078582095,
+        "Tb_K": 2313.436936048692,
+        "rhou_kg_m3": 77.34966816290843,
+        "massflux_kg_m2s": 56.02344253267559
+      },
+      "last_speed_relative_change": 0.0006525682952637224,
+      "sha256": {
+        "configuration.txt": "38152e4ef2a58e26d93ca4f0cd27328c6fe535d8661382ee62145b309d9c5d84",
+        "refinement.csv": "6af8c4f914eaf82193a7f4ca714ede8b05487ae4ce423e6fa78ab155a84ba080",
+        "profile.csv": "aa41d4c848952cb0ac73df23c548b885a042e8635d479a1fdfa3596ac09799c3",
+        "property-checks.csv": "84e0b540f9d3e282778eda7b94b72cdd955303960cf2c4f21d2e742b90085d89",
+        "transport.csv": "326850176f36a15133b6de902c0600dc369c18f4c09ff94e91aee17a1d9c2837",
+        "callbacks.txt": "a66b7c2de910105a36bbf59ff9cbcec3b8182c81c8425de19b470208863f5512",
+        "soret-flux.csv": "2f4b2f6e4d244392748855aa2b876af4e730b229031b976408efd3c946eb92f0"
+      }
+    },
+    {
+      "job": 125091781,
+      "case": "3",
+      "phi": 1.4,
+      "transport": "pairs",
+      "variant": "baseline",
+      "configuration": {
+        "case": "3",
+        "phi": "1.4",
+        "pressure_Pa": "10132500",
+        "Tu_K": "298",
+        "width_m": "0.01",
+        "kinetics": "Burke2012-N2-pressure",
+        "collider_concentration": "pressure-based",
+        "transport": "author-pair-count 10",
+        "model_variant": "baseline",
+        "alpha": "original-Soave",
+        "flux_correction": "left-node",
+        "grid_factor": "1",
+        "initial_grid_points": "1818",
+        "conductivity": "dense-increment-diagnostic",
+        "Takahashi": "bounded-Table2",
+        "Soret": "off",
+        "thermal_collision_pair_count": "0",
+        "energy": "legacy-total-enthalpy"
+      },
+      "source_revision": "ae10e5c32ea9e794a2ab584f1f03eb72af4788cd",
+      "build_identity": {
+        "basis": "observed-job-records",
+        "job": 125091444,
+        "binary_sha256": "34d8c6f84618dbacd3b71820f92b5640904334999c391ba25a3382a4e0463e1f",
+        "record_sha256": {
+          "build-path.txt": "6627102e54893d24e383aa59067cc535fe417ea9cbd46bcc50d39768c4334d24",
+          "executable.sha256": "f80cb345b65f3b83ffeca08b08218ae321e6b69932d8da9a5a603034ae86fd66",
+          "source-revision.txt": "5d8b91a89bf8ac0ffe030daf5abd952bd16462eced1ff2bf1c926d42f43ae187",
+          "input-sha256.txt": "3243c9e4edbeaee0227b15e77081c1e98aade088e145671b2f7e598a8228e74e",
+          "guess-sha256.txt": "e10334531a6e3e773f35ecc1461ca7a51137af27404308d6d2709a9a41009b92",
+          "command.txt": "e1ca253bd2efaba554528cb13163e320860c6b83ed6c93df9ab253155c0284f1"
+        }
+      },
+      "snapshot_result": "state/liang-hydrogen-20261020/snapshot-hydrogen-soret-0405/jobs/125091781/result",
+      "final": {
+        "phi": 1.4,
+        "slope": 0.00375,
+        "curve": 0.00625,
+        "points": 1823.0,
+        "speed_cm_s": 75.54601024282141,
+        "Tb_K": 2301.463097023827,
+        "rhou_kg_m3": 74.85949514286254,
+        "massflux_kg_m2s": 56.55336186835133
+      },
+      "last_speed_relative_change": 2.2472496847836254e-06,
+      "sha256": {
+        "configuration.txt": "2d20e1a7adf32f0b22cacbd7065c232df15a7f1793d053a1a113dc4614cc42d4",
+        "refinement.csv": "a443fecb514b5ed37833de7feb743a55e57a0b29c86f4f01d743932ad1721b29",
+        "profile.csv": "0eeb669fb2c9ab7b810f20f19ad982ab156a0062bbf9cfdf21d02bffb531a401",
+        "property-checks.csv": "27f9b4e7e62c23925b2bd7b8f95c5420a2ed5ce16246b8a2f0bd3603c56e0eb6",
+        "transport.csv": "00ed8c3980b9e3cc4aa113aeb8ef61e565292b152320971501888ab6ee61eeb7",
+        "callbacks.txt": "300a1616c4629d4c87b3c0247103856e2a55bf02ebd9ea526d8c1bbf60e52b43"
+      }
+    },
+    {
+      "job": 125091783,
+      "case": "3",
+      "phi": 1.4,
+      "transport": "pairs",
+      "variant": "soret-baseline",
+      "configuration": {
+        "case": "3",
+        "phi": "1.4",
+        "pressure_Pa": "10132500",
+        "Tu_K": "298",
+        "width_m": "0.01",
+        "kinetics": "Burke2012-N2-pressure",
+        "collider_concentration": "pressure-based",
+        "transport": "author-pair-count 10",
+        "model_variant": "soret-baseline",
+        "alpha": "original-Soave",
+        "flux_correction": "left-node",
+        "grid_factor": "1",
+        "initial_grid_points": "1818",
+        "conductivity": "dense-increment-diagnostic",
+        "Takahashi": "bounded-Table2",
+        "Soret": "cantera-3.2",
+        "thermal_collision_pair_count": "0",
+        "energy": "legacy-total-enthalpy"
+      },
+      "source_revision": "ae10e5c32ea9e794a2ab584f1f03eb72af4788cd",
+      "build_identity": {
+        "basis": "observed-job-records",
+        "job": 125091444,
+        "binary_sha256": "34d8c6f84618dbacd3b71820f92b5640904334999c391ba25a3382a4e0463e1f",
+        "record_sha256": {
+          "build-path.txt": "6627102e54893d24e383aa59067cc535fe417ea9cbd46bcc50d39768c4334d24",
+          "executable.sha256": "f80cb345b65f3b83ffeca08b08218ae321e6b69932d8da9a5a603034ae86fd66",
+          "source-revision.txt": "5d8b91a89bf8ac0ffe030daf5abd952bd16462eced1ff2bf1c926d42f43ae187",
+          "input-sha256.txt": "3243c9e4edbeaee0227b15e77081c1e98aade088e145671b2f7e598a8228e74e",
+          "guess-sha256.txt": "e10334531a6e3e773f35ecc1461ca7a51137af27404308d6d2709a9a41009b92",
+          "command.txt": "48bb701a283c41e22acc4d63777ffcf46a4586fabc58cdb931d4fd885f35672a"
+        }
+      },
+      "snapshot_result": "state/liang-hydrogen-20261020/snapshot-hydrogen-soret-0405/jobs/125091783/result",
+      "final": {
+        "phi": 1.4,
+        "slope": 0.00375,
+        "curve": 0.00625,
+        "points": 1969.0,
+        "speed_cm_s": 72.52270314313442,
+        "Tb_K": 2301.439155616972,
+        "rhou_kg_m3": 74.85949514286254,
+        "massflux_kg_m2s": 54.29012943690734
+      },
+      "last_speed_relative_change": 0.0006144644812214883,
+      "sha256": {
+        "configuration.txt": "00234429b6e2586f31637d2161f92e26b7788c20f44784750a464c4723017ce5",
+        "refinement.csv": "5c7bc5fdf07d5ee00b8204648f01dcdd7a5676e6ed91a1f8c11e926acb3571ee",
+        "profile.csv": "dd76eb6c81d1d330d5465fd4c16d6c211dc3740970655adb391ae06fc9c2e59d",
+        "property-checks.csv": "27f9b4e7e62c23925b2bd7b8f95c5420a2ed5ce16246b8a2f0bd3603c56e0eb6",
+        "transport.csv": "a26cf20461ba37dbf6e4deb90c222e391c076bf2a20e5fd24a98f094c9543dac",
+        "callbacks.txt": "aca0c68074f7c189593678efe681b2a52ab98e6a8a05ab3006d2942830d5c54c",
+        "soret-flux.csv": "46abcf0e57de3d649ece8a8d4da4addd4bdfba2b77df56037b058eb16f028bf2"
+      }
+    },
+    {
+      "job": 125091785,
+      "case": "3",
+      "phi": 1.4,
+      "transport": "pairs",
+      "variant": "manual-soret-baseline",
+      "configuration": {
+        "case": "3",
+        "phi": "1.4",
+        "pressure_Pa": "10132500",
+        "Tu_K": "298",
+        "width_m": "0.01",
+        "kinetics": "Burke2012-N2-pressure",
+        "collider_concentration": "pressure-based",
+        "transport": "author-pair-count 10",
+        "model_variant": "manual-soret-baseline",
+        "alpha": "original-Soave",
+        "flux_correction": "left-node",
+        "grid_factor": "1",
+        "initial_grid_points": "1818",
+        "conductivity": "dense-increment-diagnostic",
+        "Takahashi": "bounded-Table2",
+        "Soret": "manual-author-pairs",
+        "thermal_collision_pair_count": "10",
+        "energy": "legacy-total-enthalpy"
+      },
+      "source_revision": "ae10e5c32ea9e794a2ab584f1f03eb72af4788cd",
+      "build_identity": {
+        "basis": "observed-job-records",
+        "job": 125091444,
+        "binary_sha256": "34d8c6f84618dbacd3b71820f92b5640904334999c391ba25a3382a4e0463e1f",
+        "record_sha256": {
+          "build-path.txt": "6627102e54893d24e383aa59067cc535fe417ea9cbd46bcc50d39768c4334d24",
+          "executable.sha256": "f80cb345b65f3b83ffeca08b08218ae321e6b69932d8da9a5a603034ae86fd66",
+          "source-revision.txt": "5d8b91a89bf8ac0ffe030daf5abd952bd16462eced1ff2bf1c926d42f43ae187",
+          "input-sha256.txt": "3243c9e4edbeaee0227b15e77081c1e98aade088e145671b2f7e598a8228e74e",
+          "guess-sha256.txt": "e10334531a6e3e773f35ecc1461ca7a51137af27404308d6d2709a9a41009b92",
+          "command.txt": "e46b455a52c1b6abfaf66d9a1d4f390ababd1967582e00ee053af5d93b178e31"
+        }
+      },
+      "snapshot_result": "state/liang-hydrogen-20261020/snapshot-hydrogen-soret-0405/jobs/125091785/result",
+      "final": {
+        "phi": 1.4,
+        "slope": 0.00375,
+        "curve": 0.00625,
+        "points": 1959.0,
+        "speed_cm_s": 71.97727480841155,
+        "Tb_K": 2301.570104116161,
+        "rhou_kg_m3": 74.85949514286254,
+        "massflux_kg_m2s": 53.88182453916767
+      },
+      "last_speed_relative_change": 0.0005119173765281149,
+      "sha256": {
+        "configuration.txt": "e9a957d06ca7831ad0d156fcdf31c75f567eac2f0d5a1f5854c00549e15a6d4b",
+        "refinement.csv": "31c77301a4aace534afe7bd8aa8925d817e14f60babdf484689625684e7466f7",
+        "profile.csv": "9941e8e18fef6ca720c9d919551cbb286eb7f1fd9e6dfcfa075e750155a2c5bb",
+        "property-checks.csv": "27f9b4e7e62c23925b2bd7b8f95c5420a2ed5ce16246b8a2f0bd3603c56e0eb6",
+        "transport.csv": "a0447d7771b3f3b5b3e36450b306337e611b6202e3a384354e93110006687096",
+        "callbacks.txt": "aec602aee8446fabe7b0c36d817fb144cd221a0588d48630577f191a73b36250",
+        "soret-flux.csv": "9068e54fd2eded601c91a69f67f82e9efd4e8499eff00e8793c092dc242c8e84"
+      }
+    },
+    {
+      "job": 125091788,
+      "case": "4",
+      "phi": 1.4,
+      "transport": "pairs",
+      "variant": "baseline",
+      "configuration": {
+        "case": "4",
+        "phi": "1.4",
+        "pressure_Pa": "10132500",
+        "Tu_K": "298",
+        "width_m": "0.01",
+        "kinetics": "Burke2012-N2-pressure",
+        "collider_concentration": "pressure-based",
+        "transport": "author-pair-count 10",
+        "model_variant": "baseline",
+        "alpha": "original-Soave",
+        "flux_correction": "left-node",
+        "grid_factor": "1",
+        "initial_grid_points": "1822",
+        "conductivity": "dense-increment-diagnostic",
+        "Takahashi": "bounded-Table2",
+        "Soret": "off",
+        "thermal_collision_pair_count": "0",
+        "energy": "legacy-total-enthalpy"
+      },
+      "source_revision": "ae10e5c32ea9e794a2ab584f1f03eb72af4788cd",
+      "build_identity": {
+        "basis": "observed-job-records",
+        "job": 125091444,
+        "binary_sha256": "34d8c6f84618dbacd3b71820f92b5640904334999c391ba25a3382a4e0463e1f",
+        "record_sha256": {
+          "build-path.txt": "6627102e54893d24e383aa59067cc535fe417ea9cbd46bcc50d39768c4334d24",
+          "executable.sha256": "f80cb345b65f3b83ffeca08b08218ae321e6b69932d8da9a5a603034ae86fd66",
+          "source-revision.txt": "5d8b91a89bf8ac0ffe030daf5abd952bd16462eced1ff2bf1c926d42f43ae187",
+          "input-sha256.txt": "3243c9e4edbeaee0227b15e77081c1e98aade088e145671b2f7e598a8228e74e",
+          "guess-sha256.txt": "248f106d50c5b06065f664f964ad14fd1f8662cbeac519d9871d394e573ba0a8",
+          "command.txt": "f8917514242194788835bad804baccf53a6813c2959673b07ae864b115f73099"
+        }
+      },
+      "snapshot_result": "state/liang-hydrogen-20261020/snapshot-hydrogen-soret-0405/jobs/125091788/result",
+      "final": {
+        "phi": 1.4,
+        "slope": 0.00375,
+        "curve": 0.00625,
+        "points": 1825.0,
+        "speed_cm_s": 76.3134725378597,
+        "Tb_K": 2301.456623421305,
+        "rhou_kg_m3": 74.85949514286254,
+        "massflux_kg_m2s": 57.12788026782881
+      },
+      "last_speed_relative_change": 2.566568124473534e-06,
+      "sha256": {
+        "configuration.txt": "8b5e6319cc16c6b12b65b77ca92ad0c2438ee9acf49309d292b0d01159e1f11e",
+        "refinement.csv": "cde2c1c9443348de6905f00450a040e5ea5e194ed45ad586bd895724ffd76af9",
+        "profile.csv": "d1d6e3144276d8b66c1d857bec489145514db37370b2008b33b39909ed7b6a4b",
+        "property-checks.csv": "27f9b4e7e62c23925b2bd7b8f95c5420a2ed5ce16246b8a2f0bd3603c56e0eb6",
+        "transport.csv": "b9777adad58141a59c4a2175ebdc258eb3789e7137a26e1ac27dfa05dedc3b82",
+        "callbacks.txt": "685e4ea3618d0380095770f85908c9cfdec0f3d24a6b1ee6e030012eea573a7f"
+      }
+    },
+    {
+      "job": 125091791,
+      "case": "4",
+      "phi": 1.4,
+      "transport": "pairs",
+      "variant": "soret-baseline",
+      "configuration": {
+        "case": "4",
+        "phi": "1.4",
+        "pressure_Pa": "10132500",
+        "Tu_K": "298",
+        "width_m": "0.01",
+        "kinetics": "Burke2012-N2-pressure",
+        "collider_concentration": "pressure-based",
+        "transport": "author-pair-count 10",
+        "model_variant": "soret-baseline",
+        "alpha": "original-Soave",
+        "flux_correction": "left-node",
+        "grid_factor": "1",
+        "initial_grid_points": "1822",
+        "conductivity": "dense-increment-diagnostic",
+        "Takahashi": "bounded-Table2",
+        "Soret": "cantera-3.2",
+        "thermal_collision_pair_count": "0",
+        "energy": "legacy-total-enthalpy"
+      },
+      "source_revision": "ae10e5c32ea9e794a2ab584f1f03eb72af4788cd",
+      "build_identity": {
+        "basis": "observed-job-records",
+        "job": 125091444,
+        "binary_sha256": "34d8c6f84618dbacd3b71820f92b5640904334999c391ba25a3382a4e0463e1f",
+        "record_sha256": {
+          "build-path.txt": "6627102e54893d24e383aa59067cc535fe417ea9cbd46bcc50d39768c4334d24",
+          "executable.sha256": "f80cb345b65f3b83ffeca08b08218ae321e6b69932d8da9a5a603034ae86fd66",
+          "source-revision.txt": "5d8b91a89bf8ac0ffe030daf5abd952bd16462eced1ff2bf1c926d42f43ae187",
+          "input-sha256.txt": "3243c9e4edbeaee0227b15e77081c1e98aade088e145671b2f7e598a8228e74e",
+          "guess-sha256.txt": "248f106d50c5b06065f664f964ad14fd1f8662cbeac519d9871d394e573ba0a8",
+          "command.txt": "b4adc42135207dd50638812af36b4351333638e4357bac5ebca22f60f4b40e51"
+        }
+      },
+      "snapshot_result": "state/liang-hydrogen-20261020/snapshot-hydrogen-soret-0405/jobs/125091791/result",
+      "final": {
+        "phi": 1.4,
+        "slope": 0.00375,
+        "curve": 0.00625,
+        "points": 1971.0,
+        "speed_cm_s": 73.27712182149547,
+        "Tb_K": 2301.488460261455,
+        "rhou_kg_m3": 74.85949514286254,
+        "massflux_kg_m2s": 54.85488345079187
+      },
+      "last_speed_relative_change": 0.0005367760159193935,
+      "sha256": {
+        "configuration.txt": "03df79c405811f7e6e9dc9479f4e9462143e4b355689ac1ecb5a1f558fc9e916",
+        "refinement.csv": "2d3a93ce9e4d9fc94c335fcfdeabbd7bfb8b86bd9209a5059756e6ae1d957cf5",
+        "profile.csv": "1aa85eda96db4d65e6fc0207c8e8b0c9e0e09e426af95568df4f3c568997e7cb",
+        "property-checks.csv": "27f9b4e7e62c23925b2bd7b8f95c5420a2ed5ce16246b8a2f0bd3603c56e0eb6",
+        "transport.csv": "5827aff2ac3f8f7028bb8de2b574382cc580c3b5e3fb7389ff4cc328e1448a58",
+        "callbacks.txt": "ed5eac476080541cd0db350ab6df86f20ac2d3809bfa69310d1be4dc2d09caa7",
+        "soret-flux.csv": "0f3d1f0ee3bce44786310d12aea4f4fec434ac7d744b54aedda4c696d0a4f405"
+      }
+    },
+    {
+      "job": 125091792,
+      "case": "4",
+      "phi": 1.4,
+      "transport": "pairs",
+      "variant": "manual-soret-baseline",
+      "configuration": {
+        "case": "4",
+        "phi": "1.4",
+        "pressure_Pa": "10132500",
+        "Tu_K": "298",
+        "width_m": "0.01",
+        "kinetics": "Burke2012-N2-pressure",
+        "collider_concentration": "pressure-based",
+        "transport": "author-pair-count 10",
+        "model_variant": "manual-soret-baseline",
+        "alpha": "original-Soave",
+        "flux_correction": "left-node",
+        "grid_factor": "1",
+        "initial_grid_points": "1822",
+        "conductivity": "dense-increment-diagnostic",
+        "Takahashi": "bounded-Table2",
+        "Soret": "manual-author-pairs",
+        "thermal_collision_pair_count": "10",
+        "energy": "legacy-total-enthalpy"
+      },
+      "source_revision": "ae10e5c32ea9e794a2ab584f1f03eb72af4788cd",
+      "build_identity": {
+        "basis": "observed-job-records",
+        "job": 125091444,
+        "binary_sha256": "34d8c6f84618dbacd3b71820f92b5640904334999c391ba25a3382a4e0463e1f",
+        "record_sha256": {
+          "build-path.txt": "6627102e54893d24e383aa59067cc535fe417ea9cbd46bcc50d39768c4334d24",
+          "executable.sha256": "f80cb345b65f3b83ffeca08b08218ae321e6b69932d8da9a5a603034ae86fd66",
+          "source-revision.txt": "5d8b91a89bf8ac0ffe030daf5abd952bd16462eced1ff2bf1c926d42f43ae187",
+          "input-sha256.txt": "3243c9e4edbeaee0227b15e77081c1e98aade088e145671b2f7e598a8228e74e",
+          "guess-sha256.txt": "248f106d50c5b06065f664f964ad14fd1f8662cbeac519d9871d394e573ba0a8",
+          "command.txt": "edd6d88f1fef0c3a07758efaee99431025cefd202cab48b39933e931f96d0312"
+        }
+      },
+      "snapshot_result": "state/liang-hydrogen-20261020/snapshot-hydrogen-soret-0405/jobs/125091792/result",
+      "final": {
+        "phi": 1.4,
+        "slope": 0.00375,
+        "curve": 0.00625,
+        "points": 1961.0,
+        "speed_cm_s": 72.72827240997997,
+        "Tb_K": 2301.588260984653,
+        "rhou_kg_m3": 74.85949514286254,
+        "massflux_kg_m2s": 54.44401755223679
+      },
+      "last_speed_relative_change": 0.00048684792209707783,
+      "sha256": {
+        "configuration.txt": "c7aaec6e076ec0cfbfbac47d68a2c4570ca073cc4bb2eb50caa565a312d2b91c",
+        "refinement.csv": "d5c28efc145608b8f375cfc83bad59eb161c127b88b4acacb243bd6679c91ba9",
+        "profile.csv": "c16e32d2dd0c252fb4444aa224f89e3931185dee6969d0d3c0822eda31ad3722",
+        "property-checks.csv": "27f9b4e7e62c23925b2bd7b8f95c5420a2ed5ce16246b8a2f0bd3603c56e0eb6",
+        "transport.csv": "2854bb032256b909e51a41b0203faa38b13254864eaf20dc7626c84298ea2db1",
+        "callbacks.txt": "00f9a083b92b7b9bf7d25c287860d3e68ca512e5a142742967dfbf81587420b6",
+        "soret-flux.csv": "2e3445c390697aafadae8421e52454d0b84238e83ecc6f03bbb80244baca5a6c"
+      }
+    },
+    {
+      "job": 125091794,
+      "case": "5",
+      "phi": 1.4,
+      "transport": "pairs",
+      "variant": "baseline",
+      "configuration": {
+        "case": "5",
+        "phi": "1.4",
+        "pressure_Pa": "10132500",
+        "Tu_K": "298",
+        "width_m": "0.01",
+        "kinetics": "Burke2012-N2-pressure",
+        "collider_concentration": "pressure-based",
+        "transport": "author-pair-count 10",
+        "model_variant": "baseline",
+        "alpha": "original-Soave",
+        "flux_correction": "left-node",
+        "grid_factor": "1",
+        "initial_grid_points": "1831",
+        "conductivity": "dense-increment-diagnostic",
+        "Takahashi": "bounded-Table2",
+        "Soret": "off",
+        "thermal_collision_pair_count": "0",
+        "energy": "legacy-total-enthalpy"
+      },
+      "source_revision": "ae10e5c32ea9e794a2ab584f1f03eb72af4788cd",
+      "build_identity": {
+        "basis": "observed-job-records",
+        "job": 125091444,
+        "binary_sha256": "34d8c6f84618dbacd3b71820f92b5640904334999c391ba25a3382a4e0463e1f",
+        "record_sha256": {
+          "build-path.txt": "6627102e54893d24e383aa59067cc535fe417ea9cbd46bcc50d39768c4334d24",
+          "executable.sha256": "f80cb345b65f3b83ffeca08b08218ae321e6b69932d8da9a5a603034ae86fd66",
+          "source-revision.txt": "5d8b91a89bf8ac0ffe030daf5abd952bd16462eced1ff2bf1c926d42f43ae187",
+          "input-sha256.txt": "3243c9e4edbeaee0227b15e77081c1e98aade088e145671b2f7e598a8228e74e",
+          "guess-sha256.txt": "1894c90758a8d8ab4b905e77ef6b41318fc34f7ee9559991765251cd886aa9b5",
+          "command.txt": "39e9763a5e19c2c84c21e7d05d998876b55a786b5fe15173a35261ebd646e0e0"
+        }
+      },
+      "snapshot_result": "state/liang-hydrogen-20261020/snapshot-hydrogen-soret-0405/jobs/125091794/result",
+      "final": {
+        "phi": 1.4,
+        "slope": 0.00375,
+        "curve": 0.00625,
+        "points": 1834.0,
+        "speed_cm_s": 75.38071097957362,
+        "Tb_K": 2301.46412553747,
+        "rhou_kg_m3": 74.85949514286254,
+        "massflux_kg_m2s": 56.42961967440916
+      },
+      "last_speed_relative_change": 4.27493434795867e-06,
+      "sha256": {
+        "configuration.txt": "a617dab210422795208dceb3ee58d80193fde9f5259e3d72a3645ab757859bb7",
+        "refinement.csv": "d593e09ae508b8311bc58a0306f70c7cbe8095e9cb46140c78407a42cd966a36",
+        "profile.csv": "03db2d00cdacf80c96cb8d67bc6c7472f1f40a2a45ee85b376cbe51073c86564",
+        "property-checks.csv": "27f9b4e7e62c23925b2bd7b8f95c5420a2ed5ce16246b8a2f0bd3603c56e0eb6",
+        "transport.csv": "8c613447938ec327fab98dfd8f0e7de8e1f7cc5485f37119fa34dd7a3c87c690",
+        "callbacks.txt": "dcc3b7df24915639419e7048b058048130c5434e1e80180d70268e8c173411d3"
+      }
+    },
+    {
+      "job": 125091797,
+      "case": "5",
+      "phi": 1.4,
+      "transport": "pairs",
+      "variant": "soret-baseline",
+      "configuration": {
+        "case": "5",
+        "phi": "1.4",
+        "pressure_Pa": "10132500",
+        "Tu_K": "298",
+        "width_m": "0.01",
+        "kinetics": "Burke2012-N2-pressure",
+        "collider_concentration": "pressure-based",
+        "transport": "author-pair-count 10",
+        "model_variant": "soret-baseline",
+        "alpha": "original-Soave",
+        "flux_correction": "left-node",
+        "grid_factor": "1",
+        "initial_grid_points": "1831",
+        "conductivity": "dense-increment-diagnostic",
+        "Takahashi": "bounded-Table2",
+        "Soret": "cantera-3.2",
+        "thermal_collision_pair_count": "0",
+        "energy": "legacy-total-enthalpy"
+      },
+      "source_revision": "ae10e5c32ea9e794a2ab584f1f03eb72af4788cd",
+      "build_identity": {
+        "basis": "observed-job-records",
+        "job": 125091444,
+        "binary_sha256": "34d8c6f84618dbacd3b71820f92b5640904334999c391ba25a3382a4e0463e1f",
+        "record_sha256": {
+          "build-path.txt": "6627102e54893d24e383aa59067cc535fe417ea9cbd46bcc50d39768c4334d24",
+          "executable.sha256": "f80cb345b65f3b83ffeca08b08218ae321e6b69932d8da9a5a603034ae86fd66",
+          "source-revision.txt": "5d8b91a89bf8ac0ffe030daf5abd952bd16462eced1ff2bf1c926d42f43ae187",
+          "input-sha256.txt": "3243c9e4edbeaee0227b15e77081c1e98aade088e145671b2f7e598a8228e74e",
+          "guess-sha256.txt": "1894c90758a8d8ab4b905e77ef6b41318fc34f7ee9559991765251cd886aa9b5",
+          "command.txt": "b45fc5ccd3606e6eb2dcde710fb182122025f8da9238eafc34aa594c981e3796"
+        }
+      },
+      "snapshot_result": "state/liang-hydrogen-20261020/snapshot-hydrogen-soret-0405/jobs/125091797/result",
+      "final": {
+        "phi": 1.4,
+        "slope": 0.00375,
+        "curve": 0.00625,
+        "points": 1988.0,
+        "speed_cm_s": 72.34036359581421,
+        "Tb_K": 2301.547798370164,
+        "rhou_kg_m3": 74.85949514286254,
+        "massflux_kg_m2s": 54.15363097233764
+      },
+      "last_speed_relative_change": 0.000610727371990416,
+      "sha256": {
+        "configuration.txt": "12806e0926b1efb907a7cf183952779ba62f2badcb85e02cf14137f987efe45c",
+        "refinement.csv": "26c7a9b4ff8247a7f3b851497160303d36daa2fdc1fa0743bd16a3b46f8c6eda",
+        "profile.csv": "b2e06de733342902d4ed4ff15c887fe2ac3cf0d0f1a11b2669a212d1361cf74a",
+        "property-checks.csv": "27f9b4e7e62c23925b2bd7b8f95c5420a2ed5ce16246b8a2f0bd3603c56e0eb6",
+        "transport.csv": "56be671bf89042cd611ea35b257d2b4eb4bac85a6b81626732d10958a90e3193",
+        "callbacks.txt": "a6cce81f8b6586c72f42e27205f7a789ecf42d89695c103ab555f97eb24654c0",
+        "soret-flux.csv": "523303d898cfbabcc8fae9e7ab820d6c17df35de60b2f15cc05c415a80de396b"
+      }
+    },
+    {
+      "job": 125091800,
+      "case": "5",
+      "phi": 1.4,
+      "transport": "pairs",
+      "variant": "manual-soret-baseline",
+      "configuration": {
+        "case": "5",
+        "phi": "1.4",
+        "pressure_Pa": "10132500",
+        "Tu_K": "298",
+        "width_m": "0.01",
+        "kinetics": "Burke2012-N2-pressure",
+        "collider_concentration": "pressure-based",
+        "transport": "author-pair-count 10",
+        "model_variant": "manual-soret-baseline",
+        "alpha": "original-Soave",
+        "flux_correction": "left-node",
+        "grid_factor": "1",
+        "initial_grid_points": "1831",
+        "conductivity": "dense-increment-diagnostic",
+        "Takahashi": "bounded-Table2",
+        "Soret": "manual-author-pairs",
+        "thermal_collision_pair_count": "10",
+        "energy": "legacy-total-enthalpy"
+      },
+      "source_revision": "ae10e5c32ea9e794a2ab584f1f03eb72af4788cd",
+      "build_identity": {
+        "basis": "observed-job-records",
+        "job": 125091444,
+        "binary_sha256": "34d8c6f84618dbacd3b71820f92b5640904334999c391ba25a3382a4e0463e1f",
+        "record_sha256": {
+          "build-path.txt": "6627102e54893d24e383aa59067cc535fe417ea9cbd46bcc50d39768c4334d24",
+          "executable.sha256": "f80cb345b65f3b83ffeca08b08218ae321e6b69932d8da9a5a603034ae86fd66",
+          "source-revision.txt": "5d8b91a89bf8ac0ffe030daf5abd952bd16462eced1ff2bf1c926d42f43ae187",
+          "input-sha256.txt": "3243c9e4edbeaee0227b15e77081c1e98aade088e145671b2f7e598a8228e74e",
+          "guess-sha256.txt": "1894c90758a8d8ab4b905e77ef6b41318fc34f7ee9559991765251cd886aa9b5",
+          "command.txt": "743f891a9d7ede173c956bd43eea8a4aed15bd936b36a1fc4e33e39d0eef1e04"
+        }
+      },
+      "snapshot_result": "state/liang-hydrogen-20261020/snapshot-hydrogen-soret-0405/jobs/125091800/result",
+      "final": {
+        "phi": 1.4,
+        "slope": 0.00375,
+        "curve": 0.00625,
+        "points": 1975.0,
+        "speed_cm_s": 71.78882811707203,
+        "Tb_K": 2301.655762414134,
+        "rhou_kg_m3": 74.85949514286254,
+        "massflux_kg_m2s": 53.74075429741747
+      },
+      "last_speed_relative_change": 0.0005527944127958762,
+      "sha256": {
+        "configuration.txt": "1c783f88161fdcfb35f1a9a2dfc0cc7ec5adaca3139c1141dd1d6f4cc670ef03",
+        "refinement.csv": "b8e0f865bce7007523470ad81d1a099ca82c5bbadb281c5971a69c712454291d",
+        "profile.csv": "e8c710e78a4f9a3f5bfd564b7ccc993fb54b27540b43ef653f6afebd9808e568",
+        "property-checks.csv": "27f9b4e7e62c23925b2bd7b8f95c5420a2ed5ce16246b8a2f0bd3603c56e0eb6",
+        "transport.csv": "e55ae915ad6486da4a373df632a77f8ebc3832a428180c997ca20873c859ca85",
+        "callbacks.txt": "975bae7cbfcd5f2d5ecb920c5b08e114569f31a1870a561b03dc4f8565b88c7f",
+        "soret-flux.csv": "e2a7aa91e41552ed493e911168a839396f735055480fde8ea4ae5d20b5416b8a"
+      }
+    }
+  ],
+  "rich_analysis": {
+    "manifest_sha256": "ed81ed0c73aaca62906b526913a2a26916fcef4d30a98d013301066c9f75275b",
+    "reference_sha256": "a62b7930fd8c1e0cef978842ab5b49a21a832034eaab6328f92c10fd545cdf99",
+    "script_sha256": "2b40582dfd97b1502abadd5b71f321b922904342e5bfe7ef63a640d415b6f547",
+    "native_audit_sha256": "e22ed897e69777e5ce20750a668483eba4556fb95e1b2b44a63aac529aa878aa",
+    "runs": [
+      {
+        "job": 125091771,
+        "case": "1",
+        "phi": 1.4,
+        "transport": "pairs",
+        "variant": "baseline",
+        "source": "ae10e5c32ea9e794a2ab584f1f03eb72af4788cd",
+        "build_identity": {
+          "basis": "observed-job-records",
+          "job": 125091444,
+          "binary_sha256": "34d8c6f84618dbacd3b71820f92b5640904334999c391ba25a3382a4e0463e1f",
+          "record_sha256": {
+            "build-path.txt": "6627102e54893d24e383aa59067cc535fe417ea9cbd46bcc50d39768c4334d24",
+            "executable.sha256": "f80cb345b65f3b83ffeca08b08218ae321e6b69932d8da9a5a603034ae86fd66",
+            "source-revision.txt": "5d8b91a89bf8ac0ffe030daf5abd952bd16462eced1ff2bf1c926d42f43ae187",
+            "input-sha256.txt": "3243c9e4edbeaee0227b15e77081c1e98aade088e145671b2f7e598a8228e74e",
+            "guess-sha256.txt": "9488c263ba95d551a8a3563126b2fd80fd07d2ef1a472f91848240181868f1a0",
+            "command.txt": "882ed938fb3f942d828f2c557577ca4dccf7795e01ac3ab47eb3fad48aace60f"
+          }
+        },
+        "configuration": {
+          "case": "1",
+          "phi": "1.4",
+          "pressure_Pa": "10132500",
+          "Tu_K": "298",
+          "width_m": "0.01",
+          "kinetics": "Burke2012-N2-pressure",
+          "collider_concentration": "pressure-based",
+          "transport": "author-pair-count 10",
+          "model_variant": "baseline",
+          "alpha": "original-Soave",
+          "flux_correction": "left-node",
+          "grid_factor": "1",
+          "initial_grid_points": "1810",
+          "conductivity": "dense-increment-diagnostic",
+          "Takahashi": "bounded-Table2",
+          "Soret": "off",
+          "thermal_collision_pair_count": "0",
+          "energy": "partial-temperature"
+        },
+        "speed_cm_s": 76.13228207477538,
+        "Tb_K": 2313.524379893529,
+        "grid_change": 1.6514342227047507e-07,
+        "diagnostics": {
+          "points": 1811,
+          "min_temperature_K": 298.0,
+          "max_temperature_K": 2313.524383712251,
+          "max_species_sum_error": 1.7077494973705143e-10,
+          "minimum_mass_fraction": -3.387319984532335e-15,
+          "max_relative_massflux_change": 1.645394931415467e-10,
+          "inlet_outlet_enthalpy_difference_J_kg": -290.47399049265744
+        },
+        "sha256": {
+          "profile.csv": "e0de1315fc9806209c887944c96c729aee1d12d9bc4d735e3337b173928f9182",
+          "refinement.csv": "39b5917c62782f280300f15f3c7730bb4a6208f40efa3d1d9a49a2f6af762333",
+          "property-checks.csv": "84e0b540f9d3e282778eda7b94b72cdd955303960cf2c4f21d2e742b90085d89",
+          "configuration.txt": "bae3a9ec9773d388e78b0980b2da7cc57a5f9d2e47cdd2f643f0e73297afbee3",
+          "callbacks.txt": "5ed6841949d5816410718efd037aaff3597785aaca741d9bff4a27c828cf1aaa"
+        },
+        "paper_comparison": {
+          "phi": 1.4,
+          "value": 75.82811940131273,
+          "uncertainty": 0.08398418352525575,
+          "method": "linear path interpolation",
+          "bracket_phi": [
+            1.3999717563455687,
+            1.4143443121591002
+          ],
+          "drawing_ids": [
+            2,
+            2
+          ],
+          "error_cm_s": 0.3041626734626419,
+          "relative_error_percent": 0.40112121448363514,
+          "screening_allowance_cm_s": 0.842265377538383,
+          "screen_passed": true
+        }
+      },
+      {
+        "job": 125091777,
+        "case": "1",
+        "phi": 1.4,
+        "transport": "pairs",
+        "variant": "soret-baseline",
+        "source": "ae10e5c32ea9e794a2ab584f1f03eb72af4788cd",
+        "build_identity": {
+          "basis": "observed-job-records",
+          "job": 125091444,
+          "binary_sha256": "34d8c6f84618dbacd3b71820f92b5640904334999c391ba25a3382a4e0463e1f",
+          "record_sha256": {
+            "build-path.txt": "6627102e54893d24e383aa59067cc535fe417ea9cbd46bcc50d39768c4334d24",
+            "executable.sha256": "f80cb345b65f3b83ffeca08b08218ae321e6b69932d8da9a5a603034ae86fd66",
+            "source-revision.txt": "5d8b91a89bf8ac0ffe030daf5abd952bd16462eced1ff2bf1c926d42f43ae187",
+            "input-sha256.txt": "3243c9e4edbeaee0227b15e77081c1e98aade088e145671b2f7e598a8228e74e",
+            "guess-sha256.txt": "9488c263ba95d551a8a3563126b2fd80fd07d2ef1a472f91848240181868f1a0",
+            "command.txt": "1604cec0f46bf273d53ed2ca4fa7fcb357f0ce859907e9cc1458970b27ac6e11"
+          }
+        },
+        "configuration": {
+          "case": "1",
+          "phi": "1.4",
+          "pressure_Pa": "10132500",
+          "Tu_K": "298",
+          "width_m": "0.01",
+          "kinetics": "Burke2012-N2-pressure",
+          "collider_concentration": "pressure-based",
+          "transport": "author-pair-count 10",
+          "model_variant": "soret-baseline",
+          "alpha": "original-Soave",
+          "flux_correction": "left-node",
+          "grid_factor": "1",
+          "initial_grid_points": "1810",
+          "conductivity": "dense-increment-diagnostic",
+          "Takahashi": "bounded-Table2",
+          "Soret": "cantera-3.2",
+          "thermal_collision_pair_count": "0",
+          "energy": "partial-temperature"
+        },
+        "speed_cm_s": 73.03060507511118,
+        "Tb_K": 2313.355264409788,
+        "grid_change": 0.0008141865179945862,
+        "diagnostics": {
+          "points": 1956,
+          "min_temperature_K": 297.9999999999488,
+          "max_temperature_K": 2313.355264409788,
+          "max_species_sum_error": 1.7101520199958031e-10,
+          "minimum_mass_fraction": -5.05543827047337e-15,
+          "max_relative_massflux_change": 3.9525416273278324e-09,
+          "inlet_outlet_enthalpy_difference_J_kg": -526.3780221789319
+        },
+        "sha256": {
+          "profile.csv": "856cccadfbdfad08fdf4695a01068bf14daadc5c5c5f1f36b8c25cbf6a2b737e",
+          "refinement.csv": "1a6c2ce0a9e146df9c84fc3f1ef4797e509dca15b045dbd1727efa32fe671d3c",
+          "property-checks.csv": "84e0b540f9d3e282778eda7b94b72cdd955303960cf2c4f21d2e742b90085d89",
+          "configuration.txt": "813c7cbda8b9e30c74bfd74cd86c7a9630f3a223cfd1dc505cc9f3f2ad48a927",
+          "callbacks.txt": "16e327b77c7fbf862a9ab24e47f48cf62a17e1b0d72d9f1d13b406217d94a8b2",
+          "soret-flux.csv": "0020506def01c440c9d84dd2c8d093c61aa6b5e939bb93c96817fa8d0bb97721"
+        },
+        "native_flux_checks": {
+          "decomposition": 2.685036071195575e-16,
+          "thermal_definition": 3.574380431287151e-11,
+          "total_mass_closure": 3.6806390556571716e-11,
+          "thermal_mass_closure": 2.3879645193522686e-11,
+          "coefficient_projection": 1.57790972889752e-10
+        },
+        "strict_native_limits": {
+          "decomposition": 1e-12,
+          "thermal_definition": 1e-10,
+          "total_mass_closure": 1e-07,
+          "thermal_mass_closure": 1e-10,
+          "coefficient_projection": 1e-10
+        },
+        "strict_native_failures": [
+          "coefficient_projection"
+        ],
+        "maximum_absolute_thermal_enthalpy_flux_W_m2": 4739861.13654096,
+        "species_thermal_flux": [
+          {
+            "species": "H",
+            "max_abs_ordinary_kg_m2s": 0.0617703080790405,
+            "max_abs_thermal_kg_m2s": 0.003408830263720687,
+            "max_abs_total_kg_m2s": 0.05862032989988586,
+            "signed_peak_thermal_kg_m2s": 0.003408830263720687,
+            "T_at_peak_thermal_K": 1858.845863506789
+          },
+          {
+            "species": "H2",
+            "max_abs_ordinary_kg_m2s": 0.8330570754694088,
+            "max_abs_thermal_kg_m2s": 0.5674426440561186,
+            "max_abs_total_kg_m2s": 1.275590680258107,
+            "signed_peak_thermal_kg_m2s": 0.5674426440561186,
+            "T_at_peak_thermal_K": 1011.73923707785
+          },
+          {
+            "species": "O",
+            "max_abs_ordinary_kg_m2s": 0.01708389005559032,
+            "max_abs_thermal_kg_m2s": 0.0003624564740791351,
+            "max_abs_total_kg_m2s": 0.0167769355020443,
+            "signed_peak_thermal_kg_m2s": 0.0003624564740791351,
+            "T_at_peak_thermal_K": 1731.65012654683
+          },
+          {
+            "species": "OH",
+            "max_abs_ordinary_kg_m2s": 0.08191436255912472,
+            "max_abs_thermal_kg_m2s": 0.001579390978723313,
+            "max_abs_total_kg_m2s": 0.08051143478896639,
+            "signed_peak_thermal_kg_m2s": 0.001579390978723313,
+            "T_at_peak_thermal_K": 1789.718372665579
+          },
+          {
+            "species": "H2O",
+            "max_abs_ordinary_kg_m2s": 6.863861187171793,
+            "max_abs_thermal_kg_m2s": 0.2481468933772916,
+            "max_abs_total_kg_m2s": 6.615765272044507,
+            "signed_peak_thermal_kg_m2s": 0.2481468933772916,
+            "T_at_peak_thermal_K": 1567.4766398707595
+          },
+          {
+            "species": "O2",
+            "max_abs_ordinary_kg_m2s": 5.144600754027424,
+            "max_abs_thermal_kg_m2s": 0.2501890678932551,
+            "max_abs_total_kg_m2s": 4.990392142612901,
+            "signed_peak_thermal_kg_m2s": -0.2501890678932551,
+            "T_at_peak_thermal_K": 1015.073598257355
+          },
+          {
+            "species": "HO2",
+            "max_abs_ordinary_kg_m2s": 0.1412460097648938,
+            "max_abs_thermal_kg_m2s": 0.005514490937760365,
+            "max_abs_total_kg_m2s": 0.1382283783027241,
+            "signed_peak_thermal_kg_m2s": -0.005514490937760365,
+            "T_at_peak_thermal_K": 1345.426601013922
+          },
+          {
+            "species": "H2O2",
+            "max_abs_ordinary_kg_m2s": 0.1730214517453484,
+            "max_abs_thermal_kg_m2s": 0.00437325487583295,
+            "max_abs_total_kg_m2s": 0.1708662418241414,
+            "signed_peak_thermal_kg_m2s": -0.00437325487583295,
+            "T_at_peak_thermal_K": 1249.1913937005006
+          },
+          {
+            "species": "N2",
+            "max_abs_ordinary_kg_m2s": 0.7922404679918794,
+            "max_abs_thermal_kg_m2s": 0.5040294728947564,
+            "max_abs_total_kg_m2s": 0.3294029582942168,
+            "signed_peak_thermal_kg_m2s": -0.5040294728947564,
+            "T_at_peak_thermal_K": 1395.6891731050264
+          },
+          {
+            "species": "AR",
+            "max_abs_ordinary_kg_m2s": 1.105961789822143e-250,
+            "max_abs_thermal_kg_m2s": 5.577574066895098e-252,
+            "max_abs_total_kg_m2s": 1.139491201836823e-250,
+            "signed_peak_thermal_kg_m2s": 5.577574066895098e-252,
+            "T_at_peak_thermal_K": 1797.8548181923925
+          },
+          {
+            "species": "HE",
+            "max_abs_ordinary_kg_m2s": 2.221947899625221e-255,
+            "max_abs_thermal_kg_m2s": 9.183641409332803e-257,
+            "max_abs_total_kg_m2s": 2.234937167286067e-255,
+            "signed_peak_thermal_kg_m2s": -9.183641409332803e-257,
+            "T_at_peak_thermal_K": 1231.0330052509871
+          },
+          {
+            "species": "CO",
+            "max_abs_ordinary_kg_m2s": 0.0,
+            "max_abs_thermal_kg_m2s": 0.0,
+            "max_abs_total_kg_m2s": 0.0,
+            "signed_peak_thermal_kg_m2s": 0.0,
+            "T_at_peak_thermal_K": 297.999999999975
+          },
+          {
+            "species": "CO2",
+            "max_abs_ordinary_kg_m2s": 0.0,
+            "max_abs_thermal_kg_m2s": 0.0,
+            "max_abs_total_kg_m2s": 0.0,
+            "signed_peak_thermal_kg_m2s": 0.0,
+            "T_at_peak_thermal_K": 297.999999999975
+          }
+        ],
+        "paper_comparison": {
+          "phi": 1.4,
+          "value": 75.82811940131273,
+          "uncertainty": 0.08398418352525575,
+          "method": "linear path interpolation",
+          "bracket_phi": [
+            1.3999717563455687,
+            1.4143443121591002
+          ],
+          "drawing_ids": [
+            2,
+            2
+          ],
+          "error_cm_s": -2.7975143262015507,
+          "relative_error_percent": -3.6892835379392475,
+          "screening_allowance_cm_s": 0.842265377538383,
+          "screen_passed": false
+        }
+      },
+      {
+        "job": 125091779,
+        "case": "1",
+        "phi": 1.4,
+        "transport": "pairs",
+        "variant": "manual-soret-baseline",
+        "source": "ae10e5c32ea9e794a2ab584f1f03eb72af4788cd",
+        "build_identity": {
+          "basis": "observed-job-records",
+          "job": 125091444,
+          "binary_sha256": "34d8c6f84618dbacd3b71820f92b5640904334999c391ba25a3382a4e0463e1f",
+          "record_sha256": {
+            "build-path.txt": "6627102e54893d24e383aa59067cc535fe417ea9cbd46bcc50d39768c4334d24",
+            "executable.sha256": "f80cb345b65f3b83ffeca08b08218ae321e6b69932d8da9a5a603034ae86fd66",
+            "source-revision.txt": "5d8b91a89bf8ac0ffe030daf5abd952bd16462eced1ff2bf1c926d42f43ae187",
+            "input-sha256.txt": "3243c9e4edbeaee0227b15e77081c1e98aade088e145671b2f7e598a8228e74e",
+            "guess-sha256.txt": "9488c263ba95d551a8a3563126b2fd80fd07d2ef1a472f91848240181868f1a0",
+            "command.txt": "32e45fe884cf3d0f5c36970c5362908400c1a3493e7a0a764f0834b18adc7d02"
+          }
+        },
+        "configuration": {
+          "case": "1",
+          "phi": "1.4",
+          "pressure_Pa": "10132500",
+          "Tu_K": "298",
+          "width_m": "0.01",
+          "kinetics": "Burke2012-N2-pressure",
+          "collider_concentration": "pressure-based",
+          "transport": "author-pair-count 10",
+          "model_variant": "manual-soret-baseline",
+          "alpha": "original-Soave",
+          "flux_correction": "left-node",
+          "grid_factor": "1",
+          "initial_grid_points": "1810",
+          "conductivity": "dense-increment-diagnostic",
+          "Takahashi": "bounded-Table2",
+          "Soret": "manual-author-pairs",
+          "thermal_collision_pair_count": "10",
+          "energy": "partial-temperature"
+        },
+        "speed_cm_s": 72.4288078582095,
+        "Tb_K": 2313.436936048692,
+        "grid_change": 0.0006525682952637224,
+        "diagnostics": {
+          "points": 1946,
+          "min_temperature_K": 298.0,
+          "max_temperature_K": 2313.436936048692,
+          "max_species_sum_error": 2.5866075947789113e-10,
+          "minimum_mass_fraction": -1.097328348915267e-14,
+          "max_relative_massflux_change": 2.819316557989282e-09,
+          "inlet_outlet_enthalpy_difference_J_kg": -672.1847650808372
+        },
+        "sha256": {
+          "profile.csv": "aa41d4c848952cb0ac73df23c548b885a042e8635d479a1fdfa3596ac09799c3",
+          "refinement.csv": "6af8c4f914eaf82193a7f4ca714ede8b05487ae4ce423e6fa78ab155a84ba080",
+          "property-checks.csv": "84e0b540f9d3e282778eda7b94b72cdd955303960cf2c4f21d2e742b90085d89",
+          "configuration.txt": "38152e4ef2a58e26d93ca4f0cd27328c6fe535d8661382ee62145b309d9c5d84",
+          "callbacks.txt": "a66b7c2de910105a36bbf59ff9cbcec3b8182c81c8425de19b470208863f5512",
+          "soret-flux.csv": "2f4b2f6e4d244392748855aa2b876af4e730b229031b976408efd3c946eb92f0"
+        },
+        "native_flux_checks": {
+          "decomposition": 2.635167844047786e-16,
+          "thermal_definition": 3.9190100888085497e-11,
+          "total_mass_closure": 1.2466192637286616e-11,
+          "thermal_mass_closure": 4.1174497563246655e-17,
+          "coefficient_projection": 7.828006908103727e-16
+        },
+        "strict_native_limits": {
+          "decomposition": 1e-12,
+          "thermal_definition": 1e-10,
+          "total_mass_closure": 1e-07,
+          "thermal_mass_closure": 1e-10,
+          "coefficient_projection": 1e-10
+        },
+        "strict_native_failures": [],
+        "maximum_absolute_thermal_enthalpy_flux_W_m2": 9425824.724551324,
+        "species_thermal_flux": [
+          {
+            "species": "H",
+            "max_abs_ordinary_kg_m2s": 0.06097612380060918,
+            "max_abs_thermal_kg_m2s": 0.002995489374094603,
+            "max_abs_total_kg_m2s": 0.05818417113379221,
+            "signed_peak_thermal_kg_m2s": 0.002995489374094603,
+            "T_at_peak_thermal_K": 1855.1909040990754
+          },
+          {
+            "species": "H2",
+            "max_abs_ordinary_kg_m2s": 0.7815712334675249,
+            "max_abs_thermal_kg_m2s": 0.637356207437146,
+            "max_abs_total_kg_m2s": 1.281025260822365,
+            "signed_peak_thermal_kg_m2s": 0.637356207437146,
+            "T_at_peak_thermal_K": 1033.4018290152649
+          },
+          {
+            "species": "O",
+            "max_abs_ordinary_kg_m2s": 0.01684802331726098,
+            "max_abs_thermal_kg_m2s": 4.431295136899573e-05,
+            "max_abs_total_kg_m2s": 0.01688699599627396,
+            "signed_peak_thermal_kg_m2s": -4.431295136899573e-05,
+            "T_at_peak_thermal_K": 1715.4914441426527
+          },
+          {
+            "species": "OH",
+            "max_abs_ordinary_kg_m2s": 0.08167175726598529,
+            "max_abs_thermal_kg_m2s": 0.000216835572351115,
+            "max_abs_total_kg_m2s": 0.08187091811254939,
+            "signed_peak_thermal_kg_m2s": -0.000216835572351115,
+            "T_at_peak_thermal_K": 1765.269135228403
+          },
+          {
+            "species": "H2O",
+            "max_abs_ordinary_kg_m2s": 6.673119253304552,
+            "max_abs_thermal_kg_m2s": 0.06973043845402435,
+            "max_abs_total_kg_m2s": 6.740962794505162,
+            "signed_peak_thermal_kg_m2s": -0.06973043845402435,
+            "T_at_peak_thermal_K": 1436.870580963958
+          },
+          {
+            "species": "O2",
+            "max_abs_ordinary_kg_m2s": 5.046455995041663,
+            "max_abs_thermal_kg_m2s": 0.1181003546894184,
+            "max_abs_total_kg_m2s": 4.999791705301858,
+            "signed_peak_thermal_kg_m2s": -0.1181003546894184,
+            "T_at_peak_thermal_K": 777.0884410936394
+          },
+          {
+            "species": "HO2",
+            "max_abs_ordinary_kg_m2s": 0.1402113689950749,
+            "max_abs_thermal_kg_m2s": 0.001705918387942656,
+            "max_abs_total_kg_m2s": 0.1394836727556415,
+            "signed_peak_thermal_kg_m2s": -0.001705918387942656,
+            "T_at_peak_thermal_K": 1286.5961091145625
+          },
+          {
+            "species": "H2O2",
+            "max_abs_ordinary_kg_m2s": 0.1709239637349081,
+            "max_abs_thermal_kg_m2s": 0.001300077752212315,
+            "max_abs_total_kg_m2s": 0.1704020555884418,
+            "signed_peak_thermal_kg_m2s": -0.001300077752212315,
+            "T_at_peak_thermal_K": 1196.134244309243
+          },
+          {
+            "species": "N2",
+            "max_abs_ordinary_kg_m2s": 0.838556002783879,
+            "max_abs_thermal_kg_m2s": 0.4744338698218868,
+            "max_abs_total_kg_m2s": 0.3995616745927168,
+            "signed_peak_thermal_kg_m2s": -0.4744338698218868,
+            "T_at_peak_thermal_K": 1023.3210587143525
+          },
+          {
+            "species": "AR",
+            "max_abs_ordinary_kg_m2s": 9.53836613856566e-255,
+            "max_abs_thermal_kg_m2s": 1.61469703258998e-256,
+            "max_abs_total_kg_m2s": 9.588158654270355e-255,
+            "signed_peak_thermal_kg_m2s": -1.61469703258998e-256,
+            "T_at_peak_thermal_K": 1046.9360753449723
+          },
+          {
+            "species": "HE",
+            "max_abs_ordinary_kg_m2s": 5.55808036295949e-257,
+            "max_abs_thermal_kg_m2s": 3.036185294271866e-260,
+            "max_abs_total_kg_m2s": 5.55808036295949e-257,
+            "signed_peak_thermal_kg_m2s": 3.036185294271866e-260,
+            "T_at_peak_thermal_K": 316.25943040062714
+          },
+          {
+            "species": "CO",
+            "max_abs_ordinary_kg_m2s": 0.0,
+            "max_abs_thermal_kg_m2s": 0.0,
+            "max_abs_total_kg_m2s": 0.0,
+            "signed_peak_thermal_kg_m2s": -0.0,
+            "T_at_peak_thermal_K": 298.0000000000065
+          },
+          {
+            "species": "CO2",
+            "max_abs_ordinary_kg_m2s": 0.0,
+            "max_abs_thermal_kg_m2s": 0.0,
+            "max_abs_total_kg_m2s": 0.0,
+            "signed_peak_thermal_kg_m2s": -0.0,
+            "T_at_peak_thermal_K": 298.0000000000065
+          }
+        ],
+        "paper_comparison": {
+          "phi": 1.4,
+          "value": 75.82811940131273,
+          "uncertainty": 0.08398418352525575,
+          "method": "linear path interpolation",
+          "bracket_phi": [
+            1.3999717563455687,
+            1.4143443121591002
+          ],
+          "drawing_ids": [
+            2,
+            2
+          ],
+          "error_cm_s": -3.399311543103238,
+          "relative_error_percent": -4.482916851877494,
+          "screening_allowance_cm_s": 0.842265377538383,
+          "screen_passed": false
+        }
+      },
+      {
+        "job": 125091781,
+        "case": "3",
+        "phi": 1.4,
+        "transport": "pairs",
+        "variant": "baseline",
+        "source": "ae10e5c32ea9e794a2ab584f1f03eb72af4788cd",
+        "build_identity": {
+          "basis": "observed-job-records",
+          "job": 125091444,
+          "binary_sha256": "34d8c6f84618dbacd3b71820f92b5640904334999c391ba25a3382a4e0463e1f",
+          "record_sha256": {
+            "build-path.txt": "6627102e54893d24e383aa59067cc535fe417ea9cbd46bcc50d39768c4334d24",
+            "executable.sha256": "f80cb345b65f3b83ffeca08b08218ae321e6b69932d8da9a5a603034ae86fd66",
+            "source-revision.txt": "5d8b91a89bf8ac0ffe030daf5abd952bd16462eced1ff2bf1c926d42f43ae187",
+            "input-sha256.txt": "3243c9e4edbeaee0227b15e77081c1e98aade088e145671b2f7e598a8228e74e",
+            "guess-sha256.txt": "e10334531a6e3e773f35ecc1461ca7a51137af27404308d6d2709a9a41009b92",
+            "command.txt": "e1ca253bd2efaba554528cb13163e320860c6b83ed6c93df9ab253155c0284f1"
+          }
+        },
+        "configuration": {
+          "case": "3",
+          "phi": "1.4",
+          "pressure_Pa": "10132500",
+          "Tu_K": "298",
+          "width_m": "0.01",
+          "kinetics": "Burke2012-N2-pressure",
+          "collider_concentration": "pressure-based",
+          "transport": "author-pair-count 10",
+          "model_variant": "baseline",
+          "alpha": "original-Soave",
+          "flux_correction": "left-node",
+          "grid_factor": "1",
+          "initial_grid_points": "1818",
+          "conductivity": "dense-increment-diagnostic",
+          "Takahashi": "bounded-Table2",
+          "Soret": "off",
+          "thermal_collision_pair_count": "0",
+          "energy": "legacy-total-enthalpy"
+        },
+        "speed_cm_s": 75.54601024282141,
+        "Tb_K": 2301.463097023827,
+        "grid_change": 2.2472496847836254e-06,
+        "diagnostics": {
+          "points": 1823,
+          "min_temperature_K": 297.9999999999941,
+          "max_temperature_K": 2301.463097023827,
+          "max_species_sum_error": 9.867662242868391e-12,
+          "minimum_mass_fraction": -1.440605291689337e-15,
+          "max_relative_massflux_change": 1.4944712134479232e-11,
+          "inlet_outlet_enthalpy_difference_J_kg": 10.26575925635916
+        },
+        "sha256": {
+          "profile.csv": "0eeb669fb2c9ab7b810f20f19ad982ab156a0062bbf9cfdf21d02bffb531a401",
+          "refinement.csv": "a443fecb514b5ed37833de7feb743a55e57a0b29c86f4f01d743932ad1721b29",
+          "property-checks.csv": "27f9b4e7e62c23925b2bd7b8f95c5420a2ed5ce16246b8a2f0bd3603c56e0eb6",
+          "configuration.txt": "2d20e1a7adf32f0b22cacbd7065c232df15a7f1793d053a1a113dc4614cc42d4",
+          "callbacks.txt": "300a1616c4629d4c87b3c0247103856e2a55bf02ebd9ea526d8c1bbf60e52b43"
+        },
+        "paper_comparison": {
+          "phi": 1.4,
+          "reference_phi": 1.3999749903022414,
+          "value": 71.8145011595397,
+          "uncertainty": 0.33111146419463094,
+          "method": "native marker",
+          "drawing_ids": [
+            29
+          ],
+          "error_cm_s": 3.7315090832817077,
+          "relative_error_percent": 5.196038436571415,
+          "screening_allowance_cm_s": 1.049256475790028,
+          "screen_passed": false
+        }
+      },
+      {
+        "job": 125091783,
+        "case": "3",
+        "phi": 1.4,
+        "transport": "pairs",
+        "variant": "soret-baseline",
+        "source": "ae10e5c32ea9e794a2ab584f1f03eb72af4788cd",
+        "build_identity": {
+          "basis": "observed-job-records",
+          "job": 125091444,
+          "binary_sha256": "34d8c6f84618dbacd3b71820f92b5640904334999c391ba25a3382a4e0463e1f",
+          "record_sha256": {
+            "build-path.txt": "6627102e54893d24e383aa59067cc535fe417ea9cbd46bcc50d39768c4334d24",
+            "executable.sha256": "f80cb345b65f3b83ffeca08b08218ae321e6b69932d8da9a5a603034ae86fd66",
+            "source-revision.txt": "5d8b91a89bf8ac0ffe030daf5abd952bd16462eced1ff2bf1c926d42f43ae187",
+            "input-sha256.txt": "3243c9e4edbeaee0227b15e77081c1e98aade088e145671b2f7e598a8228e74e",
+            "guess-sha256.txt": "e10334531a6e3e773f35ecc1461ca7a51137af27404308d6d2709a9a41009b92",
+            "command.txt": "48bb701a283c41e22acc4d63777ffcf46a4586fabc58cdb931d4fd885f35672a"
+          }
+        },
+        "configuration": {
+          "case": "3",
+          "phi": "1.4",
+          "pressure_Pa": "10132500",
+          "Tu_K": "298",
+          "width_m": "0.01",
+          "kinetics": "Burke2012-N2-pressure",
+          "collider_concentration": "pressure-based",
+          "transport": "author-pair-count 10",
+          "model_variant": "soret-baseline",
+          "alpha": "original-Soave",
+          "flux_correction": "left-node",
+          "grid_factor": "1",
+          "initial_grid_points": "1818",
+          "conductivity": "dense-increment-diagnostic",
+          "Takahashi": "bounded-Table2",
+          "Soret": "cantera-3.2",
+          "thermal_collision_pair_count": "0",
+          "energy": "legacy-total-enthalpy"
+        },
+        "speed_cm_s": 72.52270314313442,
+        "Tb_K": 2301.439155616972,
+        "grid_change": 0.0006144644812214883,
+        "diagnostics": {
+          "points": 1969,
+          "min_temperature_K": 298.0,
+          "max_temperature_K": 2301.439155616972,
+          "max_species_sum_error": 1.012149253298844e-09,
+          "minimum_mass_fraction": -3.654062945351707e-14,
+          "max_relative_massflux_change": 1.003650829112246e-09,
+          "inlet_outlet_enthalpy_difference_J_kg": 40.272202804819244
+        },
+        "sha256": {
+          "profile.csv": "dd76eb6c81d1d330d5465fd4c16d6c211dc3740970655adb391ae06fc9c2e59d",
+          "refinement.csv": "5c7bc5fdf07d5ee00b8204648f01dcdd7a5676e6ed91a1f8c11e926acb3571ee",
+          "property-checks.csv": "27f9b4e7e62c23925b2bd7b8f95c5420a2ed5ce16246b8a2f0bd3603c56e0eb6",
+          "configuration.txt": "00234429b6e2586f31637d2161f92e26b7788c20f44784750a464c4723017ce5",
+          "callbacks.txt": "aca0c68074f7c189593678efe681b2a52ab98e6a8a05ab3006d2942830d5c54c",
+          "soret-flux.csv": "46abcf0e57de3d649ece8a8d4da4addd4bdfba2b77df56037b058eb16f028bf2"
+        },
+        "native_flux_checks": {
+          "decomposition": 2.7641053894306867e-16,
+          "thermal_definition": 1.1064572213489831e-10,
+          "total_mass_closure": 2.6598378923088827e-10,
+          "thermal_mass_closure": 1.7692768233687413e-10,
+          "coefficient_projection": 7.474934037408134e-10
+        },
+        "strict_native_limits": {
+          "decomposition": 1e-12,
+          "thermal_definition": 1e-10,
+          "total_mass_closure": 1e-07,
+          "thermal_mass_closure": 1e-10,
+          "coefficient_projection": 1e-10
+        },
+        "strict_native_failures": [
+          "thermal_definition",
+          "thermal_mass_closure",
+          "coefficient_projection"
+        ],
+        "maximum_absolute_thermal_enthalpy_flux_W_m2": 4615343.964123218,
+        "species_thermal_flux": [
+          {
+            "species": "H",
+            "max_abs_ordinary_kg_m2s": 0.05838152332702041,
+            "max_abs_thermal_kg_m2s": 0.003231049517259884,
+            "max_abs_total_kg_m2s": 0.05539556557381047,
+            "signed_peak_thermal_kg_m2s": 0.003231049517259884,
+            "T_at_peak_thermal_K": 1853.7675397387875
+          },
+          {
+            "species": "H2",
+            "max_abs_ordinary_kg_m2s": 0.7995019828525476,
+            "max_abs_thermal_kg_m2s": 0.5561751663766334,
+            "max_abs_total_kg_m2s": 1.23208656361883,
+            "signed_peak_thermal_kg_m2s": 0.5561751663766334,
+            "T_at_peak_thermal_K": 1025.1930213231515
+          },
+          {
+            "species": "O",
+            "max_abs_ordinary_kg_m2s": 0.01599848036721831,
+            "max_abs_thermal_kg_m2s": 0.0003414108096744376,
+            "max_abs_total_kg_m2s": 0.01570941693947895,
+            "signed_peak_thermal_kg_m2s": 0.0003414108096744376,
+            "T_at_peak_thermal_K": 1728.636338742155
+          },
+          {
+            "species": "OH",
+            "max_abs_ordinary_kg_m2s": 0.07745707532668447,
+            "max_abs_thermal_kg_m2s": 0.001496202643541955,
+            "max_abs_total_kg_m2s": 0.07613306797366304,
+            "signed_peak_thermal_kg_m2s": 0.001496202643541955,
+            "T_at_peak_thermal_K": 1785.7430854943595
+          },
+          {
+            "species": "H2O",
+            "max_abs_ordinary_kg_m2s": 6.672109676355937,
+            "max_abs_thermal_kg_m2s": 0.2456319321587752,
+            "max_abs_total_kg_m2s": 6.426516319503,
+            "signed_peak_thermal_kg_m2s": 0.2456319321587752,
+            "T_at_peak_thermal_K": 1564.172582374158
+          },
+          {
+            "species": "O2",
+            "max_abs_ordinary_kg_m2s": 5.009908750892304,
+            "max_abs_thermal_kg_m2s": 0.2458427949725215,
+            "max_abs_total_kg_m2s": 4.858818517275286,
+            "signed_peak_thermal_kg_m2s": -0.2458427949725215,
+            "T_at_peak_thermal_K": 1025.1930213231515
+          },
+          {
+            "species": "HO2",
+            "max_abs_ordinary_kg_m2s": 0.135475695057128,
+            "max_abs_thermal_kg_m2s": 0.005316770288680675,
+            "max_abs_total_kg_m2s": 0.1325812114286438,
+            "signed_peak_thermal_kg_m2s": -0.005316770288680675,
+            "T_at_peak_thermal_K": 1351.002382864383
+          },
+          {
+            "species": "H2O2",
+            "max_abs_ordinary_kg_m2s": 0.1678390395984543,
+            "max_abs_thermal_kg_m2s": 0.004275726162820393,
+            "max_abs_total_kg_m2s": 0.1657303842145856,
+            "signed_peak_thermal_kg_m2s": -0.004275726162820393,
+            "T_at_peak_thermal_K": 1249.259040120282
+          },
+          {
+            "species": "N2",
+            "max_abs_ordinary_kg_m2s": 0.7714789846489247,
+            "max_abs_thermal_kg_m2s": 0.4959465106887436,
+            "max_abs_total_kg_m2s": 0.3235035266185604,
+            "signed_peak_thermal_kg_m2s": -0.4959465106887436,
+            "T_at_peak_thermal_K": 1396.8582661735963
+          },
+          {
+            "species": "AR",
+            "max_abs_ordinary_kg_m2s": 3.154929414871898e-303,
+            "max_abs_thermal_kg_m2s": 4.503927926312354e-304,
+            "max_abs_total_kg_m2s": 3.318030829047836e-303,
+            "signed_peak_thermal_kg_m2s": -4.503927926312354e-304,
+            "T_at_peak_thermal_K": 1218.919657864859
+          },
+          {
+            "species": "HE",
+            "max_abs_ordinary_kg_m2s": 1.847396031952293e-25,
+            "max_abs_thermal_kg_m2s": 2.827442334213949e-27,
+            "max_abs_total_kg_m2s": 1.823437640604416e-25,
+            "signed_peak_thermal_kg_m2s": -2.827442334213949e-27,
+            "T_at_peak_thermal_K": 463.4988819720073
+          },
+          {
+            "species": "CO",
+            "max_abs_ordinary_kg_m2s": 0.0,
+            "max_abs_thermal_kg_m2s": 0.0,
+            "max_abs_total_kg_m2s": 0.0,
+            "signed_peak_thermal_kg_m2s": -0.0,
+            "T_at_peak_thermal_K": 298.0000000000304
+          },
+          {
+            "species": "CO2",
+            "max_abs_ordinary_kg_m2s": 5.35221059460842e-24,
+            "max_abs_thermal_kg_m2s": 7.153597807568995e-25,
+            "max_abs_total_kg_m2s": 4.834914323339046e-24,
+            "signed_peak_thermal_kg_m2s": 7.153597807568995e-25,
+            "T_at_peak_thermal_K": 699.747707537552
+          }
+        ],
+        "paper_comparison": {
+          "phi": 1.4,
+          "reference_phi": 1.3999749903022414,
+          "value": 71.8145011595397,
+          "uncertainty": 0.33111146419463094,
+          "method": "native marker",
+          "drawing_ids": [
+            29
+          ],
+          "error_cm_s": 0.7082019835947193,
+          "relative_error_percent": 0.9861545678934824,
+          "screening_allowance_cm_s": 1.049256475790028,
+          "screen_passed": true
+        }
+      },
+      {
+        "job": 125091785,
+        "case": "3",
+        "phi": 1.4,
+        "transport": "pairs",
+        "variant": "manual-soret-baseline",
+        "source": "ae10e5c32ea9e794a2ab584f1f03eb72af4788cd",
+        "build_identity": {
+          "basis": "observed-job-records",
+          "job": 125091444,
+          "binary_sha256": "34d8c6f84618dbacd3b71820f92b5640904334999c391ba25a3382a4e0463e1f",
+          "record_sha256": {
+            "build-path.txt": "6627102e54893d24e383aa59067cc535fe417ea9cbd46bcc50d39768c4334d24",
+            "executable.sha256": "f80cb345b65f3b83ffeca08b08218ae321e6b69932d8da9a5a603034ae86fd66",
+            "source-revision.txt": "5d8b91a89bf8ac0ffe030daf5abd952bd16462eced1ff2bf1c926d42f43ae187",
+            "input-sha256.txt": "3243c9e4edbeaee0227b15e77081c1e98aade088e145671b2f7e598a8228e74e",
+            "guess-sha256.txt": "e10334531a6e3e773f35ecc1461ca7a51137af27404308d6d2709a9a41009b92",
+            "command.txt": "e46b455a52c1b6abfaf66d9a1d4f390ababd1967582e00ee053af5d93b178e31"
+          }
+        },
+        "configuration": {
+          "case": "3",
+          "phi": "1.4",
+          "pressure_Pa": "10132500",
+          "Tu_K": "298",
+          "width_m": "0.01",
+          "kinetics": "Burke2012-N2-pressure",
+          "collider_concentration": "pressure-based",
+          "transport": "author-pair-count 10",
+          "model_variant": "manual-soret-baseline",
+          "alpha": "original-Soave",
+          "flux_correction": "left-node",
+          "grid_factor": "1",
+          "initial_grid_points": "1818",
+          "conductivity": "dense-increment-diagnostic",
+          "Takahashi": "bounded-Table2",
+          "Soret": "manual-author-pairs",
+          "thermal_collision_pair_count": "10",
+          "energy": "legacy-total-enthalpy"
+        },
+        "speed_cm_s": 71.97727480841155,
+        "Tb_K": 2301.570104116161,
+        "grid_change": 0.0005119173765281149,
+        "diagnostics": {
+          "points": 1959,
+          "min_temperature_K": 297.9999999999819,
+          "max_temperature_K": 2301.570104116161,
+          "max_species_sum_error": 1.805834370927073e-10,
+          "minimum_mass_fraction": -1.100359381603289e-15,
+          "max_relative_massflux_change": 5.416918025247242e-10,
+          "inlet_outlet_enthalpy_difference_J_kg": 44.29707183196115
+        },
+        "sha256": {
+          "profile.csv": "9941e8e18fef6ca720c9d919551cbb286eb7f1fd9e6dfcfa075e750155a2c5bb",
+          "refinement.csv": "31c77301a4aace534afe7bd8aa8925d817e14f60babdf484689625684e7466f7",
+          "property-checks.csv": "27f9b4e7e62c23925b2bd7b8f95c5420a2ed5ce16246b8a2f0bd3603c56e0eb6",
+          "configuration.txt": "e9a957d06ca7831ad0d156fcdf31c75f567eac2f0d5a1f5854c00549e15a6d4b",
+          "callbacks.txt": "aec602aee8446fabe7b0c36d817fb144cd221a0588d48630577f191a73b36250",
+          "soret-flux.csv": "9068e54fd2eded601c91a69f67f82e9efd4e8499eff00e8793c092dc242c8e84"
+        },
+        "native_flux_checks": {
+          "decomposition": 2.7115420343444056e-16,
+          "thermal_definition": 1.180239513050295e-10,
+          "total_mass_closure": 1.3676386740353313e-11,
+          "thermal_mass_closure": 4.2367844286631344e-17,
+          "coefficient_projection": 6.389477672155611e-16
+        },
+        "strict_native_limits": {
+          "decomposition": 1e-12,
+          "thermal_definition": 1e-10,
+          "total_mass_closure": 1e-07,
+          "thermal_mass_closure": 1e-10,
+          "coefficient_projection": 1e-10
+        },
+        "strict_native_failures": [
+          "thermal_definition"
+        ],
+        "maximum_absolute_thermal_enthalpy_flux_W_m2": 9092401.68966069,
+        "species_thermal_flux": [
+          {
+            "species": "H",
+            "max_abs_ordinary_kg_m2s": 0.05765228104102242,
+            "max_abs_thermal_kg_m2s": 0.002805267462491236,
+            "max_abs_total_kg_m2s": 0.05504010515225385,
+            "signed_peak_thermal_kg_m2s": 0.002805267462491236,
+            "T_at_peak_thermal_K": 1852.0523465651659
+          },
+          {
+            "species": "H2",
+            "max_abs_ordinary_kg_m2s": 0.7547408474498967,
+            "max_abs_thermal_kg_m2s": 0.6099198054124153,
+            "max_abs_total_kg_m2s": 1.236264142141316,
+            "signed_peak_thermal_kg_m2s": 0.6099198054124153,
+            "T_at_peak_thermal_K": 1034.9450995660195
+          },
+          {
+            "species": "O",
+            "max_abs_ordinary_kg_m2s": 0.01577854592731932,
+            "max_abs_thermal_kg_m2s": 4.095957265770892e-05,
+            "max_abs_total_kg_m2s": 0.01581452688767923,
+            "signed_peak_thermal_kg_m2s": -4.095957265770892e-05,
+            "T_at_peak_thermal_K": 1713.908557844146
+          },
+          {
+            "species": "OH",
+            "max_abs_ordinary_kg_m2s": 0.07721677004325486,
+            "max_abs_thermal_kg_m2s": 0.000201741525655817,
+            "max_abs_total_kg_m2s": 0.07740089209037988,
+            "signed_peak_thermal_kg_m2s": -0.000201741525655817,
+            "T_at_peak_thermal_K": 1762.762029342569
+          },
+          {
+            "species": "H2O",
+            "max_abs_ordinary_kg_m2s": 6.485308784120969,
+            "max_abs_thermal_kg_m2s": 0.06753253448985017,
+            "max_abs_total_kg_m2s": 6.551094605582009,
+            "signed_peak_thermal_kg_m2s": -0.06753253448985017,
+            "T_at_peak_thermal_K": 1438.8704631396604
+          },
+          {
+            "species": "O2",
+            "max_abs_ordinary_kg_m2s": 4.913533033379093,
+            "max_abs_thermal_kg_m2s": 0.1131355246338339,
+            "max_abs_total_kg_m2s": 4.86871669884442,
+            "signed_peak_thermal_kg_m2s": -0.1131355246338339,
+            "T_at_peak_thermal_K": 770.3627062408862
+          },
+          {
+            "species": "HO2",
+            "max_abs_ordinary_kg_m2s": 0.1345726672565281,
+            "max_abs_thermal_kg_m2s": 0.001600564206349075,
+            "max_abs_total_kg_m2s": 0.1338893031816417,
+            "signed_peak_thermal_kg_m2s": -0.001600564206349075,
+            "T_at_peak_thermal_K": 1294.7940440596772
+          },
+          {
+            "species": "H2O2",
+            "max_abs_ordinary_kg_m2s": 0.1658550086497323,
+            "max_abs_thermal_kg_m2s": 0.001238396108221324,
+            "max_abs_total_kg_m2s": 0.1653567144977407,
+            "signed_peak_thermal_kg_m2s": -0.001238396108221324,
+            "T_at_peak_thermal_K": 1198.6974797115445
+          },
+          {
+            "species": "N2",
+            "max_abs_ordinary_kg_m2s": 0.8090235211902661,
+            "max_abs_thermal_kg_m2s": 0.4539259019625087,
+            "max_abs_total_kg_m2s": 0.3873884317229239,
+            "signed_peak_thermal_kg_m2s": -0.4539259019625087,
+            "T_at_peak_thermal_K": 1024.9996501865367
+          },
+          {
+            "species": "AR",
+            "max_abs_ordinary_kg_m2s": 2.81323577286075e-310,
+            "max_abs_thermal_kg_m2s": 1.0344345051965e-311,
+            "max_abs_total_kg_m2s": 2.8145086348012e-310,
+            "signed_peak_thermal_kg_m2s": -1.0344345051965e-311,
+            "T_at_peak_thermal_K": 1051.644600509183
+          },
+          {
+            "species": "HE",
+            "max_abs_ordinary_kg_m2s": 3.023357854600184e-299,
+            "max_abs_thermal_kg_m2s": 2.542798341594233e-302,
+            "max_abs_total_kg_m2s": 3.023357854600184e-299,
+            "signed_peak_thermal_kg_m2s": 2.542798341594233e-302,
+            "T_at_peak_thermal_K": 329.64482212783116
+          },
+          {
+            "species": "CO",
+            "max_abs_ordinary_kg_m2s": 0.0,
+            "max_abs_thermal_kg_m2s": 0.0,
+            "max_abs_total_kg_m2s": 0.0,
+            "signed_peak_thermal_kg_m2s": 0.0,
+            "T_at_peak_thermal_K": 297.99999999999807
+          },
+          {
+            "species": "CO2",
+            "max_abs_ordinary_kg_m2s": 0.0,
+            "max_abs_thermal_kg_m2s": 0.0,
+            "max_abs_total_kg_m2s": 0.0,
+            "signed_peak_thermal_kg_m2s": 0.0,
+            "T_at_peak_thermal_K": 297.99999999999807
+          }
+        ],
+        "paper_comparison": {
+          "phi": 1.4,
+          "reference_phi": 1.3999749903022414,
+          "value": 71.8145011595397,
+          "uncertainty": 0.33111146419463094,
+          "method": "native marker",
+          "drawing_ids": [
+            29
+          ],
+          "error_cm_s": 0.1627736488718483,
+          "relative_error_percent": 0.22665846903293652,
+          "screening_allowance_cm_s": 1.049256475790028,
+          "screen_passed": true
+        }
+      },
+      {
+        "job": 125091788,
+        "case": "4",
+        "phi": 1.4,
+        "transport": "pairs",
+        "variant": "baseline",
+        "source": "ae10e5c32ea9e794a2ab584f1f03eb72af4788cd",
+        "build_identity": {
+          "basis": "observed-job-records",
+          "job": 125091444,
+          "binary_sha256": "34d8c6f84618dbacd3b71820f92b5640904334999c391ba25a3382a4e0463e1f",
+          "record_sha256": {
+            "build-path.txt": "6627102e54893d24e383aa59067cc535fe417ea9cbd46bcc50d39768c4334d24",
+            "executable.sha256": "f80cb345b65f3b83ffeca08b08218ae321e6b69932d8da9a5a603034ae86fd66",
+            "source-revision.txt": "5d8b91a89bf8ac0ffe030daf5abd952bd16462eced1ff2bf1c926d42f43ae187",
+            "input-sha256.txt": "3243c9e4edbeaee0227b15e77081c1e98aade088e145671b2f7e598a8228e74e",
+            "guess-sha256.txt": "248f106d50c5b06065f664f964ad14fd1f8662cbeac519d9871d394e573ba0a8",
+            "command.txt": "f8917514242194788835bad804baccf53a6813c2959673b07ae864b115f73099"
+          }
+        },
+        "configuration": {
+          "case": "4",
+          "phi": "1.4",
+          "pressure_Pa": "10132500",
+          "Tu_K": "298",
+          "width_m": "0.01",
+          "kinetics": "Burke2012-N2-pressure",
+          "collider_concentration": "pressure-based",
+          "transport": "author-pair-count 10",
+          "model_variant": "baseline",
+          "alpha": "original-Soave",
+          "flux_correction": "left-node",
+          "grid_factor": "1",
+          "initial_grid_points": "1822",
+          "conductivity": "dense-increment-diagnostic",
+          "Takahashi": "bounded-Table2",
+          "Soret": "off",
+          "thermal_collision_pair_count": "0",
+          "energy": "legacy-total-enthalpy"
+        },
+        "speed_cm_s": 76.3134725378597,
+        "Tb_K": 2301.456623421305,
+        "grid_change": 2.566568124473534e-06,
+        "diagnostics": {
+          "points": 1825,
+          "min_temperature_K": 298.0,
+          "max_temperature_K": 2301.456623421305,
+          "max_species_sum_error": 1.9610979506978765e-11,
+          "minimum_mass_fraction": -1.079285006186919e-14,
+          "max_relative_massflux_change": 1.7751800029941478e-11,
+          "inlet_outlet_enthalpy_difference_J_kg": 12.672112125410422
+        },
+        "sha256": {
+          "profile.csv": "d1d6e3144276d8b66c1d857bec489145514db37370b2008b33b39909ed7b6a4b",
+          "refinement.csv": "cde2c1c9443348de6905f00450a040e5ea5e194ed45ad586bd895724ffd76af9",
+          "property-checks.csv": "27f9b4e7e62c23925b2bd7b8f95c5420a2ed5ce16246b8a2f0bd3603c56e0eb6",
+          "configuration.txt": "8b5e6319cc16c6b12b65b77ca92ad0c2438ee9acf49309d292b0d01159e1f11e",
+          "callbacks.txt": "685e4ea3618d0380095770f85908c9cfdec0f3d24a6b1ee6e030012eea573a7f"
+        },
+        "paper_comparison": {
+          "phi": 1.4,
+          "value": 70.18408511733031,
+          "uncertainty": 0.3494823993175189,
+          "method": "linear dash-gap bridge",
+          "bracket_phi": [
+            1.3799540157921886,
+            1.4074175780773812
+          ],
+          "drawing_ids": [
+            50,
+            51
+          ],
+          "error_cm_s": 6.129387420529383,
+          "relative_error_percent": 8.73330101871752,
+          "screening_allowance_cm_s": 1.0513232504908219,
+          "screen_passed": false
+        }
+      },
+      {
+        "job": 125091791,
+        "case": "4",
+        "phi": 1.4,
+        "transport": "pairs",
+        "variant": "soret-baseline",
+        "source": "ae10e5c32ea9e794a2ab584f1f03eb72af4788cd",
+        "build_identity": {
+          "basis": "observed-job-records",
+          "job": 125091444,
+          "binary_sha256": "34d8c6f84618dbacd3b71820f92b5640904334999c391ba25a3382a4e0463e1f",
+          "record_sha256": {
+            "build-path.txt": "6627102e54893d24e383aa59067cc535fe417ea9cbd46bcc50d39768c4334d24",
+            "executable.sha256": "f80cb345b65f3b83ffeca08b08218ae321e6b69932d8da9a5a603034ae86fd66",
+            "source-revision.txt": "5d8b91a89bf8ac0ffe030daf5abd952bd16462eced1ff2bf1c926d42f43ae187",
+            "input-sha256.txt": "3243c9e4edbeaee0227b15e77081c1e98aade088e145671b2f7e598a8228e74e",
+            "guess-sha256.txt": "248f106d50c5b06065f664f964ad14fd1f8662cbeac519d9871d394e573ba0a8",
+            "command.txt": "b4adc42135207dd50638812af36b4351333638e4357bac5ebca22f60f4b40e51"
+          }
+        },
+        "configuration": {
+          "case": "4",
+          "phi": "1.4",
+          "pressure_Pa": "10132500",
+          "Tu_K": "298",
+          "width_m": "0.01",
+          "kinetics": "Burke2012-N2-pressure",
+          "collider_concentration": "pressure-based",
+          "transport": "author-pair-count 10",
+          "model_variant": "soret-baseline",
+          "alpha": "original-Soave",
+          "flux_correction": "left-node",
+          "grid_factor": "1",
+          "initial_grid_points": "1822",
+          "conductivity": "dense-increment-diagnostic",
+          "Takahashi": "bounded-Table2",
+          "Soret": "cantera-3.2",
+          "thermal_collision_pair_count": "0",
+          "energy": "legacy-total-enthalpy"
+        },
+        "speed_cm_s": 73.27712182149547,
+        "Tb_K": 2301.488460261455,
+        "grid_change": 0.0005367760159193935,
+        "diagnostics": {
+          "points": 1971,
+          "min_temperature_K": 297.9999999999037,
+          "max_temperature_K": 2301.488460261455,
+          "max_species_sum_error": 1.2381751179901812e-10,
+          "minimum_mass_fraction": -2.157523057735961e-14,
+          "max_relative_massflux_change": 4.662170649538666e-10,
+          "inlet_outlet_enthalpy_difference_J_kg": 44.72777632480029
+        },
+        "sha256": {
+          "profile.csv": "1aa85eda96db4d65e6fc0207c8e8b0c9e0e09e426af95568df4f3c568997e7cb",
+          "refinement.csv": "2d3a93ce9e4d9fc94c335fcfdeabbd7bfb8b86bd9209a5059756e6ae1d957cf5",
+          "property-checks.csv": "27f9b4e7e62c23925b2bd7b8f95c5420a2ed5ce16246b8a2f0bd3603c56e0eb6",
+          "configuration.txt": "03df79c405811f7e6e9dc9479f4e9462143e4b355689ac1ecb5a1f558fc9e916",
+          "callbacks.txt": "ed5eac476080541cd0db350ab6df86f20ac2d3809bfa69310d1be4dc2d09caa7",
+          "soret-flux.csv": "0f3d1f0ee3bce44786310d12aea4f4fec434ac7d744b54aedda4c696d0a4f405"
+        },
+        "native_flux_checks": {
+          "decomposition": 2.749645321099432e-16,
+          "thermal_definition": 8.236803153318944e-12,
+          "total_mass_closure": 3.275580292836074e-11,
+          "thermal_mass_closure": 2.164915199020218e-11,
+          "coefficient_projection": 1.146043433713612e-10
+        },
+        "strict_native_limits": {
+          "decomposition": 1e-12,
+          "thermal_definition": 1e-10,
+          "total_mass_closure": 1e-07,
+          "thermal_mass_closure": 1e-10,
+          "coefficient_projection": 1e-10
+        },
+        "strict_native_failures": [
+          "coefficient_projection"
+        ],
+        "maximum_absolute_thermal_enthalpy_flux_W_m2": 4637839.247874958,
+        "species_thermal_flux": [
+          {
+            "species": "H",
+            "max_abs_ordinary_kg_m2s": 0.05876433399193763,
+            "max_abs_thermal_kg_m2s": 0.003251213741635294,
+            "max_abs_total_kg_m2s": 0.05576124174268717,
+            "signed_peak_thermal_kg_m2s": 0.003251213741635294,
+            "T_at_peak_thermal_K": 1855.393977891624
+          },
+          {
+            "species": "H2",
+            "max_abs_ordinary_kg_m2s": 0.809160941194375,
+            "max_abs_thermal_kg_m2s": 0.5509846328230834,
+            "max_abs_total_kg_m2s": 1.241431482278116,
+            "signed_peak_thermal_kg_m2s": 0.5509846328230834,
+            "T_at_peak_thermal_K": 1024.403958406732
+          },
+          {
+            "species": "O",
+            "max_abs_ordinary_kg_m2s": 0.0161522321860127,
+            "max_abs_thermal_kg_m2s": 0.0003444222786079377,
+            "max_abs_total_kg_m2s": 0.0158608868009184,
+            "signed_peak_thermal_kg_m2s": 0.0003444222786079377,
+            "T_at_peak_thermal_K": 1729.555496075708
+          },
+          {
+            "species": "OH",
+            "max_abs_ordinary_kg_m2s": 0.07798522352649366,
+            "max_abs_thermal_kg_m2s": 0.00150527526642816,
+            "max_abs_total_kg_m2s": 0.07665443724793336,
+            "signed_peak_thermal_kg_m2s": 0.00150527526642816,
+            "T_at_peak_thermal_K": 1786.5205865803491
+          },
+          {
+            "species": "H2O",
+            "max_abs_ordinary_kg_m2s": 6.704133597445677,
+            "max_abs_thermal_kg_m2s": 0.243882494240363,
+            "max_abs_total_kg_m2s": 6.460312629302979,
+            "signed_peak_thermal_kg_m2s": 0.243882494240363,
+            "T_at_peak_thermal_K": 1568.785656431281
+          },
+          {
+            "species": "O2",
+            "max_abs_ordinary_kg_m2s": 5.031480620468714,
+            "max_abs_thermal_kg_m2s": 0.2434551442445141,
+            "max_abs_total_kg_m2s": 4.88083889252246,
+            "signed_peak_thermal_kg_m2s": -0.2434551442445141,
+            "T_at_peak_thermal_K": 1024.403958406732
+          },
+          {
+            "species": "HO2",
+            "max_abs_ordinary_kg_m2s": 0.1356787901480866,
+            "max_abs_thermal_kg_m2s": 0.005289225868456674,
+            "max_abs_total_kg_m2s": 0.1327881013059401,
+            "signed_peak_thermal_kg_m2s": -0.005289225868456674,
+            "T_at_peak_thermal_K": 1355.4132097734725
+          },
+          {
+            "species": "H2O2",
+            "max_abs_ordinary_kg_m2s": 0.167871535037997,
+            "max_abs_thermal_kg_m2s": 0.004238877616038297,
+            "max_abs_total_kg_m2s": 0.1657706740325848,
+            "signed_peak_thermal_kg_m2s": -0.004238877616038297,
+            "T_at_peak_thermal_K": 1254.454021712015
+          },
+          {
+            "species": "N2",
+            "max_abs_ordinary_kg_m2s": 0.7720264993680293,
+            "max_abs_thermal_kg_m2s": 0.4925805651747054,
+            "max_abs_total_kg_m2s": 0.3215936382496298,
+            "signed_peak_thermal_kg_m2s": -0.4925805651747054,
+            "T_at_peak_thermal_K": 1404.4231464669874
+          },
+          {
+            "species": "AR",
+            "max_abs_ordinary_kg_m2s": 2.66339699531371e-298,
+            "max_abs_thermal_kg_m2s": 9.841063908488075e-299,
+            "max_abs_total_kg_m2s": 3.093962229619974e-298,
+            "signed_peak_thermal_kg_m2s": 9.841063908488075e-299,
+            "T_at_peak_thermal_K": 1348.361698014973
+          },
+          {
+            "species": "HE",
+            "max_abs_ordinary_kg_m2s": 2.87588104727927e-298,
+            "max_abs_thermal_kg_m2s": 1.521732985371531e-299,
+            "max_abs_total_kg_m2s": 2.877126694184951e-298,
+            "signed_peak_thermal_kg_m2s": -1.521732985371531e-299,
+            "T_at_peak_thermal_K": 1194.428860003121
+          },
+          {
+            "species": "CO",
+            "max_abs_ordinary_kg_m2s": 0.0,
+            "max_abs_thermal_kg_m2s": 0.0,
+            "max_abs_total_kg_m2s": 0.0,
+            "signed_peak_thermal_kg_m2s": 0.0,
+            "T_at_peak_thermal_K": 297.9999999999602
+          },
+          {
+            "species": "CO2",
+            "max_abs_ordinary_kg_m2s": 0.0,
+            "max_abs_thermal_kg_m2s": 0.0,
+            "max_abs_total_kg_m2s": 0.0,
+            "signed_peak_thermal_kg_m2s": 0.0,
+            "T_at_peak_thermal_K": 297.9999999999602
+          }
+        ],
+        "paper_comparison": {
+          "phi": 1.4,
+          "value": 70.18408511733031,
+          "uncertainty": 0.3494823993175189,
+          "method": "linear dash-gap bridge",
+          "bracket_phi": [
+            1.3799540157921886,
+            1.4074175780773812
+          ],
+          "drawing_ids": [
+            50,
+            51
+          ],
+          "error_cm_s": 3.093036704165158,
+          "relative_error_percent": 4.407034299862089,
+          "screening_allowance_cm_s": 1.0513232504908219,
+          "screen_passed": false
+        }
+      },
+      {
+        "job": 125091792,
+        "case": "4",
+        "phi": 1.4,
+        "transport": "pairs",
+        "variant": "manual-soret-baseline",
+        "source": "ae10e5c32ea9e794a2ab584f1f03eb72af4788cd",
+        "build_identity": {
+          "basis": "observed-job-records",
+          "job": 125091444,
+          "binary_sha256": "34d8c6f84618dbacd3b71820f92b5640904334999c391ba25a3382a4e0463e1f",
+          "record_sha256": {
+            "build-path.txt": "6627102e54893d24e383aa59067cc535fe417ea9cbd46bcc50d39768c4334d24",
+            "executable.sha256": "f80cb345b65f3b83ffeca08b08218ae321e6b69932d8da9a5a603034ae86fd66",
+            "source-revision.txt": "5d8b91a89bf8ac0ffe030daf5abd952bd16462eced1ff2bf1c926d42f43ae187",
+            "input-sha256.txt": "3243c9e4edbeaee0227b15e77081c1e98aade088e145671b2f7e598a8228e74e",
+            "guess-sha256.txt": "248f106d50c5b06065f664f964ad14fd1f8662cbeac519d9871d394e573ba0a8",
+            "command.txt": "edd6d88f1fef0c3a07758efaee99431025cefd202cab48b39933e931f96d0312"
+          }
+        },
+        "configuration": {
+          "case": "4",
+          "phi": "1.4",
+          "pressure_Pa": "10132500",
+          "Tu_K": "298",
+          "width_m": "0.01",
+          "kinetics": "Burke2012-N2-pressure",
+          "collider_concentration": "pressure-based",
+          "transport": "author-pair-count 10",
+          "model_variant": "manual-soret-baseline",
+          "alpha": "original-Soave",
+          "flux_correction": "left-node",
+          "grid_factor": "1",
+          "initial_grid_points": "1822",
+          "conductivity": "dense-increment-diagnostic",
+          "Takahashi": "bounded-Table2",
+          "Soret": "manual-author-pairs",
+          "thermal_collision_pair_count": "10",
+          "energy": "legacy-total-enthalpy"
+        },
+        "speed_cm_s": 72.72827240997997,
+        "Tb_K": 2301.588260984653,
+        "grid_change": 0.00048684792209707783,
+        "diagnostics": {
+          "points": 1961,
+          "min_temperature_K": 297.9999999999042,
+          "max_temperature_K": 2301.588260984653,
+          "max_species_sum_error": 1.2622991540922612e-10,
+          "minimum_mass_fraction": -2.295422770863901e-14,
+          "max_relative_massflux_change": 4.75311567882386e-10,
+          "inlet_outlet_enthalpy_difference_J_kg": 43.26626757811027
+        },
+        "sha256": {
+          "profile.csv": "c16e32d2dd0c252fb4444aa224f89e3931185dee6969d0d3c0822eda31ad3722",
+          "refinement.csv": "d5c28efc145608b8f375cfc83bad59eb161c127b88b4acacb243bd6679c91ba9",
+          "property-checks.csv": "27f9b4e7e62c23925b2bd7b8f95c5420a2ed5ce16246b8a2f0bd3603c56e0eb6",
+          "configuration.txt": "c7aaec6e076ec0cfbfbac47d68a2c4570ca073cc4bb2eb50caa565a312d2b91c",
+          "callbacks.txt": "00f9a083b92b7b9bf7d25c287860d3e68ca512e5a142742967dfbf81587420b6",
+          "soret-flux.csv": "2e3445c390697aafadae8421e52454d0b84238e83ecc6f03bbb80244baca5a6c"
+        },
+        "native_flux_checks": {
+          "decomposition": 2.697554265172449e-16,
+          "thermal_definition": 5.888575504015725e-12,
+          "total_mass_closure": 9.981106733494016e-12,
+          "thermal_mass_closure": 4.214928539331951e-17,
+          "coefficient_projection": 6.37475191443279e-16
+        },
+        "strict_native_limits": {
+          "decomposition": 1e-12,
+          "thermal_definition": 1e-10,
+          "total_mass_closure": 1e-07,
+          "thermal_mass_closure": 1e-10,
+          "coefficient_projection": 1e-10
+        },
+        "strict_native_failures": [],
+        "maximum_absolute_thermal_enthalpy_flux_W_m2": 9075499.117119905,
+        "species_thermal_flux": [
+          {
+            "species": "H",
+            "max_abs_ordinary_kg_m2s": 0.05803187853011019,
+            "max_abs_thermal_kg_m2s": 0.002821615280120445,
+            "max_abs_total_kg_m2s": 0.05540610775394234,
+            "signed_peak_thermal_kg_m2s": 0.002821615280120445,
+            "T_at_peak_thermal_K": 1851.625342141094
+          },
+          {
+            "species": "H2",
+            "max_abs_ordinary_kg_m2s": 0.7644937181828451,
+            "max_abs_thermal_kg_m2s": 0.6038948934235793,
+            "max_abs_total_kg_m2s": 1.245622157089399,
+            "signed_peak_thermal_kg_m2s": 0.6038948934235793,
+            "T_at_peak_thermal_K": 1052.0410059594865
+          },
+          {
+            "species": "O",
+            "max_abs_ordinary_kg_m2s": 0.01592952267387672,
+            "max_abs_thermal_kg_m2s": 4.139652848690019e-05,
+            "max_abs_total_kg_m2s": 0.01596579753563148,
+            "signed_peak_thermal_kg_m2s": -4.139652848690019e-05,
+            "T_at_peak_thermal_K": 1714.7789663627964
+          },
+          {
+            "species": "OH",
+            "max_abs_ordinary_kg_m2s": 0.0777328408362142,
+            "max_abs_thermal_kg_m2s": 0.0002032618436776193,
+            "max_abs_total_kg_m2s": 0.07791836675216249,
+            "signed_peak_thermal_kg_m2s": -0.0002032618436776193,
+            "T_at_peak_thermal_K": 1763.5091973425606
+          },
+          {
+            "species": "H2O",
+            "max_abs_ordinary_kg_m2s": 6.519652691679247,
+            "max_abs_thermal_kg_m2s": 0.06702712352921657,
+            "max_abs_total_kg_m2s": 6.585064338962211,
+            "signed_peak_thermal_kg_m2s": -0.06702712352921657,
+            "T_at_peak_thermal_K": 1445.9754304520734
+          },
+          {
+            "species": "O2",
+            "max_abs_ordinary_kg_m2s": 4.935633166048159,
+            "max_abs_thermal_kg_m2s": 0.1114533827585089,
+            "max_abs_total_kg_m2s": 4.890875021343821,
+            "signed_peak_thermal_kg_m2s": -0.1114533827585089,
+            "T_at_peak_thermal_K": 789.1779742563153
+          },
+          {
+            "species": "HO2",
+            "max_abs_ordinary_kg_m2s": 0.1347818340179869,
+            "max_abs_thermal_kg_m2s": 0.001595640095663369,
+            "max_abs_total_kg_m2s": 0.1340981088470772,
+            "signed_peak_thermal_kg_m2s": -0.001595640095663369,
+            "T_at_peak_thermal_K": 1297.7557314311516
+          },
+          {
+            "species": "H2O2",
+            "max_abs_ordinary_kg_m2s": 0.1659153105823748,
+            "max_abs_thermal_kg_m2s": 0.001230524412314006,
+            "max_abs_total_kg_m2s": 0.1654151191069731,
+            "signed_peak_thermal_kg_m2s": -0.001230524412314006,
+            "T_at_peak_thermal_K": 1204.2346840086554
+          },
+          {
+            "species": "N2",
+            "max_abs_ordinary_kg_m2s": 0.8096978200944392,
+            "max_abs_thermal_kg_m2s": 0.4493913555441352,
+            "max_abs_total_kg_m2s": 0.3910566379536395,
+            "signed_peak_thermal_kg_m2s": -0.4493913555441352,
+            "T_at_peak_thermal_K": 1042.154438129357
+          },
+          {
+            "species": "AR",
+            "max_abs_ordinary_kg_m2s": 3.371045718710279e-308,
+            "max_abs_thermal_kg_m2s": 1.261417772244976e-309,
+            "max_abs_total_kg_m2s": 3.373374783059811e-308,
+            "signed_peak_thermal_kg_m2s": -1.261417772244976e-309,
+            "T_at_peak_thermal_K": 1082.0288785885864
+          },
+          {
+            "species": "HE",
+            "max_abs_ordinary_kg_m2s": 2.064236030671772e-299,
+            "max_abs_thermal_kg_m2s": 1.157061631799338e-302,
+            "max_abs_total_kg_m2s": 2.064236030671772e-299,
+            "signed_peak_thermal_kg_m2s": 1.157061631799338e-302,
+            "T_at_peak_thermal_K": 304.18727714071593
+          },
+          {
+            "species": "CO",
+            "max_abs_ordinary_kg_m2s": 0.0,
+            "max_abs_thermal_kg_m2s": 0.0,
+            "max_abs_total_kg_m2s": 0.0,
+            "signed_peak_thermal_kg_m2s": 0.0,
+            "T_at_peak_thermal_K": 297.99999999995754
+          },
+          {
+            "species": "CO2",
+            "max_abs_ordinary_kg_m2s": 0.0,
+            "max_abs_thermal_kg_m2s": 0.0,
+            "max_abs_total_kg_m2s": 0.0,
+            "signed_peak_thermal_kg_m2s": 0.0,
+            "T_at_peak_thermal_K": 297.99999999995754
+          }
+        ],
+        "paper_comparison": {
+          "phi": 1.4,
+          "value": 70.18408511733031,
+          "uncertainty": 0.3494823993175189,
+          "method": "linear dash-gap bridge",
+          "bracket_phi": [
+            1.3799540157921886,
+            1.4074175780773812
+          ],
+          "drawing_ids": [
+            50,
+            51
+          ],
+          "error_cm_s": 2.544187292649653,
+          "relative_error_percent": 3.6250202426894917,
+          "screening_allowance_cm_s": 1.0513232504908219,
+          "screen_passed": false
+        }
+      },
+      {
+        "job": 125091794,
+        "case": "5",
+        "phi": 1.4,
+        "transport": "pairs",
+        "variant": "baseline",
+        "source": "ae10e5c32ea9e794a2ab584f1f03eb72af4788cd",
+        "build_identity": {
+          "basis": "observed-job-records",
+          "job": 125091444,
+          "binary_sha256": "34d8c6f84618dbacd3b71820f92b5640904334999c391ba25a3382a4e0463e1f",
+          "record_sha256": {
+            "build-path.txt": "6627102e54893d24e383aa59067cc535fe417ea9cbd46bcc50d39768c4334d24",
+            "executable.sha256": "f80cb345b65f3b83ffeca08b08218ae321e6b69932d8da9a5a603034ae86fd66",
+            "source-revision.txt": "5d8b91a89bf8ac0ffe030daf5abd952bd16462eced1ff2bf1c926d42f43ae187",
+            "input-sha256.txt": "3243c9e4edbeaee0227b15e77081c1e98aade088e145671b2f7e598a8228e74e",
+            "guess-sha256.txt": "1894c90758a8d8ab4b905e77ef6b41318fc34f7ee9559991765251cd886aa9b5",
+            "command.txt": "39e9763a5e19c2c84c21e7d05d998876b55a786b5fe15173a35261ebd646e0e0"
+          }
+        },
+        "configuration": {
+          "case": "5",
+          "phi": "1.4",
+          "pressure_Pa": "10132500",
+          "Tu_K": "298",
+          "width_m": "0.01",
+          "kinetics": "Burke2012-N2-pressure",
+          "collider_concentration": "pressure-based",
+          "transport": "author-pair-count 10",
+          "model_variant": "baseline",
+          "alpha": "original-Soave",
+          "flux_correction": "left-node",
+          "grid_factor": "1",
+          "initial_grid_points": "1831",
+          "conductivity": "dense-increment-diagnostic",
+          "Takahashi": "bounded-Table2",
+          "Soret": "off",
+          "thermal_collision_pair_count": "0",
+          "energy": "legacy-total-enthalpy"
+        },
+        "speed_cm_s": 75.38071097957362,
+        "Tb_K": 2301.46412553747,
+        "grid_change": 4.27493434795867e-06,
+        "diagnostics": {
+          "points": 1834,
+          "min_temperature_K": 298.0,
+          "max_temperature_K": 2301.46412553747,
+          "max_species_sum_error": 1.1596312798900499e-10,
+          "minimum_mass_fraction": -6.643744157455873e-23,
+          "max_relative_massflux_change": 1.0996159538478878e-10,
+          "inlet_outlet_enthalpy_difference_J_kg": 23.952306533170486
+        },
+        "sha256": {
+          "profile.csv": "03db2d00cdacf80c96cb8d67bc6c7472f1f40a2a45ee85b376cbe51073c86564",
+          "refinement.csv": "d593e09ae508b8311bc58a0306f70c7cbe8095e9cb46140c78407a42cd966a36",
+          "property-checks.csv": "27f9b4e7e62c23925b2bd7b8f95c5420a2ed5ce16246b8a2f0bd3603c56e0eb6",
+          "configuration.txt": "a617dab210422795208dceb3ee58d80193fde9f5259e3d72a3645ab757859bb7",
+          "callbacks.txt": "dcc3b7df24915639419e7048b058048130c5434e1e80180d70268e8c173411d3"
+        },
+        "paper_comparison": {
+          "phi": 1.4,
+          "value": 68.27386173246784,
+          "uncertainty": 0.34527273064393715,
+          "method": "linear dash-gap bridge",
+          "bracket_phi": [
+            1.3793033136263515,
+            1.4070231857799183
+          ],
+          "drawing_ids": [
+            85,
+            86
+          ],
+          "error_cm_s": 7.106849247105785,
+          "relative_error_percent": 10.409326595519207,
+          "screening_allowance_cm_s": 1.0280113479686155,
+          "screen_passed": false
+        }
+      },
+      {
+        "job": 125091797,
+        "case": "5",
+        "phi": 1.4,
+        "transport": "pairs",
+        "variant": "soret-baseline",
+        "source": "ae10e5c32ea9e794a2ab584f1f03eb72af4788cd",
+        "build_identity": {
+          "basis": "observed-job-records",
+          "job": 125091444,
+          "binary_sha256": "34d8c6f84618dbacd3b71820f92b5640904334999c391ba25a3382a4e0463e1f",
+          "record_sha256": {
+            "build-path.txt": "6627102e54893d24e383aa59067cc535fe417ea9cbd46bcc50d39768c4334d24",
+            "executable.sha256": "f80cb345b65f3b83ffeca08b08218ae321e6b69932d8da9a5a603034ae86fd66",
+            "source-revision.txt": "5d8b91a89bf8ac0ffe030daf5abd952bd16462eced1ff2bf1c926d42f43ae187",
+            "input-sha256.txt": "3243c9e4edbeaee0227b15e77081c1e98aade088e145671b2f7e598a8228e74e",
+            "guess-sha256.txt": "1894c90758a8d8ab4b905e77ef6b41318fc34f7ee9559991765251cd886aa9b5",
+            "command.txt": "b45fc5ccd3606e6eb2dcde710fb182122025f8da9238eafc34aa594c981e3796"
+          }
+        },
+        "configuration": {
+          "case": "5",
+          "phi": "1.4",
+          "pressure_Pa": "10132500",
+          "Tu_K": "298",
+          "width_m": "0.01",
+          "kinetics": "Burke2012-N2-pressure",
+          "collider_concentration": "pressure-based",
+          "transport": "author-pair-count 10",
+          "model_variant": "soret-baseline",
+          "alpha": "original-Soave",
+          "flux_correction": "left-node",
+          "grid_factor": "1",
+          "initial_grid_points": "1831",
+          "conductivity": "dense-increment-diagnostic",
+          "Takahashi": "bounded-Table2",
+          "Soret": "cantera-3.2",
+          "thermal_collision_pair_count": "0",
+          "energy": "legacy-total-enthalpy"
+        },
+        "speed_cm_s": 72.34036359581421,
+        "Tb_K": 2301.547798370164,
+        "grid_change": 0.000610727371990416,
+        "diagnostics": {
+          "points": 1988,
+          "min_temperature_K": 297.9999999999951,
+          "max_temperature_K": 2301.547798370164,
+          "max_species_sum_error": 5.0921289407313e-10,
+          "minimum_mass_fraction": -1.812540413060069e-16,
+          "max_relative_massflux_change": 3.65503294297298e-10,
+          "inlet_outlet_enthalpy_difference_J_kg": 39.08605201768114
+        },
+        "sha256": {
+          "profile.csv": "b2e06de733342902d4ed4ff15c887fe2ac3cf0d0f1a11b2669a212d1361cf74a",
+          "refinement.csv": "26c7a9b4ff8247a7f3b851497160303d36daa2fdc1fa0743bd16a3b46f8c6eda",
+          "property-checks.csv": "27f9b4e7e62c23925b2bd7b8f95c5420a2ed5ce16246b8a2f0bd3603c56e0eb6",
+          "configuration.txt": "12806e0926b1efb907a7cf183952779ba62f2badcb85e02cf14137f987efe45c",
+          "callbacks.txt": "a6cce81f8b6586c72f42e27205f7a789ecf42d89695c103ab555f97eb24654c0",
+          "soret-flux.csv": "523303d898cfbabcc8fae9e7ab820d6c17df35de60b2f15cc05c415a80de396b"
+        },
+        "native_flux_checks": {
+          "decomposition": 2.766264638446904e-16,
+          "thermal_definition": 6.577375093481588e-11,
+          "total_mass_closure": 1.2198186248480632e-10,
+          "thermal_mass_closure": 8.59387741552774e-11,
+          "coefficient_projection": 4.694378682211566e-10
+        },
+        "strict_native_limits": {
+          "decomposition": 1e-12,
+          "thermal_definition": 1e-10,
+          "total_mass_closure": 1e-07,
+          "thermal_mass_closure": 1e-10,
+          "coefficient_projection": 1e-10
+        },
+        "strict_native_failures": [
+          "coefficient_projection"
+        ],
+        "maximum_absolute_thermal_enthalpy_flux_W_m2": 4692032.670974436,
+        "species_thermal_flux": [
+          {
+            "species": "H",
+            "max_abs_ordinary_kg_m2s": 0.05846619893911925,
+            "max_abs_thermal_kg_m2s": 0.003238611752818026,
+            "max_abs_total_kg_m2s": 0.05547315223707174,
+            "signed_peak_thermal_kg_m2s": 0.003238611752818026,
+            "T_at_peak_thermal_K": 1853.6055699988046
+          },
+          {
+            "species": "H2",
+            "max_abs_ordinary_kg_m2s": 0.7955123866335011,
+            "max_abs_thermal_kg_m2s": 0.5610663209931954,
+            "max_abs_total_kg_m2s": 1.235952861947966,
+            "signed_peak_thermal_kg_m2s": 0.5610663209931954,
+            "T_at_peak_thermal_K": 1024.9988896191585
+          },
+          {
+            "species": "O",
+            "max_abs_ordinary_kg_m2s": 0.01595292990053207,
+            "max_abs_thermal_kg_m2s": 0.0003408680819110582,
+            "max_abs_total_kg_m2s": 0.01566427988254537,
+            "signed_peak_thermal_kg_m2s": 0.0003408680819110582,
+            "T_at_peak_thermal_K": 1727.0271163164525
+          },
+          {
+            "species": "OH",
+            "max_abs_ordinary_kg_m2s": 0.07753948055479098,
+            "max_abs_thermal_kg_m2s": 0.001498845478745842,
+            "max_abs_total_kg_m2s": 0.07621298997464722,
+            "signed_peak_thermal_kg_m2s": 0.001498845478745842,
+            "T_at_peak_thermal_K": 1784.5147725037014
+          },
+          {
+            "species": "H2O",
+            "max_abs_ordinary_kg_m2s": 6.66917197623818,
+            "max_abs_thermal_kg_m2s": 0.2476971005868702,
+            "max_abs_total_kg_m2s": 6.421500006584949,
+            "signed_peak_thermal_kg_m2s": 0.2476971005868702,
+            "T_at_peak_thermal_K": 1562.155434251282
+          },
+          {
+            "species": "O2",
+            "max_abs_ordinary_kg_m2s": 5.044482411189626,
+            "max_abs_thermal_kg_m2s": 0.246765538041797,
+            "max_abs_total_kg_m2s": 4.890830410264286,
+            "signed_peak_thermal_kg_m2s": -0.246765538041797,
+            "T_at_peak_thermal_K": 1024.9988896191585
+          },
+          {
+            "species": "HO2",
+            "max_abs_ordinary_kg_m2s": 0.136324370190522,
+            "max_abs_thermal_kg_m2s": 0.005358415212278421,
+            "max_abs_total_kg_m2s": 0.1334002191541416,
+            "signed_peak_thermal_kg_m2s": -0.005358415212278421,
+            "T_at_peak_thermal_K": 1352.6428645635735
+          },
+          {
+            "species": "H2O2",
+            "max_abs_ordinary_kg_m2s": 0.169697569438773,
+            "max_abs_thermal_kg_m2s": 0.004328945634739775,
+            "max_abs_total_kg_m2s": 0.167558524867802,
+            "signed_peak_thermal_kg_m2s": -0.004328945634739775,
+            "T_at_peak_thermal_K": 1249.3135953240705
+          },
+          {
+            "species": "N2",
+            "max_abs_ordinary_kg_m2s": 0.7289143243010454,
+            "max_abs_thermal_kg_m2s": 0.5032610765294022,
+            "max_abs_total_kg_m2s": 0.3374544395995123,
+            "signed_peak_thermal_kg_m2s": -0.5032610765294022,
+            "T_at_peak_thermal_K": 1395.938131685526
+          },
+          {
+            "species": "AR",
+            "max_abs_ordinary_kg_m2s": 4.883135480906689e-300,
+            "max_abs_thermal_kg_m2s": 1.033278553376991e-300,
+            "max_abs_total_kg_m2s": 5.841069651655455e-300,
+            "signed_peak_thermal_kg_m2s": 1.033278553376991e-300,
+            "T_at_peak_thermal_K": 1467.115447119809
+          },
+          {
+            "species": "HE",
+            "max_abs_ordinary_kg_m2s": 6.005155168198083e-300,
+            "max_abs_thermal_kg_m2s": 2.910706677643918e-301,
+            "max_abs_total_kg_m2s": 6.25104066028827e-300,
+            "signed_peak_thermal_kg_m2s": 2.910706677643918e-301,
+            "T_at_peak_thermal_K": 1249.3135953240705
+          },
+          {
+            "species": "CO",
+            "max_abs_ordinary_kg_m2s": 0.0,
+            "max_abs_thermal_kg_m2s": 0.0,
+            "max_abs_total_kg_m2s": 0.0,
+            "signed_peak_thermal_kg_m2s": -0.0,
+            "T_at_peak_thermal_K": 298.00000000000114
+          },
+          {
+            "species": "CO2",
+            "max_abs_ordinary_kg_m2s": 0.0,
+            "max_abs_thermal_kg_m2s": 0.0,
+            "max_abs_total_kg_m2s": 0.0,
+            "signed_peak_thermal_kg_m2s": -0.0,
+            "T_at_peak_thermal_K": 298.00000000000114
+          }
+        ],
+        "paper_comparison": {
+          "phi": 1.4,
+          "value": 68.27386173246784,
+          "uncertainty": 0.34527273064393715,
+          "method": "linear dash-gap bridge",
+          "bracket_phi": [
+            1.3793033136263515,
+            1.4070231857799183
+          ],
+          "drawing_ids": [
+            85,
+            86
+          ],
+          "error_cm_s": 4.0665018633463745,
+          "relative_error_percent": 5.956162080418159,
+          "screening_allowance_cm_s": 1.0280113479686155,
+          "screen_passed": false
+        }
+      },
+      {
+        "job": 125091800,
+        "case": "5",
+        "phi": 1.4,
+        "transport": "pairs",
+        "variant": "manual-soret-baseline",
+        "source": "ae10e5c32ea9e794a2ab584f1f03eb72af4788cd",
+        "build_identity": {
+          "basis": "observed-job-records",
+          "job": 125091444,
+          "binary_sha256": "34d8c6f84618dbacd3b71820f92b5640904334999c391ba25a3382a4e0463e1f",
+          "record_sha256": {
+            "build-path.txt": "6627102e54893d24e383aa59067cc535fe417ea9cbd46bcc50d39768c4334d24",
+            "executable.sha256": "f80cb345b65f3b83ffeca08b08218ae321e6b69932d8da9a5a603034ae86fd66",
+            "source-revision.txt": "5d8b91a89bf8ac0ffe030daf5abd952bd16462eced1ff2bf1c926d42f43ae187",
+            "input-sha256.txt": "3243c9e4edbeaee0227b15e77081c1e98aade088e145671b2f7e598a8228e74e",
+            "guess-sha256.txt": "1894c90758a8d8ab4b905e77ef6b41318fc34f7ee9559991765251cd886aa9b5",
+            "command.txt": "743f891a9d7ede173c956bd43eea8a4aed15bd936b36a1fc4e33e39d0eef1e04"
+          }
+        },
+        "configuration": {
+          "case": "5",
+          "phi": "1.4",
+          "pressure_Pa": "10132500",
+          "Tu_K": "298",
+          "width_m": "0.01",
+          "kinetics": "Burke2012-N2-pressure",
+          "collider_concentration": "pressure-based",
+          "transport": "author-pair-count 10",
+          "model_variant": "manual-soret-baseline",
+          "alpha": "original-Soave",
+          "flux_correction": "left-node",
+          "grid_factor": "1",
+          "initial_grid_points": "1831",
+          "conductivity": "dense-increment-diagnostic",
+          "Takahashi": "bounded-Table2",
+          "Soret": "manual-author-pairs",
+          "thermal_collision_pair_count": "10",
+          "energy": "legacy-total-enthalpy"
+        },
+        "speed_cm_s": 71.78882811707203,
+        "Tb_K": 2301.655762414134,
+        "grid_change": 0.0005527944127958762,
+        "diagnostics": {
+          "points": 1975,
+          "min_temperature_K": 297.9999999999242,
+          "max_temperature_K": 2301.655762414134,
+          "max_species_sum_error": 4.326008440358464e-10,
+          "minimum_mass_fraction": -1.739327423696475e-14,
+          "max_relative_massflux_change": 2.9064517459431727e-10,
+          "inlet_outlet_enthalpy_difference_J_kg": 34.690611837420875
+        },
+        "sha256": {
+          "profile.csv": "e8c710e78a4f9a3f5bfd564b7ccc993fb54b27540b43ef653f6afebd9808e568",
+          "refinement.csv": "b8e0f865bce7007523470ad81d1a099ca82c5bbadb281c5971a69c712454291d",
+          "property-checks.csv": "27f9b4e7e62c23925b2bd7b8f95c5420a2ed5ce16246b8a2f0bd3603c56e0eb6",
+          "configuration.txt": "1c783f88161fdcfb35f1a9a2dfc0cc7ec5adaca3139c1141dd1d6f4cc670ef03",
+          "callbacks.txt": "975bae7cbfcd5f2d5ecb920c5b08e114569f31a1870a561b03dc4f8565b88c7f",
+          "soret-flux.csv": "e2a7aa91e41552ed493e911168a839396f735055480fde8ea4ae5d20b5416b8a"
+        },
+        "native_flux_checks": {
+          "decomposition": 2.7133236003620184e-16,
+          "thermal_definition": 7.022454559731954e-11,
+          "total_mass_closure": 2.322608817521201e-11,
+          "thermal_mass_closure": 5.087481750678784e-17,
+          "coefficient_projection": 7.732989432138257e-16
+        },
+        "strict_native_limits": {
+          "decomposition": 1e-12,
+          "thermal_definition": 1e-10,
+          "total_mass_closure": 1e-07,
+          "thermal_mass_closure": 1e-10,
+          "coefficient_projection": 1e-10
+        },
+        "strict_native_failures": [],
+        "maximum_absolute_thermal_enthalpy_flux_W_m2": 9234486.758775847,
+        "species_thermal_flux": [
+          {
+            "species": "H",
+            "max_abs_ordinary_kg_m2s": 0.057725520649497,
+            "max_abs_thermal_kg_m2s": 0.002812501381410177,
+            "max_abs_total_kg_m2s": 0.05510628439530942,
+            "signed_peak_thermal_kg_m2s": 0.002812501381410177,
+            "T_at_peak_thermal_K": 1851.8010441654806
+          },
+          {
+            "species": "H2",
+            "max_abs_ordinary_kg_m2s": 0.7496455323551732,
+            "max_abs_thermal_kg_m2s": 0.6162429808838115,
+            "max_abs_total_kg_m2s": 1.240096668104149,
+            "signed_peak_thermal_kg_m2s": 0.6162429808838115,
+            "T_at_peak_thermal_K": 1049.1250088524234
+          },
+          {
+            "species": "O",
+            "max_abs_ordinary_kg_m2s": 0.01572888685037977,
+            "max_abs_thermal_kg_m2s": 4.094794851729016e-05,
+            "max_abs_total_kg_m2s": 0.01576477691410734,
+            "signed_peak_thermal_kg_m2s": -4.094794851729016e-05,
+            "T_at_peak_thermal_K": 1712.380166649353
+          },
+          {
+            "species": "OH",
+            "max_abs_ordinary_kg_m2s": 0.07728496651372202,
+            "max_abs_thermal_kg_m2s": 0.0002024699022727579,
+            "max_abs_total_kg_m2s": 0.07746995376650186,
+            "signed_peak_thermal_kg_m2s": -0.0002024699022727579,
+            "T_at_peak_thermal_K": 1761.7459039345076
+          },
+          {
+            "species": "H2O",
+            "max_abs_ordinary_kg_m2s": 6.479761702116669,
+            "max_abs_thermal_kg_m2s": 0.0687902460899855,
+            "max_abs_total_kg_m2s": 6.546793162316668,
+            "signed_peak_thermal_kg_m2s": -0.0687902460899855,
+            "T_at_peak_thermal_K": 1438.7846686371315
+          },
+          {
+            "species": "O2",
+            "max_abs_ordinary_kg_m2s": 4.94596005191246,
+            "max_abs_thermal_kg_m2s": 0.112704302828786,
+            "max_abs_total_kg_m2s": 4.900384870071448,
+            "signed_peak_thermal_kg_m2s": -0.112704302828786,
+            "T_at_peak_thermal_K": 782.1532242822036
+          },
+          {
+            "species": "HO2",
+            "max_abs_ordinary_kg_m2s": 0.1353947537694249,
+            "max_abs_thermal_kg_m2s": 0.00161315721273008,
+            "max_abs_total_kg_m2s": 0.1347057601825117,
+            "signed_peak_thermal_kg_m2s": -0.00161315721273008,
+            "T_at_peak_thermal_K": 1293.8687768048726
+          },
+          {
+            "species": "H2O2",
+            "max_abs_ordinary_kg_m2s": 0.1676361290892438,
+            "max_abs_thermal_kg_m2s": 0.001256343011893329,
+            "max_abs_total_kg_m2s": 0.1671284418729979,
+            "signed_peak_thermal_kg_m2s": -0.001256343011893329,
+            "T_at_peak_thermal_K": 1197.918480573289
+          },
+          {
+            "species": "N2",
+            "max_abs_ordinary_kg_m2s": 0.7648005417909309,
+            "max_abs_thermal_kg_m2s": 0.4590273388592704,
+            "max_abs_total_kg_m2s": 0.3807155409595391,
+            "signed_peak_thermal_kg_m2s": -0.4590273388592704,
+            "T_at_peak_thermal_K": 1040.9680091210116
+          },
+          {
+            "species": "AR",
+            "max_abs_ordinary_kg_m2s": 5.733918406270186e-309,
+            "max_abs_thermal_kg_m2s": 2.60020361927053e-310,
+            "max_abs_total_kg_m2s": 5.737881771267887e-309,
+            "signed_peak_thermal_kg_m2s": -2.60020361927053e-310,
+            "T_at_peak_thermal_K": 1087.1191116465445
+          },
+          {
+            "species": "HE",
+            "max_abs_ordinary_kg_m2s": 3.601104001221066e-301,
+            "max_abs_thermal_kg_m2s": 5e-324,
+            "max_abs_total_kg_m2s": 3.601104001221066e-301,
+            "signed_peak_thermal_kg_m2s": -5e-324,
+            "T_at_peak_thermal_K": 297.9999999999678
+          },
+          {
+            "species": "CO",
+            "max_abs_ordinary_kg_m2s": 0.0,
+            "max_abs_thermal_kg_m2s": 0.0,
+            "max_abs_total_kg_m2s": 0.0,
+            "signed_peak_thermal_kg_m2s": 0.0,
+            "T_at_peak_thermal_K": 297.9999999999678
+          },
+          {
+            "species": "CO2",
+            "max_abs_ordinary_kg_m2s": 0.0,
+            "max_abs_thermal_kg_m2s": 0.0,
+            "max_abs_total_kg_m2s": 0.0,
+            "signed_peak_thermal_kg_m2s": 0.0,
+            "T_at_peak_thermal_K": 297.9999999999678
+          }
+        ],
+        "paper_comparison": {
+          "phi": 1.4,
+          "value": 68.27386173246784,
+          "uncertainty": 0.34527273064393715,
+          "method": "linear dash-gap bridge",
+          "bracket_phi": [
+            1.3793033136263515,
+            1.4070231857799183
+          ],
+          "drawing_ids": [
+            85,
+            86
+          ],
+          "error_cm_s": 3.514966384604193,
+          "relative_error_percent": 5.148333923716875,
+          "screening_allowance_cm_s": 1.0280113479686155,
+          "screen_passed": false
+        }
+      }
+    ],
+    "comparisons": [
+      {
+        "case": "1",
+        "phi": 1.4,
+        "transport": "pairs",
+        "variant": "baseline",
+        "job": 125091771,
+        "speed_cm_s": 76.13228207477538,
+        "change_from_off_percent": 0.0,
+        "paper_cm_s": 75.82811940131273,
+        "paper_error_percent": 0.40112121448363514,
+        "paper_speed_screen": true
+      },
+      {
+        "case": "1",
+        "phi": 1.4,
+        "transport": "pairs",
+        "variant": "soret-baseline",
+        "job": 125091777,
+        "speed_cm_s": 73.03060507511118,
+        "change_from_off_percent": -4.074062822151836,
+        "paper_cm_s": 75.82811940131273,
+        "paper_error_percent": -3.6892835379392475,
+        "paper_speed_screen": false
+      },
+      {
+        "case": "1",
+        "phi": 1.4,
+        "transport": "pairs",
+        "variant": "manual-soret-baseline",
+        "job": 125091779,
+        "speed_cm_s": 72.4288078582095,
+        "change_from_off_percent": -4.8645254229058965,
+        "paper_cm_s": 75.82811940131273,
+        "paper_error_percent": -4.482916851877494,
+        "paper_speed_screen": false
+      },
+      {
+        "case": "3",
+        "phi": 1.4,
+        "transport": "pairs",
+        "variant": "baseline",
+        "job": 125091781,
+        "speed_cm_s": 75.54601024282141,
+        "change_from_off_percent": 0.0,
+        "paper_cm_s": 71.8145011595397,
+        "paper_error_percent": 5.196038436571415,
+        "paper_speed_screen": false
+      },
+      {
+        "case": "3",
+        "phi": 1.4,
+        "transport": "pairs",
+        "variant": "soret-baseline",
+        "job": 125091783,
+        "speed_cm_s": 72.52270314313442,
+        "change_from_off_percent": -4.0019414525921615,
+        "paper_cm_s": 71.8145011595397,
+        "paper_error_percent": 0.9861545678934824,
+        "paper_speed_screen": true
+      },
+      {
+        "case": "3",
+        "phi": 1.4,
+        "transport": "pairs",
+        "variant": "manual-soret-baseline",
+        "job": 125091785,
+        "speed_cm_s": 71.97727480841155,
+        "change_from_off_percent": -4.723923107175565,
+        "paper_cm_s": 71.8145011595397,
+        "paper_error_percent": 0.22665846903293652,
+        "paper_speed_screen": true
+      },
+      {
+        "case": "4",
+        "phi": 1.4,
+        "transport": "pairs",
+        "variant": "baseline",
+        "job": 125091788,
+        "speed_cm_s": 76.3134725378597,
+        "change_from_off_percent": 0.0,
+        "paper_cm_s": 70.18408511733031,
+        "paper_error_percent": 8.73330101871752,
+        "paper_speed_screen": false
+      },
+      {
+        "case": "4",
+        "phi": 1.4,
+        "transport": "pairs",
+        "variant": "soret-baseline",
+        "job": 125091791,
+        "speed_cm_s": 73.27712182149547,
+        "change_from_off_percent": -3.9787872513046385,
+        "paper_cm_s": 70.18408511733031,
+        "paper_error_percent": 4.407034299862089,
+        "paper_speed_screen": false
+      },
+      {
+        "case": "4",
+        "phi": 1.4,
+        "transport": "pairs",
+        "variant": "manual-soret-baseline",
+        "job": 125091792,
+        "speed_cm_s": 72.72827240997997,
+        "change_from_off_percent": -4.69799107372697,
+        "paper_cm_s": 70.18408511733031,
+        "paper_error_percent": 3.6250202426894917,
+        "paper_speed_screen": false
+      },
+      {
+        "case": "5",
+        "phi": 1.4,
+        "transport": "pairs",
+        "variant": "baseline",
+        "job": 125091794,
+        "speed_cm_s": 75.38071097957362,
+        "change_from_off_percent": 0.0,
+        "paper_cm_s": 68.27386173246784,
+        "paper_error_percent": 10.409326595519207,
+        "paper_speed_screen": false
+      },
+      {
+        "case": "5",
+        "phi": 1.4,
+        "transport": "pairs",
+        "variant": "soret-baseline",
+        "job": 125091797,
+        "speed_cm_s": 72.34036359581421,
+        "change_from_off_percent": -4.033322774818715,
+        "paper_cm_s": 68.27386173246784,
+        "paper_error_percent": 5.956162080418159,
+        "paper_speed_screen": false
+      },
+      {
+        "case": "5",
+        "phi": 1.4,
+        "transport": "pairs",
+        "variant": "manual-soret-baseline",
+        "job": 125091800,
+        "speed_cm_s": 71.78882811707203,
+        "change_from_off_percent": -4.764989366410866,
+        "paper_cm_s": 68.27386173246784,
+        "paper_error_percent": 5.148333923716875,
+        "paper_speed_screen": false
+      }
+    ],
+    "numerical_checks_passed": true,
+    "strict_native_checks_passed": false,
+    "scientific_acceptance": false,
+    "limits": [
+      "Neither Soret closure is identified as Liang's setting",
+      "No paper extrapolation; phi=1 lies outside Figure 3's extracted interval",
+      "Author collision-fit temperature bounds are unavailable",
+      "Strict native-flux failures remain explicit and are not waived",
+      "Case 4/5 conductivity remains a provisional dense-increment model"
+    ]
+  },
+  "roundtrip_diagnostic": {
+    "manifest_sha256": "a13fcbaaef9a1bed5b162f19c7a042f635a119b9deff32edaa058faed462df59",
+    "script_sha256": "b2610956b83c6149f8bdd37fae471f4e61a1b3004f6128202ed854ddc69f3574",
+    "decimal_significant_digits": 16,
+    "runs": [
+      {
+        "job": 125091691,
+        "case": "1",
+        "phi": 1.0,
+        "variant": "soret-baseline",
+        "strict_native_residuals": {
+          "decomposition": 4.029076794248178e-16,
+          "thermal_definition": 2.5105051596310577e-12,
+          "total_mass_closure": 2.639203315588081e-11,
+          "thermal_mass_closure": 1.0121783768185362e-11,
+          "coefficient_projection": 7.57879164779615e-11
+        },
+        "maximum_thermal_reconstruction_error_kg_m2_s": 1.106842395515173e-11,
+        "maximum_decimal_bound_kg_m2_s": 2.2984995559732888e-10,
+        "maximum_error_to_local_bound": 0.48931357516156715,
+        "entries_outside_decimal_bound": 0,
+        "maximum_face_species_sum_error": 1.7399448548616192e-10,
+        "coefficient_peak_face": 1246,
+        "coefficient_sum_at_peak_kg_m_s": 1.9099216532045184e-16,
+        "species_sum_error_at_coefficient_peak": -1.7399448548616192e-10,
+        "profile_sha256": "bd067fda847c16aab177dfc8ddad6fa3d3a38a9407642ee9df4c40308037d0f5",
+        "flux_sha256": "9afd64a6786e1c616382956d70a3b045d9d07bee35e8d9d9741a7c169c2baea8"
+      },
+      {
+        "job": 125091694,
+        "case": "1",
+        "phi": 1.0,
+        "variant": "manual-soret-baseline",
+        "strict_native_residuals": {
+          "decomposition": 3.9473920594227816e-16,
+          "thermal_definition": 3.279305205065615e-12,
+          "total_mass_closure": 1.281185303766555e-11,
+          "thermal_mass_closure": 3.0839000464240483e-17,
+          "coefficient_projection": 3.6337950255708453e-16
+        },
+        "maximum_thermal_reconstruction_error_kg_m2_s": 1.4757139954468812e-11,
+        "maximum_decimal_bound_kg_m2_s": 2.2489189266219594e-10,
+        "maximum_error_to_local_bound": 0.43265351348775327,
+        "entries_outside_decimal_bound": 0,
+        "maximum_face_species_sum_error": 1.350879408335004e-10,
+        "coefficient_peak_face": 706,
+        "coefficient_sum_at_peak_kg_m_s": -2.6469779601696886e-22,
+        "species_sum_error_at_coefficient_peak": -1.039013319825699e-11,
+        "profile_sha256": "41bf633c523c1c39191f228cb5ee1152572f71a45d4c95e021d863ef41f7be96",
+        "flux_sha256": "0fb235e74a3e57ba8ee409f94bb43bdcc5e926e1c03621fcc1859a2d70127527"
+      },
+      {
+        "job": 125091706,
+        "case": "3",
+        "phi": 1.0,
+        "variant": "soret-baseline",
+        "strict_native_residuals": {
+          "decomposition": 4.174151206770083e-16,
+          "thermal_definition": 8.585589865422524e-12,
+          "total_mass_closure": 2.3405489787842103e-11,
+          "thermal_mass_closure": 1.027129474184438e-11,
+          "coefficient_projection": 6.67410355677383e-11
+        },
+        "maximum_thermal_reconstruction_error_kg_m2_s": 3.653694014005282e-11,
+        "maximum_decimal_bound_kg_m2_s": 2.2537113577575108e-10,
+        "maximum_error_to_local_bound": 0.4887127841343938,
+        "entries_outside_decimal_bound": 0,
+        "maximum_face_species_sum_error": 1.531992310788155e-10,
+        "coefficient_peak_face": 1259,
+        "coefficient_sum_at_peak_kg_m_s": 1.6754481103300268e-16,
+        "species_sum_error_at_coefficient_peak": -1.5319900903421058e-10,
+        "profile_sha256": "10d53e6042843e61ef5dba33bf1e75d0968570d7e7fcc0c3c65e089d6990e1cd",
+        "flux_sha256": "0f2407f87ec0645e4488d25ecf6cb91f2f28bf42be6a346afcb965522ddce816"
+      },
+      {
+        "job": 125091712,
+        "case": "3",
+        "phi": 1.0,
+        "variant": "manual-soret-baseline",
+        "strict_native_residuals": {
+          "decomposition": 4.088874825787359e-16,
+          "thermal_definition": 3.2662347384738915e-12,
+          "total_mass_closure": 1.3645073626091574e-11,
+          "thermal_mass_closure": 3.194433457646374e-17,
+          "coefficient_projection": 3.738564945819776e-16
+        },
+        "maximum_thermal_reconstruction_error_kg_m2_s": 1.4189718844370702e-11,
+        "maximum_decimal_bound_kg_m2_s": 2.1379495895572711e-10,
+        "maximum_error_to_local_bound": 0.42073435864614966,
+        "entries_outside_decimal_bound": 0,
+        "maximum_face_species_sum_error": 1.438860142144449e-10,
+        "coefficient_peak_face": 209,
+        "coefficient_sum_at_peak_kg_m_s": 2.6469779601696886e-22,
+        "species_sum_error_at_coefficient_peak": -2.7145619085899853e-11,
+        "profile_sha256": "88d4a4e456b1b0be3fa8dd3981b84900b2d81e88c6e6337041a302f76796ff34",
+        "flux_sha256": "1a8bc186c7eb17cb0465b33ef8883346b94830feba43c109685a45e9dd8e5c7d"
+      },
+      {
+        "job": 125091750,
+        "case": "4",
+        "phi": 1.0,
+        "variant": "soret-baseline",
+        "strict_native_residuals": {
+          "decomposition": 6.20545665134117e-16,
+          "thermal_definition": 2.5601257816842513e-12,
+          "total_mass_closure": 2.26453079330286e-11,
+          "thermal_mass_closure": 9.679232500505884e-12,
+          "coefficient_projection": 6.456743055356407e-11
+        },
+        "maximum_thermal_reconstruction_error_kg_m2_s": 1.0992817767174756e-11,
+        "maximum_decimal_bound_kg_m2_s": 2.2460915141289064e-10,
+        "maximum_error_to_local_bound": 0.48931535822591227,
+        "entries_outside_decimal_bound": 0,
+        "maximum_face_species_sum_error": 1.4644130352792217e-10,
+        "coefficient_peak_face": 1260,
+        "coefficient_sum_at_peak_kg_m_s": 1.6211617687135601e-16,
+        "species_sum_error_at_coefficient_peak": -1.4643863899266307e-10,
+        "profile_sha256": "239fca798a5fd354ca3024eeba896d3e73485533af36ac1355d7798221bd5076",
+        "flux_sha256": "0d0507ba3114d52eb5cc410b4f5c324d2cd7f8984d51fd9d5a4c68bbda38d603"
+      },
+      {
+        "job": 125091762,
+        "case": "4",
+        "phi": 1.0,
+        "variant": "manual-soret-baseline",
+        "strict_native_residuals": {
+          "decomposition": 4.054555554891182e-16,
+          "thermal_definition": 3.2460455010306078e-12,
+          "total_mass_closure": 1.4923475928698196e-11,
+          "thermal_mass_closure": 3.801145832710483e-17,
+          "coefficient_projection": 4.486277934984518e-16
+        },
+        "maximum_thermal_reconstruction_error_kg_m2_s": 1.422136020057252e-11,
+        "maximum_decimal_bound_kg_m2_s": 2.1251255840840677e-10,
+        "maximum_error_to_local_bound": 0.48931535754483235,
+        "entries_outside_decimal_bound": 0,
+        "maximum_face_species_sum_error": 1.530177096142893e-10,
+        "coefficient_peak_face": 146,
+        "coefficient_sum_at_peak_kg_m_s": 3.1763735522036263e-22,
+        "species_sum_error_at_coefficient_peak": -9.390044297674649e-12,
+        "profile_sha256": "26830fbb3755508d16ef53eaf76e92e611eb56b97d1153c06a9da44a552f08df",
+        "flux_sha256": "5037480db6300a639071b82f05ba445f644844218239112b3bf109eb8de14396"
+      },
+      {
+        "job": 125091765,
+        "case": "5",
+        "phi": 1.0,
+        "variant": "soret-baseline",
+        "strict_native_residuals": {
+          "decomposition": 4.1934113469455175e-16,
+          "thermal_definition": 2.5601673925218838e-11,
+          "total_mass_closure": 2.3222234044025042e-11,
+          "thermal_mass_closure": 1.1293158158752994e-11,
+          "coefficient_projection": 6.903216814763414e-11
+        },
+        "maximum_thermal_reconstruction_error_kg_m2_s": 1.0845038755924463e-10,
+        "maximum_decimal_bound_kg_m2_s": 6.0605246959556e-10,
+        "maximum_error_to_local_bound": 0.489315300560677,
+        "entries_outside_decimal_bound": 0,
+        "maximum_face_species_sum_error": 1.465981780413017e-10,
+        "coefficient_peak_face": 1145,
+        "coefficient_sum_at_peak_kg_m_s": 1.763393423657195e-16,
+        "species_sum_error_at_coefficient_peak": -1.4173906492942479e-10,
+        "profile_sha256": "a46ffc23c478f2f4cdaffb1a1ea951e2b1bea61e0738515b9efb77ba5b4da8d7",
+        "flux_sha256": "5dde33e02ae0cd887e8dd9cc5563eb88b7e13d52af22939e50862befdb05418c"
+      },
+      {
+        "job": 125091767,
+        "case": "5",
+        "phi": 1.0,
+        "variant": "manual-soret-baseline",
+        "strict_native_residuals": {
+          "decomposition": 4.1099906288804654e-16,
+          "thermal_definition": 2.910913706625305e-11,
+          "total_mass_closure": 1.149501444646321e-11,
+          "thermal_mass_closure": 3.853044509383339e-17,
+          "coefficient_projection": 4.324733001402861e-16
+        },
+        "maximum_thermal_reconstruction_error_kg_m2_s": 1.2581102826203505e-10,
+        "maximum_decimal_bound_kg_m2_s": 7.030188779561348e-10,
+        "maximum_error_to_local_bound": 0.48931535822593053,
+        "entries_outside_decimal_bound": 0,
+        "maximum_face_species_sum_error": 1.4459533570487793e-10,
+        "coefficient_peak_face": 152,
+        "coefficient_sum_at_peak_kg_m_s": 3.1763187212516353e-22,
+        "species_sum_error_at_coefficient_peak": -9.018563673635072e-12,
+        "profile_sha256": "5c7dc99c9538d15617360ca35bef6c5d1c30c1ce36e4b04d185a278052542efe",
+        "flux_sha256": "e6900540c93c262fbe907cae15e6433617ddf6a4683b226865ce9c3b16aec1ec"
+      },
+      {
+        "job": 125091777,
+        "case": "1",
+        "phi": 1.4,
+        "variant": "soret-baseline",
+        "strict_native_residuals": {
+          "decomposition": 2.685036071195575e-16,
+          "thermal_definition": 3.574380431287151e-11,
+          "total_mass_closure": 3.6806390556571716e-11,
+          "thermal_mass_closure": 2.3879645193522686e-11,
+          "coefficient_projection": 1.57790972889752e-10
+        },
+        "maximum_thermal_reconstruction_error_kg_m2_s": 2.3647261926385e-10,
+        "maximum_decimal_bound_kg_m2_s": 1.4175501044631187e-09,
+        "maximum_error_to_local_bound": 0.48931535822598327,
+        "entries_outside_decimal_bound": 0,
+        "maximum_face_species_sum_error": 1.7086310144520667e-10,
+        "coefficient_peak_face": 1244,
+        "coefficient_sum_at_peak_kg_m_s": 4.3823197701979913e-16,
+        "species_sum_error_at_coefficient_peak": -1.7086310144520667e-10,
+        "profile_sha256": "856cccadfbdfad08fdf4695a01068bf14daadc5c5c5f1f36b8c25cbf6a2b737e",
+        "flux_sha256": "0020506def01c440c9d84dd2c8d093c61aa6b5e939bb93c96817fa8d0bb97721"
+      },
+      {
+        "job": 125091779,
+        "case": "1",
+        "phi": 1.4,
+        "variant": "manual-soret-baseline",
+        "strict_native_residuals": {
+          "decomposition": 2.635167844047786e-16,
+          "thermal_definition": 3.9190100888085497e-11,
+          "total_mass_closure": 1.2466192637286616e-11,
+          "thermal_mass_closure": 4.1174497563246655e-17,
+          "coefficient_projection": 7.828006908103727e-16
+        },
+        "maximum_thermal_reconstruction_error_kg_m2_s": 2.64179011999488e-10,
+        "maximum_decimal_bound_kg_m2_s": 1.583636418909438e-09,
+        "maximum_error_to_local_bound": 0.4892760015163313,
+        "entries_outside_decimal_bound": 0,
+        "maximum_face_species_sum_error": 2.585918146280619e-10,
+        "coefficient_peak_face": 1046,
+        "coefficient_sum_at_peak_kg_m_s": 1.0587911840678754e-21,
+        "species_sum_error_at_coefficient_peak": -1.4292722561037863e-10,
+        "profile_sha256": "aa41d4c848952cb0ac73df23c548b885a042e8635d479a1fdfa3596ac09799c3",
+        "flux_sha256": "2f4b2f6e4d244392748855aa2b876af4e730b229031b976408efd3c946eb92f0"
+      },
+      {
+        "job": 125091783,
+        "case": "3",
+        "phi": 1.4,
+        "variant": "soret-baseline",
+        "strict_native_residuals": {
+          "decomposition": 2.7641053894306867e-16,
+          "thermal_definition": 1.1064572213489831e-10,
+          "total_mass_closure": 2.6598378923088827e-10,
+          "thermal_mass_closure": 1.7692768233687413e-10,
+          "coefficient_projection": 7.474934037408134e-10
+        },
+        "maximum_thermal_reconstruction_error_kg_m2_s": 7.110666500054208e-10,
+        "maximum_decimal_bound_kg_m2_s": 3.997988696367519e-09,
+        "maximum_error_to_local_bound": 0.44978970211304714,
+        "entries_outside_decimal_bound": 0,
+        "maximum_face_species_sum_error": 8.923971561713984e-10,
+        "coefficient_peak_face": 679,
+        "coefficient_sum_at_peak_kg_m_s": 2.067034512338047e-15,
+        "species_sum_error_at_coefficient_peak": -8.923971561713984e-10,
+        "profile_sha256": "dd76eb6c81d1d330d5465fd4c16d6c211dc3740970655adb391ae06fc9c2e59d",
+        "flux_sha256": "46abcf0e57de3d649ece8a8d4da4addd4bdfba2b77df56037b058eb16f028bf2"
+      },
+      {
+        "job": 125091785,
+        "case": "3",
+        "phi": 1.4,
+        "variant": "manual-soret-baseline",
+        "strict_native_residuals": {
+          "decomposition": 2.7115420343444056e-16,
+          "thermal_definition": 1.180239513050295e-10,
+          "total_mass_closure": 1.3676386740353313e-11,
+          "thermal_mass_closure": 4.2367844286631344e-17,
+          "coefficient_projection": 6.389477672155611e-16
+        },
+        "maximum_thermal_reconstruction_error_kg_m2_s": 7.731860707238525e-10,
+        "maximum_decimal_bound_kg_m2_s": 4.347333647731486e-09,
+        "maximum_error_to_local_bound": 0.48931535822443767,
+        "entries_outside_decimal_bound": 0,
+        "maximum_face_species_sum_error": 1.5312440204695577e-10,
+        "coefficient_peak_face": 863,
+        "coefficient_sum_at_peak_kg_m_s": -8.470329472543003e-22,
+        "species_sum_error_at_coefficient_peak": -8.947675933512755e-11,
+        "profile_sha256": "9941e8e18fef6ca720c9d919551cbb286eb7f1fd9e6dfcfa075e750155a2c5bb",
+        "flux_sha256": "9068e54fd2eded601c91a69f67f82e9efd4e8499eff00e8793c092dc242c8e84"
+      },
+      {
+        "job": 125091791,
+        "case": "4",
+        "phi": 1.4,
+        "variant": "soret-baseline",
+        "strict_native_residuals": {
+          "decomposition": 2.749645321099432e-16,
+          "thermal_definition": 8.236803153318944e-12,
+          "total_mass_closure": 3.275580292836074e-11,
+          "thermal_mass_closure": 2.164915199020218e-11,
+          "coefficient_projection": 1.146043433713612e-10
+        },
+        "maximum_thermal_reconstruction_error_kg_m2_s": 5.3212267925317747e-11,
+        "maximum_decimal_bound_kg_m2_s": 2.7041040576819356e-09,
+        "maximum_error_to_local_bound": 0.48931535822604083,
+        "entries_outside_decimal_bound": 0,
+        "maximum_face_species_sum_error": 1.2370904300951224e-10,
+        "coefficient_peak_face": 1252,
+        "coefficient_sum_at_peak_kg_m_s": 3.1691060095161844e-16,
+        "species_sum_error_at_coefficient_peak": -1.2370904300951224e-10,
+        "profile_sha256": "1aa85eda96db4d65e6fc0207c8e8b0c9e0e09e426af95568df4f3c568997e7cb",
+        "flux_sha256": "0f3d1f0ee3bce44786310d12aea4f4fec434ac7d744b54aedda4c696d0a4f405"
+      },
+      {
+        "job": 125091792,
+        "case": "4",
+        "phi": 1.4,
+        "variant": "manual-soret-baseline",
+        "strict_native_residuals": {
+          "decomposition": 2.697554265172449e-16,
+          "thermal_definition": 5.888575504015725e-12,
+          "total_mass_closure": 9.981106733494016e-12,
+          "thermal_mass_closure": 4.214928539331951e-17,
+          "coefficient_projection": 6.37475191443279e-16
+        },
+        "maximum_thermal_reconstruction_error_kg_m2_s": 3.877664855878038e-11,
+        "maximum_decimal_bound_kg_m2_s": 2.9361958204383018e-09,
+        "maximum_error_to_local_bound": 0.48931535293692696,
+        "entries_outside_decimal_bound": 0,
+        "maximum_face_species_sum_error": 1.2615131161908266e-10,
+        "coefficient_peak_face": 796,
+        "coefficient_sum_at_peak_kg_m_s": -8.470329472543003e-22,
+        "species_sum_error_at_coefficient_peak": -8.099154680252241e-11,
+        "profile_sha256": "c16e32d2dd0c252fb4444aa224f89e3931185dee6969d0d3c0822eda31ad3722",
+        "flux_sha256": "2e3445c390697aafadae8421e52454d0b84238e83ecc6f03bbb80244baca5a6c"
+      },
+      {
+        "job": 125091797,
+        "case": "5",
+        "phi": 1.4,
+        "variant": "soret-baseline",
+        "strict_native_residuals": {
+          "decomposition": 2.766264638446904e-16,
+          "thermal_definition": 6.577375093481588e-11,
+          "total_mass_closure": 1.2198186248480632e-10,
+          "thermal_mass_closure": 8.59387741552774e-11,
+          "coefficient_projection": 4.694378682211566e-10
+        },
+        "maximum_thermal_reconstruction_error_kg_m2_s": 4.2236614206103695e-10,
+        "maximum_decimal_bound_kg_m2_s": 2.5319371809836597e-09,
+        "maximum_error_to_local_bound": 0.4893153582229689,
+        "entries_outside_decimal_bound": 0,
+        "maximum_face_species_sum_error": 5.089954013826059e-10,
+        "coefficient_peak_face": 1266,
+        "coefficient_sum_at_peak_kg_m_s": 1.3277194861399059e-15,
+        "species_sum_error_at_coefficient_peak": -5.089954013826059e-10,
+        "profile_sha256": "b2e06de733342902d4ed4ff15c887fe2ac3cf0d0f1a11b2669a212d1361cf74a",
+        "flux_sha256": "523303d898cfbabcc8fae9e7ab820d6c17df35de60b2f15cc05c415a80de396b"
+      },
+      {
+        "job": 125091800,
+        "case": "5",
+        "phi": 1.4,
+        "variant": "manual-soret-baseline",
+        "strict_native_residuals": {
+          "decomposition": 2.7133236003620184e-16,
+          "thermal_definition": 7.022454559731954e-11,
+          "total_mass_closure": 2.322608817521201e-11,
+          "thermal_mass_closure": 5.087481750678784e-17,
+          "coefficient_projection": 7.732989432138257e-16
+        },
+        "maximum_thermal_reconstruction_error_kg_m2_s": 4.5974557494332657e-10,
+        "maximum_decimal_bound_kg_m2_s": 2.7560125553173133e-09,
+        "maximum_error_to_local_bound": 0.48930498513963355,
+        "entries_outside_decimal_bound": 0,
+        "maximum_face_species_sum_error": 4.325366731450231e-10,
+        "coefficient_peak_face": 1083,
+        "coefficient_sum_at_peak_kg_m_s": -1.0587911840678754e-21,
+        "species_sum_error_at_coefficient_peak": -3.292169870050543e-10,
+        "profile_sha256": "e8c710e78a4f9a3f5bfd564b7ccc993fb54b27540b43ef653f6afebd9808e568",
+        "flux_sha256": "e2a7aa91e41552ed493e911168a839396f735055480fde8ea4ae5d20b5416b8a"
+      }
+    ],
+    "scientific_acceptance": false,
+    "limits": [
+      "Arithmetic output bound only; no strict audit tolerance is changed",
+      "Cantera Flow1D supplies unnormalized face mass fractions",
+      "The native projection subtracts Y_k times the unprojected coefficient sum",
+      "Composition correlation alone does not independently reconstruct that sum"
+    ]
+  },
+  "build_qualification": {
+    "job": 125091444,
+    "files": {
+      "activity-check.txt": "dafc62481ba2dc15ce4a74fc77e628684a9732f03ecb7c015358cd95f876ad1a",
+      "alpha-check.txt": "4c0a5511056a916cd0c2f43c99d3b6652c3bc9bf654721517c29b14ad48e5619",
+      "build-passed.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "chemistry-check.txt": "7338bc513b635d27f4130e7146e58fb4f2b458e0bf8a77adbe0ac541067959c0",
+      "compiler-flags.txt": "bf98a475672e0793aebb4e8b8881b6ee286d9124c937c981aad078eb797b99d4",
+      "compiler.txt": "0862052071eec9a502d6d6ff9f72f872d0c61897ff761c39819f12e132dcd370",
+      "dependencies.txt": "b23b26e9312d200578f328eb7d240caf440755dde9ddf6f6a4655505afee73b2",
+      "midpoint-check.txt": "89df17d4c935100c8a7d7f5df7916100178807a14b65afa9fd7e46db54353aa4",
+      "pairs-check.txt": "0feaf65748d044b12a6b983d7f688d9e42c7208a3f9dab47bb1fcc75269f2ceb",
+      "signed-check.txt": "9826479df3c92cbe0e670993fcf5978b3019f1438d767467fa02c5cff5c5263e",
+      "soret-check.txt": "c52a82740db96248e3a4048f8ec3af00b34269f41ae1cf93235f604da26c1fe1",
+      "source-revision.txt": "5d8b91a89bf8ac0ffe030daf5abd952bd16462eced1ff2bf1c926d42f43ae187",
+      "srk-check.txt": "0a6a164a4eba534d63f00cee36d0079b223c074f22d00cfe5cec2c913044508f",
+      "takahashi-check.txt": "c3f881797bd606d1276c3b4f308f81c3cc770db616197500105703c3ce0f3605",
+      "binary.sha256": "f80cb345b65f3b83ffeca08b08218ae321e6b69932d8da9a5a603034ae86fd66",
+      "compile-activity.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "compile-chemistry.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "compile.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "compile-midpoint.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "compile-pairs.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "compile-soret.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "test": "PASS fixtures 15 collision_error 7.635768816955871e-16 coefficient_error 4.046163072742266e-15 pressure_ordinary_transport_native_flux_and_parser_checks passed"
+  },
+  "pending_refinement_registry": [
+    {
+      "case": "1",
+      "phi": 1.0,
+      "transport": "pairs",
+      "variant": "baseline",
+      "source": "ae10e5c32ea9e794a2ab584f1f03eb72af4788cd",
+      "build": 125091444,
+      "guess_job": 125091687,
+      "width_m": 0.01,
+      "Tu_K": 298,
+      "grid_factor": 2,
+      "pressure_atm": 100,
+      "numerical_guess": "same-model completed steady profile; each interval subdivided twice",
+      "job": 125092989
+    },
+    {
+      "case": "1",
+      "phi": 1.0,
+      "transport": "pairs",
+      "variant": "soret-baseline",
+      "source": "ae10e5c32ea9e794a2ab584f1f03eb72af4788cd",
+      "build": 125091444,
+      "guess_job": 125091691,
+      "width_m": 0.01,
+      "Tu_K": 298,
+      "grid_factor": 2,
+      "pressure_atm": 100,
+      "numerical_guess": "same-model completed steady profile; each interval subdivided twice",
+      "job": 125092993
+    },
+    {
+      "case": "1",
+      "phi": 1.0,
+      "transport": "pairs",
+      "variant": "manual-soret-baseline",
+      "source": "ae10e5c32ea9e794a2ab584f1f03eb72af4788cd",
+      "build": 125091444,
+      "guess_job": 125091694,
+      "width_m": 0.01,
+      "Tu_K": 298,
+      "grid_factor": 2,
+      "pressure_atm": 100,
+      "numerical_guess": "same-model completed steady profile; each interval subdivided twice",
+      "job": 125092998
+    },
+    {
+      "case": "3",
+      "phi": 1.0,
+      "transport": "pairs",
+      "variant": "baseline",
+      "source": "ae10e5c32ea9e794a2ab584f1f03eb72af4788cd",
+      "build": 125091444,
+      "guess_job": 125091702,
+      "width_m": 0.01,
+      "Tu_K": 298,
+      "grid_factor": 2,
+      "pressure_atm": 100,
+      "numerical_guess": "same-model completed steady profile; each interval subdivided twice",
+      "job": 125093003
+    },
+    {
+      "case": "3",
+      "phi": 1.0,
+      "transport": "pairs",
+      "variant": "soret-baseline",
+      "source": "ae10e5c32ea9e794a2ab584f1f03eb72af4788cd",
+      "build": 125091444,
+      "guess_job": 125091706,
+      "width_m": 0.01,
+      "Tu_K": 298,
+      "grid_factor": 2,
+      "pressure_atm": 100,
+      "numerical_guess": "same-model completed steady profile; each interval subdivided twice",
+      "job": 125093012
+    },
+    {
+      "case": "3",
+      "phi": 1.0,
+      "transport": "pairs",
+      "variant": "manual-soret-baseline",
+      "source": "ae10e5c32ea9e794a2ab584f1f03eb72af4788cd",
+      "build": 125091444,
+      "guess_job": 125091712,
+      "width_m": 0.01,
+      "Tu_K": 298,
+      "grid_factor": 2,
+      "pressure_atm": 100,
+      "numerical_guess": "same-model completed steady profile; each interval subdivided twice",
+      "job": 125093019
+    },
+    {
+      "case": "4",
+      "phi": 1.0,
+      "transport": "pairs",
+      "variant": "baseline",
+      "source": "ae10e5c32ea9e794a2ab584f1f03eb72af4788cd",
+      "build": 125091444,
+      "guess_job": 125091718,
+      "width_m": 0.01,
+      "Tu_K": 298,
+      "grid_factor": 2,
+      "pressure_atm": 100,
+      "numerical_guess": "same-model completed steady profile; each interval subdivided twice",
+      "job": 125093024
+    },
+    {
+      "case": "4",
+      "phi": 1.0,
+      "transport": "pairs",
+      "variant": "soret-baseline",
+      "source": "ae10e5c32ea9e794a2ab584f1f03eb72af4788cd",
+      "build": 125091444,
+      "guess_job": 125091750,
+      "width_m": 0.01,
+      "Tu_K": 298,
+      "grid_factor": 2,
+      "pressure_atm": 100,
+      "numerical_guess": "same-model completed steady profile; each interval subdivided twice",
+      "job": 125093031
+    },
+    {
+      "case": "4",
+      "phi": 1.0,
+      "transport": "pairs",
+      "variant": "manual-soret-baseline",
+      "source": "ae10e5c32ea9e794a2ab584f1f03eb72af4788cd",
+      "build": 125091444,
+      "guess_job": 125091762,
+      "width_m": 0.01,
+      "Tu_K": 298,
+      "grid_factor": 2,
+      "pressure_atm": 100,
+      "numerical_guess": "same-model completed steady profile; each interval subdivided twice",
+      "job": 125093043
+    },
+    {
+      "case": "5",
+      "phi": 1.0,
+      "transport": "pairs",
+      "variant": "baseline",
+      "source": "ae10e5c32ea9e794a2ab584f1f03eb72af4788cd",
+      "build": 125091444,
+      "guess_job": 125091763,
+      "width_m": 0.01,
+      "Tu_K": 298,
+      "grid_factor": 2,
+      "pressure_atm": 100,
+      "numerical_guess": "same-model completed steady profile; each interval subdivided twice",
+      "job": 125093063
+    },
+    {
+      "case": "5",
+      "phi": 1.0,
+      "transport": "pairs",
+      "variant": "soret-baseline",
+      "source": "ae10e5c32ea9e794a2ab584f1f03eb72af4788cd",
+      "build": 125091444,
+      "guess_job": 125091765,
+      "width_m": 0.01,
+      "Tu_K": 298,
+      "grid_factor": 2,
+      "pressure_atm": 100,
+      "numerical_guess": "same-model completed steady profile; each interval subdivided twice",
+      "job": 125093076
+    },
+    {
+      "case": "5",
+      "phi": 1.0,
+      "transport": "pairs",
+      "variant": "manual-soret-baseline",
+      "source": "ae10e5c32ea9e794a2ab584f1f03eb72af4788cd",
+      "build": 125091444,
+      "guess_job": 125091767,
+      "width_m": 0.01,
+      "Tu_K": 298,
+      "grid_factor": 2,
+      "pressure_atm": 100,
+      "numerical_guess": "same-model completed steady profile; each interval subdivided twice",
+      "job": 125093081
+    },
+    {
+      "case": "1",
+      "phi": 1.4,
+      "transport": "pairs",
+      "variant": "baseline",
+      "source": "ae10e5c32ea9e794a2ab584f1f03eb72af4788cd",
+      "build": 125091444,
+      "guess_job": 125091771,
+      "width_m": 0.01,
+      "Tu_K": 298,
+      "grid_factor": 2,
+      "pressure_atm": 100,
+      "numerical_guess": "same-model completed steady profile; each interval subdivided twice",
+      "job": 125093089
+    },
+    {
+      "case": "1",
+      "phi": 1.4,
+      "transport": "pairs",
+      "variant": "soret-baseline",
+      "source": "ae10e5c32ea9e794a2ab584f1f03eb72af4788cd",
+      "build": 125091444,
+      "guess_job": 125091777,
+      "width_m": 0.01,
+      "Tu_K": 298,
+      "grid_factor": 2,
+      "pressure_atm": 100,
+      "numerical_guess": "same-model completed steady profile; each interval subdivided twice",
+      "job": 125093091
+    },
+    {
+      "case": "1",
+      "phi": 1.4,
+      "transport": "pairs",
+      "variant": "manual-soret-baseline",
+      "source": "ae10e5c32ea9e794a2ab584f1f03eb72af4788cd",
+      "build": 125091444,
+      "guess_job": 125091779,
+      "width_m": 0.01,
+      "Tu_K": 298,
+      "grid_factor": 2,
+      "pressure_atm": 100,
+      "numerical_guess": "same-model completed steady profile; each interval subdivided twice",
+      "job": 125093093
+    },
+    {
+      "case": "3",
+      "phi": 1.4,
+      "transport": "pairs",
+      "variant": "baseline",
+      "source": "ae10e5c32ea9e794a2ab584f1f03eb72af4788cd",
+      "build": 125091444,
+      "guess_job": 125091781,
+      "width_m": 0.01,
+      "Tu_K": 298,
+      "grid_factor": 2,
+      "pressure_atm": 100,
+      "numerical_guess": "same-model completed steady profile; each interval subdivided twice",
+      "job": 125093095
+    },
+    {
+      "case": "3",
+      "phi": 1.4,
+      "transport": "pairs",
+      "variant": "soret-baseline",
+      "source": "ae10e5c32ea9e794a2ab584f1f03eb72af4788cd",
+      "build": 125091444,
+      "guess_job": 125091783,
+      "width_m": 0.01,
+      "Tu_K": 298,
+      "grid_factor": 2,
+      "pressure_atm": 100,
+      "numerical_guess": "same-model completed steady profile; each interval subdivided twice",
+      "job": 125093097
+    },
+    {
+      "case": "3",
+      "phi": 1.4,
+      "transport": "pairs",
+      "variant": "manual-soret-baseline",
+      "source": "ae10e5c32ea9e794a2ab584f1f03eb72af4788cd",
+      "build": 125091444,
+      "guess_job": 125091785,
+      "width_m": 0.01,
+      "Tu_K": 298,
+      "grid_factor": 2,
+      "pressure_atm": 100,
+      "numerical_guess": "same-model completed steady profile; each interval subdivided twice",
+      "job": 125093101
+    },
+    {
+      "case": "4",
+      "phi": 1.4,
+      "transport": "pairs",
+      "variant": "baseline",
+      "source": "ae10e5c32ea9e794a2ab584f1f03eb72af4788cd",
+      "build": 125091444,
+      "guess_job": 125091788,
+      "width_m": 0.01,
+      "Tu_K": 298,
+      "grid_factor": 2,
+      "pressure_atm": 100,
+      "numerical_guess": "same-model completed steady profile; each interval subdivided twice",
+      "job": 125093104
+    },
+    {
+      "case": "4",
+      "phi": 1.4,
+      "transport": "pairs",
+      "variant": "soret-baseline",
+      "source": "ae10e5c32ea9e794a2ab584f1f03eb72af4788cd",
+      "build": 125091444,
+      "guess_job": 125091791,
+      "width_m": 0.01,
+      "Tu_K": 298,
+      "grid_factor": 2,
+      "pressure_atm": 100,
+      "numerical_guess": "same-model completed steady profile; each interval subdivided twice",
+      "job": 125093109
+    },
+    {
+      "case": "4",
+      "phi": 1.4,
+      "transport": "pairs",
+      "variant": "manual-soret-baseline",
+      "source": "ae10e5c32ea9e794a2ab584f1f03eb72af4788cd",
+      "build": 125091444,
+      "guess_job": 125091792,
+      "width_m": 0.01,
+      "Tu_K": 298,
+      "grid_factor": 2,
+      "pressure_atm": 100,
+      "numerical_guess": "same-model completed steady profile; each interval subdivided twice",
+      "job": 125093120
+    },
+    {
+      "case": "5",
+      "phi": 1.4,
+      "transport": "pairs",
+      "variant": "baseline",
+      "source": "ae10e5c32ea9e794a2ab584f1f03eb72af4788cd",
+      "build": 125091444,
+      "guess_job": 125091794,
+      "width_m": 0.01,
+      "Tu_K": 298,
+      "grid_factor": 2,
+      "pressure_atm": 100,
+      "numerical_guess": "same-model completed steady profile; each interval subdivided twice",
+      "job": 125093123
+    },
+    {
+      "case": "5",
+      "phi": 1.4,
+      "transport": "pairs",
+      "variant": "soret-baseline",
+      "source": "ae10e5c32ea9e794a2ab584f1f03eb72af4788cd",
+      "build": 125091444,
+      "guess_job": 125091797,
+      "width_m": 0.01,
+      "Tu_K": 298,
+      "grid_factor": 2,
+      "pressure_atm": 100,
+      "numerical_guess": "same-model completed steady profile; each interval subdivided twice",
+      "job": 125093125
+    },
+    {
+      "case": "5",
+      "phi": 1.4,
+      "transport": "pairs",
+      "variant": "manual-soret-baseline",
+      "source": "ae10e5c32ea9e794a2ab584f1f03eb72af4788cd",
+      "build": 125091444,
+      "guess_job": 125091800,
+      "width_m": 0.01,
+      "Tu_K": 298,
+      "grid_factor": 2,
+      "pressure_atm": 100,
+      "numerical_guess": "same-model completed steady profile; each interval subdivided twice",
+      "job": 125093127
+    }
+  ]
+}

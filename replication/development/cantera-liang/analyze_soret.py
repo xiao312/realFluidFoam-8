@@ -29,8 +29,8 @@ def read_profile(path):
     return values, names
 
 
-def native_fluxes(path, profile, species):
-    """Preserve the writer's face-major, species-minor ordering."""
+def inspect_native_fluxes(path, profile, species):
+    """Require valid structure; return measured residuals without accepting them."""
     header = ["x_left_m", "x_right_m", "T_mid_K", "species", "DT_kg_m_s",
               "ordinary_kg_m2_s", "soret_kg_m2_s", "total_kg_m2_s", "partial_h_J_kg"]
     numeric = [name for name in header if name != "species"]
@@ -69,11 +69,6 @@ def native_fluxes(path, profile, species):
         "coefficient_projection": float(np.max(np.abs(coefficient.sum(axis=1))) /
                                         max(1e-100, np.max(np.abs(coefficient)))),
     }
-    require(errors["decomposition"] < 1e-12, "Flux decomposition failed")
-    require(errors["thermal_definition"] < 1e-10, "Thermal flux definition failed")
-    require(errors["total_mass_closure"] < 1e-7, "Total mass-flux closure failed")
-    require(errors["thermal_mass_closure"] < 1e-10, "Thermal mass-flux closure failed")
-    require(errors["coefficient_projection"] < 1e-10, "Coefficient projection failed")
     faces = []
     ordinary_h = np.sum(ordinary*data["partial_h_J_kg"], axis=1)
     thermal_h = np.sum(thermal*data["partial_h_J_kg"], axis=1)
@@ -97,6 +92,17 @@ def native_fluxes(path, profile, species):
             "signed_peak_thermal_kg_m2s": float(thermal[peak, k]),
             "T_at_peak_thermal_K": float(expected_temperature[peak]),
         })
+    return errors, faces, species_rows
+
+
+def native_fluxes(path, profile, species):
+    """Apply the original strict audit; exploratory readers must retain failures."""
+    errors, faces, species_rows = inspect_native_fluxes(path, profile, species)
+    require(errors["decomposition"] < 1e-12, "Flux decomposition failed")
+    require(errors["thermal_definition"] < 1e-10, "Thermal flux definition failed")
+    require(errors["total_mass_closure"] < 1e-7, "Total mass-flux closure failed")
+    require(errors["thermal_mass_closure"] < 1e-10, "Thermal mass-flux closure failed")
+    require(errors["coefficient_projection"] < 1e-10, "Coefficient projection failed")
     return errors, faces, species_rows
 
 
