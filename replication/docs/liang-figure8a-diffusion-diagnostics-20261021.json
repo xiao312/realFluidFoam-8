@@ -1,6 +1,6 @@
 {
   "baseline_sha256": "79da2c0f01c053b619135ec1ee766aa9d75877230b938e1582e8a9d4225f0d9d",
-  "observed_utc": "2026-10-20T23:15:18.405943+00:00",
+  "observed_utc": "2026-10-20T23:53:36.833812+00:00",
   "diagnostics": [
     {
       "stage": 4,
@@ -759,6 +759,150 @@
         ]
       },
       "native_flux_sha256": "7193ef6e3b321d96cf2966f2fcff7d089871dbe4ad3e3decce5624ed9faf6425",
+      "steady_rtol": 1e-07,
+      "steady_atol": 1e-13
+    },
+    {
+      "stage": 1,
+      "phi": 1.4,
+      "speed_cm_s": 6.109791523545419,
+      "label": "Cantera: conservative residual",
+      "job": "125102244",
+      "pressure_atm": 100,
+      "screen_passed": true,
+      "source": "6c9cc9b7d5090a947c0f73ad8e2789c9c55110f1",
+      "variant": "total-enthalpy,conservative-species",
+      "profile_sha256": "880219a24190a59ced8e83c4c57a1e9d907644ed0982c9ada733bcce8bcfc84b",
+      "screen": {
+        "stage": 1,
+        "phi": 1.4,
+        "speed_cm_s": 6.109791523545419,
+        "last_refinement_relative_change": 0.00021838900855442045,
+        "mass_flux_relative_range": 3.4568115178567387e-10,
+        "maximum_species_sum_error": 7.753730990600616e-11,
+        "minimum_mass_fraction": -3.4044723510934577e-15,
+        "points": 2281,
+        "scientific_acceptance": false,
+        "remaining": [
+          "domain sensitivity",
+          "initial-guess sensitivity",
+          "publication parameter uncertainty"
+        ]
+      },
+      "conservation_qualified": true,
+      "native_sha256": {
+        "balance-nodes.csv": "4926146f37a99031ac596db5ba1d29e456514d8fc55425ea5c5cc04f7ec93a90",
+        "balance-faces.csv": "1a66ef7432b3efeceb43c71886a398cd8612d3043df36e35b9185321984437c2",
+        "profile.csv": "880219a24190a59ced8e83c4c57a1e9d907644ed0982c9ada733bcce8bcfc84b"
+      },
+      "steady_rtol": 1e-07,
+      "steady_atol": 1e-13
+    },
+    {
+      "stage": 4,
+      "phi": 1.4,
+      "speed_cm_s": 5.759754637450518,
+      "label": "Cantera: conservative residual",
+      "job": "125102245",
+      "pressure_atm": 100,
+      "screen_passed": true,
+      "source": "6c9cc9b7d5090a947c0f73ad8e2789c9c55110f1",
+      "variant": "dense-increment,bounded-takahashi,pressure-chemistry,takahashi-table2,total-enthalpy,conservative-species",
+      "profile_sha256": "b792d19a5e0b8bc2f2c3619e3712235838d8349ec09ad0c299c859533973ccd4",
+      "screen": {
+        "stage": 4,
+        "phi": 1.4,
+        "speed_cm_s": 5.759754637450518,
+        "last_refinement_relative_change": 0.00015277875494557058,
+        "mass_flux_relative_range": 2.6626441341708896e-11,
+        "maximum_species_sum_error": 2.6590951662797124e-11,
+        "minimum_mass_fraction": -3.9972223276836506e-14,
+        "points": 2214,
+        "scientific_acceptance": false,
+        "remaining": [
+          "domain sensitivity",
+          "initial-guess sensitivity",
+          "publication parameter uncertainty"
+        ]
+      },
+      "conservation_qualified": true,
+      "native_sha256": {
+        "balance-nodes.csv": "828dbf68f8d5694ebf2abfb191ece640d12756f763dd41158039e6ac1934abe6",
+        "balance-faces.csv": "6388c477b96646d1a53b61008f7eaa1c5763f134b40aa01e95c425e3669ffc1d",
+        "profile.csv": "b792d19a5e0b8bc2f2c3619e3712235838d8349ec09ad0c299c859533973ccd4"
+      },
+      "steady_rtol": 1e-07,
+      "steady_atol": 1e-13
+    },
+    {
+      "stage": 1,
+      "phi": 1.3,
+      "speed_cm_s": 6.607106752777018,
+      "label": "Cantera: conservative residual",
+      "job": "125102670",
+      "pressure_atm": 100,
+      "screen_passed": true,
+      "source": "6c9cc9b7d5090a947c0f73ad8e2789c9c55110f1",
+      "variant": "total-enthalpy,conservative-species",
+      "profile_sha256": "393502b72ee4c8fcdab862bffd3dad93568df54dee2e7165792d3ef898f06ff9",
+      "screen": {
+        "stage": 1,
+        "phi": 1.3,
+        "speed_cm_s": 6.607106752777018,
+        "last_refinement_relative_change": 1.5954555562247563e-06,
+        "mass_flux_relative_range": 2.8294204265120247e-10,
+        "maximum_species_sum_error": 6.318845446884325e-11,
+        "minimum_mass_fraction": -4.642244475348634e-15,
+        "points": 2293,
+        "scientific_acceptance": false,
+        "remaining": [
+          "domain sensitivity",
+          "initial-guess sensitivity",
+          "publication parameter uncertainty"
+        ]
+      },
+      "conservation_qualified": true,
+      "native_sha256": {
+        "balance-nodes.csv": "af449c1ac7a8c743c79056c645e421e30746014a0b44672f8c07ee543a974380",
+        "balance-faces.csv": "002cae0e1db6f8291c562c16ff21816cadc53c1afe7d2bd4198b85aaa5f920b1",
+        "profile.csv": "393502b72ee4c8fcdab862bffd3dad93568df54dee2e7165792d3ef898f06ff9"
+      },
+      "steady_rtol": 1e-07,
+      "steady_atol": 1e-13
+    },
+    {
+      "stage": 1,
+      "phi": 1.35,
+      "speed_cm_s": 6.354540171537698,
+      "label": "Cantera: conservative residual",
+      "job": "125102674",
+      "pressure_atm": 100,
+      "screen_passed": true,
+      "source": "6c9cc9b7d5090a947c0f73ad8e2789c9c55110f1",
+      "variant": "total-enthalpy,conservative-species",
+      "profile_sha256": "7f0351a2cf1ae6d181171b14b5330471493fcd00c82ebc3e9478ba045e7e2816",
+      "screen": {
+        "stage": 1,
+        "phi": 1.35,
+        "speed_cm_s": 6.354540171537698,
+        "last_refinement_relative_change": 1.027925949192987e-05,
+        "mass_flux_relative_range": 3.0468848676453453e-10,
+        "maximum_species_sum_error": 6.553391163066635e-11,
+        "minimum_mass_fraction": -1.0622746097531567e-14,
+        "points": 2309,
+        "scientific_acceptance": false,
+        "remaining": [
+          "domain sensitivity",
+          "initial-guess sensitivity",
+          "publication parameter uncertainty"
+        ]
+      },
+      "conservation_qualified": true,
+      "native_sha256": {
+        "balance-nodes.csv": "f033b8f72e77e8de70dc28428cc645bca62234f19bca03fb30b794e064aacce2",
+        "balance-faces.csv": "9489ff834b8aa5ce23582852636f00156a275271af4ed3952b2a052cfe288f41",
+        "profile.csv": "7f0351a2cf1ae6d181171b14b5330471493fcd00c82ebc3e9478ba045e7e2816"
+      },
       "steady_rtol": 1e-07,
       "steady_atol": 1e-13
     }

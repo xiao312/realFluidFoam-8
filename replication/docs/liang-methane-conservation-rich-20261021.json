@@ -1,0 +1,486 @@
+{
+  "observation": {
+    "observed_utc": "2026-10-20T23:53:36.833812+00:00",
+    "snapshot": "state/liang-hydrogen-20261020/monitor-snapshots/methane-conservative-rich-observation-terminal",
+    "jobs": [
+      {
+        "stage": 1,
+        "phi": 1.3,
+        "soret": false,
+        "variant": "total-enthalpy,conservative-species",
+        "build": 125102147,
+        "source": "6c9cc9b7d5090a947c0f73ad8e2789c9c55110f1",
+        "pressure_atm": 100,
+        "guess_job": 125092152,
+        "steady_rtol": 1e-07,
+        "steady_atol": 1e-13,
+        "cpus": 1,
+        "memory_MiB": 3072,
+        "time_limit": "00:30:00",
+        "purpose": "Other rich Figure 8(a) conditions with native conservation",
+        "job": 125102670,
+        "scheduler": [
+          "COMPLETED",
+          "00:12:37",
+          "0:0"
+        ],
+        "screen_passed": true,
+        "levels": [
+          {
+            "stage": "1",
+            "phi": "1.3",
+            "slope": "0.0075",
+            "curve": "0.0125",
+            "points": "2250",
+            "speed_cm_s": "6.607117294139016"
+          },
+          {
+            "stage": "1",
+            "phi": "1.3",
+            "slope": "0.00375",
+            "curve": "0.00625",
+            "points": "2293",
+            "speed_cm_s": "6.607106752777018"
+          }
+        ],
+        "executable_sha256": "7cb1bd1cf59a7d116225e1c6fc41dcfa056ba3a339284eceac361cf1d1675cff",
+        "screen": {
+          "stage": 1,
+          "phi": 1.3,
+          "speed_cm_s": 6.607106752777018,
+          "last_refinement_relative_change": 1.5954555562247563e-06,
+          "mass_flux_relative_range": 2.8294204265120247e-10,
+          "maximum_species_sum_error": 6.318845446884325e-11,
+          "minimum_mass_fraction": -4.642244475348634e-15,
+          "points": 2293,
+          "scientific_acceptance": false,
+          "remaining": [
+            "domain sensitivity",
+            "initial-guess sensitivity",
+            "publication parameter uncertainty"
+          ]
+        },
+        "output_sha256": {
+          "profile.csv": "393502b72ee4c8fcdab862bffd3dad93568df54dee2e7165792d3ef898f06ff9",
+          "refinement.csv": "c4449e56c5c3bffba0797c73ec57d3e1135708a09c58d6d837c2101627ba32a5",
+          "property-checks.csv": "9fdfd9c90b3fe320d1d5397db3cd00f011070a5d9a3f63f049c6e7cb389684f4",
+          "flame.yaml": "2f6a18e9bbaa011f5e002812062bba9122db8e7b98f1f0a781ddc90f8f511468"
+        },
+        "record_sha256": {
+          "source-revision.txt": "45fa509dd43ebc69ce4e5827e92a381edd2e72870ed9587e4be612c4ccef1188",
+          "build-path.txt": "4dc028048224acb514491618a733a66909b8116980c277f1c7911437e8f934b9",
+          "command.txt": "7f86e391c118ea14f23bfd81b60d1ca0c349a5db0fa85b971af8fb954e05ab6e",
+          "input-sha256.txt": "299f8180be344806978329d019d95025da58bfc6984f9d72592d29de26f0257b",
+          "executable.sha256": "926278a254f81d7a8b3e672dfb581b4f076210a6da135a89c3f8b711432d85b0"
+        },
+        "identity_status": "observed source, build and binary"
+      },
+      {
+        "stage": 4,
+        "phi": 1.3,
+        "soret": false,
+        "variant": "dense-increment,bounded-takahashi,pressure-chemistry,takahashi-table2,total-enthalpy,conservative-species",
+        "build": 125102147,
+        "source": "6c9cc9b7d5090a947c0f73ad8e2789c9c55110f1",
+        "pressure_atm": 100,
+        "guess_job": 125092152,
+        "steady_rtol": 1e-07,
+        "steady_atol": 1e-13,
+        "cpus": 1,
+        "memory_MiB": 3072,
+        "time_limit": "00:30:00",
+        "purpose": "Other rich Figure 8(a) conditions with native conservation",
+        "job": 125102671,
+        "scheduler": [
+          "TIMEOUT",
+          "00:30:21",
+          "0:0"
+        ],
+        "screen_passed": false,
+        "identity_status": "submitted registry; completed output unavailable"
+      },
+      {
+        "stage": 5,
+        "phi": 1.3,
+        "soret": false,
+        "variant": "dense-increment,bounded-takahashi,pressure-chemistry,takahashi-table2,total-enthalpy,conservative-species",
+        "build": 125102147,
+        "source": "6c9cc9b7d5090a947c0f73ad8e2789c9c55110f1",
+        "pressure_atm": 100,
+        "guess_job": 125092152,
+        "steady_rtol": 1e-07,
+        "steady_atol": 1e-13,
+        "cpus": 1,
+        "memory_MiB": 3072,
+        "time_limit": "00:30:00",
+        "purpose": "Other rich Figure 8(a) conditions with native conservation",
+        "job": 125102672,
+        "scheduler": [
+          "TIMEOUT",
+          "00:30:21",
+          "0:0"
+        ],
+        "screen_passed": false,
+        "identity_status": "submitted registry; completed output unavailable"
+      },
+      {
+        "stage": 1,
+        "phi": 1.35,
+        "soret": false,
+        "variant": "total-enthalpy,conservative-species",
+        "build": 125102147,
+        "source": "6c9cc9b7d5090a947c0f73ad8e2789c9c55110f1",
+        "pressure_atm": 100,
+        "guess_job": 125092189,
+        "steady_rtol": 1e-07,
+        "steady_atol": 1e-13,
+        "cpus": 1,
+        "memory_MiB": 3072,
+        "time_limit": "00:30:00",
+        "purpose": "Other rich Figure 8(a) conditions with native conservation",
+        "job": 125102674,
+        "scheduler": [
+          "COMPLETED",
+          "00:13:48",
+          "0:0"
+        ],
+        "screen_passed": true,
+        "levels": [
+          {
+            "stage": "1",
+            "phi": "1.35",
+            "slope": "0.0075",
+            "curve": "0.0125",
+            "points": "2259",
+            "speed_cm_s": "6.354605492176521"
+          },
+          {
+            "stage": "1",
+            "phi": "1.35",
+            "slope": "0.00375",
+            "curve": "0.00625",
+            "points": "2309",
+            "speed_cm_s": "6.354540171537698"
+          }
+        ],
+        "executable_sha256": "7cb1bd1cf59a7d116225e1c6fc41dcfa056ba3a339284eceac361cf1d1675cff",
+        "screen": {
+          "stage": 1,
+          "phi": 1.35,
+          "speed_cm_s": 6.354540171537698,
+          "last_refinement_relative_change": 1.027925949192987e-05,
+          "mass_flux_relative_range": 3.0468848676453453e-10,
+          "maximum_species_sum_error": 6.553391163066635e-11,
+          "minimum_mass_fraction": -1.0622746097531567e-14,
+          "points": 2309,
+          "scientific_acceptance": false,
+          "remaining": [
+            "domain sensitivity",
+            "initial-guess sensitivity",
+            "publication parameter uncertainty"
+          ]
+        },
+        "output_sha256": {
+          "profile.csv": "7f0351a2cf1ae6d181171b14b5330471493fcd00c82ebc3e9478ba045e7e2816",
+          "refinement.csv": "f9d14891c9fc84e98a184e11eb487a8454a61166ffa20763a7bc779f277516ab",
+          "property-checks.csv": "1541ba959142f5ced6916c9bb96139eb23421944573994567805248b7063dc0d",
+          "flame.yaml": "7a5947807cc25b6a58bdc7875a841ee2f0ff15438f0828acc31bf421873bc916"
+        },
+        "record_sha256": {
+          "source-revision.txt": "45fa509dd43ebc69ce4e5827e92a381edd2e72870ed9587e4be612c4ccef1188",
+          "build-path.txt": "4dc028048224acb514491618a733a66909b8116980c277f1c7911437e8f934b9",
+          "command.txt": "900284ae4b7929aadf1a9465396673421a02d1d27d7e26183094e32101421acb",
+          "input-sha256.txt": "968ef73556d79a8f12eb203e9fe2c1844f1bcd054d630bd76940dbf27bf90071",
+          "executable.sha256": "926278a254f81d7a8b3e672dfb581b4f076210a6da135a89c3f8b711432d85b0"
+        },
+        "identity_status": "observed source, build and binary"
+      },
+      {
+        "stage": 4,
+        "phi": 1.35,
+        "soret": false,
+        "variant": "dense-increment,bounded-takahashi,pressure-chemistry,takahashi-table2,total-enthalpy,conservative-species",
+        "build": 125102147,
+        "source": "6c9cc9b7d5090a947c0f73ad8e2789c9c55110f1",
+        "pressure_atm": 100,
+        "guess_job": 125092189,
+        "steady_rtol": 1e-07,
+        "steady_atol": 1e-13,
+        "cpus": 1,
+        "memory_MiB": 3072,
+        "time_limit": "00:30:00",
+        "purpose": "Other rich Figure 8(a) conditions with native conservation",
+        "job": 125102675,
+        "scheduler": [
+          "TIMEOUT",
+          "00:30:19",
+          "0:0"
+        ],
+        "screen_passed": false,
+        "identity_status": "submitted registry; completed output unavailable"
+      },
+      {
+        "stage": 5,
+        "phi": 1.35,
+        "soret": false,
+        "variant": "dense-increment,bounded-takahashi,pressure-chemistry,takahashi-table2,total-enthalpy,conservative-species",
+        "build": 125102147,
+        "source": "6c9cc9b7d5090a947c0f73ad8e2789c9c55110f1",
+        "pressure_atm": 100,
+        "guess_job": 125092189,
+        "steady_rtol": 1e-07,
+        "steady_atol": 1e-13,
+        "cpus": 1,
+        "memory_MiB": 3072,
+        "time_limit": "00:30:00",
+        "purpose": "Other rich Figure 8(a) conditions with native conservation",
+        "job": 125102676,
+        "scheduler": [
+          "TIMEOUT",
+          "00:30:16",
+          "0:0"
+        ],
+        "screen_passed": false,
+        "identity_status": "submitted registry; completed output unavailable"
+      }
+    ]
+  },
+  "balances": [
+    {
+      "job": 125102670,
+      "stage": 1,
+      "phi": 1.3,
+      "source": "6c9cc9b7d5090a947c0f73ad8e2789c9c55110f1",
+      "build": 125102147,
+      "executable_sha256": "7cb1bd1cf59a7d116225e1c6fc41dcfa056ba3a339284eceac361cf1d1675cff",
+      "speed_cm_s": 6.607106752777018,
+      "Tb_K": 2059.734703364402,
+      "identity_errors": {
+        "face_mass_average": 0.0,
+        "species_flux_definition": 6.017738793134978e-17,
+        "species_residual_identity": 1.639872318131988e-22,
+        "species_integral_identity": 5.415964913821481e-16,
+        "energy_advective_definition": 0.0,
+        "energy_conductive_definition": 0.0,
+        "energy_species_definition": 1.0323751830002598e-15,
+        "energy_decomposition": 1.7206253050004332e-16,
+        "energy_residual_identity": 1.4625315091156862e-15,
+        "energy_integral_identity": 4.301563262501083e-17,
+        "chemical_mass_balance": 1.3312089909239127e-15,
+        "chemical_element_balance": 1.0639211459435194e-15
+      },
+      "balance_metrics": {
+        "elemental_face_span_relative": {
+          "C": 1.0185216243746207e-07,
+          "H": 3.615055104995463e-07,
+          "O": 5.805142485250339e-08,
+          "N": 1.8862124148506502e-08
+        },
+        "inactive_element_face_span_over_massflow": 0.0,
+        "maximum_diffusion_mass_sum_over_massflow": 2.9793073695254724e-13,
+        "feed_to_first_face_over_massflow": 1.3239025344896953e-14,
+        "outlet_state_to_last_face_over_massflow": 6.376636734757548e-11,
+        "energy_flux_span_equivalent_K": 0.000627954517742742,
+        "maximum_species_residual_s_1": 0.00891223741118176,
+        "maximum_energy_residual_K_s": 30.624779026156844
+      },
+      "checks": {
+        "face_mass_average": true,
+        "species_flux_definition": true,
+        "species_residual_identity": true,
+        "species_integral_identity": true,
+        "energy_advective_definition": true,
+        "energy_conductive_definition": true,
+        "energy_species_definition": true,
+        "energy_decomposition": true,
+        "energy_residual_identity": true,
+        "energy_integral_identity": true,
+        "chemical_mass_balance": true,
+        "chemical_element_balance": true,
+        "numerical_screen": true,
+        "elemental_flux": true,
+        "inactive_elements": true,
+        "diffusion_mass": true,
+        "inlet_flux": true,
+        "outlet_flux": true,
+        "energy_flux": true
+      },
+      "failed_checks": [],
+      "output_sha256": {
+        "balance-nodes.csv": "af449c1ac7a8c743c79056c645e421e30746014a0b44672f8c07ee543a974380",
+        "balance-faces.csv": "002cae0e1db6f8291c562c16ff21816cadc53c1afe7d2bd4198b85aaa5f920b1",
+        "profile.csv": "393502b72ee4c8fcdab862bffd3dad93568df54dee2e7165792d3ef898f06ff9"
+      },
+      "mechanism_sha256": "c6e72c25dbf5af75a16b71042e071aed15ca4fd4a8a854fd8720a820ce1986c6"
+    },
+    {
+      "job": 125102674,
+      "stage": 1,
+      "phi": 1.35,
+      "source": "6c9cc9b7d5090a947c0f73ad8e2789c9c55110f1",
+      "build": 125102147,
+      "executable_sha256": "7cb1bd1cf59a7d116225e1c6fc41dcfa056ba3a339284eceac361cf1d1675cff",
+      "speed_cm_s": 6.354540171537698,
+      "Tb_K": 2019.6566604380278,
+      "identity_errors": {
+        "face_mass_average": 0.0,
+        "species_flux_definition": 6.268812532064456e-17,
+        "species_residual_identity": 3.5704964699662096e-22,
+        "species_integral_identity": 3.134406266032228e-17,
+        "energy_advective_definition": 0.0,
+        "energy_conductive_definition": 0.0,
+        "energy_species_definition": 1.268615649957595e-15,
+        "energy_decomposition": 1.812308071367993e-16,
+        "energy_residual_identity": 1.812308071294635e-15,
+        "energy_integral_identity": 4.530770178419983e-17,
+        "chemical_mass_balance": 1.515992811587189e-15,
+        "chemical_element_balance": 1.4378402005103966e-15
+      },
+      "balance_metrics": {
+        "elemental_face_span_relative": {
+          "C": 1.3401747740067608e-07,
+          "H": 4.5025940258456746e-07,
+          "O": 7.5429808659189e-08,
+          "N": 2.411169115017975e-08
+        },
+        "inactive_element_face_span_over_massflow": 0.0,
+        "maximum_diffusion_mass_sum_over_massflow": 3.5115466263431607e-13,
+        "feed_to_first_face_over_massflow": 1.1902344513947032e-14,
+        "outlet_state_to_last_face_over_massflow": 6.586390574938842e-11,
+        "energy_flux_span_equivalent_K": 0.0006566403061413704,
+        "maximum_species_residual_s_1": 0.011714389286728988,
+        "maximum_energy_residual_K_s": 29.806642891384154
+      },
+      "checks": {
+        "face_mass_average": true,
+        "species_flux_definition": true,
+        "species_residual_identity": true,
+        "species_integral_identity": true,
+        "energy_advective_definition": true,
+        "energy_conductive_definition": true,
+        "energy_species_definition": true,
+        "energy_decomposition": true,
+        "energy_residual_identity": true,
+        "energy_integral_identity": true,
+        "chemical_mass_balance": true,
+        "chemical_element_balance": true,
+        "numerical_screen": true,
+        "elemental_flux": true,
+        "inactive_elements": true,
+        "diffusion_mass": true,
+        "inlet_flux": true,
+        "outlet_flux": true,
+        "energy_flux": true
+      },
+      "failed_checks": [],
+      "output_sha256": {
+        "balance-nodes.csv": "f033b8f72e77e8de70dc28428cc645bca62234f19bca03fb30b794e064aacce2",
+        "balance-faces.csv": "9489ff834b8aa5ce23582852636f00156a275271af4ed3952b2a052cfe288f41",
+        "profile.csv": "7f0351a2cf1ae6d181171b14b5330471493fcd00c82ebc3e9478ba045e7e2816"
+      },
+      "mechanism_sha256": "c6e72c25dbf5af75a16b71042e071aed15ca4fd4a8a854fd8720a820ce1986c6"
+    }
+  ],
+  "comparison": {
+    "criteria": "abs(error) <= max(0.05 cm/s, 1% reference) + digitization uncertainty",
+    "rows": [
+      {
+        "stage": 1,
+        "phi": 1.3,
+        "job": 125102670,
+        "computed_cm_s": 6.607106752777018,
+        "paper_cm_s": 6.616136798884045,
+        "image_uncertainty_cm_s": 0.04,
+        "error_cm_s": -0.009030046107026735,
+        "error_percent": -0.13648517830752604,
+        "limit_cm_s": 0.10616136798884046,
+        "within_screen": true
+      },
+      {
+        "stage": 1,
+        "phi": 1.35,
+        "job": 125102674,
+        "computed_cm_s": 6.354540171537698,
+        "paper_cm_s": 6.363337088078295,
+        "image_uncertainty_cm_s": 0.04,
+        "error_cm_s": -0.008796916540597444,
+        "error_percent": -0.13824376139177755,
+        "limit_cm_s": 0.10363337088078295,
+        "within_screen": true
+      }
+    ],
+    "excluded": [],
+    "stages": {
+      "1": {
+        "points": 2,
+        "rms_cm_s": 0.008914243470908386,
+        "max_abs_cm_s": 0.009030046107026735,
+        "failed_points": 0
+      }
+    },
+    "scientific_acceptance": false
+  },
+  "steady_guesses": {
+    "phi130": {
+      "purpose": "Shared completed Case 4 steady Cantera guess; no CFD initialization",
+      "phi": 1.3,
+      "pressure_atm": 100,
+      "Tu_K": 298,
+      "guess_job": 125092152,
+      "profile_sha256": "9ca52277442989bea5a69800e4dceb862c43e24fa250f2127543d88a00a588ac",
+      "observation_sha256": "f446e3138e9b0345417ff6fa0e9ca0d2d4140b10b03cc1833712c79ce6d48443",
+      "source_profile_revision": "c9c2c55b3db6b9b6f379026ad94ff4fdea17d34c",
+      "changes": "Column projection only; no rescaling, clipping or normalization",
+      "files_sha256": {
+        "ideal.yaml": "c6e72c25dbf5af75a16b71042e071aed15ca4fd4a8a854fd8720a820ce1986c6",
+        "srk.yaml": "9d2e7b8a245d38c5f8950e97ccb819402cecce87af91639e0457d9aee489e1f5",
+        "species.txt": "6374f6cb2c693997f1f2a1e6505c1579c62e9adc238555a2d4ba45edebca1b61",
+        "guess.csv": "af9523423ebeae12e17598b223d4bdee98d870e0a6673658ff8334b870a72746"
+      }
+    },
+    "phi135": {
+      "purpose": "Shared completed Case 4 steady Cantera guess; no CFD initialization",
+      "phi": 1.35,
+      "pressure_atm": 100,
+      "Tu_K": 298,
+      "guess_job": 125092189,
+      "profile_sha256": "21a519e055d217cbd9947644321a089edc2417ac8faa0c2bd64c6caad1fc5bbd",
+      "observation_sha256": "40d8fd6e8bd09e7b6809b72b199cab329137014e8dc8dd105ee52d81f77bbeae",
+      "source_profile_revision": "c9c2c55b3db6b9b6f379026ad94ff4fdea17d34c",
+      "changes": "Column projection only; no rescaling, clipping or normalization",
+      "files_sha256": {
+        "ideal.yaml": "c6e72c25dbf5af75a16b71042e071aed15ca4fd4a8a854fd8720a820ce1986c6",
+        "srk.yaml": "9d2e7b8a245d38c5f8950e97ccb819402cecce87af91639e0457d9aee489e1f5",
+        "species.txt": "6374f6cb2c693997f1f2a1e6505c1579c62e9adc238555a2d4ba45edebca1b61",
+        "guess.csv": "a239cee267f91b493ab321c0dc251602981b925a8049f5a36b83a2c155fea854"
+      }
+    }
+  },
+  "numerics": {
+    "125102670": {
+      "values": {
+        "steady_rtol": "9.9999999999999995e-08",
+        "steady_atol": "1e-13",
+        "output_significant_digits": "17"
+      },
+      "sha256": "cee8da6c739d31a5f62f505edecb5802f73fd6405a80e02b557ce4025eacd1af"
+    },
+    "125102674": {
+      "values": {
+        "steady_rtol": "9.9999999999999995e-08",
+        "steady_atol": "1e-13",
+        "output_significant_digits": "17"
+      },
+      "sha256": "cee8da6c739d31a5f62f505edecb5802f73fd6405a80e02b557ce4025eacd1af"
+    }
+  },
+  "observation_sha256": "52dcf52368948f3eec2b77d0b4a583d9798b1a2b6dc556c747ad85243517dece",
+  "script_sha256": "7acefb2c616b7169afa9eab2084c7bb2a91ed1c998d5c6679f507b6108d81013",
+  "scientific_acceptance": false,
+  "limits": [
+    "All six attempts retain their terminal scheduler states",
+    "One completed Case 4 steady numerical guess per condition is shared across stages",
+    "These are Cantera steady solves, not CFD restarts",
+    "No normalization, physical parameter fitting or audit-threshold relaxation"
+  ]
+}

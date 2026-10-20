@@ -1,0 +1,967 @@
+{
+  "observation": {
+    "observed_utc": "2026-10-20T23:51:13.643215+00:00",
+    "snapshot": "state/liang-hydrogen-20261020/monitor-snapshots/methane-conservative-terminal",
+    "jobs": [
+      {
+        "stage": 1,
+        "phi": 1.4,
+        "soret": false,
+        "variant": "total-enthalpy,conservative-species",
+        "build": 125102147,
+        "source": "6c9cc9b7d5090a947c0f73ad8e2789c9c55110f1",
+        "pressure_atm": 100,
+        "comparison_job": 125101520,
+        "steady_rtol": 1e-05,
+        "steady_atol": 1e-11,
+        "time_limit": "00:45:00",
+        "cpus": 1,
+        "memory_MiB": 3072,
+        "purpose": "conservative species divergence with unchanged total-enthalpy equation",
+        "job": 125102175,
+        "tolerance_control": "default",
+        "scheduler": [
+          "COMPLETED",
+          "00:06:35",
+          "0:0"
+        ],
+        "screen_passed": true,
+        "levels": [
+          {
+            "stage": "1",
+            "phi": "1.4",
+            "slope": "0.0075",
+            "curve": "0.0125",
+            "points": "1195",
+            "speed_cm_s": "6.110844545650506"
+          },
+          {
+            "stage": "1",
+            "phi": "1.4",
+            "slope": "0.00375",
+            "curve": "0.00625",
+            "points": "2281",
+            "speed_cm_s": "6.108900522625101"
+          }
+        ],
+        "executable_sha256": "7cb1bd1cf59a7d116225e1c6fc41dcfa056ba3a339284eceac361cf1d1675cff",
+        "screen": {
+          "stage": 1,
+          "phi": 1.4,
+          "speed_cm_s": 6.108900522625101,
+          "last_refinement_relative_change": 0.0003181267353281614,
+          "mass_flux_relative_range": 8.096584302864798e-10,
+          "maximum_species_sum_error": 3.0460878264193525e-10,
+          "minimum_mass_fraction": -1.190493257530926e-13,
+          "points": 2281,
+          "scientific_acceptance": false,
+          "remaining": [
+            "domain sensitivity",
+            "initial-guess sensitivity",
+            "publication parameter uncertainty"
+          ]
+        },
+        "output_sha256": {
+          "profile.csv": "e5b57c267bf6fb99df041ce0285b97e81fe554136c155e64adbafcd1443d13ca",
+          "refinement.csv": "f3b889e380711492c2f712ee1a71451d63f90190c0f59e9887e45b1fae9d27ff",
+          "property-checks.csv": "446317feefef116a5632be0fb0179cda8ee294dad216d4dee5c27339cf7ca085",
+          "flame.yaml": "ac8d9a9e5bc811acb9e7f82f96c6b51a95cee94d08002078cb1d8e5bf9c51268"
+        },
+        "record_sha256": {
+          "source-revision.txt": "45fa509dd43ebc69ce4e5827e92a381edd2e72870ed9587e4be612c4ccef1188",
+          "build-path.txt": "4dc028048224acb514491618a733a66909b8116980c277f1c7911437e8f934b9",
+          "command.txt": "bed439bbad8676e9ed5a74298ef0f1f3e98e0de356a2aace0682914f581bd9ec",
+          "input-sha256.txt": "8028512f5c42ef2163d94af5d7f2d8e342328d08c61d999d4ec9c41b9e2ac585",
+          "executable.sha256": "926278a254f81d7a8b3e672dfb581b4f076210a6da135a89c3f8b711432d85b0"
+        }
+      },
+      {
+        "stage": 4,
+        "phi": 1.4,
+        "soret": false,
+        "variant": "dense-increment,bounded-takahashi,pressure-chemistry,takahashi-table2,total-enthalpy,conservative-species",
+        "build": 125102147,
+        "source": "6c9cc9b7d5090a947c0f73ad8e2789c9c55110f1",
+        "pressure_atm": 100,
+        "comparison_job": 125101527,
+        "steady_rtol": 1e-05,
+        "steady_atol": 1e-11,
+        "time_limit": "00:45:00",
+        "cpus": 1,
+        "memory_MiB": 3072,
+        "purpose": "conservative species divergence with unchanged total-enthalpy equation",
+        "job": 125102176,
+        "tolerance_control": "default",
+        "scheduler": [
+          "COMPLETED",
+          "00:17:50",
+          "0:0"
+        ],
+        "screen_passed": true,
+        "levels": [
+          {
+            "stage": "4",
+            "phi": "1.4",
+            "slope": "0.0075",
+            "curve": "0.0125",
+            "points": "1218",
+            "speed_cm_s": "5.760905806926433"
+          },
+          {
+            "stage": "4",
+            "phi": "1.4",
+            "slope": "0.00375",
+            "curve": "0.00625",
+            "points": "2214",
+            "speed_cm_s": "5.759065845072932"
+          }
+        ],
+        "executable_sha256": "7cb1bd1cf59a7d116225e1c6fc41dcfa056ba3a339284eceac361cf1d1675cff",
+        "screen": {
+          "stage": 4,
+          "phi": 1.4,
+          "speed_cm_s": 5.759065845072932,
+          "last_refinement_relative_change": 0.00031938759548699736,
+          "mass_flux_relative_range": 1.834879142150751e-09,
+          "maximum_species_sum_error": 3.1323277305261854e-10,
+          "minimum_mass_fraction": -5.300846273656769e-13,
+          "points": 2214,
+          "scientific_acceptance": false,
+          "remaining": [
+            "domain sensitivity",
+            "initial-guess sensitivity",
+            "publication parameter uncertainty"
+          ]
+        },
+        "output_sha256": {
+          "profile.csv": "dc1553f0a0302294cd953118b0f84306996c8e60ce6f69c947802ebb8f9e1f05",
+          "refinement.csv": "7d0f2b7ddb15477d0d2f016a7292a81cb739650a208dd9d77f48130d39d07e2d",
+          "property-checks.csv": "ddba46b16162dee966dc1ce512e8bbec9036e5e66503275256ae2472370ccda3",
+          "flame.yaml": "37b54505c3d717b19f54d6d1a5db50a4ab313d8c941ee5fa7d61fa2f64b0f019"
+        },
+        "record_sha256": {
+          "source-revision.txt": "45fa509dd43ebc69ce4e5827e92a381edd2e72870ed9587e4be612c4ccef1188",
+          "build-path.txt": "4dc028048224acb514491618a733a66909b8116980c277f1c7911437e8f934b9",
+          "command.txt": "22cc41c6c0687acc45a70f649f0f61ccfc2df7ca3d2412e849d0da4c9225b04a",
+          "input-sha256.txt": "8028512f5c42ef2163d94af5d7f2d8e342328d08c61d999d4ec9c41b9e2ac585",
+          "executable.sha256": "926278a254f81d7a8b3e672dfb581b4f076210a6da135a89c3f8b711432d85b0"
+        }
+      },
+      {
+        "stage": 5,
+        "phi": 1.4,
+        "soret": false,
+        "variant": "dense-increment,bounded-takahashi,pressure-chemistry,takahashi-table2,total-enthalpy,conservative-species",
+        "build": 125102147,
+        "source": "6c9cc9b7d5090a947c0f73ad8e2789c9c55110f1",
+        "pressure_atm": 100,
+        "comparison_job": 125101531,
+        "steady_rtol": 1e-05,
+        "steady_atol": 1e-11,
+        "time_limit": "00:45:00",
+        "cpus": 1,
+        "memory_MiB": 3072,
+        "purpose": "conservative species divergence with unchanged total-enthalpy equation",
+        "job": 125102177,
+        "tolerance_control": "default",
+        "scheduler": [
+          "COMPLETED",
+          "00:29:15",
+          "0:0"
+        ],
+        "screen_passed": true,
+        "levels": [
+          {
+            "stage": "5",
+            "phi": "1.4",
+            "slope": "0.0075",
+            "curve": "0.0125",
+            "points": "1231",
+            "speed_cm_s": "5.71763710923817"
+          },
+          {
+            "stage": "5",
+            "phi": "1.4",
+            "slope": "0.00375",
+            "curve": "0.00625",
+            "points": "2214",
+            "speed_cm_s": "5.716013152549377"
+          }
+        ],
+        "executable_sha256": "7cb1bd1cf59a7d116225e1c6fc41dcfa056ba3a339284eceac361cf1d1675cff",
+        "screen": {
+          "stage": 5,
+          "phi": 1.4,
+          "speed_cm_s": 5.716013152549377,
+          "last_refinement_relative_change": 0.0002840258410541363,
+          "mass_flux_relative_range": 1.2484922488117846e-09,
+          "maximum_species_sum_error": 2.1845358855188124e-10,
+          "minimum_mass_fraction": -1.5176553559285128e-13,
+          "points": 2214,
+          "scientific_acceptance": false,
+          "remaining": [
+            "domain sensitivity",
+            "initial-guess sensitivity",
+            "publication parameter uncertainty"
+          ]
+        },
+        "output_sha256": {
+          "profile.csv": "6cfdd920712f9eb05a94d121771ad9ef58146dc2f78ba857a836d2a4e9d398ea",
+          "refinement.csv": "60f4bc19482cf27ee38f1f60e766d77e3665a4c3cd4802ef7027bf0a9bc91ff7",
+          "property-checks.csv": "7904e1b5f966dedfeb6188910740da67f8caf51270471657821265b51597a608",
+          "flame.yaml": "7c43d06e9d1bd38d74d5b09d551bdf730721bf69e62e835d5f3116b2d24450f0"
+        },
+        "record_sha256": {
+          "source-revision.txt": "45fa509dd43ebc69ce4e5827e92a381edd2e72870ed9587e4be612c4ccef1188",
+          "build-path.txt": "4dc028048224acb514491618a733a66909b8116980c277f1c7911437e8f934b9",
+          "command.txt": "83a95da6086bf73fed79878dba496437d4ae5e6edbc3e6212e1bec711318254a",
+          "input-sha256.txt": "8028512f5c42ef2163d94af5d7f2d8e342328d08c61d999d4ec9c41b9e2ac585",
+          "executable.sha256": "926278a254f81d7a8b3e672dfb581b4f076210a6da135a89c3f8b711432d85b0"
+        }
+      },
+      {
+        "stage": 1,
+        "phi": 1.4,
+        "soret": false,
+        "variant": "total-enthalpy,conservative-species",
+        "build": 125102147,
+        "source": "6c9cc9b7d5090a947c0f73ad8e2789c9c55110f1",
+        "pressure_atm": 100,
+        "comparison_job": 125101520,
+        "steady_rtol": 1e-07,
+        "steady_atol": 1e-13,
+        "time_limit": "00:55:00",
+        "cpus": 1,
+        "memory_MiB": 3072,
+        "purpose": "conservative species divergence with unchanged total-enthalpy equation",
+        "job": 125102244,
+        "tolerance_control": "tight",
+        "scheduler": [
+          "COMPLETED",
+          "00:11:08",
+          "0:0"
+        ],
+        "screen_passed": true,
+        "levels": [
+          {
+            "stage": "1",
+            "phi": "1.4",
+            "slope": "0.0075",
+            "curve": "0.0125",
+            "points": "1195",
+            "speed_cm_s": "6.111126126321297"
+          },
+          {
+            "stage": "1",
+            "phi": "1.4",
+            "slope": "0.00375",
+            "curve": "0.00625",
+            "points": "2281",
+            "speed_cm_s": "6.109791523545419"
+          }
+        ],
+        "executable_sha256": "7cb1bd1cf59a7d116225e1c6fc41dcfa056ba3a339284eceac361cf1d1675cff",
+        "screen": {
+          "stage": 1,
+          "phi": 1.4,
+          "speed_cm_s": 6.109791523545419,
+          "last_refinement_relative_change": 0.00021838900855442045,
+          "mass_flux_relative_range": 3.4568115178567387e-10,
+          "maximum_species_sum_error": 7.753730990600616e-11,
+          "minimum_mass_fraction": -3.4044723510934577e-15,
+          "points": 2281,
+          "scientific_acceptance": false,
+          "remaining": [
+            "domain sensitivity",
+            "initial-guess sensitivity",
+            "publication parameter uncertainty"
+          ]
+        },
+        "output_sha256": {
+          "profile.csv": "880219a24190a59ced8e83c4c57a1e9d907644ed0982c9ada733bcce8bcfc84b",
+          "refinement.csv": "caf5a2bf7ded1e3ef931108379bc86d3dd7cb60cf81aceeb77c8c06364731efe",
+          "property-checks.csv": "446317feefef116a5632be0fb0179cda8ee294dad216d4dee5c27339cf7ca085",
+          "flame.yaml": "f22a34b81f1fe715c13c46c04f25630c51e7ce33fdab11b88cd139cd56585d3c"
+        },
+        "record_sha256": {
+          "source-revision.txt": "45fa509dd43ebc69ce4e5827e92a381edd2e72870ed9587e4be612c4ccef1188",
+          "build-path.txt": "4dc028048224acb514491618a733a66909b8116980c277f1c7911437e8f934b9",
+          "command.txt": "176a16aedaab2a35698a0854e1b2129c1b3ad2b10ca2d0b8ce7f2c56e06a6713",
+          "input-sha256.txt": "8028512f5c42ef2163d94af5d7f2d8e342328d08c61d999d4ec9c41b9e2ac585",
+          "executable.sha256": "926278a254f81d7a8b3e672dfb581b4f076210a6da135a89c3f8b711432d85b0"
+        }
+      },
+      {
+        "stage": 4,
+        "phi": 1.4,
+        "soret": false,
+        "variant": "dense-increment,bounded-takahashi,pressure-chemistry,takahashi-table2,total-enthalpy,conservative-species",
+        "build": 125102147,
+        "source": "6c9cc9b7d5090a947c0f73ad8e2789c9c55110f1",
+        "pressure_atm": 100,
+        "comparison_job": 125101527,
+        "steady_rtol": 1e-07,
+        "steady_atol": 1e-13,
+        "time_limit": "00:55:00",
+        "cpus": 1,
+        "memory_MiB": 3072,
+        "purpose": "conservative species divergence with unchanged total-enthalpy equation",
+        "job": 125102245,
+        "tolerance_control": "tight",
+        "scheduler": [
+          "COMPLETED",
+          "00:36:53",
+          "0:0"
+        ],
+        "screen_passed": true,
+        "levels": [
+          {
+            "stage": "4",
+            "phi": "1.4",
+            "slope": "0.0075",
+            "curve": "0.0125",
+            "points": "1218",
+            "speed_cm_s": "5.7606347400538"
+          },
+          {
+            "stage": "4",
+            "phi": "1.4",
+            "slope": "0.00375",
+            "curve": "0.00625",
+            "points": "2214",
+            "speed_cm_s": "5.759754637450518"
+          }
+        ],
+        "executable_sha256": "7cb1bd1cf59a7d116225e1c6fc41dcfa056ba3a339284eceac361cf1d1675cff",
+        "screen": {
+          "stage": 4,
+          "phi": 1.4,
+          "speed_cm_s": 5.759754637450518,
+          "last_refinement_relative_change": 0.00015277875494557058,
+          "mass_flux_relative_range": 2.6626441341708896e-11,
+          "maximum_species_sum_error": 2.6590951662797124e-11,
+          "minimum_mass_fraction": -3.9972223276836506e-14,
+          "points": 2214,
+          "scientific_acceptance": false,
+          "remaining": [
+            "domain sensitivity",
+            "initial-guess sensitivity",
+            "publication parameter uncertainty"
+          ]
+        },
+        "output_sha256": {
+          "profile.csv": "b792d19a5e0b8bc2f2c3619e3712235838d8349ec09ad0c299c859533973ccd4",
+          "refinement.csv": "56868db21c75d9d69ae30159b02eab6dd1592e403cb6b27f01e7575857dba7c4",
+          "property-checks.csv": "ddba46b16162dee966dc1ce512e8bbec9036e5e66503275256ae2472370ccda3",
+          "flame.yaml": "b779014c9ceb19d79f3ee145b9fb8ff82bb2b9a8a2b6e54d2c7eebfc0e9dd786"
+        },
+        "record_sha256": {
+          "source-revision.txt": "45fa509dd43ebc69ce4e5827e92a381edd2e72870ed9587e4be612c4ccef1188",
+          "build-path.txt": "4dc028048224acb514491618a733a66909b8116980c277f1c7911437e8f934b9",
+          "command.txt": "c41dab52ee18e9a5b48b47acc17df2fde689b6439b79e801b7058d7cb9683481",
+          "input-sha256.txt": "8028512f5c42ef2163d94af5d7f2d8e342328d08c61d999d4ec9c41b9e2ac585",
+          "executable.sha256": "926278a254f81d7a8b3e672dfb581b4f076210a6da135a89c3f8b711432d85b0"
+        }
+      },
+      {
+        "stage": 5,
+        "phi": 1.4,
+        "soret": false,
+        "variant": "dense-increment,bounded-takahashi,pressure-chemistry,takahashi-table2,total-enthalpy,conservative-species",
+        "build": 125102147,
+        "source": "6c9cc9b7d5090a947c0f73ad8e2789c9c55110f1",
+        "pressure_atm": 100,
+        "comparison_job": 125101531,
+        "steady_rtol": 1e-07,
+        "steady_atol": 1e-13,
+        "time_limit": "00:55:00",
+        "cpus": 1,
+        "memory_MiB": 3072,
+        "purpose": "conservative species divergence with unchanged total-enthalpy equation",
+        "job": 125102246,
+        "tolerance_control": "tight",
+        "scheduler": [
+          "TIMEOUT",
+          "00:55:24",
+          "0:0"
+        ],
+        "screen_passed": false
+      }
+    ]
+  },
+  "balances": {
+    "observation_sha256": "4278ce42168febd0a7bc781c912293d54cdbbf03835032d0cd75681c8dc8a55f",
+    "mechanism_sha256": "c6e72c25dbf5af75a16b71042e071aed15ca4fd4a8a854fd8720a820ce1986c6",
+    "script_sha256": "82bc75914723df215c978a54f1320d5047f1f6f50698c9af001d3af4d2b498e2",
+    "runs": [
+      {
+        "job": 125102175,
+        "stage": 1,
+        "phi": 1.4,
+        "source": "6c9cc9b7d5090a947c0f73ad8e2789c9c55110f1",
+        "build": 125102147,
+        "executable_sha256": "7cb1bd1cf59a7d116225e1c6fc41dcfa056ba3a339284eceac361cf1d1675cff",
+        "speed_cm_s": 6.108900522625101,
+        "Tb_K": 1980.6417567888363,
+        "identity_errors": {
+          "face_mass_average": 0.0,
+          "species_flux_definition": 6.533187341092248e-17,
+          "species_residual_identity": 1.556475902654951e-21,
+          "species_integral_identity": 1.9599562023276744e-16,
+          "energy_advective_definition": 0.0,
+          "energy_conductive_definition": 0.0,
+          "energy_species_definition": 9.54091735633352e-16,
+          "energy_decomposition": 1.9081834712667038e-16,
+          "energy_residual_identity": 1.5265467770098053e-15,
+          "energy_integral_identity": 9.540917356333519e-17,
+          "chemical_mass_balance": 1.46164293885799e-15,
+          "chemical_element_balance": 1.0162858791330605e-15
+        },
+        "balance_metrics": {
+          "elemental_face_span_relative": {
+            "C": 6.386533128141418e-07,
+            "H": 2.999671071115676e-06,
+            "O": 1.4521258737400893e-06,
+            "N": 4.736154736148908e-07
+          },
+          "inactive_element_face_span_over_massflow": 0.0,
+          "maximum_diffusion_mass_sum_over_massflow": 8.82166694637566e-13,
+          "feed_to_first_face_over_massflow": 2.336645300623842e-13,
+          "outlet_state_to_last_face_over_massflow": 2.847842494731475e-10,
+          "energy_flux_span_equivalent_K": 0.05440246206572429,
+          "maximum_species_residual_s_1": 0.019784870841452445,
+          "maximum_energy_residual_K_s": 2413.5200572675117
+        },
+        "checks": {
+          "face_mass_average": true,
+          "species_flux_definition": true,
+          "species_residual_identity": true,
+          "species_integral_identity": true,
+          "energy_advective_definition": true,
+          "energy_conductive_definition": true,
+          "energy_species_definition": true,
+          "energy_decomposition": true,
+          "energy_residual_identity": true,
+          "energy_integral_identity": true,
+          "chemical_mass_balance": true,
+          "chemical_element_balance": true,
+          "numerical_screen": true,
+          "elemental_flux": false,
+          "inactive_elements": true,
+          "diffusion_mass": true,
+          "inlet_flux": true,
+          "outlet_flux": true,
+          "energy_flux": false
+        },
+        "failed_checks": [
+          "elemental_flux",
+          "energy_flux"
+        ],
+        "output_sha256": {
+          "balance-nodes.csv": "6366848126cc88571d68fe76969d510e801a475573b1819259997910d1bd7786",
+          "balance-faces.csv": "71f4b42d6e3d9469165a13153cb5fd48c51887351c50ed3834d36217cb28cde1",
+          "profile.csv": "e5b57c267bf6fb99df041ce0285b97e81fe554136c155e64adbafcd1443d13ca"
+        }
+      },
+      {
+        "job": 125102176,
+        "stage": 4,
+        "phi": 1.4,
+        "source": "6c9cc9b7d5090a947c0f73ad8e2789c9c55110f1",
+        "build": 125102147,
+        "executable_sha256": "7cb1bd1cf59a7d116225e1c6fc41dcfa056ba3a339284eceac361cf1d1675cff",
+        "speed_cm_s": 5.759065845072932,
+        "Tb_K": 1958.769705707588,
+        "identity_errors": {
+          "face_mass_average": 0.0,
+          "species_flux_definition": 6.892688382640118e-17,
+          "species_residual_identity": 8.445549639361271e-22,
+          "species_integral_identity": 4.824881867848083e-16,
+          "energy_advective_definition": 0.0,
+          "energy_conductive_definition": 0.0,
+          "energy_species_definition": 9.925190925461347e-16,
+          "energy_decomposition": 1.9850381850922695e-16,
+          "energy_residual_identity": 1.5384045934429235e-15,
+          "energy_integral_identity": 9.925190925461348e-17,
+          "chemical_mass_balance": 1.2166996632449422e-15,
+          "chemical_element_balance": 1.0251340365838643e-15
+        },
+        "balance_metrics": {
+          "elemental_face_span_relative": {
+            "C": 6.910917325910099e-07,
+            "H": 2.671181726955497e-06,
+            "O": 1.2346532716052055e-06,
+            "N": 3.923735650103847e-07
+          },
+          "inactive_element_face_span_over_massflow": 0.0,
+          "maximum_diffusion_mass_sum_over_massflow": 9.751842251453092e-13,
+          "feed_to_first_face_over_massflow": 5.300846265339232e-13,
+          "outlet_state_to_last_face_over_massflow": 2.971655770709046e-10,
+          "energy_flux_span_equivalent_K": 0.04472789469333775,
+          "maximum_species_residual_s_1": 0.029821236332975527,
+          "maximum_energy_residual_K_s": 2208.3076151455957
+        },
+        "checks": {
+          "face_mass_average": true,
+          "species_flux_definition": true,
+          "species_residual_identity": true,
+          "species_integral_identity": true,
+          "energy_advective_definition": true,
+          "energy_conductive_definition": true,
+          "energy_species_definition": true,
+          "energy_decomposition": true,
+          "energy_residual_identity": true,
+          "energy_integral_identity": true,
+          "chemical_mass_balance": true,
+          "chemical_element_balance": true,
+          "numerical_screen": true,
+          "elemental_flux": false,
+          "inactive_elements": true,
+          "diffusion_mass": true,
+          "inlet_flux": true,
+          "outlet_flux": true,
+          "energy_flux": true
+        },
+        "failed_checks": [
+          "elemental_flux"
+        ],
+        "output_sha256": {
+          "balance-nodes.csv": "b02f9dc96241db747516ef39ed31f092a52095127615b406d38aa4bdd769c334",
+          "balance-faces.csv": "962195aaf78021e1d73fd548a1b7d69ee1478d4740a2cc609ab3a15d9d8ba3ed",
+          "profile.csv": "dc1553f0a0302294cd953118b0f84306996c8e60ce6f69c947802ebb8f9e1f05"
+        }
+      },
+      {
+        "job": 125102177,
+        "stage": 5,
+        "phi": 1.4,
+        "source": "6c9cc9b7d5090a947c0f73ad8e2789c9c55110f1",
+        "build": 125102147,
+        "executable_sha256": "7cb1bd1cf59a7d116225e1c6fc41dcfa056ba3a339284eceac361cf1d1675cff",
+        "speed_cm_s": 5.716013152549377,
+        "Tb_K": 1958.7687501755001,
+        "identity_errors": {
+          "face_mass_average": 0.0,
+          "species_flux_definition": 6.944603731009786e-17,
+          "species_residual_identity": 4.31962848095566e-22,
+          "species_integral_identity": 8.680754663762232e-17,
+          "energy_advective_definition": 0.0,
+          "energy_conductive_definition": 0.0,
+          "energy_species_definition": 1.002055504422043e-15,
+          "energy_decomposition": 2.0041110088440859e-16,
+          "energy_residual_identity": 1.5030832566295614e-15,
+          "energy_integral_identity": 5.0102775221102147e-17,
+          "chemical_mass_balance": 1.0725395619017969e-15,
+          "chemical_element_balance": 8.48553522890045e-16
+        },
+        "balance_metrics": {
+          "elemental_face_span_relative": {
+            "C": 4.975250099147068e-07,
+            "H": 2.0243402879885878e-06,
+            "O": 8.772839119911996e-07,
+            "N": 2.8210854511772603e-07
+          },
+          "inactive_element_face_span_over_massflow": 0.0,
+          "maximum_diffusion_mass_sum_over_massflow": 8.585381685523598e-13,
+          "feed_to_first_face_over_massflow": 1.5176554753654514e-13,
+          "outlet_state_to_last_face_over_massflow": 2.0491428339883112e-10,
+          "energy_flux_span_equivalent_K": 0.03217743846020522,
+          "maximum_species_residual_s_1": 0.05762744471086845,
+          "maximum_energy_residual_K_s": 1668.0352679219632
+        },
+        "checks": {
+          "face_mass_average": true,
+          "species_flux_definition": true,
+          "species_residual_identity": true,
+          "species_integral_identity": true,
+          "energy_advective_definition": true,
+          "energy_conductive_definition": true,
+          "energy_species_definition": true,
+          "energy_decomposition": true,
+          "energy_residual_identity": true,
+          "energy_integral_identity": true,
+          "chemical_mass_balance": true,
+          "chemical_element_balance": true,
+          "numerical_screen": true,
+          "elemental_flux": false,
+          "inactive_elements": true,
+          "diffusion_mass": true,
+          "inlet_flux": true,
+          "outlet_flux": true,
+          "energy_flux": true
+        },
+        "failed_checks": [
+          "elemental_flux"
+        ],
+        "output_sha256": {
+          "balance-nodes.csv": "143d580f1e97bdebe0ea488d4a78035329473a76f5ca7df753c35ecb866fa377",
+          "balance-faces.csv": "ef3ca9fbb63174c9f9a30c2f18a822ca616ce652a95e1f8fdd17e3854b0b209e",
+          "profile.csv": "6cfdd920712f9eb05a94d121771ad9ef58146dc2f78ba857a836d2a4e9d398ea"
+        }
+      },
+      {
+        "job": 125102244,
+        "stage": 1,
+        "phi": 1.4,
+        "source": "6c9cc9b7d5090a947c0f73ad8e2789c9c55110f1",
+        "build": 125102147,
+        "executable_sha256": "7cb1bd1cf59a7d116225e1c6fc41dcfa056ba3a339284eceac361cf1d1675cff",
+        "speed_cm_s": 6.109791523545419,
+        "Tb_K": 1980.696605904101,
+        "identity_errors": {
+          "face_mass_average": 0.0,
+          "species_flux_definition": 6.532234597113028e-17,
+          "species_residual_identity": 3.890266445717913e-22,
+          "species_integral_identity": 4.572564217979119e-16,
+          "energy_advective_definition": 0.0,
+          "energy_conductive_definition": 0.0,
+          "energy_species_definition": 1.335517053947694e-15,
+          "energy_decomposition": 1.907881505639563e-16,
+          "energy_residual_identity": 1.4786081668672153e-15,
+          "energy_integral_identity": 0.0,
+          "chemical_mass_balance": 1.2296478670151444e-15,
+          "chemical_element_balance": 1.1392105342050879e-15
+        },
+        "balance_metrics": {
+          "elemental_face_span_relative": {
+            "C": 1.8484798940739556e-07,
+            "H": 5.700827134104279e-07,
+            "O": 1.0044567283038429e-07,
+            "N": 3.098679266560051e-08
+          },
+          "inactive_element_face_span_over_massflow": 0.0,
+          "maximum_diffusion_mass_sum_over_massflow": 4.391992281310716e-13,
+          "feed_to_first_face_over_massflow": 1.4520822256681635e-15,
+          "outlet_state_to_last_face_over_massflow": 7.81780449476326e-11,
+          "energy_flux_span_equivalent_K": 0.00042752624873183907,
+          "maximum_species_residual_s_1": 0.016437008016978123,
+          "maximum_energy_residual_K_s": 24.937897892333954
+        },
+        "checks": {
+          "face_mass_average": true,
+          "species_flux_definition": true,
+          "species_residual_identity": true,
+          "species_integral_identity": true,
+          "energy_advective_definition": true,
+          "energy_conductive_definition": true,
+          "energy_species_definition": true,
+          "energy_decomposition": true,
+          "energy_residual_identity": true,
+          "energy_integral_identity": true,
+          "chemical_mass_balance": true,
+          "chemical_element_balance": true,
+          "numerical_screen": true,
+          "elemental_flux": true,
+          "inactive_elements": true,
+          "diffusion_mass": true,
+          "inlet_flux": true,
+          "outlet_flux": true,
+          "energy_flux": true
+        },
+        "failed_checks": [],
+        "output_sha256": {
+          "balance-nodes.csv": "4926146f37a99031ac596db5ba1d29e456514d8fc55425ea5c5cc04f7ec93a90",
+          "balance-faces.csv": "1a66ef7432b3efeceb43c71886a398cd8612d3043df36e35b9185321984437c2",
+          "profile.csv": "880219a24190a59ced8e83c4c57a1e9d907644ed0982c9ada733bcce8bcfc84b"
+        }
+      },
+      {
+        "job": 125102245,
+        "stage": 4,
+        "phi": 1.4,
+        "source": "6c9cc9b7d5090a947c0f73ad8e2789c9c55110f1",
+        "build": 125102147,
+        "executable_sha256": "7cb1bd1cf59a7d116225e1c6fc41dcfa056ba3a339284eceac361cf1d1675cff",
+        "speed_cm_s": 5.759754637450518,
+        "Tb_K": 1958.8138789065795,
+        "identity_errors": {
+          "face_mass_average": 0.0,
+          "species_flux_definition": 6.891864116901201e-17,
+          "species_residual_identity": 1.3193622399715217e-23,
+          "species_integral_identity": 2.0675592350703602e-16,
+          "energy_advective_definition": 0.0,
+          "energy_conductive_definition": 0.0,
+          "energy_species_definition": 1.1908710580131258e-15,
+          "energy_decomposition": 1.984785096688543e-16,
+          "energy_residual_identity": 1.637447704764232e-15,
+          "energy_integral_identity": 9.923925483442715e-17,
+          "chemical_mass_balance": 1.2119252006339111e-15,
+          "chemical_element_balance": 9.288051246195189e-16
+        },
+        "balance_metrics": {
+          "elemental_face_span_relative": {
+            "C": 2.2268105126474554e-08,
+            "H": 4.854272991734772e-08,
+            "O": 1.2209002240018875e-08,
+            "N": 4.292938923210848e-09
+          },
+          "inactive_element_face_span_over_massflow": 0.0,
+          "maximum_diffusion_mass_sum_over_massflow": 6.078729628092168e-14,
+          "feed_to_first_face_over_massflow": 1.5162101057182642e-14,
+          "outlet_state_to_last_face_over_massflow": 2.7126515001405463e-11,
+          "energy_flux_span_equivalent_K": 0.00027777442149932736,
+          "maximum_species_residual_s_1": 0.0005679632959438994,
+          "maximum_energy_residual_K_s": 12.95960336776381
+        },
+        "checks": {
+          "face_mass_average": true,
+          "species_flux_definition": true,
+          "species_residual_identity": true,
+          "species_integral_identity": true,
+          "energy_advective_definition": true,
+          "energy_conductive_definition": true,
+          "energy_species_definition": true,
+          "energy_decomposition": true,
+          "energy_residual_identity": true,
+          "energy_integral_identity": true,
+          "chemical_mass_balance": true,
+          "chemical_element_balance": true,
+          "numerical_screen": true,
+          "elemental_flux": true,
+          "inactive_elements": true,
+          "diffusion_mass": true,
+          "inlet_flux": true,
+          "outlet_flux": true,
+          "energy_flux": true
+        },
+        "failed_checks": [],
+        "output_sha256": {
+          "balance-nodes.csv": "828dbf68f8d5694ebf2abfb191ece640d12756f763dd41158039e6ac1934abe6",
+          "balance-faces.csv": "6388c477b96646d1a53b61008f7eaa1c5763f134b40aa01e95c425e3669ffc1d",
+          "profile.csv": "b792d19a5e0b8bc2f2c3619e3712235838d8349ec09ad0c299c859533973ccd4"
+        }
+      }
+    ],
+    "conservation_qualified": false,
+    "scientific_acceptance": false,
+    "limits": [
+      "Boundary residual placeholders are excluded",
+      "Native field identities and conservation do not identify Liang's implementation",
+      "No saved field is normalized or altered",
+      "Numerical thresholds are retained from the hydrogen audit"
+    ]
+  },
+  "comparisons": {
+    "default": {
+      "criteria": "abs(error) <= max(0.05 cm/s, 1% reference) + digitization uncertainty",
+      "rows": [
+        {
+          "stage": 1,
+          "phi": 1.4,
+          "job": 125102175,
+          "computed_cm_s": 6.108900522625101,
+          "paper_cm_s": 6.116682100188833,
+          "image_uncertainty_cm_s": 0.04,
+          "error_cm_s": -0.007781577563732434,
+          "error_percent": -0.12721893072540424,
+          "limit_cm_s": 0.10116682100188834,
+          "within_screen": true
+        },
+        {
+          "stage": 4,
+          "phi": 1.4,
+          "job": 125102176,
+          "computed_cm_s": 5.759065845072932,
+          "paper_cm_s": 5.795719156940164,
+          "image_uncertainty_cm_s": 0.03,
+          "error_cm_s": -0.036653311867231864,
+          "error_percent": -0.6324204274691407,
+          "limit_cm_s": 0.08795719156940164,
+          "within_screen": true
+        },
+        {
+          "stage": 5,
+          "phi": 1.4,
+          "job": 125102177,
+          "computed_cm_s": 5.716013152549377,
+          "paper_cm_s": 5.642738222985565,
+          "image_uncertainty_cm_s": 0.015,
+          "error_cm_s": 0.07327492956381221,
+          "error_percent": 1.2985704221636307,
+          "limit_cm_s": 0.07142738222985565,
+          "within_screen": false
+        }
+      ],
+      "excluded": [],
+      "stages": {
+        "1": {
+          "points": 1,
+          "rms_cm_s": 0.007781577563732434,
+          "max_abs_cm_s": 0.007781577563732434,
+          "failed_points": 0
+        },
+        "4": {
+          "points": 1,
+          "rms_cm_s": 0.036653311867231864,
+          "max_abs_cm_s": 0.036653311867231864,
+          "failed_points": 0
+        },
+        "5": {
+          "points": 1,
+          "rms_cm_s": 0.07327492956381221,
+          "max_abs_cm_s": 0.07327492956381221,
+          "failed_points": 1
+        }
+      },
+      "scientific_acceptance": false
+    },
+    "tight": {
+      "criteria": "abs(error) <= max(0.05 cm/s, 1% reference) + digitization uncertainty",
+      "rows": [
+        {
+          "stage": 1,
+          "phi": 1.4,
+          "job": 125102244,
+          "computed_cm_s": 6.109791523545419,
+          "paper_cm_s": 6.116682100188833,
+          "image_uncertainty_cm_s": 0.04,
+          "error_cm_s": -0.006890576643414192,
+          "error_percent": -0.11265219494080733,
+          "limit_cm_s": 0.10116682100188834,
+          "within_screen": true
+        },
+        {
+          "stage": 4,
+          "phi": 1.4,
+          "job": 125102245,
+          "computed_cm_s": 5.759754637450518,
+          "paper_cm_s": 5.795719156940164,
+          "image_uncertainty_cm_s": 0.03,
+          "error_cm_s": -0.03596451948964585,
+          "error_percent": -0.6205359251505422,
+          "limit_cm_s": 0.08795719156940164,
+          "within_screen": true
+        }
+      ],
+      "excluded": [],
+      "stages": {
+        "1": {
+          "points": 1,
+          "rms_cm_s": 0.006890576643414192,
+          "max_abs_cm_s": 0.006890576643414192,
+          "failed_points": 0
+        },
+        "4": {
+          "points": 1,
+          "rms_cm_s": 0.03596451948964585,
+          "max_abs_cm_s": 0.03596451948964585,
+          "failed_points": 0
+        }
+      },
+      "scientific_acceptance": false
+    }
+  },
+  "paired": [
+    {
+      "stage": 1,
+      "default_job": 125102175,
+      "tight_job": 125102244,
+      "default_cm_s": 6.108900522625101,
+      "tight_cm_s": 6.109791523545419,
+      "tight_scheduler": [
+        "COMPLETED",
+        "00:11:08",
+        "0:0"
+      ],
+      "tolerance_change_percent": 0.014585291035906778,
+      "total_enthalpy_cm_s": 6.121253539501265,
+      "default_failed_checks": [
+        "elemental_flux",
+        "energy_flux"
+      ],
+      "tight_failed_checks": []
+    },
+    {
+      "stage": 4,
+      "default_job": 125102176,
+      "tight_job": 125102245,
+      "default_cm_s": 5.759065845072932,
+      "tight_cm_s": 5.759754637450518,
+      "tight_scheduler": [
+        "COMPLETED",
+        "00:36:53",
+        "0:0"
+      ],
+      "tolerance_change_percent": 0.011960140691491539,
+      "total_enthalpy_cm_s": 5.771138948724215,
+      "default_failed_checks": [
+        "elemental_flux"
+      ],
+      "tight_failed_checks": []
+    },
+    {
+      "stage": 5,
+      "default_job": 125102177,
+      "tight_job": 125102246,
+      "default_cm_s": 5.716013152549377,
+      "tight_cm_s": null,
+      "tight_scheduler": [
+        "TIMEOUT",
+        "00:55:24",
+        "0:0"
+      ],
+      "tolerance_change_percent": null,
+      "total_enthalpy_cm_s": 5.727276284818818,
+      "default_failed_checks": [
+        "elemental_flux"
+      ],
+      "tight_failed_checks": [
+        "scheduler_TIMEOUT"
+      ]
+    }
+  ],
+  "numerics": {
+    "125102175": {
+      "values": {
+        "steady_rtol": "1.0000000000000001e-05",
+        "steady_atol": "9.9999999999999994e-12",
+        "output_significant_digits": "17"
+      },
+      "sha256": "9a9282096355411228ecb18e85a736e7523806c207f8c079ddfde08e14f3e44c"
+    },
+    "125102176": {
+      "values": {
+        "steady_rtol": "1.0000000000000001e-05",
+        "steady_atol": "9.9999999999999994e-12",
+        "output_significant_digits": "17"
+      },
+      "sha256": "9a9282096355411228ecb18e85a736e7523806c207f8c079ddfde08e14f3e44c"
+    },
+    "125102177": {
+      "values": {
+        "steady_rtol": "1.0000000000000001e-05",
+        "steady_atol": "9.9999999999999994e-12",
+        "output_significant_digits": "17"
+      },
+      "sha256": "9a9282096355411228ecb18e85a736e7523806c207f8c079ddfde08e14f3e44c"
+    },
+    "125102244": {
+      "values": {
+        "steady_rtol": "9.9999999999999995e-08",
+        "steady_atol": "1e-13",
+        "output_significant_digits": "17"
+      },
+      "sha256": "cee8da6c739d31a5f62f505edecb5802f73fd6405a80e02b557ce4025eacd1af"
+    },
+    "125102245": {
+      "values": {
+        "steady_rtol": "9.9999999999999995e-08",
+        "steady_atol": "1e-13",
+        "output_significant_digits": "17"
+      },
+      "sha256": "cee8da6c739d31a5f62f505edecb5802f73fd6405a80e02b557ce4025eacd1af"
+    }
+  },
+  "inputs_sha256": {
+    "methane-conservative-terminal.json": "3cc4eecec175ad680f071538b7fc825012eeff0e469549a242bfb69ac33b7f73",
+    "methane-conservative-all-balances.json": "17d05a37399cd1ef18a4e47460fe423d2fc996025f9dde90bb845582d56a5bc8",
+    "liang-methane-energy-results-20261021.json": "f962d71c34e5f64b933441a59592e41d84f076040087bb892b274fb410cf4b32",
+    "liang-figure8a-digitized-v2.json": "4beac428ce44b910b63aafbd464870211c8a3c48701b869d477e941bf503e115"
+  },
+  "scientific_acceptance": false,
+  "limits": [
+    "Conservative equations change no thermodynamic or transport parameter",
+    "Native balance failures remain failures",
+    "Conservation, refinement and paper comparisons are distinct checks"
+  ]
+}

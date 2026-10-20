@@ -1,7 +1,7 @@
 # Liang Figures 1–8: overnight qualification checkpoint
 
-21 October 2026, Asia/Shanghai. The campaign continues until 08:00. Extended
-Cantera remains the current calculation stage; the conditional OpenFOAM stage
+21 October 2026, Asia/Shanghai. Overnight qualification record. Extended
+Cantera remains the qualification stage; the conditional OpenFOAM stage
 has not been released. Completion of a numerical solve is recorded separately
 from agreement with the paper.
 
@@ -158,10 +158,18 @@ still fail the existing screen. The
 [legacy record](liang-methane-legacy-energy-20261021.json) explicitly retains
 its historical build-association limitation. No duplicate rerun was needed.
 
-The [tolerance controls](liang-methane-tolerance-controls-20261021.md)
-separate output precision from nonlinear convergence. The
-[conservative species controls](liang-methane-conservation-controls-20261021.md)
-add native balance exports; they change no model parameter.
+All six [tight methane controls](liang-methane-tight-results-20261021.json)
+completed. Tightening convergence changes speed by at most 0.0132%; all three
+enabled-Soret native audits now pass, including the unchanged coefficient
+projection limit. This separates the earlier small numerical residual from
+the percent-level rich-flame discrepancy. The three tighter phi=1.10 points
+replace the earlier diagnostic overlays; their original values remain archived.
+
+The [conservative species campaign](liang-methane-conservation-controls-20261021.md)
+records six matched default/tight attempts at phi=1.40 and six tight attempts
+at phi=1.30/1.35. Native balances and every terminal outcome are retained.
+Only completed tight points passing every native check enter the overlays.
+These controls change no thermodynamic, transport or chemistry parameter.
 These diagnostics do not replace the 65-point baseline or the frozen CFD
 capture. New OpenFOAM runs remain conditional on the unresolved scientific
 comparisons.
@@ -220,3 +228,15 @@ All raw PDFs, profiles, downloads and rendered images remain in project state
 or output directories. The source checkout retains scripts, identities and
 reviewable scientific findings. No new CFD calculation has consumed these
 unqualified diagnostics.
+
+## Comparison artifacts
+
+The final packet is `output/pdf/liang-figures-1-8-20261021-final/`
+`liang-figures-1-8.pdf`: 19 pages, comprising a register, nine primary panels,
+three Figure 7 diagnostics and six additional Figure 8(a) panels.
+Every inserted source page retains its original dimensions and pixels.
+The separate seven-panel gallery is in `output/pdf/liang-figure8a-20261021-final/`.
+Both overviews and Cases 2/3 retain their earlier pixels; Cases 1/4/5 receive
+qualified new diagnostics with explicit legends. The 65-point baseline and
+20 October 13:05 CST CFD capture are unchanged. Lark uses the existing
+figure sections and preserves their direct heading links.
