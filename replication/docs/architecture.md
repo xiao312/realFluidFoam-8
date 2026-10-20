@@ -19,6 +19,10 @@ The energy diagnostics reuse the previously qualified SRK C4 alpha continuation
 and can explicitly subdivide every initial-grid interval for convergence checks.
 The hash-pinned vector digitizer consumes only the local paper, independently
 of simulation results, and supplies reading uncertainties to comparison screens.
+The comparison screen consumes its reference JSON and completed profile snapshots;
+it preserves separate transport variants and reports numerical conservation.
+The all-species diffusion replay additionally depends on Cantera Python 3.2 and
+`validation/diffusion`'s independent table, with parity against frozen C++ output.
 
 `validation/diffusion` consumes committed Liang flame comparisons, primary-source
 diffusion fixtures, author mechanism inputs and the pinned Cantera 3.2 SDK. Its

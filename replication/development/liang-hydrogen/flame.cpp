@@ -1,6 +1,7 @@
 #include "Profile.h"
 #include "HydrogenTransport.h"
 #include "EnergyFlows.h"
+#include "DiffusionFlow.h"
 #include "../cantera-liang/PressureChemistry.h"
 #include "../cantera-liang/TotalEnthalpyFlow.h"
 #include "cantera/oneD/DomainFactory.h"
@@ -18,8 +19,10 @@ try {
     const double phi=std::stod(argv[3]),pressure=100*OneAtm;
     const double width=argc>=7?std::stod(argv[6]):.01,Tu=argc>=8?std::stod(argv[7]):298.;
     const std::string requestedVariant=argc>=9?argv[8]:"baseline";
-    const bool smooth=requestedVariant.rfind("smooth-",0)==0;
-    const std::string variant=smooth?requestedVariant.substr(7):requestedVariant;
+    const bool midpoint=requestedVariant.rfind("midpoint-",0)==0;
+    const std::string alphaVariant=midpoint?requestedVariant.substr(9):requestedVariant;
+    const bool smooth=alphaVariant.rfind("smooth-",0)==0;
+    const std::string variant=smooth?alphaVariant.substr(7):alphaVariant;
     const int gridFactor=argc>=10?std::stoi(argv[9]):1;
     if(gridFactor!=1 && gridFactor!=2 && gridFactor!=4)
         throw std::runtime_error("GRID_FACTOR must be 1, 2 or 4");
@@ -82,12 +85,14 @@ try {
           <<"\nTu_K "<<Tu<<"\nwidth_m "<<guess.x.back()-guess.x.front()
           <<"\nkinetics Burke2012-N2-pressure\ntransport author-pair-count "<<pairs.size()
           <<"\nmodel_variant "<<requestedVariant<<"\nalpha "<<(smooth?"C4-continuation":"original-Soave")
+          <<"\nflux_correction "<<(midpoint?"midpoint":"left-node")
           <<"\ngrid_factor "<<gridFactor<<"\ninitial_grid_points "<<grid.size()
           <<"\nconductivity "<<(fullConductivity?"full-Ely-Hanley":"dense-increment-diagnostic")
           <<"\nTakahashi bounded-Table2"
           <<"\nSoret off\nenergy "<<(pureTemperature?"pure-temperature":
               matchedEnergy?"matched-total-enthalpy":
               stage>=3 && label!="3star"?"legacy-total-enthalpy":"partial-temperature")<<'\n';
+    config.flush();
     std::ofstream checks(output/"property-checks.csv");
     checks<<"T_K,relative_cp_fd_error,relative_enthalpy_euler_error\n"<<std::setprecision(16);
     for(double T:{Tu,900.,1800.,2400.}) {
@@ -104,10 +109,10 @@ try {
     }
     gas->setState_TPX(Tu,pressure,xin.data());
     std::shared_ptr<Flow1D> flow;
-    if(pureTemperature)flow=std::make_shared<hydrogen::PureTemperatureFlow>(sol);
-    else if(matchedEnergy)flow=std::make_shared<hydrogen::EnthalpyFlow>(sol,pureFlux);
-    else if(stage>=3 && label!="3star")flow=std::make_shared<liang::TotalEnthalpyFlow>(sol,pureFlux);
-    else flow=newDomain<Flow1D>("gas-flow",sol,"flow");
+    if(pureTemperature)flow=hydrogen::makeFlow<hydrogen::PureTemperatureFlow>(midpoint,sol);
+    else if(matchedEnergy)flow=hydrogen::makeFlow<hydrogen::EnthalpyFlow>(midpoint,sol,pureFlux);
+    else if(stage>=3 && label!="3star")flow=hydrogen::makeFlow<liang::TotalEnthalpyFlow>(midpoint,sol,pureFlux);
+    else flow=hydrogen::makeFlow<Flow1D>(midpoint,sol,"flow");
     flow->setFreeFlow();flow->setPressure(pressure);
     flow->setupGrid(grid.size(),grid.data());flow->setSteadyTolerances(1e-5,1e-11);
     flow->setFluxGradientBasis(ThermoBasis::molar);flow->enableSoret(false);

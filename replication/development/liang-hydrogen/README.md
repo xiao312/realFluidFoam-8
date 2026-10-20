@@ -56,6 +56,19 @@ interpolated onto it. This tests actual global grid refinement even when the
 adaptive error criteria would otherwise retain nearly every initial node.
 The original grid and final grid sizes are recorded. The grid limit rises to
 12000 for this explicit refinement diagnostic.
+Prefix with `midpoint-` (before optional `smooth-`) to distribute the ordinary
+diffusion correction using face-averaged mass fractions, as in the inspected
+PREMIX 2.5b source. Cantera 3.2 uses left-node mass fractions. This isolated
+discretization control supports mixture-averaged mole-gradient diffusion with
+Soret off; it does not change binary coefficients or assert Liang's exact
+PREMIX release. `DiffusionFlow.h` applies it to the selected energy equation.
+Compare ideal and nonideal pilots at two global grid factors before drawing
+a conclusion about this numerical difference.
+The build runs 32 frozen face-state checks: zero net mass flux, zero flux for
+uniform composition, and antisymmetry when the two faces are exchanged. A stock
+left-node control must fail the antisymmetry condition, proving that this test
+distinguishes the changed stencil. These are numerical invariants, not evidence
+that Liang used this particular source release.
 
 An ideal HP equilibrium profile supplies only the initial steady-solver guess.
 An optional solved CSV guess is also only a steady numerical initial guess.
@@ -127,3 +140,22 @@ to calculations or extrapolate; interpolation samples identify dash gaps.
 It depends on PyMuPDF, NumPy and Matplotlib, with no runtime solver dependency
 or secrets. Run `plan`, then `apply`, and inspect the overlays and tick residuals
 before using extracted points for a paper-comparison screen.
+
+`diffusion_definitions.py plan|apply INPUTS PROFILE TRANSPORT_CSV NEW_OUTPUT`
+replays the independently checked Takahashi table at saved LJ flame states and
+reports every named species' mixture diffusivity ratio. It first checks the H2,
+O2 and N2 values against the actual C++ output. It depends on Cantera 3.2,
+NumPy and `validation/diffusion`'s independent table/correlation, with no flame
+solve or coefficient fit. Author-pair inputs are rejected by this LJ-only probe.
+An unnamed paper diffusivity is not identified merely by a nearby computed curve.
+
+`compare.py plan|apply MANIFEST REFERENCE_JSON NEW_OUTPUT` compares completed
+baseline runs against the independently extracted Figure 3/4/5 geometry.
+It reports uncompleted jobs, grid changes and profile conservation diagnostics.
+Figure 3 uses the existing methane screening rule: absolute speed error no larger
+than max(0.05 cm/s, 1% of reference) plus the figure-reading allowance. Other
+quantities retain raw errors and reading bounds without a new acceptance rule.
+The partial-temperature control is not eligible as a reconstructed paper Case 3*.
+LJ and author-pair curves remain separate; duplicate points fail explicitly.
+It uses NumPy and the local digitizer, with no new solver or remote writes.
+Run the plan first and inspect the resulting CSV and failed-point list.

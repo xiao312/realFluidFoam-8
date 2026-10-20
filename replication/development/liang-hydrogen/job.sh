@@ -31,6 +31,9 @@ if [[ $action == build ]]; then
  "$compiler" -std=c++17 -O2 -D_GLIBCXX_USE_CXX11_ABI=1 "$module/test_pairs.cpp" \
   $flags -Wl,-rpath,"$sdk/lib" -o test-pairs > compile-pairs.log 2>&1
  ./test-pairs "$inputs" > pairs-check.txt
+ "$compiler" -std=c++17 -O2 -D_GLIBCXX_USE_CXX11_ABI=1 "$module/test_midpoint.cpp" \
+  $flags -Wl,-rpath,"$sdk/lib" -o test-midpoint > compile-midpoint.log 2>&1
+ ./test-midpoint "$inputs/ideal.yaml" > midpoint-check.txt
  "$compiler" -std=c++17 -O2 -D_GLIBCXX_USE_CXX11_ABI=1 "$module/flame.cpp" \
   $flags -Wl,-rpath,"$sdk/lib" -o hydrogen-flame > compile.log 2>&1
  sha256sum hydrogen-flame > binary.sha256
