@@ -55,6 +55,19 @@ model is not evidence that Liang used this closure with Takahashi coefficients.
 The SRK unit check includes the constant-TP Gibbs–Duhem constraint on these
 composition derivatives.
 
+The opt-in `nonideal-driving` flame diagnostic uses that same constant-TP
+composition contribution in Flow1D's mixture-averaged diffusive mass flux.
+It retains Cantera's baseline coefficients, left-node zero-mass-flux correction,
+energy equation and chemistry. No Soret or pressure-gradient term is added.
+The flag cannot be combined with `mass-gradient` or `total-enthalpy` so each
+experiment changes one closure. For ideal gas it follows the stock flow path
+exactly. This is an unverified alternative to the paper's unspecified flux
+equation; it must not replace the declared baseline merely by improving a fit.
+`test_diffusion_flow.cpp` exercises the actual Flow1D override on identical and
+different-temperature composition pairs, compares an independently assembled
+flux, checks zero net mass flux and verifies ideal-gas identity. It depends on
+the existing SDK and model-input directory only; it needs no saved flame state.
+
 `figure_gallery.py` accepts an optional `--diagnostics FILE`. This JSON contains `diagnostics`
 and `baseline_sha256`, which must match the baseline Cantera input file.
 Each entry must identify stage, phi, speed, label, 100-atm pressure, a completed

@@ -4,6 +4,7 @@
 #include "PropertyChecks.h"
 #include "EquilibriumCheck.h"
 #include "TotalEnthalpyFlow.h"
+#include "NonidealDiffusionFlow.h"
 #include "cantera/onedim.h"
 #include "cantera/oneD/DomainFactory.h"
 #include "cantera/thermo/ThermoFactory.h"
@@ -66,6 +67,7 @@ try {
     if(values[0].size()<10 || columns[0]!="x_m")throw std::runtime_error("Invalid initial profile");
     std::shared_ptr<Flow1D> flow;
     if(options.totalEnthalpy)flow=std::make_shared<liang::TotalEnthalpyFlow>(sol,options.pureSpeciesFlux);
+    else if(options.nonidealDriving)flow=std::make_shared<liang::NonidealDiffusionFlow>(sol);
     else flow=newDomain<Flow1D>("gas-flow",sol,"flow");
     flow->setFreeFlow();flow->setPressure(pressure);
     flow->setupGrid(values[0].size(),values[0].data());flow->setSteadyTolerances(1e-5,1e-11);

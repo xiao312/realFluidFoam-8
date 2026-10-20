@@ -3,7 +3,7 @@ set -euo pipefail
 root=${1:?}; release=${2:?}; sdk=${3:?}; inputs=${4:?}; stage=${5:?}; build=${6:-}
 phi=${7:-1.10}
 variant=${8:-full}
-[[ $variant =~ ^(full|(dense-increment|bounded-takahashi|pressure-chemistry|fine-grid|smoothed-alpha|takahashi-table2|takahashi-high-t|takahashi-bulk|mass-gradient|total-enthalpy|pure-species-flux)(,(dense-increment|bounded-takahashi|pressure-chemistry|fine-grid|smoothed-alpha|takahashi-table2|takahashi-high-t|takahashi-bulk|mass-gradient|total-enthalpy|pure-species-flux))*)$ ]] || exit 2
+[[ $variant =~ ^(full|(dense-increment|bounded-takahashi|pressure-chemistry|fine-grid|smoothed-alpha|takahashi-table2|takahashi-high-t|takahashi-bulk|mass-gradient|nonideal-driving|total-enthalpy|pure-species-flux)(,(dense-increment|bounded-takahashi|pressure-chemistry|fine-grid|smoothed-alpha|takahashi-table2|takahashi-high-t|takahashi-bulk|mass-gradient|nonideal-driving|total-enthalpy|pure-species-flux))*)$ ]] || exit 2
 pressure=${9:-100}
 [[ $pressure =~ ^[0-9]+([.][0-9]+)?$ ]] || exit 2
 [[ -n ${SLURM_JOB_ID:-} ]] || exit 2
@@ -27,6 +27,9 @@ if [[ $stage == build ]]; then
  # pkg-config supplies compiler arguments, not shell commands.
  "$compiler" -std=c++17 -O2 -D_GLIBCXX_USE_CXX11_ABI=1 "$module_path/test_srk.cpp" -o test-srk
  ./test-srk > kernel-check.txt
+ "$compiler" -std=c++17 -O2 -D_GLIBCXX_USE_CXX11_ABI=1 "$module_path/test_diffusion_flow.cpp" \
+   $flags -Wl,-rpath,"$sdk/lib" -o test-diffusion-flow > compile-flow-test.log 2>&1
+ ./test-diffusion-flow "$inputs" > diffusion-flow-check.txt
  "$compiler" -std=c++17 -O2 "$module_path/test_alpha.cpp" -o test-alpha
  ./test-alpha > alpha-check.txt
  "$compiler" -std=c++17 -O2 "$module_path/test_takahashi.cpp" $flags -Wl,-rpath,"$sdk/lib" -o test-takahashi

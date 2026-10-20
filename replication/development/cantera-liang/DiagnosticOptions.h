@@ -10,6 +10,7 @@ struct DiagnosticOptions {
     bool table2=false;
     bool highTemperature=false;
     bool bulkTakahashi=false,massGradient=false;
+    bool nonidealDriving=false;
     bool totalEnthalpy=false,pureSpeciesFlux=false;
     explicit DiagnosticOptions(const std::string& text) {
         if(text=="full")return;
@@ -25,6 +26,7 @@ struct DiagnosticOptions {
             else if(item=="takahashi-high-t")highTemperature=true;
             else if(item=="takahashi-bulk")bulkTakahashi=true;
             else if(item=="mass-gradient")massGradient=true;
+            else if(item=="nonideal-driving")nonidealDriving=true;
             else if(item=="total-enthalpy")totalEnthalpy=true;
             else if(item=="pure-species-flux")pureSpeciesFlux=true;
             else throw std::runtime_error("Unknown diagnostic option: "+item);
@@ -34,6 +36,8 @@ struct DiagnosticOptions {
         if(highTemperature && !(bounded && table2))throw std::runtime_error("takahashi-high-t requires bounded-takahashi,takahashi-table2");
         if(bulkTakahashi && !(bounded && table2))throw std::runtime_error("takahashi-bulk requires bounded-takahashi,takahashi-table2");
         if(pureSpeciesFlux && !totalEnthalpy)throw std::runtime_error("pure-species-flux requires total-enthalpy");
+        if(nonidealDriving && (massGradient || totalEnthalpy))
+            throw std::runtime_error("nonideal-driving requires the stock energy and mole-gradient formulations");
     }
 };
 }
