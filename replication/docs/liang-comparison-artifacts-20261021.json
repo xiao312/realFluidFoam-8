@@ -1,0 +1,320 @@
+{
+  "manifest_sha256": "f4ea75b2cb4a528a0d45bcac658699f9ed3e107403f8b5857c49e7082ebfae6a",
+  "script_sha256": "d2d29cd2b5e5d77b477fd2816a9bb80aa22a6f254ab6a3482c14b757f752d5e0",
+  "output_sha256": "8017d65094c2c5c8b1ccad350383e1e66ed2f355532e065de4e71f66c2a67efb",
+  "captured_at": "21 October 2026, 07:54 Asia/Shanghai; individual panel captures retained",
+  "source_revision": "56894690ad8e9e33505485ca7f3ed6f22288716b",
+  "figures": [
+    {
+      "id": "1",
+      "title": "Oxygen properties at 100 atm",
+      "status": "SRK follows the density model line. Conductivity and experimental-marker comparisons remain distinct and unresolved.",
+      "pdf": "output/pdf/liang-properties-20261021-calibrated-v2/liang-figures-1-2.pdf",
+      "page": 0,
+      "evidence": "output/pdf/liang-properties-20261021-calibrated-v2/manifest.json",
+      "pdf_sha256": "2f7cff80686c63fcfd9c0f7a157ddab41fa05e2d848557a04fb0ec734bcb12b9",
+      "evidence_sha256": "af2f21c756bc4f4b662bb5e4b4a096836def9840c90373e1b00c31629e3c5cdf",
+      "source_page_rect": [
+        0.0,
+        0.0,
+        468.0,
+        526.0
+      ]
+    },
+    {
+      "id": "2",
+      "title": "Mixture critical properties",
+      "status": "Critical pressures remain unresolved. Substituting both paper-implied EOS parameters also misses Figure 4 density for tested slope rules.",
+      "pdf": "output/pdf/liang-hydrogen-20261021-final/liang-hydrogen-figures-2-7.pdf",
+      "page": 0,
+      "evidence": "output/pdf/liang-hydrogen-20261021-final/evidence.json",
+      "pdf_sha256": "00a98c6dd5593bacd9b007a53ac3b0f787e45d5e31637ed39f8e03e3cd793f8c",
+      "evidence_sha256": "2bae042a577301bbe28b51de8b128eb4121ccfe960620835921b0ebac928a242",
+      "source_page_rect": [
+        0.0,
+        0.0,
+        500.0,
+        420.0
+      ]
+    },
+    {
+      "id": "3",
+      "title": "Hydrogen flame speeds",
+      "status": "Baseline Cases 1/2 pass readable speeds. Thirty conservative controls pass balances; Cases 3-5 still miss speeds.",
+      "pdf": "output/pdf/liang-hydrogen-20261021-final/liang-hydrogen-figures-2-7.pdf",
+      "page": 1,
+      "evidence": "output/pdf/liang-hydrogen-20261021-final/evidence.json",
+      "pdf_sha256": "00a98c6dd5593bacd9b007a53ac3b0f787e45d5e31637ed39f8e03e3cd793f8c",
+      "evidence_sha256": "2bae042a577301bbe28b51de8b128eb4121ccfe960620835921b0ebac928a242",
+      "source_page_rect": [
+        0.0,
+        0.0,
+        500.0,
+        448.0
+      ]
+    },
+    {
+      "id": "4",
+      "title": "Fresh density and burning flux",
+      "status": "Twelve selected conservative density/flux comparisons lie inside the existing graphical reading bounds.",
+      "pdf": "output/pdf/liang-hydrogen-20261021-final/liang-hydrogen-figures-2-7.pdf",
+      "page": 2,
+      "evidence": "output/pdf/liang-hydrogen-20261021-final/evidence.json",
+      "pdf_sha256": "00a98c6dd5593bacd9b007a53ac3b0f787e45d5e31637ed39f8e03e3cd793f8c",
+      "evidence_sha256": "2bae042a577301bbe28b51de8b128eb4121ccfe960620835921b0ebac928a242",
+      "source_page_rect": [
+        0.0,
+        0.0,
+        500.0,
+        434.0
+      ]
+    },
+    {
+      "id": "5",
+      "title": "Burned-gas temperature",
+      "status": "Conservative endpoints are grid-stable below 0.001 K. Several few-kelvin differences from the paper remain.",
+      "pdf": "output/pdf/liang-hydrogen-20261021-final/liang-hydrogen-figures-2-7.pdf",
+      "page": 3,
+      "evidence": "output/pdf/liang-hydrogen-20261021-final/evidence.json",
+      "pdf_sha256": "00a98c6dd5593bacd9b007a53ac3b0f787e45d5e31637ed39f8e03e3cd793f8c",
+      "evidence_sha256": "2bae042a577301bbe28b51de8b128eb4121ccfe960620835921b0ebac928a242",
+      "source_page_rect": [
+        0.0,
+        0.0,
+        500.0,
+        434.0
+      ]
+    },
+    {
+      "id": "6",
+      "title": "Transport ratios",
+      "status": "The journal and dissertation use different ratio definitions and curves. Neither interpretation closes the current discrepancy.",
+      "pdf": "output/pdf/liang-hydrogen-20261021-final/liang-hydrogen-figures-2-7.pdf",
+      "page": 4,
+      "evidence": "output/pdf/liang-hydrogen-20261021-final/evidence.json",
+      "pdf_sha256": "00a98c6dd5593bacd9b007a53ac3b0f787e45d5e31637ed39f8e03e3cd793f8c",
+      "evidence_sha256": "2bae042a577301bbe28b51de8b128eb4121ccfe960620835921b0ebac928a242",
+      "source_page_rect": [
+        0.0,
+        0.0,
+        500.0,
+        420.0
+      ]
+    },
+    {
+      "id": "7",
+      "title": "Stoichiometric hydrogen flame structure",
+      "status": "Conservative Case 5: width agrees within reading bounds; HO2/H2O2 peaks are 5.97%/7.36% high. Soret diagnostics follow in the appendices.",
+      "pdf": "output/pdf/liang-figure7-controls-20261021-final/liang-figure7-structure-controls.pdf",
+      "page": 0,
+      "evidence": "output/pdf/liang-figure7-controls-20261021-final/manifest.json",
+      "pdf_sha256": "9d35580f76527beff0995dc24cb4d1f1d52aa447d212150000e5d27a3fd95b56",
+      "evidence_sha256": "462c1a8171fdf793d1bcdb0329c93a6ca63a5f3fc00810dd1eaec2d82a9b20b4",
+      "source_page_rect": [
+        0.0,
+        0.0,
+        500.0,
+        440.0
+      ]
+    },
+    {
+      "id": "8a",
+      "title": "Methane model ablations, GRI30",
+      "status": "Cases 1-4 baseline points pass; Case 5 rich points and the Case 4-5 separation remain unresolved after transport, energy and conservation controls.",
+      "pdf": "output/pdf/liang-figure8a-20261021-final/liang-figure8a-seven-comparisons.pdf",
+      "page": 0,
+      "evidence": "output/pdf/liang-figure8a-20261021-final/manifest.json",
+      "pdf_sha256": "88a767cfd6703b5324c975a17c526df1991de9909d862aaac12d4444fc990202",
+      "evidence_sha256": "5f89c658d2ac4eecd7cb7f10545af41ccf4b2aeb1e7cf21b2f8923fdf960c424",
+      "source_page_rect": [
+        0.0,
+        0.0,
+        468.0,
+        420.0
+      ]
+    },
+    {
+      "id": "8b",
+      "title": "Methane kinetic mechanisms",
+      "status": "GRI matches; full USC/HP ideal sweeps remain high. All 28 selected points completed; prompt-HCO controls do not close the gap.",
+      "pdf": "output/pdf/liang-kinetics-20261021-0215/liang-figure-8b.pdf",
+      "page": 0,
+      "evidence": "output/pdf/liang-kinetics-20261021-0215/evidence.json",
+      "pdf_sha256": "710fe14445f70264c4bc9dd920a23176a90bcfd55eb0c6119031473149f75fb6",
+      "evidence_sha256": "5950f0c12b83463799a1bb81859fe7c8fe70e88fcf68e757878b1d71d163360f",
+      "source_page_rect": [
+        0.0,
+        0.0,
+        500.0,
+        410.0
+      ]
+    }
+  ],
+  "appendices": [
+    {
+      "id": "structure-125097214",
+      "title": "Figure 7: Case 3 Cantera 3.2 Soret",
+      "pdf": "output/pdf/liang-figure7-controls-20261021-final/liang-figure7-structure-controls.pdf",
+      "page": 1,
+      "evidence": "output/pdf/liang-figure7-controls-20261021-final/manifest.json",
+      "pdf_sha256": "9d35580f76527beff0995dc24cb4d1f1d52aa447d212150000e5d27a3fd95b56",
+      "evidence_sha256": "462c1a8171fdf793d1bcdb0329c93a6ca63a5f3fc00810dd1eaec2d82a9b20b4",
+      "source_page_rect": [
+        0.0,
+        0.0,
+        500.0,
+        440.0
+      ]
+    },
+    {
+      "id": "structure-125097216",
+      "title": "Figure 7: Case 3 manual Soret formula",
+      "pdf": "output/pdf/liang-figure7-controls-20261021-final/liang-figure7-structure-controls.pdf",
+      "page": 2,
+      "evidence": "output/pdf/liang-figure7-controls-20261021-final/manifest.json",
+      "pdf_sha256": "9d35580f76527beff0995dc24cb4d1f1d52aa447d212150000e5d27a3fd95b56",
+      "evidence_sha256": "462c1a8171fdf793d1bcdb0329c93a6ca63a5f3fc00810dd1eaec2d82a9b20b4",
+      "source_page_rect": [
+        0.0,
+        0.0,
+        500.0,
+        440.0
+      ]
+    },
+    {
+      "id": "structure-125100455",
+      "title": "Figure 7: Case 5 Cantera 3.2 Soret",
+      "pdf": "output/pdf/liang-figure7-controls-20261021-final/liang-figure7-structure-controls.pdf",
+      "page": 3,
+      "evidence": "output/pdf/liang-figure7-controls-20261021-final/manifest.json",
+      "pdf_sha256": "9d35580f76527beff0995dc24cb4d1f1d52aa447d212150000e5d27a3fd95b56",
+      "evidence_sha256": "462c1a8171fdf793d1bcdb0329c93a6ca63a5f3fc00810dd1eaec2d82a9b20b4",
+      "source_page_rect": [
+        0.0,
+        0.0,
+        500.0,
+        440.0
+      ]
+    },
+    {
+      "id": "figure8a-1",
+      "title": "Figure 8(a): developed OpenFOAM solver, historical capture",
+      "pdf": "output/pdf/liang-figure8a-20261021-final/liang-figure8a-seven-comparisons.pdf",
+      "page": 1,
+      "evidence": "output/pdf/liang-figure8a-20261021-final/manifest.json",
+      "pdf_sha256": "88a767cfd6703b5324c975a17c526df1991de9909d862aaac12d4444fc990202",
+      "evidence_sha256": "5f89c658d2ac4eecd7cb7f10545af41ccf4b2aeb1e7cf21b2f8923fdf960c424",
+      "source_page_rect": [
+        0.0,
+        0.0,
+        468.0,
+        420.0
+      ]
+    },
+    {
+      "id": "figure8a-2",
+      "title": "Figure 8(a): Case 1",
+      "pdf": "output/pdf/liang-figure8a-20261021-final/liang-figure8a-seven-comparisons.pdf",
+      "page": 2,
+      "evidence": "output/pdf/liang-figure8a-20261021-final/manifest.json",
+      "pdf_sha256": "88a767cfd6703b5324c975a17c526df1991de9909d862aaac12d4444fc990202",
+      "evidence_sha256": "5f89c658d2ac4eecd7cb7f10545af41ccf4b2aeb1e7cf21b2f8923fdf960c424",
+      "source_page_rect": [
+        0.0,
+        0.0,
+        468.0,
+        479.0
+      ]
+    },
+    {
+      "id": "figure8a-3",
+      "title": "Figure 8(a): Case 2",
+      "pdf": "output/pdf/liang-figure8a-20261021-final/liang-figure8a-seven-comparisons.pdf",
+      "page": 3,
+      "evidence": "output/pdf/liang-figure8a-20261021-final/manifest.json",
+      "pdf_sha256": "88a767cfd6703b5324c975a17c526df1991de9909d862aaac12d4444fc990202",
+      "evidence_sha256": "5f89c658d2ac4eecd7cb7f10545af41ccf4b2aeb1e7cf21b2f8923fdf960c424",
+      "source_page_rect": [
+        0.0,
+        0.0,
+        468.0,
+        420.0
+      ]
+    },
+    {
+      "id": "figure8a-4",
+      "title": "Figure 8(a): Case 3",
+      "pdf": "output/pdf/liang-figure8a-20261021-final/liang-figure8a-seven-comparisons.pdf",
+      "page": 4,
+      "evidence": "output/pdf/liang-figure8a-20261021-final/manifest.json",
+      "pdf_sha256": "88a767cfd6703b5324c975a17c526df1991de9909d862aaac12d4444fc990202",
+      "evidence_sha256": "5f89c658d2ac4eecd7cb7f10545af41ccf4b2aeb1e7cf21b2f8923fdf960c424",
+      "source_page_rect": [
+        0.0,
+        0.0,
+        468.0,
+        420.0
+      ]
+    },
+    {
+      "id": "figure8a-5",
+      "title": "Figure 8(a): Case 4",
+      "pdf": "output/pdf/liang-figure8a-20261021-final/liang-figure8a-seven-comparisons.pdf",
+      "page": 5,
+      "evidence": "output/pdf/liang-figure8a-20261021-final/manifest.json",
+      "pdf_sha256": "88a767cfd6703b5324c975a17c526df1991de9909d862aaac12d4444fc990202",
+      "evidence_sha256": "5f89c658d2ac4eecd7cb7f10545af41ccf4b2aeb1e7cf21b2f8923fdf960c424",
+      "source_page_rect": [
+        0.0,
+        0.0,
+        468.0,
+        478.0
+      ]
+    },
+    {
+      "id": "figure8a-6",
+      "title": "Figure 8(a): Case 5",
+      "pdf": "output/pdf/liang-figure8a-20261021-final/liang-figure8a-seven-comparisons.pdf",
+      "page": 6,
+      "evidence": "output/pdf/liang-figure8a-20261021-final/manifest.json",
+      "pdf_sha256": "88a767cfd6703b5324c975a17c526df1991de9909d862aaac12d4444fc990202",
+      "evidence_sha256": "5f89c658d2ac4eecd7cb7f10545af41ccf4b2aeb1e7cf21b2f8923fdf960c424",
+      "source_page_rect": [
+        0.0,
+        0.0,
+        468.0,
+        478.0
+      ]
+    }
+  ],
+  "scientific_acceptance": false,
+  "artifact": "output/pdf/liang-figures-1-8-20261021-final/liang-figures-1-8.pdf",
+  "verification": {
+    "source_pages_with_identical_pixels_and_dimensions": 18,
+    "total_pages": 19,
+    "bookmarks": 19,
+    "visually_reviewed": [
+      "cover",
+      "Figure 8a Case 1",
+      "Figure 8a Case 4",
+      "Figure 8a Case 5"
+    ],
+    "unchanged_pngs": [
+      "cantera-overview",
+      "openfoam-overview",
+      "case-2",
+      "case-3"
+    ]
+  },
+  "figure8_gallery": {
+    "pdf": "output/pdf/liang-figure8a-20261021-final/liang-figure8a-seven-comparisons.pdf",
+    "pdf_sha256": "88a767cfd6703b5324c975a17c526df1991de9909d862aaac12d4444fc990202",
+    "manifest_sha256": "5f89c658d2ac4eecd7cb7f10545af41ccf4b2aeb1e7cf21b2f8923fdf960c424",
+    "diagnostic_points": 30,
+    "baseline_points": 65,
+    "panel_size_pt": [
+      204,
+      175
+    ]
+  }
+}
