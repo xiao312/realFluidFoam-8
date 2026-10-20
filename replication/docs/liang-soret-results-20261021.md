@@ -125,6 +125,26 @@ It still does not identify the missing Case 5 effect or Liang's settings.
 
 ## Comparison figures
 
+The original phi=1.10 six-control set is also complete. All solves pass
+the numerical screen, and all three enabled runs pass the strict native
+flux audit. The [phi=1.10 record](liang-methane-phi110-controls-20261021.json)
+includes independent elemental checks and both paper-point comparisons.
+
+| Case | Soret off, cm/s | Soret on, cm/s | Liang reading, cm/s |
+| --- | ---: | ---: | ---: |
+| 1 | 7.461703 | 7.365773 | 7.476410 |
+| 4 | 7.134648 | 7.039123 | 7.124660 |
+| 5 | 7.050849 | 6.954854 | 7.012234 |
+
+All six values pass the existing paper-point screen. The enabled Case 1
+value is only 0.00413 cm/s inside its allowance; this is not an exact match.
+The computed Case 4–5 separation is 0.083800 cm/s without Soret and
+0.084269 cm/s with Soret, versus Liang's 0.112426 cm/s.
+The largest feed-to-outlet elemental change is 0.0434%.
+This offline balance check does not assign a flame-speed error bound.
+The [energy controls](liang-methane-energy-controls-20261021.md) test a
+separate equation-level explanation at phi=1.40.
+
 The per-case gallery now contains the eight completed earlier diagnostics,
 nine completed Cantera 3.2 Soret points and three manual-formula points.
 Each diagnostic has a distinct color/marker combination and a matching legend.

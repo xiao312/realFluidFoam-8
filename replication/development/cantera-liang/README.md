@@ -96,6 +96,21 @@ credentials or plotting dependencies are involved. The comparison report consume
 its output. Run `plan`, then `apply` to a new directory; expect all native
 flux identities to pass. Scientific agreement is reported separately.
 
+`element_balance.py plan|apply OBSERVATION FLUX_DIRECTORY MECHANISM NEW_JSON`
+audits the observed methane profiles' elemental balances using Cantera 3.2
+Python's mechanism stoichiometry and the saved native species diffusion fluxes.
+It verifies mechanism/profile/flux hashes and species order before computing
+feed/outlet element changes and conservative face-flux spans. The latter use
+an explicitly reconstructed upwind advective flux; they are not the stock
+solver's nonconservative species residual. Disabled-Soret rows retain only the
+profile endpoint check because their native face export is absent.
+The input is a completed six-control observation from the same collection
+workflow as `analyze_soret.py`; output records errors and identities without
+assigning paper acceptance. Dependencies are Python Cantera 3.2 and NumPy.
+There are no remote writes, credentials or changes to saved composition.
+Verify an ideal stoichiometric reactant/product pair and a deliberately
+element-changing, mass-normalized perturbation before interpreting new data.
+
 The additional `manual-soret` diagnostic uses the published CHEMKIN
 light-species formula, with direct evaluation of the fixed TRANFIT collision
 polynomials. It enables Soret and replaces only the thermal coefficient.

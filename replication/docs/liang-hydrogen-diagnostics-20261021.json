@@ -62,15 +62,13 @@
       "value": 72.66762663354733,
       "case": "4",
       "phi": 1.4,
-      "job": 125097240,
-      "source": "fcd11507e74587a4e3aced0f383d630018121a01",
-      "profile_sha256": "6716693e66fbbc79808facc0ed394a7a86a1a69fe44c97090c5bc23c0e78c927",
+      "job": 125100461,
+      "source": "31694902ffebc63222959adb2d95751c5ea3a165",
+      "profile_sha256": "8746b1eb1ebaf7c685a853d8e895a5b6bbf485ba92989fbb5adfb6bf16341acb",
       "numerical_screen_passed": true,
       "label": "Soret: manual formula",
       "marker": "diamond",
-      "strict_native_failures": [
-        "thermal_definition"
-      ]
+      "strict_native_failures": []
     },
     {
       "figure": 3,
@@ -78,15 +76,13 @@
       "value": 73.22002419695932,
       "case": "4",
       "phi": 1.4,
-      "job": 125097239,
-      "source": "fcd11507e74587a4e3aced0f383d630018121a01",
-      "profile_sha256": "b5ebc331e02730822fa7b426ec87183b560217afed0ea5c3d9085cc2e25b3f76",
+      "job": 125100459,
+      "source": "31694902ffebc63222959adb2d95751c5ea3a165",
+      "profile_sha256": "571913afde7fcb805176fe8bfe999cc6876cad9dfe0dd1495128a9eb2e4a93f2",
       "numerical_screen_passed": true,
       "label": "Soret: Cantera 3.2",
       "marker": "square",
-      "strict_native_failures": [
-        "thermal_definition"
-      ]
+      "strict_native_failures": []
     },
     {
       "figure": 3,
@@ -94,15 +90,13 @@
       "value": 71.73130231678505,
       "case": "5",
       "phi": 1.4,
-      "job": 125097244,
-      "source": "fcd11507e74587a4e3aced0f383d630018121a01",
-      "profile_sha256": "00b7f8e0223c8503b473675737ab14387c50c6e912188cd23efb8bfd093cbf99",
+      "job": 125100466,
+      "source": "31694902ffebc63222959adb2d95751c5ea3a165",
+      "profile_sha256": "5c27dc347f49a32a44dd99302c5e74ac54e1d54723a16af40279a67ad2da0ad0",
       "numerical_screen_passed": true,
       "label": "Soret: manual formula",
       "marker": "diamond",
-      "strict_native_failures": [
-        "thermal_definition"
-      ]
+      "strict_native_failures": []
     },
     {
       "figure": 3,
@@ -110,9 +104,9 @@
       "value": 72.28634987618581,
       "case": "5",
       "phi": 1.4,
-      "job": 125097242,
-      "source": "fcd11507e74587a4e3aced0f383d630018121a01",
-      "profile_sha256": "d3cd4a9d616a09316982c52ef260cb8e12cdf00a6c5057947c8497fdfcec818a",
+      "job": 125100464,
+      "source": "31694902ffebc63222959adb2d95751c5ea3a165",
+      "profile_sha256": "a58b19b3bb69339e36bd548d9c11bdb1cc40363e32620969cc492199e2dc3dbd",
       "numerical_screen_passed": true,
       "label": "Soret: Cantera 3.2",
       "marker": "square",

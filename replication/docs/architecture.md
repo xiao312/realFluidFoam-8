@@ -131,6 +131,9 @@ Its optional light-species Soret control uses an internal algebraic kernel and
 the same SDK transport data. Its offline Soret analyzer consumes hashed
 profiles and native face fluxes with NumPy. Neither path introduces a
 production CFD dependency or changes the no-Soret baseline.
+Its offline element-balance check additionally uses Cantera Python's pinned
+mechanism stoichiometry. It reports endpoint element changes and reconstructed
+conservative face fluxes from the same hashed snapshots, without a flame solve.
 
 `development/fresh-start` consumes ideal-baseline initial-state generation,
 premixed-paper boundary finalization and flame-tracking anchors/checks. It reuses

@@ -118,8 +118,16 @@ matched controls, original hashes, all residuals and negative test.
 This separates two numerical issues: tighter convergence resolves the
 composition/projection residual; full-precision output resolves cancellation
 when subtracting adjacent saved coordinates. Neither changes the scientific
-speed discrepancy. Further Case 4/5 full-precision controls are recorded
-separately while they complete.
+speed discrepancy.
+
+The remaining six rich Case 4/5 controls also completed. All strict native
+checks pass, with byte-identical refinement and thermodynamic files against
+their 16-digit counterparts. The four plotted enabled controls now reference
+jobs `125100459`, `125100461`, `125100464` and `125100466`.
+Their speeds remain unchanged. Case 4 native/manual errors against Liang
+are +4.326/+3.539%; Case 5 errors are +5.877/+5.064%.
+Thus all twelve rich full-precision controls are numerically qualified,
+but the nonideal paper discrepancies remain.
 
 ## Figure 7 structure controls
 

@@ -1,0 +1,895 @@
+{
+  "observation": {
+    "observed_utc": "2026-10-20T21:56:03.870650+00:00",
+    "snapshot": "state/liang-hydrogen-20261020/monitor-snapshots/soret-phi110-original-complete",
+    "jobs": [
+      {
+        "stage": 1,
+        "phi": 1.1,
+        "soret": false,
+        "variant": "full",
+        "source": "c9c2c55b3db6b9b6f379026ad94ff4fdea17d34c",
+        "build": 125085658,
+        "pressure_atm": 100,
+        "time_limit": "03:00:00",
+        "cpus": 1,
+        "memory_MiB": 3072,
+        "job": 125092061,
+        "scheduler": [
+          "COMPLETED",
+          "00:02:56",
+          "0:0"
+        ],
+        "screen_passed": true,
+        "levels": [
+          {
+            "stage": "1",
+            "phi": "1.1",
+            "slope": "0.0075",
+            "curve": "0.0125",
+            "points": "2126",
+            "speed_cm_s": "7.461626719525789"
+          },
+          {
+            "stage": "1",
+            "phi": "1.1",
+            "slope": "0.00375",
+            "curve": "0.00625",
+            "points": "2127",
+            "speed_cm_s": "7.461702833306255"
+          }
+        ],
+        "executable_sha256": "0ff9966ece7d6d822699b4a1b3c37e9988358af2df7de7965bab70ff3322735c",
+        "screen": {
+          "stage": 1,
+          "phi": 1.1,
+          "speed_cm_s": 7.461702833306255,
+          "last_refinement_relative_change": 1.020069528090417e-05,
+          "mass_flux_relative_range": 1.1043368538732205e-10,
+          "maximum_species_sum_error": 2.565558876455043e-11,
+          "minimum_mass_fraction": -8.539559004299679e-13,
+          "points": 2127,
+          "scientific_acceptance": false,
+          "remaining": [
+            "domain sensitivity",
+            "initial-guess sensitivity",
+            "publication parameter uncertainty"
+          ]
+        },
+        "output_sha256": {
+          "profile.csv": "09408212459b4f4b318de2310714cba6b4429d169cfad386d84c2c47962d550e",
+          "refinement.csv": "1cdf497a838f5aa73465c8d3179023e7fec12db971766951b9236558dad8cdc9",
+          "property-checks.csv": "9e3915ce109894d6e3a66a951c78b059d3f33e7100adea57da1268ff290560f0",
+          "flame.yaml": "b19b02c8a832febdd90d8e5772fa4b57accd5a08d2c58041c1d7983713b8a295"
+        },
+        "record_sha256": {
+          "source-revision.txt": "271db56c5bae838d6853a822f1609e589fde7d237714a62bcd5a1173a6052524",
+          "build-path.txt": "15251a81ee91454c47e4029909ff6d318954f3c3f996102add09c4e7c0447f8a",
+          "command.txt": "f80c5a56b3ea614dba74ff232a5353530b83ee0fad93204b42a5ee820a087633",
+          "input-sha256.txt": "6b9f73b14cb7ffae953989cf642b693aaff43d94bd409b852e7ffa15ce5f1821",
+          "executable.sha256": "3637d735bc5360e762daf5127f15e20580a8b4dd588ce7fb7df20dc7dca1a10e"
+        }
+      },
+      {
+        "stage": 1,
+        "phi": 1.1,
+        "soret": true,
+        "variant": "soret",
+        "source": "c9c2c55b3db6b9b6f379026ad94ff4fdea17d34c",
+        "build": 125085658,
+        "pressure_atm": 100,
+        "time_limit": "03:00:00",
+        "cpus": 1,
+        "memory_MiB": 3072,
+        "job": 125092075,
+        "scheduler": [
+          "COMPLETED",
+          "00:04:14",
+          "0:0"
+        ],
+        "screen_passed": true,
+        "levels": [
+          {
+            "stage": "1",
+            "phi": "1.1",
+            "slope": "0.0075",
+            "curve": "0.0125",
+            "points": "2126",
+            "speed_cm_s": "7.366079605101415"
+          },
+          {
+            "stage": "1",
+            "phi": "1.1",
+            "slope": "0.00375",
+            "curve": "0.00625",
+            "points": "2132",
+            "speed_cm_s": "7.365772955786756"
+          }
+        ],
+        "executable_sha256": "0ff9966ece7d6d822699b4a1b3c37e9988358af2df7de7965bab70ff3322735c",
+        "screen": {
+          "stage": 1,
+          "phi": 1.1,
+          "speed_cm_s": 7.365772955786756,
+          "last_refinement_relative_change": 4.1629921355590405e-05,
+          "mass_flux_relative_range": 1.303544795059633e-09,
+          "maximum_species_sum_error": 1.860633869199546e-10,
+          "minimum_mass_fraction": -6.480833705925371e-12,
+          "points": 2132,
+          "scientific_acceptance": false,
+          "remaining": [
+            "domain sensitivity",
+            "initial-guess sensitivity",
+            "publication parameter uncertainty"
+          ]
+        },
+        "output_sha256": {
+          "profile.csv": "098b2c203385b62434f8bfbce2fbd13fcc0db0e9fcf944e1f2d1584ddfbacc3a",
+          "refinement.csv": "8e05b091646878fe424e4dc52fa6a54b9fcbed6cb7a8464b2a2c8635cc3e215e",
+          "property-checks.csv": "9e3915ce109894d6e3a66a951c78b059d3f33e7100adea57da1268ff290560f0",
+          "flame.yaml": "ad6fffc2fafd982665ab0a50a0c22079fe703754df8f1d374e27471e5332f854"
+        },
+        "record_sha256": {
+          "source-revision.txt": "271db56c5bae838d6853a822f1609e589fde7d237714a62bcd5a1173a6052524",
+          "build-path.txt": "15251a81ee91454c47e4029909ff6d318954f3c3f996102add09c4e7c0447f8a",
+          "command.txt": "aa1b122fd4c9db7acafb64e7964c88372778ef519efb64202d8004db32972a72",
+          "input-sha256.txt": "6b9f73b14cb7ffae953989cf642b693aaff43d94bd409b852e7ffa15ce5f1821",
+          "executable.sha256": "3637d735bc5360e762daf5127f15e20580a8b4dd588ce7fb7df20dc7dca1a10e"
+        },
+        "soret_flux_sha256": "69f2aa019a4690cad6d6b2cfa9bdf588ccf3da0ff8df4701ce284455bca8f15b",
+        "saved_soret_enabled": true
+      },
+      {
+        "stage": 4,
+        "phi": 1.1,
+        "soret": false,
+        "variant": "dense-increment,bounded-takahashi,pressure-chemistry,takahashi-table2",
+        "source": "c9c2c55b3db6b9b6f379026ad94ff4fdea17d34c",
+        "build": 125085658,
+        "pressure_atm": 100,
+        "time_limit": "03:00:00",
+        "cpus": 1,
+        "memory_MiB": 3072,
+        "job": 125092086,
+        "scheduler": [
+          "COMPLETED",
+          "00:20:05",
+          "0:0"
+        ],
+        "screen_passed": true,
+        "levels": [
+          {
+            "stage": "4",
+            "phi": "1.1",
+            "slope": "0.0075",
+            "curve": "0.0125",
+            "points": "2126",
+            "speed_cm_s": "7.134728933498065"
+          },
+          {
+            "stage": "4",
+            "phi": "1.1",
+            "slope": "0.00375",
+            "curve": "0.00625",
+            "points": "2159",
+            "speed_cm_s": "7.13464824767459"
+          }
+        ],
+        "executable_sha256": "0ff9966ece7d6d822699b4a1b3c37e9988358af2df7de7965bab70ff3322735c",
+        "screen": {
+          "stage": 4,
+          "phi": 1.1,
+          "speed_cm_s": 7.13464824767459,
+          "last_refinement_relative_change": 1.1308884223515392e-05,
+          "mass_flux_relative_range": 9.032355154550694e-11,
+          "maximum_species_sum_error": 6.633538163214325e-11,
+          "minimum_mass_fraction": -1.025245648213859e-12,
+          "points": 2159,
+          "scientific_acceptance": false,
+          "remaining": [
+            "domain sensitivity",
+            "initial-guess sensitivity",
+            "publication parameter uncertainty"
+          ]
+        },
+        "output_sha256": {
+          "profile.csv": "907cb610c298e89c17baea74184a2a2e1896218ada0dabf073bc58389b587776",
+          "refinement.csv": "1344b7b4ae5af0d4e88511bcd2f35d035ef65b54ffe7d15a914249cdb8efa184",
+          "property-checks.csv": "4e35622970ed900fc8b456dd812130d47188d5667dbf4c486784da1d9e195eb8",
+          "flame.yaml": "722a19292748fdad0aa835b1db6db865763d9d59b58a4f9665bf6c81f5570ef9"
+        },
+        "record_sha256": {
+          "source-revision.txt": "271db56c5bae838d6853a822f1609e589fde7d237714a62bcd5a1173a6052524",
+          "build-path.txt": "15251a81ee91454c47e4029909ff6d318954f3c3f996102add09c4e7c0447f8a",
+          "command.txt": "50c395b912efa8efeffce65e7fb05b7b6e47be675bd436a4cb9c8fe1614283f5",
+          "input-sha256.txt": "6b9f73b14cb7ffae953989cf642b693aaff43d94bd409b852e7ffa15ce5f1821",
+          "executable.sha256": "3637d735bc5360e762daf5127f15e20580a8b4dd588ce7fb7df20dc7dca1a10e"
+        }
+      },
+      {
+        "stage": 4,
+        "phi": 1.1,
+        "soret": true,
+        "variant": "dense-increment,bounded-takahashi,pressure-chemistry,takahashi-table2,soret",
+        "source": "c9c2c55b3db6b9b6f379026ad94ff4fdea17d34c",
+        "build": 125085658,
+        "pressure_atm": 100,
+        "time_limit": "03:00:00",
+        "cpus": 1,
+        "memory_MiB": 3072,
+        "job": 125092091,
+        "scheduler": [
+          "COMPLETED",
+          "01:08:41",
+          "0:0"
+        ],
+        "screen_passed": true,
+        "levels": [
+          {
+            "stage": "4",
+            "phi": "1.1",
+            "slope": "0.0075",
+            "curve": "0.0125",
+            "points": "2126",
+            "speed_cm_s": "7.039179627845273"
+          },
+          {
+            "stage": "4",
+            "phi": "1.1",
+            "slope": "0.00375",
+            "curve": "0.00625",
+            "points": "2164",
+            "speed_cm_s": "7.039122881640285"
+          }
+        ],
+        "executable_sha256": "0ff9966ece7d6d822699b4a1b3c37e9988358af2df7de7965bab70ff3322735c",
+        "screen": {
+          "stage": 4,
+          "phi": 1.1,
+          "speed_cm_s": 7.039122881640285,
+          "last_refinement_relative_change": 8.061479886634082e-06,
+          "mass_flux_relative_range": 2.8752875021708926e-10,
+          "maximum_species_sum_error": 8.532130557625806e-11,
+          "minimum_mass_fraction": -2.379114153583529e-12,
+          "points": 2164,
+          "scientific_acceptance": false,
+          "remaining": [
+            "domain sensitivity",
+            "initial-guess sensitivity",
+            "publication parameter uncertainty"
+          ]
+        },
+        "output_sha256": {
+          "profile.csv": "4e425bb7d57662edf2f5e45e38098aa0e23cbcee4d03f260b68e9dfe276d7fec",
+          "refinement.csv": "4aa4d194cca38079bfd1fafbc1ef2bf7ee5196b5e9d0a374f79220e10be836a6",
+          "property-checks.csv": "4e35622970ed900fc8b456dd812130d47188d5667dbf4c486784da1d9e195eb8",
+          "flame.yaml": "1d6a7319223b752363800eb701ff1990baaab51800b95cda378f969df23d2ee0"
+        },
+        "record_sha256": {
+          "source-revision.txt": "271db56c5bae838d6853a822f1609e589fde7d237714a62bcd5a1173a6052524",
+          "build-path.txt": "15251a81ee91454c47e4029909ff6d318954f3c3f996102add09c4e7c0447f8a",
+          "command.txt": "6a06e2052fd7785a0637554476f7c9914daebe64c49d3573ac926e78ce81df02",
+          "input-sha256.txt": "6b9f73b14cb7ffae953989cf642b693aaff43d94bd409b852e7ffa15ce5f1821",
+          "executable.sha256": "3637d735bc5360e762daf5127f15e20580a8b4dd588ce7fb7df20dc7dca1a10e"
+        },
+        "soret_flux_sha256": "4bf530f365398bb97ba1cef5271792a0f9f2ea3809dff8f0e7158e7e4deee0ff",
+        "saved_soret_enabled": true
+      },
+      {
+        "stage": 5,
+        "phi": 1.1,
+        "soret": false,
+        "variant": "dense-increment,bounded-takahashi,pressure-chemistry,takahashi-table2",
+        "source": "c9c2c55b3db6b9b6f379026ad94ff4fdea17d34c",
+        "build": 125085658,
+        "pressure_atm": 100,
+        "time_limit": "03:00:00",
+        "cpus": 1,
+        "memory_MiB": 3072,
+        "job": 125092105,
+        "scheduler": [
+          "COMPLETED",
+          "00:31:10",
+          "0:0"
+        ],
+        "screen_passed": true,
+        "levels": [
+          {
+            "stage": "5",
+            "phi": "1.1",
+            "slope": "0.0075",
+            "curve": "0.0125",
+            "points": "2126",
+            "speed_cm_s": "7.051123429862121"
+          },
+          {
+            "stage": "5",
+            "phi": "1.1",
+            "slope": "0.00375",
+            "curve": "0.00625",
+            "points": "2175",
+            "speed_cm_s": "7.050848507849679"
+          }
+        ],
+        "executable_sha256": "0ff9966ece7d6d822699b4a1b3c37e9988358af2df7de7965bab70ff3322735c",
+        "screen": {
+          "stage": 5,
+          "phi": 1.1,
+          "speed_cm_s": 7.050848507849679,
+          "last_refinement_relative_change": 3.898981703787108e-05,
+          "mass_flux_relative_range": 2.5808687573027674e-10,
+          "maximum_species_sum_error": 4.3062220456135947e-11,
+          "minimum_mass_fraction": -6.813387464306117e-13,
+          "points": 2175,
+          "scientific_acceptance": false,
+          "remaining": [
+            "domain sensitivity",
+            "initial-guess sensitivity",
+            "publication parameter uncertainty"
+          ]
+        },
+        "output_sha256": {
+          "profile.csv": "d12d56ab50a567f3aeb5e72dfdc1e2c5439d345f4b04dd1b614de0a323ed8400",
+          "refinement.csv": "8c2fa63cb2abbefeb86c29f94c4ab065d8ac368e72c44bd7c7e29c4e52afbde8",
+          "property-checks.csv": "afe3a1de71c4f8dee45b73de09c4c174c3ace82b8aa4d4a82c90867a5e622b19",
+          "flame.yaml": "7f286069a2e757f219886c5cdcaf9ebeec0562ee3e3715fba78874798321b065"
+        },
+        "record_sha256": {
+          "source-revision.txt": "271db56c5bae838d6853a822f1609e589fde7d237714a62bcd5a1173a6052524",
+          "build-path.txt": "15251a81ee91454c47e4029909ff6d318954f3c3f996102add09c4e7c0447f8a",
+          "command.txt": "0575882e6d0f2373840306f025541327f03d84c07db1c111636a8b0131b040d4",
+          "input-sha256.txt": "6b9f73b14cb7ffae953989cf642b693aaff43d94bd409b852e7ffa15ce5f1821",
+          "executable.sha256": "3637d735bc5360e762daf5127f15e20580a8b4dd588ce7fb7df20dc7dca1a10e"
+        }
+      },
+      {
+        "stage": 5,
+        "phi": 1.1,
+        "soret": true,
+        "variant": "dense-increment,bounded-takahashi,pressure-chemistry,takahashi-table2,soret",
+        "source": "c9c2c55b3db6b9b6f379026ad94ff4fdea17d34c",
+        "build": 125085658,
+        "pressure_atm": 100,
+        "time_limit": "03:00:00",
+        "cpus": 1,
+        "memory_MiB": 3072,
+        "job": 125092127,
+        "scheduler": [
+          "COMPLETED",
+          "01:54:11",
+          "0:0"
+        ],
+        "screen_passed": true,
+        "levels": [
+          {
+            "stage": "5",
+            "phi": "1.1",
+            "slope": "0.0075",
+            "curve": "0.0125",
+            "points": "2126",
+            "speed_cm_s": "6.954993424080228"
+          },
+          {
+            "stage": "5",
+            "phi": "1.1",
+            "slope": "0.00375",
+            "curve": "0.00625",
+            "points": "2179",
+            "speed_cm_s": "6.95485382833452"
+          }
+        ],
+        "executable_sha256": "0ff9966ece7d6d822699b4a1b3c37e9988358af2df7de7965bab70ff3322735c",
+        "screen": {
+          "stage": 5,
+          "phi": 1.1,
+          "speed_cm_s": 6.95485382833452,
+          "last_refinement_relative_change": 2.0071298015067462e-05,
+          "mass_flux_relative_range": 2.406613462250797e-10,
+          "maximum_species_sum_error": 1.2894374457061986e-10,
+          "minimum_mass_fraction": -3.254236464721004e-12,
+          "points": 2179,
+          "scientific_acceptance": false,
+          "remaining": [
+            "domain sensitivity",
+            "initial-guess sensitivity",
+            "publication parameter uncertainty"
+          ]
+        },
+        "output_sha256": {
+          "profile.csv": "2e0f371c856efc5bfc5ba0ce41a9c14e82882d21ee0876d1a0a9b316f065c9bc",
+          "refinement.csv": "a54c22d93b3a614aa1888ac05664430e17c8cc9e28bd7e8655bea1944da03d05",
+          "property-checks.csv": "afe3a1de71c4f8dee45b73de09c4c174c3ace82b8aa4d4a82c90867a5e622b19",
+          "flame.yaml": "4ebdc39654681340d063d0fbc5e029a26e5ae9b3e586451e7c2758c5ef00fd51"
+        },
+        "record_sha256": {
+          "source-revision.txt": "271db56c5bae838d6853a822f1609e589fde7d237714a62bcd5a1173a6052524",
+          "build-path.txt": "15251a81ee91454c47e4029909ff6d318954f3c3f996102add09c4e7c0447f8a",
+          "command.txt": "afd81ec90524776d4c22d619424d1290035af1f449ff02772e8ac17fd9a727a4",
+          "input-sha256.txt": "6b9f73b14cb7ffae953989cf642b693aaff43d94bd409b852e7ffa15ce5f1821",
+          "executable.sha256": "3637d735bc5360e762daf5127f15e20580a8b4dd588ce7fb7df20dc7dca1a10e"
+        },
+        "soret_flux_sha256": "03196ce406062ee2303724bd9173b8da46116c1e00e2a01ed18602f84345338b",
+        "saved_soret_enabled": true
+      }
+    ]
+  },
+  "native_analysis": {
+    "observation_sha256": "1a022328ef40537410336e14ddd8adb93c7eacb58dd3e515e103f39a972d6fb5",
+    "script_sha256": "e22ed897e69777e5ce20750a668483eba4556fb95e1b2b44a63aac529aa878aa",
+    "source_revision": "c9c2c55b3db6b9b6f379026ad94ff4fdea17d34c",
+    "executable_sha256": "0ff9966ece7d6d822699b4a1b3c37e9988358af2df7de7965bab70ff3322735c",
+    "thermal_model": "cantera-3.2",
+    "input_record_sha256": "6b9f73b14cb7ffae953989cf642b693aaff43d94bd409b852e7ffa15ce5f1821",
+    "phi": 1.1,
+    "pressure_atm": 100,
+    "Tu_K": 298,
+    "pairs": [
+      {
+        "stage": 1,
+        "off_cm_s": 7.461702833306255,
+        "on_cm_s": 7.365772955786756,
+        "change_cm_s": -0.09592987751949877,
+        "change_pct": -1.2856298309187997
+      },
+      {
+        "stage": 4,
+        "off_cm_s": 7.13464824767459,
+        "on_cm_s": 7.039122881640285,
+        "change_cm_s": -0.0955253660343045,
+        "change_pct": -1.3388938419695684
+      },
+      {
+        "stage": 5,
+        "off_cm_s": 7.050848507849679,
+        "on_cm_s": 6.95485382833452,
+        "change_cm_s": -0.09599467951515894,
+        "change_pct": -1.3614627999493756
+      }
+    ],
+    "runs": [
+      {
+        "stage": 1,
+        "soret": false,
+        "job": 125092061,
+        "speed_cm_s": 7.461702833306255,
+        "final_temperature_K": 2229.455783660841
+      },
+      {
+        "stage": 1,
+        "soret": true,
+        "job": 125092075,
+        "speed_cm_s": 7.365772955786756,
+        "final_temperature_K": 2229.754284607258,
+        "native_flux_sha256": "69f2aa019a4690cad6d6b2cfa9bdf588ccf3da0ff8df4701ce284455bca8f15b",
+        "native_flux_checks": {
+          "decomposition": 8.515190372465441e-16,
+          "thermal_definition": 9.330453325704223e-13,
+          "total_mass_closure": 6.233427550147808e-12,
+          "thermal_mass_closure": 3.283739454788524e-12,
+          "coefficient_projection": 7.99718468420677e-11
+        },
+        "maximum_absolute_thermal_enthalpy_flux_W_m2": 273752.6814079058
+      },
+      {
+        "stage": 4,
+        "soret": false,
+        "job": 125092086,
+        "speed_cm_s": 7.13464824767459,
+        "final_temperature_K": 2210.184258928118
+      },
+      {
+        "stage": 4,
+        "soret": true,
+        "job": 125092091,
+        "speed_cm_s": 7.039122881640285,
+        "final_temperature_K": 2210.241835026298,
+        "native_flux_sha256": "4bf530f365398bb97ba1cef5271792a0f9f2ea3809dff8f0e7158e7e4deee0ff",
+        "native_flux_checks": {
+          "decomposition": 4.440745455201502e-16,
+          "thermal_definition": 9.456428673556122e-13,
+          "total_mass_closure": 2.766168898276809e-12,
+          "thermal_mass_closure": 9.026612415012102e-13,
+          "coefficient_projection": 3.6517437496443496e-11
+        },
+        "maximum_absolute_thermal_enthalpy_flux_W_m2": 264366.6945206853
+      },
+      {
+        "stage": 5,
+        "soret": false,
+        "job": 125092105,
+        "speed_cm_s": 7.050848507849679,
+        "final_temperature_K": 2210.134520415259
+      },
+      {
+        "stage": 5,
+        "soret": true,
+        "job": 125092127,
+        "speed_cm_s": 6.95485382833452,
+        "final_temperature_K": 2210.192764649321,
+        "native_flux_sha256": "03196ce406062ee2303724bd9173b8da46116c1e00e2a01ed18602f84345338b",
+        "native_flux_checks": {
+          "decomposition": 4.450019903058787e-16,
+          "thermal_definition": 9.454623536536277e-13,
+          "total_mass_closure": 3.841634538422904e-12,
+          "thermal_mass_closure": 1.5027728709272514e-12,
+          "coefficient_projection": 5.707612277848758e-11
+        },
+        "maximum_absolute_thermal_enthalpy_flux_W_m2": 258270.33311720777
+      }
+    ],
+    "case4_minus_case5_without_soret_cm_s": 0.08379973982491062,
+    "case4_minus_case5_with_soret_cm_s": 0.08426905330576506,
+    "change_in_case4_minus_case5_cm_s": 0.0004693134808544386,
+    "scientific_acceptance": false,
+    "limits": [
+      "cantera-3.2 Soret sensitivity, not recovered Liang settings",
+      "Case 5 uses corrected mixture diffusion with dilute binary collision terms",
+      "Native thermal enthalpy contribution is evaluated on each solved profile"
+    ]
+  },
+  "elemental_audit": {
+    "observation_sha256": "1a022328ef40537410336e14ddd8adb93c7eacb58dd3e515e103f39a972d6fb5",
+    "mechanism_sha256": "c6e72c25dbf5af75a16b71042e071aed15ca4fd4a8a854fd8720a820ce1986c6",
+    "script_sha256": "5a9b8ea4b99252a3e49e4582cedb77d2e62ef6ed605d5350c16812801ac61008",
+    "cantera_version": "3.2.0",
+    "fixtures": {
+      "balanced_maximum_element_error": 1.734723475976807e-18,
+      "normalized_perturbation_maximum_element_error": 0.0010000000000000009
+    },
+    "runs": [
+      {
+        "job": 125092061,
+        "stage": 1,
+        "phi": 1.1,
+        "soret": false,
+        "source": "c9c2c55b3db6b9b6f379026ad94ff4fdea17d34c",
+        "build": 125085658,
+        "executable_sha256": "0ff9966ece7d6d822699b4a1b3c37e9988358af2df7de7965bab70ff3322735c",
+        "speed_cm_s": 7.461702833306255,
+        "maximum_species_sum_error": 2.5655699786852892e-11,
+        "active_elements": [
+          "C",
+          "H",
+          "O",
+          "N"
+        ],
+        "outlet_minus_feed_relative": {
+          "C": -0.0003400980810519146,
+          "H": 0.0004105430778361896,
+          "O": 5.5898929523031556e-05,
+          "N": -4.292499458157922e-06
+        },
+        "maximum_inactive_element_fraction": 2.413318700763573e-176,
+        "profile_sha256": "09408212459b4f4b318de2310714cba6b4429d169cfad386d84c2c47962d550e",
+        "face_flux_status": "Unavailable: disabled-Soret run has no native face export"
+      },
+      {
+        "job": 125092075,
+        "stage": 1,
+        "phi": 1.1,
+        "soret": true,
+        "source": "c9c2c55b3db6b9b6f379026ad94ff4fdea17d34c",
+        "build": 125085658,
+        "executable_sha256": "0ff9966ece7d6d822699b4a1b3c37e9988358af2df7de7965bab70ff3322735c",
+        "speed_cm_s": 7.365772955786756,
+        "maximum_species_sum_error": 1.860633869199546e-10,
+        "active_elements": [
+          "C",
+          "H",
+          "O",
+          "N"
+        ],
+        "outlet_minus_feed_relative": {
+          "C": -0.00038778951899614465,
+          "H": 0.00013935930389772248,
+          "O": 7.216815876727522e-05,
+          "N": -5.36342440695516e-07
+        },
+        "maximum_inactive_element_fraction": 4.923199039068062e-173,
+        "profile_sha256": "098b2c203385b62434f8bfbce2fbd13fcc0db0e9fcf944e1f2d1584ddfbacc3a",
+        "face_flux_status": "Reconstructed positive-upwind advection plus native species diffusion",
+        "conservative_element_face_span_relative": {
+          "C": 0.0003878100576107039,
+          "H": 0.0001393593181544267,
+          "O": 0.00011193261539805407,
+          "N": 1.1539021446418501e-05
+        },
+        "first_face_minus_feed_over_massflow": 1.6486730111167385e-12,
+        "last_face_minus_outlet_over_massflow": 1.0317972042839889e-10,
+        "native_flux_residuals": {
+          "decomposition": 8.515190372465441e-16,
+          "thermal_definition": 9.330453325704223e-13,
+          "total_mass_closure": 6.233427550147808e-12,
+          "thermal_mass_closure": 3.283739454788524e-12,
+          "coefficient_projection": 7.99718468420677e-11
+        },
+        "native_flux_sha256": "69f2aa019a4690cad6d6b2cfa9bdf588ccf3da0ff8df4701ce284455bca8f15b"
+      },
+      {
+        "job": 125092086,
+        "stage": 4,
+        "phi": 1.1,
+        "soret": false,
+        "source": "c9c2c55b3db6b9b6f379026ad94ff4fdea17d34c",
+        "build": 125085658,
+        "executable_sha256": "0ff9966ece7d6d822699b4a1b3c37e9988358af2df7de7965bab70ff3322735c",
+        "speed_cm_s": 7.13464824767459,
+        "maximum_species_sum_error": 6.633515958753833e-11,
+        "active_elements": [
+          "C",
+          "H",
+          "O",
+          "N"
+        ],
+        "outlet_minus_feed_relative": {
+          "C": -0.0003436864915780501,
+          "H": 0.0004340661310433709,
+          "O": 5.9218861900414654e-05,
+          "N": -5.570569597150413e-06
+        },
+        "maximum_inactive_element_fraction": 1.824357855937739e-190,
+        "profile_sha256": "907cb610c298e89c17baea74184a2a2e1896218ada0dabf073bc58389b587776",
+        "face_flux_status": "Unavailable: disabled-Soret run has no native face export"
+      },
+      {
+        "job": 125092091,
+        "stage": 4,
+        "phi": 1.1,
+        "soret": true,
+        "source": "c9c2c55b3db6b9b6f379026ad94ff4fdea17d34c",
+        "build": 125085658,
+        "executable_sha256": "0ff9966ece7d6d822699b4a1b3c37e9988358af2df7de7965bab70ff3322735c",
+        "speed_cm_s": 7.039122881640285,
+        "maximum_species_sum_error": 8.532108353165313e-11,
+        "active_elements": [
+          "C",
+          "H",
+          "O",
+          "N"
+        ],
+        "outlet_minus_feed_relative": {
+          "C": -0.0003996657877400838,
+          "H": 0.00015070306988752163,
+          "O": 7.431218190559524e-05,
+          "N": -6.815720041990732e-07
+        },
+        "maximum_inactive_element_fraction": 2.633953374211411e-44,
+        "profile_sha256": "4e425bb7d57662edf2f5e45e38098aa0e23cbcee4d03f260b68e9dfe276d7fec",
+        "face_flux_status": "Reconstructed positive-upwind advection plus native species diffusion",
+        "conservative_element_face_span_relative": {
+          "C": 0.0003996884149511608,
+          "H": 0.00015070308118360286,
+          "O": 0.00011314234807718507,
+          "N": 1.1561612154257272e-05
+        },
+        "first_face_minus_feed_over_massflow": 7.364662692916618e-13,
+        "last_face_minus_outlet_over_massflow": 3.276043868092855e-11,
+        "native_flux_residuals": {
+          "decomposition": 4.440745455201502e-16,
+          "thermal_definition": 9.456428673556122e-13,
+          "total_mass_closure": 2.766168898276809e-12,
+          "thermal_mass_closure": 9.026612415012102e-13,
+          "coefficient_projection": 3.6517437496443496e-11
+        },
+        "native_flux_sha256": "4bf530f365398bb97ba1cef5271792a0f9f2ea3809dff8f0e7158e7e4deee0ff"
+      },
+      {
+        "job": 125092105,
+        "stage": 5,
+        "phi": 1.1,
+        "soret": false,
+        "source": "c9c2c55b3db6b9b6f379026ad94ff4fdea17d34c",
+        "build": 125085658,
+        "executable_sha256": "0ff9966ece7d6d822699b4a1b3c37e9988358af2df7de7965bab70ff3322735c",
+        "speed_cm_s": 7.050848507849679,
+        "maximum_species_sum_error": 4.3062220456135947e-11,
+        "active_elements": [
+          "C",
+          "H",
+          "O",
+          "N"
+        ],
+        "outlet_minus_feed_relative": {
+          "C": -0.00034691753012659293,
+          "H": 0.00042006852138735555,
+          "O": 5.1426888140675104e-05,
+          "N": -2.707636402016564e-06
+        },
+        "maximum_inactive_element_fraction": 4.312021113881856e-196,
+        "profile_sha256": "d12d56ab50a567f3aeb5e72dfdc1e2c5439d345f4b04dd1b614de0a323ed8400",
+        "face_flux_status": "Unavailable: disabled-Soret run has no native face export"
+      },
+      {
+        "job": 125092127,
+        "stage": 5,
+        "phi": 1.1,
+        "soret": true,
+        "source": "c9c2c55b3db6b9b6f379026ad94ff4fdea17d34c",
+        "build": 125085658,
+        "executable_sha256": "0ff9966ece7d6d822699b4a1b3c37e9988358af2df7de7965bab70ff3322735c",
+        "speed_cm_s": 6.95485382833452,
+        "maximum_species_sum_error": 1.2894352252601493e-10,
+        "active_elements": [
+          "C",
+          "H",
+          "O",
+          "N"
+        ],
+        "outlet_minus_feed_relative": {
+          "C": -0.0004032315057162878,
+          "H": 0.00013616991421138422,
+          "O": 6.735358966221363e-05,
+          "N": 1.960572795217421e-06
+        },
+        "maximum_inactive_element_fraction": 3.052074271176778e-36,
+        "profile_sha256": "2e0f371c856efc5bfc5ba0ce41a9c14e82882d21ee0876d1a0a9b316f065c9bc",
+        "face_flux_status": "Reconstructed positive-upwind advection plus native species diffusion",
+        "conservative_element_face_span_relative": {
+          "C": 0.00040325485623984137,
+          "H": 0.00013616992774596315,
+          "O": 0.00010506824899410739,
+          "N": 1.0483991850074079e-05
+        },
+        "first_face_minus_feed_over_massflow": 1.918700407965961e-12,
+        "last_face_minus_outlet_over_massflow": 4.9793945540203766e-11,
+        "native_flux_residuals": {
+          "decomposition": 4.450019903058787e-16,
+          "thermal_definition": 9.454623536536277e-13,
+          "total_mass_closure": 3.841634538422904e-12,
+          "thermal_mass_closure": 1.5027728709272514e-12,
+          "coefficient_projection": 5.707612277848758e-11
+        },
+        "native_flux_sha256": "03196ce406062ee2303724bd9173b8da46116c1e00e2a01ed18602f84345338b"
+      }
+    ],
+    "scientific_acceptance": false,
+    "limits": [
+      "Upwind advective face flux is reconstructed, not the stock species residual",
+      "No composition normalization or solution adjustment is applied",
+      "Profile density is the saved thermodynamic value; tiny species-sum errors remain explicit",
+      "Element-flux spans are diagnostics, not a flame-speed error estimate",
+      "This audit does not reconstruct heat conduction or assign energy conservation"
+    ]
+  },
+  "paper_comparisons": {
+    "False": {
+      "criteria": "abs(error) <= max(0.05 cm/s, 1% reference) + digitization uncertainty",
+      "rows": [
+        {
+          "stage": 1,
+          "phi": 1.1,
+          "job": 125092061,
+          "computed_cm_s": 7.461702833306255,
+          "paper_cm_s": 7.476410006449377,
+          "image_uncertainty_cm_s": 0.04,
+          "error_cm_s": -0.014707173143121643,
+          "error_percent": -0.19671437401687164,
+          "limit_cm_s": 0.11476410006449378,
+          "within_screen": true
+        },
+        {
+          "stage": 4,
+          "phi": 1.1,
+          "job": 125092086,
+          "computed_cm_s": 7.13464824767459,
+          "paper_cm_s": 7.1246601306674435,
+          "image_uncertainty_cm_s": 0.03,
+          "error_cm_s": 0.00998811700714608,
+          "error_percent": 0.1401907855808188,
+          "limit_cm_s": 0.10124660130667444,
+          "within_screen": true
+        },
+        {
+          "stage": 5,
+          "phi": 1.1,
+          "job": 125092105,
+          "computed_cm_s": 7.050848507849679,
+          "paper_cm_s": 7.0122341303942815,
+          "image_uncertainty_cm_s": 0.015,
+          "error_cm_s": 0.03861437745539753,
+          "error_percent": 0.5506715368790223,
+          "limit_cm_s": 0.08512234130394282,
+          "within_screen": true
+        }
+      ],
+      "excluded": [],
+      "stages": {
+        "1": {
+          "points": 1,
+          "rms_cm_s": 0.014707173143121643,
+          "max_abs_cm_s": 0.014707173143121643,
+          "failed_points": 0
+        },
+        "4": {
+          "points": 1,
+          "rms_cm_s": 0.00998811700714608,
+          "max_abs_cm_s": 0.00998811700714608,
+          "failed_points": 0
+        },
+        "5": {
+          "points": 1,
+          "rms_cm_s": 0.03861437745539753,
+          "max_abs_cm_s": 0.03861437745539753,
+          "failed_points": 0
+        }
+      },
+      "scientific_acceptance": false
+    },
+    "True": {
+      "criteria": "abs(error) <= max(0.05 cm/s, 1% reference) + digitization uncertainty",
+      "rows": [
+        {
+          "stage": 1,
+          "phi": 1.1,
+          "job": 125092075,
+          "computed_cm_s": 7.365772955786756,
+          "paper_cm_s": 7.476410006449377,
+          "image_uncertainty_cm_s": 0.04,
+          "error_cm_s": -0.11063705066262042,
+          "error_percent": -1.4798151862616091,
+          "limit_cm_s": 0.11476410006449378,
+          "within_screen": true
+        },
+        {
+          "stage": 4,
+          "phi": 1.1,
+          "job": 125092091,
+          "computed_cm_s": 7.039122881640285,
+          "paper_cm_s": 7.1246601306674435,
+          "image_uncertainty_cm_s": 0.03,
+          "error_cm_s": -0.08553724902715842,
+          "error_percent": -1.2005800621838958,
+          "limit_cm_s": 0.10124660130667444,
+          "within_screen": true
+        },
+        {
+          "stage": 5,
+          "phi": 1.1,
+          "job": 125092127,
+          "computed_cm_s": 6.95485382833452,
+          "paper_cm_s": 7.0122341303942815,
+          "image_uncertainty_cm_s": 0.015,
+          "error_cm_s": -0.05738030205976141,
+          "error_percent": -0.8182884511948698,
+          "limit_cm_s": 0.08512234130394282,
+          "within_screen": true
+        }
+      ],
+      "excluded": [],
+      "stages": {
+        "1": {
+          "points": 1,
+          "rms_cm_s": 0.11063705066262042,
+          "max_abs_cm_s": 0.11063705066262042,
+          "failed_points": 0
+        },
+        "4": {
+          "points": 1,
+          "rms_cm_s": 0.08553724902715842,
+          "max_abs_cm_s": 0.08553724902715842,
+          "failed_points": 0
+        },
+        "5": {
+          "points": 1,
+          "rms_cm_s": 0.05738030205976141,
+          "max_abs_cm_s": 0.05738030205976141,
+          "failed_points": 0
+        }
+      },
+      "scientific_acceptance": false
+    }
+  },
+  "inputs_sha256": {
+    "soret-phi110-original-complete.json": "1a022328ef40537410336e14ddd8adb93c7eacb58dd3e515e103f39a972d6fb5",
+    "summary.json": "afd18e444fac96d8a259853d25e56518f20ef4f625887ad55c71feb91da558f3",
+    "methane-phi110-element-balance.json": "5d34693efc499ab1237bb64f5711ae44ac6285e9f4e2ef9212f8842bdda7664f",
+    "liang-figure8a-digitized-v2.json": "4beac428ce44b910b63aafbd464870211c8a3c48701b869d477e941bf503e115"
+  },
+  "scientific_acceptance": false,
+  "limits": [
+    "These original controls use phi=1.10, not the stoichiometric phi=1 state",
+    "Element-flux reconstruction does not assign a flame-speed error bound",
+    "Native Soret is a sensitivity; Liang's thermal-diffusion setting is unknown",
+    "Default/tighter-tolerance controls are reported separately when complete"
+  ]
+}
