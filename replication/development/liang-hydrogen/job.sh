@@ -48,10 +48,16 @@ else
  test -f "$build/build-passed.txt"
  (cd "$build"; sha256sum -c binary.sha256)
  cmp "$build/source-revision.txt" "$release/SOURCE_REVISION"
+ printf '%s\n' "$build" > build-path.txt
+ printf '%s\n' "$sdk" > sdk-path.txt
+ cp "$build/binary.sha256" executable.sha256
  sha256sum "$inputs"/* > input-sha256.txt
  if [[ $guess != - ]]; then
   [[ $(realpath -e "$guess") == "$root/jobs/"* ]] || exit 2
   sha256sum "$guess" > guess-sha256.txt
  fi
+ printf '%q ' "$build/hydrogen-flame" "$inputs" "$action" "$phi" "$job/result" \
+  "$guess" "$width" "$tu" "$variant" "$grid_factor" > command.txt
+ printf '\n' >> command.txt
  "$build/hydrogen-flame" "$inputs" "$action" "$phi" "$job/result" "$guess" "$width" "$tu" "$variant" "$grid_factor" > flame.log 2>&1
 fi

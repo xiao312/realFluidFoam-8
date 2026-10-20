@@ -32,7 +32,7 @@ def main():
 cd {root}
 test "$(pwd -P)" = {root}
 for id in {' '.join(map(str, jobs))}; do
- for file in jobs/$id/source-revision.txt jobs/$id/input-sha256.txt jobs/$id/result/*.csv jobs/$id/result/completed.txt jobs/$id/result/configuration.txt jobs/$id/result/callbacks.txt; do
+ for file in jobs/$id/source-revision.txt jobs/$id/input-sha256.txt jobs/$id/guess-sha256.txt jobs/$id/build-path.txt jobs/$id/sdk-path.txt jobs/$id/executable.sha256 jobs/$id/command.txt jobs/$id/resources.txt jobs/$id/result/*.csv jobs/$id/result/completed.txt jobs/$id/result/configuration.txt jobs/$id/result/callbacks.txt; do
   if test -f "$file"; then printf '%s\\n' "$file"; fi
  done
 done | tar -czf - -T -

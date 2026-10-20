@@ -140,9 +140,23 @@ Python control with the same final grid criteria and 6000-point limit.
 remote reads only and writes a new local snapshot plus scheduler state. Each job
 row has `job`, `case`, `phi`, and `transport` (`lj` or `pairs`). Its resulting
 manifest feeds `plot.py plan|apply PAPER MANIFEST CRITICAL_CSV SPECIES_TXT OUTPUT`.
+New runs copy the checked executable hash, build and SDK paths, escaped command,
+and numerical-guess hash into the job directory. The collector retains these
+records when present; it does not invent them for historical jobs.
 The renderer uses NumPy/PyMuPDF, preserves source panels at publication scale,
 adds open-symbol legends, and exports six PNGs, a PDF and evidence JSON.
 Out-of-range samples are counted, not forced inside the original axes.
+Figure 7 uses independently fitted vector tick coordinates and translates the
+computed 1500 K crossing to the paper's 0.9801270683 cm crossing. Its calibration
+is recorded in the artifact. The earlier 0.00025 cm tick-spacing interpretation
+was wrong by a factor of two; superseded galleries must not support width claims.
+The finite paper window is distinct from the full-domain flame endpoint.
+`figure2-6-calibration.json` supplies the other measured axes; Figure 6 retains
+raster uncertainty. A 0.02-point frame tolerance preserves boundary points
+within vector calibration precision. Missing/out-of-range intervals are never
+bridged by a connecting line. Run `python -B test_plot_geometry.py`: expect
+vector tick residuals below 0.02 point, raster residuals below 0.12 point, and
+5 micrometres mapped to approximately 18.5079 PDF points in Figure 7.
 
 `digitize.py plan|apply PAPER NEW_OUTPUT` extracts hash-pinned original vector
 paths for Figures 3/4/5. It writes raw vertices, native marker centers, tick

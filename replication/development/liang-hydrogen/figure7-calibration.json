@@ -1,0 +1,170 @@
+{
+  "paper_sha256": "24163be0124e0fa6cd28ddb1d369b813e64e82bd7446e9f9218a340445aca6fe",
+  "page_index": 4,
+  "printed_page": 1737,
+  "coordinate_system": "PDF points, origin top left; physical horizontal axis cm",
+  "x_ticks": [
+    {
+      "label": "0.978",
+      "value_cm": 0.978,
+      "center_x_pt": 295.6210021972656,
+      "center_y_pt": 189.356,
+      "drawing_index": 513
+    },
+    {
+      "label": "0.9785",
+      "value_cm": 0.9784999999999999,
+      "center_x_pt": 314.1230163574219,
+      "center_y_pt": 189.356,
+      "drawing_index": 514
+    },
+    {
+      "label": "0.979",
+      "value_cm": 0.979,
+      "center_x_pt": 332.64300537109375,
+      "center_y_pt": 189.356,
+      "drawing_index": 515
+    },
+    {
+      "label": "0.9795",
+      "value_cm": 0.9794999999999999,
+      "center_x_pt": 351.14599609375,
+      "center_y_pt": 189.356,
+      "drawing_index": 516
+    },
+    {
+      "label": "0.98",
+      "value_cm": 0.98,
+      "center_x_pt": 369.64801025390625,
+      "center_y_pt": 189.356,
+      "drawing_index": 517
+    },
+    {
+      "label": "0.9805",
+      "value_cm": 0.9804999999999999,
+      "center_x_pt": 388.1670227050781,
+      "center_y_pt": 189.356,
+      "drawing_index": 518
+    },
+    {
+      "label": "0.981",
+      "value_cm": 0.981,
+      "center_x_pt": 406.6690368652344,
+      "center_y_pt": 189.356,
+      "drawing_index": 519
+    },
+    {
+      "label": "0.9815",
+      "value_cm": 0.9814999999999999,
+      "center_x_pt": 425.1720275878906,
+      "center_y_pt": 189.356,
+      "drawing_index": 520
+    }
+  ],
+  "T_ticks": [
+    {
+      "label": "500",
+      "value_K": 500,
+      "center_x_pt": 288.22,
+      "center_y_pt": 166.864013671875,
+      "drawing_index": 544
+    },
+    {
+      "label": "1000",
+      "value_K": 1000,
+      "center_x_pt": 288.22,
+      "center_y_pt": 141.39300537109375,
+      "drawing_index": 545
+    },
+    {
+      "label": "1500",
+      "value_K": 1500,
+      "center_x_pt": 288.22,
+      "center_y_pt": 115.94000244140625,
+      "drawing_index": 546
+    },
+    {
+      "label": "2000",
+      "value_K": 2000,
+      "center_x_pt": 288.22,
+      "center_y_pt": 90.47000122070312,
+      "drawing_index": 547
+    },
+    {
+      "label": "2500",
+      "value_K": 2500,
+      "center_x_pt": 288.22,
+      "center_y_pt": 65.0,
+      "drawing_index": 548
+    }
+  ],
+  "X_ticks": [
+    {
+      "label": "10^-5",
+      "log10_mole_fraction": -5,
+      "center_x_pt": 435.757,
+      "center_y_pt": 172.38702392578125,
+      "drawing_index": 598
+    },
+    {
+      "label": "10^-4",
+      "log10_mole_fraction": -4,
+      "center_x_pt": 435.757,
+      "center_y_pt": 150.01502990722656,
+      "drawing_index": 599
+    },
+    {
+      "label": "10^-3",
+      "log10_mole_fraction": -3,
+      "center_x_pt": 435.757,
+      "center_y_pt": 127.62503051757812,
+      "drawing_index": 600
+    },
+    {
+      "label": "10^-2",
+      "log10_mole_fraction": -2,
+      "center_x_pt": 435.757,
+      "center_y_pt": 105.23603057861328,
+      "drawing_index": 601
+    },
+    {
+      "label": "10^-1",
+      "log10_mole_fraction": -1,
+      "center_x_pt": 435.757,
+      "center_y_pt": 82.86302947998047,
+      "drawing_index": 602
+    },
+    {
+      "label": "10^0",
+      "log10_mole_fraction": 0,
+      "center_x_pt": 435.757,
+      "center_y_pt": 60.47303009033203,
+      "drawing_index": 603
+    }
+  ],
+  "affine_maps": {
+    "x_cm": [
+      37015.746343701074,
+      -35905.778840562176
+    ],
+    "T_K": [
+      -0.05093020629882814,
+      192.3287139892578
+    ],
+    "log10_X": [
+      -22.38328486851282,
+      60.47498357863653
+    ]
+  },
+  "paper_T1500_x_cm": 0.980127068315757,
+  "stroke_width_pt": 0.681,
+  "reading_allowance_pt": 0.4,
+  "x_allowance_um": 0.1080621193710086,
+  "T_allowance_K": 7.853885327953279,
+  "log10_X_allowance": 0.01787047800846653,
+  "fit_max_abs_residual_pt": {
+    "x": 0.00657326835062122,
+    "T": 0.006597900390659106,
+    "log10_X": 0.006906854538755169
+  }
+}

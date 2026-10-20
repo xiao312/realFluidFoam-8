@@ -18,6 +18,31 @@ PANELS = {
 COLORS = [(0, .48, .27), (.1, .36, .8), (.8, .35, .05),
           (.55, .15, .65), (.15, .6, .65), (.7, .15, .3)]
 CASES = ["1", "2", "3star", "3", "4", "5"]
+CALIBRATION_PATH = Path(__file__).with_name("figure2-6-calibration.json")
+AXES = json.loads(CALIBRATION_PATH.read_text(encoding="utf-8"))["axes"]
+FIGURE7 = {
+    "x_points_per_cm": 37015.746343701074,
+    "x_intercept_points": -35905.778840562176,
+    "temperature_intercept_points": 192.3287139892578,
+    "temperature_points_per_K": -0.05093020629882814,
+    "log_species_intercept_points": 60.47498357863653,
+    "log_species_points_per_decade": -22.38328486851282,
+    "paper_1500K_x_cm": 0.980127068315757,
+}
+
+def axis(name, value):
+    slope, intercept = AXES[name]["forward_map"]
+    return slope*value+intercept
+
+def figure7_coordinates(x_m, temperature_K):
+    """Translate a monotonic temperature front; keep metres-to-cm scale exact."""
+    import numpy as np
+    if np.any(np.diff(temperature_K) < -1e-3):
+        raise ValueError("Figure 7 alignment requires a monotonic temperature front")
+    xref = np.interp(1500, temperature_K, x_m)
+    aligned_cm = 100*(x_m-xref)+FIGURE7["paper_1500K_x_cm"]
+    return (FIGURE7["x_points_per_cm"]*aligned_cm
+            +FIGURE7["x_intercept_points"])
 
 
 def read_csv(path):
@@ -89,13 +114,21 @@ def main():
             # Coordinates are in original page points, so all paper dimensions,
             # tick locations and relative line/marker sizes remain unchanged.
             good = []
+            segments = [[]]
             for xp, yp in points:
-                if bounds[0] <= xp <= bounds[2] and bounds[1] <= yp <= bounds[3]:
-                    good.append(fitz.Point(270+xp-crop.x0, 56+yp-crop.y0))
+                # Vector ticks differ from frame positions by up to 0.014 pt.
+                # Retain that finite calibration tolerance without changing data.
+                if bounds[0]-.02 <= xp <= bounds[2]+.02 and bounds[1]-.02 <= yp <= bounds[3]+.02:
+                    pt = fitz.Point(270+xp-crop.x0, 56+yp-crop.y0)
+                    good.append(pt)
+                    segments[-1].append(pt)
                 else:
                     omitted += 1
-            if len(good) > 1:
-                page.draw_polyline(good, color=color, width=.65, dashes="[2 2] 0")
+                    if segments[-1]:
+                        segments.append([])
+            for segment in segments:
+                if len(segment) > 1:
+                    page.draw_polyline(segment, color=color, width=.65, dashes="[2 2] 0")
             for pt in good[::every]:
                 page.draw_circle(pt, 1.35, color=color, fill=(1, 1, 1), width=.65)
             legends.append((color, label))
@@ -104,11 +137,9 @@ def main():
             raw = read_csv(a.critical)
             for fuel, color in zip(["H2", "CH4"], COLORS):
                 rows = [r for r in raw if r["fuel"] == fuel][::10]
-                line([(282.737+(float(r["phi"])-.6)/1.4*151.321,
-                       194.121-(float(r["Tc_K"])-60)/100*138.085) for r in rows],
+                line([(axis("2_x", float(r["phi"])), axis("2_Tc_K", float(r["Tc_K"]))) for r in rows],
                      color, fuel+" Tc (existing SRK audit)", (282.737, 56.036, 434.058, 194.121))
-                line([(282.737+(float(r["phi"])-.6)/1.4*151.321,
-                       188.808-(float(r["Pc_atm"])-10)/50*132.771) for r in rows],
+                line([(axis("2_x", float(r["phi"])), axis("2_Pc_atm", float(r["Pc_atm"]))) for r in rows],
                      COLORS[len(legends)+1], fuel+" Pc (existing SRK audit)",
                      (282.737, 56.036, 434.058, 194.121))
         elif number in [3, 4, 5]:
@@ -119,21 +150,20 @@ def main():
                 if number == 5 and case not in ["1", "2", "3", "3star"]:
                     continue
                 if number == 3:
-                    points = [(52.709+(r["phi"]-1)*152.171,
-                               194.703-(r["speed_cm_s"]-50)*4.352) for r in selected if 1 <= r["phi"] <= 2.1]
+                    points = [(axis("3_x", r["phi"]), axis("3_speed_cm_s", r["speed_cm_s"]))
+                              for r in selected if 1 <= r["phi"] <= 2.1]
                     bounds = (52.709, 55.026, 220.09, 207.764)
                 elif number == 5:
-                    points = [(74.147+(r["phi"]-.85)/.5*(230.881-74.147),
-                               179.739-(r["Tb_K"]-2250)/250*(179.739-67.851))
+                    points = [(axis("5_x", r["phi"]), axis("5_Tb_K", r["Tb_K"]))
                               for r in selected if .85 <= r["phi"] <= 1.35]
                     bounds = (73.946, 54.434, 230.882, 197.642)
                 else:
                     bounds = (272.693, 56.879, 418.153, 189.616)
-                    line([(296.925+(r["phi"]-1)*60.614,
-                           189.616-(r["rhou_kg_m3"]/1000-.05)/.05*132.738) for r in selected],
+                    line([(axis("4_x", r["phi"]), axis("4_density_g_cm3", r["rhou_kg_m3"]/1000))
+                          for r in selected],
                          color, "Case "+case+" density", bounds)
-                    points = [(296.925+(r["phi"]-1)*60.614,
-                               189.616-r["massflux_kg_m2s"]/10/7*132.738) for r in selected]
+                    points = [(axis("4_x", r["phi"]), axis("4_massflux_g_cm2_s", r["massflux_kg_m2s"]/10))
+                              for r in selected]
                     color = COLORS[int(case)+2]
                 label = "Case "+case.replace("star", "*")+(" burning flux" if number == 4 else "")
                 if case == "3star":
@@ -150,23 +180,27 @@ def main():
                         ("Dmix_H2_real_over_ideal", COLORS[1], "H2 mixture D real/ideal"),
                         ("Dbin_H2_N2_real_over_ideal", COLORS[2], "H2-N2 binary D real/ideal")]:
                         rows = [r for r in raw if 300 <= float(r["T_K"]) <= 2000]
-                        line([(72.3+(float(r["T_K"])-200)/1800*(230.8-72.3),
-                               406.7-(float(r[key])-.9)/.15*(406.7-286.1)) for r in rows],
+                        line([(axis("6_T_K", float(r["T_K"])), axis("6_ratio", float(r[key])))
+                              for r in rows],
                              color, label, (72.3, 262.3, 230.8, 406.7), max(1, len(rows)//15))
                 else:
                     xx = np.array([float(r["x_m"]) for r in raw])
                     temp = np.array([float(r["T_K"]) for r in raw])
-                    # Paper T=1500 K crossing is near x=0.98018 cm; translation only.
-                    xref = np.interp(1500, temp, xx)
-                    xp = 369.648+(100*(xx-xref)+.98018-.9800)/.00025*18.51
+                    # Original vector ticks: 0.0005 cm spans 18.5067 PDF points.
+                    # Preserve physical width; apply only a front translation.
+                    xp = figure7_coordinates(xx, temp)
                     bounds = (288.22, 54.725, 435.757, 189.356)
-                    line(list(zip(xp, 166.864-(temp-500)/500*25.47)), COLORS[0], "T; align at 1500 K", bounds, max(1, len(raw)//30))
+                    yp = (FIGURE7["temperature_intercept_points"]
+                          +FIGURE7["temperature_points_per_K"]*temp)
+                    line(list(zip(xp, yp)), COLORS[0], "T; align at 1500 K", bounds, max(1, len(raw)//30))
                     ys = np.array([[float(r["Y_"+n]) for n in names] for r in raw])
                     mole = ys/molecular_weights
                     mole /= mole.sum(axis=1)[:, None]
                     for name, color in zip(["H2", "O2", "HO2", "H2O2"], COLORS[1:]):
                         values = mole[:, names.index(name)]
-                        points = [(float(x), 59.85-math.log10(v)*22.45) for x, v in zip(xp, values) if v > 0]
+                        points = [(float(x), FIGURE7["log_species_intercept_points"]
+                                   +math.log10(v)*FIGURE7["log_species_points_per_decade"])
+                                  for x, v in zip(xp, values) if v > 0]
                         line(points, color, name+" mole fraction", bounds, max(1, len(points)//30))
             else:
                 text(page, (270, 224, 480, 240), "Case 5 stoichiometric profile pending", 8)
@@ -187,7 +221,7 @@ def main():
         if number == 6:
             notes.append("Paper's D definition is unspecified; three named quantities shown. Raster calibration approximate.")
         if number == 7:
-            notes.append("x translated to the paper's approximate 1500 K crossing; physical width unchanged.")
+            notes.append("Case 5 shown; x translated to the paper's 1500 K crossing; vector tick scale verified.")
         if omitted:
             notes.append(f"{omitted} samples outside the original axes are omitted, never clipped to the boundary.")
         text(page, (18, 300, 482, 366), "\n".join(notes), 7)
@@ -196,7 +230,15 @@ def main():
         clipped[str(number)] = omitted
     report.save(a.output/"liang-hydrogen-figures-2-7.pdf")
     record = {"paper_sha256": PAPER_SHA, "runs": runs, "samples_outside_axes": clipped,
-              "transport_variant": a.transport, "figure_7_alignment": "T=1500 K to paper x~0.98018 cm; translation only"}
+              "transport_variant": a.transport,
+              "figure_7_alignment": "T=1500 K; translation only; finite paper window",
+              "figure_7_calibration": FIGURE7,
+              "input_sha256": {name: hashlib.sha256(getattr(a, name).read_bytes()).hexdigest()
+                               for name in ["manifest", "critical", "species"]},
+              "input_paths": {name: str(getattr(a, name)) for name in ["manifest", "critical", "species"]},
+              "axes_2_6_calibration_sha256": hashlib.sha256(CALIBRATION_PATH.read_bytes()).hexdigest(),
+              "frame_tolerance_points": .02,
+              "plot_script_sha256": hashlib.sha256(Path(__file__).read_bytes()).hexdigest()}
     (a.output/"evidence.json").write_text(json.dumps(record, indent=2)+"\n", encoding="utf-8", newline="\n")
 
 
