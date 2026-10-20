@@ -17,7 +17,10 @@ frozen-state parity report, original-zero verification, Qdot and tracking fields
 
 Dependencies: `cantera-bridge`, `flame-tracking`, `fresh-start`, the pinned native
 library and OF8 container. This module does not change those sources or active
-runs. Dependents: the ideal-flame transport comparison. No credentials are used.
+runs. Dependents: the ideal-flame transport comparison and the optional
+`cantera-wave` reference-profile runner. The latter selects its separately
+qualified native library rather than the older build pinned by this module's
+original launcher. No credentials are used.
 Generated files and temporary state stay inside the selected project root;
 source/build/model references are immutable read-only inputs. Each MPI rank owns
 one bridge context. There is no network access from the solver. Earlier immutable

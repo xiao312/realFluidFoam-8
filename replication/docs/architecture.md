@@ -1,11 +1,12 @@
 # Replication boundaries
 
 `development/cantera-wave` consumes a screened ideal Cantera profile and the
-`fresh-start` case generator. It produces mirrored original-zero flame fields
-and provenance for short travelling-wave diagnostics. It has only Python
-standard-library dependencies and no scheduler or runtime-library dependency.
-The native and Cantera-transport CFD runners can consume these cases after
-their separate qualification. It does not supply a transient restart.
+`fresh-start` case generator. Its Python generator produces mirrored original-zero
+fields without a Cantera runtime. The native runner depends on
+`temperature-inversion`, a qualified library, OF8 and Slurm. Its optional
+Cantera transport mode adds the existing `cantera-cfd` instrumenter/configurator
+and qualified `cantera-bridge` runtime. Default native execution has no Cantera
+runtime dependency. It does not supply a transient restart.
 
 `development/temperature-inversion` consumes an isolated full native library
 build and generates original-zero ideal flames through `fresh-start`.

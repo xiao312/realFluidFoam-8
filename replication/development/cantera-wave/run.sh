@@ -1,6 +1,8 @@
 #!/bin/bash
 set -o pipefail
 release=${1:?}; library=${2:?}; profile=${3:?}; results=${4:?}; velocity=${5:?}
+family=${6:-native}; bridge=${7:-none}
+[[ ( $family == native && $bridge == none ) || ( $family == cantera && $bridge =~ ^[0-9]+$ ) ]] || exit 2
 # OF8 bashrc treats existing positional file arguments as extra shell settings.
 # Keep data paths in named variables and never expose them to that mechanism.
 set --
@@ -18,10 +20,17 @@ export FOAM_USER_APPBIN=$WM_PROJECT_USER_DIR/platforms/$WM_OPTIONS/bin
 export FOAM_JOB_DIR=$job/jobControl OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1
 mkdir -p "$FOAM_USER_APPBIN" "$FOAM_JOB_DIR"
 sha256sum -c "/work/jobs/$library/products.sha256" > "$job/library-verified.txt"
-python3 -B "$thermo_module/instrument.py" plan "$release" "$job/solver-source" > "$job/solver-plan.txt"
-python3 -B "$thermo_module/instrument.py" apply "$release" "$job/solver-source" > "$job/instrument.log"
-wmake "$job/solver-source" > "$job/build.log" 2>&1
+instrument=$thermo_module/instrument.py
 solver=$FOAM_USER_APPBIN/rfThermoReactingFoam
+if [[ $family == cantera ]]; then
+ instrument=$release/replication/development/cantera-cfd/instrument.py
+ solver=$FOAM_USER_APPBIN/rfCanteraBridgeFoam
+ sdk=/work/jobs/124917358/sdk
+ export LD_LIBRARY_PATH="$sdk/lib:$LD_LIBRARY_PATH" CANTERA_DATA=$sdk/share/cantera/data
+fi
+python3 -B "$instrument" plan "$release" "$job/solver-source" > "$job/solver-plan.txt"
+python3 -B "$instrument" apply "$release" "$job/solver-source" > "$job/instrument.log"
+wmake "$job/solver-source" > "$job/build.log" 2>&1
 sha256sum "$solver" > "$job/solver-product.sha256"
 ldd "$solver" > "$job/solver-ldd.txt"
 ! grep -q 'not found' "$job/solver-ldd.txt"
@@ -34,6 +43,21 @@ for action in plan apply; do
   --velocity "$velocity" --end-us 20 > "$job/case-$action.log"
 done
 python3 -B "$thermo_module/case.py" configure "$job" "$library" 8 full
+if [[ $family == cantera ]]; then
+ python3 -B "$release/replication/development/cantera-cfd/case.py" configure "$job" "$bridge" full \
+  --chemistry-mode native --execution-profile uniform8 --numerical-profile strict12
+fi
+python3 - "$job" "$family" "$bridge" "$library" <<'PY'
+import json,sys
+from pathlib import Path
+job=Path(sys.argv[1]);family,bridge,library=sys.argv[2:]
+record=dict(solver_family=family,bridge_job=None if bridge=='none' else bridge,
+    library_job=library,chemistry='native',transport=family,initialization='generated_original_zero')
+(job/'wave-run-inputs.json').write_text(json.dumps(record,indent=2)+'\n')
+path=job/'thermo-inputs.json';data=json.loads(path.read_text())
+data.update(transport=family,solver_family=family,bridge_job=record['bridge_job'])
+path.write_text(json.dumps(data,indent=2)+'\n')
+PY
 blockMesh -case "$job/case" > "$job/blockMesh.log" 2>&1
 checkMesh -case "$job/case" > "$job/checkMesh.log" 2>&1
 grep -q 'Mesh OK' "$job/checkMesh.log"

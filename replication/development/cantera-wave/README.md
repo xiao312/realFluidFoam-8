@@ -52,6 +52,18 @@ is part of the submission ledger identity. It cannot restart or extend a case.
 The completed endpoint must pass finite-field and zero-time-history checks;
 subsequent independent front tracking supplies the speed comparison.
 
+The optional final launcher arguments `cantera BRIDGE_JOB` select the existing
+ideal Cantera conductivity/diffusion bridge while retaining native chemistry,
+native thermodynamics, the qualified library, and the same original fields.
+Default `native none` requires no Cantera runtime. The bridge must have passed
+its C-ABI and OF8 coexistence qualification, and its binary checksum is checked.
+The reference and bridge ideal YAML files must match. The existing `cantera-cfd`
+instrumenter/configurator owns this opt-in solver; no new combustion model is
+introduced here. The selected family and bridge are part of ledger identity.
+Native execution depends on `temperature-inversion`, the qualified native
+library, OF8 and Slurm. Only this optional variant adds `cantera-cfd`,
+`cantera-bridge` and the pinned Cantera runtime as dependencies.
+
 The small-increment C++ probe reports cell 0 only. `increment_case.py plan|apply
 CASE NEW_PROBE_CASE` copies its original-zero fresh-mixture state to a separate
 one-cell test mesh, retaining the registered thermo dictionaries and all 144
