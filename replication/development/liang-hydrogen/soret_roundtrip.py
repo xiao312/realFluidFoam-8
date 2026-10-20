@@ -14,12 +14,12 @@ def digest(path):
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
-def decimal_half_step(values):
-    """Half a decimal output unit for std::setprecision(16), plus binary parsing."""
+def decimal_half_step(values, digits=16):
+    """Half a declared decimal output unit, plus binary parsing."""
     values = np.asarray(values)
     result = np.zeros_like(values)
     nonzero = values != 0
-    result[nonzero] = .5*10.**(np.floor(np.log10(np.abs(values[nonzero])))-15)
+    result[nonzero] = .5*10.**(np.floor(np.log10(np.abs(values[nonzero])))-(digits-1))
     return result+np.finfo(float).eps*np.abs(values)
 
 
@@ -27,6 +27,12 @@ def inspect(row, native):
     result = Path(row["result"])
     if not (result/"completed.txt").is_file():
         raise ValueError("Incomplete run")
+    config_path = result/"configuration.txt"
+    config = (dict(line.split(maxsplit=1) for line in config_path.read_text().splitlines()
+                   if line.strip()) if config_path.exists() else {})
+    digits = int(config.get("output_significant_digits", 16))
+    if digits not in (16, 17):
+        raise ValueError("Unsupported native export precision")
     profile, species = native.read_profile(result/"profile.csv")
     path = result/"soret-flux.csv"
     # Shared reader verifies row order, finite numbers, coordinates and all lengths.
@@ -39,7 +45,7 @@ def inspect(row, native):
     x, temperature = profile["x_m"], profile["T_K"]
     dx, delta = np.diff(x), np.diff(temperature)
     total = temperature[1:]+temperature[:-1]
-    x_error, t_error = decimal_half_step(x), decimal_half_step(temperature)
+    x_error, t_error = decimal_half_step(x, digits), decimal_half_step(temperature, digits)
     dx_error = x_error[1:]+x_error[:-1]
     delta_error = t_error[1:]+t_error[:-1]
     if np.any(dx <= dx_error) or np.any(total <= delta_error):
@@ -55,8 +61,8 @@ def inspect(row, native):
     gradient_error = np.maximum(abs(lower-gradient), abs(upper-gradient))
     error_bound = (
         abs(coefficient)*gradient_error[:, None]
-        +decimal_half_step(coefficient)*(abs(gradient)+gradient_error)[:, None]
-        +decimal_half_step(thermal)
+        +decimal_half_step(coefficient, digits)*(abs(gradient)+gradient_error)[:, None]
+        +decimal_half_step(thermal, digits)
         # A small binary-operation allowance covers the native multiply/divide.
         +16*np.finfo(float).eps*(abs(thermal)+abs(coefficient*gradient[:, None]))
         +16*np.nextafter(0., 1.))
@@ -68,6 +74,7 @@ def inspect(row, native):
     peak = int(np.argmax(abs(coefficient_sum)))
     return dict(
         job=row["job"], case=row["case"], phi=row["phi"], variant=row["variant"],
+        decimal_significant_digits=digits,
         strict_native_residuals=strict_errors,
         maximum_thermal_reconstruction_error_kg_m2_s=float(residual.max()),
         maximum_decimal_bound_kg_m2_s=float(error_bound.max()),
@@ -95,7 +102,8 @@ def main():
         parser.error("No completed Soret runs")
     report = dict(
         manifest_sha256=digest(args.manifest), script_sha256=digest(Path(__file__)),
-        decimal_significant_digits=16, runs=records, scientific_acceptance=False,
+        export_precisions=sorted({r["decimal_significant_digits"] for r in records}),
+        runs=records, scientific_acceptance=False,
         limits=["Arithmetic output bound only; no strict audit tolerance is changed",
                 "Cantera Flow1D supplies unnormalized face mass fractions",
                 "The native projection subtracts Y_k times the unprojected coefficient sum",

@@ -83,9 +83,9 @@ inline void writeProfiles(const std::filesystem::path& out,
     std::vector<std::vector<double>> ys;
     for(auto& name:gas->speciesNames())ys.push_back(flow->values(name));
     std::ofstream csv(out/"profile.csv"),tr(out/"transport.csv");
-    csv<<std::setprecision(16)<<"x_m,T_K,U_m_s,rho_kg_m3,h_J_kg,cp_J_kgK,lambda_W_mK";
+    csv<<std::setprecision(std::numeric_limits<double>::max_digits10)<<"x_m,T_K,U_m_s,rho_kg_m3,h_J_kg,cp_J_kgK,lambda_W_mK";
     for(auto& name:gas->speciesNames())csv<<",Y_"<<name;csv<<'\n';
-    tr<<std::setprecision(16)<<"x_m,T_K,lambda_ideal_over_real,Dmix_H2_real_over_ideal,Dmix_O2_real_over_ideal,Dmix_N2_real_over_ideal,Dbin_H2_N2_real_over_ideal,Dbin_H2_O2_real_over_ideal\n";
+    tr<<std::setprecision(std::numeric_limits<double>::max_digits10)<<"x_m,T_K,lambda_ideal_over_real,Dmix_H2_real_over_ideal,Dmix_O2_real_over_ideal,Dmix_N2_real_over_ideal,Dbin_H2_N2_real_over_ideal,Dbin_H2_O2_real_over_ideal\n";
     std::vector<double> y(n),d0(n),d1(n),b0(n*n),b1(n*n);
     const size_t h=gas->speciesIndex("H2"),o=gas->speciesIndex("O2"),nit=gas->speciesIndex("N2");
     for(size_t j=0;j<x.size();j++) {

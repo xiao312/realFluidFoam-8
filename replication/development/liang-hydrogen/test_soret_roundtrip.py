@@ -21,12 +21,19 @@ def main():
     native, _ = shared_audit()
     original = inspect(row, native)
     assert original["entries_outside_decimal_bound"] == 0
-    # This captured thin-grid profile exceeds the former absolute relative limit.
-    assert original["strict_native_residuals"]["thermal_definition"] > 1e-10
+    error = original["strict_native_residuals"]["thermal_definition"]
+    if original["decimal_significant_digits"] == 16:
+        # The historical thin-grid fixture exceeds the strict relative limit.
+        assert error > 1e-10
+    else:
+        assert error < 1e-10
     result = args.output/"corrupted"
     result.mkdir(parents=True)
     for name in ("profile.csv", "soret-flux.csv", "completed.txt"):
         shutil.copyfile(Path(row["result"])/name, result/name)
+    config = Path(row["result"])/"configuration.txt"
+    if config.exists():
+        shutil.copyfile(config, result/config.name)
     path = result/"soret-flux.csv"
     with path.open(newline="") as stream:
         reader = csv.DictReader(stream)

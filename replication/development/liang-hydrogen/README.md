@@ -49,6 +49,10 @@ Author collision-fit validity bounds are unknown, including the 298 K inlet.
 Both controls save actual native face coefficients and thermal/ordinary fluxes
 to `soret-flux.csv`. Configuration and callback records identify the formula,
 pair count and sampled temperature range. Old no-Soret inputs remain readable.
+Profile and face CSVs now use `double::max_digits10` (17 significant digits),
+recorded as `output_significant_digits` in configuration. This preserves exact
+binary values when thin-grid coordinate differences are reconstructed offline.
+It changes only serialization; the nonlinear equations and tolerances are unchanged.
 The dependency is the existing `cantera-liang` formula and flow wrapper; no
 production CFD code consumes the sidecar.
 `test-soret INPUTS FIXTURES.csv` checks independent author/fallback fixtures,
@@ -82,14 +86,16 @@ or solver mutations. Run `plan` before `apply`; numerical checks must pass.
 Strict native-flux residuals and their failures remain explicit in the result,
 with no tolerance change. Paper agreement remains a separate outcome.
 `soret_roundtrip.py plan|apply MANIFEST NEW_JSON` investigates those failures
-using the writers' 16-significant-digit decimal rounding bounds. It reports
+using the configuration's decimal precision (16 for historical exports). It reports
 whether thermal-flux reconstruction differences fit that bound, plus measured
 face composition and coefficient sums. It neither changes the strict audit nor
 normalizes saved data. The manifest must contain completed Soret runs; NumPy
 and the shared native reader are the only analysis dependencies.
 `test_soret_roundtrip.py MANIFEST NEW_FIXTURE_DIRECTORY` uses the captured rich
 Case 3 manual control: expect its reconstruction error to fit the decimal bound
-and an injected 100 ppm flux error to be detected. Fixtures stay outside Git.
+and an injected 100 ppm flux error to be detected. The historical 16-digit fixture
+exceeds the strict thermal-definition limit; the 17-digit qualification fixture
+must pass that same limit. Fixtures stay outside Git.
 
 `compare_domains.py plan|apply MANIFEST.json NEW_OUTPUT` reads completed,
 matched source/input runs at three or more domain lengths. It verifies actual

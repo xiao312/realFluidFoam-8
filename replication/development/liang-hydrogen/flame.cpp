@@ -120,6 +120,7 @@ try {
           <<"\nflux_correction "<<(midpoint?"midpoint":"left-node")
           <<"\ngrid_factor "<<gridFactor<<"\ninitial_grid_points "<<grid.size()
           <<"\nsteady_rtol "<<steadyRtol<<"\nsteady_atol "<<steadyAtol
+          <<"\noutput_significant_digits "<<std::numeric_limits<double>::max_digits10
           <<"\nconductivity "<<(fullConductivity?"full-Ely-Hanley":"dense-increment-diagnostic")
           <<"\nTakahashi bounded-Table2"
           <<"\nSoret "<<(manualSoret?"manual-author-pairs":soret?"cantera-3.2":"off")

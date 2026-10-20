@@ -3,6 +3,7 @@
 #include "cantera/oneD/Flow1D.h"
 #include <fstream>
 #include <iomanip>
+#include <limits>
 
 namespace liang {
 class SoretOutput {
@@ -48,7 +49,7 @@ public:
         this->updateProperties(Cantera::npos,state.data(),0,this->m_points-1);
         std::ofstream out(path);
         if(!out)throw std::runtime_error("Cannot write Soret profile");
-        out<<std::setprecision(16)
+        out<<std::setprecision(std::numeric_limits<double>::max_digits10)
            <<"x_left_m,x_right_m,T_mid_K,species,DT_kg_m_s,ordinary_kg_m2_s,soret_kg_m2_s,total_kg_m2_s,partial_h_J_kg\n";
         std::vector<double> enthalpy(this->m_nsp);
         for(size_t j=0;j<this->m_points-1;j++) {

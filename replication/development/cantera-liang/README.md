@@ -422,3 +422,9 @@ Missing CFD stages remain explicitly pending. CFD markers are latest valid
 temperature-front estimates, not accepted steady flame speeds. Other OpenFOAM
 solvers appear only in the individual Case 1 comparison. Verify the seven-page
 count, series inclusion rules, source hashes, and rendered labels before upload.
+
+Native profile and Soret face CSVs use `double::max_digits10` (17 significant
+digits). This serialization change preserves binary coordinate/temperature
+values during offline reconstruction of thin-grid gradients. It changes no
+transport coefficient, residual or convergence criterion. Older 16-digit exports
+remain historical evidence and retain their measured reconstruction limits.

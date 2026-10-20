@@ -13,6 +13,7 @@
 #include <fstream>
 #include <iomanip>
 #include <iostream>
+#include <limits>
 #include <sstream>
 using namespace Cantera;
 namespace fs=std::filesystem;
@@ -102,7 +103,7 @@ try {
     flame.save((output/"flame.yaml").string(),"flame","Staged SRK, concentration-law kinetics",true);
     auto grid=flow->grid(),T=flow->values("T"),u=flow->values("velocity");
     std::vector<std::vector<double>> ys;for(auto& n:species)ys.push_back(flow->values(n));
-    std::ofstream csv(output/"profile.csv");csv<<std::setprecision(16)<<"x_m,T_K,U_m_s,rho_kg_m3,h_J_kg,cp_J_kgK,lambda_W_mK";
+    std::ofstream csv(output/"profile.csv");csv<<std::setprecision(std::numeric_limits<double>::max_digits10)<<"x_m,T_K,U_m_s,rho_kg_m3,h_J_kg,cp_J_kgK,lambda_W_mK";
     for(auto& n:species)csv<<",Y_"<<n;csv<<'\n';
     std::vector<double> y(species.size());
     for(size_t j=0;j<grid.size();j++) {
