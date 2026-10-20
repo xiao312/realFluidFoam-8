@@ -33,7 +33,9 @@ try {
     auto name=symbol<decltype(&rf_ct_species_name)>(library,"rf_ct_species_name");
     char message[4096];auto* context=create(argv[2],std::stoi(argv[3]),argv[4],message,sizeof(message));
     if(!context)throw std::runtime_error(message);
-    for(const char* option:{"fine-grid","total-enthalpy","total-enthalpy,pure-species-flux"}) {
+    for(const char* option:{"fine-grid","mass-gradient","total-enthalpy",
+                            "total-enthalpy,pure-species-flux",
+                            "bounded-takahashi,takahashi-table2,takahashi-bulk"}) {
         auto* invalid=create(argv[2],1,option,message,sizeof(message));
         if(invalid) {destroy(invalid);throw std::runtime_error("Flow-only option accepted by property bridge");}
         if(std::string(message).find("not property or reactor")==std::string::npos)

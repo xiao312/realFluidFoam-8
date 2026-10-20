@@ -43,8 +43,9 @@ extern "C" rf_ct_context* rf_ct_create(const char* inputs,int stage,const char* 
     try {
         if(!inputs || !text || stage<1 || stage>5)throw std::runtime_error("Invalid model configuration");
         liang::DiagnosticOptions options(text);
-        if(options.fineGrid || options.totalEnthalpy || options.pureSpeciesFlux)
-            throw std::runtime_error("Flow/grid diagnostics are not property or reactor model options");
+        if(options.fineGrid || options.totalEnthalpy || options.pureSpeciesFlux
+           || options.massGradient || options.bulkTakahashi)
+            throw std::runtime_error("Flow/grid and unqualified diffusion diagnostics are not property or reactor model options");
         std::filesystem::path directory=std::filesystem::canonical(inputs);
         std::ifstream table(directory/"species.txt");
         std::vector<liang::Species> parameters;std::vector<std::string> names;

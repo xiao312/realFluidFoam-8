@@ -37,6 +37,12 @@ then query species names, supply a matching mass-fraction vector, evaluate and
 destroy the context. The shared library supports one model context per instance;
 model selection never changes after initialization.
 
+Flow-only options `fine-grid`, `mass-gradient`, `total-enthalpy`, and
+`pure-species-flux` are rejected at context creation. The experimental
+`takahashi-bulk` correlation rule is also rejected because it has not been
+qualified through this bridge. The negative-option probe checks each rejection.
+No shared flame option can silently select an ignored bridge setting.
+
 Verification: compile the shared library with the pinned SDK; compile `probe.cpp`
 as an ABI0 client with no Cantera headers, load the library dynamically and compare
 saved independent FreeFlame rho/h/Cp/conductivity values. Exercise invalid input
