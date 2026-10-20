@@ -13,6 +13,7 @@ public:
     bool denseIncrementOnly=false;
     bool boundedTakahashi=false;
     bool smoothedAlpha=false;
+    bool signedAlpha=false;
     bool table2=false;
     bool highTemperature=false;
     bool bulkTakahashi=false;
@@ -73,7 +74,7 @@ public:
         if(projected || std::abs(sum-1)>1e-12) {
             if(!(sum>0))throw std::runtime_error("Invalid transport composition");
             for(auto& value:x)value/=sum;
-            auto z=evaluate(m_thermo->temperature(),m_thermo->pressure(),x,parameters,smoothedAlpha);
+            auto z=evaluate(m_thermo->temperature(),m_thermo->pressure(),x,parameters,smoothedAlpha,signedAlpha);
             v=z.vb;molarVolume=z.v;projectedCompositionCalls++;
         }
         if(*std::min_element(v.begin(),v.end())<0)negativePartialVolumeCalls++;

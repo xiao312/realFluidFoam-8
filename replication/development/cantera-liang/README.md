@@ -75,6 +75,14 @@ Dependencies: pinned Cantera 3.2 C++ SDK, C++17 compiler, `ideal-baseline`, and
 The author critical table approximates Liang's unprovided table.
 NO, NO2 and N2O EOS coefficients are zero; transport parameters remain populated.
 Original Soave alpha constants are explicit. No coefficient is fitted to flame speed.
+The shared kernel also exposes a separately selected signed-factor continuation.
+The H2 driver uses it to test the pinned upstream OF6/OF8 polynomial mixing.
+`signedAlpha` and `smoothedAlpha` are mutually exclusive and must be set before
+evaluating a state. The signed option propagates through phase, transport-state
+projection and pure-species energy diagnostics. `test_signed.cpp` checks
+negative/zero mixture sums, polynomial equivalence, thermodynamic derivatives
+and pure-fluid parity; `test_srk.cpp` covers all three continuations.
+This option does not change the default methane driver or identify Liang's code.
 Dependents: the Liang comparison report. Production OpenFOAM code does not depend on this module.
 
 All generated state stays in the project directory. No secrets are used.

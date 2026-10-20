@@ -75,6 +75,14 @@ ideal Case 1 parity control before interpreting nonideal pilot differences.
 Prefix any variant with `smooth-` to select the already tested C4 continuation
 of the Soave alpha function. This is a separately named diagnostic, not Liang's
 reported model. It sets both phase and transport SRK evaluations consistently.
+Alternatively, prefix with `signed-` to retain the signed Soave factors in
+mixture attraction. This reconstructs the polynomial mixing used in the pinned
+OF6/OF8 sources; it does not identify Liang's implementation. Pure-fluid
+attraction remains unchanged. Negative or zero mixture-factor sums use a
+division-free fugacity expression. The prefix occupies the same position as
+`smooth-`; both cannot be selected together. Frozen checks cover the EOS,
+enthalpy derivatives, Gibbs identities, alpha crossings and pure-fluid parity.
+See the [source audit](../../docs/liang-srk-root-sign-audit-20261021.md).
 `GRID_FACTOR` is 1 (default), 2 or 4. Every interval of the initial grid is
 subdivided by this factor before solving, while the same numerical guess is
 interpolated onto it. This tests actual global grid refinement even when the

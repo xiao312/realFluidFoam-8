@@ -23,7 +23,7 @@ if [[ $action == build ]]; then
  "$compiler" --version > compiler.txt
  flags=$("$sdk/bin/pkg-config" --cflags --libs cantera)
  printf '%s\n' "$flags" > compiler-flags.txt
- for target in srk alpha takahashi; do
+ for target in srk alpha signed takahashi; do
   "$compiler" -std=c++17 -O2 -D_GLIBCXX_USE_CXX11_ABI=1 \
    "$module/../cantera-liang/test_$target.cpp" $flags -Wl,-rpath,"$sdk/lib" -o "test-$target"
   "./test-$target" > "$target-check.txt"

@@ -15,12 +15,13 @@ int main() {
     std::vector<liang::Species> s={{190.56,4.5992e6,.0986,16.04,.011},
         {154.58,5.043e6,.0734,32,.022},{126.2,3.3958e6,.0895,28,.0372}};
     std::vector<double> x={.1,.2,.7};
-    for(bool smooth:{false,true}) for(double T:{298.,500.,1000.,1800.,2500.}) for(double p:{1e3,101325.,10132500.}) {
+    for(int alpha:{0,1,2}) for(double T:{298.,500.,1000.,1800.,2500.}) for(double p:{1e3,101325.,10132500.}) {
+        const bool smooth=alpha==1,signedAlpha=alpha==2;
         std::cout<<"T="<<T<<" p="<<p<<std::endl;
-        auto z=liang::evaluate(T,p,x,s,smooth);
+        auto z=liang::evaluate(T,p,x,s,smooth,signedAlpha);
         check(p,liang::R*T/(z.v-z.b)-z.a/(z.v*(z.v+z.b)),1e-10,"pressure root");
         double dt=T*1e-5;
-        auto hi=liang::evaluate(T+dt,p,x,s,smooth),lo=liang::evaluate(T-dt,p,x,s,smooth);
+        auto hi=liang::evaluate(T+dt,p,x,s,smooth,signedAlpha),lo=liang::evaluate(T-dt,p,x,s,smooth,signedAlpha);
         check(z.cp,(hi.h-lo.h)/(2*dt),2e-6,"cp derivative");
         double hs=0,vs=0,gs=0;
         for(size_t k=0;k<x.size();k++) {
@@ -29,7 +30,7 @@ int main() {
             auto xp=x,xm=x;double dx=1e-5;
             xp[k]+=dx;xm[k]-=dx;
             for(size_t j=0;j<x.size();j++){xp[j]/=1+dx;xm[j]/=1-dx;}
-            auto a=liang::evaluate(T,p,xp,s,smooth),b=liang::evaluate(T,p,xm,s,smooth);
+            auto a=liang::evaluate(T,p,xp,s,smooth,signedAlpha),b=liang::evaluate(T,p,xm,s,smooth,signedAlpha);
             check(z.hb[k],z.h+(a.h-b.h)/(2*dx),3e-6,"partial enthalpy");
             double gibbsDuhem=0;
             for(size_t j=0;j<x.size();j++)

@@ -34,7 +34,7 @@ protected:
                 const auto& mixture=srk->state();
                 for(size_t k=0;k<m_nsp;k++) {
                     const auto pure=evaluate(m_thermo->temperature(),m_press,{1.},
-                                             {srk->parameters[k]},srk->smoothedAlpha);
+                                             {srk->parameters[k]},srk->smoothedAlpha,srk->signedAlpha);
                     speciesH[k]+=pure.h-mixture.hb[k];
                 }
             }

@@ -12,8 +12,10 @@ struct State {
     std::vector<double> hb,vb,lnphi;
 };
 inline State evaluate(double T,double p,const std::vector<double>& x,
-                      const std::vector<Species>& species,bool smoothedAlpha=false) {
+                      const std::vector<Species>& species,bool smoothedAlpha=false,
+                      bool signedAlpha=false) {
     if (!(T>0 && p>0) || x.size()!=species.size()) throw std::domain_error("SRK state");
+    if(smoothedAlpha && signedAlpha)throw std::domain_error("Choose one SRK alpha continuation");
     const size_t n=x.size();
     std::vector<double> si(n),sti(n),bi(n);
     double q=0,qt=0,qtt=0,b=0;
@@ -23,8 +25,8 @@ inline State evaluate(double T,double p,const std::vector<double>& x,
         double m=.48+1.574*z.omega-.176*z.omega*z.omega;
         double c=std::sqrt(.42747*(R*z.Tc)*(R*z.Tc)/z.Pc);
         double bracket=1+m*(1-std::sqrt(T/z.Tc));
-        double sign=bracket<0?-1:1;
-        si[i]=c*std::abs(bracket);
+        double sign=signedAlpha?1:(bracket<0?-1:1);
+        si[i]=c*(signedAlpha?bracket:std::abs(bracket));
         sti[i]=-sign*c*m/(2*std::sqrt(T*z.Tc));
         double stti=-sti[i]/(2*T);
         if(smoothedAlpha && bracket<1) {
@@ -71,8 +73,9 @@ inline State evaluate(double T,double p,const std::vector<double>& x,
         double lx=bi[i]/(v+b)-b*vx[i]/(v*(v+b));
         hx[i]=p*vx[i]+(T*atx-ax)*L/b+C*(lx/b-L*bi[i]/(b*b));
         hxmean+=x[i]*hx[i];vxmean+=x[i]*vx[i];
+        // Algebraic form remains valid when signed factors sum to zero or less.
         z.lnphi[i]=bi[i]/b*(Z-1)-std::log(Z-B)
-            -(q>0 ? A/B*(2*si[i]/q-bi[i]/b)*L:0);
+            -(2*q*si[i]-a*bi[i]/b)*L/(b*R*T);
     }
     for(size_t i=0;i<n;i++) {z.hb[i]=z.h+hx[i]-hxmean;z.vb[i]=v+vx[i]-vxmean;}
     return z;

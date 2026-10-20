@@ -26,7 +26,8 @@ try {
     const bool midpoint=fluxVariant.rfind("midpoint-",0)==0;
     const std::string alphaVariant=midpoint?fluxVariant.substr(9):fluxVariant;
     const bool smooth=alphaVariant.rfind("smooth-",0)==0;
-    const std::string variant=smooth?alphaVariant.substr(7):alphaVariant;
+    const bool signedAlpha=alphaVariant.rfind("signed-",0)==0;
+    const std::string variant=(smooth || signedAlpha)?alphaVariant.substr(7):alphaVariant;
     const int gridFactor=argc>=10?std::stoi(argv[9]):1;
     if(gridFactor!=1 && gridFactor!=2 && gridFactor!=4)
         throw std::runtime_error("GRID_FACTOR must be 1, 2 or 4");
@@ -51,12 +52,12 @@ try {
     TransportFactory::factory()->reg("hydrogen-staged",[&](){
         auto* t=new hydrogen::Transport;t->pairs=pairs;t->parameters=parameters;t->stage=stage;
         t->denseIncrementOnly=!fullConductivity;t->boundedTakahashi=true;t->table2=true;
-        t->smoothedAlpha=smooth;return t;
+        t->smoothedAlpha=smooth;t->signedAlpha=signedAlpha;return t;
     });
     TransportFactory::factory()->reg("hydrogen-full",[&](){
         auto* t=new hydrogen::Transport;t->pairs=pairs;t->parameters=parameters;t->stage=5;
         t->denseIncrementOnly=!fullConductivity;t->boundedTakahashi=true;t->table2=true;
-        t->smoothedAlpha=smooth;return t;
+        t->smoothedAlpha=smooth;t->signedAlpha=signedAlpha;return t;
     });
     TransportFactory::factory()->reg("hydrogen-dilute",[&](){
         auto* t=new hydrogen::Transport;t->pairs=pairs;t->parameters=parameters;t->stage=1;return t;
@@ -64,6 +65,7 @@ try {
     auto activate=[&](std::shared_ptr<Solution> s,int modelStage) {
         if(auto* g=dynamic_cast<liang::SrkPhase*>(s->thermo().get())) {
             g->parameters=parameters;g->stage=modelStage;g->smoothedAlpha=smooth;
+            g->signedAlpha=signedAlpha;
             g->fugacityKinetics=activity;
             g->setState_TP(Tu,pressure);
         }
@@ -95,7 +97,8 @@ try {
                             concentration?"Burke2012-N2-actual-concentration":"Burke2012-N2-pressure")
           <<"\ncollider_concentration "<<(activity || concentration?"physical":"pressure-based")
           <<"\ntransport author-pair-count "<<pairs.size()
-          <<"\nmodel_variant "<<requestedVariant<<"\nalpha "<<(smooth?"C4-continuation":"original-Soave")
+          <<"\nmodel_variant "<<requestedVariant<<"\nalpha "<<(smooth?"C4-continuation":
+              signedAlpha?"signed-Soave-factors":"original-Soave")
           <<"\nflux_correction "<<(midpoint?"midpoint":"left-node")
           <<"\ngrid_factor "<<gridFactor<<"\ninitial_grid_points "<<grid.size()
           <<"\nconductivity "<<(fullConductivity?"full-Ely-Hanley":"dense-increment-diagnostic")

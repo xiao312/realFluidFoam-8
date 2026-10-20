@@ -57,7 +57,7 @@ protected:
                 const auto& mixture=srk->state();
                 for(size_t k=0;k<m_nsp;k++) {
                     const auto pure=liang::evaluate(m_thermo->temperature(),m_press,{1.},
-                                                   {srk->parameters[k]},srk->smoothedAlpha);
+                                                   {srk->parameters[k]},srk->smoothedAlpha,srk->signedAlpha);
                     hk[k]+=pure.h-mixture.hb[k];
                 }
             }
@@ -102,7 +102,7 @@ protected:
                 savedH[(j-begin)*m_nsp+k]=m_hk(k,j);
                 double hk=liang::R*T(x,j)*h0[k],ck=liang::R*cp0[k];
                 if(srk && srk->stage>=3) {
-                    const auto pure=liang::evaluate(T(x,j),m_press,{1.},{srk->parameters[k]},srk->smoothedAlpha);
+                    const auto pure=liang::evaluate(T(x,j),m_press,{1.},{srk->parameters[k]},srk->smoothedAlpha,srk->signedAlpha);
                     hk+=pure.h;ck+=pure.cp;
                 }
                 m_hk(k,j)=hk;cp+=Y(x,k,j)*ck/m_wt[k];
