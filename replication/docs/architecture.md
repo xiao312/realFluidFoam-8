@@ -24,6 +24,11 @@ pressure-chemistry and total-enthalpy adapters. It supplies Figures 3–7 with
 steady hydrogen flame and transport profiles; Figure 2 remains the independent
 `liang-properties` critical audit. Downloaded mechanism files stay outside Git.
 Its bounded Slurm jobs have no production CFD or transient-restart dependency.
+Its optional thermal-diffusion controls consume a separate author collision
+sidecar from the same transport source as its binary coefficients. A protected
+collision-ratio hook extends only the existing manual-Soret coefficient.
+The shared native-flow wrapper supplies thermal and enthalpy fluxes and records
+face diagnostics. No-Soret inputs have no dependency on that sidecar.
 Its read-only collector retrieves selected small job artifacts. The independent
 NumPy/PyMuPDF renderer overlays those profiles on the locally supplied paper
 panels and exports PNG/PDF evidence; it never changes models or submits jobs.

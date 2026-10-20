@@ -58,8 +58,7 @@ public:
                 if(j==k || x[j]==0)continue;
                 // GasTransport's epsilon includes the same polar/nonpolar
                 // effective-well-depth correction as the reviewed formula.
-                const auto collision=lightSpeciesCollisionRatios(
-                    std::log(Cantera::Boltzmann*m_thermo->temperature()/m_epsilon(k,j)));
+                const auto collision=manualCollisionRatios(k,j,m_thermo->temperature());
                 theta[k]+=x[k]*x[j]*lightSpeciesPairFactor(collision,weights[k],weights[j]);
             }
         }
@@ -67,6 +66,14 @@ public:
                                                   weights,x,y,diffusion,theta);
         std::copy(result.begin(),result.end(),output);
     }
+protected:
+    // A derived transport may supply source-qualified pair ratios without
+    // changing ordinary diffusion or the inherited Cantera Soret coefficient.
+    virtual CollisionRatios manualCollisionRatios(size_t first,size_t second,double temperature) {
+        return lightSpeciesCollisionRatios(
+            std::log(Cantera::Boltzmann*temperature/m_epsilon(first,second)));
+    }
+public:
     void updateCorrectionFactors() override {
         if(!boundedTakahashi) {
             Cantera::HighPressureGasTransportBase::updateCorrectionFactors();return;

@@ -40,6 +40,11 @@ if [[ $action == build ]]; then
  "$compiler" -std=c++17 -O2 -D_GLIBCXX_USE_CXX11_ABI=1 "$module/test_activity.cpp" \
   $flags -Wl,-rpath,"$sdk/lib" -o test-activity > compile-activity.log 2>&1
  ./test-activity "$inputs" > activity-check.txt
+ if test -f "$inputs/collision-pairs.txt"; then
+  "$compiler" -std=c++17 -O2 -D_GLIBCXX_USE_CXX11_ABI=1 "$module/test_soret.cpp" \
+   $flags -Wl,-rpath,"$sdk/lib" -o test-soret > compile-soret.log 2>&1
+  ./test-soret "$inputs" "$module/soret-fixtures.csv" > soret-check.txt
+ fi
  "$compiler" -std=c++17 -O2 -D_GLIBCXX_USE_CXX11_ABI=1 "$module/flame.cpp" \
   $flags -Wl,-rpath,"$sdk/lib" -o hydrogen-flame > compile.log 2>&1
  sha256sum hydrogen-flame > binary.sha256
@@ -51,6 +56,12 @@ else
  test -f "$build/build-passed.txt"
  (cd "$build"; sha256sum -c binary.sha256)
  cmp "$build/source-revision.txt" "$release/SOURCE_REVISION"
+ if [[ $variant == soret-baseline || $variant == manual-soret-baseline ]]; then
+  if ! test -s "$build/soret-check.txt"; then
+   printf '%s\n' 'Soret requires a build qualified with collision-pairs.txt and test-soret' >&2
+   exit 2
+  fi
+ fi
  printf '%s\n' "$build" > build-path.txt
  printf '%s\n' "$sdk" > sdk-path.txt
  cp "$build/binary.sha256" executable.sha256

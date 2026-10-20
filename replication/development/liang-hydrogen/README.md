@@ -24,6 +24,46 @@ Without `--pairs`, preparation makes an explicitly named LJ control.
 Liang does not state whether his calculations enabled this author extension.
 The polynomial temperature validity interval is not stated in the source.
 
+`prepare.py --pairs AUTHOR_PAIR_JSON --thermal-pairs` additionally writes
+`collision-pairs.txt` from that same source. Its ten unordered pairs must match
+`pairs.txt`. Each row contains two names followed by four A*, four B* and four
+C* coefficients. These dimensionless cubics use actual `ln(T/K)`, without
+exponentiation. The manifest records both the source and sidecar hashes.
+The default preparation remains unchanged.
+
+The named `soret-baseline` and `manual-soret-baseline` controls enable native
+thermal mass flux and its associated enthalpy flux. Both retain the baseline
+energy equation, chemistry, ordinary stencil and refinement. Other option
+combinations are rejected in this first qualification.
+`soret-baseline` uses Cantera 3.2's mixture-averaged formula.
+`manual-soret-baseline` uses the published manual's light-species formula with
+the author A*/B*/C* pairs and the existing fallback for unlisted pairs.
+The manual control requires the explicit collision sidecar; missing, duplicate,
+nonfinite or mismatched pair records fail before solving.
+The selected-stage mixture diffusivity still includes the same author D pairs
+and, in Case 5, the same Takahashi correction.
+The final mass projection preserves zero total thermal mass flux.
+Neither formula is established as Liang's setting or validated as dense-gas Soret.
+Author collision-fit validity bounds are unknown, including the 298 K inlet.
+
+Both controls save actual native face coefficients and thermal/ordinary fluxes
+to `soret-flux.csv`. Configuration and callback records identify the formula,
+pair count and sampled temperature range. Old no-Soret inputs remain readable.
+The dependency is the existing `cantera-liang` formula and flow wrapper; no
+production CFD code consumes the sidecar.
+`test-soret INPUTS FIXTURES.csv` checks independent author/fallback fixtures,
+binary scaling, ordinary-transport invariance, stage selection, pair parsing
+and native flux direction/closure before the build qualifies.
+The committed `soret-fixtures.csv` contains 15 independent evaluations from
+the raw author appendix and published fallback. It covers H2/N2, H/N2,
+H2/O2, H/O2 and H2/Ar at 298, 1000 and 2500 K.
+The [fixture source record](../../docs/liang-hydrogen-soret-integration-review-20261021.md)
+pins raw data, mechanism weights and the independent evaluation script.
+Both Soret modes require a build that passed this additional test.
+Example: `flame inputs 3 1.4 new-result - .01 298 manual-soret-baseline 1`.
+Use the same source and inputs with `baseline` for its paired no-Soret control.
+Preparation supports `plan`; Slurm still owns compilation and flame solves.
+
 `flame INPUT CASE PHI OUTPUT [GUESS|-] [WIDTH_M] [TU_K] [VARIANT] [GRID_FACTOR]`
 runs 100-atm H2/air.
 Cases are `1`, `2`, `3`, `3star`, `4`, and `5`. Cases 3–5 initially use the existing

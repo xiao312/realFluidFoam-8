@@ -1,7 +1,10 @@
 #pragma once
 #include "../cantera-liang/StagedTransport.h"
+#include "CollisionPairs.h"
 #include <array>
 #include <fstream>
+#include <limits>
+#include <map>
 
 namespace hydrogen {
 struct Pair {
@@ -20,8 +23,48 @@ inline std::vector<Pair> readPairs(const std::string& path) {
 class Transport : public liang::StagedTransport {
 public:
     std::vector<Pair> pairs;
+    std::vector<CollisionPair> collisionPairs;
     size_t pairUpdates=0;
+    size_t thermalCalls=0,authorCollisionCalls=0,fallbackCollisionCalls=0;
+    double thermalMinimumT=std::numeric_limits<double>::infinity();
+    double thermalMaximumT=0;
+    void init(Cantera::ThermoPhase* gas,int mode=0) override {
+        liang::StagedTransport::init(gas,mode);
+        collisionLookup.clear();
+        if(collisionPairs.empty())return; // Old no-Soret inputs remain valid.
+        std::set<std::pair<std::string,std::string>> binaryKeys,collisionKeys;
+        for(const auto& pair:pairs)
+            if(!binaryKeys.insert(pairKey(pair.first,pair.second)).second)
+                throw std::runtime_error("Duplicate author binary pair");
+        for(size_t row=0;row<collisionPairs.size();row++) {
+            const auto& pair=collisionPairs[row];
+            collisionKeys.insert(pairKey(pair.first,pair.second));
+            size_t first=gas->speciesIndex(pair.first),second=gas->speciesIndex(pair.second);
+            if(first>=m_nsp || second>=m_nsp)
+                throw std::runtime_error("Unknown collision-pair species");
+            collisionLookup[{std::min(first,second),std::max(first,second)}]=row;
+        }
+        if(binaryKeys!=collisionKeys || collisionLookup.size()!=collisionPairs.size())
+            throw std::runtime_error("Author binary and collision pair inventories differ");
+    }
+    void getThermalDiffCoeffs(double* output) override {
+        const double temperature=m_thermo->temperature();
+        thermalCalls++;
+        thermalMinimumT=std::min(thermalMinimumT,temperature);
+        thermalMaximumT=std::max(thermalMaximumT,temperature);
+        liang::StagedTransport::getThermalDiffCoeffs(output);
+    }
 protected:
+    std::map<std::pair<size_t,size_t>,size_t> collisionLookup;
+    liang::CollisionRatios manualCollisionRatios(size_t first,size_t second,double temperature) override {
+        const auto found=collisionLookup.find({std::min(first,second),std::max(first,second)});
+        if(found==collisionLookup.end()) {
+            fallbackCollisionCalls++;
+            return liang::StagedTransport::manualCollisionRatios(first,second,temperature);
+        }
+        authorCollisionCalls++;
+        return evaluateCollisionPair(collisionPairs[found->second],temperature);
+    }
     void updateDiff_T() override {
         Cantera::GasTransport::updateDiff_T();
         // Burke/Wang CHEMKIN extension: ln(D [cm2/s] at 1 atm) is cubic

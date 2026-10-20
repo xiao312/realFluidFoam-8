@@ -4,6 +4,7 @@
 #include "DiffusionFlow.h"
 #include "../cantera-liang/PressureChemistry.h"
 #include "../cantera-liang/TotalEnthalpyFlow.h"
+#include "../cantera-liang/SoretCompatibleFlow.h"
 #include "cantera/oneD/DomainFactory.h"
 #include "cantera/thermo/ThermoFactory.h"
 #include "cantera/transport/TransportFactory.h"
@@ -19,10 +20,13 @@ try {
     const double phi=std::stod(argv[3]),pressure=100*OneAtm;
     const double width=argc>=7?std::stod(argv[6]):.01,Tu=argc>=8?std::stod(argv[7]):298.;
     const std::string requestedVariant=argc>=9?argv[8]:"baseline";
-    const bool concentration=requestedVariant.rfind("concentration-",0)==0;
-    const bool activity=requestedVariant.rfind("activity-",0)==0;
-    const std::string fluxVariant=concentration?requestedVariant.substr(14):
-                                  activity?requestedVariant.substr(9):requestedVariant;
+    const bool manualSoret=requestedVariant=="manual-soret-baseline";
+    const bool soret=manualSoret || requestedVariant=="soret-baseline";
+    const std::string baseVariant=soret?"baseline":requestedVariant;
+    const bool concentration=baseVariant.rfind("concentration-",0)==0;
+    const bool activity=baseVariant.rfind("activity-",0)==0;
+    const std::string fluxVariant=concentration?baseVariant.substr(14):
+                                  activity?baseVariant.substr(9):baseVariant;
     const bool midpoint=fluxVariant.rfind("midpoint-",0)==0;
     const std::string alphaVariant=midpoint?fluxVariant.substr(9):fluxVariant;
     const bool smooth=alphaVariant.rfind("smooth-",0)==0;
@@ -48,9 +52,13 @@ try {
     }
     if(names.size()!=13)throw std::runtime_error("Expected 13 Burke species");
     auto pairs=hydrogen::readPairs((input/"pairs.txt").string());
+    const auto collisionPairs=manualSoret?
+        hydrogen::readCollisionPairs((input/"collision-pairs.txt").string()):
+        std::vector<hydrogen::CollisionPair>{};
     ThermoFactory::factory()->reg("liang-srk",[](){auto* g=new liang::SrkPhase;g->stage=1;return g;});
     TransportFactory::factory()->reg("hydrogen-staged",[&](){
         auto* t=new hydrogen::Transport;t->pairs=pairs;t->parameters=parameters;t->stage=stage;
+        t->manualSoret=manualSoret;t->collisionPairs=collisionPairs;
         t->denseIncrementOnly=!fullConductivity;t->boundedTakahashi=true;t->table2=true;
         t->smoothedAlpha=smooth;t->signedAlpha=signedAlpha;return t;
     });
@@ -103,7 +111,9 @@ try {
           <<"\ngrid_factor "<<gridFactor<<"\ninitial_grid_points "<<grid.size()
           <<"\nconductivity "<<(fullConductivity?"full-Ely-Hanley":"dense-increment-diagnostic")
           <<"\nTakahashi bounded-Table2"
-          <<"\nSoret off\nenergy "<<(cpOnlyTemperature?"cp-only-temperature":pureTemperature?"pure-temperature":
+          <<"\nSoret "<<(manualSoret?"manual-author-pairs":soret?"cantera-3.2":"off")
+          <<"\nthermal_collision_pair_count "<<collisionPairs.size()
+          <<"\nenergy "<<(cpOnlyTemperature?"cp-only-temperature":pureTemperature?"pure-temperature":
               matchedEnergy?"matched-total-enthalpy":
               stage>=3 && label!="3star"?"legacy-total-enthalpy":"partial-temperature")<<'\n';
     config.flush();
@@ -123,14 +133,17 @@ try {
     }
     gas->setState_TPX(Tu,pressure,xin.data());
     std::shared_ptr<Flow1D> flow;
-    if(cpOnlyTemperature)flow=hydrogen::makeFlow<hydrogen::CpOnlyTemperatureFlow>(midpoint,sol);
+    if(soret && stage>=3 && label!="3star")
+        flow=std::make_shared<liang::SoretCompatibleFlow<liang::TotalEnthalpyFlow>>(sol,pureFlux);
+    else if(soret)flow=std::make_shared<liang::SoretCompatibleFlow<Flow1D>>(sol,"flow");
+    else if(cpOnlyTemperature)flow=hydrogen::makeFlow<hydrogen::CpOnlyTemperatureFlow>(midpoint,sol);
     else if(pureTemperature)flow=hydrogen::makeFlow<hydrogen::PureTemperatureFlow>(midpoint,sol);
     else if(matchedEnergy)flow=hydrogen::makeFlow<hydrogen::EnthalpyFlow>(midpoint,sol,pureFlux);
     else if(stage>=3 && label!="3star")flow=hydrogen::makeFlow<liang::TotalEnthalpyFlow>(midpoint,sol,pureFlux);
     else flow=hydrogen::makeFlow<Flow1D>(midpoint,sol,"flow");
     flow->setFreeFlow();flow->setPressure(pressure);
     flow->setupGrid(grid.size(),grid.data());flow->setSteadyTolerances(1e-5,1e-11);
-    flow->setFluxGradientBasis(ThermoBasis::molar);flow->enableSoret(false);
+    flow->setFluxGradientBasis(ThermoBasis::molar);flow->enableSoret(soret);
     auto inlet=newDomain<Inlet1D>("inlet",sol);inlet->setTemperature(Tu);
     inlet->setMoleFractions(xin.data());inlet->setMdot(rho*guess.u[0]);
     auto outlet=newDomain<Outlet1D>("outlet",sol);
@@ -152,13 +165,24 @@ try {
     }
     auto real=newSolution((input/"srk.yaml").string(),"","hydrogen-full");activate(real,5);
     hydrogen::writeProfiles(output,flow,sol,ideal,real,pressure);
+    if(soret) {
+        auto* exporter=dynamic_cast<liang::SoretOutput*>(flow.get());
+        if(!exporter)throw std::runtime_error("Missing hydrogen Soret output");
+        exporter->writeSoretFluxes((output/"soret-flux.csv").string());
+    }
     std::ofstream callbacks(output/"callbacks.txt");
     auto* chemistry=dynamic_cast<liang::PressureChemistry*>(sol->kinetics().get());
     callbacks<<"pressure_chemistry "<<(chemistry?chemistry->calls:0)<<'\n';
     if(auto* t=dynamic_cast<liang::StagedTransport*>(sol->transport().get()))
         callbacks<<"conductivity "<<t->conductivityCalls<<"\ndiffusion "<<t->diffusionCalls<<'\n';
-    if(auto* t=dynamic_cast<hydrogen::Transport*>(sol->transport().get()))
+    if(auto* t=dynamic_cast<hydrogen::Transport*>(sol->transport().get())) {
         callbacks<<"pair_update "<<t->pairUpdates<<'\n';
+        if(soret)callbacks<<std::setprecision(16)<<"thermal_calls "<<t->thermalCalls
+            <<"\nauthor_collision_calls "<<t->authorCollisionCalls
+            <<"\nfallback_collision_calls "<<t->fallbackCollisionCalls
+            <<"\nthermal_minimum_T_K "<<t->thermalMinimumT
+            <<"\nthermal_maximum_T_K "<<t->thermalMaximumT<<'\n';
+    }
     std::ofstream(output/"completed.txt")<<"Solver completed; scientific acceptance pending\n";
     std::cout<<"COMPLETED "<<label<<" phi="<<phi<<" speed_cm_s="<<100*flow->values("velocity")[0]<<std::endl;
 } catch(const std::exception& e) {std::cerr<<e.what()<<std::endl;return 1;}

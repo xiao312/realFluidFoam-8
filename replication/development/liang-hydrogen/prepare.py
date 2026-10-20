@@ -2,6 +2,7 @@
 import argparse
 import hashlib
 import json
+import math
 from pathlib import Path
 
 
@@ -53,30 +54,51 @@ def prepare(args):
                    "Soret off; paper setting unspecified",
                    "Figure 6 diffusion species/closure unspecified"],
     }
-    pairs = []
+    if args.thermal_pairs and not args.pairs:
+        raise ValueError("--thermal-pairs requires the same --pairs author JSON")
+    pairs, collision_pairs = [], []
     if args.pairs:
         data = json.loads(args.pairs.read_text())
         for pair in data["pairs"]:
             if pair["present_in_burke_mechanism"]:
                 pairs.append(" ".join(map(str, [*pair["pair"], *pair["D_coefficients"]])))
+                if args.thermal_pairs:
+                    values = [v for key in ("Astar", "Bstar", "Cstar")
+                              for v in pair[key+"_coefficients"]]
+                    if len(values)!=12 or not all(math.isfinite(v) for v in values):
+                        raise ValueError("Expected twelve finite author collision coefficients")
+                    collision_pairs.append(" ".join(map(str, [*pair["pair"], *values])))
         if len(pairs) != 10:
             raise ValueError("Expected ten applicable author diffusion pairs")
         manifest["transport"] = "author LJ plus ten quantum binary-diffusion overrides"
         manifest["pair_source_sha256"] = digest(args.pairs)
         manifest["limits"].append("Liang use of appended Burke transport extension unknown")
+    if args.thermal_pairs:
+        collision_text = "\n".join(collision_pairs)+"\n"
+        manifest["thermal_collision_sidecar"] = {
+            "schema": "first second A0 A1 A2 A3 B0 B1 B2 B3 C0 C1 C2 C3",
+            "formula": "Each dimensionless ratio is a cubic in actual ln(T/K)",
+            "source_sha256": digest(args.pairs),
+            "sha256": hashlib.sha256(collision_text.encode()).hexdigest(),
+            "pairs": len(collision_pairs), "temperature_validity_K": None,
+        }
+        manifest["limits"][3] = "Soret is selected explicitly per run; paper setting unspecified"
     print(json.dumps(manifest, indent=2))
     if args.action == "plan":
         return
     if source.count("thermo: ideal-gas") != 1:
         raise ValueError("Expected one ideal phase")
     args.output.mkdir(parents=True)
-    for name, text in {
+    files = {
         "ideal.yaml": source,
         "srk.yaml": source.replace("thermo: ideal-gas", "thermo: liang-srk"),
         "species.txt": "\n".join(rows) + "\n",
         "pairs.txt": "\n".join(pairs) + ("\n" if pairs else ""),
         "manifest.json": json.dumps(manifest, indent=2) + "\n",
-    }.items():
+    }
+    if args.thermal_pairs:
+        files["collision-pairs.txt"] = collision_text
+    for name, text in files.items():
         (args.output / name).write_text(text, encoding="utf-8", newline="\n")
 
 
@@ -86,4 +108,5 @@ if __name__ == "__main__":
     for field in ("mechanism", "species", "output"):
         parser.add_argument(field, type=Path)
     parser.add_argument("--pairs", type=Path)
+    parser.add_argument("--thermal-pairs", action="store_true")
     prepare(parser.parse_args())
