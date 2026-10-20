@@ -61,6 +61,15 @@ It does not integrate chemistry, modify inputs, or estimate a CFD speed error.
 Verification: run on the frozen eight-state probe; require matching species and
 initial temperatures. Inspect 50-ns changes separately from SEULEX/CVODE parity.
 
+`transport_at_states.py SNAPSHOT MECHANISM JOB` compares saved native kappa and
+species diffusivities with Cantera at identical frozen T,p,Y. It reads the
+job-keyed JSON schema documented in the script and writes JSON to stdout.
+It depends on Python Cantera 3.2 and the frozen saved-field snapshot; no CFD
+calculation or remote write occurs. It validates species identity, normalization,
+and finite properties. Verification: reproduce the eight-state 125035588 audit
+and confirm all ratios against the recorded transport comparison. Different
+composition states must not be compared as an implementation parity test.
+
 DeepFlame dependency URLs and hashes are locked in `dependencies-lock.json`.
 Packages are staged offline; the first cluster attempt failed because compute
 nodes could not resolve the package host. Upstream CRLF shell files are normalized

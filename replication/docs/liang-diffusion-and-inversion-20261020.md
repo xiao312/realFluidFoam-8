@@ -143,6 +143,26 @@ strict linear solves, mesh and generated original fields are retained. The bridg
 and reference ideal mechanisms must match byte-for-byte. The previous fresh-state
 audit found native conductivity 6.55% above Cantera, making this a measured lead.
 
+The saved travelling-wave field at 19.994734 microseconds gives the following
+same-state comparison. Cantera evaluates each native T,p,Y; differences in the
+flame profiles are therefore not mixed into the property comparison.
+
+| Frozen native T (K) | Native kappa relative to Cantera | Native D(H) relative to Cantera |
+|---|---:|---:|
+| 405.0 | +8.113% | -0.145% |
+| 780.1 | +10.945% | -0.173% |
+| 1193.8 | +9.677% | -0.154% |
+| 1486.4 | +7.099% | -0.152% |
+| 1820.0 | +3.698% | -0.137% |
+| 2098.9 | +0.860% | -0.122% |
+
+This strengthens the conductivity-model lead. It does not establish that the
+conductivity difference caused the transient OH speed error. The native library
+uses its own transport model; a property-model difference is not itself a
+programming defect. `solver-comparison/transport_at_states.py` reproduces the
+eight-state comparison in `liang-frozen-transport-20261020.json` with the pinned
+ideal mechanism and the preserved saved-field snapshot.
+
 Job 125043700 is the native 5-ns step control, source
 `499fa91439248acc5787810b88abdd1873e29ae3`. It targets the same 20-microsecond
 checkpoint from identical original fields. Its eight-hour limit reserves at most
