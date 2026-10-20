@@ -52,6 +52,10 @@ The `liang-properties` conductivity diagnostic consumes a Cantera ideal phase,
 an explicit species table and optional frozen flame profiles. Its independent
 NumPy SRK/mapping equations qualify baseline parity and prescribed-volume
 mapping alternatives without changing the compiled flame transport adapter.
+Its cold-oxygen Cp probe consumes the native property CSV, original species
+dictionary and paper-reading CSV. It uses the same independent mathematics
+to isolate a published Shomate-Cp substitution. It supplies only diagnostic
+evidence; no solver or production thermodynamic model consumes its output.
 
 `development/cantera-wave` consumes a screened ideal Cantera profile and the
 `fresh-start` case generator. Its Python generator produces mirrored original-zero

@@ -62,6 +62,10 @@ profile. Soret solves also write `soret-flux.csv` with each face's actual native
 coefficient, ordinary flux, thermal flux, total flux and partial enthalpy.
 Units are explicit in the column names. New jobs retain observed executable,
 source, command, build and SDK records, with an explicit 3072 MiB allocation.
+The separate `energy-probe` rejects `soret`: its reconstruction has no thermal
+diffusion term. Use the recorded native face flux for a Soret energy audit.
+Applying its no-Soret reconstruction would omit both thermal mass flux and
+the associated diffusive enthalpy flux.
 
 `diffusion-probe INPUTS PROFILE NEW_OUTPUT.csv` audits frozen profile states with
 pair and bulk critical-property averaging. It independently reconstructs

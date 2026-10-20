@@ -16,6 +16,7 @@ try {
     fs::path input=argv[1];int stage=std::stoi(argv[2]);double pressure=101325*std::stod(argv[6]);
     if(stage<1 || stage>5 || pressure<101325 || pressure>10132500)throw std::runtime_error("Invalid stage/pressure");
     liang::DiagnosticOptions options(argv[5]);
+    if(options.soret)throw std::runtime_error("Use the recorded native soret-flux.csv; this energy probe has no thermal-diffusion term");
     std::ifstream table(input/"species.txt");std::vector<liang::Species> parameters;
     std::vector<std::string> names;std::string name;liang::Species item;
     while(table>>name>>item.Tc>>item.Pc>>item.Vc>>item.W>>item.omega>>item.eos) {names.push_back(name);parameters.push_back(item);}

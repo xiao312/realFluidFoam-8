@@ -34,6 +34,22 @@ The oxygen sweep uses its NASA polynomial directly. Values below its stated
 200 K bound are explicitly marked extrapolated; no temperature clipping or
 caloric inversion is used. These values are exploratory, not qualified calorics.
 
+`cold_cp_probe.py plan|apply --native OXYGEN.csv --species DICTIONARY
+--readings PAPER_READINGS.csv --output NEW_DIRECTORY` tests a separate
+100–200 K oxygen Cp substitution. It uses the published NIST Shomate gas-Cp
+fit and preserves the native SRK density, reference mapping and transport
+coefficients. It does not splice thermodynamic models or change solver inputs.
+The native CSV and dictionary must match the original property calculation;
+the probe checks its independent conductivity replay before interpreting changes.
+The reading CSV supplies the four cold conductivity markers and their existing
+image-reading intervals. Output contains all 101 states, marker comparisons,
+source coefficients, input hashes and a summary. Existing output paths fail.
+Dependencies are NumPy and this module's independent mathematics; no network,
+secrets or scheduler is needed. The comparison report is its only consumer.
+Verification: run `plan`, then `apply` with the same inputs. Expect native
+conductivity agreement within `1e-10` relative and the analytical Cp-only
+increment within `2e-16 W/(m K)` of direct re-evaluation.
+
 Outputs are CSV sweeps, derivative residuals, input/product hashes, NIST
 snapshots and local PDF/PNG comparisons. Raw data and copyrighted paper crops
 stay outside Git. No credentials or network are needed by the compiled probe.
