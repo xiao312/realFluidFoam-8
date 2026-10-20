@@ -56,10 +56,13 @@ so floating-point crossings of the discontinuous Pr=0.1 policy are explicit.
 Prescribed correlation states can extend below a mechanism's fitted temperature
 range; their dimensional dilute coefficients are not accepted property predictions.
 
-Run `bash job.sh plan ROOT RELEASE SDK INPUTS`, then submit `job.sh apply` with
+Run `bash job.sh plan ROOT RELEASE SDK INPUTS PYTHON`, then submit `job.sh apply` with
 those same inputs to Slurm (one CPU, ten-minute cap, explicit project log paths).
 Expected: `corrected-report.json` passes and `legacy-report.json` fails when the
 published Pr=3 correction is deliberately disabled. Preserve both reports.
+`PYTHON` is an absolute, executable path under the broader FlamePilot project,
+used read-only; its hash and version are recorded. Do not rely on the login-node
+PATH being available on compute nodes.
 
 ## Minimal use and verification
 
@@ -75,5 +78,5 @@ The first command is a deterministic saved-result replay and is expected to
 exit 1 until the Case 5 discrepancy is resolved. The second prints the dilute
 benchmark plan; the third performs the calculation and writes its evidence.
 Run `git diff --check`. For the C++ probe use `job.sh plan` before scheduler
-submission; its documented positional inputs are ROOT RELEASE SDK INPUTS.
+submission; its documented positional inputs are ROOT RELEASE SDK INPUTS PYTHON.
 The probe never solves a flame or changes an input file.

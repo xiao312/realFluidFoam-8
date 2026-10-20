@@ -1,6 +1,7 @@
 #!/bin/bash
 set -euo pipefail
 mode=${1:?plan or apply}; root=${2:?}; release=${3:?}; sdk=${4:?}; inputs=${5:?}
+python=${6:?absolute project Python executable}
 [[ $mode == plan || $mode == apply ]] || exit 2
 [[ $(realpath -e "$root") == "$root" && $root == /public/home/dfagent/FlamePilot/* ]] || exit 2
 for path in "$release" "$sdk" "$inputs"; do
@@ -11,8 +12,10 @@ test -f "$module_path/property_probe.cpp"
 test -f "$inputs/ideal.yaml"
 test -f "$inputs/species.txt"
 test -f "$release/SOURCE_REVISION"
+[[ $(realpath -e "$python") == /public/home/dfagent/FlamePilot/* && -x $python ]] || exit 2
 if [[ $mode == plan ]]; then
     printf 'PLAN: compile prescribed-state probe; release=%s sdk=%s inputs=%s\n' "$release" "$sdk" "$inputs"
+    printf 'Read-only Python executable: %s\n' "$python"
     printf 'Outputs: %s/jobs/SLURM_JOB_ID; no flame solve\n' "$root"
     exit 0
 fi
@@ -28,7 +31,8 @@ unset CPLUS_INCLUDE_PATH C_INCLUDE_PATH CPATH LIBRARY_PATH
 cd "$job"
 cp "$release/SOURCE_REVISION" source-revision.txt
 sha256sum "$inputs/ideal.yaml" "$inputs/species.txt" "$module_path/references.json" \
-    "$sdk/lib/libcantera.so" > input-sha256.txt
+    "$sdk/lib/libcantera.so" "$python" > input-sha256.txt
+"$python" --version > python-version.txt
 compiler=/public/software/compiler/gcc/11.2.0/bin/g++
 "$compiler" --version > compiler.txt
 flags=$("$sdk/bin/pkg-config" --cflags --libs cantera)
@@ -38,13 +42,13 @@ printf '%s\n' "$flags" > compiler-flags.txt
     -o property-probe > compile.log 2>&1
 sha256sum property-probe > binary.sha256
 ldd property-probe > dependencies.txt
-python3 -B "$module_path/prepare.py" "$inputs"
-python3 -B "$module_path/prepare.py" "$inputs" --output requests.csv
+"$python" -B "$module_path/prepare.py" "$inputs"
+"$python" -B "$module_path/prepare.py" "$inputs" --output requests.csv
 ./property-probe "$inputs" requests.csv corrected > corrected.csv 2> corrected.log
-python3 -B "$module_path/check.py" requests.csv corrected.csv > corrected-report.json
+"$python" -B "$module_path/check.py" requests.csv corrected.csv > corrected-report.json
 ./property-probe "$inputs" requests.csv legacy > legacy.csv 2> legacy.log
 set +e
-python3 -B "$module_path/check.py" requests.csv legacy.csv > legacy-report.json
+"$python" -B "$module_path/check.py" requests.csv legacy.csv > legacy-report.json
 legacy_status=$?
 set -e
 [[ $legacy_status == 1 ]] || { echo "Legacy control did not fail as expected"; exit 1; }
