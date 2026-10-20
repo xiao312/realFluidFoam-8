@@ -98,10 +98,35 @@ outside their screen does not establish the missing model.
 This manual formula follows the published sign convention.
 It is not established as Liang's historical PREMIX implementation.
 
+## Additional rich methane conditions
+
+The matched native-formula off/on controls at phi=1.30 and 1.35 completed from
+the same `c9c2c55` source and `125085658` build. All twelve solves passed the
+existing numerical screens; all six enabled runs passed the unchanged native
+thermal-flux audit. The [extension record](liang-soret-rich-extension-20261021.json)
+contains paired speeds, input/profile hashes and separate paper comparisons.
+
+| Phi | Case | Enabled job | Soret speed (cm/s) | Liang reading (cm/s) | Paper-point screen |
+| ---: | ---: | ---: | ---: | ---: | --- |
+| 1.30 | 1 | 125092144 | 6.532562 | 6.616137 | Pass |
+| 1.30 | 4 | 125092157 | 6.211469 | 6.275426 | Pass |
+| 1.30 | 5 | 125092165 | 6.158321 | 6.155245 | Pass |
+| 1.35 | 1 | 125092182 | 6.283022 | 6.363337 | Pass |
+| 1.35 | 4 | 125092203 | 5.969123 | 6.033030 | Pass |
+| 1.35 | 5 | 125092219 | 5.920535 | 5.887285 | Pass |
+
+The criterion remains absolute error no larger than
+`max(0.05 cm/s, 1% of paper value) + digitization uncertainty`.
+Passing this finite graphical screen does not recover the staged separation:
+at phi=1.30, the computed Case 4-5 difference is 0.053148 cm/s versus
+Liang's 0.120181; at phi=1.35 it is 0.048588 versus 0.145745 cm/s.
+Soret therefore produces nearly a common speed shift in these controls.
+It still does not identify the missing Case 5 effect or Liang's settings.
+
 ## Comparison figures
 
 The per-case gallery now contains the eight completed earlier diagnostics,
-three completed Cantera 3.2 Soret points and three manual-formula points.
+nine completed Cantera 3.2 Soret points and three manual-formula points.
 Each diagnostic has a distinct color/marker combination and a matching legend.
 The 65-point baseline and frozen CFD capture remain separate inputs.
 The original panel and caption retain their publication dimensions.
@@ -109,7 +134,7 @@ The original panel and caption retain their publication dimensions.
 Input record:
 [Figure 8(a) diagnostics](liang-figure8a-diffusion-diagnostics-20261021.json).
 Rendered output:
-`output/pdf/liang-figure8a-manual-soret-20261021-0415/`.
+`output/pdf/liang-figure8a-rich-soret-20261021-0505/`.
 No diagnostic point replaces a baseline curve.
 Both overview PNGs and the Case 2/3 PNGs are byte-identical to the previous
 gallery. The combined PDF retains seven pages. Multiple operating points with

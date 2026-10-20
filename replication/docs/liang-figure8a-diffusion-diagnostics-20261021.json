@@ -1,6 +1,6 @@
 {
   "baseline_sha256": "79da2c0f01c053b619135ec1ee766aa9d75877230b938e1582e8a9d4225f0d9d",
-  "observed_utc": "2026-10-20T20:01:12.213636+00:00",
+  "observed_utc": "2026-10-21T04:47:00.065414+08:00",
   "diagnostics": [
     {
       "stage": 4,
@@ -404,6 +404,186 @@
           "publication parameter uncertainty"
         ]
       }
+    },
+    {
+      "stage": 1,
+      "phi": 1.3,
+      "pressure_atm": 100,
+      "speed_cm_s": 6.532562442683372,
+      "label": "Cantera: Soret (3.2 formulation)",
+      "job": "125092144",
+      "screen_passed": true,
+      "source": "c9c2c55b3db6b9b6f379026ad94ff4fdea17d34c",
+      "build": 125085658,
+      "variant": "soret",
+      "executable_sha256": "0ff9966ece7d6d822699b4a1b3c37e9988358af2df7de7965bab70ff3322735c",
+      "profile_sha256": "de908dd3ce4a145e2fbba3b66c75dd50a8cafa5bfa8f3d52191f2724e9e59d0b",
+      "screen": {
+        "stage": 1,
+        "phi": 1.3,
+        "speed_cm_s": 6.532562442683372,
+        "last_refinement_relative_change": 0.0006253183874340706,
+        "mass_flux_relative_range": 1.461092234040539e-10,
+        "maximum_species_sum_error": 3.422873096070589e-11,
+        "minimum_mass_fraction": -1.533450561191996e-12,
+        "points": 2175,
+        "scientific_acceptance": false,
+        "remaining": [
+          "domain sensitivity",
+          "initial-guess sensitivity",
+          "publication parameter uncertainty"
+        ]
+      }
+    },
+    {
+      "stage": 4,
+      "phi": 1.3,
+      "pressure_atm": 100,
+      "speed_cm_s": 6.21146934262461,
+      "label": "Cantera: Soret (3.2 formulation)",
+      "job": "125092157",
+      "screen_passed": true,
+      "source": "c9c2c55b3db6b9b6f379026ad94ff4fdea17d34c",
+      "build": 125085658,
+      "variant": "dense-increment,bounded-takahashi,pressure-chemistry,takahashi-table2,soret",
+      "executable_sha256": "0ff9966ece7d6d822699b4a1b3c37e9988358af2df7de7965bab70ff3322735c",
+      "profile_sha256": "fc09f72b104575eeb274a8e88226d3394b5877238de6c4c32a74ca99f5cf8620",
+      "screen": {
+        "stage": 4,
+        "phi": 1.3,
+        "speed_cm_s": 6.21146934262461,
+        "last_refinement_relative_change": 0.0008179192636114108,
+        "mass_flux_relative_range": 1.5896810015322658e-10,
+        "maximum_species_sum_error": 3.717681718029553e-11,
+        "minimum_mass_fraction": -8.827171038069952e-13,
+        "points": 2187,
+        "scientific_acceptance": false,
+        "remaining": [
+          "domain sensitivity",
+          "initial-guess sensitivity",
+          "publication parameter uncertainty"
+        ]
+      }
+    },
+    {
+      "stage": 5,
+      "phi": 1.3,
+      "pressure_atm": 100,
+      "speed_cm_s": 6.158321221831168,
+      "label": "Cantera: Soret (3.2 formulation)",
+      "job": "125092165",
+      "screen_passed": true,
+      "source": "c9c2c55b3db6b9b6f379026ad94ff4fdea17d34c",
+      "build": 125085658,
+      "variant": "dense-increment,bounded-takahashi,pressure-chemistry,takahashi-table2,soret",
+      "executable_sha256": "0ff9966ece7d6d822699b4a1b3c37e9988358af2df7de7965bab70ff3322735c",
+      "profile_sha256": "ccae111a7dcb2bcc07daf1ec39f22d3426e490ae583a23f583c76dd1f2e4c9e4",
+      "screen": {
+        "stage": 5,
+        "phi": 1.3,
+        "speed_cm_s": 6.158321221831168,
+        "last_refinement_relative_change": 0.0006762488141432987,
+        "mass_flux_relative_range": 1.6162929891332518e-10,
+        "maximum_species_sum_error": 4.164613098822656e-11,
+        "minimum_mass_fraction": -9.752143652567124e-13,
+        "points": 2192,
+        "scientific_acceptance": false,
+        "remaining": [
+          "domain sensitivity",
+          "initial-guess sensitivity",
+          "publication parameter uncertainty"
+        ]
+      }
+    },
+    {
+      "stage": 1,
+      "phi": 1.35,
+      "pressure_atm": 100,
+      "speed_cm_s": 6.283021661261859,
+      "label": "Cantera: Soret (3.2 formulation)",
+      "job": "125092182",
+      "screen_passed": true,
+      "source": "c9c2c55b3db6b9b6f379026ad94ff4fdea17d34c",
+      "build": 125085658,
+      "variant": "soret",
+      "executable_sha256": "0ff9966ece7d6d822699b4a1b3c37e9988358af2df7de7965bab70ff3322735c",
+      "profile_sha256": "416b5588e008ea75b9e58b1b69dcbba802003848830c1c2b437c538b5d2550bd",
+      "screen": {
+        "stage": 1,
+        "phi": 1.35,
+        "speed_cm_s": 6.283021661261859,
+        "last_refinement_relative_change": 0.0005744132525311585,
+        "mass_flux_relative_range": 1.5984530521786965e-10,
+        "maximum_species_sum_error": 4.569833400580592e-11,
+        "minimum_mass_fraction": -3.538237854056026e-12,
+        "points": 2185,
+        "scientific_acceptance": false,
+        "remaining": [
+          "domain sensitivity",
+          "initial-guess sensitivity",
+          "publication parameter uncertainty"
+        ]
+      }
+    },
+    {
+      "stage": 4,
+      "phi": 1.35,
+      "pressure_atm": 100,
+      "speed_cm_s": 5.969123069024559,
+      "label": "Cantera: Soret (3.2 formulation)",
+      "job": "125092203",
+      "screen_passed": true,
+      "source": "c9c2c55b3db6b9b6f379026ad94ff4fdea17d34c",
+      "build": 125085658,
+      "variant": "dense-increment,bounded-takahashi,pressure-chemistry,takahashi-table2,soret",
+      "executable_sha256": "0ff9966ece7d6d822699b4a1b3c37e9988358af2df7de7965bab70ff3322735c",
+      "profile_sha256": "00fc5b99e808b41d58ee47850a5c41a75585ee544c619c9c661bb9ba77a227ac",
+      "screen": {
+        "stage": 4,
+        "phi": 1.35,
+        "speed_cm_s": 5.969123069024559,
+        "last_refinement_relative_change": 0.0007909388362189462,
+        "mass_flux_relative_range": 1.6912187917973713e-10,
+        "maximum_species_sum_error": 5.630307331472295e-11,
+        "minimum_mass_fraction": -5.315225573063652e-13,
+        "points": 2191,
+        "scientific_acceptance": false,
+        "remaining": [
+          "domain sensitivity",
+          "initial-guess sensitivity",
+          "publication parameter uncertainty"
+        ]
+      }
+    },
+    {
+      "stage": 5,
+      "phi": 1.35,
+      "pressure_atm": 100,
+      "speed_cm_s": 5.920534752127007,
+      "label": "Cantera: Soret (3.2 formulation)",
+      "job": "125092219",
+      "screen_passed": true,
+      "source": "c9c2c55b3db6b9b6f379026ad94ff4fdea17d34c",
+      "build": 125085658,
+      "variant": "dense-increment,bounded-takahashi,pressure-chemistry,takahashi-table2,soret",
+      "executable_sha256": "0ff9966ece7d6d822699b4a1b3c37e9988358af2df7de7965bab70ff3322735c",
+      "profile_sha256": "2ef8e2673fa43b6bda671075b4861f534945d9570599fc2e9b3b298b8844bf52",
+      "screen": {
+        "stage": 5,
+        "phi": 1.35,
+        "speed_cm_s": 5.920534752127007,
+        "last_refinement_relative_change": 0.0007042599342133027,
+        "mass_flux_relative_range": 1.6040312150518727e-10,
+        "maximum_species_sum_error": 5.7135185471679506e-11,
+        "minimum_mass_fraction": -1.016873303386854e-13,
+        "points": 2179,
+        "scientific_acceptance": false,
+        "remaining": [
+          "domain sensitivity",
+          "initial-guess sensitivity",
+          "publication parameter uncertainty"
+        ]
+      }
     }
   ],
   "independent_seed_check": {
@@ -442,5 +622,6 @@
     "refinement": "stage,phi,slope,curve,points,speed_cm_s\n1,1.1,0.0075,0.0125,2133,7.461783729146212\n1,1.1,0.00375,0.00625,2133,7.461820426150887\n"
   },
   "thermal_diffusion_record": "liang-soret-controls-20261021.json",
-  "manual_thermal_diffusion_record": "liang-manual-soret-controls-20261021.json"
+  "manual_thermal_diffusion_record": "liang-manual-soret-controls-20261021.json",
+  "rich_native_soret_record": "liang-soret-rich-extension-20261021.json"
 }
