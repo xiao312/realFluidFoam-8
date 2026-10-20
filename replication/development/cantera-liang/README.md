@@ -280,3 +280,16 @@ not specified by Liang. Takahashi's fitted data mostly cover Tr=0.95–5; using
 the correlation above that range is extrapolation, not an accepted correction.
 The frozen-state probe reports H2, OH and CH4 diffusivities with and without
 this upper clamp before any flame comparison. All other models remain fixed.
+## Figure 8(a) comparison gallery
+
+`figure_gallery.py plan|apply PAPER CANTERA REFERENCE CFD_AUDIT SWEEP_AUDIT OUTPUT`
+creates seven separate comparisons: Cantera overview, developed-solver CFD
+overview, and one comparison for each Case 1–5. Each has the original 204 by
+175 point paper panel and caption beside the computed panel. Inputs are frozen
+JSON results, digitized paper data, and validated front-history audit summaries.
+Outputs are PNG/PDF pages, a combined PDF, and an input-hash manifest. The
+renderer uses PyMuPDF and the existing axis calibration. It submits no jobs.
+Missing CFD stages remain explicitly pending. CFD markers are latest valid
+temperature-front estimates, not accepted steady flame speeds. Other OpenFOAM
+solvers appear only in the individual Case 1 comparison. Verify the seven-page
+count, series inclusion rules, source hashes, and rendered labels before upload.
