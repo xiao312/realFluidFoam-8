@@ -3,7 +3,7 @@ set -euo pipefail
 root=${1:?}; release=${2:?}; sdk=${3:?}; inputs=${4:?}; stage=${5:?}; build=${6:-}
 phi=${7:-1.10}
 variant=${8:-full}
-[[ $variant =~ ^(full|(dense-increment|bounded-takahashi|pressure-chemistry|fine-grid|smoothed-alpha|takahashi-table2|takahashi-high-t|takahashi-bulk|mass-gradient|total-enthalpy|pure-species-flux|soret|manual-soret)(,(dense-increment|bounded-takahashi|pressure-chemistry|fine-grid|smoothed-alpha|takahashi-table2|takahashi-high-t|takahashi-bulk|mass-gradient|total-enthalpy|pure-species-flux|soret|manual-soret))*)$ ]] || exit 2
+[[ $variant =~ ^(full|(dense-increment|bounded-takahashi|pressure-chemistry|fine-grid|smoothed-alpha|takahashi-table2|takahashi-high-t|takahashi-bulk|mass-gradient|total-enthalpy|pure-species-flux|soret|manual-soret|conservative-species)(,(dense-increment|bounded-takahashi|pressure-chemistry|fine-grid|smoothed-alpha|takahashi-table2|takahashi-high-t|takahashi-bulk|mass-gradient|total-enthalpy|pure-species-flux|soret|manual-soret|conservative-species))*)$ ]] || exit 2
 pressure=${9:-100}
 steady_rtol=${10:-1e-5}; steady_atol=${11:-1e-11}
 [[ $pressure =~ ^[0-9]+([.][0-9]+)?$ ]] || exit 2
@@ -41,6 +41,9 @@ if [[ $stage == build ]]; then
  "$compiler" -std=c++17 -O2 -D_GLIBCXX_USE_CXX11_ABI=1 "$module_path/test_soret.cpp" \
    $flags -Wl,-rpath,"$sdk/lib" -o test-soret > compile-soret.log 2>&1
  ./test-soret "$inputs" "$inputs/guess.csv" > soret-check.txt
+ "$compiler" -std=c++17 -O2 -D_GLIBCXX_USE_CXX11_ABI=1 "$module_path/test_conservative.cpp" \
+   $flags -Wl,-rpath,"$sdk/lib" -o test-conservative > compile-conservative.log 2>&1
+ ./test-conservative "$inputs/ideal.yaml" > conservative-check.txt
  "$compiler" -std=c++17 -O2 -D_GLIBCXX_USE_CXX11_ABI=1 "$module_path/flame.cpp" \
    $flags -Wl,-rpath,"$sdk/lib" -o liang-flame > compile.log 2>&1
  "$compiler" -std=c++17 -O2 -D_GLIBCXX_USE_CXX11_ABI=1 "$module_path/model_probe.cpp" \

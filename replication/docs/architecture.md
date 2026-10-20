@@ -32,8 +32,11 @@ face diagnostics. No-Soret inputs have no dependency on that sidecar.
 Its offline thermal-diffusion comparison reuses the native-face audit from
 `cantera-liang/analyze_soret.py` and the local hydrogen digitizer/profile checks.
 This analysis dependency does not change either runtime model.
-Its conservative numerical control reuses `cantera-liang/TotalEnthalpyFlow`
-and applies the same face-advection/divergence construction to species.
+Its conservative numerical control aliases `cantera-liang/ConservativeFlow`,
+which applies the same face-advection/divergence construction to species
+and total enthalpy. Both methane and hydrogen consume this shared class
+and its manufactured residual fixture; the shared module does not depend
+on the hydrogen driver.
 Stock boundary equations and property/chemistry adapters remain dependencies;
 the control neither patches Cantera nor changes production CFD.
 Its offline conservation audit consumes native node/face CSVs, uses Cantera

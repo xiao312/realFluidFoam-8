@@ -4,6 +4,22 @@ This module runs Liang Figure 8(a) model stages with Cantera 3.2 FreeFlame.
 It owns C++ thermodynamic and transport adapters. It does not claim to reproduce
 unpublished PREMIX inputs or resolve the Figure 2 discrepancy.
 
+The optional `total-enthalpy,conservative-species` control uses shared
+`ConservativeFlow.h` for face-based species and total-enthalpy divergence.
+It preserves property, chemistry and boundary models. It requires total
+enthalpy and rejects Soret or pure-species enthalpy combinations.
+The default equations remain unchanged. Completed controls export
+`balance-nodes.csv` and `balance-faces.csv` for the existing conservation audit.
+The shared class also serves `liang-hydrogen` through a compatibility alias;
+its numerical implementation is unchanged from that module's qualified control.
+The SDK and existing total-enthalpy adapter are its only runtime dependencies.
+It reads no secrets and writes only the selected result directory.
+Example: `liang-flame INPUTS 1 1.4 OUTPUT total-enthalpy,conservative-species`.
+Every build runs `test-conservative INPUTS/ideal.yaml`: expect 16 passing
+manufactured residual fixtures, including variable mass flow and both directions.
+Scientific checks additionally require native conservation and grid comparisons;
+passing this fixture does not establish agreement with Liang.
+
 Plot input JSON can include `stage_labels`: five nonempty strings in stage order.
 Use explicit labels when a displayed curve changes model variants, such as the
 corrected Takahashi Table 2 coefficient. The plot manifest records these labels.

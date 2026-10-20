@@ -4,6 +4,7 @@
 #include "PropertyChecks.h"
 #include "EquilibriumCheck.h"
 #include "TotalEnthalpyFlow.h"
+#include "ConservativeFlow.h"
 #include "SoretCompatibleFlow.h"
 #include "cantera/onedim.h"
 #include "cantera/oneD/DomainFactory.h"
@@ -84,7 +85,9 @@ try {
         for(size_t k=0;k<fields.size();k++)values[k].push_back(std::stod(fields[k]));}
     if(values[0].size()<10 || columns[0]!="x_m")throw std::runtime_error("Invalid initial profile");
     std::shared_ptr<Flow1D> flow;
-    if(options.soret && options.totalEnthalpy)
+    if(options.conservativeSpecies)
+        flow=std::make_shared<liang::ConservativeFlow>(sol);
+    else if(options.soret && options.totalEnthalpy)
         flow=std::make_shared<liang::SoretCompatibleFlow<liang::TotalEnthalpyFlow>>(sol,options.pureSpeciesFlux);
     else if(options.soret)
         flow=std::make_shared<liang::SoretCompatibleFlow<Flow1D>>(sol,"flow");
@@ -114,6 +117,8 @@ try {
         if(!exporter)throw std::runtime_error("Missing Soret diagnostic output");
         exporter->writeSoretFluxes((output/"soret-flux.csv").string());
     }
+    if(options.conservativeSpecies)
+        std::dynamic_pointer_cast<liang::ConservativeFlow>(flow)->writeBalances(output);
     // Save numerical fields explicitly; custom factories must also be registered on reload.
     flame.save((output/"flame.yaml").string(),"flame","Staged SRK, concentration-law kinetics",true);
     auto grid=flow->grid(),T=flow->values("T"),u=flow->values("velocity");

@@ -10,7 +10,7 @@ struct DiagnosticOptions {
     bool table2=false;
     bool highTemperature=false;
     bool bulkTakahashi=false,massGradient=false;
-    bool totalEnthalpy=false,pureSpeciesFlux=false;
+    bool totalEnthalpy=false,pureSpeciesFlux=false,conservativeSpecies=false;
     bool soret=false,manualSoret=false;
     explicit DiagnosticOptions(const std::string& text) {
         if(text=="full")return;
@@ -27,6 +27,7 @@ struct DiagnosticOptions {
             else if(item=="takahashi-bulk")bulkTakahashi=true;
             else if(item=="mass-gradient")massGradient=true;
             else if(item=="total-enthalpy")totalEnthalpy=true;
+            else if(item=="conservative-species")conservativeSpecies=true;
             else if(item=="pure-species-flux")pureSpeciesFlux=true;
             else if(item=="soret")soret=true;
             else if(item=="manual-soret") {soret=true;manualSoret=true;}
@@ -39,6 +40,8 @@ struct DiagnosticOptions {
         if(pureSpeciesFlux && !totalEnthalpy)throw std::runtime_error("pure-species-flux requires total-enthalpy");
         if(manualSoret && seen.count("soret"))
             throw std::runtime_error("Select either soret or manual-soret");
+        if(conservativeSpecies && (!totalEnthalpy || pureSpeciesFlux || soret))
+            throw std::runtime_error("conservative-species requires total-enthalpy without Soret or pure-species-flux");
     }
 };
 }

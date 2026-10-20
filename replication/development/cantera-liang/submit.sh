@@ -3,7 +3,7 @@ set -euo pipefail
 action=${1:?}; root=${2:?}; release=${3:?}; sdk=${4:?}; inputs=${5:?}; stage=${6:?}; build=${7:-}
 phi=${8:-1.10}
 variant=${9:-full}
-[[ $variant =~ ^(full|(dense-increment|bounded-takahashi|pressure-chemistry|fine-grid|smoothed-alpha|takahashi-table2|takahashi-high-t|takahashi-bulk|mass-gradient|total-enthalpy|pure-species-flux|soret|manual-soret)(,(dense-increment|bounded-takahashi|pressure-chemistry|fine-grid|smoothed-alpha|takahashi-table2|takahashi-high-t|takahashi-bulk|mass-gradient|total-enthalpy|pure-species-flux|soret|manual-soret))*)$ ]] || exit 2
+[[ $variant =~ ^(full|(dense-increment|bounded-takahashi|pressure-chemistry|fine-grid|smoothed-alpha|takahashi-table2|takahashi-high-t|takahashi-bulk|mass-gradient|total-enthalpy|pure-species-flux|soret|manual-soret|conservative-species)(,(dense-increment|bounded-takahashi|pressure-chemistry|fine-grid|smoothed-alpha|takahashi-table2|takahashi-high-t|takahashi-bulk|mass-gradient|total-enthalpy|pure-species-flux|soret|manual-soret|conservative-species))*)$ ]] || exit 2
 pressure=${10:-100}
 steady_rtol=${11:-1e-5}; steady_atol=${12:-1e-11}
 [[ $pressure =~ ^[0-9]+([.][0-9]+)?$ ]] || exit 2

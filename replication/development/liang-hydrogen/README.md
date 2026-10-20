@@ -4,6 +4,11 @@ This module reconstructs the hydrogen calculations in Liang, Li and Law (2019),
 DOI 10.1016/j.proci.2018.06.070. It uses the cited Burke et al. (2012) mechanism,
 not Cantera's bundled `h2o2.yaml`. It does not change production CFD solvers.
 
+`ConservativeFlow.h` preserves the existing `hydrogen::ConservativeFlow`
+interface as an alias to the shared `cantera-liang/ConservativeFlow.h`.
+The manufactured fixture is also shared; its local wrapper retains the
+existing build command. This relocation changes no numerical expression.
+
 ## Inputs, outputs and configuration
 
 `acquire.py plan|apply OUTPUT [--source-dir ORIGINALS]` downloads or reads
@@ -313,6 +318,10 @@ manifest feeds `plot.py plan|apply PAPER MANIFEST CRITICAL_CSV SPECIES_TXT OUTPU
 New runs copy the checked executable hash, build and SDK paths, escaped command,
 and numerical-guess hash into the job directory. The collector retains these
 records when present; it does not invent them for historical jobs.
+It also retains optional `result/numerics.txt` for methane-driver tolerance
+controls. This read-only extension does not require the file in hydrogen or
+historical jobs. Verify its values against the recorded command before
+comparing default and tighter convergence settings.
 The renderer uses NumPy/PyMuPDF, preserves source panels at publication scale,
 adds open-symbol legends, and exports six PNGs, a PDF and evidence JSON.
 Optional `--diagnostics JSON` overlays screened discrete controls on Figures
