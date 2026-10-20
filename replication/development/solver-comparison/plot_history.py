@@ -101,7 +101,7 @@ def figure(config, all_rows, zoom):
         ax.set_xlabel(r'Physical time ($\mu$s)')
         ax.tick_params(direction='in', top=True, right=True)
         ax.grid(axis='y', color='.9', lw=.5)
-        ax.set_xlim(0, max(200, max(r['time_us'] for r in all_rows)))
+        ax.set_xlim(0, config.get('time_limit_us', max(200, max(r['time_us'] for r in all_rows))))
         if zoom:
             ax.set_ylim(4, 10)
     axes[0].set_ylabel(r'Density-normalized front speed (cm s$^{-1}$)')
@@ -137,6 +137,12 @@ def main():
         rows.extend(values); audits.append(audit)
     if not rows:
         raise ValueError('No tracking observations')
+    if 'time_limit_us' in config:
+        limit = config['time_limit_us']
+        if not isinstance(limit, (float, int)) or not np.isfinite(limit) or limit <= 0:
+            raise ValueError('time_limit_us must be a finite positive number')
+        if limit < max(r['time_us'] for r in rows):
+            raise ValueError('time_limit_us would hide recorded observations')
     args.output.mkdir(parents=True, exist_ok=True)
     with (args.output/'plotted-history.csv').open('w', encoding='utf8', newline='') as stream:
         writer = csv.DictWriter(stream, fieldnames=list(rows[0]))

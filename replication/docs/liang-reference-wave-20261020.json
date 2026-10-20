@@ -1,0 +1,178 @@
+{
+  "observed_utc": "2026-10-20T10:33:54.694922+00:00",
+  "reference_cm_s": 7.461702833306255,
+  "runs": [
+    {
+      "job": "125035576",
+      "recipe": "zero",
+      "source": "5f946723070f100e062852202021c5aeef5ae4c7",
+      "library_job": "125030062",
+      "library_source": "ef60c736b5ce802f3918980dc895a944bd1bbadb",
+      "original_zero": true,
+      "initial_profile_job": "124920014",
+      "profile_sha256": "09408212459b4f4b318de2310714cba6b4429d169cfad386d84c2c47962d550e",
+      "tracking_sha256": "d3dba9f2976fae0881d34bb920d97eb41ed465eb1e608be2f5c58cee30758ac4",
+      "ideal_increment_checks": "144/144 passed",
+      "endpoint": {
+        "time_s": 1.99947341146e-05,
+        "cells": 8000,
+        "species_sum_error": 1.3986589664227722e-12,
+        "fields": {
+          "T": {
+            "min": 298.055145251,
+            "max": 2229.98905654
+          },
+          "p": {
+            "min": 10139140.4195,
+            "max": 10140221.6505
+          },
+          "rho": {
+            "min": 14.7706225062,
+            "max": 112.620895137
+          },
+          "CH4": {
+            "min": 3.59624283136e-08,
+            "max": 0.0603501253193
+          },
+          "OH": {
+            "min": 2.79650043396e-34,
+            "max": 0.000379566204359
+          }
+        },
+        "first_time_s": 0,
+        "latest_time_s": 1.99947341146e-05,
+        "scientific_acceptance": false
+      },
+      "markers": {
+        "T": {
+          "time_us": 19.994734114577188,
+          "mean_cm_s": 7.410814751177163
+        },
+        "OH": {
+          "time_us": 19.994734114577188,
+          "mean_cm_s": 6.8573848449717865
+        }
+      },
+      "scientific_acceptance": false,
+      "signed_heat_release": [
+        {
+          "time_us": 4.994734114580001,
+          "min_W_m3": -9291502.38428,
+          "max_W_m3": 2390676930260.0,
+          "signed_integral_W_m2": 42591575.26886181
+        },
+        {
+          "time_us": 9.99473411458,
+          "min_W_m3": -5775579.28093,
+          "max_W_m3": 2330010374290.0,
+          "signed_integral_W_m2": 42085614.55406726
+        },
+        {
+          "time_us": 14.9947341146,
+          "min_W_m3": 2.20198045864e-08,
+          "max_W_m3": 2292765608800.0,
+          "signed_integral_W_m2": 41856556.36661578
+        },
+        {
+          "time_us": 19.9947341146,
+          "min_W_m3": 2.08743574102e-08,
+          "max_W_m3": 2271410123710.0,
+          "signed_integral_W_m2": 41756318.33729685
+        }
+      ]
+    },
+    {
+      "job": "125035588",
+      "recipe": "travelling",
+      "source": "5f946723070f100e062852202021c5aeef5ae4c7",
+      "library_job": "125030062",
+      "library_source": "ef60c736b5ce802f3918980dc895a944bd1bbadb",
+      "original_zero": true,
+      "initial_profile_job": "124920014",
+      "profile_sha256": "09408212459b4f4b318de2310714cba6b4429d169cfad386d84c2c47962d550e",
+      "tracking_sha256": "faefde20c56e0871240c85dd627341fe8875003d629c9feff6bc1efe79ad0536",
+      "ideal_increment_checks": "144/144 passed",
+      "endpoint": {
+        "time_s": 1.99947341146e-05,
+        "cells": 8000,
+        "species_sum_error": 1.304956143144409e-12,
+        "fields": {
+          "T": {
+            "min": 297.994570259,
+            "max": 2229.5839919
+          },
+          "p": {
+            "min": 10131836.5197,
+            "max": 10131900.4911
+          },
+          "rho": {
+            "min": 14.7626654688,
+            "max": 112.554414991
+          },
+          "CH4": {
+            "min": 3.63647858416e-08,
+            "max": 0.0603501253193
+          },
+          "OH": {
+            "min": 2.78987479264e-34,
+            "max": 0.000379433089809
+          }
+        },
+        "first_time_s": 0,
+        "latest_time_s": 1.99947341146e-05,
+        "scientific_acceptance": false
+      },
+      "markers": {
+        "T": {
+          "time_us": 19.994734114577188,
+          "mean_cm_s": 7.3979683202410635
+        },
+        "OH": {
+          "time_us": 19.994734114577188,
+          "mean_cm_s": 6.857405056147445
+        }
+      },
+      "scientific_acceptance": false,
+      "signed_heat_release": [
+        {
+          "time_us": 4.994734114580001,
+          "min_W_m3": 1.08447615982e-06,
+          "max_W_m3": 2368859335770.0,
+          "signed_integral_W_m2": 42431357.99235884
+        },
+        {
+          "time_us": 9.99473411458,
+          "min_W_m3": -138181.364858,
+          "max_W_m3": 2309278547270.0,
+          "signed_integral_W_m2": 41938003.460171
+        },
+        {
+          "time_us": 14.9947341146,
+          "min_W_m3": -2703988.29181,
+          "max_W_m3": 2281754437450.0,
+          "signed_integral_W_m2": 41765295.051337264
+        },
+        {
+          "time_us": 19.9947341146,
+          "min_W_m3": -3821886.86668,
+          "max_W_m3": 2269336572790.0,
+          "signed_integral_W_m2": 41725297.70997724
+        }
+      ]
+    }
+  ],
+  "transport_control": {
+    "job": "125041726",
+    "source": "6bf3cb8a7f550aa316a4f4bcfb27474857c85210",
+    "library_job": "125030062",
+    "bridge_job": "124942015",
+    "changed": [
+      "kappa",
+      "Dimix"
+    ],
+    "native_chemistry": true,
+    "original_zero": true,
+    "velocity": "travelling",
+    "end_time_us": 20
+  }
+}

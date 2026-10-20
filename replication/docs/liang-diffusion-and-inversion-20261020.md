@@ -1,10 +1,11 @@
 # Liang Case 5 diffusion and CFD energy qualification
 
-20 October 2026, 17:30 CST. Case 5 remains outside the digitized-paper screen
+20 October 2026, completed-reference-wave update. Case 5 remains outside the digitized-paper screen
 on the rich side. The tested diffusion alternatives do not explain the missing
 Case 4-to-5 reduction. A separate, demonstrated temperature-inversion error is
 fixed and has passed the existing native-library checks. Two short ideal CFD
-diagnostics are running from newly generated zero-time fields. No new 2-D
+diagnostics finished from newly generated zero-time fields. One matched-transport
+control is submitted as 125041726. No new 2-D
 campaign is active.
 
 ## Case 5 findings
@@ -19,7 +20,7 @@ a reduction of 0.152981 cm/s. The current calculation gives 5.807094 and
 | Current baseline | 5.807094 | 5.762399 | 0.044695 |
 | Mass-fraction-gradient formulation | 5.777965 | 5.733245 | 0.044720 |
 | Whole-mixture critical averaging | — | 5.781626 | — |
-| Additional mesh refinement | 5.799594 | Running | Pending |
+| Additional mesh refinement | 5.799594 | 5.754848 | 0.044747 |
 
 Mass-gradient Case 5 remains high by 0.090507 cm/s, or 1.60%; whole-mixture
 critical averaging remains high by 0.138888 cm/s, or 2.46%. Neither passes the
@@ -42,18 +43,32 @@ as the discrepancy's cause. It does not establish the author's transport inputs.
 | Case 5 mass-gradient | 125029635 | 2198 | 0.1556% |
 | Case 5 whole-mixture critical averaging | 125029652 | 2195 | 0.1561% |
 | Case 4 additional refinement | 125027407 | 4021 | 0.1292% |
-| Case 5 additional refinement | 125027408 | Running | Pending |
-| Same Case 5, converged steady numerical guess | 125033536 | Running | Pending |
+| Case 5 additional refinement | 125027408 | 4024 | 0.1310% |
+| Same Case 5, converged steady numerical guess | 125033536 | 4022 | 0.1370% |
 
 All completed flames in this table pass the existing numerical screen. The
 diagnostic source is `116bb7ecd04b524d0c3befc2a769892af4d2d77c`, build 125027773,
 with Cantera SDK 124917358. The additional-refinement jobs use source 97d9ce9
-and build 124951950. They retain the original alpha and energy formulation;
-only a third refinement level is added. The completed first two levels reproduce
-the existing baseline. A running refinement is not a converged result.
+and build 124951950, except the independent-guess job, which uses 116bb7e/125027773.
+They retain the original alpha and energy formulation; only a third refinement
+level is added. Fine Case 5 remains 1.99% above the digitized paper. Independent
+steady guesses differ by 0.000249 cm/s, or 0.00433%. These checks do not establish
+asymptotic grid convergence, but their changes are much smaller than the paper gap.
 Job 125033536 independently starts the steady solve from the completed Case 5
 profile's 2196-point grid to avoid repeating its earlier difficult iterations.
 This is a Cantera numerical guess; no transient CFD state is continued.
+
+Source d4c115d adds a frozen nonideal-driving-force probe, built as 125037886
+and run as 125039385. At each face it evaluates composition derivatives of SRK
+log fugacity at the same midpoint T and p, avoiding an accidental Soret term.
+The additional corrected flux has an L1 magnitude of 2.12% of baseline near
+401 K, 1.07% near 600 K, 0.215% near 1200 K, and 0.0133% near 1800 K.
+These are local flux ratios, not flame-speed errors. The 848 previous coefficient
+and mass-flux checks remain unchanged and pass. A constant-TP Gibbs–Duhem test
+also passes. No flame equation uses this additional term. Giovangigli et al.
+(2011), Section 4.2, describes the chemical-potential driving force, but does not
+establish that Liang used it with Takahashi coefficients. The main Liang article
+specifies binary correction and mixture averaging without its detailed flux equation.
 
 The corrected Takahashi Table 2 coefficient remains in use. Species critical
 parameters and the precise binary-mixture reduction used by Liang remain
@@ -97,17 +112,36 @@ velocity is not counted as a measured CFD flame-speed result.
 
 | Fresh diagnostic | Job | Case source | Library build |
 |---|---|---|---|
-| Profile T/Y, zero initial U | 125032262 | 4a0933835db4655c8a0f692ddacdad6dac3cb9c2 | 125030062 |
-| Same T/Y, travelling-wave U | 125032289 | 4a0933835db4655c8a0f692ddacdad6dac3cb9c2 | 125030062 |
+| Profile T/Y, zero initial U | 125035576 | 5f946723070f100e062852202021c5aeef5ae4c7 | 125030062 |
+| Same T/Y, travelling-wave U | 125035588 | 5f946723070f100e062852202021c5aeef5ae4c7 | 125030062 |
+| Travelling U, Cantera kappa/Dimix | 125041726 | 6bf3cb8a7f550aa316a4f4bcfb27474857c85210 | 125030062 |
 
 These eight-rank jobs have a 20-microsecond endpoint and a one-hour wall limit
 each. They retain native chemistry and transport, current-state species sensible
 enthalpies, and strict linear-solver tolerances. The initial profile hash is
 `09408212459b4f4b318de2310714cba6b4429d169cfad386d84c2c47962d550e`.
 It must match the frozen, screened Case 1 result before case creation.
-At this update both jobs are still evaluating their ideal-mixture increment
-gate before CFD time integration. A running scheduler job does not imply that
-the flame has advanced.
+Both native jobs passed 144/144 ideal-mixture increment checks, distinct CPU
+assignment, original-zero history, and finite-field endpoint checks. Their final
+time is 19.994734 microseconds. This time endpoint is a diagnostic checkpoint.
+
+| Native initialization | T-front speed (cm/s) | OH-front speed (cm/s) | Peak T (K) |
+|---|---:|---:|---:|
+| Zero U | 7.410815 | 6.857385 | 2229.989057 |
+| Travelling U | 7.397968 | 6.857405 | 2229.583992 |
+
+The same reference speed is 7.461703 cm/s. T remains transient, and OH disagrees
+with T. Initial velocity alone therefore does not remove the mismatch. The
+integrated signed Qdot across both fronts at the endpoint is 41.7563 and
+41.7253 MW/m2, respectively; peaks are 2.27141e12 and 2.26934e12 W/m3.
+Small negative Qdot values are retained rather than clipped. Both histories and
+saved-field checks are in `liang-reference-wave-20261020.json`.
+
+Job 125041726 changes only conductivity and mixture diffusivities through
+qualified bridge 124942015. Native chemistry, thermodynamics, inversion,
+strict linear solves, mesh and generated original fields are retained. The bridge
+and reference ideal mechanisms must match byte-for-byte. The previous fresh-state
+audit found native conductivity 6.55% above Cantera, making this a measured lead.
 
 All original-zero fields are generated anew. No CFD checkpoint, positive-time
 directory, or latestTime selection is accepted. Local verification passed
@@ -119,6 +153,11 @@ Initial launch attempts 125031691/125031693 were cancelled and excluded. OF8
 bashrc treats existing positional file arguments as additional shell settings;
 it attempted to source the CSV/JSON inputs. The replacement launcher saves its
 arguments in named variables and clears positional arguments before bashrc.
+Jobs 125032262/125032289 then spent their allocation evaluating the full flame
+mesh for a probe whose verdict only used cell 0. They were cancelled before
+integration. Source 5f94672 instead generates a separate one-cell probe with
+the same cell-0 composition and all 144 test combinations. Original CFD fields
+were verified unchanged before the replacements were launched.
 
 The native energy equation also uses an inert-species diffusion closure where
 the species equations use a mass correction across species. The prior frozen
@@ -128,9 +167,39 @@ for consistency improvement; it is not demonstrated to cause the current speed
 error. The new initialization tests first check whether the qualified solver
 preserves the known flame structure.
 
+## Chemistry integration and source averaging
+
+The existing eight-state probe 124897206 showed close SEULEX/CVODE parity for
+the same concentration/Cp-temperature ODE. That test does not show whether an
+ODE-averaged source preserves a steady reaction-diffusion profile. The new
+read-only `solver-comparison/source_averaging.py` compares each frozen CVODE
+interval with its own instantaneous source. It reuses the matched-reference-
+pressure experiment, with no new chemistry calculation or changed flame model.
+
+| Local ODE interval | Maximum source-vector L1 change across eight states |
+|---|---:|
+| 1 ns | 0.627% |
+| 5 ns | 1.976% |
+| 50 ns | 4.690% |
+| 500 ns | 21.275% |
+
+At approximately 1501 K, a 50-ns average changes OH from -425.178 to
+-122.847 kg/(m3 s). At approximately 1962 K, OH changes sign, from -795.388 to
++846.264 kg/(m3 s). These are net sources, so cancellation can make relative
+species changes large. They do not imply an integrator defect or quantify the
+resulting CFD speed error. The experiment's overridden thermo reference pressure
+is 100000 Pa; the source profile and mechanism hashes remain in the record.
+
+After the transport control, the next controlled comparison reduces the CFD
+chemistry/transport step with the same original fields. The prediction is reduced
+early profile distortion and T/OH disagreement if source averaging is important.
+A clean matched-source/transport comparison must precede any conclusion about
+energy-equation or SEULEX errors. `liang-source-averaging-20261020.json` records
+all four intervals, signed selected-species rates and input identities.
+
 ## Figure and record updates
 
-`liang-figure8a-diffusion-diagnostics-20261020.json` freezes the five completed
+`liang-figure8a-diffusion-diagnostics-20261020.json` freezes the six completed
 diagnostic points with job, model flags, source, profile hash and numerical checks.
 It identifies the unchanged 65-point baseline by SHA256. Pass it to
 `development/cantera-liang/figure_gallery.py` with `--diagnostics` alongside the
@@ -145,6 +214,7 @@ use the 13:05 capture; new diagnostic jobs are not presented as completed data.
 
 The Lark record is updated in the existing
 [Liang Figure 8(a) section](https://qcnwovvb1xop.feishu.cn/docx/KgobdGw8CoIfRCxI2BvcoFYEnCf#doxcnSSnHgwGcFEVThXv7DJEXNf).
-The Case 5 discrepancy remains open. Next checks are the pending refinement and
-traceable transport inputs, followed by measured CFD front evolution and energy
-balance. No staged nonideal CFD or 2-D result is claimed here.
+The Case 5 discrepancy remains open. Refinement and independent guesses did not
+close it. Traceable transport inputs and nonideal driving-force sensitivity remain
+separate leads. CFD transport, source averaging and energy balance are separate
+checks. No staged nonideal CFD or 2-D result is claimed here.
