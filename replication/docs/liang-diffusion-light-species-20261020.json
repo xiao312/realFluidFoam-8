@@ -1,0 +1,1331 @@
+{
+  "cantera_version": "3.2.0",
+  "mechanism_sha256": "c6e72c25dbf5af75a16b71042e071aed15ca4fd4a8a854fd8720a820ce1986c6",
+  "fixture_sha256": "b2ac91df9bb1ab0c1b03067f7372182ba5f23e5d292a0b75187567b63dbe2507",
+  "script_sha256": "22d626db780002614d5cf53f75677591f99e531bfded30dc6e5b7fa96ba8237e",
+  "references": {
+    "schema": 1,
+    "pressure_pa": 101325.0,
+    "hydrogen": {
+      "doi": "10.1299/kikaib.67.189",
+      "url": "https://www.jstage.jst.go.jp/article/kikaib1979/67/653/67_653_189/_pdf",
+      "pdf_sha256": "442c9ebad94a29cb2c20655e60c7cd5aba4bcaa77b8ce6b54dd8990085b85ad9",
+      "location": "Table 1, printed page 190; method and uncertainty on the same page",
+      "definition": "Mutual diffusion measured by Taylor dispersion in the named carrier gas; compare with carrier-dominated trace limit.",
+      "uncertainty": "Author estimates about +/-2%; confidence level unspecified. Do not reduce by sqrt(number of repeats).",
+      "relative_uncertainty": 0.02,
+      "temperature_C": [
+        30,
+        60,
+        90,
+        120,
+        150,
+        180
+      ],
+      "D_unit": "1e-4 m2/s = cm2/s",
+      "series": [
+        {
+          "id": "H2-air",
+          "tracer": "H2",
+          "bath": {
+            "N2": 0.794,
+            "O2": 0.206
+          },
+          "carrier": "air",
+          "repeats": [
+            [
+              0.819,
+              0.821
+            ],
+            [
+              0.976,
+              0.961
+            ],
+            [
+              1.12,
+              1.12,
+              1.12
+            ],
+            [
+              1.3,
+              1.29
+            ],
+            [
+              1.46,
+              1.46
+            ],
+            [
+              1.65,
+              1.66
+            ]
+          ]
+        },
+        {
+          "id": "H2-N2",
+          "tracer": "H2",
+          "bath": {
+            "N2": 1
+          },
+          "carrier": "N2",
+          "repeats": [
+            [
+              0.824,
+              0.817
+            ],
+            [
+              0.962,
+              0.957,
+              0.975,
+              0.963,
+              0.967
+            ],
+            [
+              1.11,
+              1.11,
+              1.12
+            ],
+            [
+              1.27,
+              1.28
+            ],
+            [
+              1.45,
+              1.45
+            ],
+            [
+              1.64,
+              1.61,
+              1.63
+            ]
+          ],
+          "tungsten_TCD_repeat_indices": {
+            "60": [
+              2,
+              3,
+              4
+            ]
+          }
+        },
+        {
+          "id": "N2-H2",
+          "tracer": "N2",
+          "bath": {
+            "H2": 1
+          },
+          "carrier": "H2",
+          "repeats": [
+            [
+              0.804,
+              0.791
+            ],
+            [
+              0.946,
+              0.944
+            ],
+            [
+              1.1,
+              1.09
+            ],
+            [
+              1.24,
+              1.23
+            ],
+            [
+              1.41,
+              1.4
+            ],
+            [
+              1.6,
+              1.6,
+              1.57
+            ]
+          ],
+          "detector": "All repeats tungsten TCD; other entries semiconductor except flagged H2-N2 entries."
+        },
+        {
+          "id": "H2-O2",
+          "tracer": "H2",
+          "bath": {
+            "O2": 1
+          },
+          "carrier": "O2",
+          "repeats": [
+            [
+              0.865,
+              0.85,
+              0.852
+            ],
+            [
+              1.01,
+              1.02
+            ],
+            [
+              1.19,
+              1.18
+            ],
+            [
+              1.37,
+              1.35
+            ],
+            [
+              1.54,
+              1.54
+            ],
+            [
+              1.73,
+              1.74
+            ]
+          ]
+        }
+      ]
+    },
+    "oh_air": {
+      "doi": "10.1021/jp066558w",
+      "url": "https://pubs.acs.org/doi/10.1021/jp066558w",
+      "location": "Primary article abstract; full experimental composition not yet qualified",
+      "temperature_K": 296.0,
+      "Dp_torr_cm2_s": 165.0,
+      "reported_uncertainty_torr_cm2_s": 20.0,
+      "confidence_level": "Not established from the abstract",
+      "qualification": "Exploratory: exact air composition not established. Evaluate 21/79 and bounds for any N2/O2 bath; do not extrapolate measurement to flame temperatures.",
+      "nist_298_K_cm2_s": 0.253,
+      "nist_note": "Separate rounded evaluated value in NIST TN2279 Table 1a at 298 K; no uncertainty assigned here.",
+      "later_study": {
+        "doi": "10.1029/2008GL036170",
+        "url": "https://agupubs.onlinelibrary.wiley.com/doi/full/10.1029/2008GL036170",
+        "location": "Section 3, paragraph 10; Tables 1 and 2",
+        "temperature_K": 300,
+        "Dp_torr_cm2_s": 198,
+        "reported_uncertainty_torr_cm2_s": 20,
+        "method": "OH-air inferred by Blanc's law from OH-He and a 0.7/0.3 He/air mixture. Synthetic air composition not quantified in article text.",
+        "limits": "Separate measurement and temperature from Ivanov 2007; do not pool. Reported OH-air study range 243-318 K, not flame temperatures.",
+        "polar_analogue": "Authors compare measured OH with H2O diffusion calculated from effective Lennard-Jones parameters. This is not the stock GRI30 H2O parameter set.",
+        "effective_LJ_species_sigma_A_epsilon_over_k_K": {
+          "H2O": [
+            2.641,
+            809.1
+          ],
+          "N2": [
+            3.798,
+            71.4
+          ],
+          "O2": [
+            3.467,
+            106.0
+          ]
+        },
+        "effective_LJ_pairs_sigma_A_epsilon_over_k_K": {
+          "H2O-N2": [
+            3.22,
+            240.35
+          ],
+          "H2O-O2": [
+            3.054,
+            293.82
+          ]
+        }
+      }
+    },
+    "nist_fits": {
+      "doi": "10.6028/NIST.TN.2279",
+      "url": "https://nvlpubs.nist.gov/nistpubs/TechnicalNotes/NIST.TN.2279.pdf",
+      "pdf_sha256": "67d9627330960b938b4e9ec92019ea0f5e5c81d5e7ca132f2d1b1c17686d3e45",
+      "location": "Table 1a; ln(D[cm2/s]) = A + B/T[K] + C*ln(T[K]); p = 101325 Pa",
+      "kind": "NIST evaluated reference fits; not individual experimental measurements",
+      "uncertainty": "Printed percent ranges vary with temperature; use the upper value only as a descriptive envelope, not a 95% interval.",
+      "sample_T_K": [
+        300,
+        400,
+        600,
+        900,
+        1200,
+        1500,
+        1800,
+        2000
+      ],
+      "series": [
+        {
+          "pair": [
+            "H2O",
+            "N2"
+          ],
+          "T_range_K": [
+            150,
+            2000
+          ],
+          "A": -10.324,
+          "B": -84.181,
+          "C": 1.62,
+          "uncertainty_percent_range": [
+            2,
+            3
+          ],
+          "reference_number": 25
+        },
+        {
+          "pair": [
+            "H2O",
+            "CO2"
+          ],
+          "T_range_K": [
+            250,
+            2000
+          ],
+          "A": -10.298,
+          "B": -180.06,
+          "C": 1.597,
+          "uncertainty_percent_range": [
+            2,
+            3
+          ],
+          "reference_number": 27
+        },
+        {
+          "pair": [
+            "CH4",
+            "N2"
+          ],
+          "T_range_K": [
+            70,
+            1200
+          ],
+          "A": -10.636,
+          "B": -48.119,
+          "C": 1.637,
+          "uncertainty_percent_range": [
+            2,
+            3
+          ],
+          "reference_number": 16
+        },
+        {
+          "pair": [
+            "O2",
+            "O2"
+          ],
+          "T_range_K": [
+            55,
+            2000
+          ],
+          "A": -10.787,
+          "B": -44.22,
+          "C": 1.649,
+          "uncertainty_percent_range": [
+            2,
+            5
+          ],
+          "reference_number": 29
+        }
+      ]
+    }
+  },
+  "hydrogen": [
+    {
+      "series": "H2-air",
+      "carrier": "air",
+      "temperature_K": 303.15,
+      "reference_cm2_s": 0.82,
+      "repeats_cm2_s": [
+        0.819,
+        0.821
+      ],
+      "uncertainty_cm2_s": 0.016399999999999998,
+      "calculated_cm2_s": {
+        "author": 0.7987964182452041,
+        "stock_gri30": 0.7988134370616131
+      },
+      "residual_percent": -2.585802653023883,
+      "within_estimated_band": false
+    },
+    {
+      "series": "H2-air",
+      "carrier": "air",
+      "temperature_K": 333.15,
+      "reference_cm2_s": 0.9684999999999999,
+      "repeats_cm2_s": [
+        0.976,
+        0.961
+      ],
+      "uncertainty_cm2_s": 0.01937,
+      "calculated_cm2_s": {
+        "author": 0.9380630008954927,
+        "stock_gri30": 0.9380721105552875
+      },
+      "residual_percent": -3.1426947965417895,
+      "within_estimated_band": false
+    },
+    {
+      "series": "H2-air",
+      "carrier": "air",
+      "temperature_K": 363.15,
+      "reference_cm2_s": 1.12,
+      "repeats_cm2_s": [
+        1.12,
+        1.12,
+        1.12
+      ],
+      "uncertainty_cm2_s": 0.022400000000000003,
+      "calculated_cm2_s": {
+        "author": 1.0857668099562072,
+        "stock_gri30": 1.085769290364924
+      },
+      "residual_percent": -3.0565348253386526,
+      "within_estimated_band": false
+    },
+    {
+      "series": "H2-air",
+      "carrier": "air",
+      "temperature_K": 393.15,
+      "reference_cm2_s": 1.295,
+      "repeats_cm2_s": [
+        1.3,
+        1.29
+      ],
+      "uncertainty_cm2_s": 0.0259,
+      "calculated_cm2_s": {
+        "author": 1.2416431605820795,
+        "stock_gri30": 1.2416402054137943
+      },
+      "residual_percent": -4.120219260071078,
+      "within_estimated_band": false
+    },
+    {
+      "series": "H2-air",
+      "carrier": "air",
+      "temperature_K": 423.15,
+      "reference_cm2_s": 1.46,
+      "repeats_cm2_s": [
+        1.46,
+        1.46
+      ],
+      "uncertainty_cm2_s": 0.0292,
+      "calculated_cm2_s": {
+        "author": 1.405458402435333,
+        "stock_gri30": 1.4054511078940852
+      },
+      "residual_percent": -3.7357258605936305,
+      "within_estimated_band": false
+    },
+    {
+      "series": "H2-air",
+      "carrier": "air",
+      "temperature_K": 453.15,
+      "reference_cm2_s": 1.6549999999999998,
+      "repeats_cm2_s": [
+        1.65,
+        1.66
+      ],
+      "uncertainty_cm2_s": 0.0331,
+      "calculated_cm2_s": {
+        "author": 1.5770040958430849,
+        "stock_gri30": 1.5769934565196586
+      },
+      "residual_percent": -4.712743453590029,
+      "within_estimated_band": false
+    },
+    {
+      "series": "H2-N2",
+      "carrier": "N2",
+      "temperature_K": 303.15,
+      "reference_cm2_s": 0.8205,
+      "repeats_cm2_s": [
+        0.824,
+        0.817
+      ],
+      "uncertainty_cm2_s": 0.01641,
+      "calculated_cm2_s": {
+        "author": 0.7929371455864666,
+        "stock_gri30": 0.7929669351594485
+      },
+      "residual_percent": -3.359275370327053,
+      "within_estimated_band": false
+    },
+    {
+      "series": "H2-N2",
+      "carrier": "N2",
+      "temperature_K": 333.15,
+      "reference_cm2_s": 0.9648,
+      "repeats_cm2_s": [
+        0.962,
+        0.957,
+        0.975,
+        0.963,
+        0.967
+      ],
+      "uncertainty_cm2_s": 0.019296,
+      "calculated_cm2_s": {
+        "author": 0.9311101796265049,
+        "stock_gri30": 0.9311293264407214
+      },
+      "residual_percent": -3.4918968048813337,
+      "within_estimated_band": false
+    },
+    {
+      "series": "H2-N2",
+      "carrier": "N2",
+      "temperature_K": 363.15,
+      "reference_cm2_s": 1.1133333333333335,
+      "repeats_cm2_s": [
+        1.11,
+        1.11,
+        1.12
+      ],
+      "uncertainty_cm2_s": 0.02226666666666667,
+      "calculated_cm2_s": {
+        "author": 1.0776522980439989,
+        "stock_gri30": 1.0776623334117907
+      },
+      "residual_percent": -3.2048834092216705,
+      "within_estimated_band": false
+    },
+    {
+      "series": "H2-N2",
+      "carrier": "N2",
+      "temperature_K": 393.15,
+      "reference_cm2_s": 1.275,
+      "repeats_cm2_s": [
+        1.27,
+        1.28
+      ],
+      "uncertainty_cm2_s": 0.0255,
+      "calculated_cm2_s": {
+        "author": 1.2323012659513761,
+        "stock_gri30": 1.2323036368113758
+      },
+      "residual_percent": -3.348920317539117,
+      "within_estimated_band": false
+    },
+    {
+      "series": "H2-N2",
+      "carrier": "N2",
+      "temperature_K": 423.15,
+      "reference_cm2_s": 1.45,
+      "repeats_cm2_s": [
+        1.45,
+        1.45
+      ],
+      "uncertainty_cm2_s": 0.028999999999999998,
+      "calculated_cm2_s": {
+        "author": 1.3948255687041722,
+        "stock_gri30": 1.3948216198002874
+      },
+      "residual_percent": -3.805133192815713,
+      "within_estimated_band": false
+    },
+    {
+      "series": "H2-N2",
+      "carrier": "N2",
+      "temperature_K": 453.15,
+      "reference_cm2_s": 1.6266666666666667,
+      "repeats_cm2_s": [
+        1.64,
+        1.61,
+        1.63
+      ],
+      "uncertainty_cm2_s": 0.03253333333333334,
+      "calculated_cm2_s": {
+        "author": 1.565018649629571,
+        "stock_gri30": 1.5650096151605477
+      },
+      "residual_percent": -3.789837112936212,
+      "within_estimated_band": false
+    },
+    {
+      "series": "N2-H2",
+      "carrier": "H2",
+      "temperature_K": 303.15,
+      "reference_cm2_s": 0.7975000000000001,
+      "repeats_cm2_s": [
+        0.804,
+        0.791
+      ],
+      "uncertainty_cm2_s": 0.015950000000000002,
+      "calculated_cm2_s": {
+        "author": 0.7929371455864667,
+        "stock_gri30": 0.7929669351594486
+      },
+      "residual_percent": -0.5721447540480762,
+      "within_estimated_band": true
+    },
+    {
+      "series": "N2-H2",
+      "carrier": "H2",
+      "temperature_K": 333.15,
+      "reference_cm2_s": 0.945,
+      "repeats_cm2_s": [
+        0.946,
+        0.944
+      ],
+      "uncertainty_cm2_s": 0.0189,
+      "calculated_cm2_s": {
+        "author": 0.9311101796265049,
+        "stock_gri30": 0.9311293264407214
+      },
+      "residual_percent": -1.4698222617455126,
+      "within_estimated_band": true
+    },
+    {
+      "series": "N2-H2",
+      "carrier": "H2",
+      "temperature_K": 363.15,
+      "reference_cm2_s": 1.0950000000000002,
+      "repeats_cm2_s": [
+        1.1,
+        1.09
+      ],
+      "uncertainty_cm2_s": 0.021900000000000003,
+      "calculated_cm2_s": {
+        "author": 1.0776522980439993,
+        "stock_gri30": 1.0776623334117912
+      },
+      "residual_percent": -1.5842650188128693,
+      "within_estimated_band": true
+    },
+    {
+      "series": "N2-H2",
+      "carrier": "H2",
+      "temperature_K": 393.15,
+      "reference_cm2_s": 1.2349999999999999,
+      "repeats_cm2_s": [
+        1.24,
+        1.23
+      ],
+      "uncertainty_cm2_s": 0.0247,
+      "calculated_cm2_s": {
+        "author": 1.2323012659513761,
+        "stock_gri30": 1.2323036368113758
+      },
+      "residual_percent": -0.21852097559706962,
+      "within_estimated_band": true
+    },
+    {
+      "series": "N2-H2",
+      "carrier": "H2",
+      "temperature_K": 423.15,
+      "reference_cm2_s": 1.4049999999999998,
+      "repeats_cm2_s": [
+        1.41,
+        1.4
+      ],
+      "uncertainty_cm2_s": 0.028099999999999997,
+      "calculated_cm2_s": {
+        "author": 1.3948255687041726,
+        "stock_gri30": 1.3948216198002876
+      },
+      "residual_percent": -0.7241588110909025,
+      "within_estimated_band": true
+    },
+    {
+      "series": "N2-H2",
+      "carrier": "H2",
+      "temperature_K": 453.15,
+      "reference_cm2_s": 1.59,
+      "repeats_cm2_s": [
+        1.6,
+        1.6,
+        1.57
+      ],
+      "uncertainty_cm2_s": 0.0318,
+      "calculated_cm2_s": {
+        "author": 1.5650186496295713,
+        "stock_gri30": 1.565009615160548
+      },
+      "residual_percent": -1.5711541113477279,
+      "within_estimated_band": true
+    },
+    {
+      "series": "H2-O2",
+      "carrier": "O2",
+      "temperature_K": 303.15,
+      "reference_cm2_s": 0.8556666666666667,
+      "repeats_cm2_s": [
+        0.865,
+        0.85,
+        0.852
+      ],
+      "uncertainty_cm2_s": 0.017113333333333335,
+      "calculated_cm2_s": {
+        "author": 0.8222140578597902,
+        "stock_gri30": 0.8221781374372957
+      },
+      "residual_percent": -3.9095374530825677,
+      "within_estimated_band": false
+    },
+    {
+      "series": "H2-O2",
+      "carrier": "O2",
+      "temperature_K": 333.15,
+      "reference_cm2_s": 1.0150000000000001,
+      "repeats_cm2_s": [
+        1.01,
+        1.02
+      ],
+      "uncertainty_cm2_s": 0.020300000000000002,
+      "calculated_cm2_s": {
+        "author": 0.9658619463744614,
+        "stock_gri30": 0.9658294196273725
+      },
+      "residual_percent": -4.841187549314152,
+      "within_estimated_band": false
+    },
+    {
+      "series": "H2-O2",
+      "carrier": "O2",
+      "temperature_K": 363.15,
+      "reference_cm2_s": 1.185,
+      "repeats_cm2_s": [
+        1.19,
+        1.18
+      ],
+      "uncertainty_cm2_s": 0.023700000000000002,
+      "calculated_cm2_s": {
+        "author": 1.1182205295407914,
+        "stock_gri30": 1.11819165498126
+      },
+      "residual_percent": -5.6353983509880745,
+      "within_estimated_band": false
+    },
+    {
+      "series": "H2-O2",
+      "carrier": "O2",
+      "temperature_K": 393.15,
+      "reference_cm2_s": 1.36,
+      "repeats_cm2_s": [
+        1.37,
+        1.35
+      ],
+      "uncertainty_cm2_s": 0.027200000000000002,
+      "calculated_cm2_s": {
+        "author": 1.2790152223972846,
+        "stock_gri30": 1.278990156714104
+      },
+      "residual_percent": -5.954763059023193,
+      "within_estimated_band": false
+    },
+    {
+      "series": "H2-O2",
+      "carrier": "O2",
+      "temperature_K": 423.15,
+      "reference_cm2_s": 1.54,
+      "repeats_cm2_s": [
+        1.54,
+        1.54
+      ],
+      "uncertainty_cm2_s": 0.0308,
+      "calculated_cm2_s": {
+        "author": 1.4480037509033454,
+        "stock_gri30": 1.4479825676008293
+      },
+      "residual_percent": -5.9737824088736735,
+      "within_estimated_band": false
+    },
+    {
+      "series": "H2-O2",
+      "carrier": "O2",
+      "temperature_K": 453.15,
+      "reference_cm2_s": 1.7349999999999999,
+      "repeats_cm2_s": [
+        1.73,
+        1.74
+      ],
+      "uncertainty_cm2_s": 0.0347,
+      "calculated_cm2_s": {
+        "author": 1.6249700771210431,
+        "stock_gri30": 1.6249527815334155
+      },
+      "residual_percent": -6.341782298498943,
+      "within_estimated_band": false
+    }
+  ],
+  "nist_fits": [
+    {
+      "series": "H2O-N2",
+      "temperature_K": 300,
+      "reference_cm2_s": 0.2555146009514186,
+      "calculated_cm2_s": {
+        "author": 0.2269551736969916,
+        "stock_gri30": 0.2266130384723007
+      },
+      "residual_percent": -11.17721928534997,
+      "reference_kind": "evaluated temperature fit",
+      "uncertainty_percent_range": [
+        2,
+        3
+      ]
+    },
+    {
+      "series": "H2O-N2",
+      "temperature_K": 400,
+      "reference_cm2_s": 0.436799965434433,
+      "calculated_cm2_s": {
+        "author": 0.3958027389452156,
+        "stock_gri30": 0.39609620456772465
+      },
+      "residual_percent": -9.3858126679205,
+      "reference_kind": "evaluated temperature fit",
+      "uncertainty_percent_range": [
+        2,
+        3
+      ]
+    },
+    {
+      "series": "H2O-N2",
+      "temperature_K": 600,
+      "reference_cm2_s": 0.9036839204803743,
+      "calculated_cm2_s": {
+        "author": 0.8413895318173974,
+        "stock_gri30": 0.8417271563187861
+      },
+      "residual_percent": -6.8933824372865775,
+      "reference_kind": "evaluated temperature fit",
+      "uncertainty_percent_range": [
+        2,
+        3
+      ]
+    },
+    {
+      "series": "H2O-N2",
+      "temperature_K": 900,
+      "reference_cm2_s": 1.82639681459222,
+      "calculated_cm2_s": {
+        "author": 1.734443303659925,
+        "stock_gri30": 1.733892382464224
+      },
+      "residual_percent": -5.034695100080189,
+      "reference_kind": "evaluated temperature fit",
+      "uncertainty_percent_range": [
+        2,
+        3
+      ]
+    },
+    {
+      "series": "H2O-N2",
+      "temperature_K": 1200,
+      "reference_cm2_s": 2.9795540468892163,
+      "calculated_cm2_s": {
+        "author": 2.8547753478928177,
+        "stock_gri30": 2.853863015607627
+      },
+      "residual_percent": -4.187831367807304,
+      "reference_kind": "evaluated temperature fit",
+      "uncertainty_percent_range": [
+        2,
+        3
+      ]
+    },
+    {
+      "series": "H2O-N2",
+      "temperature_K": 1500,
+      "reference_cm2_s": 4.33749225820548,
+      "calculated_cm2_s": {
+        "author": 4.174837030834934,
+        "stock_gri30": 4.174529111214831
+      },
+      "residual_percent": -3.7499831166924236,
+      "reference_kind": "evaluated temperature fit",
+      "uncertainty_percent_range": [
+        2,
+        3
+      ]
+    },
+    {
+      "series": "H2O-N2",
+      "temperature_K": 1800,
+      "reference_cm2_s": 5.88266991994246,
+      "calculated_cm2_s": {
+        "author": 5.67802555807989,
+        "stock_gri30": 5.6789198250816835
+      },
+      "residual_percent": -3.47876669348417,
+      "reference_kind": "evaluated temperature fit",
+      "uncertainty_percent_range": [
+        2,
+        3
+      ]
+    },
+    {
+      "series": "H2O-N2",
+      "temperature_K": 2000,
+      "reference_cm2_s": 7.010236825716208,
+      "calculated_cm2_s": {
+        "author": 6.776450359855382,
+        "stock_gri30": 6.778110054252848
+      },
+      "residual_percent": -3.334929641794826,
+      "reference_kind": "evaluated temperature fit",
+      "uncertainty_percent_range": [
+        2,
+        3
+      ]
+    },
+    {
+      "series": "H2O-CO2",
+      "temperature_K": 300,
+      "reference_cm2_s": 0.16708386817719925,
+      "calculated_cm2_s": {
+        "author": 0.16023936951459322,
+        "stock_gri30": 0.16028326144771543
+      },
+      "residual_percent": -4.096444939464272,
+      "reference_kind": "evaluated temperature fit",
+      "uncertainty_percent_range": [
+        2,
+        3
+      ]
+    },
+    {
+      "series": "H2O-CO2",
+      "temperature_K": 400,
+      "reference_cm2_s": 0.30734600366475096,
+      "calculated_cm2_s": {
+        "author": 0.28629076057176694,
+        "stock_gri30": 0.28613482961977454
+      },
+      "residual_percent": -6.850664346347191,
+      "reference_kind": "evaluated temperature fit",
+      "uncertainty_percent_range": [
+        2,
+        3
+      ]
+    },
+    {
+      "series": "H2O-CO2",
+      "temperature_K": 600,
+      "reference_cm2_s": 0.6823562883469946,
+      "calculated_cm2_s": {
+        "author": 0.6324516105080347,
+        "stock_gri30": 0.6323568004820811
+      },
+      "residual_percent": -7.313580704276035,
+      "reference_kind": "evaluated temperature fit",
+      "uncertainty_percent_range": [
+        2,
+        3
+      ]
+    },
+    {
+      "series": "H2O-CO2",
+      "temperature_K": 900,
+      "reference_cm2_s": 1.4410294735713787,
+      "calculated_cm2_s": {
+        "author": 1.3490048142205784,
+        "stock_gri30": 1.3492926118306001
+      },
+      "residual_percent": -6.386035888824038,
+      "reference_kind": "evaluated temperature fit",
+      "uncertainty_percent_range": [
+        2,
+        3
+      ]
+    },
+    {
+      "series": "H2O-CO2",
+      "temperature_K": 1200,
+      "reference_cm2_s": 2.3984020587112256,
+      "calculated_cm2_s": {
+        "author": 2.2638998436096425,
+        "stock_gri30": 2.264280316189258
+      },
+      "residual_percent": -5.607992813926177,
+      "reference_kind": "evaluated temperature fit",
+      "uncertainty_percent_range": [
+        2,
+        3
+      ]
+    },
+    {
+      "series": "H2O-CO2",
+      "temperature_K": 1500,
+      "reference_cm2_s": 3.5295590854886583,
+      "calculated_cm2_s": {
+        "author": 3.3505137906178377,
+        "stock_gri30": 3.3505695276822927
+      },
+      "residual_percent": -5.0727382807371875,
+      "reference_kind": "evaluated temperature fit",
+      "uncertainty_percent_range": [
+        2,
+        3
+      ]
+    },
+    {
+      "series": "H2O-CO2",
+      "temperature_K": 1800,
+      "reference_cm2_s": 4.817943373690482,
+      "calculated_cm2_s": {
+        "author": 4.591959537386836,
+        "stock_gri30": 4.591466124073939
+      },
+      "residual_percent": -4.690462688658492,
+      "reference_kind": "evaluated temperature fit",
+      "uncertainty_percent_range": [
+        2,
+        3
+      ]
+    },
+    {
+      "series": "H2O-CO2",
+      "temperature_K": 2000,
+      "reference_cm2_s": 5.7581211248272,
+      "calculated_cm2_s": {
+        "author": 5.499843811825092,
+        "stock_gri30": 5.499027014864771
+      },
+      "residual_percent": -4.485444251745562,
+      "reference_kind": "evaluated temperature fit",
+      "uncertainty_percent_range": [
+        2,
+        3
+      ]
+    },
+    {
+      "series": "CH4-N2",
+      "temperature_K": 300,
+      "reference_cm2_s": 0.23239779182701117,
+      "calculated_cm2_s": {
+        "author": 0.22424281355093145,
+        "stock_gri30": 0.22414274243939045
+      },
+      "residual_percent": -3.5090601386393527,
+      "reference_kind": "evaluated temperature fit",
+      "uncertainty_percent_range": [
+        2,
+        3
+      ]
+    },
+    {
+      "series": "CH4-N2",
+      "temperature_K": 400,
+      "reference_cm2_s": 0.38741065040192596,
+      "calculated_cm2_s": {
+        "author": 0.3731818887482077,
+        "stock_gri30": 0.3733093861035568
+      },
+      "residual_percent": -3.6727853606906224,
+      "reference_kind": "evaluated temperature fit",
+      "uncertainty_percent_range": [
+        2,
+        3
+      ]
+    },
+    {
+      "series": "CH4-N2",
+      "temperature_K": 600,
+      "reference_cm2_s": 0.7831551239424206,
+      "calculated_cm2_s": {
+        "author": 0.7511245640548073,
+        "stock_gri30": 0.7512625997304334
+      },
+      "residual_percent": -4.089938111669467,
+      "reference_kind": "evaluated temperature fit",
+      "uncertainty_percent_range": [
+        2,
+        3
+      ]
+    },
+    {
+      "series": "CH4-N2",
+      "temperature_K": 900,
+      "reference_cm2_s": 1.5621368693559798,
+      "calculated_cm2_s": {
+        "author": 1.4906413345745144,
+        "stock_gri30": 1.490448524301882
+      },
+      "residual_percent": -4.576777885726546,
+      "reference_kind": "evaluated temperature fit",
+      "uncertainty_percent_range": [
+        2,
+        3
+      ]
+    },
+    {
+      "series": "CH4-N2",
+      "temperature_K": 1200,
+      "reference_cm2_s": 2.535413178983381,
+      "calculated_cm2_s": {
+        "author": 2.4113340876934455,
+        "stock_gri30": 2.41100018493029
+      },
+      "residual_percent": -4.8938410637940795,
+      "reference_kind": "evaluated temperature fit",
+      "uncertainty_percent_range": [
+        2,
+        3
+      ]
+    },
+    {
+      "series": "O2-O2",
+      "temperature_K": 300,
+      "reference_cm2_s": 0.2167820735762168,
+      "calculated_cm2_s": {
+        "author": 0.20847662068202968,
+        "stock_gri30": 0.20838804199810532
+      },
+      "residual_percent": -3.8312452488222237,
+      "reference_kind": "evaluated temperature fit",
+      "uncertainty_percent_range": [
+        2,
+        5
+      ]
+    },
+    {
+      "series": "O2-O2",
+      "temperature_K": 400,
+      "reference_cm2_s": 0.3614523847526376,
+      "calculated_cm2_s": {
+        "author": 0.34559043198216527,
+        "stock_gri30": 0.34565854186888695
+      },
+      "residual_percent": -4.388393448096228,
+      "reference_kind": "evaluated temperature fit",
+      "uncertainty_percent_range": [
+        2,
+        5
+      ]
+    },
+    {
+      "series": "O2-O2",
+      "temperature_K": 600,
+      "reference_cm2_s": 0.731862226024934,
+      "calculated_cm2_s": {
+        "author": 0.6928914963225222,
+        "stock_gri30": 0.692976373542088
+      },
+      "residual_percent": -5.324872403113212,
+      "reference_kind": "evaluated temperature fit",
+      "uncertainty_percent_range": [
+        2,
+        5
+      ]
+    },
+    {
+      "series": "O2-O2",
+      "temperature_K": 900,
+      "reference_cm2_s": 1.4637704859959746,
+      "calculated_cm2_s": {
+        "author": 1.3718875499207157,
+        "stock_gri30": 1.3717613539387414
+      },
+      "residual_percent": -6.277140914802648,
+      "reference_kind": "evaluated temperature fit",
+      "uncertainty_percent_range": [
+        2,
+        5
+      ]
+    },
+    {
+      "series": "O2-O2",
+      "temperature_K": 1200,
+      "reference_cm2_s": 2.381395599557505,
+      "calculated_cm2_s": {
+        "author": 2.217214894266976,
+        "stock_gri30": 2.216997595348935
+      },
+      "residual_percent": -6.894306234589331,
+      "reference_kind": "evaluated temperature fit",
+      "uncertainty_percent_range": [
+        2,
+        5
+      ]
+    },
+    {
+      "series": "O2-O2",
+      "temperature_K": 1500,
+      "reference_cm2_s": 3.466066641486753,
+      "calculated_cm2_s": {
+        "author": 3.212531339764088,
+        "stock_gri30": 3.2124518862193945
+      },
+      "residual_percent": -7.3147843924291305,
+      "reference_kind": "evaluated temperature fit",
+      "uncertainty_percent_range": [
+        2,
+        5
+      ]
+    },
+    {
+      "series": "O2-O2",
+      "temperature_K": 1800,
+      "reference_cm2_s": 4.704794046713869,
+      "calculated_cm2_s": {
+        "author": 4.346723021232624,
+        "stock_gri30": 4.346925769158943
+      },
+      "residual_percent": -7.610769396618844,
+      "reference_kind": "evaluated temperature fit",
+      "uncertainty_percent_range": [
+        2,
+        5
+      ]
+    },
+    {
+      "series": "O2-O2",
+      "temperature_K": 2000,
+      "reference_cm2_s": 5.611276062470048,
+      "calculated_cm2_s": {
+        "author": 5.175850519758163,
+        "stock_gri30": 5.176234953705254
+      },
+      "residual_percent": -7.759831059180023,
+      "reference_kind": "evaluated temperature fit",
+      "uncertainty_percent_range": [
+        2,
+        5
+      ]
+    }
+  ],
+  "oh_air": {
+    "temperature_K": 296.0,
+    "reference_cm2_s": 0.21710526315789475,
+    "reported_uncertainty_cm2_s": 0.02631578947368421,
+    "calculated_cm2_s": {
+      "author": {
+        "air_21_79": 0.31170319001120694,
+        "N2_limit": 0.31069984672298345,
+        "O2_limit": 0.3155364281941279
+      },
+      "stock_gri30": {
+        "air_21_79": 0.31165987308211457,
+        "N2_limit": 0.3106626314660123,
+        "O2_limit": 0.3154694475910046
+      }
+    },
+    "residual_percent": 43.5723784294044,
+    "validation_eligible": false,
+    "reason": "Exploratory: exact air composition not established. Evaluate 21/79 and bounds for any N2/O2 bath; do not extrapolate measurement to flame temperatures."
+  },
+  "oh_air_followup": {
+    "temperature_K": 300,
+    "reference_cm2_s": 0.26052631578947366,
+    "reported_uncertainty_cm2_s": 0.02631578947368421,
+    "calculated_cm2_s": 0.31912012750033186,
+    "residual_percent": 22.490553990026374,
+    "validation_eligible": false,
+    "reason": "OH-air inferred by Blanc's law from OH-He and a 0.7/0.3 He/air mixture. Synthetic air composition not quantified in article text. Separate measurement and temperature from Ivanov 2007; do not pool. Reported OH-air study range 243-318 K, not flame temperatures."
+  },
+  "transport_inputs": {
+    "H": {
+      "model": "gas",
+      "geometry": "atom",
+      "diameter": 2.05,
+      "well-depth": 145.0
+    },
+    "H2": {
+      "model": "gas",
+      "geometry": "linear",
+      "diameter": 2.9200000000000004,
+      "well-depth": 38.0,
+      "polarizability": 0.7900000000000001,
+      "rotational-relaxation": 280.0
+    },
+    "O": {
+      "model": "gas",
+      "geometry": "atom",
+      "diameter": 2.7500000000000004,
+      "well-depth": 80.0
+    },
+    "OH": {
+      "model": "gas",
+      "geometry": "linear",
+      "diameter": 2.7500000000000004,
+      "well-depth": 80.0
+    },
+    "H2O": {
+      "model": "gas",
+      "geometry": "nonlinear",
+      "diameter": 2.6050000000000004,
+      "well-depth": 572.4,
+      "dipole": 1.8439999999999999,
+      "rotational-relaxation": 4.0
+    },
+    "CH4": {
+      "model": "gas",
+      "geometry": "nonlinear",
+      "diameter": 3.7460000000000004,
+      "well-depth": 141.4,
+      "polarizability": 2.6,
+      "rotational-relaxation": 13.0
+    },
+    "N2": {
+      "model": "gas",
+      "geometry": "linear",
+      "diameter": 3.621,
+      "well-depth": 97.53,
+      "polarizability": 1.76,
+      "rotational-relaxation": 4.0
+    },
+    "O2": {
+      "model": "gas",
+      "geometry": "linear",
+      "diameter": 3.458,
+      "well-depth": 107.4,
+      "polarizability": 1.6,
+      "rotational-relaxation": 3.8
+    }
+  },
+  "summary": {
+    "H2-air": {
+      "within_estimated_band": 0,
+      "count": 6,
+      "residual_percent_range": [
+        -4.712743453590029,
+        -2.585802653023883
+      ]
+    },
+    "H2-N2": {
+      "within_estimated_band": 0,
+      "count": 6,
+      "residual_percent_range": [
+        -3.805133192815713,
+        -3.2048834092216705
+      ]
+    },
+    "N2-H2": {
+      "within_estimated_band": 6,
+      "count": 6,
+      "residual_percent_range": [
+        -1.5842650188128693,
+        -0.21852097559706962
+      ]
+    },
+    "H2-O2": {
+      "within_estimated_band": 0,
+      "count": 6,
+      "residual_percent_range": [
+        -6.341782298498943,
+        -3.9095374530825677
+      ]
+    },
+    "NIST_H2O-N2": {
+      "count": 8,
+      "residual_percent_range": [
+        -11.17721928534997,
+        -3.334929641794826
+      ]
+    },
+    "NIST_H2O-CO2": {
+      "count": 8,
+      "residual_percent_range": [
+        -7.313580704276035,
+        -4.096444939464272
+      ]
+    },
+    "NIST_CH4-N2": {
+      "count": 5,
+      "residual_percent_range": [
+        -4.8938410637940795,
+        -3.5090601386393527
+      ]
+    },
+    "NIST_O2-O2": {
+      "count": 8,
+      "residual_percent_range": [
+        -7.759831059180023,
+        -3.8312452488222237
+      ]
+    }
+  },
+  "maximum_author_stock_relative_difference": 0.001509777314656846,
+  "scientific_acceptance": false,
+  "new_flame_calculation": false
+}

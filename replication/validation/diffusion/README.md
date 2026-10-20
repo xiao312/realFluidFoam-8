@@ -104,3 +104,39 @@ records hashes, actual selected temperatures and all approximation limits.
 It also reports the coefficient change when only the upper Tr clamp is removed.
 That column is an explicitly unqualified extrapolation sensitivity; a large
 clamped denominator fraction need not imply a large change in diffusivity.
+
+## Additional species and measured high-pressure checks
+
+`light_species.py INPUTS/ideal.yaml [--output NEW.json]` reads
+`light-species-reference.json`. It compares author and stock GRI30 transport
+without changing either input. Matsunaga's hydrogen measurements retain their
+carrier direction, replicates and estimated 2% uncertainty (no confidence level
+is supplied). The model is evaluated at the trace limit in the stated carrier;
+the reverse-carrier result tests the composition-independent binary model.
+The OH-air check retains the unknown exact air composition and reports the whole
+N2/O2 bath range. It is exploratory, not an exact-composition acceptance test.
+NIST temperature fits are evaluated only in their published ranges and remain
+evaluated references, not newly obtained experimental points. Their uncertainty
+ranges are reported without inventing a common confidence level.
+Expected result: a reproducible report, including any failed property screens.
+Exit 1 means at least one eligible hydrogen mean is outside the stated band.
+No transport parameter, reaction or flame result is changed.
+
+`self_diffusion.py INPUTS [--output NEW.json]` uses Dawson's pure-methane
+self-diffusion measurements and the independently verified Takahashi Table 2.
+It reports dilute and corrected predictions, the reduced states, and a
+plus-one-atmosphere pressure-basis sensitivity. Points beyond the table range
+are reported separately and do not count as in-range validation. Uncertainty
+components are kept separate; there is no invented 95% acceptance band.
+This is a property calculation, not a flame solve or a new C++ adapter probe.
+Both scripts use the existing pinned Cantera 3.2 dependency and create no files
+unless given a new output path. Run their plans before calculations and inspect
+the source hashes and limits in the JSON reports.
+
+`property_report.py LIGHT.json SELF.json EXISTING.pdf [--output NEW_DIRECTORY]`
+adds two property-comparison pages to the existing verification PDF and exports
+their PNG previews. It uses NumPy/Matplotlib and PyMuPDF, records input hashes,
+and never edits the input PDF. Without output it prints its plan. Inspect both
+new page renders and the combined page count before replacing the existing
+report attachment. All new curves have explicit legends; this report does not
+replace the separate Liang flame-speed comparison.

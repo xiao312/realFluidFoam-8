@@ -1,0 +1,87 @@
+{
+  "schema": 1,
+  "pressure_pa": 101325.0,
+  "hydrogen": {
+    "doi": "10.1299/kikaib.67.189",
+    "url": "https://www.jstage.jst.go.jp/article/kikaib1979/67/653/67_653_189/_pdf",
+    "pdf_sha256": "442c9ebad94a29cb2c20655e60c7cd5aba4bcaa77b8ce6b54dd8990085b85ad9",
+    "location": "Table 1, printed page 190; method and uncertainty on the same page",
+    "definition": "Mutual diffusion measured by Taylor dispersion in the named carrier gas; compare with carrier-dominated trace limit.",
+    "uncertainty": "Author estimates about +/-2%; confidence level unspecified. Do not reduce by sqrt(number of repeats).",
+    "relative_uncertainty": 0.02,
+    "temperature_C": [30, 60, 90, 120, 150, 180],
+    "D_unit": "1e-4 m2/s = cm2/s",
+    "series": [
+      {
+        "id": "H2-air",
+        "tracer": "H2",
+        "bath": {"N2": 0.794, "O2": 0.206},
+        "carrier": "air",
+        "repeats": [[0.819, 0.821], [0.976, 0.961], [1.12, 1.12, 1.12], [1.30, 1.29], [1.46, 1.46], [1.65, 1.66]]
+      },
+      {
+        "id": "H2-N2",
+        "tracer": "H2",
+        "bath": {"N2": 1},
+        "carrier": "N2",
+        "repeats": [[0.824, 0.817], [0.962, 0.957, 0.975, 0.963, 0.967], [1.11, 1.11, 1.12], [1.27, 1.28], [1.45, 1.45], [1.64, 1.61, 1.63]],
+        "tungsten_TCD_repeat_indices": {"60": [2, 3, 4]}
+      },
+      {
+        "id": "N2-H2",
+        "tracer": "N2",
+        "bath": {"H2": 1},
+        "carrier": "H2",
+        "repeats": [[0.804, 0.791], [0.946, 0.944], [1.10, 1.09], [1.24, 1.23], [1.41, 1.40], [1.60, 1.60, 1.57]],
+        "detector": "All repeats tungsten TCD; other entries semiconductor except flagged H2-N2 entries."
+      },
+      {
+        "id": "H2-O2",
+        "tracer": "H2",
+        "bath": {"O2": 1},
+        "carrier": "O2",
+        "repeats": [[0.865, 0.850, 0.852], [1.01, 1.02], [1.19, 1.18], [1.37, 1.35], [1.54, 1.54], [1.73, 1.74]]
+      }
+    ]
+  },
+  "oh_air": {
+    "doi": "10.1021/jp066558w",
+    "url": "https://pubs.acs.org/doi/10.1021/jp066558w",
+    "location": "Primary article abstract; full experimental composition not yet qualified",
+    "temperature_K": 296.0,
+    "Dp_torr_cm2_s": 165.0,
+    "reported_uncertainty_torr_cm2_s": 20.0,
+    "confidence_level": "Not established from the abstract",
+    "qualification": "Exploratory: exact air composition not established. Evaluate 21/79 and bounds for any N2/O2 bath; do not extrapolate measurement to flame temperatures.",
+    "nist_298_K_cm2_s": 0.253,
+    "nist_note": "Separate rounded evaluated value in NIST TN2279 Table 1a at 298 K; no uncertainty assigned here.",
+    "later_study": {
+      "doi": "10.1029/2008GL036170",
+      "url": "https://agupubs.onlinelibrary.wiley.com/doi/full/10.1029/2008GL036170",
+      "location": "Section 3, paragraph 10; Tables 1 and 2",
+      "temperature_K": 300,
+      "Dp_torr_cm2_s": 198,
+      "reported_uncertainty_torr_cm2_s": 20,
+      "method": "OH-air inferred by Blanc's law from OH-He and a 0.7/0.3 He/air mixture. Synthetic air composition not quantified in article text.",
+      "limits": "Separate measurement and temperature from Ivanov 2007; do not pool. Reported OH-air study range 243-318 K, not flame temperatures.",
+      "polar_analogue": "Authors compare measured OH with H2O diffusion calculated from effective Lennard-Jones parameters. This is not the stock GRI30 H2O parameter set.",
+      "effective_LJ_species_sigma_A_epsilon_over_k_K": {"H2O": [2.641, 809.1], "N2": [3.798, 71.4], "O2": [3.467, 106.0]},
+      "effective_LJ_pairs_sigma_A_epsilon_over_k_K": {"H2O-N2": [3.220, 240.35], "H2O-O2": [3.054, 293.82]}
+    }
+  },
+  "nist_fits": {
+    "doi": "10.6028/NIST.TN.2279",
+    "url": "https://nvlpubs.nist.gov/nistpubs/TechnicalNotes/NIST.TN.2279.pdf",
+    "pdf_sha256": "67d9627330960b938b4e9ec92019ea0f5e5c81d5e7ca132f2d1b1c17686d3e45",
+    "location": "Table 1a; ln(D[cm2/s]) = A + B/T[K] + C*ln(T[K]); p = 101325 Pa",
+    "kind": "NIST evaluated reference fits; not individual experimental measurements",
+    "uncertainty": "Printed percent ranges vary with temperature; use the upper value only as a descriptive envelope, not a 95% interval.",
+    "sample_T_K": [300, 400, 600, 900, 1200, 1500, 1800, 2000],
+    "series": [
+      {"pair": ["H2O", "N2"], "T_range_K": [150, 2000], "A": -10.324, "B": -84.181, "C": 1.620, "uncertainty_percent_range": [2, 3], "reference_number": 25},
+      {"pair": ["H2O", "CO2"], "T_range_K": [250, 2000], "A": -10.298, "B": -180.060, "C": 1.597, "uncertainty_percent_range": [2, 3], "reference_number": 27},
+      {"pair": ["CH4", "N2"], "T_range_K": [70, 1200], "A": -10.636, "B": -48.119, "C": 1.637, "uncertainty_percent_range": [2, 3], "reference_number": 16},
+      {"pair": ["O2", "O2"], "T_range_K": [55, 2000], "A": -10.787, "B": -44.220, "C": 1.649, "uncertainty_percent_range": [2, 5], "reference_number": 29}
+    ]
+  }
+}

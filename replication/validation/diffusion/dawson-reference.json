@@ -1,0 +1,346 @@
+{
+  "schema_version": 1,
+  "status": "qualified_for_conditional_self_diffusion_comparison_not_binary_mixture_acceptance",
+  "source": {
+    "title": "Self-diffusion in methane",
+    "author": "Charles Rapier Dawson Jr.",
+    "year_on_thesis": 1966,
+    "catalog_year": 1967,
+    "url": "https://hdl.handle.net/1911/14341",
+    "pdf_url": "https://repository.rice.edu/server/api/core/bitstreams/136a4ce1-fe6e-42d6-b141-b8a7a05c6640/content",
+    "pdf_sha256": "71227eec51a166ecec3dc95bbb185ac784da6f1df6235fae0623c36228745723",
+    "table": "Table I, printed p.104, PDF page 113 (one-based)",
+    "uncertainty_pages": "printed pp.98-100, PDF pages 107-109",
+    "density_method_page": "printed p.61, PDF page70",
+    "companion_article": "https://doi.org/10.1002/aic.690160507",
+    "companion_limit": "1970 article abstract supports absolute pressure but its numerical table was not obtained; do not assert these thesis rows equal the final journal rows."
+  },
+  "property": {
+    "species": "CH4",
+    "definition": "pure-fluid molecular self-diffusion coefficient measured by pulsed NMR",
+    "composition": "nominal pure methane",
+    "thermodynamic_factor_required": false,
+    "reason": "There is no finite binary concentration gradient to convert; do not substitute a binary Fick coefficient or a mixture-averaged coefficient."
+  },
+  "units": {
+    "T_K": "K",
+    "p_psi": "psi as printed; absolute assumed with explicit pressure-basis sensitivity",
+    "rho_g_cm3": "g/cm3",
+    "D_cm2_s": "cm2/s",
+    "rhoD_times_1e6": "(g/(cm s))*1e6",
+    "psi_to_Pa": 6894.757293168,
+    "cm2_s_to_m2_s": 0.0001,
+    "g_cm3_to_kg_m3": 1000
+  },
+  "pressure_basis": {
+    "nominal": "absolute",
+    "qualification": "Table I says PSI only. Companion 1970 article explicitly reports absolute pressure. This is supportive, not direct confirmation of every thesis row.",
+    "required_sensitivity_Pa": 101325,
+    "instruction": "Evaluate nominal p_psi*psi_to_Pa and nominal+101325 Pa. Report whether conclusions change; never overwrite the original values."
+  },
+  "uncertainty": {
+    "gradient_systematic_relative": 0.03,
+    "point_random_relative_about": 0.015,
+    "confidence_level": null,
+    "coverage_factor": null,
+    "combined_95_percent_uncertainty": null,
+    "notes": [
+      "The shared gradient uncertainty is systematic; do not divide by sqrt(number_of_points).",
+      "The roughly 1.5% scatter is not stated as a standard or expanded uncertainty.",
+      "Low-pressure background noise adds uncertainty not quantified point by point.",
+      "A 7% erroneous magnet-operation episode is discussed, but no supplied per-row flag identifies such data; do not apply an invented correction.",
+      "Temperature/pressure errors are described as negligible relative to dominant errors.",
+      "Critical-region density uncertainty is about 10%; selected warm rows avoid the critical-temperature region."
+    ],
+    "screen_if_needed": "A declared engineering screen may use +/-4.5% as a conservative linear sum of the two stated components. It is not a 95% confidence interval, excludes unquantified low-SNR error, and is not the authors combined uncertainty."
+  },
+  "comparison_requirements": [
+    "Use actual author CH4 critical properties in the tested implementation; report them.",
+    "Classify Tr>=1 and 0.1<=Pr<=5 separately from out-of-range states.",
+    "The correlation test is Dself(T,p)=Dself_dilute(T,p)*F(T/Tc,p/Pc), using the same species on both sides; no mixture coefficient or Gamma factor.",
+    "Keep out-of-range rows visible; do not silently rely on the Pr=5 cap as validation.",
+    "A successful self-diffusion comparison does not validate CH4-N2 or H/OH binary diffusion."
+  ],
+  "rows": [
+    {
+      "T_K": 353.8,
+      "p_psi": 993,
+      "rho_g_cm3": 0.03933,
+      "D_cm2_s": 0.004256,
+      "rhoD_times_1e6": 167.4,
+      "id": "dawson-tableI-p104-01"
+    },
+    {
+      "T_K": 353.85,
+      "p_psi": 1256,
+      "rho_g_cm3": 0.05025,
+      "D_cm2_s": 0.003316,
+      "rhoD_times_1e6": 166.6,
+      "id": "dawson-tableI-p104-02"
+    },
+    {
+      "T_K": 353.85,
+      "p_psi": 1680,
+      "rho_g_cm3": 0.06803,
+      "D_cm2_s": 0.002386,
+      "rhoD_times_1e6": 162.3,
+      "id": "dawson-tableI-p104-03"
+    },
+    {
+      "T_K": 353.8,
+      "p_psi": 2138,
+      "rho_g_cm3": 0.08713,
+      "D_cm2_s": 0.001892,
+      "rhoD_times_1e6": 164.8,
+      "id": "dawson-tableI-p104-04"
+    },
+    {
+      "T_K": 353.85,
+      "p_psi": 2640,
+      "rho_g_cm3": 0.10737,
+      "D_cm2_s": 0.001536,
+      "rhoD_times_1e6": 165.0,
+      "id": "dawson-tableI-p104-05"
+    },
+    {
+      "T_K": 353.9,
+      "p_psi": 3498,
+      "rho_g_cm3": 0.13912,
+      "D_cm2_s": 0.001167,
+      "rhoD_times_1e6": 162.4,
+      "id": "dawson-tableI-p104-06"
+    },
+    {
+      "T_K": 353.9,
+      "p_psi": 4699,
+      "rho_g_cm3": 0.17614,
+      "D_cm2_s": 0.0008758,
+      "rhoD_times_1e6": 154.3,
+      "id": "dawson-tableI-p104-07"
+    },
+    {
+      "T_K": 353.9,
+      "p_psi": 6025,
+      "rho_g_cm3": 0.2079,
+      "D_cm2_s": 0.0007213,
+      "rhoD_times_1e6": 150.0,
+      "id": "dawson-tableI-p104-08"
+    },
+    {
+      "T_K": 322.46,
+      "p_psi": 709,
+      "rho_g_cm3": 0.03106,
+      "D_cm2_s": 0.005007,
+      "rhoD_times_1e6": 155.5,
+      "id": "dawson-tableI-p104-09"
+    },
+    {
+      "T_K": 322.46,
+      "p_psi": 945,
+      "rho_g_cm3": 0.04216,
+      "D_cm2_s": 0.003664,
+      "rhoD_times_1e6": 154.5,
+      "id": "dawson-tableI-p104-10"
+    },
+    {
+      "T_K": 322.51,
+      "p_psi": 1185,
+      "rho_g_cm3": 0.05375,
+      "D_cm2_s": 0.002879,
+      "rhoD_times_1e6": 154.7,
+      "id": "dawson-tableI-p104-11"
+    },
+    {
+      "T_K": 322.52,
+      "p_psi": 1489,
+      "rho_g_cm3": 0.06876,
+      "D_cm2_s": 0.002282,
+      "rhoD_times_1e6": 157.0,
+      "id": "dawson-tableI-p104-12"
+    },
+    {
+      "T_K": 322.46,
+      "p_psi": 1851,
+      "rho_g_cm3": 0.08682,
+      "D_cm2_s": 0.0018054,
+      "rhoD_times_1e6": 156.7,
+      "id": "dawson-tableI-p104-13"
+    },
+    {
+      "T_K": 322.46,
+      "p_psi": 2264,
+      "rho_g_cm3": 0.10712,
+      "D_cm2_s": 0.0014484,
+      "rhoD_times_1e6": 155.2,
+      "id": "dawson-tableI-p104-14"
+    },
+    {
+      "T_K": 322.46,
+      "p_psi": 2975,
+      "rho_g_cm3": 0.13965,
+      "D_cm2_s": 0.001096,
+      "rhoD_times_1e6": 153.1,
+      "id": "dawson-tableI-p104-15"
+    },
+    {
+      "T_K": 296.96,
+      "p_psi": 771,
+      "rho_g_cm3": 0.03793,
+      "D_cm2_s": 0.003838,
+      "rhoD_times_1e6": 145.6,
+      "id": "dawson-tableI-p104-16"
+    },
+    {
+      "T_K": 296.96,
+      "p_psi": 982,
+      "rho_g_cm3": 0.04944,
+      "D_cm2_s": 0.002953,
+      "rhoD_times_1e6": 146.0,
+      "id": "dawson-tableI-p104-17"
+    },
+    {
+      "T_K": 296.86,
+      "p_psi": 1386,
+      "rho_g_cm3": 0.07281,
+      "D_cm2_s": 0.002053,
+      "rhoD_times_1e6": 149.5,
+      "id": "dawson-tableI-p104-18"
+    },
+    {
+      "T_K": 296.84,
+      "p_psi": 1846,
+      "rho_g_cm3": 0.1003,
+      "D_cm2_s": 0.0014747,
+      "rhoD_times_1e6": 148.0,
+      "id": "dawson-tableI-p104-19"
+    },
+    {
+      "T_K": 296.81,
+      "p_psi": 2370,
+      "rho_g_cm3": 0.13076,
+      "D_cm2_s": 0.0011241,
+      "rhoD_times_1e6": 147.0,
+      "id": "dawson-tableI-p104-20"
+    },
+    {
+      "T_K": 296.81,
+      "p_psi": 3020,
+      "rho_g_cm3": 0.16405,
+      "D_cm2_s": 0.0008806,
+      "rhoD_times_1e6": 144.5,
+      "id": "dawson-tableI-p104-21"
+    },
+    {
+      "T_K": 296.81,
+      "p_psi": 4161,
+      "rho_g_cm3": 0.2083,
+      "D_cm2_s": 0.0006577,
+      "rhoD_times_1e6": 137.0,
+      "id": "dawson-tableI-p104-22"
+    },
+    {
+      "T_K": 296.81,
+      "p_psi": 5996,
+      "rho_g_cm3": 0.2539,
+      "D_cm2_s": 0.0005018,
+      "rhoD_times_1e6": 127.4,
+      "id": "dawson-tableI-p104-23"
+    },
+    {
+      "T_K": 256.8,
+      "p_psi": 322,
+      "rho_g_cm3": 0.01844,
+      "D_cm2_s": 0.00694,
+      "rhoD_times_1e6": 128.0,
+      "id": "dawson-tableI-p104-24"
+    },
+    {
+      "T_K": 256.83,
+      "p_psi": 451,
+      "rho_g_cm3": 0.02571,
+      "D_cm2_s": 0.005036,
+      "rhoD_times_1e6": 129.5,
+      "id": "dawson-tableI-p104-25"
+    },
+    {
+      "T_K": 256.83,
+      "p_psi": 598,
+      "rho_g_cm3": 0.03524,
+      "D_cm2_s": 0.003634,
+      "rhoD_times_1e6": 128.1,
+      "id": "dawson-tableI-p104-26"
+    },
+    {
+      "T_K": 256.77,
+      "p_psi": 731,
+      "rho_g_cm3": 0.04451,
+      "D_cm2_s": 0.00294,
+      "rhoD_times_1e6": 130.9,
+      "id": "dawson-tableI-p104-27"
+    },
+    {
+      "T_K": 256.7,
+      "p_psi": 928,
+      "rho_g_cm3": 0.05929,
+      "D_cm2_s": 0.002228,
+      "rhoD_times_1e6": 132.1,
+      "id": "dawson-tableI-p104-28"
+    },
+    {
+      "T_K": 256.7,
+      "p_psi": 1115,
+      "rho_g_cm3": 0.07461,
+      "D_cm2_s": 0.001783,
+      "rhoD_times_1e6": 133.0,
+      "id": "dawson-tableI-p104-29"
+    },
+    {
+      "T_K": 256.69,
+      "p_psi": 1447,
+      "rho_g_cm3": 0.10416,
+      "D_cm2_s": 0.001264,
+      "rhoD_times_1e6": 131.7,
+      "id": "dawson-tableI-p104-30"
+    },
+    {
+      "T_K": 256.69,
+      "p_psi": 1816,
+      "rho_g_cm3": 0.13788,
+      "D_cm2_s": 0.0009513,
+      "rhoD_times_1e6": 131.2,
+      "id": "dawson-tableI-p104-31"
+    },
+    {
+      "T_K": 256.69,
+      "p_psi": 2270,
+      "rho_g_cm3": 0.1744,
+      "D_cm2_s": 0.0007314,
+      "rhoD_times_1e6": 127.6,
+      "id": "dawson-tableI-p104-32"
+    },
+    {
+      "T_K": 256.69,
+      "p_psi": 3100,
+      "rho_g_cm3": 0.221,
+      "D_cm2_s": 0.000545,
+      "rhoD_times_1e6": 120.4,
+      "id": "dawson-tableI-p104-33"
+    },
+    {
+      "T_K": 256.66,
+      "p_psi": 4350,
+      "rho_g_cm3": 0.2622,
+      "D_cm2_s": 0.0004192,
+      "rhoD_times_1e6": 109.9,
+      "id": "dawson-tableI-p104-34"
+    },
+    {
+      "T_K": 256.64,
+      "p_psi": 5935,
+      "rho_g_cm3": 0.2939,
+      "D_cm2_s": 0.0003612,
+      "rhoD_times_1e6": 106.2,
+      "id": "dawson-tableI-p104-35"
+    }
+  ]
+}
