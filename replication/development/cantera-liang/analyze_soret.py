@@ -127,6 +127,10 @@ def main():
     require(len(sources) == len(binaries) == len(inputs) == 1, "Unmatched build or inputs")
     require(len({r["phi"] for r in runs}) == 1, "Unmatched equivalence ratio")
     require(all(r["pressure_atm"] == 100 for r in runs), "Expected 100 atm")
+    thermal_models = {"manual-light-species" if "manual-soret" in r["variant"].split(",")
+                      else "cantera-3.2" for r in runs if r["soret"]}
+    require(len(thermal_models) == 1, "Do not combine different thermal-diffusion closures")
+    thermal_model = next(iter(thermal_models))
     diagnostics, tables, pairs = [], {}, []
     by_stage = {}
     for row in runs:
@@ -164,14 +168,17 @@ def main():
     summary = {
         "observation_sha256": digest(args.observation), "script_sha256": digest(Path(__file__)),
         "source_revision": next(iter(sources)), "executable_sha256": next(iter(binaries)),
+        "thermal_model": thermal_model,
         "input_record_sha256": next(iter(inputs)), "phi": runs[0]["phi"],
         "pressure_atm": 100, "Tu_K": 298, "pairs": pairs, "runs": diagnostics,
         "case4_minus_case5_without_soret_cm_s": delta_off,
         "case4_minus_case5_with_soret_cm_s": delta_on,
         "change_in_case4_minus_case5_cm_s": delta_on-delta_off,
         "scientific_acceptance": False,
-        "limits": ["Cantera 3.2 mixture Soret sensitivity, not recovered Liang settings",
-                   "Case 5 uses corrected mixture diffusion with dilute binary collision terms",
+        "limits": [thermal_model+" Soret sensitivity, not recovered Liang settings",
+                   ("Case 5 uses corrected mixture diffusion with dilute binary collision terms"
+                    if thermal_model == "cantera-3.2" else
+                    "Case 5 uses corrected mixture diffusion and physical density in the manual thermal closure"),
                    "Native thermal enthalpy contribution is evaluated on each solved profile"],
     }
     print(json.dumps(summary, indent=2))

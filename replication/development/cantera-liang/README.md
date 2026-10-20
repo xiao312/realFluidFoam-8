@@ -129,7 +129,9 @@ composition derivatives.
 and `baseline_sha256`, which must match the baseline Cantera input file.
 Each entry must identify stage, phi, speed, label, 100-atm pressure, a completed
 job and a passed numerical screen. These appear only in the corresponding
-per-case panel as unconnected squares. Baseline overview curves remain the
+per-case panel as unconnected symbols. Up to eight diagnostic series per case
+use distinct color/marker combinations with matching legends.
+Baseline overview curves remain the
 declared 65-point calculation; a sensitivity point cannot replace a curve.
 The legacy `diagnostics` member in the baseline JSON belongs to `plot.py` and
 does not silently add experiments to this seven-panel gallery.

@@ -4,6 +4,12 @@ from pathlib import Path
 from plot import PAPER_SHA,COLORS,panel_coordinates
 
 LABELS=['Ideal gas','SRK density','SRK enthalpy','Dense conductivity','Takahashi diffusion (Table 2)']
+DIAGNOSTIC_STYLES=[
+    ((.3,.3,.3),'square'), ((.2,.3,.8),'diamond'),
+    ((.3,.5,.2),'triangle'), ((.5,.2,.6),'cross'),
+    ((.1,.5,.55),'x'), ((.6,.35,.05),'down-triangle'),
+    ((.3,.3,.3),'diamond'), ((.7,.2,.4),'triangle'),
+]
 
 def main():
     p=argparse.ArgumentParser(description=__doc__)
@@ -61,8 +67,10 @@ def main():
         items=[series('Liang Case '+str(s)+' (digitized)',rows,(0,0,0),'line' if s in [1,5] else 'square',s in [1,5]),
                series('Cantera Case '+str(s),[r for r in ct['results'] if r['stage']==s],COLORS[s-1],connect=True)]
         for index,row in enumerate(r for r in diagnostics if r['stage']==s):
-            color=(.3,.3,.3) if s==1 else [(.7,0,.2),(.2,.3,.8),(.3,.5,.2),(.5,.2,.6)][index%4]
-            items.append(series(row['label'],[row],color,'square'))
+            if index>=len(DIAGNOSTIC_STYLES):
+                raise ValueError('Too many diagnostic series for distinct legend markers')
+            color,marker=DIAGNOSTIC_STYLES[index]
+            items.append(series(row['label'],[row],color,marker))
         if s==1:
             items+=ours+[series('Stock reactingFoam',point('stock'),(.8,0,.2),'square'),
                          series('DeepFlame dfLowMachFoam',point('deepflame'),(.9,.45,0),'square')]
@@ -109,6 +117,17 @@ def main():
             def marker(pt):
                 if item['marker']=='square':page.draw_rect(f.Rect(pt.x-1.4,pt.y-1.4,pt.x+1.4,pt.y+1.4),color=color,fill=(1,1,1),width=.65)
                 elif item['marker']=='circle':page.draw_circle(pt,1.3,color=color,fill=(1,1,1),width=.65)
+                elif item['marker'] in ['diamond','triangle','down-triangle']:
+                    if item['marker']=='diamond':offsets=[(0,-1.8),(1.8,0),(0,1.8),(-1.8,0)]
+                    elif item['marker']=='triangle':offsets=[(0,-1.8),(1.6,1.2),(-1.6,1.2)]
+                    else:offsets=[(0,1.8),(1.6,-1.2),(-1.6,-1.2)]
+                    vertices=[f.Point(pt.x+dx,pt.y+dy) for dx,dy in offsets]
+                    page.draw_polyline(vertices+[vertices[0]],color=color,fill=(1,1,1),width=.65)
+                elif item['marker'] in ['cross','x']:
+                    segments=([(-1.6,0,1.6,0),(0,-1.6,0,1.6)] if item['marker']=='cross'
+                              else [(-1.3,-1.3,1.3,1.3),(-1.3,1.3,1.3,-1.3)])
+                    for x0,y0,x1,y1 in segments:
+                        page.draw_line(f.Point(pt.x+x0,pt.y+y0),f.Point(pt.x+x1,pt.y+y1),color=color,width=.65)
                 else:page.draw_line(f.Point(pt.x-3,pt.y),f.Point(pt.x+3,pt.y),color=color,width=.8)
             if item['marker']!='line':
                 for pt in points:marker(pt)

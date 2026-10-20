@@ -1,0 +1,355 @@
+{
+  "baseline_sha256": "79da2c0f01c053b619135ec1ee766aa9d75877230b938e1582e8a9d4225f0d9d",
+  "observed_utc": "2026-10-20T19:26:12.413763+00:00",
+  "diagnostics": [
+    {
+      "stage": 4,
+      "phi": 1.4,
+      "speed_cm_s": 5.799594400369154,
+      "label": "Cantera: extra mesh refinement",
+      "job": "125027407",
+      "pressure_atm": 100,
+      "screen_passed": true,
+      "source": "97d9ce998ee5d5afcf4a41ad7026070ed9fe918d",
+      "variant": "dense-increment,bounded-takahashi,pressure-chemistry,takahashi-table2,fine-grid",
+      "profile_sha256": "2a7bc2454a9853ab70f9edc30d4f3961950a03012fdce2ec49b5db31077685ba",
+      "screen": {
+        "stage": 4,
+        "phi": 1.4,
+        "speed_cm_s": 5.799594400369154,
+        "last_refinement_relative_change": 0.001291533652858834,
+        "mass_flux_relative_range": 9.34957066393722e-10,
+        "maximum_species_sum_error": 9.164173864206759e-10,
+        "minimum_mass_fraction": -3.679625868379352e-12,
+        "points": 4021,
+        "scientific_acceptance": false,
+        "remaining": [
+          "domain sensitivity",
+          "initial-guess sensitivity",
+          "publication parameter uncertainty"
+        ]
+      }
+    },
+    {
+      "stage": 1,
+      "phi": 1.4,
+      "speed_cm_s": 6.086412954715525,
+      "label": "Cantera: mass-gradient",
+      "job": "125029569",
+      "pressure_atm": 100,
+      "screen_passed": true,
+      "source": "116bb7ecd04b524d0c3befc2a769892af4d2d77c",
+      "variant": "mass-gradient",
+      "profile_sha256": "3c8a92b2dd37c08a844f41d27623bb9ad2832bc6dae9fd5e4d47c23c56f58cc1",
+      "screen": {
+        "stage": 1,
+        "phi": 1.4,
+        "speed_cm_s": 6.086412954715525,
+        "last_refinement_relative_change": 0.0012539302598711943,
+        "mass_flux_relative_range": 8.287975649468396e-10,
+        "maximum_species_sum_error": 6.977580735423317e-10,
+        "minimum_mass_fraction": -2.374300856851014e-13,
+        "points": 2263,
+        "scientific_acceptance": false,
+        "remaining": [
+          "domain sensitivity",
+          "initial-guess sensitivity",
+          "publication parameter uncertainty"
+        ]
+      }
+    },
+    {
+      "stage": 4,
+      "phi": 1.4,
+      "speed_cm_s": 5.777964715655865,
+      "label": "Cantera: mass-gradient",
+      "job": "125029619",
+      "pressure_atm": 100,
+      "screen_passed": true,
+      "source": "116bb7ecd04b524d0c3befc2a769892af4d2d77c",
+      "variant": "dense-increment,bounded-takahashi,pressure-chemistry,takahashi-table2,mass-gradient",
+      "profile_sha256": "4525dfe2d0e1a920a5268a6e46889684fc035073ea2da2164b6d8fc0c89a6a2e",
+      "screen": {
+        "stage": 4,
+        "phi": 1.4,
+        "speed_cm_s": 5.777964715655865,
+        "last_refinement_relative_change": 0.0016849674939035664,
+        "mass_flux_relative_range": 4.047389734410541e-10,
+        "maximum_species_sum_error": 3.7618286263807477e-10,
+        "minimum_mass_fraction": -3.35963951355424e-12,
+        "points": 2204,
+        "scientific_acceptance": false,
+        "remaining": [
+          "domain sensitivity",
+          "initial-guess sensitivity",
+          "publication parameter uncertainty"
+        ]
+      }
+    },
+    {
+      "stage": 5,
+      "phi": 1.4,
+      "speed_cm_s": 5.733245034254556,
+      "label": "Cantera: mass-gradient",
+      "job": "125029635",
+      "pressure_atm": 100,
+      "screen_passed": true,
+      "source": "116bb7ecd04b524d0c3befc2a769892af4d2d77c",
+      "variant": "dense-increment,bounded-takahashi,pressure-chemistry,takahashi-table2,mass-gradient",
+      "profile_sha256": "65329948bf7b166428965dedf614f9823e4cfc71ff21cf0c585aedc712ca8bb5",
+      "screen": {
+        "stage": 5,
+        "phi": 1.4,
+        "speed_cm_s": 5.733245034254556,
+        "last_refinement_relative_change": 0.0015562909560085103,
+        "mass_flux_relative_range": 1.724555298544886e-09,
+        "maximum_species_sum_error": 9.263121381053452e-10,
+        "minimum_mass_fraction": -6.055053223774013e-12,
+        "points": 2198,
+        "scientific_acceptance": false,
+        "remaining": [
+          "domain sensitivity",
+          "initial-guess sensitivity",
+          "publication parameter uncertainty"
+        ]
+      }
+    },
+    {
+      "stage": 5,
+      "phi": 1.4,
+      "speed_cm_s": 5.781626210277715,
+      "label": "Cantera: bulk critical data",
+      "job": "125029652",
+      "pressure_atm": 100,
+      "screen_passed": true,
+      "source": "116bb7ecd04b524d0c3befc2a769892af4d2d77c",
+      "variant": "dense-increment,bounded-takahashi,pressure-chemistry,takahashi-table2,takahashi-bulk",
+      "profile_sha256": "15a816e5e492ecfc233fca87a32f25fa259d3165e122f3aa74bb3867bfba54d4",
+      "screen": {
+        "stage": 5,
+        "phi": 1.4,
+        "speed_cm_s": 5.781626210277715,
+        "last_refinement_relative_change": 0.001560721357473982,
+        "mass_flux_relative_range": 1.6085384819710578e-10,
+        "maximum_species_sum_error": 6.225064907994238e-11,
+        "minimum_mass_fraction": -2.341164660185707e-13,
+        "points": 2195,
+        "scientific_acceptance": false,
+        "remaining": [
+          "domain sensitivity",
+          "initial-guess sensitivity",
+          "publication parameter uncertainty"
+        ]
+      }
+    },
+    {
+      "stage": 5,
+      "phi": 1.4,
+      "speed_cm_s": 5.754847862575295,
+      "label": "Cantera: extra mesh refinement",
+      "job": "125027408",
+      "pressure_atm": 100,
+      "screen_passed": true,
+      "source": "97d9ce998ee5d5afcf4a41ad7026070ed9fe918d",
+      "variant": "dense-increment,bounded-takahashi,pressure-chemistry,takahashi-table2,fine-grid",
+      "profile_sha256": "f8affaa60e4fa964c9707da3d4b041f33705b042041a0b120807469d288ad5c5",
+      "screen": {
+        "stage": 5,
+        "phi": 1.4,
+        "speed_cm_s": 5.754847862575295,
+        "last_refinement_relative_change": 0.0013104787976304655,
+        "mass_flux_relative_range": 2.212684188618877e-09,
+        "maximum_species_sum_error": 1.9251101823769545e-09,
+        "minimum_mass_fraction": -3.880479134519793e-11,
+        "points": 4024,
+        "scientific_acceptance": false,
+        "remaining": [
+          "domain sensitivity",
+          "publication parameter uncertainty"
+        ]
+      }
+    },
+    {
+      "stage": 4,
+      "phi": 1.4,
+      "speed_cm_s": 5.807463280452708,
+      "label": "Cantera: nonideal driving force",
+      "job": "125045311",
+      "pressure_atm": 100,
+      "screen_passed": true,
+      "source": "8d5d6405f35c256e59b334b50bc40f8b558ef832",
+      "variant": "dense-increment,bounded-takahashi,pressure-chemistry,takahashi-table2,nonideal-driving",
+      "profile_sha256": "f58f7ad87ed37596c3b560ebf514f75c2c65fbc2b91c9a81c9d15d535114ecc8",
+      "screen": {
+        "stage": 4,
+        "phi": 1.4,
+        "speed_cm_s": 5.807463280452708,
+        "last_refinement_relative_change": 7.926122629786647e-06,
+        "mass_flux_relative_range": 1.820521574535954e-10,
+        "maximum_species_sum_error": 1.9504797776903615e-10,
+        "minimum_mass_fraction": -1.988442941870116e-12,
+        "points": 2202,
+        "scientific_acceptance": false,
+        "remaining": [
+          "domain sensitivity",
+          "initial-guess sensitivity",
+          "publication parameter uncertainty"
+        ]
+      }
+    },
+    {
+      "stage": 5,
+      "phi": 1.4,
+      "speed_cm_s": 5.762671953054699,
+      "label": "Cantera: nonideal driving force",
+      "job": "125045316",
+      "pressure_atm": 100,
+      "screen_passed": true,
+      "source": "8d5d6405f35c256e59b334b50bc40f8b558ef832",
+      "variant": "dense-increment,bounded-takahashi,pressure-chemistry,takahashi-table2,nonideal-driving",
+      "profile_sha256": "30e0a25a820ac59b0393f14ba8fc283c4f5179d64352abde7f8452c3a2ee52c1",
+      "screen": {
+        "stage": 5,
+        "phi": 1.4,
+        "speed_cm_s": 5.762671953054699,
+        "last_refinement_relative_change": 3.6451825609074007e-06,
+        "mass_flux_relative_range": 4.2761682841964844e-10,
+        "maximum_species_sum_error": 4.353530869138922e-10,
+        "minimum_mass_fraction": -2.592555226848817e-13,
+        "points": 2200,
+        "scientific_acceptance": false,
+        "remaining": [
+          "domain sensitivity",
+          "initial-guess sensitivity",
+          "publication parameter uncertainty"
+        ]
+      }
+    },
+    {
+      "stage": 1,
+      "phi": 1.4,
+      "pressure_atm": 100,
+      "speed_cm_s": 6.041508598333742,
+      "label": "Cantera: Soret (3.2 formulation)",
+      "job": "125085885",
+      "screen_passed": true,
+      "source": "c9c2c55b3db6b9b6f379026ad94ff4fdea17d34c",
+      "build": 125085658,
+      "variant": "soret",
+      "executable_sha256": "0ff9966ece7d6d822699b4a1b3c37e9988358af2df7de7965bab70ff3322735c",
+      "profile_sha256": "e41b740c7f310b54de5288ccad61db3987ac11a2c84a89aea91762f3d63e8f00",
+      "screen": {
+        "stage": 1,
+        "phi": 1.4,
+        "speed_cm_s": 6.041508598333742,
+        "last_refinement_relative_change": 0.0005157083049067701,
+        "mass_flux_relative_range": 1.9887793055514815e-10,
+        "maximum_species_sum_error": 8.86473117134301e-11,
+        "minimum_mass_fraction": -8.260134865029924e-14,
+        "points": 2193,
+        "scientific_acceptance": false,
+        "remaining": [
+          "domain sensitivity",
+          "initial-guess sensitivity",
+          "publication parameter uncertainty"
+        ]
+      }
+    },
+    {
+      "stage": 4,
+      "phi": 1.4,
+      "pressure_atm": 100,
+      "speed_cm_s": 5.736048405361223,
+      "label": "Cantera: Soret (3.2 formulation)",
+      "job": "125085926",
+      "screen_passed": true,
+      "source": "c9c2c55b3db6b9b6f379026ad94ff4fdea17d34c",
+      "build": 125085658,
+      "variant": "dense-increment,bounded-takahashi,pressure-chemistry,takahashi-table2,soret",
+      "executable_sha256": "0ff9966ece7d6d822699b4a1b3c37e9988358af2df7de7965bab70ff3322735c",
+      "profile_sha256": "ae363ee3fa1ca50b93ff0cc4cfd94f2cd79fe3e24153e2f70d8a464112fbcc6a",
+      "screen": {
+        "stage": 4,
+        "phi": 1.4,
+        "speed_cm_s": 5.736048405361223,
+        "last_refinement_relative_change": 0.0007281765914095573,
+        "mass_flux_relative_range": 1.6015856324235433e-10,
+        "maximum_species_sum_error": 5.694078542006764e-11,
+        "minimum_mass_fraction": -7.084977859755213e-13,
+        "points": 2144,
+        "scientific_acceptance": false,
+        "remaining": [
+          "domain sensitivity",
+          "initial-guess sensitivity",
+          "publication parameter uncertainty"
+        ]
+      }
+    },
+    {
+      "stage": 5,
+      "phi": 1.4,
+      "pressure_atm": 100,
+      "speed_cm_s": 5.690929398076037,
+      "label": "Cantera: Soret (3.2 formulation)",
+      "job": "125085934",
+      "screen_passed": true,
+      "source": "c9c2c55b3db6b9b6f379026ad94ff4fdea17d34c",
+      "build": 125085658,
+      "variant": "dense-increment,bounded-takahashi,pressure-chemistry,takahashi-table2,soret",
+      "executable_sha256": "0ff9966ece7d6d822699b4a1b3c37e9988358af2df7de7965bab70ff3322735c",
+      "profile_sha256": "10abb31d4f84f7815835225d4d2e1647f73f7906bffa29686c2b0c60231c1aa7",
+      "screen": {
+        "stage": 5,
+        "phi": 1.4,
+        "speed_cm_s": 5.690929398076037,
+        "last_refinement_relative_change": 0.0006212175358574212,
+        "mass_flux_relative_range": 1.7626991725972145e-10,
+        "maximum_species_sum_error": 7.823386383165598e-11,
+        "minimum_mass_fraction": -5.560641225143414e-13,
+        "points": 2122,
+        "scientific_acceptance": false,
+        "remaining": [
+          "domain sensitivity",
+          "initial-guess sensitivity",
+          "publication parameter uncertainty"
+        ]
+      }
+    }
+  ],
+  "independent_seed_check": {
+    "job": "125033536",
+    "stage": 5,
+    "phi": 1.4,
+    "source": "116bb7ecd04b524d0c3befc2a769892af4d2d77c",
+    "speed_cm_s": 5.754598785607148,
+    "points": 4022,
+    "screen_passed": true,
+    "last_refinement_relative_change": 0.0013697238068807183,
+    "profile_sha256": "12262c7a9a0cd75fd896a556337c7f70e6ebc97ac6271149d65dce6304c76bdd",
+    "kind": "steady Cantera numerical guess; no transient CFD restart"
+  },
+  "driving_ideal_control": {
+    "job": "125045302",
+    "screen": {
+      "stage": 1,
+      "phi": 1.1,
+      "speed_cm_s": 7.461820426150887,
+      "last_refinement_relative_change": 4.917993606801119e-06,
+      "mass_flux_relative_range": 1.0167966085946165e-10,
+      "maximum_species_sum_error": 7.137024304881834e-11,
+      "minimum_mass_fraction": -1.620267782424071e-12,
+      "points": 2133,
+      "scientific_acceptance": false,
+      "remaining": [
+        "domain sensitivity",
+        "initial-guess sensitivity",
+        "publication parameter uncertainty"
+      ]
+    },
+    "source": "8d5d6405f35c256e59b334b50bc40f8b558ef832",
+    "variant": "nonideal-driving",
+    "profile_sha256": "0c18409beddda7fd87bc798976f60f09ca77a794f19b846e562bf6b506782a70",
+    "refinement": "stage,phi,slope,curve,points,speed_cm_s\n1,1.1,0.0075,0.0125,2133,7.461783729146212\n1,1.1,0.00375,0.00625,2133,7.461820426150887\n"
+  },
+  "thermal_diffusion_record": "liang-soret-controls-20261021.json"
+}
