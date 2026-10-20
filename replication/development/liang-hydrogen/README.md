@@ -24,7 +24,8 @@ Without `--pairs`, preparation makes an explicitly named LJ control.
 Liang does not state whether his calculations enabled this author extension.
 The polynomial temperature validity interval is not stated in the source.
 
-`flame INPUT CASE PHI OUTPUT [GUESS|-] [WIDTH_M] [TU_K] [VARIANT]` runs 100-atm H2/air.
+`flame INPUT CASE PHI OUTPUT [GUESS|-] [WIDTH_M] [TU_K] [VARIANT] [GRID_FACTOR]`
+runs 100-atm H2/air.
 Cases are `1`, `2`, `3`, `3star`, `4`, and `5`. Cases 3–5 initially use the existing
 total-enthalpy residual; baseline 3star uses stock Cantera's partial-enthalpy
 temperature residual and is not established as Liang's Case 3* implementation.
@@ -46,6 +47,15 @@ species enthalpies to their pure values. `pure-temperature` implements the
 pure-species temperature approximation in Liang reference 8, including
 Cp=sum(Y Cp_pure). Each energy variant is also usable with ideal Case 1 for
 parity and grid tests. `EnergyFlows.h` owns these isolated energy residuals.
+Prefix any variant with `smooth-` to select the already tested C4 continuation
+of the Soave alpha function. This is a separately named diagnostic, not Liang's
+reported model. It sets both phase and transport SRK evaluations consistently.
+`GRID_FACTOR` is 1 (default), 2 or 4. Every interval of the initial grid is
+subdivided by this factor before solving, while the same numerical guess is
+interpolated onto it. This tests actual global grid refinement even when the
+adaptive error criteria would otherwise retain nearly every initial node.
+The original grid and final grid sizes are recorded. The grid limit rises to
+12000 for this explicit refinement diagnostic.
 
 An ideal HP equilibrium profile supplies only the initial steady-solver guess.
 An optional solved CSV guess is also only a steady numerical initial guess.

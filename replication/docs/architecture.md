@@ -6,6 +6,11 @@ pressure-chemistry and total-enthalpy adapters. It supplies Figures 3–7 with
 steady hydrogen flame and transport profiles; Figure 2 remains the independent
 `liang-properties` critical audit. Downloaded mechanism files stay outside Git.
 Its bounded Slurm jobs have no production CFD or transient-restart dependency.
+Its read-only collector retrieves selected small job artifacts. The independent
+NumPy/PyMuPDF renderer overlays those profiles on the locally supplied paper
+panels and exports PNG/PDF evidence; it never changes models or submits jobs.
+The energy diagnostics reuse the previously qualified SRK C4 alpha continuation
+and can explicitly subdivide every initial-grid interval for convergence checks.
 
 `validation/diffusion` consumes committed Liang flame comparisons, primary-source
 diffusion fixtures, author mechanism inputs and the pinned Cantera 3.2 SDK. Its

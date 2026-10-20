@@ -12,12 +12,17 @@ namespace fs=std::filesystem;
 
 int main(int argc,char** argv) {
 try {
-    if(argc<5 || argc>9)throw std::runtime_error("Usage: flame INPUT CASE PHI NEW_OUTPUT [GUESS|-] [WIDTH_M] [TU_K] [VARIANT]");
+    if(argc<5 || argc>10)throw std::runtime_error("Usage: flame INPUT CASE PHI NEW_OUTPUT [GUESS|-] [WIDTH_M] [TU_K] [VARIANT] [GRID_FACTOR]");
     fs::path input=argv[1],output=argv[4];std::string label=argv[2];
     const int stage=label=="3star"?3:std::stoi(label);
     const double phi=std::stod(argv[3]),pressure=100*OneAtm;
     const double width=argc>=7?std::stod(argv[6]):.01,Tu=argc>=8?std::stod(argv[7]):298.;
-    const std::string variant=argc>=9?argv[8]:"baseline";
+    const std::string requestedVariant=argc>=9?argv[8]:"baseline";
+    const bool smooth=requestedVariant.rfind("smooth-",0)==0;
+    const std::string variant=smooth?requestedVariant.substr(7):requestedVariant;
+    const int gridFactor=argc>=10?std::stoi(argv[9]):1;
+    if(gridFactor!=1 && gridFactor!=2 && gridFactor!=4)
+        throw std::runtime_error("GRID_FACTOR must be 1, 2 or 4");
     const bool pureFlux=variant=="pure-flux" || variant=="pure-flux-full-conductivity" || variant=="pure-flux-matched-energy";
     const bool fullConductivity=variant=="full-conductivity" || variant=="pure-flux-full-conductivity";
     const bool matchedEnergy=variant=="matched-energy" || variant=="pure-flux-matched-energy";
@@ -36,18 +41,21 @@ try {
     ThermoFactory::factory()->reg("liang-srk",[](){auto* g=new liang::SrkPhase;g->stage=1;return g;});
     TransportFactory::factory()->reg("hydrogen-staged",[&](){
         auto* t=new hydrogen::Transport;t->pairs=pairs;t->parameters=parameters;t->stage=stage;
-        t->denseIncrementOnly=!fullConductivity;t->boundedTakahashi=true;t->table2=true;return t;
+        t->denseIncrementOnly=!fullConductivity;t->boundedTakahashi=true;t->table2=true;
+        t->smoothedAlpha=smooth;return t;
     });
     TransportFactory::factory()->reg("hydrogen-full",[&](){
         auto* t=new hydrogen::Transport;t->pairs=pairs;t->parameters=parameters;t->stage=5;
-        t->denseIncrementOnly=!fullConductivity;t->boundedTakahashi=true;t->table2=true;return t;
+        t->denseIncrementOnly=!fullConductivity;t->boundedTakahashi=true;t->table2=true;
+        t->smoothedAlpha=smooth;return t;
     });
     TransportFactory::factory()->reg("hydrogen-dilute",[&](){
         auto* t=new hydrogen::Transport;t->pairs=pairs;t->parameters=parameters;t->stage=1;return t;
     });
     auto activate=[&](std::shared_ptr<Solution> s,int modelStage) {
         if(auto* g=dynamic_cast<liang::SrkPhase*>(s->thermo().get())) {
-            g->parameters=parameters;g->stage=modelStage;g->setState_TP(Tu,pressure);
+            g->parameters=parameters;g->stage=modelStage;g->smoothedAlpha=smooth;
+            g->setState_TP(Tu,pressure);
         }
     };
     auto ideal=newSolution((input/"ideal.yaml").string(),"","hydrogen-dilute");
@@ -56,6 +64,11 @@ try {
         if(ideal->thermo()->speciesName(k)!=names[k])throw std::runtime_error("Species order mismatch");
     auto guess=hydrogen::initialGuess(ideal,phi,Tu,pressure,width);
     if(argc>=6 && std::string(argv[5])!="-")guess=hydrogen::readGuess(argv[5],names.size());
+    std::vector<double> grid;
+    for(size_t j=0;j+1<guess.x.size();j++)
+        for(int part=0;part<gridFactor;part++)
+            grid.push_back(guess.x[j]+double(part)/gridFactor*(guess.x[j+1]-guess.x[j]));
+    grid.push_back(guess.x.back());
     auto sol=newSolution((input/(stage==1?"ideal.yaml":"srk.yaml")).string(),"",
                          "hydrogen-staged");
     activate(sol,stage);auto gas=sol->thermo();
@@ -68,9 +81,13 @@ try {
     config<<std::setprecision(16)<<"case "<<label<<"\nphi "<<phi<<"\npressure_Pa "<<pressure
           <<"\nTu_K "<<Tu<<"\nwidth_m "<<guess.x.back()-guess.x.front()
           <<"\nkinetics Burke2012-N2-pressure\ntransport author-pair-count "<<pairs.size()
-          <<"\nmodel_variant "<<variant<<"\nconductivity "<<(fullConductivity?"full-Ely-Hanley":"dense-increment-diagnostic")
+          <<"\nmodel_variant "<<requestedVariant<<"\nalpha "<<(smooth?"C4-continuation":"original-Soave")
+          <<"\ngrid_factor "<<gridFactor<<"\ninitial_grid_points "<<grid.size()
+          <<"\nconductivity "<<(fullConductivity?"full-Ely-Hanley":"dense-increment-diagnostic")
           <<"\nTakahashi bounded-Table2"
-          <<"\nSoret off\nenergy "<<(stage>=3 && label!="3star"?"total-enthalpy":"temperature")<<'\n';
+          <<"\nSoret off\nenergy "<<(pureTemperature?"pure-temperature":
+              matchedEnergy?"matched-total-enthalpy":
+              stage>=3 && label!="3star"?"legacy-total-enthalpy":"partial-temperature")<<'\n';
     std::ofstream checks(output/"property-checks.csv");
     checks<<"T_K,relative_cp_fd_error,relative_enthalpy_euler_error\n"<<std::setprecision(16);
     for(double T:{Tu,900.,1800.,2400.}) {
@@ -92,13 +109,13 @@ try {
     else if(stage>=3 && label!="3star")flow=std::make_shared<liang::TotalEnthalpyFlow>(sol,pureFlux);
     else flow=newDomain<Flow1D>("gas-flow",sol,"flow");
     flow->setFreeFlow();flow->setPressure(pressure);
-    flow->setupGrid(guess.x.size(),guess.x.data());flow->setSteadyTolerances(1e-5,1e-11);
+    flow->setupGrid(grid.size(),grid.data());flow->setSteadyTolerances(1e-5,1e-11);
     flow->setFluxGradientBasis(ThermoBasis::molar);flow->enableSoret(false);
     auto inlet=newDomain<Inlet1D>("inlet",sol);inlet->setTemperature(Tu);
     inlet->setMoleFractions(xin.data());inlet->setMdot(rho*guess.u[0]);
     auto outlet=newDomain<Outlet1D>("outlet",sol);
     std::vector<std::shared_ptr<Domain1D>> domains{inlet,flow,outlet};
-    Sim1D flame(domains);flame.setMaxGridPoints(1,6000);
+    Sim1D flame(domains);flame.setMaxGridPoints(1,gridFactor>1?12000:6000);
     auto loc=guess.x;for(auto& x:loc)x=(x-guess.x.front())/(guess.x.back()-guess.x.front());
     flow->setProfile("T",loc,guess.T);flow->setProfile("velocity",loc,guess.u);
     for(size_t k=0;k<names.size();k++)flow->setProfile(names[k],loc,guess.y[k]);

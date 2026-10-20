@@ -3,6 +3,7 @@ set -euo pipefail
 root=${1:?}; release=${2:?}; sdk=${3:?}; inputs=${4:?}; action=${5:?}
 build=${6:?}; phi=${7:-1.0}; guess=${8:--}; width=${9:-0.01}; tu=${10:-298}
 variant=${11:-baseline}
+grid_factor=${12:-1}
 [[ -n ${SLURM_JOB_ID:-} ]] || exit 2
 for path in "$release" "$sdk" "$inputs"; do
  [[ $(realpath -e "$path") == "$root/"* ]] || exit 2
@@ -46,5 +47,5 @@ else
   [[ $(realpath -e "$guess") == "$root/jobs/"* ]] || exit 2
   sha256sum "$guess" > guess-sha256.txt
  fi
- "$build/hydrogen-flame" "$inputs" "$action" "$phi" "$job/result" "$guess" "$width" "$tu" "$variant" > flame.log 2>&1
+ "$build/hydrogen-flame" "$inputs" "$action" "$phi" "$job/result" "$guess" "$width" "$tu" "$variant" "$grid_factor" > flame.log 2>&1
 fi

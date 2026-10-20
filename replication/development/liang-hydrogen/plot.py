@@ -44,7 +44,7 @@ def load_runs(manifest):
 
 def text(page, rect, value, size=8, color=(0, 0, 0)):
     import pymupdf as fitz
-    if page.insert_textbox(fitz.Rect(rect), value, fontsize=size, fontname="helv", color=color) < 0:
+    if page.insert_textbox(fitz.Rect(rect), value, fontsize=size, fontname="helv", color=color, lineheight=1) < 0:
         raise ValueError("Text overflow: "+value)
 
 
@@ -75,7 +75,7 @@ def main():
     for number, (page_index, box, caption) in PANELS.items():
         page = report.new_page(width=500, height=390)
         crop = fitz.Rect(box)
-        text(page, (18, 12, 482, 29), f"Liang Figure {number}: {caption}", 11)
+        text(page, (18, 9, 482, 35), f"Liang Figure {number}: {caption}", 11)
         for x, title in [(18, "Original paper"), (270, "Paper + our calculation (open symbols)")]:
             text(page, (x, 37, x+212, 51), title, 8)
             target = fitz.Rect(x, 56, x+crop.width, 56+crop.height)
@@ -136,6 +136,8 @@ def main():
                                189.616-r["massflux_kg_m2s"]/10/7*132.738) for r in selected]
                     color = COLORS[int(case)+2]
                 label = "Case "+case.replace("star", "*")+(" burning flux" if number == 4 else "")
+                if case == "3star":
+                    label = "Partial-T control (paper 3* unresolved)"
                 line(points, color, label, bounds)
         else:
             candidates = [r for r in runs if r["case"] == "5" and r["phi"] == 1.]
@@ -176,7 +178,7 @@ def main():
             text(page, (x+22, y, x+237, y+13), label, 7)
         notes = [
             "Computed: Burke 2012 N2 bath-gas kinetics; 100 atm; Tu=298 K assumed; "+a.transport+" transport.",
-            "Case 3*: temperature equation. Cases 3-5: total enthalpy. Cases 4/5 conductivity provisional.",
+            "3*: partial-T control, not verified paper 3*. Cases 3-5: partial-H. Conductivity provisional.",
             "Grid refinement is recorded; agreement with the paper is not yet accepted.",
         ]
         if number == 2:
