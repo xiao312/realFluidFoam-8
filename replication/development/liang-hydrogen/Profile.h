@@ -5,6 +5,11 @@
 #include <fstream>
 #include <iomanip>
 #include <sstream>
+#include <cerrno>
+#include <cctype>
+#include <cmath>
+#include <cstdlib>
+#include <limits>
 
 namespace hydrogen {
 struct Profile {
@@ -31,13 +36,36 @@ inline Profile initialGuess(const std::shared_ptr<Cantera::Solution>& ideal,
     }
     gas->setState_TPY(Tu,pressure,yu.data());return a;
 }
+inline double readProfileValue(const std::string& text,
+                               const std::filesystem::path& file,
+                               size_t row,size_t column) {
+    // strtod can set ERANGE for a representable subnormal. Preserve that finite
+    // trace concentration; reject overflow and values that underflow to zero.
+    errno=0;
+    char* end=nullptr;
+    const double value=std::strtod(text.c_str(),&end);
+    const int error=errno;
+    const bool consumed=end!=text.c_str();
+    while(*end && std::isspace(static_cast<unsigned char>(*end)))++end;
+    const bool finiteSubnormal=std::isfinite(value) && value!=0 &&
+        std::abs(value)<std::numeric_limits<double>::min();
+    if(!consumed || *end || !std::isfinite(value) ||
+       (error && !(error==ERANGE && finiteSubnormal))) {
+        throw std::runtime_error("Invalid profile value in "+file.string()+
+            " at row "+std::to_string(row)+", column "+std::to_string(column));
+    }
+    return value;
+}
 inline Profile readGuess(const std::filesystem::path& file,size_t n) {
     std::ifstream stream(file);if(!stream)throw std::runtime_error("Missing guess");
     std::string line;std::getline(stream,line);
     Profile a;a.y.resize(n);
+    size_t rowNumber=1;
     while(std::getline(stream,line)) {
+        ++rowNumber;
         std::stringstream row(line);std::string part;std::vector<double> v;
-        while(std::getline(row,part,','))v.push_back(std::stod(part));
+        while(std::getline(row,part,','))
+            v.push_back(readProfileValue(part,file,rowNumber,v.size()+1));
         if(v.size()!=7+n)throw std::runtime_error("Guess profile width mismatch");
         a.x.push_back(v[0]);a.T.push_back(v[1]);a.u.push_back(v[2]);
         for(size_t k=0;k<n;k++)a.y[k].push_back(v[7+k]);

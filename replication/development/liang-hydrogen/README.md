@@ -99,6 +99,17 @@ It makes no remote writes, modifies no inputs and does not introduce a new
 paper acceptance tolerance. Expected result: all numerical checks pass, with
 observed domain sensitivity reported separately from paper agreement.
 
+The steady-profile reader must preserve finite subnormal trace species from its
+own CSV writer. `std::stod` can report range errors for those representable
+values. Its bounded replacement accepts finite nonzero subnormals, rejects
+overflow, underflow to zero, nonfinite values and trailing junk, and reports
+the input row and column. It changes no state normalization or flame model.
+`test-profile-reader NEW_FIXTURE_DIRECTORY [CAPTURED_PROFILE]` exercises the actual CSV reader
+with subnormals and ordinary values plus malformed/overflow inputs.
+The optional captured profile checks every species value and requires subnormal
+coverage. The expected result is `PASS`; fixture files stay in the build job
+directory. Every new build runs the fixture check before compiling the driver.
+
 `flame INPUT CASE PHI OUTPUT [GUESS|-] [WIDTH_M] [TU_K] [VARIANT] [GRID_FACTOR]`
 runs 100-atm H2/air.
 Cases are `1`, `2`, `3`, `3star`, `4`, and `5`. Cases 3–5 initially use the existing

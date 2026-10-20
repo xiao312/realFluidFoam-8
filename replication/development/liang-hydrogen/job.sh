@@ -23,6 +23,9 @@ if [[ $action == build ]]; then
  "$compiler" --version > compiler.txt
  flags=$("$sdk/bin/pkg-config" --cflags --libs cantera)
  printf '%s\n' "$flags" > compiler-flags.txt
+ "$compiler" -std=c++17 -O2 -D_GLIBCXX_USE_CXX11_ABI=1 "$module/test_profile_reader.cpp" \
+  $flags -Wl,-rpath,"$sdk/lib" -o test-profile-reader > compile-profile-reader.log 2>&1
+ ./test-profile-reader profile-reader-fixtures > profile-reader-check.txt
  for target in srk alpha signed takahashi; do
   "$compiler" -std=c++17 -O2 -D_GLIBCXX_USE_CXX11_ABI=1 \
    "$module/../cantera-liang/test_$target.cpp" $flags -Wl,-rpath,"$sdk/lib" -o "test-$target"
