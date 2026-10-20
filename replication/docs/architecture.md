@@ -1,5 +1,11 @@
 # Replication boundaries
 
+`development/liang-kinetics` consumes explicitly identified author mechanisms
+and the pinned Cantera 3.2 SDK for Figure 8(b)'s ideal methane controls. It has
+no SRK or OpenFOAM dependency in this initial stage. Input hashes and the
+fixed-100-atm HP contract qualify the mechanism representation separately from
+the flame solve; output profiles feed the paper comparison gallery.
+
 `development/liang-hydrogen` consumes the author Burke 2012 mechanism and
 qualified species parameters, reusing `cantera-liang` SRK, transport,
 pressure-chemistry and total-enthalpy adapters. It supplies Figures 3–7 with
