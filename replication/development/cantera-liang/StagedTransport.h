@@ -15,6 +15,7 @@ public:
     bool smoothedAlpha=false;
     bool table2=false;
     bool highTemperature=false;
+    bool bulkTakahashi=false;
     size_t boundedPairCalls=0;
     std::vector<Species> parameters;
     size_t conductivityCalls=0,diffusionCalls=0;
@@ -37,14 +38,22 @@ public:
             Cantera::HighPressureGasTransportBase::updateCorrectionFactors();return;
         }
         const double p=m_thermo->pressure();
+        double bulkTc=0,bulkPc=0,bulkSum=0;
+        if(bulkTakahashi) {
+            for(size_t k=0;k<m_nsp;k++) {
+                const double x=std::max(Cantera::Tiny,m_molefracs[k]);
+                bulkTc+=x*m_Tcrit[k];bulkPc+=x*m_Pcrit[k];bulkSum+=x;
+            }
+            bulkTc/=bulkSum;bulkPc/=bulkSum;
+        }
         for(size_t i=0;i<m_nsp;i++)for(size_t j=0;j<m_nsp;j++) {
             double xi=std::max(Cantera::Tiny,m_molefracs[i]);
             double xj=std::max(Cantera::Tiny,m_molefracs[j]);
             double sum=xi+xj;xi/=sum;xj/=sum;
-            double tr=m_temp/(xi*m_Tcrit[i]+xj*m_Tcrit[j]);
+            double tr=m_temp/(bulkTakahashi?bulkTc:xi*m_Tcrit[i]+xj*m_Tcrit[j]);
             double bounded=highTemperature?std::max(tr,1.):std::clamp(tr,1.,5.);
             if(bounded!=tr)boundedPairCalls++;
-            double pr=p/(xi*m_Pcrit[i]+xj*m_Pcrit[j]);
+            double pr=p/(bulkTakahashi?bulkPc:xi*m_Pcrit[i]+xj*m_Pcrit[j]);
             double factor=Cantera::takahashiCorrectionFactor(pr,bounded);
             if(table2)factor+=takahashiTable2Delta(pr,bounded);
             if(!(factor>0 && std::isfinite(factor)))throw std::runtime_error("Invalid bounded Takahashi factor");

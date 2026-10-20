@@ -22,6 +22,27 @@ ideal calorics and is not a consistent equilibrium model.
 An ideal flame supplies a labelled steady-solver guess, not a transient restart.
 No OpenFOAM run is resumed by this module.
 
+Case 5 diffusion diagnostics add two opt-in choices. `takahashi-bulk` uses
+whole-mixture mole-weighted critical temperature and pressure for every binary
+pair, instead of Cantera's pair-normalized mole weights. It requires the bounded
+and Table 2 options. This tests the base-gas interpretation of Takahashi's
+correlation; it is not established as Liang's implementation. `mass-gradient`
+selects Cantera's mass-fraction-gradient mixture diffusion formulation, including
+its corresponding coefficients. Default flames retain mole-fraction gradients.
+Neither option changes chemistry, calorics, or conductivity.
+
+`diffusion-probe INPUTS PROFILE NEW_OUTPUT.csv` audits frozen profile states with
+pair and bulk critical-property averaging. It independently reconstructs
+`D_i = (1-Y_i)/sum(j!=i, X_j/D_ij)` from the returned binary matrix, checks matrix
+symmetry, and writes species diffusivities and corrected fluxes for both gradient
+bases. It uses the existing SDK and adapters, has no new dependencies or secrets,
+and never changes the input profile. Compile it with the existing build job.
+For example, run `diffusion-probe inputs result/profile.csv diffusion.csv` in a
+compute allocation. Expected: reconstruction error below 1e-10 and zero net
+diffusive mass flux to floating-point accuracy. Passing these checks validates
+the conversion, not agreement with Liang. The energy probe supports the same
+options so a diagnostic flame cannot silently be analysed with another closure.
+
 Cases 1 and 3–5 also calculate HP equilibrium with VCS, checking enthalpy and
 element conservation. This diagnostic uses SRK fugacity for the nonideal cases;
 it remains distinct from the concentration-law flame kinetics. It does not

@@ -23,6 +23,7 @@ try {
     ThermoFactory::factory()->reg("liang-srk",[](){auto* g=new liang::SrkPhase;g->stage=1;return g;});
     TransportFactory::factory()->reg("liang-staged",[&](){auto* t=new liang::StagedTransport;
         t->highTemperature=options.highTemperature;
+        t->bulkTakahashi=options.bulkTakahashi;
         t->table2=options.table2;t->smoothedAlpha=options.smoothedAlpha;t->parameters=parameters;t->stage=stage;t->denseIncrementOnly=options.dense;t->boundedTakahashi=options.bounded;return t;});
     auto sol=newSolution((input/(stage==1?"ideal.yaml":"srk.yaml")).string(),"",stage==1?"mixture-averaged":"liang-staged");
     auto gas=sol->thermo();if(auto* g=dynamic_cast<liang::SrkPhase*>(gas.get())) {g->smoothedAlpha=options.smoothedAlpha;g->parameters=parameters;g->stage=stage;}
@@ -51,10 +52,14 @@ try {
         std::vector<double> y(53),d(53),h(53),flux(53);
         for(size_t k=0;k<53;k++)y[k]=.5*(a[k+7]+b[k+7]);
         gas->setTemperature(.5*(a[1]+b[1]));gas->setMassFractions_NoNorm(y.data());gas->setPressure(pressure);
-        sol->transport()->getMixDiffCoeffs(d.data());gas->getPartialMolarEnthalpies(h.data());
+        if(options.massGradient)sol->transport()->getMixDiffCoeffsMass(d.data());
+        else sol->transport()->getMixDiffCoeffs(d.data());
+        gas->getPartialMolarEnthalpies(h.data());
         double correction=0;
         for(size_t k=0;k<53;k++) {
-            flux[k]=d[k]*gas->molecularWeight(k)*gas->density()/gas->meanMolecularWeight()*(xs[j][k]-xs[j+1][k])/dz;
+            flux[k]=options.massGradient
+                ? d[k]*gas->density()*(a[k+7]-b[k+7])/dz
+                : d[k]*gas->molecularWeight(k)*gas->density()/gas->meanMolecularWeight()*(xs[j][k]-xs[j+1][k])/dz;
             correction-=flux[k];
         }
         double speciesFlux=0,massFlux=0,pureDifference=0;
