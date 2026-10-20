@@ -1,0 +1,47 @@
+{
+  "review_date": "2026-10-20",
+  "purpose": "Liang references 5-8,10,19 diffusion audit; PDFs remain outside Git",
+  "documents": [
+    {
+      "name": "ref05-pons-2009",
+      "url": "https://yang.gatech.edu/publications/Journal/CTM%20%28Pons%2C%202009%29.pdf",
+      "sha256": "b8114d52063bd5f9966c6ee779f83fdac93cc04e29bab68dcf743c947a413e2a",
+      "pages": 26,
+      "bytes": 853723
+    },
+    {
+      "name": "ref06-huo-2014",
+      "url": "https://yang.gatech.edu/publications/Journal/C%26F%20%282014%2C%20Huo%29%20-%20S%20curve.pdf",
+      "sha256": "4450b8b93c10d3bf2c05f989b8e1af798d2d3070bfdd059d1f1bf262f502921d",
+      "pages": 11,
+      "bytes": 1690601
+    },
+    {
+      "name": "ref07-wang-2015",
+      "url": "https://yang.gatech.edu/publications/Journal/CST%20%282015%2C%20counterflow%20flames%2C%20Wang%29.pdf",
+      "sha256": "afff8d8d5e0dfa68fa43c4071d1df50766a6e9268d610d21f004723a3bc74039",
+      "pages": 24,
+      "bytes": 1305466
+    },
+    {
+      "name": "ref08-juanos-2017",
+      "url": "https://sirignano.eng.uci.edu/theme/pdfs/39.pdf",
+      "sha256": "8104c6f00cb5b610b9ac9776cc4484be5baad39212a027dcd9a68440f8582a31",
+      "pages": 17,
+      "bytes": 2538148
+    },
+    {
+      "name": "ref19-takahashi-1975",
+      "url": "https://www.jstage.jst.go.jp/article/jcej1968/7/6/7_6_417/_pdf",
+      "sha256": "88e9eaa011e6b17b4ea2dd1253c36e363865776f4c8a8fa4db8fb507ada3945e",
+      "pages": 4,
+      "bytes": 696962
+    },
+    {
+      "name": "ref10-giovangigli-2011",
+      "url": "https://www.cmap.polytechnique.fr/~giovangi/688.pdf",
+      "sha256": "0e93e18d404857f37b49044813dc5adf799781e87735e34f357a3b8171a256c5",
+      "pages": 42
+    }
+  ]
+}

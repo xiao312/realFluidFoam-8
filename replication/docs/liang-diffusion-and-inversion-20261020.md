@@ -298,7 +298,9 @@ use the 13:05 capture; new diagnostic jobs are not presented as completed data.
 
 The Lark record is updated in the existing
 [Liang Figure 8(a) section](https://qcnwovvb1xop.feishu.cn/docx/KgobdGw8CoIfRCxI2BvcoFYEnCf#doxcnSSnHgwGcFEVThXv7DJEXNf).
-The Case 5 discrepancy remains open. Refinement and independent guesses did not
-close it. Traceable transport inputs and nonideal driving-force sensitivity remain
-separate leads. CFD transport, source averaging and energy balance are separate
-checks. No staged nonideal CFD or 2-D result is claimed here.
+The Case 5 discrepancy remains open. Refinement, independent guesses and the
+nonideal driving-force experiment did not close it. The
+[diffusion reference audit](liang-diffusion-literature-20261020.md) identifies
+property-level benchmarks from Liang's references and NIST. CFD transport,
+source averaging and energy balance remain separate checks. No staged nonideal
+CFD or 2-D result is claimed here.
