@@ -1,4 +1,4 @@
-"""Assemble exactly one current comparison for each Liang Figure 1–8 panel."""
+"""Assemble one comparison per Liang panel, followed by explicit diagnostic appendices."""
 import argparse
 import hashlib
 import json
@@ -34,16 +34,23 @@ def main():
     data = json.loads(manifest.read_text(encoding="utf-8"))
     if [row["id"] for row in data["figures"]] != IDS:
         raise ValueError("Expected ordered figures 1–7, 8a, 8b, exactly once")
-    sources = []
-    for row in data["figures"]:
+    appendix_rows = data.get("appendices", [])
+    appendix_ids = [row["id"] for row in appendix_rows]
+    if len(set(appendix_ids)) != len(appendix_ids) or set(appendix_ids) & set(IDS):
+        raise ValueError("Appendix IDs must be unique and distinct from primary figures")
+    all_sources = []
+    for row in data["figures"]+appendix_rows:
         pdf, evidence = contained(root, row["pdf"]), contained(root, row["evidence"])
         with fitz.open(pdf) as document:
             if not isinstance(row["page"], int) or not 0 <= row["page"] < len(document):
                 raise ValueError(f"Invalid source page: {row}")
             size = list(document[row["page"]].rect)
-        sources.append(dict(**row, pdf_sha256=digest(pdf), evidence_sha256=digest(evidence),
-                            source_page_rect=size))
-    print(json.dumps(dict(figures=len(sources), pages=10, output=str(output),
+        all_sources.append(dict(**row, pdf_sha256=digest(pdf), evidence_sha256=digest(evidence),
+                                source_page_rect=size))
+    sources, appendices = all_sources[:len(IDS)], all_sources[len(IDS):]
+    page_count = 1+len(all_sources)
+    print(json.dumps(dict(figures=len(sources), appendices=len(appendices),
+                          pages=page_count, output=str(output),
                           captured_at=data["captured_at"], remote_writes=False)))
     if args.action == "plan":
         return
@@ -68,10 +75,12 @@ def main():
          "their original dimensions. Image-reading bounds are not experimental error bars. "
          "A completed solve does not establish paper agreement.", 9)
     bookmarks = [[1, "Comparison register", 1]]
-    for row in sources:
+    for row in all_sources:
         with fitz.open(contained(root, row["pdf"])) as source:
             document.insert_pdf(source, from_page=row["page"], to_page=row["page"])
-        bookmarks.append([1, "Figure "+row["id"]+": "+row["title"], len(document)])
+        title = ("Figure "+row["id"]+": "+row["title"] if row["id"] in IDS
+                 else "Diagnostic appendix: "+row["title"])
+        bookmarks.append([1, title, len(document)])
     document.set_toc(bookmarks)
     document.set_metadata({"title": "Liang Figures 1-8 replication comparisons",
                            "subject": "Qualified calculations and unresolved comparisons",
@@ -80,15 +89,16 @@ def main():
     target = output/"liang-figures-1-8.pdf"
     document.save(target, garbage=4, deflate=True)
     with fitz.open(target) as check:
-        if len(check) != 10:
+        if len(check) != page_count:
             raise ValueError("Unexpected assembled page count")
-        for i, row in enumerate(sources, 1):
+        for i, row in enumerate(all_sources, 1):
             if list(check[i].rect) != row["source_page_rect"]:
                 raise ValueError("Source page dimensions changed")
         check[0].get_pixmap(matrix=fitz.Matrix(1.5, 1.5)).save(output/"cover.png")
     record = dict(manifest_sha256=digest(manifest), script_sha256=digest(Path(__file__)),
                   output_sha256=digest(target), captured_at=data["captured_at"],
                   source_revision=data["source_revision"], figures=sources,
+                  appendices=appendices,
                   scientific_acceptance=False)
     (output/"evidence.json").write_text(json.dumps(record, indent=2)+"\n",
                                        encoding="utf-8", newline="\n")

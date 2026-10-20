@@ -160,3 +160,22 @@ Verify both series against the original crops, including the separate viscosity
 and conductivity axes. Render and inspect all five comparison PDF pages. These
 are approximate digitizations, not original author tables. Quantitative summary
 metrics still use Nguyen's temperature curve only. No dependency has changed.
+
+## Liang comparison register
+
+`liang_atlas.py plan|apply PROJECT MANIFEST NEW_OUTPUT` assembles one current
+page each for Figures 1–7, 8(a) and 8(b), preceded by a status register.
+The project-relative JSON declares `captured_at`, `source_revision`, `summary`
+and ordered `figures`. Each figure has `id`, `title`, `status`, `pdf`, zero-based
+`page` and `evidence`. Optional `appendices` use the same page/source fields
+with unique IDs and explicit diagnostic titles. They follow the nine primary
+comparisons and never replace a figure or change its qualification.
+
+The assembler reads existing reviewed PDFs; it does not calculate data, choose
+models or rescale pages. Dependencies are PyMuPDF and the standard library.
+All input/output paths must remain inside `PROJECT`; no remote access, secrets
+or scheduler commands are involved. Outputs are the combined PDF, cover preview
+and a source/evidence hash record. For example, run `plan PROJECT manifest.json
+output/pdf/liang-register`, then `apply` with the same arguments. Verify exactly
+ten main pages plus the declared appendices, unchanged source-page dimensions,
+correct bookmarks and a visually reviewed cover.
