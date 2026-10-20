@@ -200,5 +200,40 @@
     "Default-tolerance conservation failures are retained",
     "Manufactured identities and corruption detection do not prove flame convergence",
     "No mechanism or transport coefficient was changed"
-  ]
+  ],
+  "hydrogen_compatibility_build": {
+    "job": 125102357,
+    "source": "6c9cc9b7d5090a947c0f73ad8e2789c9c55110f1",
+    "executable_sha256": "72568183621558ba3e664c8b6c6be712045eea9ebc8171bef5df2a1678cb9efa",
+    "checks": {
+      "profile-reader-check.txt": "PASS 8 finite fixtures, 6 rejected fixtures; original trace values preserved",
+      "conservative-check.txt": "PASS 16 residual fixtures; telescoping 1.11022e-16 uniform 1.73472e-17 distinguishing_nonuniform 0.05304 summed_species 4.30211e-16 partial_range 0 perturbation_locality 0",
+      "srk-check.txt": "T=298 p=1000\nT=298 p=101325\nT=298 p=1.01325e+07\nT=500 p=1000\nT=500 p=101325\nT=500 p=1.01325e+07\nT=1000 p=1000\nT=1000 p=101325\nT=1000 p=1.01325e+07\nT=1800 p=1000\nT=1800 p=101325\nT=1800 p=1.01325e+07\nT=2500 p=1000\nT=2500 p=101325\nT=2500 p=1.01325e+07\nT=298 p=1000\nT=298 p=101325\nT=298 p=1.01325e+07\nT=500 p=1000\nT=500 p=101325\nT=500 p=1.01325e+07\nT=1000 p=1000\nT=1000 p=101325\nT=1000 p=1.01325e+07\nT=1800 p=1000\nT=1800 p=101325\nT=1800 p=1.01325e+07\nT=2500 p=1000\nT=2500 p=101325\nT=2500 p=1.01325e+07\nT=298 p=1000\nT=298 p=101325\nT=298 p=1.01325e+07\nT=500 p=1000\nT=500 p=101325\nT=500 p=1.01325e+07\nT=1000 p=1000\nT=1000 p=101325\nT=1000 p=1.01325e+07\nT=1800 p=1000\nT=1800 p=101325\nT=1800 p=1.01325e+07\nT=2500 p=1000\nT=2500 p=101325\nT=2500 p=1.01325e+07\nSRK pressure, cp, partial enthalpy, volume, fugacity and Gibbs-Duhem checks passed",
+      "alpha-check.txt": "crossing_K=1727.51 enthalpy_integrability_residual_J_kmol=-5.39388e-11\ncrossing_K=1339.29 enthalpy_integrability_residual_J_kmol=4.44953e-11\ncrossing_K=1030.58 enthalpy_integrability_residual_J_kmol=8.42858e-12",
+      "signed-check.txt": "Signed-root states=48 negative_roots=22; polynomial, derivatives, fugacity, crossings and pure parity passed",
+      "takahashi-check.txt": "Pr=3 Tr=2 expected=0.941602 actual=0.941602",
+      "pairs-check.txt": "PASS 230 binary/mixture checks; author pairs=10",
+      "midpoint-check.txt": "32 states: reversal=0 zero-sum=9.71445e-17 uniform=0 legacy-reversal=0.0219435",
+      "chemistry-check.txt": "six_states_max_relative_error 4.2724e-16\nmaximum_law_separation 0.0807593",
+      "activity-check.txt": "six_states_activity_relative_error 1.06078e-15\nequilibrium_detailed_balance_scaled 3.63097e-08\nelemental_mass_fraction_error 2.22045e-16",
+      "soret-check.txt": "PASS fixtures 15 collision_error 7.635768816955871e-16 coefficient_error 4.046163072742266e-15 pressure_ordinary_transport_native_flux_and_parser_checks passed"
+    },
+    "output_sha256": {
+      "source-revision.txt": "45fa509dd43ebc69ce4e5827e92a381edd2e72870ed9587e4be612c4ccef1188",
+      "binary.sha256": "0e96ce427e9cd2dd1ec376f0f64a1fb78b63a85e766ecf848ea04b6c374905dc",
+      "build-passed.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "profile-reader-check.txt": "8a9072f5e5cf9c2b5fc6bfcf9065fba146c872beed11407fbde905016f6c9ab3",
+      "conservative-check.txt": "54b6a2de206c73c0adb0a38ea543d736c796a23b98a8760633f3ced79126fabd",
+      "srk-check.txt": "0a6a164a4eba534d63f00cee36d0079b223c074f22d00cfe5cec2c913044508f",
+      "alpha-check.txt": "4c0a5511056a916cd0c2f43c99d3b6652c3bc9bf654721517c29b14ad48e5619",
+      "signed-check.txt": "9826479df3c92cbe0e670993fcf5978b3019f1438d767467fa02c5cff5c5263e",
+      "takahashi-check.txt": "c3f881797bd606d1276c3b4f308f81c3cc770db616197500105703c3ce0f3605",
+      "pairs-check.txt": "0feaf65748d044b12a6b983d7f688d9e42c7208a3f9dab47bb1fcc75269f2ceb",
+      "midpoint-check.txt": "89df17d4c935100c8a7d7f5df7916100178807a14b65afa9fd7e46db54353aa4",
+      "chemistry-check.txt": "7338bc513b635d27f4130e7146e58fb4f2b458e0bf8a77adbe0ac541067959c0",
+      "activity-check.txt": "dafc62481ba2dc15ce4a74fc77e628684a9732f03ecb7c015358cd95f876ad1a",
+      "soret-check.txt": "c52a82740db96248e3a4048f8ec3af00b34269f41ae1cf93235f604da26c1fe1"
+    },
+    "qualification": "Full hydrogen build sequence completed against the shared class"
+  }
 }

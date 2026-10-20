@@ -1,6 +1,6 @@
 {
   "baseline_sha256": "79da2c0f01c053b619135ec1ee766aa9d75877230b938e1582e8a9d4225f0d9d",
-  "observed_utc": "2026-10-20T22:40:29.938172+00:00",
+  "observed_utc": "2026-10-20T23:15:18.405943+00:00",
   "diagnostics": [
     {
       "stage": 4,
@@ -672,51 +672,22 @@
     {
       "stage": 1,
       "phi": 1.1,
-      "speed_cm_s": 7.365772955786756,
+      "speed_cm_s": 7.364989553864072,
       "label": "Cantera: Soret (3.2 formulation)",
-      "job": "125092075",
+      "job": "125100417",
       "pressure_atm": 100,
       "screen_passed": true,
-      "source": "c9c2c55b3db6b9b6f379026ad94ff4fdea17d34c",
+      "source": "56e6bcba5cec8eeaf47a3ba366dec3b9ec26eb90",
       "variant": "soret",
-      "profile_sha256": "098b2c203385b62434f8bfbce2fbd13fcc0db0e9fcf944e1f2d1584ddfbacc3a",
+      "profile_sha256": "cc76af97dab1125add78683cbf4a38ee6589b9030471df37bc759e563c01bf3b",
       "screen": {
         "stage": 1,
         "phi": 1.1,
-        "speed_cm_s": 7.365772955786756,
-        "last_refinement_relative_change": 4.1629921355590405e-05,
-        "mass_flux_relative_range": 1.303544795059633e-09,
-        "maximum_species_sum_error": 1.860633869199546e-10,
-        "minimum_mass_fraction": -6.480833705925371e-12,
-        "points": 2132,
-        "scientific_acceptance": false,
-        "remaining": [
-          "domain sensitivity",
-          "initial-guess sensitivity",
-          "publication parameter uncertainty"
-        ]
-      },
-      "native_flux_sha256": "69f2aa019a4690cad6d6b2cfa9bdf588ccf3da0ff8df4701ce284455bca8f15b"
-    },
-    {
-      "stage": 4,
-      "phi": 1.1,
-      "speed_cm_s": 7.039122881640285,
-      "label": "Cantera: Soret (3.2 formulation)",
-      "job": "125092091",
-      "pressure_atm": 100,
-      "screen_passed": true,
-      "source": "c9c2c55b3db6b9b6f379026ad94ff4fdea17d34c",
-      "variant": "dense-increment,bounded-takahashi,pressure-chemistry,takahashi-table2,soret",
-      "profile_sha256": "4e425bb7d57662edf2f5e45e38098aa0e23cbcee4d03f260b68e9dfe276d7fec",
-      "screen": {
-        "stage": 4,
-        "phi": 1.1,
-        "speed_cm_s": 7.039122881640285,
-        "last_refinement_relative_change": 8.061479886634082e-06,
-        "mass_flux_relative_range": 2.8752875021708926e-10,
-        "maximum_species_sum_error": 8.532130557625806e-11,
-        "minimum_mass_fraction": -2.379114153583529e-12,
+        "speed_cm_s": 7.364989553864072,
+        "last_refinement_relative_change": 1.1715530583322753e-05,
+        "mass_flux_relative_range": 8.476730581550733e-13,
+        "maximum_species_sum_error": 3.6060043839825084e-13,
+        "minimum_mass_fraction": -6.697952905671252e-15,
         "points": 2164,
         "scientific_acceptance": false,
         "remaining": [
@@ -725,28 +696,30 @@
           "publication parameter uncertainty"
         ]
       },
-      "native_flux_sha256": "4bf530f365398bb97ba1cef5271792a0f9f2ea3809dff8f0e7158e7e4deee0ff"
+      "native_flux_sha256": "80eea4ed2ad8887717e61075b09e4d4468f339ce35e6d5fc672d498cdc61ccc4",
+      "steady_rtol": 1e-07,
+      "steady_atol": 1e-13
     },
     {
-      "stage": 5,
+      "stage": 4,
       "phi": 1.1,
-      "speed_cm_s": 6.95485382833452,
+      "speed_cm_s": 7.040024806083649,
       "label": "Cantera: Soret (3.2 formulation)",
-      "job": "125092127",
+      "job": "125100420",
       "pressure_atm": 100,
       "screen_passed": true,
-      "source": "c9c2c55b3db6b9b6f379026ad94ff4fdea17d34c",
+      "source": "56e6bcba5cec8eeaf47a3ba366dec3b9ec26eb90",
       "variant": "dense-increment,bounded-takahashi,pressure-chemistry,takahashi-table2,soret",
-      "profile_sha256": "2e0f371c856efc5bfc5ba0ce41a9c14e82882d21ee0876d1a0a9b316f065c9bc",
+      "profile_sha256": "afc9107a25be7daddce2c4fa3a719fc6a89675909337f084db911154f200d2f8",
       "screen": {
-        "stage": 5,
+        "stage": 4,
         "phi": 1.1,
-        "speed_cm_s": 6.95485382833452,
-        "last_refinement_relative_change": 2.0071298015067462e-05,
-        "mass_flux_relative_range": 2.406613462250797e-10,
-        "maximum_species_sum_error": 1.2894374457061986e-10,
-        "minimum_mass_fraction": -3.254236464721004e-12,
-        "points": 2179,
+        "speed_cm_s": 7.040024806083649,
+        "last_refinement_relative_change": 1.5238181886201296e-05,
+        "mass_flux_relative_range": 9.22553608228182e-13,
+        "maximum_species_sum_error": 3.561595462997502e-13,
+        "minimum_mass_fraction": -2.0832432842497053e-14,
+        "points": 2166,
         "scientific_acceptance": false,
         "remaining": [
           "domain sensitivity",
@@ -754,7 +727,40 @@
           "publication parameter uncertainty"
         ]
       },
-      "native_flux_sha256": "03196ce406062ee2303724bd9173b8da46116c1e00e2a01ed18602f84345338b"
+      "native_flux_sha256": "ccc52da2d9b52053bad2b8c3cac483db0aea99745bd5a1ee4ae65bc9a39fdb67",
+      "steady_rtol": 1e-07,
+      "steady_atol": 1e-13
+    },
+    {
+      "stage": 5,
+      "phi": 1.1,
+      "speed_cm_s": 6.955831517892726,
+      "label": "Cantera: Soret (3.2 formulation)",
+      "job": "125100424",
+      "pressure_atm": 100,
+      "screen_passed": true,
+      "source": "56e6bcba5cec8eeaf47a3ba366dec3b9ec26eb90",
+      "variant": "dense-increment,bounded-takahashi,pressure-chemistry,takahashi-table2,soret",
+      "profile_sha256": "c160c8ea8aea3ea3e7ecd415dbde973a16856982c61871a2e74856db0a61b55d",
+      "screen": {
+        "stage": 5,
+        "phi": 1.1,
+        "speed_cm_s": 6.955831517892726,
+        "last_refinement_relative_change": 2.102101062073647e-05,
+        "mass_flux_relative_range": 9.153942005549722e-13,
+        "maximum_species_sum_error": 3.739231146937527e-13,
+        "minimum_mass_fraction": -1.4718007894259956e-14,
+        "points": 2180,
+        "scientific_acceptance": false,
+        "remaining": [
+          "domain sensitivity",
+          "initial-guess sensitivity",
+          "publication parameter uncertainty"
+        ]
+      },
+      "native_flux_sha256": "7193ef6e3b321d96cf2966f2fcff7d089871dbe4ad3e3decce5624ed9faf6425",
+      "steady_rtol": 1e-07,
+      "steady_atol": 1e-13
     }
   ],
   "independent_seed_check": {
