@@ -31,9 +31,13 @@ int main() {
             for(size_t j=0;j<x.size();j++){xp[j]/=1+dx;xm[j]/=1-dx;}
             auto a=liang::evaluate(T,p,xp,s,smooth),b=liang::evaluate(T,p,xm,s,smooth);
             check(z.hb[k],z.h+(a.h-b.h)/(2*dx),3e-6,"partial enthalpy");
+            double gibbsDuhem=0;
+            for(size_t j=0;j<x.size();j++)
+                gibbsDuhem+=x[j]*(a.lnphi[j]-b.lnphi[j])/(2*dx);
+            check(gibbsDuhem,0,1e-8,"constant-TP Gibbs-Duhem");
         }
         check(hs,z.h,1e-10,"enthalpy Euler");check(vs,z.v,1e-10,"volume Euler");
         check(gs,z.h-T*z.s,1e-8,"Gibbs Euler");
     }
-    std::cout<<"SRK pressure, cp, partial enthalpy, volume and fugacity checks passed\n";
+    std::cout<<"SRK pressure, cp, partial enthalpy, volume, fugacity and Gibbs-Duhem checks passed\n";
 }

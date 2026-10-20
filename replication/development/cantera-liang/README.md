@@ -42,6 +42,19 @@ compute allocation. Expected: reconstruction error below 1e-10 and zero net
 diffusive mass flux to floating-point accuracy. Passing these checks validates
 the conversion, not agreement with Liang. The energy probe supports the same
 options so a diagnostic flame cannot silently be analysed with another closure.
+
+The diffusion probe also reports a frozen-state nonideal-driving-force
+diagnostic. At each face it evaluates the two composition states at the same
+midpoint T and fixed p, then adds `X_i*d(log(phi_i))/dx` to `dX_i/dx` before
+the usual zero-mass-flux correction. This follows the constant-temperature
+chemical-potential derivative in [Giovangigli et al. (2011), Section 4.2](https://www.cmap.polytechnique.fr/~giovangi/688.pdf); it
+does not introduce a temperature-gradient/Soret term. New columns report the
+corrected flux and its difference from the baseline. Both retain zero net mass
+flux. No flame equation or baseline model changes. The cited full transport
+model is not evidence that Liang used this closure with Takahashi coefficients.
+The SRK unit check includes the constant-TP Gibbs–Duhem constraint on these
+composition derivatives.
+
 `figure_gallery.py` accepts an optional `--diagnostics FILE`. This JSON contains `diagnostics`
 and `baseline_sha256`, which must match the baseline Cantera input file.
 Each entry must identify stage, phi, speed, label, 100-atm pressure, a completed

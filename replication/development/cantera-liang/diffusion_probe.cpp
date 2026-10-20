@@ -66,7 +66,8 @@ try {
     std::ofstream out(argv[3]);out<<std::setprecision(16)
         <<"target_T,T_K,critical_rule,species,X,Y,D_dilute,D_corrected,D_mass,"
           "binary_reconstruction_relative_error,mole_flux_kg_m2s,mass_flux_kg_m2s,"
-          "sum_mole_flux,sum_mass_flux,bulk_Tc_K,bulk_Pc_Pa\n";
+          "sum_mole_flux,sum_mass_flux,bulk_Tc_K,bulk_Pc_Pa,"
+          "nonideal_driving_flux_kg_m2s,extra_driving_flux_kg_m2s,sum_driving_flux\n";
     double maxError=0,maxSymmetry=0,maxFluxError=0;
     size_t checks=0;
     for(double target:{300.,400.,600.,900.,1200.,1500.,1800.,2100.}) {
@@ -84,6 +85,10 @@ try {
         for(size_t k=0;k<n;k++)y[k]=.5*(yl[k]+yr[k]);
         gas->setState_TPY(temperature,10132500,y.data());
         gas->getMoleFractions(x.data());gas->getMassFractions(y.data());
+        // Composition contribution only: both fugacities use identical T,p.
+        // Differencing each side's own T would inadvertently add thermodiffusion.
+        const auto phiLeft=liang::evaluate(temperature,10132500,xl,parameters).lnphi;
+        const auto phiRight=liang::evaluate(temperature,10132500,xr,parameters).lnphi;
         double bulkTc=0,bulkPc=0;
         for(size_t k=0;k<n;k++) {
             bulkTc+=x[k]*parameters[k].Tc;bulkPc+=x[k]*parameters[k].Pc;
@@ -96,8 +101,8 @@ try {
             transport->getMixDiffCoeffs(corrected.data());
             transport->getMixDiffCoeffsMass(mass.data());
             transport->getBinaryDiffCoeffs(n,binary.data());
-            std::vector<double> errors(n),jx(n),jy(n);
-            double sumX=0,sumY=0,scaleX=0,scaleY=0;
+            std::vector<double> errors(n),jx(n),jy(n),extra(n);
+            double sumX=0,sumY=0,sumExtra=0,scaleX=0,scaleY=0,scaleDriving=0;
             for(size_t k=0;k<n;k++) {
                 double denominator=0;
                 for(size_t other=0;other<n;other++) {
@@ -112,22 +117,30 @@ try {
                 jx[k]=-gas->density()*gas->molecularWeight(k)/gas->meanMolecularWeight()
                       *corrected[k]*(xr[k]-xl[k])/dx;
                 jy[k]=-gas->density()*mass[k]*(yr[k]-yl[k])/dx;
+                extra[k]=-gas->density()*gas->molecularWeight(k)/gas->meanMolecularWeight()
+                         *corrected[k]*x[k]*(phiRight[k]-phiLeft[k])/dx;
+                if(!std::isfinite(extra[k]))throw std::runtime_error("Nonfinite driving-force flux");
+                sumExtra+=extra[k];scaleDriving+=std::abs(jx[k]+extra[k]);
                 sumX+=jx[k];sumY+=jy[k];scaleX+=std::abs(jx[k]);scaleY+=std::abs(jy[k]);
             }
-            double correctedSumX=0,correctedSumY=0;
+            double correctedSumX=0,correctedSumY=0,correctedSumDriving=0;
             for(size_t k=0;k<n;k++) {
                 // Match Flow1D's left-node mass-correction convention.
                 jx[k]-=yl[k]*sumX;jy[k]-=yl[k]*sumY;
+                extra[k]-=yl[k]*sumExtra;
                 correctedSumX+=jx[k];correctedSumY+=jy[k];
+                correctedSumDriving+=jx[k]+extra[k];
             }
             maxFluxError=std::max({maxFluxError,
                 std::abs(correctedSumX)/std::max(scaleX,1e-100),
-                std::abs(correctedSumY)/std::max(scaleY,1e-100)});
+                std::abs(correctedSumY)/std::max(scaleY,1e-100),
+                std::abs(correctedSumDriving)/std::max(scaleDriving,1e-100)});
             for(size_t k=0;k<n;k++)
                 out<<target<<','<<temperature<<','<<(bulk?"bulk":"pair")<<','<<names[k]
                    <<','<<x[k]<<','<<y[k]<<','<<dilute[k]<<','<<corrected[k]<<','<<mass[k]
                    <<','<<errors[k]<<','<<jx[k]<<','<<jy[k]<<','<<correctedSumX
-                   <<','<<correctedSumY<<','<<bulkTc<<','<<bulkPc<<'\n';
+                   <<','<<correctedSumY<<','<<bulkTc<<','<<bulkPc
+                   <<','<<jx[k]+extra[k]<<','<<extra[k]<<','<<correctedSumDriving<<'\n';
         }
     }
     std::cout<<std::setprecision(16)<<"checks="<<checks
