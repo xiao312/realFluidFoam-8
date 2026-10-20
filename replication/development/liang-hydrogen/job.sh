@@ -26,6 +26,9 @@ if [[ $action == build ]]; then
  "$compiler" -std=c++17 -O2 -D_GLIBCXX_USE_CXX11_ABI=1 "$module/test_profile_reader.cpp" \
   $flags -Wl,-rpath,"$sdk/lib" -o test-profile-reader > compile-profile-reader.log 2>&1
  ./test-profile-reader profile-reader-fixtures > profile-reader-check.txt
+ "$compiler" -std=c++17 -O2 -D_GLIBCXX_USE_CXX11_ABI=1 "$module/test_conservative.cpp" \
+  $flags -Wl,-rpath,"$sdk/lib" -o test-conservative > compile-conservative.log 2>&1
+ ./test-conservative "$inputs/ideal.yaml" > conservative-check.txt
  for target in srk alpha signed takahashi; do
   "$compiler" -std=c++17 -O2 -D_GLIBCXX_USE_CXX11_ABI=1 \
    "$module/../cantera-liang/test_$target.cpp" $flags -Wl,-rpath,"$sdk/lib" -o "test-$target"

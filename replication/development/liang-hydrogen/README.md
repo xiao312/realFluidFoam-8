@@ -110,6 +110,33 @@ The optional captured profile checks every species value and requires subnormal
 coverage. The expected result is `PASS`; fixture files stay in the build job
 directory. Every new build runs the fixture check before compiling the driver.
 
+The named `conservative` diagnostic uses the existing total-enthalpy equation
+at every stage, including ideal Case 1, and gives every interior species equation
+the same face mass flow, upwind face state and dual-cell divergence. It retains
+stock boundary equations, all interior species unknowns, native diffusion,
+chemistry and pseudo-time normalization. It changes no property model.
+No Soret, radiation, two-point control or strain is supported in this first
+qualification. This is a numerical conservation control, not a recovered
+PREMIX implementation. Default variants remain unchanged.
+The separate `total-enthalpy` control forces the existing total-H equation
+even for ideal Case 1 while retaining stock species equations. This isolates
+the energy-variable/discretization change from conservative species advection.
+Neither control is allowed under the deliberately approximate `3star` label.
+Configuration records identify both the species and energy discretization.
+Completed controls write 17-digit native `balance-nodes.csv` and
+`balance-faces.csv`: SI mass sources/residuals, species diffusion and total
+fluxes, and advective/conductive/species/total enthalpy fluxes. Node residuals
+are valid only where `interior=1`; boundary placeholders are zero because
+connector equations are not evaluated by this exporter. Separate inlet/outlet
+flux checks use physical state and face data, never those placeholders.
+`test-conservative IDEAL_YAML` checks the actual residual's global telescoping
+balance on unequal grids, both flow signs, source and pseudo-time normalization,
+unchanged boundary rows and equivalence to stock species residuals on a uniform
+grid. A nonuniform fixture must distinguish the old residual. The build runs
+this test before qualifying the driver. Completed pilots additionally require
+elemental/mass/energy flux checks and an explicit grid comparison; fixture
+success alone does not establish a flame solution or paper agreement.
+
 `flame INPUT CASE PHI OUTPUT [GUESS|-] [WIDTH_M] [TU_K] [VARIANT] [GRID_FACTOR]`
 runs 100-atm H2/air.
 Cases are `1`, `2`, `3`, `3star`, `4`, and `5`. Cases 3–5 initially use the existing

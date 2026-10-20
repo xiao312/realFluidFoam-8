@@ -2,6 +2,7 @@
 #include "HydrogenTransport.h"
 #include "EnergyFlows.h"
 #include "DiffusionFlow.h"
+#include "ConservativeFlow.h"
 #include "../cantera-liang/PressureChemistry.h"
 #include "../cantera-liang/TotalEnthalpyFlow.h"
 #include "../cantera-liang/SoretCompatibleFlow.h"
@@ -40,8 +41,12 @@ try {
     const bool matchedEnergy=variant=="matched-energy" || variant=="pure-flux-matched-energy";
     const bool pureTemperature=variant=="pure-temperature";
     const bool cpOnlyTemperature=variant=="cp-only-temperature";
-    if(variant!="baseline" && !pureFlux && !fullConductivity && !matchedEnergy && !pureTemperature && !cpOnlyTemperature)
+    const bool conservative=requestedVariant=="conservative";
+    const bool forceTotalEnthalpy=requestedVariant=="total-enthalpy";
+    if(variant!="baseline" && !pureFlux && !fullConductivity && !matchedEnergy && !pureTemperature && !cpOnlyTemperature && !conservative && !forceTotalEnthalpy)
         throw std::runtime_error("Unknown model variant");
+    if((conservative || forceTotalEnthalpy) && label=="3star")
+        throw std::runtime_error("Total enthalpy is not a Case 3star approximation");
     if(stage<1 || stage>5 || !(phi>=.6 && phi<=3) || !(width>0 && width<=.1)
        || !(Tu>=280 && Tu<=350) || fs::exists(output))throw std::runtime_error("Invalid input or existing output");
     if(activity && stage==2)throw std::runtime_error("Activity chemistry requires complete thermodynamics");
@@ -113,9 +118,12 @@ try {
           <<"\nTakahashi bounded-Table2"
           <<"\nSoret "<<(manualSoret?"manual-author-pairs":soret?"cantera-3.2":"off")
           <<"\nthermal_collision_pair_count "<<collisionPairs.size()
-          <<"\nenergy "<<(cpOnlyTemperature?"cp-only-temperature":pureTemperature?"pure-temperature":
+          <<"\nspecies_discretization "<<(conservative?"conservative-face":"stock-upwind")
+          <<"\nenergy "<<(conservative?"conservative-total-enthalpy":
+              cpOnlyTemperature?"cp-only-temperature":pureTemperature?"pure-temperature":
               matchedEnergy?"matched-total-enthalpy":
-              stage>=3 && label!="3star"?"legacy-total-enthalpy":"partial-temperature")<<'\n';
+              forceTotalEnthalpy || (stage>=3 && label!="3star")?
+                  "legacy-total-enthalpy":"partial-temperature")<<'\n';
     config.flush();
     std::ofstream checks(output/"property-checks.csv");
     checks<<"T_K,relative_cp_fd_error,relative_enthalpy_euler_error\n"<<std::setprecision(16);
@@ -133,13 +141,15 @@ try {
     }
     gas->setState_TPX(Tu,pressure,xin.data());
     std::shared_ptr<Flow1D> flow;
-    if(soret && stage>=3 && label!="3star")
+    if(conservative)flow=std::make_shared<hydrogen::ConservativeFlow>(sol);
+    else if(soret && stage>=3 && label!="3star")
         flow=std::make_shared<liang::SoretCompatibleFlow<liang::TotalEnthalpyFlow>>(sol,pureFlux);
     else if(soret)flow=std::make_shared<liang::SoretCompatibleFlow<Flow1D>>(sol,"flow");
     else if(cpOnlyTemperature)flow=hydrogen::makeFlow<hydrogen::CpOnlyTemperatureFlow>(midpoint,sol);
     else if(pureTemperature)flow=hydrogen::makeFlow<hydrogen::PureTemperatureFlow>(midpoint,sol);
     else if(matchedEnergy)flow=hydrogen::makeFlow<hydrogen::EnthalpyFlow>(midpoint,sol,pureFlux);
-    else if(stage>=3 && label!="3star")flow=hydrogen::makeFlow<liang::TotalEnthalpyFlow>(midpoint,sol,pureFlux);
+    else if(forceTotalEnthalpy || (stage>=3 && label!="3star"))
+        flow=hydrogen::makeFlow<liang::TotalEnthalpyFlow>(midpoint,sol,pureFlux);
     else flow=hydrogen::makeFlow<Flow1D>(midpoint,sol,"flow");
     flow->setFreeFlow();flow->setPressure(pressure);
     flow->setupGrid(grid.size(),grid.data());flow->setSteadyTolerances(1e-5,1e-11);
@@ -165,6 +175,8 @@ try {
     }
     auto real=newSolution((input/"srk.yaml").string(),"","hydrogen-full");activate(real,5);
     hydrogen::writeProfiles(output,flow,sol,ideal,real,pressure);
+    if(conservative)
+        std::dynamic_pointer_cast<hydrogen::ConservativeFlow>(flow)->writeBalances(output);
     if(soret) {
         auto* exporter=dynamic_cast<liang::SoretOutput*>(flow.get());
         if(!exporter)throw std::runtime_error("Missing hydrogen Soret output");
