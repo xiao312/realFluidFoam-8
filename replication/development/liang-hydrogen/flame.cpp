@@ -1,5 +1,6 @@
 #include "Profile.h"
 #include "HydrogenTransport.h"
+#include "EnergyFlows.h"
 #include "../cantera-liang/PressureChemistry.h"
 #include "../cantera-liang/TotalEnthalpyFlow.h"
 #include "cantera/oneD/DomainFactory.h"
@@ -11,11 +12,18 @@ namespace fs=std::filesystem;
 
 int main(int argc,char** argv) {
 try {
-    if(argc<5 || argc>8)throw std::runtime_error("Usage: flame INPUT CASE PHI NEW_OUTPUT [GUESS|-] [WIDTH_M] [TU_K]");
+    if(argc<5 || argc>9)throw std::runtime_error("Usage: flame INPUT CASE PHI NEW_OUTPUT [GUESS|-] [WIDTH_M] [TU_K] [VARIANT]");
     fs::path input=argv[1],output=argv[4];std::string label=argv[2];
     const int stage=label=="3star"?3:std::stoi(label);
     const double phi=std::stod(argv[3]),pressure=100*OneAtm;
     const double width=argc>=7?std::stod(argv[6]):.01,Tu=argc>=8?std::stod(argv[7]):298.;
+    const std::string variant=argc>=9?argv[8]:"baseline";
+    const bool pureFlux=variant=="pure-flux" || variant=="pure-flux-full-conductivity" || variant=="pure-flux-matched-energy";
+    const bool fullConductivity=variant=="full-conductivity" || variant=="pure-flux-full-conductivity";
+    const bool matchedEnergy=variant=="matched-energy" || variant=="pure-flux-matched-energy";
+    const bool pureTemperature=variant=="pure-temperature";
+    if(variant!="baseline" && !pureFlux && !fullConductivity && !matchedEnergy && !pureTemperature)
+        throw std::runtime_error("Unknown model variant");
     if(stage<1 || stage>5 || !(phi>=.6 && phi<=3) || !(width>0 && width<=.1)
        || !(Tu>=280 && Tu<=350) || fs::exists(output))throw std::runtime_error("Invalid input or existing output");
     std::ifstream table(input/"species.txt");std::vector<liang::Species> parameters;
@@ -28,11 +36,11 @@ try {
     ThermoFactory::factory()->reg("liang-srk",[](){auto* g=new liang::SrkPhase;g->stage=1;return g;});
     TransportFactory::factory()->reg("hydrogen-staged",[&](){
         auto* t=new hydrogen::Transport;t->pairs=pairs;t->parameters=parameters;t->stage=stage;
-        t->denseIncrementOnly=true;t->boundedTakahashi=true;t->table2=true;return t;
+        t->denseIncrementOnly=!fullConductivity;t->boundedTakahashi=true;t->table2=true;return t;
     });
     TransportFactory::factory()->reg("hydrogen-full",[&](){
         auto* t=new hydrogen::Transport;t->pairs=pairs;t->parameters=parameters;t->stage=5;
-        t->denseIncrementOnly=true;t->boundedTakahashi=true;t->table2=true;return t;
+        t->denseIncrementOnly=!fullConductivity;t->boundedTakahashi=true;t->table2=true;return t;
     });
     TransportFactory::factory()->reg("hydrogen-dilute",[&](){
         auto* t=new hydrogen::Transport;t->pairs=pairs;t->parameters=parameters;t->stage=1;return t;
@@ -60,7 +68,8 @@ try {
     config<<std::setprecision(16)<<"case "<<label<<"\nphi "<<phi<<"\npressure_Pa "<<pressure
           <<"\nTu_K "<<Tu<<"\nwidth_m "<<guess.x.back()-guess.x.front()
           <<"\nkinetics Burke2012-N2-pressure\ntransport author-pair-count "<<pairs.size()
-          <<"\nconductivity dense-increment-diagnostic\nTakahashi bounded-Table2"
+          <<"\nmodel_variant "<<variant<<"\nconductivity "<<(fullConductivity?"full-Ely-Hanley":"dense-increment-diagnostic")
+          <<"\nTakahashi bounded-Table2"
           <<"\nSoret off\nenergy "<<(stage>=3 && label!="3star"?"total-enthalpy":"temperature")<<'\n';
     std::ofstream checks(output/"property-checks.csv");
     checks<<"T_K,relative_cp_fd_error,relative_enthalpy_euler_error\n"<<std::setprecision(16);
@@ -78,7 +87,9 @@ try {
     }
     gas->setState_TPX(Tu,pressure,xin.data());
     std::shared_ptr<Flow1D> flow;
-    if(stage>=3 && label!="3star")flow=std::make_shared<liang::TotalEnthalpyFlow>(sol,false);
+    if(pureTemperature)flow=std::make_shared<hydrogen::PureTemperatureFlow>(sol);
+    else if(matchedEnergy)flow=std::make_shared<hydrogen::EnthalpyFlow>(sol,pureFlux);
+    else if(stage>=3 && label!="3star")flow=std::make_shared<liang::TotalEnthalpyFlow>(sol,pureFlux);
     else flow=newDomain<Flow1D>("gas-flow",sol,"flow");
     flow->setFreeFlow();flow->setPressure(pressure);
     flow->setupGrid(guess.x.size(),guess.x.data());flow->setSteadyTolerances(1e-5,1e-11);
