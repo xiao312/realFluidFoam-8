@@ -52,6 +52,14 @@ is part of the submission ledger identity. It cannot restart or extend a case.
 The completed endpoint must pass finite-field and zero-time-history checks;
 subsequent independent front tracking supplies the speed comparison.
 
+The small-increment C++ probe reports cell 0 only. `increment_case.py plan|apply
+CASE NEW_PROBE_CASE` copies its original-zero fresh-mixture state to a separate
+one-cell test mesh, retaining the registered thermo dictionaries and all 144
+temperature/pressure/increment combinations. The actual 8000-cell CFD case is
+unchanged. This avoids recomputing the entire flame mesh for a one-cell verdict.
+The input receipt records original field hashes and the selected composition.
+The normal initial-boundary probe still evaluates the actual CFD case.
+
 Verification: `python3 prepare.py verify CASE` checks all 53 zero-time species,
 normalization, symmetry of T/Y, antisymmetry of U, expected front positions,
 source hash, and absence of positive-time directories. Use the existing

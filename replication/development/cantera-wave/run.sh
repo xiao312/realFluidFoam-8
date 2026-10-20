@@ -38,7 +38,11 @@ blockMesh -case "$job/case" > "$job/blockMesh.log" 2>&1
 checkMesh -case "$job/case" > "$job/checkMesh.log" 2>&1
 grep -q 'Mesh OK' "$job/checkMesh.log"
 "$probe" -case "$job/case" -initial > "$job/initial-probe.log" 2>&1
-"$probe" -case "$job/case" -small-increments > "$job/ideal-increments.log" 2>&1
+for action in plan apply; do
+ python3 -B "$module/increment_case.py" "$action" "$job/case" "$job/increment-probe-case" > "$job/increment-case-$action.json"
+done
+blockMesh -case "$job/increment-probe-case" > "$job/increment-blockMesh.log" 2>&1
+"$probe" -case "$job/increment-probe-case" -small-increments > "$job/ideal-increments.log" 2>&1
 grep -q 'Small-increment inversion failures: 0/144' "$job/ideal-increments.log"
 python3 -B "$release/replication/development/premixed-paper/check.py" finalize "$job/case" > "$job/finalize.log"
 decomposePar -case "$job/case" > "$job/decompose.log" 2>&1
