@@ -1,4 +1,5 @@
-ElyHanley.H was adapted from equations and implementation in Cantera v3.2.0,
+ElyHanley.H and the baseline equations replayed by conductivity_math.py were
+adapted from equations and implementation in Cantera v3.2.0,
 commit 4a8358eb80cfeb50474386b5f9ec0b3a83519889,
 src/transport/HighPressureGasTransport.cpp. The reference-density mapping was
 corrected to use methane molecular weight per corresponding molar volume,

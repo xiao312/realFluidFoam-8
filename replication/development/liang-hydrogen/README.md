@@ -119,3 +119,11 @@ manifest feeds `plot.py plan|apply PAPER MANIFEST CRITICAL_CSV SPECIES_TXT OUTPU
 The renderer uses NumPy/PyMuPDF, preserves source panels at publication scale,
 adds open-symbol legends, and exports six PNGs, a PDF and evidence JSON.
 Out-of-range samples are counted, not forced inside the original axes.
+
+`digitize.py plan|apply PAPER NEW_OUTPUT` extracts hash-pinned original vector
+paths for Figures 3/4/5. It writes raw vertices, native marker centers, tick
+calibration, uncertainty bounds and PNG verification overlays. It does not fit
+to calculations or extrapolate; interpolation samples identify dash gaps.
+It depends on PyMuPDF, NumPy and Matplotlib, with no runtime solver dependency
+or secrets. Run `plan`, then `apply`, and inspect the overlays and tick residuals
+before using extracted points for a paper-comparison screen.

@@ -251,3 +251,139 @@ Existing output paths fail.
 
 These local values qualify the diagnosis only. Publication agreement and CFD
 deployment remain pending.
+
+## Follow-up after the pure-property pilots
+
+This section adds the reference-10 audit and independent endpoint checks.
+The coordinator reported the following phi=1.4 diagnostic results:
+pure-temperature job `125070683` gives 78.686 cm/s and 2312.23 K;
+pure-flux total H gives 75.495 cm/s; matching the advective stencil with pure
+flux gives 75.541 cm/s. These reported results have not been independently
+downloaded in this audit. They do not explain the extracted Liang Case 3 value
+of 71.8145 ± 0.3311 cm/s.
+
+### Source-supported choices and ruled-out changes
+
+The author manuscript corresponding to reference 10 explicitly defines radical
+LJ attraction at the pseudo-critical temperature, then applies a temperature
+function. Constant radical attraction would contradict that sequence. Its
+original square root uses an absolute value; its preferred smooth alternative is
+`sqrt(alpha) = 1 + tanh(s*(1-sqrt(T/Tc)))` above Tc, with the original bracket
+below Tc. This is a different model from the 2024 smoothing diagnostic.
+[Giovangigli et al., R.I.688, Eqs.39–43](https://www.cmap.polytechnique.fr/~giovangi/688.pdf)
+
+The manuscript prints `s = 0.48508 + 1.5517*omega - 0.151613*omega^2`.
+The last coefficient differs from reference 8's `0.15613` and the current
+kernel's original-Soave polynomial. The local page rendering verifies that
+`0.151613` is printed; it is not an extraction correction. The manuscript is a
+July 2010 report corresponding to the 2011 journal article, so a final published
+version should be checked before treating this last digit sequence as settled.
+
+Reference 8 writes the square-root bracket without an absolute value, while
+its mixture rule writes `sqrt(a_i*a_j)`. Signed brackets in a squared mixture
+sum and positive square roots of squared pure attractions cease to be equivalent
+above a species' crossing temperature. Liang does not resolve that choice.
+A signed-bracket control is therefore an implementation ambiguity test, not a
+justified replacement selected by agreement with Figure 3.
+
+The kernel's departure expression is algebraically Liang Eq. (3):
+`R*T*b/(v-b)-a/(v+b) = p*v-R*T`. Both cited treatments reference the ideal
+enthalpy at the same temperature and composition, with departure vanishing
+at infinite volume. Neither calls for subtracting another departure at 298 K.
+A composition-dependent reference shift can change reaction heat and should
+not be introduced to lower the flame speed.
+[Reference 8, Eqs.17–18](https://sirignano.eng.uci.edu/theme/pdfs/39.pdf)
+
+Reference 10 distinguishes pressure-derived ideal concentrations, actual
+high-pressure concentrations, a hybrid equilibrium correction, and fully
+activity-based chemistry. Our adapter implements its first model. Its molar
+source goes directly into `m*Y_i' + j_i' = W_i*omega_i`; no separate `1/Z`
+multiplier is specified. The corresponding equilibrium is ideal TP chemistry,
+even when SRK enthalpy supplies the energy constraint.
+[Reference 10, Eqs.1,15–19,56–59](https://www.cmap.polytechnique.fr/~giovangi/688.pdf)
+
+At fixed T,p,Y, changing Case 2 to Case 3 leaves this adapter's forward,
+reverse, third-body and falloff calculations unchanged. The intended changes
+are caloric properties and the energy residual. A rate difference in a frozen
+Case 2/3 state would be an implementation defect, not the intended staging.
+
+### The outlet composition reveals a numerical conservation defect
+
+An independent Cantera 3.2 calculation reconstructed elemental mass fractions
+from the exported species fields. H decreases and O increases between the
+inlet and outlet. This occurs in the stock ideal and EOS-only controls as well
+as the total-H solver:
+
+| phi | Case 1 relative H change | Case 2 relative H change | Case 3 relative H change |
+| --- | ---: | ---: | ---: |
+| 1.0 | -0.3342% | -0.3053% | -0.3433% |
+| 1.4 | -0.1986% | -0.1803% | -0.1972% |
+
+For Case 3, the absolute H/O changes are respectively
+`-9.78818e-5 / +9.94099e-5` at phi=1 and
+`-7.78450e-5 / +7.39894e-5` at phi=1.4. A numerical elemental-flux balance,
+including the inlet diffusion flux, should determine the exact source of the
+defect. Its presence in the stock controls prevents attributing it solely
+to our total-H energy equation.
+
+The outlet composition is already in local TP chemical equilibrium: the largest
+mass-fraction change after equilibration is `3.95e-11` and `2.87e-13` in the two
+Case 3 profiles. Slow terminal chemistry is therefore not a plausible
+explanation for their endpoint difference from feed equilibrium.
+
+For each trial temperature, the independent endpoint calculation equilibrated
+the exact 21/79 air feed at T,p, added our independently reconstructed SRK mixture
+departure, and solved `h(T,Y_eq)=h_in`. Repeating this calculation using the
+outlet's elemental composition isolates the measured elemental drift.
+
+| phi | Equilibrium with feed elements, K | Equilibrium with outlet elements, K | Saved outlet, K |
+| --- | ---: | ---: | ---: |
+| 1.0 | 2472.7262 | 2470.1352 | 2470.1562 |
+| 1.4 | 2299.6360 | 2301.4305 | 2301.4456 |
+
+The remaining 0.021/0.015 K corresponds to the small total-H endpoint defect.
+Thus the elemental change accounts for the endpoint-temperature discrepancy
+almost exactly. This is evidence to qualify the discretization; it does not
+demonstrate that the 3.7 cm/s rich-flame speed discrepancy has the same cause.
+
+Using the reference-10 tanh alpha, including its printed coefficient, changes
+feed-equilibrium temperatures only to 2472.5213 and 2299.5355 K. A signed-bracket
+mixture gives 2470.5908 and 2297.6982 K. These are frozen equilibrium calculations,
+not new flame predictions. The alpha tests principally probe the preheat-zone
+enthalpy/Cp variation and its numerical treatment, not a large change of final
+equilibrium temperature.
+
+### What to test next
+
+The planned explicit grid subdivision should track elemental flux and energy
+flux alongside speed. If the elemental defect shrinks, compare extrapolated
+speeds before changing caloric or chemical models. Tightening an adaptive
+criterion without adding points does not test this.
+
+Use one common equivalence ratio in the overlap of Figures 3 and 5 to judge speed
+and temperature together. Current temperature agreement is at phi=1, whereas
+the large speed discrepancy is assessed at phi=1.4, outside Figure 5. It does
+not yet establish matching rich-flame temperature. Figure 4's ideal inlet
+density at phi=1, `0.085522 ± 0.000140 g/cm^3`, independently agrees with our
+298 K value `0.0855255`; an inlet-temperature change is not the leading cause.
+
+The pure-Cp temperature pilot disfavors that particular reconstruction of
+Case 3*. It does not establish which approximate residual Liang used.
+Mixture Cp with pure-species source enthalpies remains a separately named
+interpretation, and must not be silently labeled the published implementation.
+
+New state evidence is in `state/liang-hydrogen-20261020/energy-sources/`:
+
+- `element-conservation-audit.json`, SHA256
+  `6e195daf0bd1b841616b4592ffa00a5cc4281267b690711e68d65e05b8abd14f`.
+- `pressure-equilibrium-endpoint-audit-corrected.json`, SHA256
+  `cef4d08cf41b338e71429ffa67bcbc5b33152a5716618126329f4b45c77e0e67`.
+  This supersedes the endpoint screening using air ratio 3.76 in
+  `pressure-equilibrium-endpoint-audit.json`; the actual driver uses 79/21.
+- `ref10-alpha-page.png`, visual verification of the printed Eq.42.
+- Reference-10 source PDF is
+  `state/cantera-liang-20261019/giovangigli-2011-transcritical.pdf`, SHA256
+  `0e93e18d404857f37b49044813dc5adf799781e87735e34f357a3b8171a256c5`.
+
+These checks used frozen local profiles only. They changed no model, submitted
+no job, and fitted no parameter.

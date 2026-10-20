@@ -11,6 +11,8 @@ NumPy/PyMuPDF renderer overlays those profiles on the locally supplied paper
 panels and exports PNG/PDF evidence; it never changes models or submits jobs.
 The energy diagnostics reuse the previously qualified SRK C4 alpha continuation
 and can explicitly subdivide every initial-grid interval for convergence checks.
+The hash-pinned vector digitizer consumes only the local paper, independently
+of simulation results, and supplies reading uncertainties to comparison screens.
 
 `validation/diffusion` consumes committed Liang flame comparisons, primary-source
 diffusion fixtures, author mechanism inputs and the pinned Cantera 3.2 SDK. Its
@@ -23,6 +25,11 @@ the gate artifacts and supplies a property-comparison PNG/PDF to the report.
 The extended property renderer also uses PyMuPDF to preserve the earlier PDF
 page while adding light-species and high-pressure self-diffusion comparisons.
 These measured and evaluated-reference checks change no flame-model inputs.
+
+The `liang-properties` conductivity diagnostic consumes a Cantera ideal phase,
+an explicit species table and optional frozen flame profiles. Its independent
+NumPy SRK/mapping equations qualify baseline parity and prescribed-volume
+mapping alternatives without changing the compiled flame transport adapter.
 
 `development/cantera-wave` consumes a screened ideal Cantera profile and the
 `fresh-start` case generator. Its Python generator produces mirrored original-zero
