@@ -8,6 +8,9 @@ the flame solve; output profiles feed the paper comparison gallery.
 An optional named-species steady-profile guess is an explicit data input; the
 kinetics driver maps it by species name and records discarded guess mass.
 It is independent of transient CFD restarts and does not supply boundary data.
+An optional author binary-polynomial table modifies only the ideal driver's
+mixture-averaged mass diffusion. It uses the Cantera SDK directly, without a
+dependency on hydrogen-specific or SRK adapters, and records its own input hash.
 
 `development/liang-hydrogen` consumes the author Burke 2012 mechanism and
 qualified species parameters, reusing `cantera-liang` SRK, transport,

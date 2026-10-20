@@ -3,6 +3,7 @@ set -euo pipefail
 root=${1:?}; release=${2:?}; sdk=${3:?}; mechanism=${4:?}
 action=${5:?}; build=${6:?}; phi=${7:?}; expected_sha=${8:?}
 guess=${9:--}
+pairs=${10:--}
 [[ -n ${SLURM_JOB_ID:-} ]] || exit 2
 for path in "$release" "$sdk" "$mechanism"; do
  [[ $(realpath -e "$path") == "$root/"* ]] || exit 2
@@ -20,6 +21,10 @@ printf 'job=%s\ncpus=%s\nmemory_per_node_MiB=%s\n' \
  > resources.txt
 cp "$release/SOURCE_REVISION" source-revision.txt
 sha256sum "$mechanism" > input-sha256.txt
+if [[ $pairs != - ]]; then
+ [[ $(realpath -e "$pairs") == "$root/"* ]] || exit 2
+ sha256sum "$pairs" >> input-sha256.txt
+fi
 if [[ $action == build ]]; then
  unset CPLUS_INCLUDE_PATH C_INCLUDE_PATH CPATH LIBRARY_PATH
  compiler=/public/software/compiler/gcc/11.2.0/bin/g++
@@ -29,6 +34,12 @@ if [[ $action == build ]]; then
  "$compiler" -std=c++17 -O2 -D_GLIBCXX_USE_CXX11_ABI=1 \
   "$release/replication/development/liang-kinetics/flame.cpp" $flags \
   -Wl,-rpath,"$sdk/lib" -o kinetics-flame > compile.log 2>&1
+ if [[ $pairs != - ]]; then
+  "$compiler" -std=c++17 -O2 -D_GLIBCXX_USE_CXX11_ABI=1 \
+   "$release/replication/development/liang-kinetics/test_pairs.cpp" $flags \
+   -Wl,-rpath,"$sdk/lib" -o test-pairs > compile-pairs.log 2>&1
+  ./test-pairs "$mechanism" "$pairs" > pairs-check.txt
+ fi
  sha256sum kinetics-flame > binary.sha256
  ldd kinetics-flame > dependencies.txt
  touch build-passed.txt
@@ -37,9 +48,14 @@ else
  test -f "$build/build-passed.txt"
  (cd "$build"; sha256sum -c binary.sha256)
  cmp "$build/source-revision.txt" "$release/SOURCE_REVISION"
+ printf '%s\n' "$build" > build-path.txt
+ printf '%s\n' "$sdk" > sdk-path.txt
+ cp "$build/binary.sha256" executable.sha256
  if [[ $guess != - ]]; then
   [[ $(realpath -e "$guess") == "$root/"* ]] || exit 2
   sha256sum "$guess" > guess-sha256.txt
  fi
- "$build/kinetics-flame" "$mechanism" "$phi" "$job/result" "$guess" > flame.log 2>&1
+ printf '%q ' "$build/kinetics-flame" "$mechanism" "$phi" "$job/result" "$guess" "$pairs" > command.txt
+ printf '\n' >> command.txt
+ "$build/kinetics-flame" "$mechanism" "$phi" "$job/result" "$guess" "$pairs" > flame.log 2>&1
 fi

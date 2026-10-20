@@ -7,7 +7,7 @@ Liang's unpublished methane subset, or repair invalid rates by clipping.
 
 ## Interface and boundaries
 
-`kinetics-flame MECHANISM PHI NEW_OUTPUT [GUESS_CSV|-]` uses 100 atm, 298 K, CH4 and
+`kinetics-flame MECHANISM PHI NEW_OUTPUT [GUESS_CSV|-] [PAIRS_TXT|-]` uses 100 atm, 298 K, CH4 and
 21/79 molar O2/N2, mixture-averaged mole-gradient diffusion, no Soret/radiation,
 and a 1-cm domain. A numerical initial guess comes from that mechanism's own
 ideal HP equilibrium. It is not a transient CFD restart. The current interface
@@ -22,11 +22,25 @@ preparation solve. Both paths solve the full energy equation for reported result
 Inputs require increasing x, finite fields and at least ten points. No transient
 CFD checkpoint is consumed.
 
+Optional `PAIRS_TXT` supplies named binary diffusion polynomials, one whitespace
+row `species_a species_b d0 d1 d2 d3` per author pair. Its explicit formula is
+`D[m2/s] = 1e-4*(101325/p[Pa])*exp(sum(d_i*ln(T[K])^i))`.
+Only binary mass diffusivity changes. Ordinary mixture reduction consumes the
+corrected pairs; viscosity and conductivity retain their ordinary models.
+The author USC/Wang documentation identifies this as the mixture-averaged
+diffusion extension. Its A*/B*/C* corrections for multicomponent/Soret transport
+are outside this module, as is complete modified TRANSPORT program equivalence.
+An omitted table keeps the LJ baseline. Unknown or duplicate pairs fail;
+there is no implicit transfer of USC's table to another mechanism.
+The configuration records the count and the job records the table hash.
+
 Outputs are refinement/speed/temperature CSVs, a named-species profile, a saved
 steady solution, input/binary hashes and source revision. The fixed-100-atm HP
 input must have its documented SHA256; its unchanged signed Arrhenius endpoint
 representation is qualified only at that pressure and 298-3500 K. Other input
 variants require equally explicit identity records.
+Each new job also retains its checked executable hash, immutable build/SDK paths,
+escaped command, numerical-guess hash and actual Slurm resource allocation.
 
 Dependencies: the pinned Cantera 3.2 C++ SDK, GCC 11.2, Bash and Slurm. The
 module has no OpenFOAM dependency or secret handling. The comparison gallery
@@ -36,7 +50,7 @@ outside public Git.
 
 ## Execution and verification
 
-`submit.sh plan|apply ROOT RELEASE SDK MECHANISM build|flame BUILD PARTITION PHI [GUESS|-]`
+`submit.sh plan|apply ROOT RELEASE SDK MECHANISM build|flame BUILD PARTITION PHI [GUESS|-] [PAIRS|-]`
 plans or submits one build or ideal flame. `BUILD` is `-` for compilation,
 otherwise a passed immutable build.
 One compute thread and two hours bound each scheduler job. Plan is read-only.
@@ -58,3 +72,6 @@ the earlier independent result before treating mechanism differences as new
 physics. A completed job is not paper acceptance. Retain ambiguous USC
 duplicate-record choices as distinct inputs; the negative-rate Hashemi input
 is blocked until a source-supported resolution exists.
+Builds with a supplied pair table run binary-formula, symmetry, mixture-reduction,
+and unchanged-thermal-conductivity checks at ten prescribed states before
+qualifying the executable.

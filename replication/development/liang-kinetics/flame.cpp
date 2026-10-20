@@ -1,6 +1,8 @@
 #include "cantera/onedim.h"
 #include "cantera/oneD/DomainFactory.h"
 #include "Guess.h"
+#include "PairTransport.h"
+#include "cantera/transport/TransportFactory.h"
 #include <filesystem>
 #include <fstream>
 #include <iomanip>
@@ -10,12 +12,15 @@ namespace fs=std::filesystem;
 
 int main(int argc,char** argv) {
 try {
-    if(argc<4 || argc>5)throw std::runtime_error("Usage: kinetics-flame MECHANISM PHI NEW_OUTPUT [GUESS|-]");
+    if(argc<4 || argc>6)throw std::runtime_error("Usage: kinetics-flame MECHANISM PHI NEW_OUTPUT [GUESS|-] [PAIRS|-]");
     const double phi=std::stod(argv[2]),pressure=100*OneAtm,Tu=298.,width=.01;
     const fs::path output=argv[3];
     if(phi<.8 || phi>1.5 || fs::exists(output))
         throw std::runtime_error("Expected phi 0.8-1.5 and new output");
-    auto sol=newSolution(argv[1],"","mixture-averaged");
+    auto pairs=kinetics_control::readPairs(argc==6?argv[5]:"-");
+    TransportFactory::factory()->reg("kinetics-author-pairs",[&](){
+        auto* transport=new kinetics_control::PairTransport;transport->pairs=pairs;return transport;});
+    auto sol=newSolution(argv[1],"",pairs.empty()?"mixture-averaged":"kinetics-author-pairs");
     auto gas=sol->thermo();
     gas->setEquivalenceRatio(phi,"CH4","O2:0.21,N2:0.79");gas->setState_TP(Tu,pressure);
     const size_t n=gas->nSpecies();
@@ -34,7 +39,7 @@ try {
         temperatures.push_back(Tu+q*(Tb-Tu));velocities.push_back(uu+q*(ub-uu));
         for(size_t k=0;k<n;k++)ys[k].push_back(yu[k]+q*(yb[k]-yu[k]));
     }
-    const bool suppliedGuess=argc==5 && std::string(argv[4])!="-";
+    const bool suppliedGuess=argc>=5 && std::string(argv[4])!="-";
     const double discarded=suppliedGuess?kinetics_control::readGuess(
         argv[4],*gas,grid,loc,temperatures,velocities,ys):0.;
     auto flow=newDomain<Flow1D>("gas-flow",sol,"flow");
@@ -56,6 +61,7 @@ try {
           <<"\nTu_K "<<Tu<<"\nwidth_m "<<grid.back()-grid.front()<<"\nspecies "<<n
           <<"\nreactions "<<sol->kinetics()->nReactions()
           <<"\ntransport mixture-averaged-molar\nSoret off\nradiation off"
+          <<"\nauthor_diffusion_pairs "<<pairs.size()
           <<"\nsupplied_steady_guess "<<suppliedGuess<<"\nmaximum_discarded_guess_mass_fraction "<<discarded<<'\n';
     config.flush();
     std::ofstream results(output/"refinement.csv");
@@ -88,6 +94,8 @@ try {
         for(auto v:y)csv<<','<<v;csv<<'\n';
     }
     std::ofstream(output/"completed.txt")<<"Numerical solve completed; paper acceptance pending\n";
+    if(auto* transport=dynamic_cast<kinetics_control::PairTransport*>(sol->transport().get()))
+        std::ofstream(output/"callbacks.txt")<<"author_pair_updates "<<transport->pairUpdates<<'\n';
     std::cout<<"COMPLETED speed_cm_s="<<100*velocities[0]<<std::endl;
 } catch(const std::exception& e) {std::cerr<<e.what()<<std::endl;return 1;}
 }
