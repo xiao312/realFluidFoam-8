@@ -1,5 +1,12 @@
 # Replication boundaries
 
+`development/liang-hydrogen` consumes the author Burke 2012 mechanism and
+qualified species parameters, reusing `cantera-liang` SRK, transport,
+pressure-chemistry and total-enthalpy adapters. It supplies Figures 3–7 with
+steady hydrogen flame and transport profiles; Figure 2 remains the independent
+`liang-properties` critical audit. Downloaded mechanism files stay outside Git.
+Its bounded Slurm jobs have no production CFD or transient-restart dependency.
+
 `validation/diffusion` consumes committed Liang flame comparisons, primary-source
 diffusion fixtures, author mechanism inputs and the pinned Cantera 3.2 SDK. Its
 prescribed-state C++ probe uses the actual `cantera-liang/StagedTransport.h`;
