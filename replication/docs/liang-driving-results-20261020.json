@@ -1,0 +1,72 @@
+{
+  "build_job": "125045036",
+  "runs": {
+    "125045302": {
+      "screen": {
+        "stage": 1,
+        "phi": 1.1,
+        "speed_cm_s": 7.461820426150887,
+        "last_refinement_relative_change": 4.917993606801119e-06,
+        "mass_flux_relative_range": 1.0167966085946165e-10,
+        "maximum_species_sum_error": 7.137024304881834e-11,
+        "minimum_mass_fraction": -1.620267782424071e-12,
+        "points": 2133,
+        "scientific_acceptance": false,
+        "remaining": [
+          "domain sensitivity",
+          "initial-guess sensitivity",
+          "publication parameter uncertainty"
+        ]
+      },
+      "source": "8d5d6405f35c256e59b334b50bc40f8b558ef832",
+      "variant": "nonideal-driving",
+      "profile_sha256": "0c18409beddda7fd87bc798976f60f09ca77a794f19b846e562bf6b506782a70",
+      "refinement": "stage,phi,slope,curve,points,speed_cm_s\n1,1.1,0.0075,0.0125,2133,7.461783729146212\n1,1.1,0.00375,0.00625,2133,7.461820426150887\n"
+    },
+    "125045311": {
+      "screen": {
+        "stage": 4,
+        "phi": 1.4,
+        "speed_cm_s": 5.807463280452708,
+        "last_refinement_relative_change": 7.926122629786647e-06,
+        "mass_flux_relative_range": 1.820521574535954e-10,
+        "maximum_species_sum_error": 1.9504797776903615e-10,
+        "minimum_mass_fraction": -1.988442941870116e-12,
+        "points": 2202,
+        "scientific_acceptance": false,
+        "remaining": [
+          "domain sensitivity",
+          "initial-guess sensitivity",
+          "publication parameter uncertainty"
+        ]
+      },
+      "source": "8d5d6405f35c256e59b334b50bc40f8b558ef832",
+      "variant": "dense-increment,bounded-takahashi,pressure-chemistry,takahashi-table2,nonideal-driving",
+      "profile_sha256": "f58f7ad87ed37596c3b560ebf514f75c2c65fbc2b91c9a81c9d15d535114ecc8",
+      "refinement": "stage,phi,slope,curve,points,speed_cm_s\n4,1.4,0.0075,0.0125,2201,5.807417250151421\n4,1.4,0.00375,0.00625,2202,5.807463280452708\n"
+    },
+    "125045316": {
+      "screen": {
+        "stage": 5,
+        "phi": 1.4,
+        "speed_cm_s": 5.762671953054699,
+        "last_refinement_relative_change": 3.6451825609074007e-06,
+        "mass_flux_relative_range": 4.2761682841964844e-10,
+        "maximum_species_sum_error": 4.353530869138922e-10,
+        "minimum_mass_fraction": -2.592555226848817e-13,
+        "points": 2200,
+        "scientific_acceptance": false,
+        "remaining": [
+          "domain sensitivity",
+          "initial-guess sensitivity",
+          "publication parameter uncertainty"
+        ]
+      },
+      "source": "8d5d6405f35c256e59b334b50bc40f8b558ef832",
+      "variant": "dense-increment,bounded-takahashi,pressure-chemistry,takahashi-table2,nonideal-driving",
+      "profile_sha256": "30e0a25a820ac59b0393f14ba8fc283c4f5179d64352abde7f8452c3a2ee52c1",
+      "refinement": "stage,phi,slope,curve,points,speed_cm_s\n5,1.4,0.0075,0.0125,2198,5.762650947139963\n5,1.4,0.00375,0.00625,2200,5.762671953054699\n"
+    }
+  },
+  "interpretation": "Additional driving force does not close Case 4-to-5 gap; no baseline change"
+}

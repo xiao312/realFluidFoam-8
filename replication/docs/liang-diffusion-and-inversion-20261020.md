@@ -4,8 +4,9 @@
 on the rich side. The tested diffusion alternatives do not explain the missing
 Case 4-to-5 reduction. A separate, demonstrated temperature-inversion error is
 fixed and has passed the existing native-library checks. Two short ideal CFD
-diagnostics finished from newly generated zero-time fields. One matched-transport
-control is submitted as 125041726. No new 2-D
+diagnostics finished from newly generated zero-time fields. Matched-transport
+control 125041726 also finished. Two original-zero 5-ns controls are active.
+No new 2-D
 campaign is active.
 
 ## Case 5 findings
@@ -21,6 +22,7 @@ a reduction of 0.152981 cm/s. The current calculation gives 5.807094 and
 | Mass-fraction-gradient formulation | 5.777965 | 5.733245 | 0.044720 |
 | Whole-mixture critical averaging | — | 5.781626 | — |
 | Additional mesh refinement | 5.799594 | 5.754848 | 0.044747 |
+| Additional nonideal driving force | 5.807463 | 5.762672 | 0.044791 |
 
 Mass-gradient Case 5 remains high by 0.090507 cm/s, or 1.60%; whole-mixture
 critical averaging remains high by 0.138888 cm/s, or 2.46%. Neither passes the
@@ -65,10 +67,21 @@ The additional corrected flux has an L1 magnitude of 2.12% of baseline near
 401 K, 1.07% near 600 K, 0.215% near 1200 K, and 0.0133% near 1800 K.
 These are local flux ratios, not flame-speed errors. The 848 previous coefficient
 and mass-flux checks remain unchanged and pass. A constant-TP Gibbs–Duhem test
-also passes. No flame equation uses this additional term. Giovangigli et al.
+also passes. The baseline flame equation omits this term. Giovangigli et al.
 (2011), Section 4.2, describes the chemical-potential driving force, but does not
 establish that Liang used it with Takahashi coefficients. The main Liang article
 specifies binary correction and mixture averaging without its detailed flux equation.
+
+The separate opt-in Flow1D experiment then completed as jobs 125045302,
+125045311 and 125045316, built with source 8d5d640 as 125045036. Twelve direct
+face tests and the full ideal control passed. At phi=1.40, Cases 4/5 give
+5.807463/5.762672 cm/s with negligible final refinement changes. The Case 5
+shift is only +0.000273 cm/s; the stage separation remains 0.044791 cm/s.
+This closure does not explain Liang's approximately 0.153 cm/s reduction.
+It remains a labelled experiment on `draft/case5-diffusion`, not a baseline
+change. `liang-driving-results-20261020.json` records the completed checks and
+profile hashes. The ideal control differs by 0.0016% because its adaptive
+numerical guess adds six grid points; its frozen ideal flux remains identical.
 
 The corrected Takahashi Table 2 coefficient remains in use. Species critical
 parameters and the precise binary-mixture reduction used by Liang remain
@@ -129,6 +142,7 @@ time is 19.994734 microseconds. This time endpoint is a diagnostic checkpoint.
 |---|---:|---:|---:|
 | Zero U | 7.410815 | 6.857385 | 2229.989057 |
 | Travelling U | 7.397968 | 6.857405 | 2229.583992 |
+| Travelling U, Cantera kappa/Dimix | 7.413847 | 7.456346 | 2229.615171 |
 
 The same reference speed is 7.461703 cm/s. T remains transient, and OH disagrees
 with T. Initial velocity alone therefore does not remove the mismatch. The
@@ -142,6 +156,15 @@ qualified bridge 124942015. Native chemistry, thermodynamics, inversion,
 strict linear solves, mesh and generated original fields are retained. The bridge
 and reference ideal mechanisms must match byte-for-byte. The previous fresh-state
 audit found native conductivity 6.55% above Cantera, making this a measured lead.
+
+The control completed in 27 min 12 s and passed the same 144 ideal-mixture
+checks, original-zero history, distinct-CPU and finite-field endpoint gates.
+All original time-zero fields match native travelling-wave job 125035588
+byte-for-byte. Its T/OH speeds differ from Cantera by -0.641%/-0.0718%.
+Their disagreement is now 0.04250 cm/s, versus 0.54056 in the native-transport
+control. Transport is therefore a major contributor to this transient mismatch.
+Steady-state and time/grid independence remain unqualified. Endpoint signed
+Qdot across both fronts is 44.3621 MW/m2, with peak 2.50095e12 W/m3.
 
 The saved travelling-wave field at 19.994734 microseconds gives the following
 same-state comparison. Cantera evaluates each native T,p,Y; differences in the
@@ -170,6 +193,16 @@ checkpoint from identical original fields. Its eight-hour limit reserves at most
 step, so the comparison cannot attribute a speed change to chemistry alone.
 Local verification confirmed exact zero-field parity and rejected a
 control/manifest step mismatch. No saved positive-time field is used.
+
+After the matched-transport endpoint passed, job 125046769 was submitted as
+the corresponding Cantera-transport/native-chemistry 5-ns control. It uses the
+same source 499fa91, library 125030062, bridge 124942015, original reference
+fields, eight ranks and eight-hour ceiling. Both step controls target 20 us.
+They retain GRI30, laminar combustion without a turbulence-chemistry interaction
+model, and native SEULEX at absolute/relative tolerances 1e-8/1e-6. The initial
+chemical step is 1e-8 s; the CFD step starts at 1e-10 s with adaptive maxCo=0.1
+and the selected ceiling. The new transport mode does not use Cantera for ODE
+integration. Both jobs must develop independent histories from zero.
 
 ## Integration decision
 
@@ -241,7 +274,7 @@ species changes large. They do not imply an integrator defect or quantify the
 resulting CFD speed error. The experiment's overridden thermo reference pressure
 is 100000 Pa; the source profile and mechanism hashes remain in the record.
 
-After the transport control, the next controlled comparison reduces the CFD
+After the transport control, jobs 125043700/125046769 reduce the CFD
 chemistry/transport step with the same original fields. The prediction is reduced
 early profile distortion and T/OH disagreement if source averaging is important.
 A clean matched-source/transport comparison must precede any conclusion about
@@ -250,7 +283,7 @@ all four intervals, signed selected-species rates and input identities.
 
 ## Figure and record updates
 
-`liang-figure8a-diffusion-diagnostics-20261020.json` freezes the six completed
+`liang-figure8a-diffusion-diagnostics-20261020.json` freezes the eight completed
 diagnostic points with job, model flags, source, profile hash and numerical checks.
 It identifies the unchanged 65-point baseline by SHA256. Pass it to
 `development/cantera-liang/figure_gallery.py` with `--diagnostics` alongside the
