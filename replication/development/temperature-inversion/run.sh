@@ -41,6 +41,9 @@ blockMesh -case "$job/case" > "$job/blockMesh.log" 2>&1
 checkMesh -case "$job/case" > "$job/checkMesh.log" 2>&1
 grep -q 'Mesh OK' "$job/checkMesh.log"
 "$probe" -case "$job/case" -initial > "$job/initial-probe.log" 2>&1
+if [[ $mode == build ]]; then
+ "$probe" -case "$job/case" -small-increments > "$job/ideal-increments.log" 2>&1
+fi
 if [[ $ranks == 32 ]]; then
  for action in plan apply; do
   python3 -B "$release/replication/development/cantera-cfd/partition.py" "$action" "$job/case" bands32 > "$job/partition-$action.json"

@@ -37,3 +37,13 @@ Then compare eight/32-rank global initial and final fields with
 `cantera-cfd/decomposition_parity.py`; do not relax its limits after a failure.
 Each MPI rank is assigned one distinct CPU from the batch process's existing
 allocation. A rank/count mismatch fails before the solver starts.
+
+`python3 pipeline.py plan ROOT RELEASE LIBRARY_JOB` lists a bounded job graph.
+`apply` submits two property checks after the library build, two independent
+8/32-rank startup checks, and eleven 8-rank flames after the eight-rank check.
+Every smoke also tests ideal-mixture small increments before time integration.
+Failed dependencies cancel children; the runtime wrapper also checks test receipts.
+Each full case has a 12-hour wall limit and a 300-microsecond physical endpoint.
+The sweep reserves at most 1056 core-hours. Endpoint completion does not prove
+steady state. A source-keyed ledger prevents duplicate submission. The pipeline
+does not authorize 32-rank full runs or staged nonideal CFD models.
