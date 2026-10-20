@@ -1,0 +1,40 @@
+{
+  "schema": 1,
+  "nist": {
+    "doi": "10.1021/acs.jced.1c00161",
+    "url": "https://tsapps.nist.gov/publication/get_pdf.cfm?pub_id=931779",
+    "definition": "Dilute methane in bath gas; measured D normalized linearly to 101.3 kPa",
+    "pressure_pa": 101300,
+    "columns": ["temperature_K", "D_cm2_s", "expanded_uncertainty_cm2_s"],
+    "uncertainty": "Combined expanded uncertainty, 95% confidence; correlated systematic component",
+    "nitrogen_table2": [[250, 0.170, 0.002], [273, 0.200, 0.002], [300, 0.237, 0.003], [350, 0.310, 0.004], [400, 0.391, 0.004], [450, 0.475, 0.005], [500, 0.577, 0.007], [550, 0.673, 0.007]],
+    "air_table4": [[250, 0.170, 0.004], [273, 0.200, 0.005], [300, 0.237, 0.005], [350, 0.311, 0.005]],
+    "air_limit": "Table 1 specifies breathing air without exact composition. A 21/79 O2/N2 approximation is exploratory only."
+  },
+  "takahashi": {
+    "doi": "10.1252/jcej.7.417",
+    "url": "https://www.jstage.jst.go.jp/article/jcej1968/7/6/7_6_417/_pdf",
+    "definition": "F = D*p/(D*p)^0 = Cinf*(1-A*Tr^-B)*(1-C*Tr^-E)",
+    "columns": ["Pr", "Cinf", "A", "B", "C", "E"],
+    "table2": [
+      [0.1, 1.01, 0.038042, 1.52267, 0, 0],
+      [0.2, 1.01, 0.067433, 2.16794, 0, 0],
+      [0.3, 1.01, 0.098317, 2.42910, 0, 0],
+      [0.4, 1.01, 0.137610, 2.77605, 0, 0],
+      [0.5, 1.01, 0.175081, 2.98256, 0, 0],
+      [0.6, 1.01, 0.216376, 3.11384, 0, 0],
+      [0.8, 1.01, 0.314051, 3.50264, 0, 0],
+      [1.0, 1.02, 0.385736, 3.07773, 0.141211, 13.45454],
+      [1.2, 1.02, 0.514553, 3.54744, 0.278407, 14],
+      [1.4, 1.02, 0.599184, 3.61216, 0.372683, 10.009],
+      [1.6, 1.02, 0.557725, 3.41882, 0.504894, 8.57519],
+      [1.8, 1.03, 0.593007, 3.18415, 0.678469, 10.37483],
+      [2.0, 1.03, 0.696001, 3.37660, 0.665702, 11.21674],
+      [2.5, 1.04, 0.790770, 3.27984, 0, 0],
+      [3.0, 1.05, 0.502100, 2.39031, 0.602907, 6.19043],
+      [4.0, 1.06, 0.837452, 3.23513, 0, 0],
+      [5.0, 1.07, 0.890390, 3.13001, 0, 0]
+    ],
+    "policies": "Linear interpolation in Pr between factors; below 0.1 unity; above 5 cap; Tr clamped to [1,5]. Policies outside tabulated Pr are implementation choices."
+  }
+}

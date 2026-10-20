@@ -1,5 +1,13 @@
 # Replication boundaries
 
+`validation/diffusion` consumes committed Liang flame comparisons, primary-source
+diffusion fixtures, author mechanism inputs and the pinned Cantera 3.2 SDK. Its
+prescribed-state C++ probe uses the actual `cantera-liang/StagedTransport.h`;
+independent Python calculations verify its correlation and compare dilute
+transport with measurements. It supplies the Case 5 investigation with property
+gates, without changing model parameters or solving flames. Production solvers
+have no dependency on this module.
+
 `development/cantera-wave` consumes a screened ideal Cantera profile and the
 `fresh-start` case generator. Its Python generator produces mirrored original-zero
 fields without a Cantera runtime. The native runner depends on
