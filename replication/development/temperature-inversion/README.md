@@ -45,5 +45,9 @@ Every smoke also tests ideal-mixture small increments before time integration.
 Failed dependencies cancel children; the runtime wrapper also checks test receipts.
 Each full case has a 12-hour wall limit and a 300-microsecond physical endpoint.
 The sweep reserves at most 1056 core-hours. Endpoint completion does not prove
-steady state. A source-keyed ledger prevents duplicate submission. The pipeline
+steady state. A source-and-build ledger prevents duplicate submission. The pipeline
 does not authorize 32-rank full runs or staged nonideal CFD models.
+Build archives must use `git -c core.autocrlf=false archive`. Verify every file
+against its Git blob before upload. Build 125004465 failed before compilation
+because the Windows archive converted Linux scripts to CRLF; its children were
+cancelled by dependency guards. Do not reuse or alter that failed release.

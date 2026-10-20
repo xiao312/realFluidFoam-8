@@ -22,7 +22,7 @@ plan=dict(source=sha,library_job=a.library_job,conditions=conditions,
     maximum_sweep_core_hours=11*8*12,
     note='32-rank smoke is diagnostic only; no 32-rank production permission')
 print(json.dumps(plan,indent=2))
-ledger=root/'results'/('temperature-pipeline-'+sha[:12]+'.json')
+ledger=root/'results'/('temperature-pipeline-'+sha[:12]+'-'+a.library_job+'.json')
 if ledger.exists():raise ValueError('Already submitted; inspect '+str(ledger))
 if a.action=='plan':raise SystemExit(0)
 plan['jobs']={}
