@@ -174,5 +174,19 @@
     "original_zero": true,
     "velocity": "travelling",
     "end_time_us": 20
-  }
+  },
+  "step_control": {
+    "job": "125043700",
+    "source": "499fa91439248acc5787810b88abdd1873e29ae3",
+    "library_job": "125030062",
+    "velocity": "travelling",
+    "max_delta_t_s": 5e-09,
+    "original_zero": true,
+    "end_time_us": 20,
+    "wall_limit_hours": 8,
+    "maximum_core_hours": 64,
+    "zero_field_parity_verified": true
+  },
+  "integration_source": "ea7211e281e3018e9aeca20a99beace2a39a28e5",
+  "combined_bridge_qualification": "125043949"
 }

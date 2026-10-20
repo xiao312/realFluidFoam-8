@@ -143,6 +143,37 @@ strict linear solves, mesh and generated original fields are retained. The bridg
 and reference ideal mechanisms must match byte-for-byte. The previous fresh-state
 audit found native conductivity 6.55% above Cantera, making this a measured lead.
 
+Job 125043700 is the native 5-ns step control, source
+`499fa91439248acc5787810b88abdd1873e29ae3`. It targets the same 20-microsecond
+checkpoint from identical original fields. Its eight-hour limit reserves at most
+64 core-hours. Both Euler time error and chemistry averaging change with the
+step, so the comparison cannot attribute a speed change to chemistry alone.
+Local verification confirmed exact zero-field parity and rejected a
+control/manifest step mismatch. No saved positive-time field is used.
+
+## Integration decision
+
+The demonstrated temperature-inversion corrections and original-zero diagnostic
+modules are merged into `develop/reacting` at
+`ea7211e281e3018e9aeca20a99beace2a39a28e5`; the remote branch was verified.
+Risk is low within the tested scope: 288/288 SRK/PR increments, 450/450 property
+inversions, both 144/144 ideal gates and both finite 20-microsecond CFD endpoints
+passed. The original-zero policy, module Python/shell syntax and environment
+lock also passed locally after integration. Scientific acceptance remains false.
+
+The combined Cantera bridge additionally passed qualification 125043949.
+Its ABI0 client checked 51 states in each ideal, smooth-SRK and bounded-diffusion
+context, then repeated with the OF8 core library loaded. Maximum scaled property
+error was 3.165e-10; relative mass-source imbalance was below 4.334e-16.
+The bridge now rejects flow-only and unqualified bulk-critical options instead
+of silently ignoring them. This qualification does not replace the old pinned
+bridge binary used by running transport job 125041726.
+
+Qualified new bridge SHA256:
+`7f196b847665d4ffb944c7248e8d32d3bebd55cd616fc45a24df330f21bd6d20`.
+Client SHA256:
+`08fed502b298a4ed2db4977ea040f27e69427ea475f716a33159ad5b8e937503`.
+
 All original-zero fields are generated anew. No CFD checkpoint, positive-time
 directory, or latestTime selection is accepted. Local verification passed
 normalization at 2.22e-16, exact T/Y parity between the two recipes, symmetry,
