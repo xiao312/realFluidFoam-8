@@ -1,0 +1,950 @@
+{
+  "cantera_version": "3.2.0",
+  "pressure_pa": 10132500.0,
+  "states": [
+    {
+      "target_K": 300,
+      "actual_K": 299.97320517960515,
+      "face_index": 123
+    },
+    {
+      "target_K": 400,
+      "actual_K": 400.3819505867774,
+      "face_index": 339
+    },
+    {
+      "target_K": 600,
+      "actual_K": 600.1748158742737,
+      "face_index": 526
+    },
+    {
+      "target_K": 900,
+      "actual_K": 899.7352215904489,
+      "face_index": 835
+    },
+    {
+      "target_K": 1200,
+      "actual_K": 1199.9342721277872,
+      "face_index": 1194
+    },
+    {
+      "target_K": 1500,
+      "actual_K": 1500.1951676152994,
+      "face_index": 1745
+    },
+    {
+      "target_K": 1800,
+      "actual_K": 1799.83845975433,
+      "face_index": 2167
+    },
+    {
+      "target_K": 2100,
+      "actual_K": 2006.9022136610206,
+      "face_index": 3108
+    }
+  ],
+  "ordered_pair_samples": 22048,
+  "input_sha256": {
+    "ideal.yaml": "c6e72c25dbf5af75a16b71042e071aed15ca4fd4a8a854fd8720a820ce1986c6",
+    "species.txt": "6374f6cb2c693997f1f2a1e6505c1579c62e9adc238555a2d4ba45edebca1b61",
+    "fine-case4-profile-125027407.csv": "2a7bc2454a9853ab70f9edc30d4f3961950a03012fdce2ec49b5db31077685ba",
+    "references.json": "62f54b709d5cee57f1dd530fc12b30cf619db472ce886c95053b1f32c1ba01b0"
+  },
+  "maximum_low_Pr_fraction_all": 7.011879193966615e-10,
+  "maximum_low_Pr_fraction_major": 7.943297501445484e-21,
+  "major_species": [
+    {
+      "target_K": 300,
+      "species": "CH4",
+      "mass_fraction": 0.07546823742637929,
+      "low_Pr_denominator_fraction": 0,
+      "Tr_clamped_denominator_fraction": 0,
+      "Tr_upper_clamped_fraction": 0,
+      "Tr_lower_clamped_fraction": 0,
+      "upper_unclamped_mix_change_percent": 0.0,
+      "mix_corrected_m2_s": 2.2887102955711243e-07
+    },
+    {
+      "target_K": 300,
+      "species": "H",
+      "mass_fraction": 7.18649675044844e-22,
+      "low_Pr_denominator_fraction": 7.943297501445484e-21,
+      "Tr_clamped_denominator_fraction": 0.001571665940726916,
+      "Tr_upper_clamped_fraction": 0.001332822584293525,
+      "Tr_lower_clamped_fraction": 0.0002388433564333909,
+      "upper_unclamped_mix_change_percent": 0.0006501126370350718,
+      "mix_corrected_m2_s": 1.1657296759058197e-06
+    },
+    {
+      "target_K": 300,
+      "species": "O2",
+      "mass_fraction": 0.21519872950318306,
+      "low_Pr_denominator_fraction": 0,
+      "Tr_clamped_denominator_fraction": 0,
+      "Tr_upper_clamped_fraction": 0,
+      "Tr_lower_clamped_fraction": 0,
+      "upper_unclamped_mix_change_percent": 0.0,
+      "mix_corrected_m2_s": 1.9722258081935215e-07
+    },
+    {
+      "target_K": 300,
+      "species": "H2",
+      "mass_fraction": 0.0001952927242483077,
+      "low_Pr_denominator_fraction": 0,
+      "Tr_clamped_denominator_fraction": 1.9922194841350905e-05,
+      "Tr_upper_clamped_fraction": 1.9922194841350905e-05,
+      "Tr_lower_clamped_fraction": 0,
+      "upper_unclamped_mix_change_percent": 9.60355028833959e-06,
+      "mix_corrected_m2_s": 7.496829154186039e-07
+    },
+    {
+      "target_K": 300,
+      "species": "O",
+      "mass_fraction": 4.541488459463152e-16,
+      "low_Pr_denominator_fraction": 0,
+      "Tr_clamped_denominator_fraction": 0.0009384705989719769,
+      "Tr_upper_clamped_fraction": 0.0007160375328064376,
+      "Tr_lower_clamped_fraction": 0.0002224330661655393,
+      "upper_unclamped_mix_change_percent": 0.0003492615249012232,
+      "mix_corrected_m2_s": 3.139913270250743e-07
+    },
+    {
+      "target_K": 300,
+      "species": "OH",
+      "mass_fraction": 1.0854120460144291e-14,
+      "low_Pr_denominator_fraction": 0,
+      "Tr_clamped_denominator_fraction": 0.0009268884753094914,
+      "Tr_upper_clamped_fraction": 0.0007050371357351312,
+      "Tr_lower_clamped_fraction": 0.00022185133957436024,
+      "upper_unclamped_mix_change_percent": 0.00034389584431249176,
+      "mix_corrected_m2_s": 3.0814050617710653e-07
+    },
+    {
+      "target_K": 300,
+      "species": "H2O",
+      "mass_fraction": 0.00014338037956659801,
+      "low_Pr_denominator_fraction": 0,
+      "Tr_clamped_denominator_fraction": 2.58856709936689e-05,
+      "Tr_upper_clamped_fraction": 0,
+      "Tr_lower_clamped_fraction": 2.58856709936689e-05,
+      "upper_unclamped_mix_change_percent": 0.0,
+      "mix_corrected_m2_s": 2.1806227160936904e-07
+    },
+    {
+      "target_K": 300,
+      "species": "CO",
+      "mass_fraction": 1.975268636450162e-05,
+      "low_Pr_denominator_fraction": 0,
+      "Tr_clamped_denominator_fraction": 0.0008747919417273292,
+      "Tr_upper_clamped_fraction": 0.0006431265132639387,
+      "Tr_lower_clamped_fraction": 0.00023166542846339057,
+      "upper_unclamped_mix_change_percent": 0.00030960003754021415,
+      "mix_corrected_m2_s": 2.0074341474356057e-07
+    },
+    {
+      "target_K": 300,
+      "species": "CO2",
+      "mass_fraction": 2.527969194969342e-06,
+      "low_Pr_denominator_fraction": 0,
+      "Tr_clamped_denominator_fraction": 0.000818131484443232,
+      "Tr_upper_clamped_fraction": 0.0005713424023350641,
+      "Tr_lower_clamped_fraction": 0.0002467890821081679,
+      "upper_unclamped_mix_change_percent": 0.0002778991213814308,
+      "mix_corrected_m2_s": 1.531244572593408e-07
+    },
+    {
+      "target_K": 300,
+      "species": "N2",
+      "mass_fraction": 0.7089712598549658,
+      "low_Pr_denominator_fraction": 0,
+      "Tr_clamped_denominator_fraction": 0,
+      "Tr_upper_clamped_fraction": 0,
+      "Tr_lower_clamped_fraction": 0,
+      "upper_unclamped_mix_change_percent": 0.0,
+      "mix_corrected_m2_s": 1.9596861406134062e-07
+    },
+    {
+      "target_K": 400,
+      "species": "CH4",
+      "mass_fraction": 0.0720009840555683,
+      "low_Pr_denominator_fraction": 0,
+      "Tr_clamped_denominator_fraction": 0,
+      "Tr_upper_clamped_fraction": 0,
+      "Tr_lower_clamped_fraction": 0,
+      "upper_unclamped_mix_change_percent": 0.0,
+      "mix_corrected_m2_s": 4.0069861808558373e-07
+    },
+    {
+      "target_K": 400,
+      "species": "H",
+      "mass_fraction": 7.35812093042773e-17,
+      "low_Pr_denominator_fraction": 0,
+      "Tr_clamped_denominator_fraction": 0.019058376680073198,
+      "Tr_upper_clamped_fraction": 0.0048219176638204485,
+      "Tr_lower_clamped_fraction": 0.014236459016252749,
+      "upper_unclamped_mix_change_percent": 0.0026104937597581923,
+      "mix_corrected_m2_s": 2.0507244954745753e-06
+    },
+    {
+      "target_K": 400,
+      "species": "O2",
+      "mass_fraction": 0.2084320316040444,
+      "low_Pr_denominator_fraction": 0,
+      "Tr_clamped_denominator_fraction": 0,
+      "Tr_upper_clamped_fraction": 0,
+      "Tr_lower_clamped_fraction": 0,
+      "upper_unclamped_mix_change_percent": 0.0,
+      "mix_corrected_m2_s": 3.4336296204378813e-07
+    },
+    {
+      "target_K": 400,
+      "species": "H2",
+      "mass_fraction": 0.0006640502515296556,
+      "low_Pr_denominator_fraction": 0,
+      "Tr_clamped_denominator_fraction": 0.0025243341890024817,
+      "Tr_upper_clamped_fraction": 0.0025243341890024817,
+      "Tr_lower_clamped_fraction": 0,
+      "upper_unclamped_mix_change_percent": 0.0011544099740801173,
+      "mix_corrected_m2_s": 1.2911830795059814e-06
+    },
+    {
+      "target_K": 400,
+      "species": "O",
+      "mass_fraction": 7.811209544245672e-14,
+      "low_Pr_denominator_fraction": 0,
+      "Tr_clamped_denominator_fraction": 0.015908033420824738,
+      "Tr_upper_clamped_fraction": 0.002578455253148325,
+      "Tr_lower_clamped_fraction": 0.013329578167676413,
+      "upper_unclamped_mix_change_percent": 0.0013959092762139136,
+      "mix_corrected_m2_s": 5.460617997550642e-07
+    },
+    {
+      "target_K": 400,
+      "species": "OH",
+      "mass_fraction": 2.3187744233318986e-11,
+      "low_Pr_denominator_fraction": 0,
+      "Tr_clamped_denominator_fraction": 0.01583244566510846,
+      "Tr_upper_clamped_fraction": 0.00253886016699319,
+      "Tr_lower_clamped_fraction": 0.013293585498115268,
+      "upper_unclamped_mix_change_percent": 0.0013744732189513442,
+      "mix_corrected_m2_s": 5.358903209520874e-07
+    },
+    {
+      "target_K": 400,
+      "species": "H2O",
+      "mass_fraction": 0.008636371700199529,
+      "low_Pr_denominator_fraction": 0,
+      "Tr_clamped_denominator_fraction": 0.003406816221503914,
+      "Tr_upper_clamped_fraction": 0,
+      "Tr_lower_clamped_fraction": 0.003406816221503914,
+      "upper_unclamped_mix_change_percent": 0.0,
+      "mix_corrected_m2_s": 3.9890455966579344e-07
+    },
+    {
+      "target_K": 400,
+      "species": "CO",
+      "mass_fraction": 0.001815515996924001,
+      "low_Pr_denominator_fraction": 0,
+      "Tr_clamped_denominator_fraction": 0.01626771577884193,
+      "Tr_upper_clamped_fraction": 0.0023224180405460385,
+      "Tr_lower_clamped_fraction": 0.013945297738295894,
+      "upper_unclamped_mix_change_percent": 0.0010392760371624732,
+      "mix_corrected_m2_s": 3.501771873096469e-07
+    },
+    {
+      "target_K": 400,
+      "species": "CO2",
+      "mass_fraction": 0.0008947567184203289,
+      "low_Pr_denominator_fraction": 0,
+      "Tr_clamped_denominator_fraction": 0.016632671617539885,
+      "Tr_upper_clamped_fraction": 0.002077217307390089,
+      "Tr_lower_clamped_fraction": 0.014555454310149795,
+      "upper_unclamped_mix_change_percent": 0.0009445207074243456,
+      "mix_corrected_m2_s": 2.7276086649216985e-07
+    },
+    {
+      "target_K": 400,
+      "species": "N2",
+      "mass_fraction": 0.707329190546109,
+      "low_Pr_denominator_fraction": 0,
+      "Tr_clamped_denominator_fraction": 0,
+      "Tr_upper_clamped_fraction": 0,
+      "Tr_lower_clamped_fraction": 0,
+      "upper_unclamped_mix_change_percent": 0.0,
+      "mix_corrected_m2_s": 3.382506328351497e-07
+    },
+    {
+      "target_K": 600,
+      "species": "CH4",
+      "mass_fraction": 0.06493316911581094,
+      "low_Pr_denominator_fraction": 0,
+      "Tr_clamped_denominator_fraction": 0,
+      "Tr_upper_clamped_fraction": 0,
+      "Tr_lower_clamped_fraction": 0,
+      "upper_unclamped_mix_change_percent": 0.0,
+      "mix_corrected_m2_s": 8.242082928708013e-07
+    },
+    {
+      "target_K": 600,
+      "species": "H",
+      "mass_fraction": 5.0842445351133155e-14,
+      "low_Pr_denominator_fraction": 0,
+      "Tr_clamped_denominator_fraction": 0.0463429820677175,
+      "Tr_upper_clamped_fraction": 0.0071556534661681385,
+      "Tr_lower_clamped_fraction": 0.039187328601549366,
+      "upper_unclamped_mix_change_percent": 0.004061423479662096,
+      "mix_corrected_m2_s": 4.239237071154174e-06
+    },
+    {
+      "target_K": 600,
+      "species": "O2",
+      "mass_fraction": 0.19044942881320814,
+      "low_Pr_denominator_fraction": 0,
+      "Tr_clamped_denominator_fraction": 0,
+      "Tr_upper_clamped_fraction": 0,
+      "Tr_lower_clamped_fraction": 0,
+      "upper_unclamped_mix_change_percent": 0.0,
+      "mix_corrected_m2_s": 7.075679686554982e-07
+    },
+    {
+      "target_K": 600,
+      "species": "H2",
+      "mass_fraction": 0.0009512784672734578,
+      "low_Pr_denominator_fraction": 0,
+      "Tr_clamped_denominator_fraction": 0.010673333948337013,
+      "Tr_upper_clamped_fraction": 0.010673333948337013,
+      "Tr_lower_clamped_fraction": 0,
+      "upper_unclamped_mix_change_percent": 0.004783926803941796,
+      "mix_corrected_m2_s": 2.6249499773083606e-06
+    },
+    {
+      "target_K": 600,
+      "species": "O",
+      "mass_fraction": 2.245531201595463e-12,
+      "low_Pr_denominator_fraction": 0,
+      "Tr_clamped_denominator_fraction": 0.04094921073912558,
+      "Tr_upper_clamped_fraction": 0.0038064876805440615,
+      "Tr_lower_clamped_fraction": 0.03714272305858152,
+      "upper_unclamped_mix_change_percent": 0.0021604545120013086,
+      "mix_corrected_m2_s": 1.116468441187772e-06
+    },
+    {
+      "target_K": 600,
+      "species": "OH",
+      "mass_fraction": 4.3761730798698494e-10,
+      "low_Pr_denominator_fraction": 0,
+      "Tr_clamped_denominator_fraction": 0.04078679116644859,
+      "Tr_upper_clamped_fraction": 0.0037481806336102357,
+      "Tr_lower_clamped_fraction": 0.03703861053283835,
+      "upper_unclamped_mix_change_percent": 0.002127360159498437,
+      "mix_corrected_m2_s": 1.0957145515846134e-06
+    },
+    {
+      "target_K": 600,
+      "species": "H2O",
+      "mass_fraction": 0.025712045254589623,
+      "low_Pr_denominator_fraction": 0,
+      "Tr_clamped_denominator_fraction": 0.006416343612015673,
+      "Tr_upper_clamped_fraction": 0,
+      "Tr_lower_clamped_fraction": 0.006416343612015673,
+      "upper_unclamped_mix_change_percent": 0.0,
+      "mix_corrected_m2_s": 8.742514494066104e-07
+    },
+    {
+      "target_K": 600,
+      "species": "CO",
+      "mass_fraction": 0.006639231220410748,
+      "low_Pr_denominator_fraction": 0,
+      "Tr_clamped_denominator_fraction": 0.003448350265229942,
+      "Tr_upper_clamped_fraction": 0.003448350265229942,
+      "Tr_lower_clamped_fraction": 0,
+      "upper_unclamped_mix_change_percent": 0.0016652726249288818,
+      "mix_corrected_m2_s": 7.177020491177133e-07
+    },
+    {
+      "target_K": 600,
+      "species": "CO2",
+      "mass_fraction": 0.0046288045044863835,
+      "low_Pr_denominator_fraction": 0,
+      "Tr_clamped_denominator_fraction": 0.04417537319752085,
+      "Tr_upper_clamped_fraction": 0.003125539477019028,
+      "Tr_lower_clamped_fraction": 0.041049833720501826,
+      "upper_unclamped_mix_change_percent": 0.0010582104600143083,
+      "mix_corrected_m2_s": 5.702977607164801e-07
+    },
+    {
+      "target_K": 600,
+      "species": "N2",
+      "mass_fraction": 0.7055532707785606,
+      "low_Pr_denominator_fraction": 0,
+      "Tr_clamped_denominator_fraction": 0,
+      "Tr_upper_clamped_fraction": 0,
+      "Tr_lower_clamped_fraction": 0,
+      "upper_unclamped_mix_change_percent": 0.0,
+      "mix_corrected_m2_s": 6.919768270283065e-07
+    },
+    {
+      "target_K": 900,
+      "species": "CH4",
+      "mass_fraction": 0.05361267376680663,
+      "low_Pr_denominator_fraction": 0,
+      "Tr_clamped_denominator_fraction": 0.8962428411211112,
+      "Tr_upper_clamped_fraction": 0.8962428411211112,
+      "Tr_lower_clamped_fraction": 0,
+      "upper_unclamped_mix_change_percent": 0.3591873688125524,
+      "mix_corrected_m2_s": 1.6388194496615872e-06
+    },
+    {
+      "target_K": 900,
+      "species": "H",
+      "mass_fraction": 3.438971439635883e-11,
+      "low_Pr_denominator_fraction": 0,
+      "Tr_clamped_denominator_fraction": 0.8242185730191524,
+      "Tr_upper_clamped_fraction": 0.8242185730191524,
+      "Tr_lower_clamped_fraction": 0,
+      "upper_unclamped_mix_change_percent": 0.4377985318119393,
+      "mix_corrected_m2_s": 8.529874545387532e-06
+    },
+    {
+      "target_K": 900,
+      "species": "O2",
+      "mass_fraction": 0.15746432113839845,
+      "low_Pr_denominator_fraction": 0,
+      "Tr_clamped_denominator_fraction": 0.92879619865615,
+      "Tr_upper_clamped_fraction": 0.92879619865615,
+      "Tr_lower_clamped_fraction": 0,
+      "upper_unclamped_mix_change_percent": 0.3514819993879703,
+      "mix_corrected_m2_s": 1.422777214589341e-06
+    },
+    {
+      "target_K": 900,
+      "species": "H2",
+      "mass_fraction": 0.001210760466897165,
+      "low_Pr_denominator_fraction": 0,
+      "Tr_clamped_denominator_fraction": 0.9332111934956361,
+      "Tr_upper_clamped_fraction": 0.9332111934956361,
+      "Tr_lower_clamped_fraction": 0,
+      "upper_unclamped_mix_change_percent": 0.47798363576654346,
+      "mix_corrected_m2_s": 5.216911490631015e-06
+    },
+    {
+      "target_K": 900,
+      "species": "O",
+      "mass_fraction": 1.543626184067005e-10,
+      "low_Pr_denominator_fraction": 0,
+      "Tr_clamped_denominator_fraction": 0.8353603891265861,
+      "Tr_upper_clamped_fraction": 0.8353603891265861,
+      "Tr_lower_clamped_fraction": 0,
+      "upper_unclamped_mix_change_percent": 0.44209608992713534,
+      "mix_corrected_m2_s": 2.230928006552025e-06
+    },
+    {
+      "target_K": 900,
+      "species": "OH",
+      "mass_fraction": 1.2776435441664836e-08,
+      "low_Pr_denominator_fraction": 0,
+      "Tr_clamped_denominator_fraction": 0.8358171429712354,
+      "Tr_upper_clamped_fraction": 0.8358171429712354,
+      "Tr_lower_clamped_fraction": 0,
+      "upper_unclamped_mix_change_percent": 0.4422848389866285,
+      "mix_corrected_m2_s": 2.1895190645080055e-06
+    },
+    {
+      "target_K": 900,
+      "species": "H2O",
+      "mass_fraction": 0.05062015985771193,
+      "low_Pr_denominator_fraction": 0,
+      "Tr_clamped_denominator_fraction": 0.7227691504102702,
+      "Tr_upper_clamped_fraction": 0.7227691504102702,
+      "Tr_lower_clamped_fraction": 0,
+      "upper_unclamped_mix_change_percent": 0.006114390885780807,
+      "mix_corrected_m2_s": 1.8347981774743893e-06
+    },
+    {
+      "target_K": 900,
+      "species": "CO",
+      "mass_fraction": 0.015598187070080977,
+      "low_Pr_denominator_fraction": 0,
+      "Tr_clamped_denominator_fraction": 0.8390684350283019,
+      "Tr_upper_clamped_fraction": 0.8390684350283019,
+      "Tr_lower_clamped_fraction": 0,
+      "upper_unclamped_mix_change_percent": 0.4426352349080398,
+      "mix_corrected_m2_s": 1.4373573136200034e-06
+    },
+    {
+      "target_K": 900,
+      "species": "CO2",
+      "mass_fraction": 0.013415428773223853,
+      "low_Pr_denominator_fraction": 0,
+      "Tr_clamped_denominator_fraction": 0.8307167736014861,
+      "Tr_upper_clamped_fraction": 0.8307167736014861,
+      "Tr_lower_clamped_fraction": 0,
+      "upper_unclamped_mix_change_percent": 0.40267779414904226,
+      "mix_corrected_m2_s": 1.1553637652030365e-06
+    },
+    {
+      "target_K": 900,
+      "species": "N2",
+      "mass_fraction": 0.7048879174183859,
+      "low_Pr_denominator_fraction": 0,
+      "Tr_clamped_denominator_fraction": 1.0,
+      "Tr_upper_clamped_fraction": 1.0,
+      "Tr_lower_clamped_fraction": 0,
+      "upper_unclamped_mix_change_percent": 0.3760364505559055,
+      "mix_corrected_m2_s": 1.3791907570474348e-06
+    },
+    {
+      "target_K": 1200,
+      "species": "CH4",
+      "mass_fraction": 0.041438732535349576,
+      "low_Pr_denominator_fraction": 0,
+      "Tr_clamped_denominator_fraction": 0.8986603901665219,
+      "Tr_upper_clamped_fraction": 0.8986603901665219,
+      "Tr_lower_clamped_fraction": 0,
+      "upper_unclamped_mix_change_percent": 0.5589971897471901,
+      "mix_corrected_m2_s": 2.646867302210301e-06
+    },
+    {
+      "target_K": 1200,
+      "species": "H",
+      "mass_fraction": 5.499542153552904e-09,
+      "low_Pr_denominator_fraction": 0,
+      "Tr_clamped_denominator_fraction": 0.8824752961684958,
+      "Tr_upper_clamped_fraction": 0.8824752961684958,
+      "Tr_lower_clamped_fraction": 0,
+      "upper_unclamped_mix_change_percent": 0.6240186135768822,
+      "mix_corrected_m2_s": 1.3940259971152927e-05
+    },
+    {
+      "target_K": 1200,
+      "species": "O2",
+      "mass_fraction": 0.11936341756287834,
+      "low_Pr_denominator_fraction": 0,
+      "Tr_clamped_denominator_fraction": 0.900457253679595,
+      "Tr_upper_clamped_fraction": 0.900457253679595,
+      "Tr_lower_clamped_fraction": 0,
+      "upper_unclamped_mix_change_percent": 0.5276316296290551,
+      "mix_corrected_m2_s": 2.3323240834723423e-06
+    },
+    {
+      "target_K": 1200,
+      "species": "H2",
+      "mass_fraction": 0.0014027689003273409,
+      "low_Pr_denominator_fraction": 0,
+      "Tr_clamped_denominator_fraction": 0.9039641417172445,
+      "Tr_upper_clamped_fraction": 0.9039641417172445,
+      "Tr_lower_clamped_fraction": 0,
+      "upper_unclamped_mix_change_percent": 0.6575299549447688,
+      "mix_corrected_m2_s": 8.483199220697193e-06
+    },
+    {
+      "target_K": 1200,
+      "species": "O",
+      "mass_fraction": 1.841269605167963e-08,
+      "low_Pr_denominator_fraction": 0,
+      "Tr_clamped_denominator_fraction": 0.8843224005304275,
+      "Tr_upper_clamped_fraction": 0.8843224005304275,
+      "Tr_lower_clamped_fraction": 0,
+      "upper_unclamped_mix_change_percent": 0.628980350146735,
+      "mix_corrected_m2_s": 3.634599260444342e-06
+    },
+    {
+      "target_K": 1200,
+      "species": "OH",
+      "mass_fraction": 4.7465215910700607e-07,
+      "low_Pr_denominator_fraction": 0,
+      "Tr_clamped_denominator_fraction": 0.8844986379603852,
+      "Tr_upper_clamped_fraction": 0.8844986379603852,
+      "Tr_lower_clamped_fraction": 0,
+      "upper_unclamped_mix_change_percent": 0.629217187565323,
+      "mix_corrected_m2_s": 3.567202070072387e-06
+    },
+    {
+      "target_K": 1200,
+      "species": "H2O",
+      "mass_fraction": 0.0750344790319019,
+      "low_Pr_denominator_fraction": 0,
+      "Tr_clamped_denominator_fraction": 0.7490071020615335,
+      "Tr_upper_clamped_fraction": 0.7490071020615335,
+      "Tr_lower_clamped_fraction": 0,
+      "upper_unclamped_mix_change_percent": 0.09324921189246549,
+      "mix_corrected_m2_s": 3.051275471429561e-06
+    },
+    {
+      "target_K": 1200,
+      "species": "CO",
+      "mass_fraction": 0.026083363399724273,
+      "low_Pr_denominator_fraction": 0,
+      "Tr_clamped_denominator_fraction": 0.9061049113542521,
+      "Tr_upper_clamped_fraction": 0.9061049113542521,
+      "Tr_lower_clamped_fraction": 0,
+      "upper_unclamped_mix_change_percent": 0.636034075578551,
+      "mix_corrected_m2_s": 2.3408446431047665e-06
+    },
+    {
+      "target_K": 1200,
+      "species": "CO2",
+      "mass_fraction": 0.02532437255636487,
+      "low_Pr_denominator_fraction": 0,
+      "Tr_clamped_denominator_fraction": 0.8984279144726459,
+      "Tr_upper_clamped_fraction": 0.8984279144726459,
+      "Tr_lower_clamped_fraction": 0,
+      "upper_unclamped_mix_change_percent": 0.5532051359135259,
+      "mix_corrected_m2_s": 1.8877994712464796e-06
+    },
+    {
+      "target_K": 1200,
+      "species": "N2",
+      "mass_fraction": 0.705513804210784,
+      "low_Pr_denominator_fraction": 0,
+      "Tr_clamped_denominator_fraction": 1.0,
+      "Tr_upper_clamped_fraction": 1.0,
+      "Tr_lower_clamped_fraction": 0,
+      "upper_unclamped_mix_change_percent": 0.5403964071827305,
+      "mix_corrected_m2_s": 2.240842552933715e-06
+    },
+    {
+      "target_K": 1500,
+      "species": "CH4",
+      "mass_fraction": 0.028479930192629427,
+      "low_Pr_denominator_fraction": 0,
+      "Tr_clamped_denominator_fraction": 0.8710632670154517,
+      "Tr_upper_clamped_fraction": 0.8710632670154517,
+      "Tr_lower_clamped_fraction": 0,
+      "upper_unclamped_mix_change_percent": 0.6470917078869043,
+      "mix_corrected_m2_s": 3.8271340155693124e-06
+    },
+    {
+      "target_K": 1500,
+      "species": "H",
+      "mass_fraction": 2.0361918416874164e-07,
+      "low_Pr_denominator_fraction": 0,
+      "Tr_clamped_denominator_fraction": 0.8442343460928361,
+      "Tr_upper_clamped_fraction": 0.8442343460928361,
+      "Tr_lower_clamped_fraction": 0,
+      "upper_unclamped_mix_change_percent": 0.6969672844860941,
+      "mix_corrected_m2_s": 2.0378157853772934e-05
+    },
+    {
+      "target_K": 1500,
+      "species": "O2",
+      "mass_fraction": 0.07758039433267862,
+      "low_Pr_denominator_fraction": 0,
+      "Tr_clamped_denominator_fraction": 0.8747574054581831,
+      "Tr_upper_clamped_fraction": 0.8747574054581831,
+      "Tr_lower_clamped_fraction": 0,
+      "upper_unclamped_mix_change_percent": 0.6184923606713744,
+      "mix_corrected_m2_s": 3.425549306799229e-06
+    },
+    {
+      "target_K": 1500,
+      "species": "H2",
+      "mass_fraction": 0.001575938800905748,
+      "low_Pr_denominator_fraction": 0,
+      "Tr_clamped_denominator_fraction": 0.8744010712981299,
+      "Tr_upper_clamped_fraction": 0.8744010712981299,
+      "Tr_lower_clamped_fraction": 0,
+      "upper_unclamped_mix_change_percent": 0.7355488496300522,
+      "mix_corrected_m2_s": 1.2371889365894575e-05
+    },
+    {
+      "target_K": 1500,
+      "species": "O",
+      "mass_fraction": 5.72480337045988e-07,
+      "low_Pr_denominator_fraction": 0,
+      "Tr_clamped_denominator_fraction": 0.8457904072586138,
+      "Tr_upper_clamped_fraction": 0.8457904072586138,
+      "Tr_lower_clamped_fraction": 0,
+      "upper_unclamped_mix_change_percent": 0.7021860124417634,
+      "mix_corrected_m2_s": 5.303438240726424e-06
+    },
+    {
+      "target_K": 1500,
+      "species": "OH",
+      "mass_fraction": 7.099013956082841e-06,
+      "low_Pr_denominator_fraction": 0,
+      "Tr_clamped_denominator_fraction": 0.8460684279789791,
+      "Tr_upper_clamped_fraction": 0.8460684279789791,
+      "Tr_lower_clamped_fraction": 0,
+      "upper_unclamped_mix_change_percent": 0.702402299904592,
+      "mix_corrected_m2_s": 5.205154932602409e-06
+    },
+    {
+      "target_K": 1500,
+      "species": "H2O",
+      "mass_fraction": 0.09919531136262126,
+      "low_Pr_denominator_fraction": 0,
+      "Tr_clamped_denominator_fraction": 0.7763803960444225,
+      "Tr_upper_clamped_fraction": 0.7763803960444225,
+      "Tr_lower_clamped_fraction": 0,
+      "upper_unclamped_mix_change_percent": 0.10549062718414604,
+      "mix_corrected_m2_s": 4.508293937369026e-06
+    },
+    {
+      "target_K": 1500,
+      "species": "CO",
+      "mass_fraction": 0.03798708797130844,
+      "low_Pr_denominator_fraction": 0,
+      "Tr_clamped_denominator_fraction": 0.8766153630061996,
+      "Tr_upper_clamped_fraction": 0.8766153630061996,
+      "Tr_lower_clamped_fraction": 0,
+      "upper_unclamped_mix_change_percent": 0.7129965487479684,
+      "mix_corrected_m2_s": 3.4131425484923e-06
+    },
+    {
+      "target_K": 1500,
+      "species": "CO2",
+      "mass_fraction": 0.04011349928785077,
+      "low_Pr_denominator_fraction": 0,
+      "Tr_clamped_denominator_fraction": 0.8671428904282893,
+      "Tr_upper_clamped_fraction": 0.8671428904282893,
+      "Tr_lower_clamped_fraction": 0,
+      "upper_unclamped_mix_change_percent": 0.591097883533398,
+      "mix_corrected_m2_s": 2.7511692341095193e-06
+    },
+    {
+      "target_K": 1500,
+      "species": "N2",
+      "mass_fraction": 0.7068087803576857,
+      "low_Pr_denominator_fraction": 0,
+      "Tr_clamped_denominator_fraction": 0.9999999999999999,
+      "Tr_upper_clamped_fraction": 0.9999999999999999,
+      "Tr_lower_clamped_fraction": 0,
+      "upper_unclamped_mix_change_percent": 0.5707242155798875,
+      "mix_corrected_m2_s": 3.2644127596276928e-06
+    },
+    {
+      "target_K": 1800,
+      "species": "CH4",
+      "mass_fraction": 0.01497050678718754,
+      "low_Pr_denominator_fraction": 0,
+      "Tr_clamped_denominator_fraction": 0.8449394652955051,
+      "Tr_upper_clamped_fraction": 0.8449394652955051,
+      "Tr_lower_clamped_fraction": 0,
+      "upper_unclamped_mix_change_percent": 0.7008124460778031,
+      "mix_corrected_m2_s": 5.1628144099626385e-06
+    },
+    {
+      "target_K": 1800,
+      "species": "H",
+      "mass_fraction": 1.5596159021578098e-06,
+      "low_Pr_denominator_fraction": 0,
+      "Tr_clamped_denominator_fraction": 0.849166693234978,
+      "Tr_upper_clamped_fraction": 0.849166693234978,
+      "Tr_lower_clamped_fraction": 0,
+      "upper_unclamped_mix_change_percent": 0.7332163089140753,
+      "mix_corrected_m2_s": 2.7783129671711277e-05
+    },
+    {
+      "target_K": 1800,
+      "species": "O2",
+      "mass_fraction": 0.033243963983954135,
+      "low_Pr_denominator_fraction": 0,
+      "Tr_clamped_denominator_fraction": 0.8514402176654728,
+      "Tr_upper_clamped_fraction": 0.8514402176654728,
+      "Tr_lower_clamped_fraction": 0,
+      "upper_unclamped_mix_change_percent": 0.6883564364653427,
+      "mix_corrected_m2_s": 4.694831200478807e-06
+    },
+    {
+      "target_K": 1800,
+      "species": "H2",
+      "mass_fraction": 0.0018075795851291185,
+      "low_Pr_denominator_fraction": 0,
+      "Tr_clamped_denominator_fraction": 0.8446287705018313,
+      "Tr_upper_clamped_fraction": 0.8446287705018313,
+      "Tr_lower_clamped_fraction": 0,
+      "upper_unclamped_mix_change_percent": 0.7704792508751446,
+      "mix_corrected_m2_s": 1.6853028510434755e-05
+    },
+    {
+      "target_K": 1800,
+      "species": "O",
+      "mass_fraction": 2.5355201966123897e-06,
+      "low_Pr_denominator_fraction": 0,
+      "Tr_clamped_denominator_fraction": 0.8532964237117028,
+      "Tr_upper_clamped_fraction": 0.8532964237117028,
+      "Tr_lower_clamped_fraction": 0,
+      "upper_unclamped_mix_change_percent": 0.7407286510966005,
+      "mix_corrected_m2_s": 7.222727975644919e-06
+    },
+    {
+      "target_K": 1800,
+      "species": "OH",
+      "mass_fraction": 3.0086396279001224e-05,
+      "low_Pr_denominator_fraction": 0,
+      "Tr_clamped_denominator_fraction": 0.8537279688018143,
+      "Tr_upper_clamped_fraction": 0.8537279688018143,
+      "Tr_lower_clamped_fraction": 0,
+      "upper_unclamped_mix_change_percent": 0.7407943557538488,
+      "mix_corrected_m2_s": 7.088927594801728e-06
+    },
+    {
+      "target_K": 1800,
+      "species": "H2O",
+      "mass_fraction": 0.12312054676174326,
+      "low_Pr_denominator_fraction": 0,
+      "Tr_clamped_denominator_fraction": 0.8054162520089027,
+      "Tr_upper_clamped_fraction": 0.8054162520089027,
+      "Tr_lower_clamped_fraction": 0,
+      "upper_unclamped_mix_change_percent": 0.11170981543919822,
+      "mix_corrected_m2_s": 6.2069451122941584e-06
+    },
+    {
+      "target_K": 1800,
+      "species": "CO",
+      "mass_fraction": 0.051416935052200116,
+      "low_Pr_denominator_fraction": 0,
+      "Tr_clamped_denominator_fraction": 0.8459945969246156,
+      "Tr_upper_clamped_fraction": 0.8459945969246156,
+      "Tr_lower_clamped_fraction": 0,
+      "upper_unclamped_mix_change_percent": 0.7509970240684671,
+      "mix_corrected_m2_s": 4.64365703091075e-06
+    },
+    {
+      "target_K": 1800,
+      "species": "CO2",
+      "mass_fraction": 0.05855302861435704,
+      "low_Pr_denominator_fraction": 0,
+      "Tr_clamped_denominator_fraction": 0.8470782347952945,
+      "Tr_upper_clamped_fraction": 0.8470782347952945,
+      "Tr_lower_clamped_fraction": 0,
+      "upper_unclamped_mix_change_percent": 0.5777555943748736,
+      "mix_corrected_m2_s": 3.732481273176438e-06
+    },
+    {
+      "target_K": 1800,
+      "species": "N2",
+      "mass_fraction": 0.7085592005116202,
+      "low_Pr_denominator_fraction": 0,
+      "Tr_clamped_denominator_fraction": 1.0,
+      "Tr_upper_clamped_fraction": 1.0,
+      "Tr_lower_clamped_fraction": 0,
+      "upper_unclamped_mix_change_percent": 0.5392312342785477,
+      "mix_corrected_m2_s": 4.447438801800189e-06
+    },
+    {
+      "target_K": 2100,
+      "species": "CH4",
+      "mass_fraction": 0.004774439566929457,
+      "low_Pr_denominator_fraction": 0,
+      "Tr_clamped_denominator_fraction": 0.8321849680932689,
+      "Tr_upper_clamped_fraction": 0.8321849680932689,
+      "Tr_lower_clamped_fraction": 0,
+      "upper_unclamped_mix_change_percent": 0.7354840164945697,
+      "mix_corrected_m2_s": 6.190086684391008e-06
+    },
+    {
+      "target_K": 2100,
+      "species": "H",
+      "mass_fraction": 1.3293202941630874e-06,
+      "low_Pr_denominator_fraction": 0,
+      "Tr_clamped_denominator_fraction": 0.8370306212561395,
+      "Tr_upper_clamped_fraction": 0.8370306212561395,
+      "Tr_lower_clamped_fraction": 0,
+      "upper_unclamped_mix_change_percent": 0.7490034973207216,
+      "mix_corrected_m2_s": 3.3501338786440894e-05
+    },
+    {
+      "target_K": 2100,
+      "species": "O2",
+      "mass_fraction": 0.0004271389273735492,
+      "low_Pr_denominator_fraction": 0,
+      "Tr_clamped_denominator_fraction": 0.8408356052162942,
+      "Tr_upper_clamped_fraction": 0.8408356052162942,
+      "Tr_lower_clamped_fraction": 0,
+      "upper_unclamped_mix_change_percent": 0.7540492227928075,
+      "mix_corrected_m2_s": 5.6924393153944526e-06
+    },
+    {
+      "target_K": 2100,
+      "species": "H2",
+      "mass_fraction": 0.002581900918322016,
+      "low_Pr_denominator_fraction": 0,
+      "Tr_clamped_denominator_fraction": 0.8279623891189222,
+      "Tr_upper_clamped_fraction": 0.8279623891189222,
+      "Tr_lower_clamped_fraction": 0,
+      "upper_unclamped_mix_change_percent": 0.7391417017341695,
+      "mix_corrected_m2_s": 2.0408261954677874e-05
+    },
+    {
+      "target_K": 2100,
+      "species": "O",
+      "mass_fraction": 2.9862570148775033e-08,
+      "low_Pr_denominator_fraction": 0,
+      "Tr_clamped_denominator_fraction": 0.8411829169523005,
+      "Tr_upper_clamped_fraction": 0.8411829169523005,
+      "Tr_lower_clamped_fraction": 0,
+      "upper_unclamped_mix_change_percent": 0.7561987050291652,
+      "mix_corrected_m2_s": 8.716887620352059e-06
+    },
+    {
+      "target_K": 2100,
+      "species": "OH",
+      "mass_fraction": 1.3112864081640716e-05,
+      "low_Pr_denominator_fraction": 0,
+      "Tr_clamped_denominator_fraction": 0.8417401435372482,
+      "Tr_upper_clamped_fraction": 0.8417401435372482,
+      "Tr_lower_clamped_fraction": 0,
+      "upper_unclamped_mix_change_percent": 0.7563903324921517,
+      "mix_corrected_m2_s": 8.555426858872344e-06
+    },
+    {
+      "target_K": 2100,
+      "species": "H2O",
+      "mass_fraction": 0.13571298105970395,
+      "low_Pr_denominator_fraction": 0,
+      "Tr_clamped_denominator_fraction": 0.8233277411312554,
+      "Tr_upper_clamped_fraction": 0.8233277411312554,
+      "Tr_lower_clamped_fraction": 0,
+      "upper_unclamped_mix_change_percent": 0.1199198699237014,
+      "mix_corrected_m2_s": 7.533723620306028e-06
+    },
+    {
+      "target_K": 2100,
+      "species": "CO",
+      "mass_fraction": 0.057389382972084395,
+      "low_Pr_denominator_fraction": 0,
+      "Tr_clamped_denominator_fraction": 0.8294186377360959,
+      "Tr_upper_clamped_fraction": 0.8294186377360959,
+      "Tr_lower_clamped_fraction": 0,
+      "upper_unclamped_mix_change_percent": 0.7595605402228145,
+      "mix_corrected_m2_s": 5.600328314459204e-06
+    },
+    {
+      "target_K": 2100,
+      "species": "CO2",
+      "mass_fraction": 0.08378785625143764,
+      "low_Pr_denominator_fraction": 0,
+      "Tr_clamped_denominator_fraction": 0.8285799856938342,
+      "Tr_upper_clamped_fraction": 0.8285799856938342,
+      "Tr_lower_clamped_fraction": 0,
+      "upper_unclamped_mix_change_percent": 0.5439108490316924,
+      "mix_corrected_m2_s": 4.480591697906609e-06
+    },
+    {
+      "target_K": 2100,
+      "species": "N2",
+      "mass_fraction": 0.7093645042808402,
+      "low_Pr_denominator_fraction": 0,
+      "Tr_clamped_denominator_fraction": 1.0,
+      "Tr_upper_clamped_fraction": 1.0,
+      "Tr_lower_clamped_fraction": 0,
+      "upper_unclamped_mix_change_percent": 0.48641710877883604,
+      "mix_corrected_m2_s": 5.392068472068117e-06
+    }
+  ],
+  "scientific_acceptance": false,
+  "limits": [
+    "Independent correlation replay, not actual C++ adapter output",
+    "Eight representative faces, not the entire flame",
+    "Denominator fractions are not additive flame-speed sensitivities",
+    "Upper-unclamped values extrapolate Takahashi beyond its main fitted temperature range",
+    "Negative saved mass fractions projected to zero for transport"
+  ],
+  "profile_job": "125027407",
+  "analysis_source_sha256": {
+    "frozen.py": "0407a682bd5d90b6bb5623ac0d609c2c56deda81caf7db5b0e64236f6b0efb1d",
+    "prepare.py": "8363eb91eab11606a2ed0f66d803b84723f72abdbe25e55efbac7a4658313bd7"
+  }
+}

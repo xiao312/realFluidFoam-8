@@ -49,7 +49,7 @@ def main():
     axes[0].axhline(0, color="k", lw=.7)
     axes[0].set(xlabel="Temperature (K)", ylabel="CH$_4$–N$_2$ residual (%)",
                 title="(a) Dilute data, 101.3 kPa")
-    axes[0].legend(fontsize=7, loc="lower right")
+    axes[0].legend(fontsize=7, loc="center", bbox_to_anchor=(.5, .48))
     pressures = np.linspace(.1, 5, 300)
     for tr in (1, 1.5, 2, 3, 5):
         line, = axes[1].plot(pressures, [correction(p, tr, table) for p in pressures],

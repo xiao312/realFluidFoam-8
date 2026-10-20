@@ -93,3 +93,14 @@ It produces PNG/PDF panels of measured dilute residuals and Table 2 versus actua
 adapter output. Verify it only after the matching `check.py` report passes;
 plotting alone does not establish correctness. It does not replace the Liang
 flame comparison image.
+
+`frozen.py INPUTS PROFILE.csv [--output NEW_DIRECTORY]` uses Python Cantera 3.2
+and NumPy to reconstruct the pressure correction on eight frozen Case 4 faces.
+It exports every ordered binary pair and its fraction of the mixture denominator
+`Xj/Dij`, plus a JSON summary of low-Pr and Tr-clamped contributions. This is an
+independent correlation replay, not a new C++ adapter sample or a flame solve.
+Input profiles must have the exact 53-species order from `species.txt`. The report
+records hashes, actual selected temperatures and all approximation limits.
+It also reports the coefficient change when only the upper Tr clamp is removed.
+That column is an explicitly unqualified extrapolation sensitivity; a large
+clamped denominator fraction need not imply a large change in diffusivity.

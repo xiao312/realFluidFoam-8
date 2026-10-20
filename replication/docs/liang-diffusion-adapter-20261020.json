@@ -1,0 +1,169 @@
+{
+  "samples": 798,
+  "failures": [],
+  "boundary_policy_samples": [
+    {
+      "row": 0,
+      "actual_Pr": 0.1,
+      "actual_Tr": 0.8,
+      "factor": 0.9715775799999999,
+      "right_limit": 0.9715775799999999
+    },
+    {
+      "row": 1,
+      "actual_Pr": 0.1,
+      "actual_Tr": 1.0,
+      "factor": 0.9715775799999999,
+      "right_limit": 0.9715775799999999
+    },
+    {
+      "row": 2,
+      "actual_Pr": 0.1,
+      "actual_Tr": 1.5,
+      "factor": 0.9892768468012285,
+      "right_limit": 0.9892768468012285
+    },
+    {
+      "row": 3,
+      "actual_Pr": 0.1,
+      "actual_Tr": 2.0,
+      "factor": 0.9966274148632085,
+      "right_limit": 0.9966274148632085
+    },
+    {
+      "row": 4,
+      "actual_Pr": 0.1,
+      "actual_Tr": 3.0,
+      "factor": 1.002787488907431,
+      "right_limit": 1.002787488907431
+    },
+    {
+      "row": 5,
+      "actual_Pr": 0.1,
+      "actual_Tr": 5.0,
+      "factor": 1.0066865222510333,
+      "right_limit": 1.0066865222510333
+    },
+    {
+      "row": 6,
+      "actual_Pr": 0.1,
+      "actual_Tr": 7.0,
+      "factor": 1.0066865222510333,
+      "right_limit": 1.0066865222510333
+    },
+    {
+      "row": 266,
+      "actual_Pr": 0.1,
+      "actual_Tr": 0.8000000000000002,
+      "factor": 0.9715775799999999,
+      "right_limit": 0.9715775799999999
+    },
+    {
+      "row": 267,
+      "actual_Pr": 0.1,
+      "actual_Tr": 1.0,
+      "factor": 0.9715775799999999,
+      "right_limit": 0.9715775799999999
+    },
+    {
+      "row": 268,
+      "actual_Pr": 0.1,
+      "actual_Tr": 1.5000000000000002,
+      "factor": 0.9892768468012286,
+      "right_limit": 0.9892768468012285
+    },
+    {
+      "row": 269,
+      "actual_Pr": 0.1,
+      "actual_Tr": 2.0,
+      "factor": 0.9966274148632085,
+      "right_limit": 0.9966274148632085
+    },
+    {
+      "row": 270,
+      "actual_Pr": 0.1,
+      "actual_Tr": 3.0000000000000004,
+      "factor": 1.002787488907431,
+      "right_limit": 1.002787488907431
+    },
+    {
+      "row": 271,
+      "actual_Pr": 0.1,
+      "actual_Tr": 5.0,
+      "factor": 1.0066865222510333,
+      "right_limit": 1.0066865222510333
+    },
+    {
+      "row": 272,
+      "actual_Pr": 0.1,
+      "actual_Tr": 7.0,
+      "factor": 1.0066865222510333,
+      "right_limit": 1.0066865222510333
+    },
+    {
+      "row": 532,
+      "actual_Pr": 0.1,
+      "actual_Tr": 0.8,
+      "factor": 1.0,
+      "right_limit": 0.9715775799999999
+    },
+    {
+      "row": 533,
+      "actual_Pr": 0.1,
+      "actual_Tr": 1.0,
+      "factor": 1.0,
+      "right_limit": 0.9715775799999999
+    },
+    {
+      "row": 534,
+      "actual_Pr": 0.1,
+      "actual_Tr": 1.5,
+      "factor": 1.0,
+      "right_limit": 0.9892768468012285
+    },
+    {
+      "row": 535,
+      "actual_Pr": 0.1,
+      "actual_Tr": 2.0,
+      "factor": 1.0,
+      "right_limit": 0.9966274148632085
+    },
+    {
+      "row": 536,
+      "actual_Pr": 0.1,
+      "actual_Tr": 3.0,
+      "factor": 1.0,
+      "right_limit": 1.002787488907431
+    },
+    {
+      "row": 537,
+      "actual_Pr": 0.1,
+      "actual_Tr": 5.0,
+      "factor": 1.0,
+      "right_limit": 1.0066865222510333
+    },
+    {
+      "row": 538,
+      "actual_Pr": 0.1,
+      "actual_Tr": 7.0,
+      "factor": 1.0,
+      "right_limit": 1.0066865222510333
+    }
+  ],
+  "maximum_factor_relative_error": 8.881784197001252e-16,
+  "maximum_mixture_relative_error": 4.2688425848798964e-09,
+  "maximum_symmetry_relative_error": 0.0,
+  "input_sha256": {
+    "requests.csv": "e9b23a3dee894dc9dd88d9de3a82087c14bf7773d34d2637294a49778544322d",
+    "corrected.csv": "031fc33d4be8e899e75bdab6f84ab5a9b7ea2ec9087ef99b44bb87e099ecc4a4"
+  },
+  "scientific_acceptance": false,
+  "job": "125060880",
+  "source_revision": "8c0fdb6837a24f37566df86e306cf6310858bfd3",
+  "elapsed_seconds": 24,
+  "allocated_cpus": 1,
+  "negative_control_failures": 45,
+  "negative_control_max_factor_error": 0.07843958879418511,
+  "input_receipt": "c6e72c25dbf5af75a16b71042e071aed15ca4fd4a8a854fd8720a820ce1986c6  /public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/sweep-inputs-v2/phi110/ideal.yaml\n6374f6cb2c693997f1f2a1e6505c1579c62e9adc238555a2d4ba45edebca1b61  /public/home/dfagent/FlamePilot/trials/realfluidfoam/cache/cantera-liang-20261019/sweep-inputs-v2/phi110/species.txt\n62f54b709d5cee57f1dd530fc12b30cf619db472ce886c95053b1f32c1ba01b0  /public/home/dfagent/FlamePilot/trials/realfluidfoam/releases/diffusion-vv-8c0fdb6/replication/validation/diffusion/references.json\n3e435b9f32fd4b1b258063ee353ed3ccaa54344da154dee9c8bb6997672edc86  /public/home/dfagent/FlamePilot/trials/realfluidfoam/jobs/124917358/sdk/lib/libcantera.so\neaaa308032c4aa063df5880c4c293cd458b4629d503fbc2c03ec163d71f7f790  /public/home/dfagent/FlamePilot/software/python-20261019/bin/python3\n",
+  "executable_receipt": "c7bad4c703528f871e67cc77e9d0055ee37682e28d8a8ba7b7a4bb060fef2392  property-probe\n"
+}

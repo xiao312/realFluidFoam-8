@@ -1,0 +1,236 @@
+{
+  "cantera_version": "3.2.0",
+  "input_sha256": {
+    "ideal.yaml": "c6e72c25dbf5af75a16b71042e071aed15ca4fd4a8a854fd8720a820ce1986c6",
+    "references.json": "62f54b709d5cee57f1dd530fc12b30cf619db472ce886c95053b1f32c1ba01b0"
+  },
+  "reference": {
+    "doi": "10.1021/acs.jced.1c00161",
+    "url": "https://tsapps.nist.gov/publication/get_pdf.cfm?pub_id=931779",
+    "definition": "Dilute methane in bath gas; measured D normalized linearly to 101.3 kPa",
+    "pressure_pa": 101300,
+    "columns": [
+      "temperature_K",
+      "D_cm2_s",
+      "expanded_uncertainty_cm2_s"
+    ],
+    "uncertainty": "Combined expanded uncertainty, 95% confidence; correlated systematic component",
+    "nitrogen_table2": [
+      [
+        250,
+        0.17,
+        0.002
+      ],
+      [
+        273,
+        0.2,
+        0.002
+      ],
+      [
+        300,
+        0.237,
+        0.003
+      ],
+      [
+        350,
+        0.31,
+        0.004
+      ],
+      [
+        400,
+        0.391,
+        0.004
+      ],
+      [
+        450,
+        0.475,
+        0.005
+      ],
+      [
+        500,
+        0.577,
+        0.007
+      ],
+      [
+        550,
+        0.673,
+        0.007
+      ]
+    ],
+    "air_table4": [
+      [
+        250,
+        0.17,
+        0.004
+      ],
+      [
+        273,
+        0.2,
+        0.005
+      ],
+      [
+        300,
+        0.237,
+        0.005
+      ],
+      [
+        350,
+        0.311,
+        0.005
+      ]
+    ],
+    "air_limit": "Table 1 specifies breathing air without exact composition. A 21/79 O2/N2 approximation is exploratory only."
+  },
+  "rows": [
+    {
+      "bath": "N2",
+      "temperature_K": 250,
+      "calculated_cm2_s": 0.16116649301568176,
+      "reference_cm2_s": 0.17,
+      "stock_gri30_cm2_s": 0.1608675973559476,
+      "uncertainty_cm2_s": 0.002,
+      "residual_percent": -5.196180579010739,
+      "residual_over_U": -4.4167534921591285,
+      "within_U": false,
+      "validation_eligible": true
+    },
+    {
+      "bath": "N2",
+      "temperature_K": 273,
+      "calculated_cm2_s": 0.18921042100530858,
+      "reference_cm2_s": 0.2,
+      "stock_gri30_cm2_s": 0.18901076896821492,
+      "uncertainty_cm2_s": 0.002,
+      "residual_percent": -5.394789497345718,
+      "residual_over_U": -5.394789497345717,
+      "within_U": false,
+      "validation_eligible": true
+    },
+    {
+      "bath": "N2",
+      "temperature_K": 300,
+      "calculated_cm2_s": 0.22429815481784932,
+      "reference_cm2_s": 0.237,
+      "stock_gri30_cm2_s": 0.2241980590095878,
+      "uncertainty_cm2_s": 0.003,
+      "residual_percent": -5.359428346899018,
+      "residual_over_U": -4.233948394050224,
+      "within_U": false,
+      "validation_eligible": true
+    },
+    {
+      "bath": "N2",
+      "temperature_K": 350,
+      "calculated_cm2_s": 0.2951630477505453,
+      "reference_cm2_s": 0.31,
+      "stock_gri30_cm2_s": 0.29520238766916423,
+      "uncertainty_cm2_s": 0.004,
+      "residual_percent": -4.786113628856353,
+      "residual_over_U": -3.7092380623636734,
+      "within_U": false,
+      "validation_eligible": true
+    },
+    {
+      "bath": "N2",
+      "temperature_K": 400,
+      "calculated_cm2_s": 0.3732739869438515,
+      "reference_cm2_s": 0.391,
+      "stock_gri30_cm2_s": 0.37340151576449065,
+      "uncertainty_cm2_s": 0.004,
+      "residual_percent": -4.533507175485553,
+      "residual_over_U": -4.431503264037128,
+      "within_U": false,
+      "validation_eligible": true
+    },
+    {
+      "bath": "N2",
+      "temperature_K": 450,
+      "calculated_cm2_s": 0.45824104521072057,
+      "reference_cm2_s": 0.475,
+      "stock_gri30_cm2_s": 0.4584144189472201,
+      "uncertainty_cm2_s": 0.005,
+      "residual_percent": -3.5282010082693502,
+      "residual_over_U": -3.3517909578558824,
+      "within_U": false,
+      "validation_eligible": true
+    },
+    {
+      "bath": "N2",
+      "temperature_K": 500,
+      "calculated_cm2_s": 0.5497431312069152,
+      "reference_cm2_s": 0.577,
+      "stock_gri30_cm2_s": 0.5499285412860887,
+      "uncertainty_cm2_s": 0.007,
+      "residual_percent": -4.723894071591812,
+      "residual_over_U": -3.8938383990121075,
+      "within_U": false,
+      "validation_eligible": true
+    },
+    {
+      "bath": "N2",
+      "temperature_K": 550,
+      "calculated_cm2_s": 0.6475099500879292,
+      "reference_cm2_s": 0.673,
+      "stock_gri30_cm2_s": 0.6476813230611779,
+      "uncertainty_cm2_s": 0.007,
+      "residual_percent": -3.7875259899065115,
+      "residual_over_U": -3.641435701724403,
+      "within_U": false,
+      "validation_eligible": true
+    },
+    {
+      "bath": "air_21_79_assumption",
+      "temperature_K": 250,
+      "calculated_cm2_s": 0.1613498076656053,
+      "reference_cm2_s": 0.17,
+      "stock_gri30_cm2_s": 0.16104002121435568,
+      "uncertainty_cm2_s": 0.004,
+      "residual_percent": -5.088348431996886,
+      "residual_over_U": -2.162548083598677,
+      "within_U": false,
+      "validation_eligible": false
+    },
+    {
+      "bath": "air_21_79_assumption",
+      "temperature_K": 273,
+      "calculated_cm2_s": 0.18945971938990003,
+      "reference_cm2_s": 0.2,
+      "stock_gri30_cm2_s": 0.18925102791901333,
+      "uncertainty_cm2_s": 0.005,
+      "residual_percent": -5.270140305049991,
+      "residual_over_U": -2.1080561220199967,
+      "within_U": false,
+      "validation_eligible": false
+    },
+    {
+      "bath": "air_21_79_assumption",
+      "temperature_K": 300,
+      "calculated_cm2_s": 0.224633808925279,
+      "reference_cm2_s": 0.237,
+      "stock_gri30_cm2_s": 0.224526586785418,
+      "uncertainty_cm2_s": 0.005,
+      "residual_percent": -5.217802141232481,
+      "residual_over_U": -2.4732382149441956,
+      "within_U": false,
+      "validation_eligible": false
+    },
+    {
+      "bath": "air_21_79_assumption",
+      "temperature_K": 350,
+      "calculated_cm2_s": 0.29568231461732614,
+      "reference_cm2_s": 0.311,
+      "stock_gri30_cm2_s": 0.2957173663012495,
+      "uncertainty_cm2_s": 0.005,
+      "residual_percent": -4.925300766133074,
+      "residual_over_U": -3.0635370765347725,
+      "within_U": false,
+      "validation_eligible": false
+    }
+  ],
+  "nitrogen_within_U": 0,
+  "nitrogen_total": 8,
+  "scientific_acceptance": false,
+  "source_revision": "405aa150e14a9e95e148d7b06590ee068ab33a75",
+  "scope": "Dilute transport only; does not establish cause of the Case 4-to-5 response",
+  "nist_pdf_sha256": "d846166e59e4a00c09a2d8197b47d6da8a2188a9949fff11a3905a5a71c05b1d"
+}

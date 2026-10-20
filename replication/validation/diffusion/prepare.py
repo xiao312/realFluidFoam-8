@@ -6,8 +6,8 @@ import json
 from pathlib import Path
 
 
-def correction(pr, tr, table):
-    tr = min(max(tr, 1.0), 5.0)
+def correction(pr, tr, table, upper_clamp=True):
+    tr = min(max(tr, 1.0), 5.0) if upper_clamp else max(tr, 1.0)
     def node(row):
         _, limit, a, b, c, e = row
         return limit * (1-a*tr**(-b)) * (1-c*tr**(-e))
