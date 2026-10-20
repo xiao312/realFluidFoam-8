@@ -104,13 +104,19 @@ void fluxChecks(Flow& flow,const std::vector<double>& y) {
 }
 
 void manualChecks(const std::shared_ptr<Solution>& sol,CoefficientProbe& transport,
-                  liang::SrkPhase& gas) {
+                  liang::SrkPhase& gas,const std::filesystem::path& inputs) {
     // Independently evaluated source-formula fixtures; no flame target enters.
     const double temperatures[]={298.,1000.,3000.};
     const double qExpected[]={-.4231890148511275,-.47590044927061853,-.4927708434650581};
     const double wellDepth=60.87807487100754;
     const size_t light=gas.speciesIndex("H2"),partner=gas.speciesIndex("N2"),n=gas.nSpecies();
-    transport.manualSoret=true;transport.stage=4;gas.stage=1;
+    // SrkPhase::stage controls calorics; populated parameters always activate
+    // its EOS. Use an actual ideal phase for the ideal pressure-invariance check.
+    auto idealSolution=newSolution((inputs/"ideal.yaml").string(),"","liang-staged");
+    auto& idealGas=*idealSolution->thermo();
+    auto& idealTransport=dynamic_cast<CoefficientProbe&>(*idealSolution->transport());
+    idealTransport.manualSoret=true;idealTransport.stage=4;
+    transport.manualSoret=true;transport.stage=4;
     double maximum=0;
     std::vector<double> binaryY;
     for(size_t row=0;row<3;row++) {
@@ -122,13 +128,13 @@ void manualChecks(const std::shared_ptr<Solution>& sol,CoefficientProbe& transpo
                 "Pair permutation");
         std::vector<double> first;
         for(double pressure:{OneAtm,100*OneAtm}) {
-            gas.setState_TPX(temperatures[row],pressure,"H2:0.01,N2:0.99");
+            idealGas.setState_TPX(temperatures[row],pressure,"H2:0.01,N2:0.99");
             std::vector<double> dt(n),matrix(n*n),y(n),x(n),expected(n,0.);
-            gas.getMassFractions(y.data());gas.getMoleFractions(x.data());
-            transport.getThermalDiffCoeffs(dt.data());
-            transport.getBinaryDiffCoeffs(n,matrix.data());
+            idealGas.getMassFractions(y.data());idealGas.getMoleFractions(x.data());
+            idealTransport.getThermalDiffCoeffs(dt.data());
+            idealTransport.getBinaryDiffCoeffs(n,matrix.data());
             const double dm=(1-y[light])*matrix[light+n*partner]/x[partner];
-            const double raw=gas.density()*dm*gas.molecularWeight(light)/gas.meanMolecularWeight()
+            const double raw=idealGas.density()*dm*idealGas.molecularWeight(light)/idealGas.meanMolecularWeight()
                              *x[light]*x[partner]*qExpected[row];
             expected[light]=raw;
             for(size_t k=0;k<n;k++)expected[k]-=y[k]*raw;
@@ -139,7 +145,7 @@ void manualChecks(const std::shared_ptr<Solution>& sol,CoefficientProbe& transpo
             binaryY=y;
         }
     }
-    require(maximum<1e-10,"Manual binary coefficient/pressure qualification");
+    require(maximum<1e-10,"Manual binary coefficient/pressure qualification: "+std::to_string(maximum));
     // Density scaling and selected corrected diffusivity are independent choices.
     gas.stage=4;
     gas.setState_TPX(1000,100*OneAtm,"H2:0.01,N2:0.99");
@@ -241,7 +247,7 @@ try {
     FlowProbe<liang::TotalEnthalpyFlow> enthalpy(sol,false);fluxChecks(enthalpy,testY);
     // Native mixture transport must retain its original finalize path too.
     FlowProbe<Flow1D> stockFlow(ideal,"flow");fluxChecks(stockFlow,testY);
-    manualChecks(sol,*tr,*gas);
+    manualChecks(sol,*tr,*gas,inputs);
     std::cout<<std::setprecision(16)<<"states "<<checked<<" coefficient_error "<<maxError
         <<" pressure_error "<<maxPressure<<" stock_error "<<maxStock
         <<" projection_error "<<maxProjection<<" native_and_custom_flux_checks passed\n";
