@@ -60,7 +60,9 @@ inline Foam::scalar Foam::species::thermo<Thermo, Type>::T
 
     scalar Test = T0;
     scalar Tnew = T0;
-    scalar Ttol = T0*tol_;
+    // Resolve sub-millikelvin energy increments used by transient flames.
+    // The former relative tolerance (1e-4) stops at 0.03--0.28 K here.
+    scalar Ttol = max(T0, scalar(1))*1e-9;
     int    iter = 0;
 
     /*

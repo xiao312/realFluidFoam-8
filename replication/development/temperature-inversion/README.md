@@ -1,6 +1,11 @@
 # Temperature-inversion flame qualification
 
 This module tests a selected native library build with fresh ideal-gas flames.
+The second inversion draft tightens the Newton temperature-step tolerance to
+1e-9 relative. The first draft retained the final Newton update but failed
+the existing nonideal increment and property checks (125003821, 125003825).
+The bisection fallback and physical property models remain unchanged. These
+checks must pass before the draft is used for the flame comparison sweep.
 It preserves the native chemistry and transport models. Species enthalpy fields
 use current pressure and temperature, as in the existing energy-corrected draft.
 It does not change the PIMPLE equations or infer scientific convergence.
