@@ -1,0 +1,830 @@
+{
+  "schema": "liang-hydrogen-completed-ledger-v2",
+  "manifest_sha256": "8c2d801675f4ee558435894a5865efbf6d8b51241773cda1dd3fbcb0fc0d6f4f",
+  "script_sha256": "7dfa9062f2443de057f67459f36a056412ef76844dda786cefc350a4459ed444",
+  "build_identity_basis": "Each run declares observed job records or a named historical source-to-build registry association. No identity is inferred from current HEAD.",
+  "scientific_acceptance": false,
+  "completed": 20,
+  "runs": [
+    {
+      "job": 125082495,
+      "case": "1",
+      "phi": 1.1,
+      "transport": "pairs",
+      "variant": "smooth-matched-energy",
+      "source_revision": "234975609868a84103d568a6fa03cfd7e70c2091",
+      "build_identity": {
+        "basis": "observed-job-records",
+        "job": 125082121,
+        "binary_sha256": "5ad31c80c8d05ccb27dc09f9d58f17919cca8b88406cda1b00a227bf85b7c8d2",
+        "record_sha256": {
+          "build-path.txt": "10d705944942f036aa92dafbc79935aecaf960c360bee0e9649a18dc29006de0",
+          "executable.sha256": "968207408f1e5223769bc81c05eb9f3f5ac0cd20ae2bb2f15e3c025f84393e1c",
+          "source-revision.txt": "4274d054efaa1da0a3a8cd8b310f51b0b7f2f2917ae55387b22547683cdab251",
+          "input-sha256.txt": "99ae3e051d4d086213e60b955d8e1d70ac5c87d3440caf2242b2e995ef55cb7e",
+          "guess-sha256.txt": "553999dab6a08fe66168d15e3ee808838122ec79e648ed74d1b4f11d334ee600",
+          "command.txt": "0924be9154b41c5247df22d88fc4095ef10764f2ee32b877d9c030f03f91edfc"
+        }
+      },
+      "snapshot_result": "state/liang-hydrogen-20261020/snapshot-activity-0210/jobs/125082495/result",
+      "final": {
+        "phi": 1.1,
+        "slope": 0.00375,
+        "curve": 0.00625,
+        "points": 1859.0,
+        "speed_cm_s": 57.22527618993231,
+        "Tb_K": 2461.116466260826,
+        "rhou_kg_m3": 83.3053928154236,
+        "massflux_kg_m2s": 47.67174111973418
+      },
+      "last_speed_relative_change": 7.04562903752759e-06,
+      "sha256": {
+        "configuration.txt": "2b9f9bc1c9f75f7333eb0801d2b81916ccd6c4f030f66ce6a428c2a6f4ee793b",
+        "refinement.csv": "e10caf9d9374c9555667c043697f1785811666625efcab95f6c5946fa7d3d165",
+        "profile.csv": "ce0bc3e180154089a3d51ad8e00bbbc8efdac61d6e9511c38e937a7dee3ef10a",
+        "property-checks.csv": "11dd34a2b86ca71925c2ee2d6909d665627a24281e0b0b393591e04baa5501d5",
+        "transport.csv": "c85e361cab888f8c82afc4e8b257595532ab1b221f6e0a68b7c0e43c1be090f1",
+        "callbacks.txt": "d4147f6df685883052679eccf195c534f648840b250834865699728b6d5aaedb"
+      }
+    },
+    {
+      "job": 125082497,
+      "case": "1",
+      "phi": 1.1,
+      "transport": "pairs",
+      "variant": "activity-smooth-matched-energy",
+      "source_revision": "234975609868a84103d568a6fa03cfd7e70c2091",
+      "build_identity": {
+        "basis": "observed-job-records",
+        "job": 125082121,
+        "binary_sha256": "5ad31c80c8d05ccb27dc09f9d58f17919cca8b88406cda1b00a227bf85b7c8d2",
+        "record_sha256": {
+          "build-path.txt": "10d705944942f036aa92dafbc79935aecaf960c360bee0e9649a18dc29006de0",
+          "executable.sha256": "968207408f1e5223769bc81c05eb9f3f5ac0cd20ae2bb2f15e3c025f84393e1c",
+          "source-revision.txt": "4274d054efaa1da0a3a8cd8b310f51b0b7f2f2917ae55387b22547683cdab251",
+          "input-sha256.txt": "99ae3e051d4d086213e60b955d8e1d70ac5c87d3440caf2242b2e995ef55cb7e",
+          "guess-sha256.txt": "553999dab6a08fe66168d15e3ee808838122ec79e648ed74d1b4f11d334ee600",
+          "command.txt": "34f55f91d49d6caef968145ed19a0106ec72f5e39957c3e39eba318e5bb4fc75"
+        }
+      },
+      "snapshot_result": "state/liang-hydrogen-20261020/snapshot-activity-0210/jobs/125082497/result",
+      "final": {
+        "phi": 1.1,
+        "slope": 0.00375,
+        "curve": 0.00625,
+        "points": 1859.0,
+        "speed_cm_s": 57.22527618993231,
+        "Tb_K": 2461.116466260826,
+        "rhou_kg_m3": 83.3053928154236,
+        "massflux_kg_m2s": 47.67174111973418
+      },
+      "last_speed_relative_change": 7.04562903752759e-06,
+      "sha256": {
+        "configuration.txt": "e152cfe8359bdc52637954a96601b67e43763e0db4332e2812a50af623e01ec9",
+        "refinement.csv": "e10caf9d9374c9555667c043697f1785811666625efcab95f6c5946fa7d3d165",
+        "profile.csv": "ce0bc3e180154089a3d51ad8e00bbbc8efdac61d6e9511c38e937a7dee3ef10a",
+        "property-checks.csv": "11dd34a2b86ca71925c2ee2d6909d665627a24281e0b0b393591e04baa5501d5",
+        "transport.csv": "c85e361cab888f8c82afc4e8b257595532ab1b221f6e0a68b7c0e43c1be090f1",
+        "callbacks.txt": "d4147f6df685883052679eccf195c534f648840b250834865699728b6d5aaedb"
+      }
+    },
+    {
+      "job": 125082503,
+      "case": "3",
+      "phi": 1.1,
+      "transport": "pairs",
+      "variant": "smooth-matched-energy",
+      "source_revision": "234975609868a84103d568a6fa03cfd7e70c2091",
+      "build_identity": {
+        "basis": "observed-job-records",
+        "job": 125082121,
+        "binary_sha256": "5ad31c80c8d05ccb27dc09f9d58f17919cca8b88406cda1b00a227bf85b7c8d2",
+        "record_sha256": {
+          "build-path.txt": "10d705944942f036aa92dafbc79935aecaf960c360bee0e9649a18dc29006de0",
+          "executable.sha256": "968207408f1e5223769bc81c05eb9f3f5ac0cd20ae2bb2f15e3c025f84393e1c",
+          "source-revision.txt": "4274d054efaa1da0a3a8cd8b310f51b0b7f2f2917ae55387b22547683cdab251",
+          "input-sha256.txt": "99ae3e051d4d086213e60b955d8e1d70ac5c87d3440caf2242b2e995ef55cb7e",
+          "guess-sha256.txt": "d1f720ff7e510b857f9fe7d254e768b4ef70170865729ac23aca23062b7c3df6",
+          "command.txt": "6fc4191078351f8ab9ae9e4046cdbb940940af64888bfe2d6e6d8baadf714064"
+        }
+      },
+      "snapshot_result": "state/liang-hydrogen-20261020/snapshot-activity-0210/jobs/125082503/result",
+      "final": {
+        "phi": 1.1,
+        "slope": 0.00375,
+        "curve": 0.00625,
+        "points": 1866.0,
+        "speed_cm_s": 56.57928794897364,
+        "Tb_K": 2447.739887644109,
+        "rhou_kg_m3": 80.87949355285508,
+        "massflux_kg_m2s": 45.76104154894144
+      },
+      "last_speed_relative_change": 3.49302905999771e-06,
+      "sha256": {
+        "configuration.txt": "e0d4412222598a9313775334a4c6c3cbea2796bbb3aed142e863972ee34a197f",
+        "refinement.csv": "2b4a8c321c6ff76ae8db1badd3ce57e93af7d6f064a12dad9467d51c01c22b57",
+        "profile.csv": "03c032696ee4c39357f1982e1ce21d11b0b6946e25ee6fb46afd8db7f79c7a91",
+        "property-checks.csv": "9eb21049a5f544cc9fcd20a143bb0ef7166149f49db662c80040af4abec69063",
+        "transport.csv": "744daed2b0aff4a7ec421a6f91c09189a698888114551659382f61e321b3fef1",
+        "callbacks.txt": "352e9e77c2570fd5a96d9019bc551af15f308a646e25e74a5adfafba79bf1646"
+      }
+    },
+    {
+      "job": 125082504,
+      "case": "3",
+      "phi": 1.1,
+      "transport": "pairs",
+      "variant": "activity-smooth-matched-energy",
+      "source_revision": "234975609868a84103d568a6fa03cfd7e70c2091",
+      "build_identity": {
+        "basis": "observed-job-records",
+        "job": 125082121,
+        "binary_sha256": "5ad31c80c8d05ccb27dc09f9d58f17919cca8b88406cda1b00a227bf85b7c8d2",
+        "record_sha256": {
+          "build-path.txt": "10d705944942f036aa92dafbc79935aecaf960c360bee0e9649a18dc29006de0",
+          "executable.sha256": "968207408f1e5223769bc81c05eb9f3f5ac0cd20ae2bb2f15e3c025f84393e1c",
+          "source-revision.txt": "4274d054efaa1da0a3a8cd8b310f51b0b7f2f2917ae55387b22547683cdab251",
+          "input-sha256.txt": "99ae3e051d4d086213e60b955d8e1d70ac5c87d3440caf2242b2e995ef55cb7e",
+          "guess-sha256.txt": "d1f720ff7e510b857f9fe7d254e768b4ef70170865729ac23aca23062b7c3df6",
+          "command.txt": "9c512c33a6aca1e43a1e27d89e083eca48c935156e956ee002d8c5edc936dd36"
+        }
+      },
+      "snapshot_result": "state/liang-hydrogen-20261020/snapshot-activity-0210/jobs/125082504/result",
+      "final": {
+        "phi": 1.1,
+        "slope": 0.00375,
+        "curve": 0.00625,
+        "points": 1866.0,
+        "speed_cm_s": 57.82104227215697,
+        "Tb_K": 2447.614523447678,
+        "rhou_kg_m3": 80.87949355285508,
+        "massflux_kg_m2s": 46.7653661567028
+      },
+      "last_speed_relative_change": 6.914101724264654e-06,
+      "sha256": {
+        "configuration.txt": "20f4cf1ad2f66d952dfe7d559ed95a3a6cc6c7d2a345041c6a5c9f21b30f9b75",
+        "refinement.csv": "f59359cd503be93666cacb679f238ab3f14f29c77bf6646c6f6a9c3093488c6a",
+        "profile.csv": "64e83ed75e669ef14fcd9c204cea55392e71f3e722a725c4637c06f7e9451bf0",
+        "property-checks.csv": "9eb21049a5f544cc9fcd20a143bb0ef7166149f49db662c80040af4abec69063",
+        "transport.csv": "5f7cd3843655b6c5b8820d17aa58360f7f0e5e6490653156e8fb8190929c1ef2",
+        "callbacks.txt": "36678fab2709ae9eeada80681fbbf02e295159274ef557a00aa1653da3a15b3c"
+      }
+    },
+    {
+      "job": 125082512,
+      "case": "1",
+      "phi": 1.4,
+      "transport": "pairs",
+      "variant": "smooth-matched-energy",
+      "source_revision": "234975609868a84103d568a6fa03cfd7e70c2091",
+      "build_identity": {
+        "basis": "observed-job-records",
+        "job": 125082121,
+        "binary_sha256": "5ad31c80c8d05ccb27dc09f9d58f17919cca8b88406cda1b00a227bf85b7c8d2",
+        "record_sha256": {
+          "build-path.txt": "10d705944942f036aa92dafbc79935aecaf960c360bee0e9649a18dc29006de0",
+          "executable.sha256": "968207408f1e5223769bc81c05eb9f3f5ac0cd20ae2bb2f15e3c025f84393e1c",
+          "source-revision.txt": "4274d054efaa1da0a3a8cd8b310f51b0b7f2f2917ae55387b22547683cdab251",
+          "input-sha256.txt": "99ae3e051d4d086213e60b955d8e1d70ac5c87d3440caf2242b2e995ef55cb7e",
+          "guess-sha256.txt": "c631a4f4f0c70211aa623385586fd66c093d35243c0351de3cb1880b36944631",
+          "command.txt": "5c258ff1e9174b848295ad5b9c06ab58b7dcc95355dd08b73d03e3f2e26d7c35"
+        }
+      },
+      "snapshot_result": "state/liang-hydrogen-20261020/snapshot-activity-0210/jobs/125082512/result",
+      "final": {
+        "phi": 1.4,
+        "slope": 0.00375,
+        "curve": 0.00625,
+        "points": 1811.0,
+        "speed_cm_s": 76.14558441277055,
+        "Tb_K": 2313.588297471401,
+        "rhou_kg_m3": 77.34966816290843,
+        "massflux_kg_m2s": 58.89835686398533
+      },
+      "last_speed_relative_change": 5.863681764584072e-06,
+      "sha256": {
+        "configuration.txt": "a49edc9a23d4fb794c5699541997b8055ea2125ae5119bc86b7ae717d0c69129",
+        "refinement.csv": "73fff2f168d1037df067534b8bfc4d7918e752f0ea47d2b33f7575ff202829d0",
+        "profile.csv": "af8779ddeca3e9d61692bdd5caa7bae2e71a1273beebf55c36c9d10ae1185a34",
+        "property-checks.csv": "84e0b540f9d3e282778eda7b94b72cdd955303960cf2c4f21d2e742b90085d89",
+        "transport.csv": "984451adf8605bdb4daac6287e12c06f1d5fa780d185959552db438f9c1c9b1a",
+        "callbacks.txt": "c083f4ded8ecca828e8a9a61db4a54fd76f2d994503a1ecd61bdbf095c93e5dc"
+      }
+    },
+    {
+      "job": 125082515,
+      "case": "1",
+      "phi": 1.4,
+      "transport": "pairs",
+      "variant": "activity-smooth-matched-energy",
+      "source_revision": "234975609868a84103d568a6fa03cfd7e70c2091",
+      "build_identity": {
+        "basis": "observed-job-records",
+        "job": 125082121,
+        "binary_sha256": "5ad31c80c8d05ccb27dc09f9d58f17919cca8b88406cda1b00a227bf85b7c8d2",
+        "record_sha256": {
+          "build-path.txt": "10d705944942f036aa92dafbc79935aecaf960c360bee0e9649a18dc29006de0",
+          "executable.sha256": "968207408f1e5223769bc81c05eb9f3f5ac0cd20ae2bb2f15e3c025f84393e1c",
+          "source-revision.txt": "4274d054efaa1da0a3a8cd8b310f51b0b7f2f2917ae55387b22547683cdab251",
+          "input-sha256.txt": "99ae3e051d4d086213e60b955d8e1d70ac5c87d3440caf2242b2e995ef55cb7e",
+          "guess-sha256.txt": "c631a4f4f0c70211aa623385586fd66c093d35243c0351de3cb1880b36944631",
+          "command.txt": "1ba4945746c3f6ff2aca2dc3dc24cb4f46fa731cdc56ef4522f49834d64254e7"
+        }
+      },
+      "snapshot_result": "state/liang-hydrogen-20261020/snapshot-activity-0210/jobs/125082515/result",
+      "final": {
+        "phi": 1.4,
+        "slope": 0.00375,
+        "curve": 0.00625,
+        "points": 1811.0,
+        "speed_cm_s": 76.14558441277055,
+        "Tb_K": 2313.588297471401,
+        "rhou_kg_m3": 77.34966816290843,
+        "massflux_kg_m2s": 58.89835686398533
+      },
+      "last_speed_relative_change": 5.863681764584072e-06,
+      "sha256": {
+        "configuration.txt": "3e98677a57ccf618f616fab1a3656d6850ad11e6fcb22eb50f431cb7ab4ba38a",
+        "refinement.csv": "73fff2f168d1037df067534b8bfc4d7918e752f0ea47d2b33f7575ff202829d0",
+        "profile.csv": "af8779ddeca3e9d61692bdd5caa7bae2e71a1273beebf55c36c9d10ae1185a34",
+        "property-checks.csv": "84e0b540f9d3e282778eda7b94b72cdd955303960cf2c4f21d2e742b90085d89",
+        "transport.csv": "984451adf8605bdb4daac6287e12c06f1d5fa780d185959552db438f9c1c9b1a",
+        "callbacks.txt": "c083f4ded8ecca828e8a9a61db4a54fd76f2d994503a1ecd61bdbf095c93e5dc"
+      }
+    },
+    {
+      "job": 125082521,
+      "case": "3",
+      "phi": 1.4,
+      "transport": "pairs",
+      "variant": "smooth-matched-energy",
+      "source_revision": "234975609868a84103d568a6fa03cfd7e70c2091",
+      "build_identity": {
+        "basis": "observed-job-records",
+        "job": 125082121,
+        "binary_sha256": "5ad31c80c8d05ccb27dc09f9d58f17919cca8b88406cda1b00a227bf85b7c8d2",
+        "record_sha256": {
+          "build-path.txt": "10d705944942f036aa92dafbc79935aecaf960c360bee0e9649a18dc29006de0",
+          "executable.sha256": "968207408f1e5223769bc81c05eb9f3f5ac0cd20ae2bb2f15e3c025f84393e1c",
+          "source-revision.txt": "4274d054efaa1da0a3a8cd8b310f51b0b7f2f2917ae55387b22547683cdab251",
+          "input-sha256.txt": "99ae3e051d4d086213e60b955d8e1d70ac5c87d3440caf2242b2e995ef55cb7e",
+          "guess-sha256.txt": "ced43450ea729325a17148c82d127f384eaaf05434e307d8e837b9e16e24f859",
+          "command.txt": "2439b63fc9a1d571b9400a60fce706afe5a853459fbcd0ec458e8ff4d21e4c59"
+        }
+      },
+      "snapshot_result": "state/liang-hydrogen-20261020/snapshot-activity-0210/jobs/125082521/result",
+      "final": {
+        "phi": 1.4,
+        "slope": 0.00375,
+        "curve": 0.00625,
+        "points": 1822.0,
+        "speed_cm_s": 75.56587458627817,
+        "Tb_K": 2300.913936669049,
+        "rhou_kg_m3": 74.86460247882749,
+        "massflux_kg_m2s": 56.57209161866648
+      },
+      "last_speed_relative_change": 2.615214658274745e-06,
+      "sha256": {
+        "configuration.txt": "9e1d77fc0d46eca7433a4120edd73cbc0c4a4650ae70a74ff9e67220c961cab4",
+        "refinement.csv": "8ce7a290372c0cf47bf616e759afdea0d86985c7b2782e3a7eec1fedd273c00f",
+        "profile.csv": "9a433f14bc659cf00fa67e35f4b33343bb5da12004c13eca82ea48e53478152c",
+        "property-checks.csv": "ac471b450c92a15ec381f569f228a30168b9cb0f2fe45466d0e0af9d8a6f37b5",
+        "transport.csv": "9c317358637ddead1c6a7968ebeb2694ef24ba70c7b4caf4eea3112b78064b60",
+        "callbacks.txt": "4f48f30a7153cd5d6985862234139267ea7e39d3969c2c2440fbde2dfa2db349"
+      }
+    },
+    {
+      "job": 125082523,
+      "case": "3",
+      "phi": 1.4,
+      "transport": "pairs",
+      "variant": "activity-smooth-matched-energy",
+      "source_revision": "234975609868a84103d568a6fa03cfd7e70c2091",
+      "build_identity": {
+        "basis": "observed-job-records",
+        "job": 125082121,
+        "binary_sha256": "5ad31c80c8d05ccb27dc09f9d58f17919cca8b88406cda1b00a227bf85b7c8d2",
+        "record_sha256": {
+          "build-path.txt": "10d705944942f036aa92dafbc79935aecaf960c360bee0e9649a18dc29006de0",
+          "executable.sha256": "968207408f1e5223769bc81c05eb9f3f5ac0cd20ae2bb2f15e3c025f84393e1c",
+          "source-revision.txt": "4274d054efaa1da0a3a8cd8b310f51b0b7f2f2917ae55387b22547683cdab251",
+          "input-sha256.txt": "99ae3e051d4d086213e60b955d8e1d70ac5c87d3440caf2242b2e995ef55cb7e",
+          "guess-sha256.txt": "ced43450ea729325a17148c82d127f384eaaf05434e307d8e837b9e16e24f859",
+          "command.txt": "7355d944fd0ccc0ec69900894ac275b93dcfd9eb768e5be43bead054800fe35b"
+        }
+      },
+      "snapshot_result": "state/liang-hydrogen-20261020/snapshot-activity-0210/jobs/125082523/result",
+      "final": {
+        "phi": 1.4,
+        "slope": 0.00375,
+        "curve": 0.00625,
+        "points": 1874.0,
+        "speed_cm_s": 77.26532415920711,
+        "Tb_K": 2300.833775039179,
+        "rhou_kg_m3": 74.86460247882749,
+        "massflux_kg_m2s": 57.84437778576787
+      },
+      "last_speed_relative_change": 5.3791674162972924e-05,
+      "sha256": {
+        "configuration.txt": "fdc604b7d064d18b77f6a2fa5ba4a69e23372955808932b1e32f6f0e98729c26",
+        "refinement.csv": "11d7b3d0e7020d1ce81271cab11b6b56d894b4c5252a540abbf332733cdeb3bc",
+        "profile.csv": "5c75b1443f3ec049aabed2379479c771881b974cd220c83c7f1b530207a484ac",
+        "property-checks.csv": "ac471b450c92a15ec381f569f228a30168b9cb0f2fe45466d0e0af9d8a6f37b5",
+        "transport.csv": "ef49a0b74412dc4258bc94940c8f7666bd602ddea612106edff77cd92da57e9d",
+        "callbacks.txt": "0358be0d9ef117a5e9c61029d7b44e2c0be1a6824f49fa16ad2faf987d039a8d"
+      }
+    },
+    {
+      "job": 125083802,
+      "case": "1",
+      "phi": 1.1,
+      "transport": "pairs",
+      "variant": "matched-energy",
+      "source_revision": "615f3f70d1e698cce22b87c719f05fdff8351b2c",
+      "build_identity": {
+        "basis": "observed-job-records",
+        "job": 125083598,
+        "binary_sha256": "6bccddd543f7869b0223017c436366cd9b5ca0dee7d831ed5577275740905316",
+        "record_sha256": {
+          "build-path.txt": "cb725848a5d34df9cae64a5efe638b7f8e1abba003c58b70276c16dc3db4e1f2",
+          "executable.sha256": "df3d30bbec435215e64d904f9d799e377933a25a849c2847877635a799fd4b99",
+          "source-revision.txt": "658dcc0bd7249b4e8f9cb0a0abeca24f8dfa85e1d7a479f670915f5db5fd09da",
+          "input-sha256.txt": "99ae3e051d4d086213e60b955d8e1d70ac5c87d3440caf2242b2e995ef55cb7e",
+          "guess-sha256.txt": "52f8b6e77481c89c65b95d79cebf8974e692c945bec7b1df95bf54a4d7748c40",
+          "command.txt": "31626ac48d9a5c039f800e2f77bd1214e529543cf80105fb32319e5ca9cdf551"
+        }
+      },
+      "snapshot_result": "state/liang-hydrogen-20261020/snapshot-signed-0220/jobs/125083802/result",
+      "final": {
+        "phi": 1.1,
+        "slope": 0.00375,
+        "curve": 0.00625,
+        "points": 1859.0,
+        "speed_cm_s": 57.22574804372955,
+        "Tb_K": 2461.118313229014,
+        "rhou_kg_m3": 83.3053928154236,
+        "massflux_kg_m2s": 47.67213419939349
+      },
+      "last_speed_relative_change": 6.205099229106281e-06,
+      "sha256": {
+        "configuration.txt": "8ded18816d3b0d5ea59a4362cbc863231ac88970852c27bd4952aa59b291c7f2",
+        "refinement.csv": "a5df2591f7637d9a7ef1aaa1dfafb8b48578d8c4bfadf78bf097967baead2676",
+        "profile.csv": "6ab3f1f5f57fbcde59d4ef739043ab5c70704a40ad5184e676abbea177d0afdb",
+        "property-checks.csv": "11dd34a2b86ca71925c2ee2d6909d665627a24281e0b0b393591e04baa5501d5",
+        "transport.csv": "f81a0b52cb4d010389600395414dbf862f99549f3a9c74c7a72bdbabb8bc6af7",
+        "callbacks.txt": "d6821ab6d6bf77b8f7c8fdddaf594ec72a5a301dc40ae157227665650e05904b"
+      }
+    },
+    {
+      "job": 125083804,
+      "case": "1",
+      "phi": 1.1,
+      "transport": "pairs",
+      "variant": "signed-matched-energy",
+      "source_revision": "615f3f70d1e698cce22b87c719f05fdff8351b2c",
+      "build_identity": {
+        "basis": "observed-job-records",
+        "job": 125083598,
+        "binary_sha256": "6bccddd543f7869b0223017c436366cd9b5ca0dee7d831ed5577275740905316",
+        "record_sha256": {
+          "build-path.txt": "cb725848a5d34df9cae64a5efe638b7f8e1abba003c58b70276c16dc3db4e1f2",
+          "executable.sha256": "df3d30bbec435215e64d904f9d799e377933a25a849c2847877635a799fd4b99",
+          "source-revision.txt": "658dcc0bd7249b4e8f9cb0a0abeca24f8dfa85e1d7a479f670915f5db5fd09da",
+          "input-sha256.txt": "99ae3e051d4d086213e60b955d8e1d70ac5c87d3440caf2242b2e995ef55cb7e",
+          "guess-sha256.txt": "52f8b6e77481c89c65b95d79cebf8974e692c945bec7b1df95bf54a4d7748c40",
+          "command.txt": "ce31a5514b2ff09e2520c46fc575950df40f8216679711571133a1851c62b246"
+        }
+      },
+      "snapshot_result": "state/liang-hydrogen-20261020/snapshot-signed-0220/jobs/125083804/result",
+      "final": {
+        "phi": 1.1,
+        "slope": 0.00375,
+        "curve": 0.00625,
+        "points": 1859.0,
+        "speed_cm_s": 57.22574804372955,
+        "Tb_K": 2461.118313229014,
+        "rhou_kg_m3": 83.3053928154236,
+        "massflux_kg_m2s": 47.67213419939349
+      },
+      "last_speed_relative_change": 6.205099229106281e-06,
+      "sha256": {
+        "configuration.txt": "5cad8243f524c97f56d37f8b9e6d984bb1546c1b8fdcbbc67ca0d020cac723bf",
+        "refinement.csv": "a5df2591f7637d9a7ef1aaa1dfafb8b48578d8c4bfadf78bf097967baead2676",
+        "profile.csv": "6ab3f1f5f57fbcde59d4ef739043ab5c70704a40ad5184e676abbea177d0afdb",
+        "property-checks.csv": "11dd34a2b86ca71925c2ee2d6909d665627a24281e0b0b393591e04baa5501d5",
+        "transport.csv": "546e9ef4800594b290f13c0192c7f50c353d9f895d8cbbf2c0f2ec57eafc8f3f",
+        "callbacks.txt": "d6821ab6d6bf77b8f7c8fdddaf594ec72a5a301dc40ae157227665650e05904b"
+      }
+    },
+    {
+      "job": 125083806,
+      "case": "3",
+      "phi": 1.1,
+      "transport": "pairs",
+      "variant": "matched-energy",
+      "source_revision": "615f3f70d1e698cce22b87c719f05fdff8351b2c",
+      "build_identity": {
+        "basis": "observed-job-records",
+        "job": 125083598,
+        "binary_sha256": "6bccddd543f7869b0223017c436366cd9b5ca0dee7d831ed5577275740905316",
+        "record_sha256": {
+          "build-path.txt": "cb725848a5d34df9cae64a5efe638b7f8e1abba003c58b70276c16dc3db4e1f2",
+          "executable.sha256": "df3d30bbec435215e64d904f9d799e377933a25a849c2847877635a799fd4b99",
+          "source-revision.txt": "658dcc0bd7249b4e8f9cb0a0abeca24f8dfa85e1d7a479f670915f5db5fd09da",
+          "input-sha256.txt": "99ae3e051d4d086213e60b955d8e1d70ac5c87d3440caf2242b2e995ef55cb7e",
+          "guess-sha256.txt": "83991d0823b2903536682fdb875ab56bd5b1a06e6ca2c1ad95698f1358d41270",
+          "command.txt": "96a2ae1dd32fc63c3e6641cb1243ab4ba9916eafea4f729e629f95ea9921993e"
+        }
+      },
+      "snapshot_result": "state/liang-hydrogen-20261020/snapshot-signed-0220/jobs/125083806/result",
+      "final": {
+        "phi": 1.1,
+        "slope": 0.00375,
+        "curve": 0.00625,
+        "points": 1866.0,
+        "speed_cm_s": 56.58185194825338,
+        "Tb_K": 2448.280583609253,
+        "rhou_kg_m3": 80.87343575087748,
+        "massflux_kg_m2s": 45.75968768202731
+      },
+      "last_speed_relative_change": 6.981684840923208e-06,
+      "sha256": {
+        "configuration.txt": "c9f138831110aba7db397374268027a844ae8f22cc050308ddfdf4c5120adfdb",
+        "refinement.csv": "99d0a7e94effbebf9f2f9d61c518278a36b9ffe09c238c0dada9493660649904",
+        "profile.csv": "923e6bc2b1e50798569a434882c971b73291485a42db9459ee3c3c2055ee3c55",
+        "property-checks.csv": "a74d8c1a965d0c626a48d06f025ed52711a6782cebd81c8c416f6b40103ad833",
+        "transport.csv": "50a16fb543dd6c663d198ac82574b99c768a2e596f14ca9b529bd4be9497265e",
+        "callbacks.txt": "7417c1ba3ca4cbceaa4059ed96fc4896c16ce421108b1a173d7d0811cb0ca88e"
+      }
+    },
+    {
+      "job": 125083812,
+      "case": "3",
+      "phi": 1.1,
+      "transport": "pairs",
+      "variant": "signed-matched-energy",
+      "source_revision": "615f3f70d1e698cce22b87c719f05fdff8351b2c",
+      "build_identity": {
+        "basis": "observed-job-records",
+        "job": 125083598,
+        "binary_sha256": "6bccddd543f7869b0223017c436366cd9b5ca0dee7d831ed5577275740905316",
+        "record_sha256": {
+          "build-path.txt": "cb725848a5d34df9cae64a5efe638b7f8e1abba003c58b70276c16dc3db4e1f2",
+          "executable.sha256": "df3d30bbec435215e64d904f9d799e377933a25a849c2847877635a799fd4b99",
+          "source-revision.txt": "658dcc0bd7249b4e8f9cb0a0abeca24f8dfa85e1d7a479f670915f5db5fd09da",
+          "input-sha256.txt": "99ae3e051d4d086213e60b955d8e1d70ac5c87d3440caf2242b2e995ef55cb7e",
+          "guess-sha256.txt": "83991d0823b2903536682fdb875ab56bd5b1a06e6ca2c1ad95698f1358d41270",
+          "command.txt": "e13b86d0232b99572dd074fce97c51918ee009b417974ad116366d2900e7781e"
+        }
+      },
+      "snapshot_result": "state/liang-hydrogen-20261020/snapshot-signed-0220/jobs/125083812/result",
+      "final": {
+        "phi": 1.1,
+        "slope": 0.00375,
+        "curve": 0.00625,
+        "points": 1868.0,
+        "speed_cm_s": 56.30160153548645,
+        "Tb_K": 2446.129529275292,
+        "rhou_kg_m3": 80.87343575087748,
+        "massflux_kg_m2s": 45.53303954451668
+      },
+      "last_speed_relative_change": 1.619681160403008e-05,
+      "sha256": {
+        "configuration.txt": "1dc151521ec02e85d9b1d2b088f9df2b8f50f31f8db6822a9eee4b170a81dad7",
+        "refinement.csv": "c2a6429952d5face87aa461f5a1f188ae550138d35a79c4c8100bc4b2084da25",
+        "profile.csv": "c67ca14d066f7b5f599ad7655165fc8551f392c80600206e20aa7d539399f462",
+        "property-checks.csv": "84675b4ea3b211c0685450181e26f0ae624dc5fd7e9bed1ada8cb432b8b840cb",
+        "transport.csv": "f443c4558fc22e9f19c21d9eb38548556b4cc6659ee9a9c3802b17e449ca2281",
+        "callbacks.txt": "048302ff58f2ccd00b269103635da66d6f6ed9070b665100e5b114d48de42687"
+      }
+    },
+    {
+      "job": 125083816,
+      "case": "3star",
+      "phi": 1.1,
+      "transport": "pairs",
+      "variant": "baseline",
+      "source_revision": "615f3f70d1e698cce22b87c719f05fdff8351b2c",
+      "build_identity": {
+        "basis": "observed-job-records",
+        "job": 125083598,
+        "binary_sha256": "6bccddd543f7869b0223017c436366cd9b5ca0dee7d831ed5577275740905316",
+        "record_sha256": {
+          "build-path.txt": "cb725848a5d34df9cae64a5efe638b7f8e1abba003c58b70276c16dc3db4e1f2",
+          "executable.sha256": "df3d30bbec435215e64d904f9d799e377933a25a849c2847877635a799fd4b99",
+          "source-revision.txt": "658dcc0bd7249b4e8f9cb0a0abeca24f8dfa85e1d7a479f670915f5db5fd09da",
+          "input-sha256.txt": "99ae3e051d4d086213e60b955d8e1d70ac5c87d3440caf2242b2e995ef55cb7e",
+          "guess-sha256.txt": "83991d0823b2903536682fdb875ab56bd5b1a06e6ca2c1ad95698f1358d41270",
+          "command.txt": "a33699cc5a118028fda44ba76e64a06f3ceb52f8cfa3cb10536a90eaf0666b9a"
+        }
+      },
+      "snapshot_result": "state/liang-hydrogen-20261020/snapshot-signed-0220/jobs/125083816/result",
+      "final": {
+        "phi": 1.1,
+        "slope": 0.00375,
+        "curve": 0.00625,
+        "points": 1866.0,
+        "speed_cm_s": 56.93106052049759,
+        "Tb_K": 2449.944937988098,
+        "rhou_kg_m3": 80.87343575087748,
+        "massflux_kg_m2s": 46.04210465233779
+      },
+      "last_speed_relative_change": 6.799411510494124e-06,
+      "sha256": {
+        "configuration.txt": "df907905fe54259741f7ae216e815022079cb4aecb4b1432799f52d065088262",
+        "refinement.csv": "6c0ae8ea84e83bf4f97cba8748f425f66f9d17fcb0f5a326bc1490c375c69680",
+        "profile.csv": "7c66e72868e0e70b6d7a5de224d8d9bae211dce24563ed460a1c039520fbdb7f",
+        "property-checks.csv": "a74d8c1a965d0c626a48d06f025ed52711a6782cebd81c8c416f6b40103ad833",
+        "transport.csv": "d3ec496b136cca20f944cdcb450b01add8e14fa0a57b6ec9ab41ba25cc3874ca",
+        "callbacks.txt": "496bb091feddaa123ebac23629651eee6dacf4c194568c115ded7a8cc07c3b87"
+      }
+    },
+    {
+      "job": 125083818,
+      "case": "3star",
+      "phi": 1.1,
+      "transport": "pairs",
+      "variant": "signed-baseline",
+      "source_revision": "615f3f70d1e698cce22b87c719f05fdff8351b2c",
+      "build_identity": {
+        "basis": "observed-job-records",
+        "job": 125083598,
+        "binary_sha256": "6bccddd543f7869b0223017c436366cd9b5ca0dee7d831ed5577275740905316",
+        "record_sha256": {
+          "build-path.txt": "cb725848a5d34df9cae64a5efe638b7f8e1abba003c58b70276c16dc3db4e1f2",
+          "executable.sha256": "df3d30bbec435215e64d904f9d799e377933a25a849c2847877635a799fd4b99",
+          "source-revision.txt": "658dcc0bd7249b4e8f9cb0a0abeca24f8dfa85e1d7a479f670915f5db5fd09da",
+          "input-sha256.txt": "99ae3e051d4d086213e60b955d8e1d70ac5c87d3440caf2242b2e995ef55cb7e",
+          "guess-sha256.txt": "83991d0823b2903536682fdb875ab56bd5b1a06e6ca2c1ad95698f1358d41270",
+          "command.txt": "721a8a9a0abd4e171c8b01c5ff7c9bcba2e3b89f8f71baaa0c62e88e9a3ff3f9"
+        }
+      },
+      "snapshot_result": "state/liang-hydrogen-20261020/snapshot-signed-0220/jobs/125083818/result",
+      "final": {
+        "phi": 1.1,
+        "slope": 0.00375,
+        "curve": 0.00625,
+        "points": 1868.0,
+        "speed_cm_s": 56.29380948754302,
+        "Tb_K": 2446.059182698027,
+        "rhou_kg_m3": 80.87343575087748,
+        "massflux_kg_m2s": 45.52673784762948
+      },
+      "last_speed_relative_change": 1.6850053249140018e-05,
+      "sha256": {
+        "configuration.txt": "8b80de7aaf67d6f2cc6934b0db0b38ef1b40ab5831a7addc56ad8acc1b17df71",
+        "refinement.csv": "5342be4d54f995a53608b591721f0ae79399199b36b35d3db10b0743098c3077",
+        "profile.csv": "c18a63265d6548e892e2a1d7392919148669d2324efa88eb554db17ffcef0844",
+        "property-checks.csv": "84675b4ea3b211c0685450181e26f0ae624dc5fd7e9bed1ada8cb432b8b840cb",
+        "transport.csv": "1380008dc4cc5af2390f187e544e2b6fbe469db49990329f7b9472c713c586cf",
+        "callbacks.txt": "1dbf1783ba0b9d50c4ec8a1f586d3483041634b91805b557b63e8b24336f4c34"
+      }
+    },
+    {
+      "job": 125083820,
+      "case": "1",
+      "phi": 1.4,
+      "transport": "pairs",
+      "variant": "matched-energy",
+      "source_revision": "615f3f70d1e698cce22b87c719f05fdff8351b2c",
+      "build_identity": {
+        "basis": "observed-job-records",
+        "job": 125083598,
+        "binary_sha256": "6bccddd543f7869b0223017c436366cd9b5ca0dee7d831ed5577275740905316",
+        "record_sha256": {
+          "build-path.txt": "cb725848a5d34df9cae64a5efe638b7f8e1abba003c58b70276c16dc3db4e1f2",
+          "executable.sha256": "df3d30bbec435215e64d904f9d799e377933a25a849c2847877635a799fd4b99",
+          "source-revision.txt": "658dcc0bd7249b4e8f9cb0a0abeca24f8dfa85e1d7a479f670915f5db5fd09da",
+          "input-sha256.txt": "99ae3e051d4d086213e60b955d8e1d70ac5c87d3440caf2242b2e995ef55cb7e",
+          "guess-sha256.txt": "c50c6f72c6a62e6b3e2189f248cda7fed168345f042dd65feea70739e308fdbd",
+          "command.txt": "308a6d6f116a13f874cecf50e3b0703add02de6101434f317c2acbf8fb114f25"
+        }
+      },
+      "snapshot_result": "state/liang-hydrogen-20261020/snapshot-signed-0220/jobs/125083820/result",
+      "final": {
+        "phi": 1.4,
+        "slope": 0.00375,
+        "curve": 0.00625,
+        "points": 1811.0,
+        "speed_cm_s": 76.14566510539169,
+        "Tb_K": 2313.588003798421,
+        "rhou_kg_m3": 77.34966816290843,
+        "massflux_kg_m2s": 58.89841927946003
+      },
+      "last_speed_relative_change": 5.590660679288817e-06,
+      "sha256": {
+        "configuration.txt": "c8d7d772b55e3a32727eb32f73106a5043a0e92bdabe16e63e3d760f8225ddb7",
+        "refinement.csv": "af7e0798570634ff86f7eca640b0a67798918a20d98b0b4054b5fc868b0d3c42",
+        "profile.csv": "3488192c86ba23c1d1d799b5b4967618e472952a88282a109784acb04e9fc857",
+        "property-checks.csv": "84e0b540f9d3e282778eda7b94b72cdd955303960cf2c4f21d2e742b90085d89",
+        "transport.csv": "a02c55982bf68d9030d7edc3f92b5965434583456eb29b56d5aab13b0c6c0c24",
+        "callbacks.txt": "20a646261b98b647cf4b858a781049235d3789d318a3fe2c228c4a1a14a328d4"
+      }
+    },
+    {
+      "job": 125083824,
+      "case": "1",
+      "phi": 1.4,
+      "transport": "pairs",
+      "variant": "signed-matched-energy",
+      "source_revision": "615f3f70d1e698cce22b87c719f05fdff8351b2c",
+      "build_identity": {
+        "basis": "observed-job-records",
+        "job": 125083598,
+        "binary_sha256": "6bccddd543f7869b0223017c436366cd9b5ca0dee7d831ed5577275740905316",
+        "record_sha256": {
+          "build-path.txt": "cb725848a5d34df9cae64a5efe638b7f8e1abba003c58b70276c16dc3db4e1f2",
+          "executable.sha256": "df3d30bbec435215e64d904f9d799e377933a25a849c2847877635a799fd4b99",
+          "source-revision.txt": "658dcc0bd7249b4e8f9cb0a0abeca24f8dfa85e1d7a479f670915f5db5fd09da",
+          "input-sha256.txt": "99ae3e051d4d086213e60b955d8e1d70ac5c87d3440caf2242b2e995ef55cb7e",
+          "guess-sha256.txt": "c50c6f72c6a62e6b3e2189f248cda7fed168345f042dd65feea70739e308fdbd",
+          "command.txt": "1aa2808d5f5dc65363132689b35c5ac07a3bd68fb43b9231dc4b4acf2d9cd9dd"
+        }
+      },
+      "snapshot_result": "state/liang-hydrogen-20261020/snapshot-signed-0220/jobs/125083824/result",
+      "final": {
+        "phi": 1.4,
+        "slope": 0.00375,
+        "curve": 0.00625,
+        "points": 1811.0,
+        "speed_cm_s": 76.14566510539169,
+        "Tb_K": 2313.588003798421,
+        "rhou_kg_m3": 77.34966816290843,
+        "massflux_kg_m2s": 58.89841927946003
+      },
+      "last_speed_relative_change": 5.590660679288817e-06,
+      "sha256": {
+        "configuration.txt": "8cd463a3e1c429559beb91a02c6802682c18103452162baaa63c307d407d22c2",
+        "refinement.csv": "af7e0798570634ff86f7eca640b0a67798918a20d98b0b4054b5fc868b0d3c42",
+        "profile.csv": "3488192c86ba23c1d1d799b5b4967618e472952a88282a109784acb04e9fc857",
+        "property-checks.csv": "84e0b540f9d3e282778eda7b94b72cdd955303960cf2c4f21d2e742b90085d89",
+        "transport.csv": "3eec462cedeaee74c583be94a9a024a08e74e4d99d6c24bf9843cc85b913d492",
+        "callbacks.txt": "20a646261b98b647cf4b858a781049235d3789d318a3fe2c228c4a1a14a328d4"
+      }
+    },
+    {
+      "job": 125083830,
+      "case": "3",
+      "phi": 1.4,
+      "transport": "pairs",
+      "variant": "matched-energy",
+      "source_revision": "615f3f70d1e698cce22b87c719f05fdff8351b2c",
+      "build_identity": {
+        "basis": "observed-job-records",
+        "job": 125083598,
+        "binary_sha256": "6bccddd543f7869b0223017c436366cd9b5ca0dee7d831ed5577275740905316",
+        "record_sha256": {
+          "build-path.txt": "cb725848a5d34df9cae64a5efe638b7f8e1abba003c58b70276c16dc3db4e1f2",
+          "executable.sha256": "df3d30bbec435215e64d904f9d799e377933a25a849c2847877635a799fd4b99",
+          "source-revision.txt": "658dcc0bd7249b4e8f9cb0a0abeca24f8dfa85e1d7a479f670915f5db5fd09da",
+          "input-sha256.txt": "99ae3e051d4d086213e60b955d8e1d70ac5c87d3440caf2242b2e995ef55cb7e",
+          "guess-sha256.txt": "029c4846fdefca8563fcb9711f2654ae58a1ad9d34ae2b2f1745f084514aea95",
+          "command.txt": "d4487efce75c0099a908cf73c41a7f42854e2c77ccd247f2a3b9f2f670540e5e"
+        }
+      },
+      "snapshot_result": "state/liang-hydrogen-20261020/snapshot-signed-0220/jobs/125083830/result",
+      "final": {
+        "phi": 1.4,
+        "slope": 0.00375,
+        "curve": 0.00625,
+        "points": 1822.0,
+        "speed_cm_s": 75.58287958582028,
+        "Tb_K": 2301.392383244167,
+        "rhou_kg_m3": 74.85949514286254,
+        "massflux_kg_m2s": 56.58096207238278
+      },
+      "last_speed_relative_change": 6.001113799891655e-06,
+      "sha256": {
+        "configuration.txt": "3f6cad85718193459bc8ed78c7fce37cd54bb6dca991f5262bd2ca15893d8253",
+        "refinement.csv": "375ab05aae5563b5dfdd799aabc7a2d81a73f15803251fb9a5c24f2d5abaeff2",
+        "profile.csv": "0888776051e60cec08835107d8836ac979b29db3da0abe2734c778c3329e9449",
+        "property-checks.csv": "27f9b4e7e62c23925b2bd7b8f95c5420a2ed5ce16246b8a2f0bd3603c56e0eb6",
+        "transport.csv": "a407db0654c2ce09f3168be176ad78d80f928f3e2293a32666348ae762daaaa9",
+        "callbacks.txt": "d89aec7721f1b6acfb4b3a409905391e0063b426e61b3e8cd789a6a07734cb17"
+      }
+    },
+    {
+      "job": 125083833,
+      "case": "3",
+      "phi": 1.4,
+      "transport": "pairs",
+      "variant": "signed-matched-energy",
+      "source_revision": "615f3f70d1e698cce22b87c719f05fdff8351b2c",
+      "build_identity": {
+        "basis": "observed-job-records",
+        "job": 125083598,
+        "binary_sha256": "6bccddd543f7869b0223017c436366cd9b5ca0dee7d831ed5577275740905316",
+        "record_sha256": {
+          "build-path.txt": "cb725848a5d34df9cae64a5efe638b7f8e1abba003c58b70276c16dc3db4e1f2",
+          "executable.sha256": "df3d30bbec435215e64d904f9d799e377933a25a849c2847877635a799fd4b99",
+          "source-revision.txt": "658dcc0bd7249b4e8f9cb0a0abeca24f8dfa85e1d7a479f670915f5db5fd09da",
+          "input-sha256.txt": "99ae3e051d4d086213e60b955d8e1d70ac5c87d3440caf2242b2e995ef55cb7e",
+          "guess-sha256.txt": "029c4846fdefca8563fcb9711f2654ae58a1ad9d34ae2b2f1745f084514aea95",
+          "command.txt": "707cc832b6f6125c175589bd0ecea0f3e5496608b9491586c4a44591929fd938"
+        }
+      },
+      "snapshot_result": "state/liang-hydrogen-20261020/snapshot-signed-0220/jobs/125083833/result",
+      "final": {
+        "phi": 1.4,
+        "slope": 0.00375,
+        "curve": 0.00625,
+        "points": 1823.0,
+        "speed_cm_s": 75.24306536563012,
+        "Tb_K": 2299.500004647352,
+        "rhou_kg_m3": 74.85949514286254,
+        "massflux_kg_m2s": 56.32657886272476
+      },
+      "last_speed_relative_change": 1.184310959767565e-05,
+      "sha256": {
+        "configuration.txt": "77623c2b1dc073b69eb121dedfdc10ae874de83ead509f028878bfb9f79b21be",
+        "refinement.csv": "9770a4633e43f14285135d1e4b520d12ac667cd24fadddb30e09f20f945d53cd",
+        "profile.csv": "bb1c9aa2ce0481d042741c5e77e773976d270b7129bc34df06812564434ad096",
+        "property-checks.csv": "e9d4277dc8c2019bd2d0971083fdc18138f626c570957c5c70aaa887b6b49b1d",
+        "transport.csv": "cb846450a39b1f81a1de16a833315d07fbb906ecb952508a5a5102155f25f810",
+        "callbacks.txt": "7446b3b9b7a2e49f559e5e109780ee695457d34edd2d1b1f2cdbfbf358eb3658"
+      }
+    },
+    {
+      "job": 125083836,
+      "case": "3star",
+      "phi": 1.4,
+      "transport": "pairs",
+      "variant": "baseline",
+      "source_revision": "615f3f70d1e698cce22b87c719f05fdff8351b2c",
+      "build_identity": {
+        "basis": "observed-job-records",
+        "job": 125083598,
+        "binary_sha256": "6bccddd543f7869b0223017c436366cd9b5ca0dee7d831ed5577275740905316",
+        "record_sha256": {
+          "build-path.txt": "cb725848a5d34df9cae64a5efe638b7f8e1abba003c58b70276c16dc3db4e1f2",
+          "executable.sha256": "df3d30bbec435215e64d904f9d799e377933a25a849c2847877635a799fd4b99",
+          "source-revision.txt": "658dcc0bd7249b4e8f9cb0a0abeca24f8dfa85e1d7a479f670915f5db5fd09da",
+          "input-sha256.txt": "99ae3e051d4d086213e60b955d8e1d70ac5c87d3440caf2242b2e995ef55cb7e",
+          "guess-sha256.txt": "029c4846fdefca8563fcb9711f2654ae58a1ad9d34ae2b2f1745f084514aea95",
+          "command.txt": "8c0b858b4f7f97a3f744eb127d4678c33bd4cc2ee173bf72fcce3251aa820041"
+        }
+      },
+      "snapshot_result": "state/liang-hydrogen-20261020/snapshot-signed-0220/jobs/125083836/result",
+      "final": {
+        "phi": 1.4,
+        "slope": 0.00375,
+        "curve": 0.00625,
+        "points": 1822.0,
+        "speed_cm_s": 76.00867924405426,
+        "Tb_K": 2302.908268000185,
+        "rhou_kg_m3": 74.85949514286254,
+        "massflux_kg_m2s": 56.89971354685677
+      },
+      "last_speed_relative_change": 5.71404366200845e-06,
+      "sha256": {
+        "configuration.txt": "7cc5f3b47de1ec446eeb01a3fcc5ea42c0eda7516666a6ee184587d872ca513d",
+        "refinement.csv": "4071356b8008bb218deb14880d14de25822d41379d84f48e38fe56277c7f1f9e",
+        "profile.csv": "aa11f0c6caae17e9d44b5880877f920df709c6aad432cf812fe199bf3358714b",
+        "property-checks.csv": "27f9b4e7e62c23925b2bd7b8f95c5420a2ed5ce16246b8a2f0bd3603c56e0eb6",
+        "transport.csv": "34a50a3043060bad0b3eea0c232e34bb923c26c7e543a35f4faeb236bfd583d2",
+        "callbacks.txt": "6746eb0ff2783b386b6db4dbba5842aaaa642587e0f4d49c5d0e60f07eddbd23"
+      }
+    },
+    {
+      "job": 125083840,
+      "case": "3star",
+      "phi": 1.4,
+      "transport": "pairs",
+      "variant": "signed-baseline",
+      "source_revision": "615f3f70d1e698cce22b87c719f05fdff8351b2c",
+      "build_identity": {
+        "basis": "observed-job-records",
+        "job": 125083598,
+        "binary_sha256": "6bccddd543f7869b0223017c436366cd9b5ca0dee7d831ed5577275740905316",
+        "record_sha256": {
+          "build-path.txt": "cb725848a5d34df9cae64a5efe638b7f8e1abba003c58b70276c16dc3db4e1f2",
+          "executable.sha256": "df3d30bbec435215e64d904f9d799e377933a25a849c2847877635a799fd4b99",
+          "source-revision.txt": "658dcc0bd7249b4e8f9cb0a0abeca24f8dfa85e1d7a479f670915f5db5fd09da",
+          "input-sha256.txt": "99ae3e051d4d086213e60b955d8e1d70ac5c87d3440caf2242b2e995ef55cb7e",
+          "guess-sha256.txt": "029c4846fdefca8563fcb9711f2654ae58a1ad9d34ae2b2f1745f084514aea95",
+          "command.txt": "bb3e54707f35e9b2618acd5cf62c27ca971882fc71153243159f08e4f2fbc448"
+        }
+      },
+      "snapshot_result": "state/liang-hydrogen-20261020/snapshot-signed-0220/jobs/125083840/result",
+      "final": {
+        "phi": 1.4,
+        "slope": 0.00375,
+        "curve": 0.00625,
+        "points": 1823.0,
+        "speed_cm_s": 75.23755515332957,
+        "Tb_K": 2299.455208359491,
+        "rhou_kg_m3": 74.85949514286254,
+        "massflux_kg_m2s": 56.32245394561527
+      },
+      "last_speed_relative_change": 1.1313501895537925e-05,
+      "sha256": {
+        "configuration.txt": "03e39044ca0195f44aabcb3e53cda75ca23f65012f7314bd683167b5317177f7",
+        "refinement.csv": "62409682ba17f934d0221d800d0a4e4c80e06f6335a9bfa4ca2c2be9fd72776f",
+        "profile.csv": "3ba6fa52102722205f520c9f8dc5966853a2eaf62cfbc4bdd336842f5d3bba20",
+        "property-checks.csv": "e9d4277dc8c2019bd2d0971083fdc18138f626c570957c5c70aaa887b6b49b1d",
+        "transport.csv": "e921ce1a44d938742a36853214e58ecc19f93c10e61c9161eba9f036f99d27d0",
+        "callbacks.txt": "f14431b8479ada5538c4b3eda5642849fb2f560c8a37fb9b01e0bfe421d615c1"
+      }
+    }
+  ]
+}

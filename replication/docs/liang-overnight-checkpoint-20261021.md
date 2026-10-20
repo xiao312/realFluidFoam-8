@@ -30,7 +30,7 @@ agreement.
 | 6 | Named conductivity and diffusivity ratios are evaluated at saved flame states | Journal and dissertation use different definitions and different curve values; neither current interpretation closes the gap |
 | 7 | Corrected physical width and finite-window temperature agree within image-reading bounds | HO2/H2O2 peaks remain 5.23%/6.47% high; the paper does not identify the displayed case |
 | 8(a) | Earlier GRI Cases 1–4 pass the declared digitized-paper screen | Case 5 remains outside it at three rich conditions |
-| 8(b) | Generic ideal GRI driver reproduces the earlier result within 0.003%; first full USC/HP pilots completed | Full author releases do not reproduce the unprovided methane subsets; Hashemi input has a negative rate |
+| 8(b) | Generic ideal GRI driver reproduces the earlier result within 0.003%; full USC/HP sweeps completed at phi 0.90–1.40 | Full author releases do not reproduce the unprovided methane subsets; Hashemi input has a negative rate |
 
 Figure 3 author-polynomial speed errors are +2.20–8.47% for Case 3,
 +6.65–10.87% for Case 4 and +7.65–12.13% for Case 5. The partial-temperature
@@ -102,6 +102,13 @@ identify these runs; `snapshot-cp-only-0131` contains their collected outputs.
 The narrower heat-capacity-only interpretation worsens agreement with the
 paper's Case 3* curve and does not resolve the slower-but-hotter Case 3 result.
 
+The subsequent [chemistry and alpha controls](liang-chemistry-alpha-controls-20261021.md)
+also completed. Activity-based chemistry raises hydrogen Case 3 speed by
+approximately 2.2%, worsening agreement. A signed Soave factor lowers the
+consistent Case 3 speed by approximately 0.5%, which is insufficient.
+Both controls preserve exact ideal-case parity. Their observed build identities
+and result hashes are retained separately from the baseline.
+
 The [Takahashi reduction audit](liang-takahashi-reduction-audit-20261021.md)
 retains source-supported averaging, historical hydrogen critical-constant
 diagnostics, chart interpolation bounds and density weighting. None closes
@@ -138,6 +145,20 @@ The author-pair pilot completed at 4.286499 cm/s, an increase of 0.011297 cm/s
 over the ordinary-transport full USC result. This cannot explain the paper's
 lower speed. The dissertation independently confirms the USC and HP readings;
 see [the mechanism implementation audit](liang-figure8b-implementation-audit-20261021.md).
+
+All six USC and six HP sweep conditions completed. The current Figure 8(b)
+comparison contains 28 computed points, including the earlier GRI sweep.
+Separate C0–C2 structural controls give 4.322247 cm/s for USC and 3.953245
+cm/s for HP at phi 1.10. Neither closes the discrepancy. These are explicitly
+constructed subsets, not identified author inputs.
+
+The exact publisher HP supplement matches the retained kinetics,
+thermochemistry and transport inputs. The source-supported prompt-off control
+changes speed from 3.971810 to 3.964975 cm/s with a matched steady guess.
+That 0.172% change cannot explain the paper's 2.9220 cm/s value.
+The versioned fixed-pressure converter reproduces the historical input
+byte for byte and independently verifies its rates over 298–3500 K.
+See the [control record](liang-chemistry-alpha-controls-20261021.md).
 
 The [Hashemi audit](liang-hashemi-rate-audit-20261021.md) confirms that reaction
 567 has no missing positive duplicate. Its published aggregate rate is negative

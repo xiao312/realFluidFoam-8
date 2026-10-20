@@ -27,6 +27,21 @@ records. Historical USC profiles have unquoted comma-bearing species names;
 they require an explicit mechanism-order audit before positional recovery.
 The driver does not silently reinterpret such malformed historical files.
 
+`fixed_pressure_hp.py plan|apply AUTHOR_YAML NEW_OUTPUT` reproduces the qualified
+HP input used by these controls. It accepts only the recorded author-YAML hash.
+Seven signed PLOG channels become their unchanged Arrhenius terms at the exact
+100-atm node or nearest endpoint. It does not interpolate a rate or change a
+coefficient. Analytical positivity certificates apply to each summed channel
+over 298–3500 K. Independent CGS-to-SI rate checks cover 3204 temperatures;
+five composition states also check complete forward rates of progress.
+The generated mechanism must reproduce the previously qualified SHA256.
+Plan checks inputs and describes conversion without writing. Apply requires
+a new directory and writes mechanism, reaction mapping and qualification.
+Dependencies are pinned Cantera 3.2.0, NumPy and ruamel.yaml. This offline
+preparer has no scheduler, network or secret dependency. It does not solve
+a flame, validate rates outside its interval, or identify Liang's subset.
+Example: `python fixed_pressure_hp.py plan hp-2017-author.yaml new-input`.
+
 `subset.py plan|apply INPUT_YAML NEW_OUTPUT --max-carbon 2` prepares a labelled
 structural sensitivity input. It retains all species with at most two carbon
 atoms, all reactions whose participating species are retained, and only retained

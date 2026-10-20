@@ -174,6 +174,9 @@ and numerical-guess hash into the job directory. The collector retains these
 records when present; it does not invent them for historical jobs.
 The renderer uses NumPy/PyMuPDF, preserves source panels at publication scale,
 adds open-symbol legends, and exports six PNGs, a PDF and evidence JSON.
+Original caption crops remain beneath the original panels at their publication
+scale. Their measured PDF rectangles are recorded with the figure evidence;
+report page height can change without resizing either scientific panel.
 Out-of-range samples are counted, not forced inside the original axes.
 Figure 7 uses independently fitted vector tick coordinates and translates the
 computed 1500 K crossing to the paper's 0.9801270683 cm crossing. Its calibration
@@ -220,7 +223,12 @@ completed point, refinement change, source revision and result-file SHA256.
 Snapshot references are relative to the supplied project root. Historical build
 identity is explicitly a source-to-build registry association when the original
 job did not record its build path; it is never represented as a directly
-observed job field. The script uses only the Python standard library and reads
+observed job field. New jobs instead use their collected build path, executable
+hash and source record. Their declared build/source/variant must agree with
+the observed files. The public ledger retains the build job number and hashes,
+not machine-specific SDK or command paths. Version 2 distinguishes these two
+identity bases per run and preserves diagnostic variant names.
+The script uses only the Python standard library and reads
 no secrets, network, scheduler or simulation state beyond its supplied snapshot.
 Its output is a reviewed evidence summary, not a scientific acceptance decision.
 Verify unique job IDs, complete input coverage and the recorded file hashes.

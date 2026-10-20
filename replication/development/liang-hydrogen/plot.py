@@ -15,6 +15,15 @@ PANELS = {
     6: (4, (47, 258, 239, 424), "Transport ratios along the stoichiometric flame"),
     7: (4, (260, 50, 459, 204), "Stoichiometric flame structure"),
 }
+# Measured source caption blocks, padded by one point to preserve glyph edges.
+CAPTIONS = {
+    2: (262.29, 218.98, 459.10, 237.92),
+    3: (30.98, 233.99, 227.83, 252.92),
+    4: (246.17, 213.98, 443.00, 232.92),
+    5: (47.09, 222.98, 243.90, 241.92),
+    6: (47.09, 432.56, 243.91, 451.50),
+    7: (262.29, 213.98, 458.35, 232.92),
+}
 COLORS = [(0, .48, .27), (.1, .36, .8), (.8, .35, .05),
           (.55, .15, .65), (.15, .6, .65), (.7, .15, .3)]
 CASES = ["1", "2", "3star", "3", "4", "5"]
@@ -98,14 +107,19 @@ def main():
     molecular_weights = np.array([float(row[4]) for row in species_rows])
     clipped = {}
     for number, (page_index, box, caption) in PANELS.items():
-        page = report.new_page(width=500, height=390)
+        page = report.new_page(width=500, height=420)
         crop = fitz.Rect(box)
         text(page, (18, 9, 482, 35), f"Liang Figure {number}: {caption}", 11)
         for x, title in [(18, "Original paper"), (270, "Paper + our calculation (open symbols)")]:
             text(page, (x, 37, x+212, 51), title, 8)
             target = fitz.Rect(x, 56, x+crop.width, 56+crop.height)
             page.show_pdf_page(target, source, page_index, clip=crop)
-        legend_y = 245
+        original_caption = fitz.Rect(CAPTIONS[number])
+        caption_target = fitz.Rect(
+            18+original_caption.x0-crop.x0, 56+original_caption.y0-crop.y0,
+            18+original_caption.x1-crop.x0, 56+original_caption.y1-crop.y0)
+        page.show_pdf_page(caption_target, source, page_index, clip=original_caption)
+        legend_y = 277
         legends = []
         omitted = 0
 
@@ -212,7 +226,8 @@ def main():
             text(page, (x+22, y, x+237, y+13), label, 7)
         notes = [
             "Computed: Burke 2012 N2 bath-gas kinetics; 100 atm; Tu=298 K assumed; "+a.transport+" transport.",
-            "3*: partial-T control, not verified paper 3*. Cases 3-5: partial-H. Conductivity provisional.",
+            "3*: partial-T control, not verified paper 3*. Cases 3-5: total-H equation; partial-molar diffusion enthalpies.",
+            "Conductivity remains provisional.",
             "Grid refinement is recorded; agreement with the paper is not yet accepted.",
         ]
         if number == 2:
@@ -224,8 +239,8 @@ def main():
             notes.append("Case 5 shown; x translated to the paper's 1500 K crossing; vector tick scale verified.")
         if omitted:
             notes.append(f"{omitted} samples outside the original axes are omitted, never clipped to the boundary.")
-        text(page, (18, 300, 482, 366), "\n".join(notes), 7)
-        text(page, (18, 371, 482, 386), "Source: Liang et al., Proc. Combust. Inst. 37 (2019) 1733-1739, Fig. "+str(number), 7)
+        text(page, (18, 332, 482, 396), "\n".join(notes), 7)
+        text(page, (18, 405, 482, 420), "Source: Liang et al., Proc. Combust. Inst. 37 (2019) 1733-1739, Fig. "+str(number), 7)
         page.get_pixmap(matrix=fitz.Matrix(3, 3)).save(a.output/f"figure-{number}.png")
         clipped[str(number)] = omitted
     report.save(a.output/"liang-hydrogen-figures-2-7.pdf")
@@ -233,6 +248,7 @@ def main():
               "transport_variant": a.transport,
               "figure_7_alignment": "T=1500 K; translation only; finite paper window",
               "figure_7_calibration": FIGURE7,
+              "original_caption_rectangles_points": CAPTIONS,
               "input_sha256": {name: hashlib.sha256(getattr(a, name).read_bytes()).hexdigest()
                                for name in ["manifest", "critical", "species"]},
               "input_paths": {name: str(getattr(a, name)) for name in ["manifest", "critical", "species"]},

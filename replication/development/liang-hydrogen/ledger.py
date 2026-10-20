@@ -3,6 +3,7 @@ import argparse
 import csv
 import hashlib
 import json
+import re
 from pathlib import Path
 
 BUILDS = {
@@ -19,6 +20,37 @@ BUILDS = {
 
 def digest(path):
     return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def identity(directory, row, revision):
+    """Prefer observed immutable job records; allow only named historical pins."""
+    if row.get("source", revision) != revision:
+        raise ValueError(f"Source declaration differs from observed job {row['job']}")
+    parent = directory.parent
+    build_path, binary_path = parent/"build-path.txt", parent/"executable.sha256"
+    if build_path.exists() or binary_path.exists():
+        if not (build_path.is_file() and binary_path.is_file()):
+            raise ValueError(f"Incomplete observed build identity for job {row['job']}")
+        build = build_path.read_text().strip().rsplit("/", 1)[-1]
+        fields = binary_path.read_text().split()
+        if len(fields) != 2:
+            raise ValueError(f"Malformed executable hash record for job {row['job']}")
+        binary = fields[0]
+        if not build.isdigit() or not re.fullmatch(r"[0-9a-f]{64}", binary):
+            raise ValueError(f"Malformed build identity for job {row['job']}")
+        if int(row.get("build", build)) != int(build):
+            raise ValueError(f"Build declaration differs from observed job {row['job']}")
+        return {"basis": "observed-job-records", "job": int(build),
+                "binary_sha256": binary,
+                "record_sha256": {name: digest(parent/name) for name in (
+                    "build-path.txt", "executable.sha256", "source-revision.txt",
+                    "input-sha256.txt", "guess-sha256.txt", "command.txt")
+                    if (parent/name).is_file()}}
+    if revision not in BUILDS:
+        raise ValueError(f"No observed identity or registered historical source: {revision}")
+    if int(row.get("build", BUILDS[revision]["job"])) != BUILDS[revision]["job"]:
+        raise ValueError(f"Build declaration differs from historical registry for job {row['job']}")
+    return {"basis": "historical-source-registry", **BUILDS[revision]}
 
 
 def main():
@@ -45,12 +77,17 @@ def main():
             raise ValueError(f"Job {row['job']} lacks a refinement comparison.")
         source_path = directory.parent/"source-revision.txt"
         revision = source_path.read_text().strip()
-        if revision not in BUILDS:
-            raise ValueError(f"Unregistered historical build source: {revision}")
         record = {k: row[k] for k in ("job", "case", "phi", "transport")}
+        configuration = (directory/"configuration.txt").read_text()
+        observed_variant = next((line.split(maxsplit=1)[1] for line in
+                                 configuration.splitlines() if line.startswith("model_variant ")),
+                                "baseline")
+        if row.get("variant", observed_variant) != observed_variant:
+            raise ValueError(f"Variant declaration differs from job {row['job']}")
         record.update(
+            variant=observed_variant,
             source_revision=revision,
-            build_registry_association=BUILDS[revision],
+            build_identity=identity(directory, row, revision),
             snapshot_result=relative,
             final={k: float(v) for k, v in levels[-1].items() if k != "case"},
             last_speed_relative_change=abs(
@@ -65,11 +102,12 @@ def main():
             raise ValueError(f"Equivalence-ratio mismatch in job {row['job']}.")
         result.append(record)
     document = {
-        "schema": "liang-hydrogen-completed-ledger-v1",
+        "schema": "liang-hydrogen-completed-ledger-v2",
         "manifest_sha256": digest(args.manifest),
+        "script_sha256": digest(Path(__file__)),
         "build_identity_basis": (
-            "Historical source-to-build registry association; original jobs lack "
-            "direct build-path records. Result files and source-revision were observed."
+            "Each run declares observed job records or a named historical "
+            "source-to-build registry association. No identity is inferred from current HEAD."
         ),
         "scientific_acceptance": False,
         "completed": len(result),
