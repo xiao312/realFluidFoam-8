@@ -134,5 +134,22 @@ The ideal pair completed with byte-identical saved profiles and speeds
 (7.45469524); the last refinement changes speed by 0.12175%. Audit124953754
 finds an upwind total-flux range of 2806.89 W/m2, 0.02156% of peak conduction,
 for both definitions. Their pure-minus-partial flux difference is exactly zero.
-These are numerical controls, not a nonideal replication result. The four
-nonideal total-enthalpy pilots remain running at this snapshot.
+These are numerical controls, not a nonideal replication result.
+
+21 October reconciliation: the four nonideal pilots also completed. Their
+collected profiles match the previously recorded hashes exactly, and fresh
+numerical screens pass. The earlier "running" status is superseded by the
+[completed evidence](liang-methane-legacy-energy-20261021.json).
+
+| Case and phi | Partial diffusion enthalpy, cm/s | Pure-species diffusion enthalpy, cm/s |
+| --- | ---: | ---: |
+| Case 3, 1.10 | 7.022453 | 7.019939 |
+| Case 5, 1.40 | 5.727907 | 5.725730 |
+
+Both Case 3 points pass the existing paper screen. Both Case 5 points fail:
+their errors are +1.509% and +1.471%, respectively. Switching the diffusion
+enthalpy changes the Case 5 speed by only −0.002177 cm/s. Thus this
+interpretation does not resolve the rich methane discrepancy.
+The two ideal profiles remain byte-identical.
+Historical build associations are explicit because these older job directories
+did not retain their executable hashes or build paths.

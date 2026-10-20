@@ -137,6 +137,9 @@ production CFD dependency or changes the no-Soret baseline.
 Its offline element-balance check additionally uses Cantera Python's pinned
 mechanism stoichiometry. It reports endpoint element changes and reconstructed
 conservative face fluxes from the same hashed snapshots, without a flame solve.
+Its native conservation audit consumes the shared conservative-flow exports
+and the observed methane job records. It shares elemental metadata with
+`element_balance.py`; it has no dependency on hydrogen-specific configuration.
 
 `development/fresh-start` consumes ideal-baseline initial-state generation,
 premixed-paper boundary finalization and flame-tracking anchors/checks. It reuses

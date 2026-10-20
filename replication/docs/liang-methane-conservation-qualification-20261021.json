@@ -1,0 +1,204 @@
+{
+  "source": "6c9cc9b7d5090a947c0f73ad8e2789c9c55110f1",
+  "build": 125102147,
+  "executable_sha256": "7cb1bd1cf59a7d116225e1c6fc41dcfa056ba3a339284eceac361cf1d1675cff",
+  "build_checks": {
+    "kernel-check.txt": "T=298 p=1000\nT=298 p=101325\nT=298 p=1.01325e+07\nT=500 p=1000\nT=500 p=101325\nT=500 p=1.01325e+07\nT=1000 p=1000\nT=1000 p=101325\nT=1000 p=1.01325e+07\nT=1800 p=1000\nT=1800 p=101325\nT=1800 p=1.01325e+07\nT=2500 p=1000\nT=2500 p=101325\nT=2500 p=1.01325e+07\nT=298 p=1000\nT=298 p=101325\nT=298 p=1.01325e+07\nT=500 p=1000\nT=500 p=101325\nT=500 p=1.01325e+07\nT=1000 p=1000\nT=1000 p=101325\nT=1000 p=1.01325e+07\nT=1800 p=1000\nT=1800 p=101325\nT=1800 p=1.01325e+07\nT=2500 p=1000\nT=2500 p=101325\nT=2500 p=1.01325e+07\nT=298 p=1000\nT=298 p=101325\nT=298 p=1.01325e+07\nT=500 p=1000\nT=500 p=101325\nT=500 p=1.01325e+07\nT=1000 p=1000\nT=1000 p=101325\nT=1000 p=1.01325e+07\nT=1800 p=1000\nT=1800 p=101325\nT=1800 p=1.01325e+07\nT=2500 p=1000\nT=2500 p=101325\nT=2500 p=1.01325e+07\nSRK pressure, cp, partial enthalpy, volume, fugacity and Gibbs-Duhem checks passed",
+    "alpha-check.txt": "crossing_K=1727.51 enthalpy_integrability_residual_J_kmol=-5.39388e-11\ncrossing_K=1339.29 enthalpy_integrability_residual_J_kmol=4.44953e-11\ncrossing_K=1030.58 enthalpy_integrability_residual_J_kmol=8.42858e-12",
+    "takahashi-check.txt": "Pr=3 Tr=2 expected=0.941602 actual=0.941602",
+    "soret-check.txt": "manual_soret_binary_error 7.750188674645835e-16 selected_stage_and_native_flux_checks passed\nstates 16 coefficient_error 1.764650923490471e-15 pressure_error 8.987990513526485e-16 stock_error 2.966344847542915e-16 projection_error 1.638604428955437e-15 native_and_custom_flux_checks passed",
+    "conservative-check.txt": "PASS 16 residual fixtures; telescoping 1.11022e-16 uniform 1.73472e-17 distinguishing_nonuniform 0.05304 summed_species 4.30211e-16 partial_range 0 perturbation_locality 0"
+  },
+  "build_evidence_sha256": {
+    "source-revision.txt": "45fa509dd43ebc69ce4e5827e92a381edd2e72870ed9587e4be612c4ccef1188",
+    "sdk-path.txt": "89b07edc4ae3805836057cad6e183409dd3b1cf90fc03eb9aee3a7ea425c87d3",
+    "binary.sha256": "926278a254f81d7a8b3e672dfb581b4f076210a6da135a89c3f8b711432d85b0",
+    "kernel-check.txt": "0a6a164a4eba534d63f00cee36d0079b223c074f22d00cfe5cec2c913044508f",
+    "alpha-check.txt": "4c0a5511056a916cd0c2f43c99d3b6652c3bc9bf654721517c29b14ad48e5619",
+    "takahashi-check.txt": "c3f881797bd606d1276c3b4f308f81c3cc770db616197500105703c3ce0f3605",
+    "takahashi-legacy-control.txt": "693315fbab0e79ebe3f55c4238e719cf3441bcea5b8c568d455bb955bfaf9b04",
+    "alpha-legacy-control.txt": "956bb5e8517557dfaac2920a9872b34946020e42358b9639aab498b2faa05536",
+    "soret-check.txt": "9c4c8fa3e5b9fe0f5848ab2523fbbbe3e4a8fd5f02ccc894526602c7ada9b7d0",
+    "conservative-check.txt": "54b6a2de206c73c0adb0a38ea543d736c796a23b98a8760633f3ced79126fabd",
+    "compiler.txt": "0862052071eec9a502d6d6ff9f72f872d0c61897ff761c39819f12e132dcd370",
+    "compiler-flags.txt": "bf98a475672e0793aebb4e8b8881b6ee286d9124c937c981aad078eb797b99d4",
+    "dependencies.txt": "499d876a33670b402b465b222edbd68e20e5d67bbfaf0c52d2405f4d79edb955",
+    "build-passed.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "relocation": {
+    "numerical_expressions_unchanged": true,
+    "original_source": "b61a68aaaa35d6af77d160dac0c0f93e7f6229b5",
+    "shared_class_sha256": "dc653208df6b67cbcc783555947416b77d778324b4147382423d445a020057e5"
+  },
+  "invalid_option_combinations_rejected": 3,
+  "first_native_balance": {
+    "observation_sha256": "842ccc231f91ad5e50c56c3d04669b52ae0168bbf5a88acd9600d925248f499e",
+    "mechanism_sha256": "c6e72c25dbf5af75a16b71042e071aed15ca4fd4a8a854fd8720a820ce1986c6",
+    "script_sha256": "82bc75914723df215c978a54f1320d5047f1f6f50698c9af001d3af4d2b498e2",
+    "runs": [
+      {
+        "job": 125102175,
+        "stage": 1,
+        "phi": 1.4,
+        "source": "6c9cc9b7d5090a947c0f73ad8e2789c9c55110f1",
+        "build": 125102147,
+        "executable_sha256": "7cb1bd1cf59a7d116225e1c6fc41dcfa056ba3a339284eceac361cf1d1675cff",
+        "speed_cm_s": 6.108900522625101,
+        "Tb_K": 1980.6417567888363,
+        "identity_errors": {
+          "face_mass_average": 0.0,
+          "species_flux_definition": 6.533187341092248e-17,
+          "species_residual_identity": 1.556475902654951e-21,
+          "species_integral_identity": 1.9599562023276744e-16,
+          "energy_advective_definition": 0.0,
+          "energy_conductive_definition": 0.0,
+          "energy_species_definition": 9.54091735633352e-16,
+          "energy_decomposition": 1.9081834712667038e-16,
+          "energy_residual_identity": 1.5265467770098053e-15,
+          "energy_integral_identity": 9.540917356333519e-17,
+          "chemical_mass_balance": 1.46164293885799e-15,
+          "chemical_element_balance": 1.0162858791330605e-15
+        },
+        "balance_metrics": {
+          "elemental_face_span_relative": {
+            "C": 6.386533128141418e-07,
+            "H": 2.999671071115676e-06,
+            "O": 1.4521258737400893e-06,
+            "N": 4.736154736148908e-07
+          },
+          "inactive_element_face_span_over_massflow": 0.0,
+          "maximum_diffusion_mass_sum_over_massflow": 8.82166694637566e-13,
+          "feed_to_first_face_over_massflow": 2.336645300623842e-13,
+          "outlet_state_to_last_face_over_massflow": 2.847842494731475e-10,
+          "energy_flux_span_equivalent_K": 0.05440246206572429,
+          "maximum_species_residual_s_1": 0.019784870841452445,
+          "maximum_energy_residual_K_s": 2413.5200572675117
+        },
+        "checks": {
+          "face_mass_average": true,
+          "species_flux_definition": true,
+          "species_residual_identity": true,
+          "species_integral_identity": true,
+          "energy_advective_definition": true,
+          "energy_conductive_definition": true,
+          "energy_species_definition": true,
+          "energy_decomposition": true,
+          "energy_residual_identity": true,
+          "energy_integral_identity": true,
+          "chemical_mass_balance": true,
+          "chemical_element_balance": true,
+          "numerical_screen": true,
+          "elemental_flux": false,
+          "inactive_elements": true,
+          "diffusion_mass": true,
+          "inlet_flux": true,
+          "outlet_flux": true,
+          "energy_flux": false
+        },
+        "failed_checks": [
+          "elemental_flux",
+          "energy_flux"
+        ],
+        "output_sha256": {
+          "balance-nodes.csv": "6366848126cc88571d68fe76969d510e801a475573b1819259997910d1bd7786",
+          "balance-faces.csv": "71f4b42d6e3d9469165a13153cb5fd48c51887351c50ed3834d36217cb28cde1",
+          "profile.csv": "e5b57c267bf6fb99df041ce0285b97e81fe554136c155e64adbafcd1443d13ca"
+        }
+      }
+    ],
+    "conservation_qualified": false,
+    "scientific_acceptance": false,
+    "limits": [
+      "Boundary residual placeholders are excluded",
+      "Native field identities and conservation do not identify Liang's implementation",
+      "No saved field is normalized or altered",
+      "Numerical thresholds are retained from the hydrogen audit"
+    ]
+  },
+  "negative_controls": {
+    "result": "PASS",
+    "job": 125102175,
+    "source_identity_errors": {
+      "face_mass_average": 0.0,
+      "species_flux_definition": 6.533187341092248e-17,
+      "species_residual_identity": 1.556475902654951e-21,
+      "species_integral_identity": 1.9599562023276744e-16,
+      "energy_advective_definition": 0.0,
+      "energy_conductive_definition": 0.0,
+      "energy_species_definition": 9.54091735633352e-16,
+      "energy_decomposition": 1.9081834712667038e-16,
+      "energy_residual_identity": 1.5265467770098053e-15,
+      "energy_integral_identity": 9.540917356333519e-17,
+      "chemical_mass_balance": 1.46164293885799e-15,
+      "chemical_element_balance": 1.0162858791330605e-15
+    },
+    "original_failed_checks": [
+      "elemental_flux",
+      "energy_flux"
+    ],
+    "controls": {
+      "species": {
+        "field": "J_H2",
+        "perturbation": 1.397399322566449e-06,
+        "failed_checks": [
+          "species_flux_definition",
+          "energy_species_definition",
+          "elemental_flux",
+          "diffusion_mass",
+          "energy_flux"
+        ],
+        "identity_errors": {
+          "face_mass_average": 0.0,
+          "species_flux_definition": 2.055774236830693e-07,
+          "species_residual_identity": 1.556475902654951e-21,
+          "species_integral_identity": 1.9599562023276744e-16,
+          "energy_advective_definition": 0.0,
+          "energy_conductive_definition": 0.0,
+          "energy_species_definition": 3.1171305672674843e-06,
+          "energy_decomposition": 1.9081834712667038e-16,
+          "energy_residual_identity": 1.5265467770098053e-15,
+          "energy_integral_identity": 9.540917356333519e-17,
+          "chemical_mass_balance": 1.46164293885799e-15,
+          "chemical_element_balance": 1.0162858791330605e-15
+        }
+      },
+      "energy": {
+        "field": "H_total_W_m2",
+        "perturbation": 238.99058802237175,
+        "failed_checks": [
+          "energy_decomposition",
+          "energy_residual_identity",
+          "elemental_flux",
+          "energy_flux"
+        ],
+        "identity_errors": {
+          "face_mass_average": 0.0,
+          "species_flux_definition": 6.533187341092248e-17,
+          "species_residual_identity": 1.556475902654951e-21,
+          "species_integral_identity": 1.9599562023276744e-16,
+          "energy_advective_definition": 0.0,
+          "energy_conductive_definition": 0.0,
+          "energy_species_definition": 9.54091735633352e-16,
+          "energy_decomposition": 2.4483347783269986e-05,
+          "energy_residual_identity": 2.448334778355621e-05,
+          "energy_integral_identity": 9.540917356333519e-17,
+          "chemical_mass_balance": 1.46164293885799e-15,
+          "chemical_element_balance": 1.0162858791330605e-15
+        }
+      }
+    },
+    "script_sha256": "8ec0c7f05b7954170202c22253bfded3d7ebc0daf6781dd81cfbe011fb5ddcb7",
+    "audit_sha256": "82bc75914723df215c978a54f1320d5047f1f6f50698c9af001d3af4d2b498e2",
+    "scientific_acceptance": false
+  },
+  "inputs_sha256": {
+    "methane-conservative-first-balances.json": "ae01dff9c96dd6efa70423b237a59907cb65e82539026982b0d50ba89ee97ae4",
+    "test.json": "1e58230d6e75b79d1a5e25f01e2b0db34e5395d7b3a6a0e16a17f2e3e4274c4a"
+  },
+  "scientific_acceptance": false,
+  "limits": [
+    "Default-tolerance conservation failures are retained",
+    "Manufactured identities and corruption detection do not prove flame convergence",
+    "No mechanism or transport coefficient was changed"
+  ]
+}

@@ -20,6 +20,19 @@ manufactured residual fixtures, including variable mass flow and both directions
 Scientific checks additionally require native conservation and grid comparisons;
 passing this fixture does not establish agreement with Liang.
 
+`conservation.py plan|apply OBSERVATION BALANCE_SNAPSHOT MECHANISM OUTPUT.json`
+checks completed methane conservative controls. It verifies observed source,
+build, input and output identities before evaluating native residuals and fluxes.
+The numerical identities and limits match the hydrogen conservation audit.
+It uses local Cantera Python for elemental weights and NumPy for table checks.
+It retains failed checks; it does not normalize fields or change tolerances.
+Expected output identifies mass, element, energy and residual checks separately
+from the paper comparison. A modified face flux must fail the identity checks.
+Verify with `test_conservation.py OBSERVATION BALANCE_SNAPSHOT MECHANISM NEW_FIXTURES`.
+It copies one captured profile, injects separate species/energy flux errors,
+and requires their detection. Expected result: `PASS`, with any original
+physical-convergence failures retained.
+
 Plot input JSON can include `stage_labels`: five nonempty strings in stage order.
 Use explicit labels when a displayed curve changes model variants, such as the
 corrected Takahashi Table 2 coefficient. The plot manifest records these labels.

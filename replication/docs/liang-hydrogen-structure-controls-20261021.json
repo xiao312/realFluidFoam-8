@@ -1,7 +1,7 @@
 {
   "inputs_sha256": {
     "1-s2.0-S1540748918302530-main.pdf": "24163be0124e0fa6cd28ddb1d369b813e64e82bd7446e9f9218a340445aca6fe",
-    "structure-controls-20-manifest.json": "5703ae2ce14d5d469441101f503e3baeae3bf3b1516fc9dff6b413de9dec5af8",
+    "structure-controls-21-manifest.json": "239c0cb7c46e2c5341507cdda77ab4e57d4066162213a37a56b48d9231e1940c",
     "species.txt": "b093c29ac896bef71f36f5fbfc1f799bdc200f259efcf9b383138076253c3346",
     "figure7-calibration.json": "3d82a99ecdcf2f018d9ae1b14a5c4cddc8ba470adc7f0dbd99f837b7fc77b463",
     "compare_structure.py": "e487bc283d8c7a1960fa5bdd594b0b7080d93718de68672c823243e92048475b",
@@ -1648,6 +1648,81 @@
         "H2O2_FWHM_um": true
       },
       "finite_window_temperature_difference_K": 17.17273997188795
+    },
+    {
+      "job": 125100455,
+      "case": "5",
+      "label": "Case 5; soret-baseline; grid 1; job 125100455",
+      "variant": "soret-baseline",
+      "source": "31694902ffebc63222959adb2d95751c5ea3a165",
+      "configuration": {
+        "case": "5",
+        "phi": "1",
+        "pressure_Pa": "10132500",
+        "Tu_K": "298",
+        "width_m": "0.01",
+        "kinetics": "Burke2012-N2-pressure",
+        "collider_concentration": "pressure-based",
+        "transport": "author-pair-count 10",
+        "model_variant": "soret-baseline",
+        "alpha": "original-Soave",
+        "flux_correction": "left-node",
+        "grid_factor": "1",
+        "initial_grid_points": "3979",
+        "steady_rtol": "1e-07",
+        "steady_atol": "1e-13",
+        "output_significant_digits": "17",
+        "conductivity": "dense-increment-diagnostic",
+        "Takahashi": "bounded-Table2",
+        "Soret": "cantera-3.2",
+        "thermal_collision_pair_count": "0",
+        "species_discretization": "stock-upwind",
+        "energy": "legacy-total-enthalpy"
+      },
+      "speed_cm_s": 39.92175437465802,
+      "diagnostics": {
+        "points": 3980,
+        "min_temperature_K": 298.0,
+        "max_temperature_K": 2471.530599803656,
+        "max_species_sum_error": 2.880806704297356e-12,
+        "minimum_mass_fraction": -1.2262863636153934e-14,
+        "max_relative_massflux_change": 3.157030192824095e-12,
+        "inlet_outlet_enthalpy_difference_J_kg": -2.0475581468872406
+      },
+      "metrics": {
+        "T_left_K": 298.0,
+        "T_right_K": 2471.5305997999444,
+        "x1500_absolute_um": 3601.3976252337784,
+        "width_T500_T2000_um": 4.827768487964022,
+        "x_T500_relative_um": -3.2638136351902176,
+        "x_T1000_relative_um": -1.2643419676842313,
+        "x_T2000_relative_um": 1.5639548527738043,
+        "x_T2300_relative_um": 4.237839382755283,
+        "HO2_peak_X": 0.001267966082346564,
+        "HO2_peak_relative_um": 0.03059742247160102,
+        "HO2_peak_T_K": 1512.4778467800095,
+        "HO2_FWHM_um": 2.4384072719999494,
+        "H2O2_peak_X": 0.0008786595872078687,
+        "H2O2_peak_relative_um": -0.6194269915913537,
+        "H2O2_peak_T_K": 1244.7842585260785,
+        "H2O2_FWHM_um": 2.4166042191454835,
+        "T_at_paper_right_K": 2455.205938585309
+      },
+      "sha256": {
+        "profile.csv": "9fd132baea73019e3ebea8991692d7436210e17da44cf9348a35b6946e895213",
+        "refinement.csv": "7ec64c00547f0ca0488b19787ddee46d414b746e5ec95cd1af897a60d34aa6d6",
+        "configuration.txt": "272a44ae0d454a24edaa337699ab474d29786724dd14bc4f2f9278ab0b8512da"
+      },
+      "inside_graphical_metric_bounds": {
+        "width_T500_T2000_um": true,
+        "HO2_peak_X": true,
+        "HO2_peak_relative_um": true,
+        "HO2_FWHM_um": true,
+        "H2O2_peak_X": true,
+        "H2O2_peak_relative_um": true,
+        "H2O2_FWHM_um": true
+      },
+      "finite_window_temperature_difference_K": 3.130386164256379
     }
   ],
   "scientific_acceptance": false,
@@ -1660,8 +1735,8 @@
   ],
   "outputs_sha256": {
     "raw-vector-points.csv": "2dd20f70dad794a446731f965cd9e8921a5a6c9ca811c1db4d2ef4c9674af0d2",
-    "aligned-profiles.csv": "19b532a4f07798622b57eaa9e3cb0ef97dfd79b9bad2152d519ed7a5952f57a6",
-    "species-at-temperature.csv": "5de8c8d6901ed29d20e54a658fcef38c87ab6fc8bc7dd432c29df38a33fe7351",
-    "metrics.csv": "ec6eca44d496c17cc8def0b0518cca91c8ccc1c84444261b1c7b8845f7a2c342"
+    "aligned-profiles.csv": "ffbea77269b22d2e1be954e96fed913e3d93f301ed96da05ca960f07bafe0395",
+    "species-at-temperature.csv": "48d38f889c9e03cd52b1e54945aa1845176f67dc2ca3813b7016e54117f52e42",
+    "metrics.csv": "107444a526ba057b2482d6d0e191b62b5fe5cbb4ba11d0fa52996a0f2ea63cce"
   }
 }

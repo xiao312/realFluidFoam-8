@@ -4,6 +4,11 @@ This directory owns environment recipes, replication inputs, and result summarie
 for Nguyen's 2022 library and 2025 solver papers. The first scientific stages are
 properties, counterflow flames, and premixed flame speed. No result is accepted yet.
 
+The current Liang Figures 1–8 work is indexed in the
+[21 October qualification report](docs/liang-overnight-checkpoint-20261021.md).
+Extended Cantera provides the steady 1D controls. Unresolved scientific
+comparisons still prevent release of the conditional OpenFOAM campaign.
+
 Solver iteration now uses [development rules](development/README.md) and the
 single `develop/reacting` integration branch, with independent `draft/*` branches.
 The current adaptive continuations are recorded in the

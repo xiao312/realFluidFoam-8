@@ -578,7 +578,7 @@
   "scientific_acceptance": false,
   "limits": [
     "Discrete controls do not replace the full baseline curves",
-    "Case 4/5 rich Soret exports retain explicit 16-digit reconstruction flags",
+    "All eight rich Soret points now use 17-digit exports passing unchanged native checks",
     "Conservative controls passed all predeclared native balance checks",
     "Thermal diffusion and rich-hydrogen conductivity remain unidentified paper settings"
   ]

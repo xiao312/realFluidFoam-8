@@ -1,0 +1,232 @@
+{
+  "ledger": {
+    "schema": "liang-hydrogen-completed-ledger-v4",
+    "manifest_sha256": "6976ac9e675548ee0460a5075404463c7a6f63d87b5af77ddfee6f2ccee6c9c4",
+    "script_sha256": "ff75ef02231abfb6dbd37603612e9c096b801d22ea44a2db952c7eee40425994",
+    "build_identity_basis": "Each run declares observed job records or a named historical source-to-build registry association. No identity is inferred from current HEAD.",
+    "scientific_acceptance": false,
+    "completed": 1,
+    "runs": [
+      {
+        "job": 125100455,
+        "case": "5",
+        "phi": 1.0,
+        "transport": "pairs",
+        "variant": "soret-baseline",
+        "configuration": {
+          "case": "5",
+          "phi": "1",
+          "pressure_Pa": "10132500",
+          "Tu_K": "298",
+          "width_m": "0.01",
+          "kinetics": "Burke2012-N2-pressure",
+          "collider_concentration": "pressure-based",
+          "transport": "author-pair-count 10",
+          "model_variant": "soret-baseline",
+          "alpha": "original-Soave",
+          "flux_correction": "left-node",
+          "grid_factor": "1",
+          "initial_grid_points": "3979",
+          "steady_rtol": "1e-07",
+          "steady_atol": "1e-13",
+          "output_significant_digits": "17",
+          "conductivity": "dense-increment-diagnostic",
+          "Takahashi": "bounded-Table2",
+          "Soret": "cantera-3.2",
+          "thermal_collision_pair_count": "0",
+          "species_discretization": "stock-upwind",
+          "energy": "legacy-total-enthalpy"
+        },
+        "source_revision": "31694902ffebc63222959adb2d95751c5ea3a165",
+        "build_identity": {
+          "basis": "observed-job-records",
+          "job": 125099135,
+          "binary_sha256": "dcc81cba72e91f1b5003081b88696847ac5241924485f3ad06c625cea1df73f3",
+          "record_sha256": {
+            "build-path.txt": "bf9cfaa977e9892d3a7cfa0f85e0738f8c817385634c6f4bc630f64af0496da7",
+            "executable.sha256": "25959ff7c5cefb5e4eed97bdad17a96587e3147851713ccc73a704fdaa13396d",
+            "source-revision.txt": "0506eea96323d17d580b2d1a14a730e51f26669bb4d1f8346861fb60d3def9b6",
+            "input-sha256.txt": "3243c9e4edbeaee0227b15e77081c1e98aade088e145671b2f7e598a8228e74e",
+            "guess-sha256.txt": "3e62ec366bd0743149da5d4544be0dd8b99db5bc730d66a181b534b41c129884",
+            "command.txt": "fe1e361e425b1bc09f59f11f1a5a551c2b83c5453515eaef95bd419d65d656bc"
+          }
+        },
+        "snapshot_result": "state/liang-hydrogen-20261020/snapshot-hydrogen-tight-case5-native/jobs/125100455/result",
+        "final": {
+          "phi": 1.0,
+          "slope": 0.00375,
+          "curve": 0.00625,
+          "points": 3980.0,
+          "speed_cm_s": 39.92175437465802,
+          "Tb_K": 2471.530599799944,
+          "rhou_kg_m3": 83.12873257157612,
+          "massflux_kg_m2s": 33.18644843199096
+        },
+        "last_speed_relative_change": 3.791736835623283e-08,
+        "sha256": {
+          "configuration.txt": "272a44ae0d454a24edaa337699ab474d29786724dd14bc4f2f9278ab0b8512da",
+          "refinement.csv": "7ec64c00547f0ca0488b19787ddee46d414b746e5ec95cd1af897a60d34aa6d6",
+          "profile.csv": "9fd132baea73019e3ebea8991692d7436210e17da44cf9348a35b6946e895213",
+          "property-checks.csv": "ece59becf5238725b7ac25940a176e57ff2e54909ac19f61aea0bf6221c382a7",
+          "transport.csv": "27e611f6264364e65436187ca9d1bcc6517847c865ce4e348a282bfc1d9cfb9a",
+          "callbacks.txt": "0212f587b60c1fbe17ebd897d06533143ef729294efa74fbb5d4153977afe7a1",
+          "soret-flux.csv": "7d4a9ecf0ca8bcf6005e8563442693c5d3c8135551c908bc5f9659370e558688"
+        }
+      }
+    ]
+  },
+  "roundtrip": {
+    "manifest_sha256": "6976ac9e675548ee0460a5075404463c7a6f63d87b5af77ddfee6f2ccee6c9c4",
+    "script_sha256": "df17f40266712e4b59596ef0cab5c11b616ad5f9ac4ac35a0ef7bdde1d99ca79",
+    "export_precisions": [
+      17
+    ],
+    "runs": [
+      {
+        "job": 125100455,
+        "case": "5",
+        "phi": 1.0,
+        "variant": "soret-baseline",
+        "decimal_significant_digits": 17,
+        "strict_native_residuals": {
+          "decomposition": 0.0,
+          "thermal_definition": 1.3048688103992663e-17,
+          "total_mass_closure": 4.82038111593645e-13,
+          "thermal_mass_closure": 2.4103536665695245e-13,
+          "coefficient_projection": 1.3891362132292838e-12
+        },
+        "maximum_thermal_reconstruction_error_kg_m2_s": 0.0,
+        "maximum_decimal_bound_kg_m2_s": 1.0974084313968498e-09,
+        "maximum_error_to_local_bound": 0.0,
+        "entries_outside_decimal_bound": 0,
+        "maximum_face_species_sum_error": 2.880806704297356e-12,
+        "coefficient_peak_face": 2199,
+        "coefficient_sum_at_peak_kg_m_s": 3.554785521389485e-18,
+        "species_sum_error_at_coefficient_peak": -2.7715607586742408e-12,
+        "profile_sha256": "9fd132baea73019e3ebea8991692d7436210e17da44cf9348a35b6946e895213",
+        "flux_sha256": "7d4a9ecf0ca8bcf6005e8563442693c5d3c8135551c908bc5f9659370e558688"
+      }
+    ],
+    "scientific_acceptance": false,
+    "limits": [
+      "Arithmetic output bound only; no strict audit tolerance is changed",
+      "Cantera Flow1D supplies unnormalized face mass fractions",
+      "The native projection subtracts Y_k times the unprojected coefficient sum",
+      "Composition correlation alone does not independently reconstruct that sum"
+    ]
+  },
+  "strict_native_residuals": {
+    "decomposition": 0.0,
+    "thermal_definition": 1.3048688103992663e-17,
+    "total_mass_closure": 4.82038111593645e-13,
+    "thermal_mass_closure": 2.4103536665695245e-13,
+    "coefficient_projection": 1.3891362132292838e-12
+  },
+  "structure": {
+    "job": 125100455,
+    "case": "5",
+    "label": "Case 5; soret-baseline; grid 1; job 125100455",
+    "variant": "soret-baseline",
+    "source": "31694902ffebc63222959adb2d95751c5ea3a165",
+    "configuration": {
+      "case": "5",
+      "phi": "1",
+      "pressure_Pa": "10132500",
+      "Tu_K": "298",
+      "width_m": "0.01",
+      "kinetics": "Burke2012-N2-pressure",
+      "collider_concentration": "pressure-based",
+      "transport": "author-pair-count 10",
+      "model_variant": "soret-baseline",
+      "alpha": "original-Soave",
+      "flux_correction": "left-node",
+      "grid_factor": "1",
+      "initial_grid_points": "3979",
+      "steady_rtol": "1e-07",
+      "steady_atol": "1e-13",
+      "output_significant_digits": "17",
+      "conductivity": "dense-increment-diagnostic",
+      "Takahashi": "bounded-Table2",
+      "Soret": "cantera-3.2",
+      "thermal_collision_pair_count": "0",
+      "species_discretization": "stock-upwind",
+      "energy": "legacy-total-enthalpy"
+    },
+    "speed_cm_s": 39.92175437465802,
+    "diagnostics": {
+      "points": 3980,
+      "min_temperature_K": 298.0,
+      "max_temperature_K": 2471.530599803656,
+      "max_species_sum_error": 2.880806704297356e-12,
+      "minimum_mass_fraction": -1.2262863636153934e-14,
+      "max_relative_massflux_change": 3.157030192824095e-12,
+      "inlet_outlet_enthalpy_difference_J_kg": -2.0475581468872406
+    },
+    "metrics": {
+      "T_left_K": 298.0,
+      "T_right_K": 2471.5305997999444,
+      "x1500_absolute_um": 3601.3976252337784,
+      "width_T500_T2000_um": 4.827768487964022,
+      "x_T500_relative_um": -3.2638136351902176,
+      "x_T1000_relative_um": -1.2643419676842313,
+      "x_T2000_relative_um": 1.5639548527738043,
+      "x_T2300_relative_um": 4.237839382755283,
+      "HO2_peak_X": 0.001267966082346564,
+      "HO2_peak_relative_um": 0.03059742247160102,
+      "HO2_peak_T_K": 1512.4778467800095,
+      "HO2_FWHM_um": 2.4384072719999494,
+      "H2O2_peak_X": 0.0008786595872078687,
+      "H2O2_peak_relative_um": -0.6194269915913537,
+      "H2O2_peak_T_K": 1244.7842585260785,
+      "H2O2_FWHM_um": 2.4166042191454835,
+      "T_at_paper_right_K": 2455.205938585309
+    },
+    "sha256": {
+      "profile.csv": "9fd132baea73019e3ebea8991692d7436210e17da44cf9348a35b6946e895213",
+      "refinement.csv": "7ec64c00547f0ca0488b19787ddee46d414b746e5ec95cd1af897a60d34aa6d6",
+      "configuration.txt": "272a44ae0d454a24edaa337699ab474d29786724dd14bc4f2f9278ab0b8512da"
+    },
+    "inside_graphical_metric_bounds": {
+      "width_T500_T2000_um": true,
+      "HO2_peak_X": true,
+      "HO2_peak_relative_um": true,
+      "HO2_FWHM_um": true,
+      "H2O2_peak_X": true,
+      "H2O2_peak_relative_um": true,
+      "H2O2_FWHM_um": true
+    },
+    "finite_window_temperature_difference_K": 3.130386164256379
+  },
+  "scheduler": [
+    [
+      "125100454",
+      "TIMEOUT",
+      "01:00:03",
+      "0:0"
+    ],
+    [
+      "125100455",
+      "COMPLETED",
+      "00:58:58",
+      "0:0"
+    ],
+    [
+      "125100456",
+      "TIMEOUT",
+      "01:00:29",
+      "0:0"
+    ]
+  ],
+  "scientific_acceptance": false,
+  "inputs_sha256": {
+    "hydrogen-tight-case5-native-ledger.json": "497197261c20e6e7c41ae8520e9bb71039a6e252084625e52b0582b730c48232",
+    "hydrogen-tight-case5-native-roundtrip.json": "7bf3c7d214b97093e68bb46644bf6116ee0015ce342b8bb009ba6d25a32f810a",
+    "summary.json": "c87700e8ad583ff295c30c0f91977e639c739ef32f591d0b021fea2d840e27c7"
+  },
+  "limits": [
+    "The two complementary tight attempts timed out at their one-hour caps",
+    "No paired-triple sensitivity is inferred from an incomplete cohort",
+    "All seven finite-image width/peak/location bounds pass; tails remain discrepant",
+    "Paper case and thermal-diffusion setting remain unknown"
+  ]
+}

@@ -1,0 +1,601 @@
+{
+  "inputs_sha256": {
+    "methane-energy-observation-complete.json": "c16ac2f16a8594e24df4efac7adacc2484b5c0fdc22a5c87ea9c17c6eba5f948",
+    "soret-observation-final.json": "59393fdcce236e9509e288cfaa7036ecd34712e67e211a894eb6981f288046f6",
+    "summary.json": "ad3c85b3bcd82206d85bc635eab6abcf1314dc3e05d7082efed69a23694ee9e3",
+    "liang-figure8a-digitized-v2.json": "4beac428ce44b910b63aafbd464870211c8a3c48701b869d477e941bf503e115"
+  },
+  "observed_utc": "2026-10-20T22:40:29.938172+00:00",
+  "runs": [
+    {
+      "job": 125101520,
+      "stage": 1,
+      "phi": 1.4,
+      "source": "56e6bcba5cec8eeaf47a3ba366dec3b9ec26eb90",
+      "build": 125100350,
+      "variant": "total-enthalpy",
+      "executable_sha256": "876243a6f686e1e475de3f3a01233da6302ddc7bd87b6a9a65c34abc2079ea0d",
+      "scheduler": [
+        "COMPLETED",
+        "00:03:36",
+        "0:0"
+      ],
+      "screen": {
+        "stage": 1,
+        "phi": 1.4,
+        "speed_cm_s": 6.121253539501265,
+        "last_refinement_relative_change": 0.0019349351249265956,
+        "mass_flux_relative_range": 2.0238923945051657e-10,
+        "maximum_species_sum_error": 7.778733213115174e-11,
+        "minimum_mass_fraction": -1.6154452734120497e-13,
+        "points": 2263,
+        "scientific_acceptance": false,
+        "remaining": [
+          "domain sensitivity",
+          "initial-guess sensitivity",
+          "publication parameter uncertainty"
+        ]
+      },
+      "output_sha256": {
+        "profile.csv": "888ae609a56ddc43dabd408197cbbc2508fee2c386c8d95bfc7d38ffc7df54c0",
+        "refinement.csv": "9647a36f8aa592a19b83ae869ec5d55c9955b771cd68f85b7d29e304e4307413",
+        "property-checks.csv": "446317feefef116a5632be0fb0179cda8ee294dad216d4dee5c27339cf7ca085",
+        "flame.yaml": "5806518654dafe1c24096f1d61bc480ec3c17ebb927ae2f8c35a88a335440954"
+      },
+      "record_sha256": {
+        "source-revision.txt": "5e61814bfa97204d82bab6eaefbac4a350b342eb0eb64e30f904b3f78c1cdfdc",
+        "build-path.txt": "c2073fc08ec68ae6a7973ce89606a22b8091917cd45b4d613cbd34ba3a3a532e",
+        "command.txt": "7317dc248ee9a41e3651c080b999478b16af1f83c7b02d99d21a6a7d55997728",
+        "input-sha256.txt": "8028512f5c42ef2163d94af5d7f2d8e342328d08c61d999d4ec9c41b9e2ac585",
+        "executable.sha256": "fcd738aaf3a5ea73c2700b067cf0cb76850b3e148f1671408da22cd4156f1822"
+      },
+      "comparison_job": 125085850,
+      "comparison_source": "c9c2c55b3db6b9b6f379026ad94ff4fdea17d34c",
+      "stock_speed_cm_s": 6.116619431452803,
+      "speed_change_cm_s": 0.004634108048461982,
+      "endpoints": {
+        "stock": {
+          "enthalpy_change_J_kg": -340.60494504868984,
+          "enthalpy_over_outlet_cp_K": -0.2172988301108064,
+          "outlet_temperature_K": 1980.562542476826
+        },
+        "total_enthalpy": {
+          "enthalpy_change_J_kg": -104.40068585780682,
+          "enthalpy_over_outlet_cp_K": -0.06660472451799744,
+          "outlet_temperature_K": 1980.7101946716791
+        }
+      },
+      "numerics": {
+        "steady_rtol": "1.0000000000000001e-05",
+        "steady_atol": "9.9999999999999994e-12",
+        "output_significant_digits": "17"
+      },
+      "paper_comparison": {
+        "criteria": "abs(error) <= max(0.05 cm/s, 1% reference) + digitization uncertainty",
+        "rows": [
+          {
+            "stage": 1,
+            "phi": 1.4,
+            "job": 125101520,
+            "computed_cm_s": 6.121253539501265,
+            "paper_cm_s": 6.116682100188833,
+            "image_uncertainty_cm_s": 0.04,
+            "error_cm_s": 0.004571439312432091,
+            "error_percent": 0.0747372388748299,
+            "limit_cm_s": 0.10116682100188834,
+            "within_screen": true
+          }
+        ],
+        "excluded": [],
+        "stages": {
+          "1": {
+            "points": 1,
+            "rms_cm_s": 0.004571439312432091,
+            "max_abs_cm_s": 0.004571439312432091,
+            "failed_points": 0
+          }
+        },
+        "scientific_acceptance": false
+      }
+    },
+    {
+      "job": 125101527,
+      "stage": 4,
+      "phi": 1.4,
+      "source": "56e6bcba5cec8eeaf47a3ba366dec3b9ec26eb90",
+      "build": 125100350,
+      "variant": "dense-increment,bounded-takahashi,pressure-chemistry,takahashi-table2,total-enthalpy",
+      "executable_sha256": "876243a6f686e1e475de3f3a01233da6302ddc7bd87b6a9a65c34abc2079ea0d",
+      "scheduler": [
+        "COMPLETED",
+        "00:11:32",
+        "0:0"
+      ],
+      "screen": {
+        "stage": 4,
+        "phi": 1.4,
+        "speed_cm_s": 5.771138948724215,
+        "last_refinement_relative_change": 0.001889905195743835,
+        "mass_flux_relative_range": 1.9217182091278252e-10,
+        "maximum_species_sum_error": 5.3141158140590505e-11,
+        "minimum_mass_fraction": -5.691181242763103e-13,
+        "points": 2195,
+        "scientific_acceptance": false,
+        "remaining": [
+          "domain sensitivity",
+          "initial-guess sensitivity",
+          "publication parameter uncertainty"
+        ]
+      },
+      "output_sha256": {
+        "profile.csv": "642a4c3d33f5696476e6f0fb16048dcf8fb9024a0426d50991f2e366df35c110",
+        "refinement.csv": "69fb01573417e247098038670ee6fd4b7a79c104f665de5c96cf8d385e3f1716",
+        "property-checks.csv": "ddba46b16162dee966dc1ce512e8bbec9036e5e66503275256ae2472370ccda3",
+        "flame.yaml": "357fc223bdf6b0bc984c96da922515ac9aff8adda74cf11d2e2664ad4036e785"
+      },
+      "record_sha256": {
+        "source-revision.txt": "5e61814bfa97204d82bab6eaefbac4a350b342eb0eb64e30f904b3f78c1cdfdc",
+        "build-path.txt": "c2073fc08ec68ae6a7973ce89606a22b8091917cd45b4d613cbd34ba3a3a532e",
+        "command.txt": "52f750e38eeb79c2f1ebb7b18572f3d9dcd1481afec506d9e32c84e98d9f9f4f",
+        "input-sha256.txt": "8028512f5c42ef2163d94af5d7f2d8e342328d08c61d999d4ec9c41b9e2ac585",
+        "executable.sha256": "fcd738aaf3a5ea73c2700b067cf0cb76850b3e148f1671408da22cd4156f1822"
+      },
+      "comparison_job": 125085918,
+      "comparison_source": "c9c2c55b3db6b9b6f379026ad94ff4fdea17d34c",
+      "stock_speed_cm_s": 5.807094458287362,
+      "speed_change_cm_s": -0.03595550956314675,
+      "endpoints": {
+        "stock": {
+          "enthalpy_change_J_kg": 3367.574938994774,
+          "enthalpy_over_outlet_cp_K": 2.152068945010689,
+          "outlet_temperature_K": 1961.05305415921
+        },
+        "total_enthalpy": {
+          "enthalpy_change_J_kg": -93.80305711465189,
+          "enthalpy_over_outlet_cp_K": -0.059954741312432155,
+          "outlet_temperature_K": 1958.9348538060801
+        }
+      },
+      "numerics": {
+        "steady_rtol": "1.0000000000000001e-05",
+        "steady_atol": "9.9999999999999994e-12",
+        "output_significant_digits": "17"
+      },
+      "paper_comparison": {
+        "criteria": "abs(error) <= max(0.05 cm/s, 1% reference) + digitization uncertainty",
+        "rows": [
+          {
+            "stage": 4,
+            "phi": 1.4,
+            "job": 125101527,
+            "computed_cm_s": 5.771138948724215,
+            "paper_cm_s": 5.795719156940164,
+            "image_uncertainty_cm_s": 0.03,
+            "error_cm_s": -0.02458020821594875,
+            "error_percent": -0.4241097187484463,
+            "limit_cm_s": 0.08795719156940164,
+            "within_screen": true
+          }
+        ],
+        "excluded": [],
+        "stages": {
+          "4": {
+            "points": 1,
+            "rms_cm_s": 0.02458020821594875,
+            "max_abs_cm_s": 0.02458020821594875,
+            "failed_points": 0
+          }
+        },
+        "scientific_acceptance": false
+      }
+    },
+    {
+      "job": 125101531,
+      "stage": 5,
+      "phi": 1.4,
+      "source": "56e6bcba5cec8eeaf47a3ba366dec3b9ec26eb90",
+      "build": 125100350,
+      "variant": "dense-increment,bounded-takahashi,pressure-chemistry,takahashi-table2,total-enthalpy",
+      "executable_sha256": "876243a6f686e1e475de3f3a01233da6302ddc7bd87b6a9a65c34abc2079ea0d",
+      "scheduler": [
+        "COMPLETED",
+        "00:16:02",
+        "0:0"
+      ],
+      "screen": {
+        "stage": 5,
+        "phi": 1.4,
+        "speed_cm_s": 5.727276284818818,
+        "last_refinement_relative_change": 0.001822936825612742,
+        "mass_flux_relative_range": 1.637983687921321e-10,
+        "maximum_species_sum_error": 7.268130541859819e-11,
+        "minimum_mass_fraction": -4.772299993506306e-13,
+        "points": 2181,
+        "scientific_acceptance": false,
+        "remaining": [
+          "domain sensitivity",
+          "initial-guess sensitivity",
+          "publication parameter uncertainty"
+        ]
+      },
+      "output_sha256": {
+        "profile.csv": "c19a3323e3c486161d70374721ffad8cfaa0367f702e82fc7275138314eb8ec7",
+        "refinement.csv": "2b30e2a4f82a5fa1257b3d600d91195c7fa81338603397f0ec60e0167bd75d1e",
+        "property-checks.csv": "7904e1b5f966dedfeb6188910740da67f8caf51270471657821265b51597a608",
+        "flame.yaml": "d282dbd07491e2c13b6b79413615f23749986f88e2f017303c319349dce345d6"
+      },
+      "record_sha256": {
+        "source-revision.txt": "5e61814bfa97204d82bab6eaefbac4a350b342eb0eb64e30f904b3f78c1cdfdc",
+        "build-path.txt": "c2073fc08ec68ae6a7973ce89606a22b8091917cd45b4d613cbd34ba3a3a532e",
+        "command.txt": "755112119fbcce742a0649d07b13c4e41351e1a658ea8a5fe49eabde08486954",
+        "input-sha256.txt": "8028512f5c42ef2163d94af5d7f2d8e342328d08c61d999d4ec9c41b9e2ac585",
+        "executable.sha256": "fcd738aaf3a5ea73c2700b067cf0cb76850b3e148f1671408da22cd4156f1822"
+      },
+      "comparison_job": 125085930,
+      "comparison_source": "c9c2c55b3db6b9b6f379026ad94ff4fdea17d34c",
+      "stock_speed_cm_s": 5.7623993647663,
+      "speed_change_cm_s": -0.03512307994748198,
+      "endpoints": {
+        "stock": {
+          "enthalpy_change_J_kg": 3320.0607672991464,
+          "enthalpy_over_outlet_cp_K": 2.1217419589536095,
+          "outlet_temperature_K": 1961.000237357661
+        },
+        "total_enthalpy": {
+          "enthalpy_change_J_kg": -90.80739090539282,
+          "enthalpy_over_outlet_cp_K": -0.05804062806515742,
+          "outlet_temperature_K": 1958.8999231952087
+        }
+      },
+      "numerics": {
+        "steady_rtol": "1.0000000000000001e-05",
+        "steady_atol": "9.9999999999999994e-12",
+        "output_significant_digits": "17"
+      },
+      "paper_comparison": {
+        "criteria": "abs(error) <= max(0.05 cm/s, 1% reference) + digitization uncertainty",
+        "rows": [
+          {
+            "stage": 5,
+            "phi": 1.4,
+            "job": 125101531,
+            "computed_cm_s": 5.727276284818818,
+            "paper_cm_s": 5.642738222985565,
+            "image_uncertainty_cm_s": 0.015,
+            "error_cm_s": 0.08453806183325341,
+            "error_percent": 1.4981744410699323,
+            "limit_cm_s": 0.07142738222985565,
+            "within_screen": false
+          }
+        ],
+        "excluded": [],
+        "stages": {
+          "5": {
+            "points": 1,
+            "rms_cm_s": 0.08453806183325341,
+            "max_abs_cm_s": 0.08453806183325341,
+            "failed_points": 1
+          }
+        },
+        "scientific_acceptance": false
+      }
+    }
+  ],
+  "byte_identical_components": {
+    "replication/development/cantera-liang/SrkPhase.h": "d95ab9e158e08afd3b3f53c3e8e35b2c6ed5e75846927977170734ee7112113f",
+    "replication/development/cantera-liang/TotalEnthalpyFlow.h": "9d33f621a0d43b5b20c47716377f71ff57ee5a9656c226101e2cadbbb192a151",
+    "replication/development/cantera-liang/TakahashiTable.h": "a9b8aa2ba77a5129ee42f13ee4ae432ca12ab2471ba3bd0f8654d202b1b6c066"
+  },
+  "frozen_flux_audit": {
+    "binary_sha256": "989a9810cf96e9ab99b65d50dd8eeaee2d943b9486266c4e7a2a91ee9e9fb3d0",
+    "manifest_sha256": "dc902e17c564f83221ce8121ea6e36b65d80668ac6a2b241f2e87e46fdf6be4f",
+    "audit_script_sha256": "fc07f8071e7a360b36cf3fb672c9eed1ae6cd5ef78f9f73fdc8ff1529b12ae0e",
+    "profiles": [
+      {
+        "profile_job": "124951843",
+        "stage": 1,
+        "variant": "total-enthalpy,fine-grid",
+        "pressure_atm": 100.0,
+        "profile_sha256": "abeff6fd22c76173d256b4a97fd40542e9de288a4e85788baf5874391da4a5e6",
+        "input_sha256": {
+          "manifest.json": "7ba62b3e9717675dbe15427398a0c3305a4b4bda92be107dbf04e83fde97782d",
+          "species.txt": "6374f6cb2c693997f1f2a1e6505c1579c62e9adc238555a2d4ba45edebca1b61",
+          "guess.csv": "43971b1852f5e93ca4edcbfaf90558b0837c650b2ab98c750d764f785b47ce87",
+          "ideal.yaml": "c6e72c25dbf5af75a16b71042e071aed15ca4fd4a8a854fd8720a820ce1986c6",
+          "srk.yaml": "9d2e7b8a245d38c5f8950e97ccb819402cecce87af91639e0457d9aee489e1f5"
+        },
+        "total_range_W_m2": 3524.9577760831453,
+        "endpoint_difference_W_m2": -2727.3965660040267,
+        "peak_conductive_W_m2": 13017734.94280651,
+        "range_over_peak_conduction": 0.00027078119131861774,
+        "pure_species_range_W_m2": 3524.9577760831453,
+        "maximum_pure_minus_partial_W_m2": 0.0,
+        "upwind_partial_range_W_m2": 2806.8913947879337,
+        "upwind_pure_range_W_m2": 2806.8913947879337,
+        "maximum_inert_minus_mass_corrected_sensible_W_m2": 10788.12781462972,
+        "maximum_mass_diffusion_sum_kg_m2s": 3.624424247056571e-12
+      },
+      {
+        "profile_job": "124951845",
+        "stage": 1,
+        "variant": "total-enthalpy,pure-species-flux,fine-grid",
+        "pressure_atm": 100.0,
+        "profile_sha256": "abeff6fd22c76173d256b4a97fd40542e9de288a4e85788baf5874391da4a5e6",
+        "input_sha256": {
+          "manifest.json": "7ba62b3e9717675dbe15427398a0c3305a4b4bda92be107dbf04e83fde97782d",
+          "species.txt": "6374f6cb2c693997f1f2a1e6505c1579c62e9adc238555a2d4ba45edebca1b61",
+          "guess.csv": "43971b1852f5e93ca4edcbfaf90558b0837c650b2ab98c750d764f785b47ce87",
+          "ideal.yaml": "c6e72c25dbf5af75a16b71042e071aed15ca4fd4a8a854fd8720a820ce1986c6",
+          "srk.yaml": "9d2e7b8a245d38c5f8950e97ccb819402cecce87af91639e0457d9aee489e1f5"
+        },
+        "total_range_W_m2": 3524.9577760831453,
+        "endpoint_difference_W_m2": -2727.3965660040267,
+        "peak_conductive_W_m2": 13017734.94280651,
+        "range_over_peak_conduction": 0.00027078119131861774,
+        "pure_species_range_W_m2": 3524.9577760831453,
+        "maximum_pure_minus_partial_W_m2": 0.0,
+        "upwind_partial_range_W_m2": 2806.8913947879337,
+        "upwind_pure_range_W_m2": 2806.8913947879337,
+        "maximum_inert_minus_mass_corrected_sensible_W_m2": 10788.12781462972,
+        "maximum_mass_diffusion_sum_kg_m2s": 3.624424247056571e-12
+      },
+      {
+        "profile_job": "124951846",
+        "stage": 3,
+        "variant": "pressure-chemistry,smoothed-alpha,total-enthalpy,fine-grid",
+        "pressure_atm": 100.0,
+        "profile_sha256": "87f4cbfee90541f2bf8d5b974bbcbc5843587b22213d55ec13437c16a434756a",
+        "input_sha256": {
+          "manifest.json": "7ba62b3e9717675dbe15427398a0c3305a4b4bda92be107dbf04e83fde97782d",
+          "species.txt": "6374f6cb2c693997f1f2a1e6505c1579c62e9adc238555a2d4ba45edebca1b61",
+          "guess.csv": "43971b1852f5e93ca4edcbfaf90558b0837c650b2ab98c750d764f785b47ce87",
+          "ideal.yaml": "c6e72c25dbf5af75a16b71042e071aed15ca4fd4a8a854fd8720a820ce1986c6",
+          "srk.yaml": "9d2e7b8a245d38c5f8950e97ccb819402cecce87af91639e0457d9aee489e1f5"
+        },
+        "total_range_W_m2": 2326.516289343126,
+        "endpoint_difference_W_m2": -1275.1964127272367,
+        "peak_conductive_W_m2": 12441652.40447101,
+        "range_over_peak_conduction": 0.00018699415589741708,
+        "pure_species_range_W_m2": 286030.9967881907,
+        "maximum_pure_minus_partial_W_m2": 284150.1207032409,
+        "upwind_partial_range_W_m2": 1788.5441481471062,
+        "upwind_pure_range_W_m2": 285636.22200879594,
+        "maximum_inert_minus_mass_corrected_sensible_W_m2": 9790.00083723255,
+        "maximum_mass_diffusion_sum_kg_m2s": 1.900254395026738e-12
+      },
+      {
+        "profile_job": "124951853",
+        "stage": 3,
+        "variant": "pressure-chemistry,smoothed-alpha,total-enthalpy,pure-species-flux,fine-grid",
+        "pressure_atm": 100.0,
+        "profile_sha256": "ce1d30b7588ab839fd915c55e96ac8ffae4cc69d8468a6bed75b93e35239f074",
+        "input_sha256": {
+          "manifest.json": "7ba62b3e9717675dbe15427398a0c3305a4b4bda92be107dbf04e83fde97782d",
+          "species.txt": "6374f6cb2c693997f1f2a1e6505c1579c62e9adc238555a2d4ba45edebca1b61",
+          "guess.csv": "43971b1852f5e93ca4edcbfaf90558b0837c650b2ab98c750d764f785b47ce87",
+          "ideal.yaml": "c6e72c25dbf5af75a16b71042e071aed15ca4fd4a8a854fd8720a820ce1986c6",
+          "srk.yaml": "9d2e7b8a245d38c5f8950e97ccb819402cecce87af91639e0457d9aee489e1f5"
+        },
+        "total_range_W_m2": 286807.0504394481,
+        "endpoint_difference_W_m2": -1154.6953657208942,
+        "peak_conductive_W_m2": 12446851.50820319,
+        "range_over_peak_conduction": 0.023042538127045684,
+        "pure_species_range_W_m2": 2388.9458600990474,
+        "maximum_pure_minus_partial_W_m2": 286959.1659204487,
+        "upwind_partial_range_W_m2": 286815.24835341703,
+        "upwind_pure_range_W_m2": 1508.2589724319987,
+        "maximum_inert_minus_mass_corrected_sensible_W_m2": 9787.668430566275,
+        "maximum_mass_diffusion_sum_kg_m2s": 5.472331759286998e-11
+      },
+      {
+        "profile_job": "124951856",
+        "stage": 5,
+        "variant": "dense-increment,bounded-takahashi,pressure-chemistry,takahashi-table2,smoothed-alpha,total-enthalpy,fine-grid",
+        "pressure_atm": 100.0,
+        "profile_sha256": "910c47be02b7e3564aa9b857142b5416b8c5a61f3524f09adbc7381d715fef61",
+        "input_sha256": {
+          "manifest.json": "393420f51500f122f199b44727f94ef203d103dea33b1a1cf1ab2e44e81f290e",
+          "srk.yaml": "9d2e7b8a245d38c5f8950e97ccb819402cecce87af91639e0457d9aee489e1f5",
+          "guess.csv": "2e4667fb56bc50e665372f2b0a57ba965ec86685d1ff255fcd2b6518a5e966e5",
+          "ideal.yaml": "c6e72c25dbf5af75a16b71042e071aed15ca4fd4a8a854fd8720a820ce1986c6",
+          "species.txt": "6374f6cb2c693997f1f2a1e6505c1579c62e9adc238555a2d4ba45edebca1b61"
+        },
+        "total_range_W_m2": 2434.446794548072,
+        "endpoint_difference_W_m2": -1856.3152591870166,
+        "peak_conductive_W_m2": 9301929.662016941,
+        "range_over_peak_conduction": 0.00026171416931787566,
+        "pure_species_range_W_m2": 236599.0652295011,
+        "maximum_pure_minus_partial_W_m2": 234464.1890881106,
+        "upwind_partial_range_W_m2": 1873.4185485746711,
+        "upwind_pure_range_W_m2": 236376.2705913419,
+        "maximum_inert_minus_mass_corrected_sensible_W_m2": 10525.29484836021,
+        "maximum_mass_diffusion_sum_kg_m2s": 2.262207809316033e-12
+      },
+      {
+        "profile_job": "124951859",
+        "stage": 5,
+        "variant": "dense-increment,bounded-takahashi,pressure-chemistry,takahashi-table2,smoothed-alpha,total-enthalpy,fine-grid,pure-species-flux",
+        "pressure_atm": 100.0,
+        "profile_sha256": "368b987b0aa93aeefbb1b058a41ff753cc60136b3397d1e6b0e71d42aa704678",
+        "input_sha256": {
+          "manifest.json": "393420f51500f122f199b44727f94ef203d103dea33b1a1cf1ab2e44e81f290e",
+          "srk.yaml": "9d2e7b8a245d38c5f8950e97ccb819402cecce87af91639e0457d9aee489e1f5",
+          "guess.csv": "2e4667fb56bc50e665372f2b0a57ba965ec86685d1ff255fcd2b6518a5e966e5",
+          "ideal.yaml": "c6e72c25dbf5af75a16b71042e071aed15ca4fd4a8a854fd8720a820ce1986c6",
+          "species.txt": "6374f6cb2c693997f1f2a1e6505c1579c62e9adc238555a2d4ba45edebca1b61"
+        },
+        "total_range_W_m2": 416605.78602829576,
+        "endpoint_difference_W_m2": -1376.2416194397956,
+        "peak_conductive_W_m2": 9308326.044914672,
+        "range_over_peak_conduction": 0.04475625198538205,
+        "pure_species_range_W_m2": 180398.70622727973,
+        "maximum_pure_minus_partial_W_m2": 236619.6667006302,
+        "upwind_partial_range_W_m2": 416610.3257642393,
+        "upwind_pure_range_W_m2": 180303.2005547383,
+        "maximum_inert_minus_mass_corrected_sensible_W_m2": 10523.94514270876,
+        "maximum_mass_diffusion_sum_kg_m2s": 1.646750382921236e-10
+      },
+      {
+        "profile_job": "125085850",
+        "stage": 1,
+        "variant": "full",
+        "pressure_atm": 100,
+        "profile_sha256": "97a17e04e79c367d1d4118753432806c5cc66b12206994b9325a040172e6adce",
+        "input_sha256": {
+          "manifest.json": "393420f51500f122f199b44727f94ef203d103dea33b1a1cf1ab2e44e81f290e",
+          "srk.yaml": "9d2e7b8a245d38c5f8950e97ccb819402cecce87af91639e0457d9aee489e1f5",
+          "guess.csv": "2e4667fb56bc50e665372f2b0a57ba965ec86685d1ff255fcd2b6518a5e966e5",
+          "ideal.yaml": "c6e72c25dbf5af75a16b71042e071aed15ca4fd4a8a854fd8720a820ce1986c6",
+          "species.txt": "6374f6cb2c693997f1f2a1e6505c1579c62e9adc238555a2d4ba45edebca1b61"
+        },
+        "total_range_W_m2": 3754.5495852250606,
+        "endpoint_difference_W_m2": -2318.1656253030524,
+        "peak_conductive_W_m2": 9758261.551461529,
+        "range_over_peak_conduction": 0.0003847559901346084,
+        "pure_species_range_W_m2": 3754.5495852250606,
+        "maximum_pure_minus_partial_W_m2": 0.0,
+        "upwind_partial_range_W_m2": 3659.6466315370053,
+        "upwind_pure_range_W_m2": 3659.6466315370053,
+        "maximum_inert_minus_mass_corrected_sensible_W_m2": 8888.890065803716,
+        "maximum_mass_diffusion_sum_kg_m2s": 5.886819575914599e-12
+      },
+      {
+        "profile_job": "125085918",
+        "stage": 4,
+        "variant": "dense-increment,bounded-takahashi,pressure-chemistry,takahashi-table2",
+        "pressure_atm": 100,
+        "profile_sha256": "e17fca0f35c7b22ed671142e5410a3c8c19ed39ad768fef9f86b69bfdd57af84",
+        "input_sha256": {
+          "manifest.json": "393420f51500f122f199b44727f94ef203d103dea33b1a1cf1ab2e44e81f290e",
+          "srk.yaml": "9d2e7b8a245d38c5f8950e97ccb819402cecce87af91639e0457d9aee489e1f5",
+          "guess.csv": "2e4667fb56bc50e665372f2b0a57ba965ec86685d1ff255fcd2b6518a5e966e5",
+          "ideal.yaml": "c6e72c25dbf5af75a16b71042e071aed15ca4fd4a8a854fd8720a820ce1986c6",
+          "species.txt": "6374f6cb2c693997f1f2a1e6505c1579c62e9adc238555a2d4ba45edebca1b61"
+        },
+        "total_range_W_m2": 22443.40560003929,
+        "endpoint_difference_W_m2": 21877.902879483998,
+        "peak_conductive_W_m2": 9435889.152999578,
+        "range_over_peak_conduction": 0.002378515181359962,
+        "pure_species_range_W_m2": 229477.74728428712,
+        "maximum_pure_minus_partial_W_m2": 229120.5268496872,
+        "upwind_partial_range_W_m2": 22486.180527616758,
+        "upwind_pure_range_W_m2": 229465.34196552308,
+        "maximum_inert_minus_mass_corrected_sensible_W_m2": 8000.123002184933,
+        "maximum_mass_diffusion_sum_kg_m2s": 1.738823847277984e-12
+      },
+      {
+        "profile_job": "125085930",
+        "stage": 5,
+        "variant": "dense-increment,bounded-takahashi,pressure-chemistry,takahashi-table2",
+        "pressure_atm": 100,
+        "profile_sha256": "2daa38da8fc55cb11e9ea89b6d70d15ef314b4a52850349317904eaff93e27d8",
+        "input_sha256": {
+          "manifest.json": "393420f51500f122f199b44727f94ef203d103dea33b1a1cf1ab2e44e81f290e",
+          "srk.yaml": "9d2e7b8a245d38c5f8950e97ccb819402cecce87af91639e0457d9aee489e1f5",
+          "guess.csv": "2e4667fb56bc50e665372f2b0a57ba965ec86685d1ff255fcd2b6518a5e966e5",
+          "ideal.yaml": "c6e72c25dbf5af75a16b71042e071aed15ca4fd4a8a854fd8720a820ce1986c6",
+          "species.txt": "6374f6cb2c693997f1f2a1e6505c1579c62e9adc238555a2d4ba45edebca1b61"
+        },
+        "total_range_W_m2": 22459.874676996842,
+        "endpoint_difference_W_m2": 21403.209851983003,
+        "peak_conductive_W_m2": 9343762.551730238,
+        "range_over_peak_conduction": 0.0024037291779035867,
+        "pure_species_range_W_m2": 233603.8304148647,
+        "maximum_pure_minus_partial_W_m2": 233749.0965395755,
+        "upwind_partial_range_W_m2": 22367.265387308318,
+        "upwind_pure_range_W_m2": 233785.00151760085,
+        "maximum_inert_minus_mass_corrected_sensible_W_m2": 10605.68551683877,
+        "maximum_mass_diffusion_sum_kg_m2s": 4.120832242603643e-12
+      },
+      {
+        "profile_job": "125101520",
+        "stage": 1,
+        "variant": "total-enthalpy",
+        "pressure_atm": 100,
+        "profile_sha256": "888ae609a56ddc43dabd408197cbbc2508fee2c386c8d95bfc7d38ffc7df54c0",
+        "input_sha256": {
+          "manifest.json": "393420f51500f122f199b44727f94ef203d103dea33b1a1cf1ab2e44e81f290e",
+          "srk.yaml": "9d2e7b8a245d38c5f8950e97ccb819402cecce87af91639e0457d9aee489e1f5",
+          "guess.csv": "2e4667fb56bc50e665372f2b0a57ba965ec86685d1ff255fcd2b6518a5e966e5",
+          "ideal.yaml": "c6e72c25dbf5af75a16b71042e071aed15ca4fd4a8a854fd8720a820ce1986c6",
+          "species.txt": "6374f6cb2c693997f1f2a1e6505c1579c62e9adc238555a2d4ba45edebca1b61"
+        },
+        "total_range_W_m2": 1913.9207535879686,
+        "endpoint_difference_W_m2": -711.0921783451922,
+        "peak_conductive_W_m2": 9763893.967963967,
+        "range_over_peak_conduction": 0.00019602023125893,
+        "pure_species_range_W_m2": 1913.9207535879686,
+        "maximum_pure_minus_partial_W_m2": 0.0,
+        "upwind_partial_range_W_m2": 714.015521011781,
+        "upwind_pure_range_W_m2": 714.015521011781,
+        "maximum_inert_minus_mass_corrected_sensible_W_m2": 8899.20157480333,
+        "maximum_mass_diffusion_sum_kg_m2s": 2.106614541689438e-12
+      },
+      {
+        "profile_job": "125101527",
+        "stage": 4,
+        "variant": "dense-increment,bounded-takahashi,pressure-chemistry,takahashi-table2,total-enthalpy",
+        "pressure_atm": 100,
+        "profile_sha256": "642a4c3d33f5696476e6f0fb16048dcf8fb9024a0426d50991f2e366df35c110",
+        "input_sha256": {
+          "manifest.json": "393420f51500f122f199b44727f94ef203d103dea33b1a1cf1ab2e44e81f290e",
+          "srk.yaml": "9d2e7b8a245d38c5f8950e97ccb819402cecce87af91639e0457d9aee489e1f5",
+          "guess.csv": "2e4667fb56bc50e665372f2b0a57ba965ec86685d1ff255fcd2b6518a5e966e5",
+          "ideal.yaml": "c6e72c25dbf5af75a16b71042e071aed15ca4fd4a8a854fd8720a820ce1986c6",
+          "species.txt": "6374f6cb2c693997f1f2a1e6505c1579c62e9adc238555a2d4ba45edebca1b61"
+        },
+        "total_range_W_m2": 9476.510739568155,
+        "endpoint_difference_W_m2": -605.6310149258934,
+        "peak_conductive_W_m2": 9385840.977054996,
+        "range_over_peak_conduction": 0.0010096602704792051,
+        "pure_species_range_W_m2": 229327.97383941477,
+        "maximum_pure_minus_partial_W_m2": 228031.8490559054,
+        "upwind_partial_range_W_m2": 609.5068537029438,
+        "upwind_pure_range_W_m2": 229160.3103478602,
+        "maximum_inert_minus_mass_corrected_sensible_W_m2": 7909.325624329882,
+        "maximum_mass_diffusion_sum_kg_m2s": 1.423557791286646e-12
+      },
+      {
+        "profile_job": "125101531",
+        "stage": 5,
+        "variant": "dense-increment,bounded-takahashi,pressure-chemistry,takahashi-table2,total-enthalpy",
+        "pressure_atm": 100,
+        "profile_sha256": "c19a3323e3c486161d70374721ffad8cfaa0367f702e82fc7275138314eb8ec7",
+        "input_sha256": {
+          "manifest.json": "393420f51500f122f199b44727f94ef203d103dea33b1a1cf1ab2e44e81f290e",
+          "srk.yaml": "9d2e7b8a245d38c5f8950e97ccb819402cecce87af91639e0457d9aee489e1f5",
+          "guess.csv": "2e4667fb56bc50e665372f2b0a57ba965ec86685d1ff255fcd2b6518a5e966e5",
+          "ideal.yaml": "c6e72c25dbf5af75a16b71042e071aed15ca4fd4a8a854fd8720a820ce1986c6",
+          "species.txt": "6374f6cb2c693997f1f2a1e6505c1579c62e9adc238555a2d4ba45edebca1b61"
+        },
+        "total_range_W_m2": 9433.532954837196,
+        "endpoint_difference_W_m2": -581.8338050870225,
+        "peak_conductive_W_m2": 9295154.709778527,
+        "range_over_peak_conduction": 0.0010148871373720219,
+        "pure_species_range_W_m2": 233684.38737725513,
+        "maximum_pure_minus_partial_W_m2": 232621.5577446855,
+        "upwind_partial_range_W_m2": 584.4467140971683,
+        "upwind_pure_range_W_m2": 233733.2737313332,
+        "maximum_inert_minus_mass_corrected_sensible_W_m2": 10497.35694395834,
+        "maximum_mass_diffusion_sum_kg_m2s": 2.776307626178344e-12
+      }
+    ],
+    "scientific_acceptance": false
+  },
+  "audit_job": 125102007,
+  "audit_build": 125100350,
+  "audit_source": "56e6bcba5cec8eeaf47a3ba366dec3b9ec26eb90",
+  "case4_minus_case5_cm_s": {
+    "stock": 0.044695093521061935,
+    "total_enthalpy": 0.04386266390539717,
+    "paper": 0.15298093395459933
+  },
+  "scientific_acceptance": false,
+  "limits": [
+    "Original-alpha enthalpy jumps remain; no coefficient was fitted",
+    "Frozen midpoint/upwind flux reconstruction is not the exact native residual",
+    "Pure-species controls must be evaluated with their own selected enthalpy flux",
+    "Numerical screens do not establish model identity or paper acceptance",
+    "Legacy audit profiles retain their separately recorded build-identity limits"
+  ]
+}

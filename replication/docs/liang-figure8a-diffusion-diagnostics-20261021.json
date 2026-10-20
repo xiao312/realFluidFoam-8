@@ -1,6 +1,6 @@
 {
   "baseline_sha256": "79da2c0f01c053b619135ec1ee766aa9d75877230b938e1582e8a9d4225f0d9d",
-  "observed_utc": "2026-10-21T04:47:00.065414+08:00",
+  "observed_utc": "2026-10-20T22:40:29.938172+00:00",
   "diagnostics": [
     {
       "stage": 4,
@@ -584,6 +584,177 @@
           "publication parameter uncertainty"
         ]
       }
+    },
+    {
+      "stage": 1,
+      "phi": 1.4,
+      "speed_cm_s": 6.121253539501265,
+      "label": "Cantera: total enthalpy",
+      "job": "125101520",
+      "pressure_atm": 100,
+      "screen_passed": true,
+      "source": "56e6bcba5cec8eeaf47a3ba366dec3b9ec26eb90",
+      "variant": "total-enthalpy",
+      "profile_sha256": "888ae609a56ddc43dabd408197cbbc2508fee2c386c8d95bfc7d38ffc7df54c0",
+      "screen": {
+        "stage": 1,
+        "phi": 1.4,
+        "speed_cm_s": 6.121253539501265,
+        "last_refinement_relative_change": 0.0019349351249265956,
+        "mass_flux_relative_range": 2.0238923945051657e-10,
+        "maximum_species_sum_error": 7.778733213115174e-11,
+        "minimum_mass_fraction": -1.6154452734120497e-13,
+        "points": 2263,
+        "scientific_acceptance": false,
+        "remaining": [
+          "domain sensitivity",
+          "initial-guess sensitivity",
+          "publication parameter uncertainty"
+        ]
+      }
+    },
+    {
+      "stage": 4,
+      "phi": 1.4,
+      "speed_cm_s": 5.771138948724215,
+      "label": "Cantera: total enthalpy",
+      "job": "125101527",
+      "pressure_atm": 100,
+      "screen_passed": true,
+      "source": "56e6bcba5cec8eeaf47a3ba366dec3b9ec26eb90",
+      "variant": "dense-increment,bounded-takahashi,pressure-chemistry,takahashi-table2,total-enthalpy",
+      "profile_sha256": "642a4c3d33f5696476e6f0fb16048dcf8fb9024a0426d50991f2e366df35c110",
+      "screen": {
+        "stage": 4,
+        "phi": 1.4,
+        "speed_cm_s": 5.771138948724215,
+        "last_refinement_relative_change": 0.001889905195743835,
+        "mass_flux_relative_range": 1.9217182091278252e-10,
+        "maximum_species_sum_error": 5.3141158140590505e-11,
+        "minimum_mass_fraction": -5.691181242763103e-13,
+        "points": 2195,
+        "scientific_acceptance": false,
+        "remaining": [
+          "domain sensitivity",
+          "initial-guess sensitivity",
+          "publication parameter uncertainty"
+        ]
+      }
+    },
+    {
+      "stage": 5,
+      "phi": 1.4,
+      "speed_cm_s": 5.727276284818818,
+      "label": "Cantera: total enthalpy",
+      "job": "125101531",
+      "pressure_atm": 100,
+      "screen_passed": true,
+      "source": "56e6bcba5cec8eeaf47a3ba366dec3b9ec26eb90",
+      "variant": "dense-increment,bounded-takahashi,pressure-chemistry,takahashi-table2,total-enthalpy",
+      "profile_sha256": "c19a3323e3c486161d70374721ffad8cfaa0367f702e82fc7275138314eb8ec7",
+      "screen": {
+        "stage": 5,
+        "phi": 1.4,
+        "speed_cm_s": 5.727276284818818,
+        "last_refinement_relative_change": 0.001822936825612742,
+        "mass_flux_relative_range": 1.637983687921321e-10,
+        "maximum_species_sum_error": 7.268130541859819e-11,
+        "minimum_mass_fraction": -4.772299993506306e-13,
+        "points": 2181,
+        "scientific_acceptance": false,
+        "remaining": [
+          "domain sensitivity",
+          "initial-guess sensitivity",
+          "publication parameter uncertainty"
+        ]
+      }
+    },
+    {
+      "stage": 1,
+      "phi": 1.1,
+      "speed_cm_s": 7.365772955786756,
+      "label": "Cantera: Soret (3.2 formulation)",
+      "job": "125092075",
+      "pressure_atm": 100,
+      "screen_passed": true,
+      "source": "c9c2c55b3db6b9b6f379026ad94ff4fdea17d34c",
+      "variant": "soret",
+      "profile_sha256": "098b2c203385b62434f8bfbce2fbd13fcc0db0e9fcf944e1f2d1584ddfbacc3a",
+      "screen": {
+        "stage": 1,
+        "phi": 1.1,
+        "speed_cm_s": 7.365772955786756,
+        "last_refinement_relative_change": 4.1629921355590405e-05,
+        "mass_flux_relative_range": 1.303544795059633e-09,
+        "maximum_species_sum_error": 1.860633869199546e-10,
+        "minimum_mass_fraction": -6.480833705925371e-12,
+        "points": 2132,
+        "scientific_acceptance": false,
+        "remaining": [
+          "domain sensitivity",
+          "initial-guess sensitivity",
+          "publication parameter uncertainty"
+        ]
+      },
+      "native_flux_sha256": "69f2aa019a4690cad6d6b2cfa9bdf588ccf3da0ff8df4701ce284455bca8f15b"
+    },
+    {
+      "stage": 4,
+      "phi": 1.1,
+      "speed_cm_s": 7.039122881640285,
+      "label": "Cantera: Soret (3.2 formulation)",
+      "job": "125092091",
+      "pressure_atm": 100,
+      "screen_passed": true,
+      "source": "c9c2c55b3db6b9b6f379026ad94ff4fdea17d34c",
+      "variant": "dense-increment,bounded-takahashi,pressure-chemistry,takahashi-table2,soret",
+      "profile_sha256": "4e425bb7d57662edf2f5e45e38098aa0e23cbcee4d03f260b68e9dfe276d7fec",
+      "screen": {
+        "stage": 4,
+        "phi": 1.1,
+        "speed_cm_s": 7.039122881640285,
+        "last_refinement_relative_change": 8.061479886634082e-06,
+        "mass_flux_relative_range": 2.8752875021708926e-10,
+        "maximum_species_sum_error": 8.532130557625806e-11,
+        "minimum_mass_fraction": -2.379114153583529e-12,
+        "points": 2164,
+        "scientific_acceptance": false,
+        "remaining": [
+          "domain sensitivity",
+          "initial-guess sensitivity",
+          "publication parameter uncertainty"
+        ]
+      },
+      "native_flux_sha256": "4bf530f365398bb97ba1cef5271792a0f9f2ea3809dff8f0e7158e7e4deee0ff"
+    },
+    {
+      "stage": 5,
+      "phi": 1.1,
+      "speed_cm_s": 6.95485382833452,
+      "label": "Cantera: Soret (3.2 formulation)",
+      "job": "125092127",
+      "pressure_atm": 100,
+      "screen_passed": true,
+      "source": "c9c2c55b3db6b9b6f379026ad94ff4fdea17d34c",
+      "variant": "dense-increment,bounded-takahashi,pressure-chemistry,takahashi-table2,soret",
+      "profile_sha256": "2e0f371c856efc5bfc5ba0ce41a9c14e82882d21ee0876d1a0a9b316f065c9bc",
+      "screen": {
+        "stage": 5,
+        "phi": 1.1,
+        "speed_cm_s": 6.95485382833452,
+        "last_refinement_relative_change": 2.0071298015067462e-05,
+        "mass_flux_relative_range": 2.406613462250797e-10,
+        "maximum_species_sum_error": 1.2894374457061986e-10,
+        "minimum_mass_fraction": -3.254236464721004e-12,
+        "points": 2179,
+        "scientific_acceptance": false,
+        "remaining": [
+          "domain sensitivity",
+          "initial-guess sensitivity",
+          "publication parameter uncertainty"
+        ]
+      },
+      "native_flux_sha256": "03196ce406062ee2303724bd9173b8da46116c1e00e2a01ed18602f84345338b"
     }
   ],
   "independent_seed_check": {

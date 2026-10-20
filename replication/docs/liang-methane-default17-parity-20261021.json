@@ -1,0 +1,143 @@
+{
+  "inputs_sha256": {
+    "soret-phi110-seed-observation-complete.json": "15538dad84898c07a8ccd8cb459ba73702a3b07df104d0fe452c6d6ed1cdcad9",
+    "methane-default17-observation-complete.json": "bc6bfd51c761612c38b1ff5d84065cecc8cde6a04f224146c4b227b3cb38f6c3"
+  },
+  "runs": [
+    {
+      "job": 125100405,
+      "previous_job": 125097404,
+      "stage": 1,
+      "soret": false,
+      "byte_identical": {
+        "refinement.csv": true,
+        "property-checks.csv": true
+      },
+      "numerics": {
+        "steady_rtol": "1.0000000000000001e-05",
+        "steady_atol": "9.9999999999999994e-12",
+        "output_significant_digits": "17"
+      },
+      "maximum_profile_export_relative_difference": 5.814928578213828e-16,
+      "numerics_sha256": "9a9282096355411228ecb18e85a736e7523806c207f8c079ddfde08e14f3e44c"
+    },
+    {
+      "job": 125100406,
+      "previous_job": 125097409,
+      "stage": 1,
+      "soret": true,
+      "byte_identical": {
+        "refinement.csv": true,
+        "property-checks.csv": true
+      },
+      "numerics": {
+        "steady_rtol": "1.0000000000000001e-05",
+        "steady_atol": "9.9999999999999994e-12",
+        "output_significant_digits": "17"
+      },
+      "maximum_profile_export_relative_difference": 5.563328095542593e-16,
+      "numerics_sha256": "9a9282096355411228ecb18e85a736e7523806c207f8c079ddfde08e14f3e44c",
+      "native_residuals": {
+        "decomposition": 0.0,
+        "thermal_definition": 1.3307800117500377e-17,
+        "total_mass_closure": 2.6554206960445015e-12,
+        "thermal_mass_closure": 8.013854012865084e-13,
+        "coefficient_projection": 3.5299595863379835e-11
+      },
+      "strict_native_failure": null,
+      "native_flux_sha256": "5cb636bcf3a3d6d15ca1541a6a82293e95141e34e237b0c5f22e7b8fd223178b"
+    },
+    {
+      "job": 125100407,
+      "previous_job": 125097415,
+      "stage": 4,
+      "soret": false,
+      "byte_identical": {
+        "refinement.csv": true,
+        "property-checks.csv": true
+      },
+      "numerics": {
+        "steady_rtol": "1.0000000000000001e-05",
+        "steady_atol": "9.9999999999999994e-12",
+        "output_significant_digits": "17"
+      },
+      "maximum_profile_export_relative_difference": 5.548460612701854e-16,
+      "numerics_sha256": "9a9282096355411228ecb18e85a736e7523806c207f8c079ddfde08e14f3e44c"
+    },
+    {
+      "job": 125100409,
+      "previous_job": 125097419,
+      "stage": 4,
+      "soret": true,
+      "byte_identical": {
+        "refinement.csv": true,
+        "property-checks.csv": true
+      },
+      "numerics": {
+        "steady_rtol": "1.0000000000000001e-05",
+        "steady_atol": "9.9999999999999994e-12",
+        "output_significant_digits": "17"
+      },
+      "maximum_profile_export_relative_difference": 5.492040816190273e-16,
+      "numerics_sha256": "9a9282096355411228ecb18e85a736e7523806c207f8c079ddfde08e14f3e44c",
+      "native_residuals": {
+        "decomposition": 0.0,
+        "thermal_definition": 1.3874216723405814e-17,
+        "total_mass_closure": 4.9741516890780865e-12,
+        "thermal_mass_closure": 3.049892741412096e-12,
+        "coefficient_projection": 6.42614314859547e-11
+      },
+      "strict_native_failure": null,
+      "native_flux_sha256": "c8f87b19f9c5f3e870c5ed5f84e770a4b7313c229094f1b0b2120d7be8f3ced9"
+    },
+    {
+      "job": 125100411,
+      "previous_job": 125097423,
+      "stage": 5,
+      "soret": false,
+      "byte_identical": {
+        "refinement.csv": true,
+        "property-checks.csv": true
+      },
+      "numerics": {
+        "steady_rtol": "1.0000000000000001e-05",
+        "steady_atol": "9.9999999999999994e-12",
+        "output_significant_digits": "17"
+      },
+      "maximum_profile_export_relative_difference": 5.607572724736447e-16,
+      "numerics_sha256": "9a9282096355411228ecb18e85a736e7523806c207f8c079ddfde08e14f3e44c"
+    },
+    {
+      "job": 125100414,
+      "previous_job": 125097427,
+      "stage": 5,
+      "soret": true,
+      "byte_identical": {
+        "refinement.csv": true,
+        "property-checks.csv": true
+      },
+      "numerics": {
+        "steady_rtol": "1.0000000000000001e-05",
+        "steady_atol": "9.9999999999999994e-12",
+        "output_significant_digits": "17"
+      },
+      "maximum_profile_export_relative_difference": 5.877025580458393e-16,
+      "numerics_sha256": "9a9282096355411228ecb18e85a736e7523806c207f8c079ddfde08e14f3e44c",
+      "native_residuals": {
+        "decomposition": 0.0,
+        "thermal_definition": 1.3903042441435052e-17,
+        "total_mass_closure": 8.399485482177006e-12,
+        "thermal_mass_closure": 5.2402354602474815e-12,
+        "coefficient_projection": 1.2455838511653974e-10
+      },
+      "strict_native_failure": "Coefficient projection failed",
+      "native_flux_sha256": "ed5d8c3a9f2f84adadd3c4b72188b9981623f6094f4bbc9ff45ad6a3fa430125"
+    }
+  ],
+  "solution_parity": true,
+  "scientific_acceptance": false,
+  "limits": [
+    "Same inputs, guesses and default tolerances; only export precision changed",
+    "Native audit failures remain failures; no threshold was relaxed"
+  ]
+}

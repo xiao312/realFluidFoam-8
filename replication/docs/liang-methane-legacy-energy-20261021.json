@@ -1,0 +1,413 @@
+{
+  "recovered_from": "Completed profiles agree byte-for-byte with the 20 October 09:49 CST observation",
+  "input_sha256": {
+    "manifest.json": "70c2c6ce2e75173ce7f32740c666b1b650ea06b43cb9ab0a48d3ba11e92eed2f",
+    "liang-figure8a-digitized-v2.json": "4beac428ce44b910b63aafbd464870211c8a3c48701b869d477e941bf503e115"
+  },
+  "runs": [
+    {
+      "job": 124951843,
+      "stage": 1,
+      "phi": 1.1,
+      "source": "90da17c82470fe678708c03c2b2dbd4f1fe09f3b",
+      "variant": "total-enthalpy,fine-grid",
+      "pressure_atm": 100.0,
+      "build_registry_association": 124951545,
+      "build_identity_basis": "Historical submission registry; job has no build-path or executable receipt",
+      "screen": {
+        "stage": 1,
+        "phi": 1.1,
+        "speed_cm_s": 7.457552376786452,
+        "last_refinement_relative_change": 0.0012175331613293316,
+        "mass_flux_relative_range": 1.730531964572953e-10,
+        "maximum_species_sum_error": 1.1132050836692997e-10,
+        "minimum_mass_fraction": -3.65210022817606e-12,
+        "points": 4073,
+        "scientific_acceptance": false,
+        "remaining": [
+          "domain sensitivity",
+          "initial-guess sensitivity",
+          "publication parameter uncertainty"
+        ]
+      },
+      "screen_passed": true,
+      "profile_sha256": "abeff6fd22c76173d256b4a97fd40542e9de288a4e85788baf5874391da4a5e6",
+      "historical_screen_numeric_differences": {
+        "maximum_species_sum_error": -2.220446049250313e-16
+      },
+      "endpoint_enthalpy_change_J_kg": -324.9123432688066,
+      "endpoint_enthalpy_over_outlet_cp_K": -0.21172917046712203,
+      "paper_comparison": {
+        "criteria": "abs(error) <= max(0.05 cm/s, 1% reference) + digitization uncertainty",
+        "rows": [
+          {
+            "stage": 1,
+            "phi": 1.1,
+            "job": 124951843,
+            "computed_cm_s": 7.457552376786452,
+            "paper_cm_s": 7.476410006449377,
+            "image_uncertainty_cm_s": 0.04,
+            "error_cm_s": -0.018857629662924147,
+            "error_percent": -0.2522284043632838,
+            "limit_cm_s": 0.11476410006449378,
+            "within_screen": true
+          }
+        ],
+        "excluded": [],
+        "stages": {
+          "1": {
+            "points": 1,
+            "rms_cm_s": 0.018857629662924147,
+            "max_abs_cm_s": 0.018857629662924147,
+            "failed_points": 0
+          }
+        },
+        "scientific_acceptance": false
+      },
+      "input_hashes": {
+        "guess.csv": "43971b1852f5e93ca4edcbfaf90558b0837c650b2ab98c750d764f785b47ce87",
+        "ideal.yaml": "c6e72c25dbf5af75a16b71042e071aed15ca4fd4a8a854fd8720a820ce1986c6",
+        "manifest.json": "7ba62b3e9717675dbe15427398a0c3305a4b4bda92be107dbf04e83fde97782d",
+        "species.txt": "6374f6cb2c693997f1f2a1e6505c1579c62e9adc238555a2d4ba45edebca1b61",
+        "srk.yaml": "9d2e7b8a245d38c5f8950e97ccb819402cecce87af91639e0457d9aee489e1f5"
+      }
+    },
+    {
+      "job": 124951845,
+      "stage": 1,
+      "phi": 1.1,
+      "source": "90da17c82470fe678708c03c2b2dbd4f1fe09f3b",
+      "variant": "total-enthalpy,pure-species-flux,fine-grid",
+      "pressure_atm": 100.0,
+      "build_registry_association": 124951545,
+      "build_identity_basis": "Historical submission registry; job has no build-path or executable receipt",
+      "screen": {
+        "stage": 1,
+        "phi": 1.1,
+        "speed_cm_s": 7.457552376786452,
+        "last_refinement_relative_change": 0.0012175331613293316,
+        "mass_flux_relative_range": 1.730531964572953e-10,
+        "maximum_species_sum_error": 1.1132050836692997e-10,
+        "minimum_mass_fraction": -3.65210022817606e-12,
+        "points": 4073,
+        "scientific_acceptance": false,
+        "remaining": [
+          "domain sensitivity",
+          "initial-guess sensitivity",
+          "publication parameter uncertainty"
+        ]
+      },
+      "screen_passed": true,
+      "profile_sha256": "abeff6fd22c76173d256b4a97fd40542e9de288a4e85788baf5874391da4a5e6",
+      "historical_screen_numeric_differences": {
+        "maximum_species_sum_error": -2.220446049250313e-16
+      },
+      "endpoint_enthalpy_change_J_kg": -324.9123432688066,
+      "endpoint_enthalpy_over_outlet_cp_K": -0.21172917046712203,
+      "paper_comparison": {
+        "criteria": "abs(error) <= max(0.05 cm/s, 1% reference) + digitization uncertainty",
+        "rows": [
+          {
+            "stage": 1,
+            "phi": 1.1,
+            "job": 124951845,
+            "computed_cm_s": 7.457552376786452,
+            "paper_cm_s": 7.476410006449377,
+            "image_uncertainty_cm_s": 0.04,
+            "error_cm_s": -0.018857629662924147,
+            "error_percent": -0.2522284043632838,
+            "limit_cm_s": 0.11476410006449378,
+            "within_screen": true
+          }
+        ],
+        "excluded": [],
+        "stages": {
+          "1": {
+            "points": 1,
+            "rms_cm_s": 0.018857629662924147,
+            "max_abs_cm_s": 0.018857629662924147,
+            "failed_points": 0
+          }
+        },
+        "scientific_acceptance": false
+      },
+      "input_hashes": {
+        "guess.csv": "43971b1852f5e93ca4edcbfaf90558b0837c650b2ab98c750d764f785b47ce87",
+        "ideal.yaml": "c6e72c25dbf5af75a16b71042e071aed15ca4fd4a8a854fd8720a820ce1986c6",
+        "manifest.json": "7ba62b3e9717675dbe15427398a0c3305a4b4bda92be107dbf04e83fde97782d",
+        "species.txt": "6374f6cb2c693997f1f2a1e6505c1579c62e9adc238555a2d4ba45edebca1b61",
+        "srk.yaml": "9d2e7b8a245d38c5f8950e97ccb819402cecce87af91639e0457d9aee489e1f5"
+      }
+    },
+    {
+      "job": 124951846,
+      "stage": 3,
+      "phi": 1.1,
+      "source": "90da17c82470fe678708c03c2b2dbd4f1fe09f3b",
+      "variant": "pressure-chemistry,smoothed-alpha,total-enthalpy,fine-grid",
+      "pressure_atm": 100.0,
+      "build_registry_association": 124951545,
+      "build_identity_basis": "Historical submission registry; job has no build-path or executable receipt",
+      "screen": {
+        "stage": 3,
+        "phi": 1.1,
+        "speed_cm_s": 7.022453255693042,
+        "last_refinement_relative_change": 0.0012327880932302415,
+        "mass_flux_relative_range": 5.0591439830440155e-09,
+        "maximum_species_sum_error": 7.001377255733132e-11,
+        "minimum_mass_fraction": -1.970373873783343e-11,
+        "points": 4097,
+        "scientific_acceptance": false,
+        "remaining": [
+          "domain sensitivity",
+          "initial-guess sensitivity",
+          "publication parameter uncertainty"
+        ]
+      },
+      "screen_passed": true,
+      "profile_sha256": "87f4cbfee90541f2bf8d5b974bbcbc5843587b22213d55ec13437c16a434756a",
+      "historical_screen_numeric_differences": {},
+      "endpoint_enthalpy_change_J_kg": -160.8560782992863,
+      "endpoint_enthalpy_over_outlet_cp_K": -0.10490621660089687,
+      "paper_comparison": {
+        "criteria": "abs(error) <= max(0.05 cm/s, 1% reference) + digitization uncertainty",
+        "rows": [
+          {
+            "stage": 3,
+            "phi": 1.1,
+            "job": 124951846,
+            "computed_cm_s": 7.022453255693042,
+            "paper_cm_s": 7.070417641943881,
+            "image_uncertainty_cm_s": 0.03,
+            "error_cm_s": -0.047964386250838764,
+            "error_percent": -0.6783812312061928,
+            "limit_cm_s": 0.10070417641943881,
+            "within_screen": true
+          }
+        ],
+        "excluded": [],
+        "stages": {
+          "3": {
+            "points": 1,
+            "rms_cm_s": 0.047964386250838764,
+            "max_abs_cm_s": 0.047964386250838764,
+            "failed_points": 0
+          }
+        },
+        "scientific_acceptance": false
+      },
+      "input_hashes": {
+        "guess.csv": "43971b1852f5e93ca4edcbfaf90558b0837c650b2ab98c750d764f785b47ce87",
+        "ideal.yaml": "c6e72c25dbf5af75a16b71042e071aed15ca4fd4a8a854fd8720a820ce1986c6",
+        "manifest.json": "7ba62b3e9717675dbe15427398a0c3305a4b4bda92be107dbf04e83fde97782d",
+        "species.txt": "6374f6cb2c693997f1f2a1e6505c1579c62e9adc238555a2d4ba45edebca1b61",
+        "srk.yaml": "9d2e7b8a245d38c5f8950e97ccb819402cecce87af91639e0457d9aee489e1f5"
+      }
+    },
+    {
+      "job": 124951853,
+      "stage": 3,
+      "phi": 1.1,
+      "source": "90da17c82470fe678708c03c2b2dbd4f1fe09f3b",
+      "variant": "pressure-chemistry,smoothed-alpha,total-enthalpy,pure-species-flux,fine-grid",
+      "pressure_atm": 100.0,
+      "build_registry_association": 124951545,
+      "build_identity_basis": "Historical submission registry; job has no build-path or executable receipt",
+      "screen": {
+        "stage": 3,
+        "phi": 1.1,
+        "speed_cm_s": 7.019939128689748,
+        "last_refinement_relative_change": 0.0010361837837696841,
+        "mass_flux_relative_range": 1.9005514633964473e-09,
+        "maximum_species_sum_error": 1.834125740174386e-09,
+        "minimum_mass_fraction": -1.374064778925319e-11,
+        "points": 4163,
+        "scientific_acceptance": false,
+        "remaining": [
+          "domain sensitivity",
+          "initial-guess sensitivity",
+          "publication parameter uncertainty"
+        ]
+      },
+      "screen_passed": true,
+      "profile_sha256": "ce1d30b7588ab839fd915c55e96ac8ffae4cc69d8468a6bed75b93e35239f074",
+      "historical_screen_numeric_differences": {},
+      "endpoint_enthalpy_change_J_kg": -145.71029305894626,
+      "endpoint_enthalpy_over_outlet_cp_K": -0.09502892497809759,
+      "paper_comparison": {
+        "criteria": "abs(error) <= max(0.05 cm/s, 1% reference) + digitization uncertainty",
+        "rows": [
+          {
+            "stage": 3,
+            "phi": 1.1,
+            "job": 124951853,
+            "computed_cm_s": 7.019939128689748,
+            "paper_cm_s": 7.070417641943881,
+            "image_uncertainty_cm_s": 0.03,
+            "error_cm_s": -0.05047851325413344,
+            "error_percent": -0.7139396257822092,
+            "limit_cm_s": 0.10070417641943881,
+            "within_screen": true
+          }
+        ],
+        "excluded": [],
+        "stages": {
+          "3": {
+            "points": 1,
+            "rms_cm_s": 0.05047851325413344,
+            "max_abs_cm_s": 0.05047851325413344,
+            "failed_points": 0
+          }
+        },
+        "scientific_acceptance": false
+      },
+      "input_hashes": {
+        "guess.csv": "43971b1852f5e93ca4edcbfaf90558b0837c650b2ab98c750d764f785b47ce87",
+        "ideal.yaml": "c6e72c25dbf5af75a16b71042e071aed15ca4fd4a8a854fd8720a820ce1986c6",
+        "manifest.json": "7ba62b3e9717675dbe15427398a0c3305a4b4bda92be107dbf04e83fde97782d",
+        "species.txt": "6374f6cb2c693997f1f2a1e6505c1579c62e9adc238555a2d4ba45edebca1b61",
+        "srk.yaml": "9d2e7b8a245d38c5f8950e97ccb819402cecce87af91639e0457d9aee489e1f5"
+      }
+    },
+    {
+      "job": 124951856,
+      "stage": 5,
+      "phi": 1.4,
+      "source": "90da17c82470fe678708c03c2b2dbd4f1fe09f3b",
+      "variant": "dense-increment,bounded-takahashi,pressure-chemistry,takahashi-table2,smoothed-alpha,total-enthalpy,fine-grid",
+      "pressure_atm": 100.0,
+      "build_registry_association": 124951545,
+      "build_identity_basis": "Historical submission registry; job has no build-path or executable receipt",
+      "screen": {
+        "stage": 5,
+        "phi": 1.4,
+        "speed_cm_s": 5.727906594126845,
+        "last_refinement_relative_change": 0.0013584324011381987,
+        "mass_flux_relative_range": 1.3647022595532112e-10,
+        "maximum_species_sum_error": 1.1603118466041451e-10,
+        "minimum_mass_fraction": -1.57032897545085e-12,
+        "points": 4008,
+        "scientific_acceptance": false,
+        "remaining": [
+          "domain sensitivity",
+          "initial-guess sensitivity",
+          "publication parameter uncertainty"
+        ]
+      },
+      "screen_passed": true,
+      "profile_sha256": "910c47be02b7e3564aa9b857142b5416b8c5a61f3524f09adbc7381d715fef61",
+      "historical_screen_numeric_differences": {
+        "maximum_species_sum_error": -2.220446049250313e-16
+      },
+      "endpoint_enthalpy_change_J_kg": -289.650992539071,
+      "endpoint_enthalpy_over_outlet_cp_K": -0.1849644354482242,
+      "paper_comparison": {
+        "criteria": "abs(error) <= max(0.05 cm/s, 1% reference) + digitization uncertainty",
+        "rows": [
+          {
+            "stage": 5,
+            "phi": 1.4,
+            "job": 124951856,
+            "computed_cm_s": 5.727906594126845,
+            "paper_cm_s": 5.642738222985565,
+            "image_uncertainty_cm_s": 0.015,
+            "error_cm_s": 0.08516837114128073,
+            "error_percent": 1.5093447148469394,
+            "limit_cm_s": 0.07142738222985565,
+            "within_screen": false
+          }
+        ],
+        "excluded": [],
+        "stages": {
+          "5": {
+            "points": 1,
+            "rms_cm_s": 0.08516837114128073,
+            "max_abs_cm_s": 0.08516837114128073,
+            "failed_points": 1
+          }
+        },
+        "scientific_acceptance": false
+      },
+      "input_hashes": {
+        "guess.csv": "2e4667fb56bc50e665372f2b0a57ba965ec86685d1ff255fcd2b6518a5e966e5",
+        "ideal.yaml": "c6e72c25dbf5af75a16b71042e071aed15ca4fd4a8a854fd8720a820ce1986c6",
+        "manifest.json": "393420f51500f122f199b44727f94ef203d103dea33b1a1cf1ab2e44e81f290e",
+        "species.txt": "6374f6cb2c693997f1f2a1e6505c1579c62e9adc238555a2d4ba45edebca1b61",
+        "srk.yaml": "9d2e7b8a245d38c5f8950e97ccb819402cecce87af91639e0457d9aee489e1f5"
+      }
+    },
+    {
+      "job": 124951859,
+      "stage": 5,
+      "phi": 1.4,
+      "source": "90da17c82470fe678708c03c2b2dbd4f1fe09f3b",
+      "variant": "dense-increment,bounded-takahashi,pressure-chemistry,takahashi-table2,smoothed-alpha,total-enthalpy,fine-grid,pure-species-flux",
+      "pressure_atm": 100.0,
+      "build_registry_association": 124951545,
+      "build_identity_basis": "Historical submission registry; job has no build-path or executable receipt",
+      "screen": {
+        "stage": 5,
+        "phi": 1.4,
+        "speed_cm_s": 5.725729843311057,
+        "last_refinement_relative_change": 0.0011242637043544779,
+        "mass_flux_relative_range": 4.79197306744041e-09,
+        "maximum_species_sum_error": 4.6907362438730615e-09,
+        "minimum_mass_fraction": -1.16502880641276e-12,
+        "points": 4061,
+        "scientific_acceptance": false,
+        "remaining": [
+          "domain sensitivity",
+          "initial-guess sensitivity",
+          "publication parameter uncertainty"
+        ]
+      },
+      "screen_passed": true,
+      "profile_sha256": "368b987b0aa93aeefbb1b058a41ff753cc60136b3397d1e6b0e71d42aa704678",
+      "historical_screen_numeric_differences": {},
+      "endpoint_enthalpy_change_J_kg": -214.82796447881265,
+      "endpoint_enthalpy_over_outlet_cp_K": -0.1371841237923633,
+      "paper_comparison": {
+        "criteria": "abs(error) <= max(0.05 cm/s, 1% reference) + digitization uncertainty",
+        "rows": [
+          {
+            "stage": 5,
+            "phi": 1.4,
+            "job": 124951859,
+            "computed_cm_s": 5.725729843311057,
+            "paper_cm_s": 5.642738222985565,
+            "image_uncertainty_cm_s": 0.015,
+            "error_cm_s": 0.08299162032549212,
+            "error_percent": 1.4707685709648493,
+            "limit_cm_s": 0.07142738222985565,
+            "within_screen": false
+          }
+        ],
+        "excluded": [],
+        "stages": {
+          "5": {
+            "points": 1,
+            "rms_cm_s": 0.08299162032549212,
+            "max_abs_cm_s": 0.08299162032549212,
+            "failed_points": 1
+          }
+        },
+        "scientific_acceptance": false
+      },
+      "input_hashes": {
+        "guess.csv": "2e4667fb56bc50e665372f2b0a57ba965ec86685d1ff255fcd2b6518a5e966e5",
+        "ideal.yaml": "c6e72c25dbf5af75a16b71042e071aed15ca4fd4a8a854fd8720a820ce1986c6",
+        "manifest.json": "393420f51500f122f199b44727f94ef203d103dea33b1a1cf1ab2e44e81f290e",
+        "species.txt": "6374f6cb2c693997f1f2a1e6505c1579c62e9adc238555a2d4ba45edebca1b61",
+        "srk.yaml": "9d2e7b8a245d38c5f8950e97ccb819402cecce87af91639e0457d9aee489e1f5"
+      }
+    }
+  ],
+  "scientific_acceptance": false,
+  "limits": [
+    "Older job directories have no observed executable/build-path receipt",
+    "Build identity remains a historical submission association",
+    "Smoothed-alpha is a labelled sensitivity, not an identified Liang input",
+    "An endpoint enthalpy diagnostic is not the exact discrete residual",
+    "These results were completed before the current original-alpha energy controls"
+  ]
+}

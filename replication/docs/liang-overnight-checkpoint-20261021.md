@@ -24,12 +24,12 @@ agreement.
 | --- | --- | --- |
 | 1 | SRK density follows the visible model line, 0.272% RMS over 68 readings | Paper triangles and model lines are distinct targets; conductivity mapping remains unresolved |
 | 2 | Independent pressure-derivative calculations agree with the native implementation | Paper critical pressures are inconsistent with the stated linear covolume rule and retained species inputs |
-| 3 | Author-polynomial Cases 1 and 2 pass all 14 readable speed comparisons; maximum error is 0.53% | Cases 3–5 fail all 13 readable points per case |
-| 4 | Full Cases 1/2 coverage from phi 0.6 to 3.0; fresh density agrees with the paper | Keep density and burning-flux comparisons distinct from speed acceptance |
-| 5 | Full overlapping phi range 0.85–1.35; consistent energy forms give close results | Paper Case 3 is slower but hotter than its Case 3*; implementation identity remains unresolved |
+| 3 | Author-polynomial Cases 1 and 2 pass all 14 readable speed comparisons; maximum error is 0.53% | Cases 3–5 still fail after native conservation, tighter convergence, domain and grid controls |
+| 4 | All twelve selected conservative density/burning-flux points lie within existing image-reading bounds | Keep density and burning-flux comparisons distinct from speed acceptance |
+| 5 | Thirty conservative controls pass balances; paired endpoint temperatures differ by less than 0.001 K | Several few-kelvin paper differences remain; Case 3 is still faster and colder than the reported result |
 | 6 | Named conductivity and diffusivity ratios are evaluated at saved flame states | Journal and dissertation use different definitions and different curve values; neither current interpretation closes the gap |
-| 7 | Corrected physical width and finite-window temperature agree within image-reading bounds | HO2/H2O2 peaks remain 5.23%/6.47% high; the paper does not identify the displayed case |
-| 8(a) | Earlier GRI Cases 1–4 pass the declared digitized-paper screen | Case 5 remains outside it at three rich conditions |
+| 7 | Conservative Case 5 width agrees; native-Soret Case 5 passes all seven width/peak/location bounds | Conservative HO2/H2O2 peaks are 5.97%/7.36% high; Soret tails still differ and the paper does not identify its case |
+| 8(a) | Baseline GRI Cases 1–4 pass; native Soret gives passing discrete rich points | Baseline Case 5 fails three rich conditions; Soret and total enthalpy do not reproduce the Case 4–5 separation |
 | 8(b) | Generic ideal GRI driver reproduces the earlier result within 0.003%; full USC/HP sweeps completed at phi 0.90–1.40 | Full author releases do not reproduce the unprovided methane subsets; Hashemi input has a negative rate |
 
 Figure 3 author-polynomial speed errors are +2.20–8.47% for Case 3,
@@ -42,10 +42,22 @@ implementation. The speed screen is the existing absolute allowance
 
 The earlier Figure 7 overlay used half the printed horizontal tick interval.
 It therefore doubled the apparent calculated width. That display error and the
-broader-flame claim are withdrawn. The corrected 500–2000 K width is
-4.864 micrometres for Case 5 versus 4.726 [4.422, 5.025] in the image.
-At the same finite paper right edge, Case 5 differs by only 1.91 K; the
-full-domain burned endpoint is a different comparison.
+broader-flame claim are withdrawn. The latest conservative Case 5 has a
+corrected 500–2000 K width of 4.819 micrometres versus 4.726 [4.422, 5.025]
+in the image. At the same finite paper right edge, it differs by 4.024 K.
+The full-domain burned endpoint is a different comparison.
+
+The tight native-Soret Case 5 completed as job `125100455`. Its unchanged
+native flux checks pass. Its width is 4.828 micrometres and its HO2/H2O2
+peak errors are +1.629%/+2.507%. All seven finite-image width, peak and
+location bounds pass. At 2300 K, H2 and HO2 still differ by +8.31%/+9.62%.
+Neither this result nor the two Case 3 Soret controls identifies the paper's
+unreported case and thermal-diffusion setting. The two complementary tight
+Case 5 attempts timed out at one hour; no complete paired-triple claim is made.
+The [structure record](liang-hydrogen-structure-controls-20261021.json)
+retains 21 selected profiles, and the
+[Case 5 qualification](liang-hydrogen-case5-native-20261021.json) retains
+native checks and scheduler outcomes.
 
 The current Figures 2–7 gallery uses independently measured axes. Figure 4
 retains boundary points within the measured vector precision. Figure 1 now
@@ -85,6 +97,14 @@ advection explains the observed small elemental drift, but refinement does not
 close the speed discrepancy. Correcting that drift lowers the rich burned
 temperature further from the paper. Boundary energy leakage is negligible.
 
+The completed [30-run conservative campaign](liang-conservation-expanded-20261021.json)
+covers Cases 1–5 at phi=1.0/1.3/1.4, with two initial-grid factors and
+steady tolerances `1e-7/1e-13`. All predeclared native balance checks pass.
+The maximum two-grid speed change is 0.0541%. Rich Cases 1/2 remain within
+0.31% of the paper; Cases 3/4/5 remain 5.02–5.97%/8.37–8.55%/9.86–10.22% high.
+This separates the remaining model discrepancy from the tested conservation,
+mesh and convergence errors.
+
 The dissertation's narrower description of Case 3* as a heat-capacity update
 supports a separately named `cp-only-temperature` diagnostic. It retains actual
 SRK mixture Cp and ideal-reference species enthalpies only in the temperature
@@ -114,6 +134,37 @@ retains source-supported averaging, historical hydrogen critical-constant
 diagnostics, chart interpolation bounds and density weighting. None closes
 the cold diffusion discrepancy. Newton's modified constants are not established
 as a required input to the final Takahashi chart; they remain a diagnostic.
+
+## Figure 8(a) methane controls
+
+The [native and manual Soret controls](liang-soret-results-20261021.md)
+are labelled sensitivities. Native Soret yields passing discrete Case 1/4/5
+paper-point screens at phi=1.10, 1.30, 1.35 and 1.40. It lowers Cases 4/5
+almost equally, so their separation remains much smaller than the paper's.
+The manual formula moves rich Cases 1/4 outside their screen while improving
+Case 5. Neither result identifies Liang's thermal-diffusion setting.
+
+The [matched energy controls](liang-methane-energy-results-20261021.json)
+at phi=1.40 improve the energy balance. Case 4/5 speeds decrease from
+5.807094/5.762399 to 5.771139/5.727276 cm/s.
+Their separation is 0.043863 cm/s versus 0.152981 cm/s in the paper.
+Case 5 remains 1.498% high and outside the unchanged allowance.
+The reconstructed upwind energy-flux spans fall from about 22.4 kW/m²
+to 0.6 kW/m²; these are frozen-profile diagnostics, not native residuals.
+
+Previously completed smooth-alpha partial/pure-species energy controls were
+also recovered and checked. Their Case 5 speeds, 5.727907/5.725730 cm/s,
+still fail the existing screen. The
+[legacy record](liang-methane-legacy-energy-20261021.json) explicitly retains
+its historical build-association limitation. No duplicate rerun was needed.
+
+The [tolerance controls](liang-methane-tolerance-controls-20261021.md)
+separate output precision from nonlinear convergence. The
+[conservative species controls](liang-methane-conservation-controls-20261021.md)
+add native balance exports; they change no model parameter.
+These diagnostics do not replace the 65-point baseline or the frozen CFD
+capture. New OpenFOAM runs remain conditional on the unresolved scientific
+comparisons.
 
 ## Figure 8(b) mechanism controls
 
