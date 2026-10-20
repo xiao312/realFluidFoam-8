@@ -115,3 +115,7 @@ renderer uses PyMuPDF and the standard library, with no solver, scheduler or
 network dependency. It cannot establish the unprovided Liang methane subsets.
 Verify the original axes, marker legends, reported selected jobs and missing
 reference points before publishing. No curve is fitted to the paper.
+The untouched original retains the inset legend. On the computed overlay only,
+its independently inspected image rectangle is cleared before drawing our data:
+otherwise the new USC/HP curves cross the legend text. This measured rectangle
+contains no reference curves and is recorded in the evidence JSON.

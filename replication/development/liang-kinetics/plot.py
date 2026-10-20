@@ -9,6 +9,9 @@ from pathlib import Path
 PAPER_SHA = "24163be0124e0fa6cd28ddb1d369b813e64e82bd7446e9f9218a340445aca6fe"
 CLIP = (28, 240, 229, 416)
 CAPTION = (31, 424, 228, 452)
+# Measured original-image pixels: only the inset legend, below the GRI curves
+# and above the USC curves. The untouched original at left retains this legend.
+LEGEND_PIXELS = (241, 1005, 641, 1225)
 COLORS = [(0, .48, .27), (.75, .35, .02), (.55, .15, .65),
           (.1, .36, .8), (.15, .6, .65), (.7, .15, .3)]
 
@@ -97,6 +100,12 @@ def main():
     for left in [18, 270]:
         page.show_pdf_page(fitz.Rect(left, 60, left+201, 236), source, 5,
                            clip=fitz.Rect(CLIP))
+    legend = fitz.Rect(
+        270+image_rect.x0-CLIP[0]+LEGEND_PIXELS[0]*image_rect.width/image["width"],
+        60+image_rect.y0-CLIP[1]+LEGEND_PIXELS[1]*image_rect.height/image["height"],
+        270+image_rect.x0-CLIP[0]+LEGEND_PIXELS[2]*image_rect.width/image["width"],
+        60+image_rect.y0-CLIP[1]+LEGEND_PIXELS[3]*image_rect.height/image["height"])
+    page.draw_rect(legend, color=None, fill=(1, 1, 1))
     groups = defaultdict(list)
     comparison = []
     for row in plotted:
@@ -131,6 +140,7 @@ def main():
     text((18, 332, 482, 386),
          "100 atm, 298 K; full author USC II / HP 2017 releases. Liang's methane subsets are unprovided.\n"
          "Only Case 1 is computed here. Hashemi is blocked by a negative published rate.\n"
+         "The original inset legend is retained at left and cleared on the overlay to expose the new data.\n"
          "Steady numerical guesses are distinct from transient CFD restarts. Comparison is not accepted.", 7)
     text((18, 392, 482, 406), "Source: Liang et al., PCI 37 (2019) 1733-1739, Figure 8(b).", 7)
     page.get_pixmap(matrix=fitz.Matrix(3, 3)).save(args.output/"figure-8b.png")
@@ -145,6 +155,7 @@ def main():
                   input_sha256={k: digest(getattr(args, k)) for k in
                                 ["manifest", "reference", "gri_sweep"] if getattr(args, k)})
     record["plot_script_sha256"] = digest(Path(__file__))
+    record["overlay_legend_clearance_pixels"] = LEGEND_PIXELS
     (args.output/"evidence.json").write_text(json.dumps(record, indent=2)+"\n",
                                             encoding="utf-8", newline="\n")
 
