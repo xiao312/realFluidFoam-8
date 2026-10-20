@@ -19,8 +19,10 @@ try {
     const double phi=std::stod(argv[3]),pressure=100*OneAtm;
     const double width=argc>=7?std::stod(argv[6]):.01,Tu=argc>=8?std::stod(argv[7]):298.;
     const std::string requestedVariant=argc>=9?argv[8]:"baseline";
-    const bool midpoint=requestedVariant.rfind("midpoint-",0)==0;
-    const std::string alphaVariant=midpoint?requestedVariant.substr(9):requestedVariant;
+    const bool concentration=requestedVariant.rfind("concentration-",0)==0;
+    const std::string fluxVariant=concentration?requestedVariant.substr(14):requestedVariant;
+    const bool midpoint=fluxVariant.rfind("midpoint-",0)==0;
+    const std::string alphaVariant=midpoint?fluxVariant.substr(9):fluxVariant;
     const bool smooth=alphaVariant.rfind("smooth-",0)==0;
     const std::string variant=smooth?alphaVariant.substr(7):alphaVariant;
     const int gridFactor=argc>=10?std::stoi(argv[9]):1;
@@ -76,14 +78,15 @@ try {
                          "hydrogen-staged");
     activate(sol,stage);auto gas=sol->thermo();
     gas->setEquivalenceRatio(phi,"H2","O2:0.21,N2:0.79");gas->setState_TP(Tu,pressure);
-    if(stage>1)liang::usePressureChemistry(sol,(input/"ideal.yaml").string());
+    if(stage>1 && !concentration)liang::usePressureChemistry(sol,(input/"ideal.yaml").string());
     std::vector<double> xin(names.size()),partial(names.size());
     gas->getMoleFractions(xin.data());const double rho=gas->density();
     fs::create_directories(output);
     std::ofstream config(output/"configuration.txt");
     config<<std::setprecision(16)<<"case "<<label<<"\nphi "<<phi<<"\npressure_Pa "<<pressure
           <<"\nTu_K "<<Tu<<"\nwidth_m "<<guess.x.back()-guess.x.front()
-          <<"\nkinetics Burke2012-N2-pressure\ntransport author-pair-count "<<pairs.size()
+          <<"\nkinetics "<<(concentration?"Burke2012-N2-actual-concentration":"Burke2012-N2-pressure")
+          <<"\ntransport author-pair-count "<<pairs.size()
           <<"\nmodel_variant "<<requestedVariant<<"\nalpha "<<(smooth?"C4-continuation":"original-Soave")
           <<"\nflux_correction "<<(midpoint?"midpoint":"left-node")
           <<"\ngrid_factor "<<gridFactor<<"\ninitial_grid_points "<<grid.size()
@@ -138,6 +141,8 @@ try {
     auto real=newSolution((input/"srk.yaml").string(),"","hydrogen-full");activate(real,5);
     hydrogen::writeProfiles(output,flow,sol,ideal,real,pressure);
     std::ofstream callbacks(output/"callbacks.txt");
+    auto* chemistry=dynamic_cast<liang::PressureChemistry*>(sol->kinetics().get());
+    callbacks<<"pressure_chemistry "<<(chemistry?chemistry->calls:0)<<'\n';
     if(auto* t=dynamic_cast<liang::StagedTransport*>(sol->transport().get()))
         callbacks<<"conductivity "<<t->conductivityCalls<<"\ndiffusion "<<t->diffusionCalls<<'\n';
     if(auto* t=dynamic_cast<hydrogen::Transport*>(sol->transport().get()))

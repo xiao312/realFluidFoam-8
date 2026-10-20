@@ -33,6 +33,14 @@ Nonideal chemistry uses the pressure-based adapter. Case 4/5 conductivity is the
 explicit dense-increment diagnostic, not a verified reconstruction of Liang's
 unpublished rich-H2 mixing modification. Case 5 uses bounded, Table-2-corrected
 Takahashi binary diffusivities with mixture-averaged mole-gradient fluxes.
+The optional outer prefix `concentration-` retains the phase's existing actual
+SRK concentration mass-action law instead of installing the pressure adapter.
+It also changes third-body and falloff concentrations; standard reverse
+equilibrium constants remain those of the inherited ideal reference phase.
+This is a distinct kinetic diagnostic, not an energy correction or an identified
+Liang closure. It must precede any `midpoint-` and `smooth-` prefixes.
+The configuration records the selected law and the completed run records the
+pressure-adapter callback count (zero when the adapter is not installed).
 Soret and radiation are disabled; the paper does not specify them.
 Default Tu=298 K is an assumption, not a reported value.
 The default `baseline` uses partial-molar species enthalpies in diffusion.
@@ -120,6 +128,9 @@ Run `python3 -B prepare.py --help`, `bash -n job.sh`, `bash -n submit.sh`,
 and `git diff --check`. Build qualification runs the existing independent SRK,
 alpha and Takahashi checks before compiling the hydrogen driver. Each flame
 checks CP against finite differences and the partial-enthalpy Euler identity.
+The chemistry-law check compares six reactive frozen states against independent
+ideal-phase evaluations at physical p and p/Z. It includes third-body/falloff
+terms and requires the chemistry adapter to preserve physical SRK density.
 The ideal control must also agree with a separately solved stock Cantera flame
 before treating discrepancies as nonideal model effects.
 `stock_control.py plan|apply MECHANISM OUTPUT --phi 1.4` supplies that independent
