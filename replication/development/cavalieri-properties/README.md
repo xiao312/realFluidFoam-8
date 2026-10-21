@@ -61,9 +61,40 @@ curves do not follow (for example panel (c) at 105 K, curve 1.3258 vs marker 1.4
 9.3 % relative). Those residuals are now kept and reported: the largest in-frame
 residual is 7.8 % of span in (a), 21.6 % in (b), 6.8 % in (c) and 10.1 % in (d).
 
+## Composite rendering (`render_figures.mjs`)
+
+`renderPaperComparison` renders one panel per call, so the composite calls it four times
+with identical `canvas`/`viewBox` (the form's own coordinate system, `BBox` plus a 2 pt
+pad) and inlines the four bodies under a single root `<svg>`. Declared deviations from
+the published layout, all of them layout-only:
+
+- **Legend strip.** The published legend sits inside panel (a) at
+  `[141.06, 248.773, 165.037, 270.056]` (PDF pt, y up), on top of the density curve, and
+  it labels both fluids and all three origins. That box cannot be reused, so the legend
+  is moved into a 60 pt strip added *below* the paper's drawing area (which ends at SVG
+  y 278.108). Row `i` is drawn at `y = 284.5 + i·8.6`; `rowHeight` must exceed the 6.5 pt
+  type size or the row baselines collide, which is why the strip is taller than the
+  published legend box. Panels (b)–(d) pass `x = y = -1000` so their rows are emitted
+  outside the viewBox instead of being drawn four times.
+- **Panel titles.** `(a)`/`(b)` frames start only 2.65 pt below the top of the form, so
+  the re-typeset quantity titles would be clipped. The canvas is extended upward by
+  12 pt; the viewBox starts at that negative y so the titles are inside it.
+- **Tick labels.** Extracted tick positions can fall a fraction of a point outside a
+  frame, which printed a spurious `-0.000492` label beside the real `0`. Ticks are
+  clamped onto the declared limits and de-duplicated before labelling. Tick baselines
+  are pushed 6.8 pt below the frame and the axis title 14.6 pt below it, because 6.5 pt
+  type does not fit in a 5 pt offset.
+
+The 155 K (O₂) and 190 K (CH₄) peaks in panels (a) and (b) are the paper's own critical
+anomalies, not extraction artefacts: they are present in the extracted curves and in the
+paper raster. A synthetic self-test sweep made by resampling the paper curve on a 5 K
+grid was used once to check the layout end to end; it is **layout evidence only and is
+never published as computed data** — the published series must come from the Cantera
+SRK/Chung sweep.
+
 ## Status
 
 Digitisation is complete and reproducible (single run, ~1 s, no network, no third-party
-packages). The SRK model sweep and the `forge-paper-style-v1` recipe are not written
-yet; the Cantera model probe must resolve first because the sweep has to use the same
-EoS and transport model that the build actually supports.
+packages). The composite recipe and renderer are written and replay deterministically
+from `figure1-vector.json`; the Cantera SRK/Chung sweep is not run yet because the model
+probe has not resolved which EoS and transport model the batch build accepts.
