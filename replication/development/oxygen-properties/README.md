@@ -188,6 +188,36 @@ smoothing), `deviations.json` (all statistics above, per-marker values) and
 `environment.txt` (interpreter, module sha256, input sha256). The run is
 deterministic: two invocations produce byte-identical CSV.
 
+### Figures
+
+```sh
+node replication/development/oxygen-properties/render_figures.mjs \
+  --density-csv <run-dir>/oxygen-properties.csv \
+  --cp-csv <run-dir>/oxygen-properties.csv \
+  --reference-dir /references/central-payload/assets \
+  --out-dir <out-dir> --source-commit <commit> --run-job-id <job-id>
+```
+
+`render_figures.mjs` builds `forge-series-v1` data from the raw CSV samples and
+the extracted paper series, and writes only the `.svg` string returned by
+`renderPaperComparison` from `/forge/plots/paper-style.mjs`, so the Forge
+service can replay the exact bytes. It uses the registered `props-r2` recipes
+for 1(a) and 1(b): measured frame, axis domains and ticks, the vector axis
+glyphs taken from the PDF, and the legend slot. Two consequences are stated
+instead of hidden:
+
+* The paper's inset *annotation* box (`rho_in,O2 = 1177.2 kg/m^3`,
+  `T_in,O2 = 85 K`) and its leader line to the filled 85 K marker are part of the
+  paper's figure annotation layer and are **not** present in the registered
+  recipe, so the reproduced figure carries the series legend there instead.
+* At the measured `cp` axis limit (0-25000 J/kg/K) the whole 130-300 K range is
+  compressed into a few pixels, so the low-temperature `cp` discrepancy of
+  Section *Open discrepancy* is not visible in the figure; the committed
+  `deviations.json` carries it numerically.
+
+Draw order is paper curves, then computed curves (thinner, so the reference
+stroke stays visible where they agree), then the paper's NIST markers on top.
+
 ## What this does not claim
 
 This module reproduces the *thermodynamic model* of the paper for one pure
