@@ -14,6 +14,7 @@ reproduction does not depend on any third-party numerical library version.
 | `oxygen_properties.py` | model: PR EoS, Abudour volume translation, departure functions, cp |
 | `test_oxygen_properties.py` | 15 self-checks: ideal-gas limit, analytic vs finite-difference derivatives, critical-point algebra, literature anchors |
 | `run_properties.py` | production sweep → CSV samples, deviation statistics, environment/version record |
+| `critical_tolerance.py` | independent derivation of `c1`/`δc` and the tolerance they carry into the plotted density |
 | `job.sh` | scheduler entry point (serial, `OMP_NUM_THREADS=1`) |
 
 ## Model
@@ -95,6 +96,25 @@ Sensitivity: matching the NIST 85 K density exactly instead of to 0.07 % would
 require `Zc_exp = 0.28782` instead of 0.288 (a 0.06 % change, inside the spread
 between NIST and other compilations for O₂). `Zc_exp = 0.288` is kept as the
 published/reference value and the residual 0.07 % is reported, not fitted away.
+
+`critical_tolerance.py` re-derives both constants from that one requirement and
+bounds their effect on the plotted curve (rerun it to reproduce every number):
+
+| Perturbation | Δρ at 85 K | Δρ at the 157 K knee |
+| --- | --- | --- |
+| `c1` from Eq. (12) with `Zc_PR` (paper read literally) | −7.20 % | −0.28 % |
+| `c1` ± 5 % | ±0.60 % | ±0.02 % |
+| `δc` ± 10 % | ±0.05 % | ±0.62 % |
+| `δc` from the *exact* critical volume, i.e. including the `−0.004` residual | −0.11 % | −1.25 % |
+| `Zc_exp` ± 0.0005 (NIST `Vc = 73.4 cm³/mol` quoted to 3 digits) | ±0.013 % | — |
+
+Two consequences are recorded rather than hidden. First, the `−0.004` constant
+inside Eq. (10) survives at the critical point, so the model maps `(Tc, pc)` to
+`72.38 cm³/mol` instead of `Vc = 73.4 cm³/mol`; `critical_tolerance.py` reports
+that −1.39 % residual explicitly. Second, removing it (the "exact critical
+volume" row) moves the 157 K knee *further* from the published curve, whose
+signed deviation there is already −1.35 %, so the retained form is the one the
+published figure itself supports.
 
 ## Results at p = 5.61 MPa
 

@@ -11,7 +11,8 @@ Model (symbols as printed; see README.md for provenance of every constant):
   b   = 0.07780 R Tc/pc,  kappa = 0.37464 + 1.54226 w - 0.26992 w^2
   v_m = v_PR + c_m + dc_m (0.35/(0.35+d_m))                              (9)
   c_m = (R Tc/pc)[c1 - (0.004+c1) exp(-2 d_m)]                           (10)
-  c1  = 0.4266 Zc_PR - 0.1101                                            (11,12)
+  c1  = 0.4266 Zc_exp - 0.1101   Eq. (12) evaluated with the experimental Zc,
+                                  see critical_tolerance.py and README.md
   d_m = -(v_PR^2/(R Tc)) (dp/dv_PR)|_T                                   (13)
   dc_m= (R Tc/pc)(Zc_exp - Zc_PR)   critical-volume offset, see README.
 
