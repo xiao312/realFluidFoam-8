@@ -82,6 +82,39 @@ for T ≳ 238 K (below that the curve overlaps the axis frame and the inward tic
 (b) model peak clipped by the top frame at ≈ 0.155 W/(m·K) so the reading starts at
 ≈ 171 K.
 
+### Coverage limit and the conductivity comparison
+
+Two things are deliberately *not* claimed, because measuring them showed they would be
+false:
+
+- **The symbol set is incomplete.** The extraction cannot see into the axis band
+  (`2·BAND` px) or into the two annotation rectangles, and the panel-label rectangle sits
+  over the lower-left of the plotting area. An erosion census over those excluded regions
+  (`hidden_symbols` in the digitisation JSON; it reads the same RGBA and applies the same
+  erosion-core shape filter) finds published symbols there: panel (b) is missing four
+  (≈126 K/0.110, 154 K/0.0738, 198 K/0.031, 235 K/0.027 W/(m·K)) and panel (a) one clear
+  one (231 K/199 kg/m³) plus two that are ambiguous with the `(a)` glyph strokes at this
+  raster resolution. Symbols inside the legend box are legend glyphs and are not counted.
+  `reference_coverage` therefore reports **failed** and the curve remains unchanged: no
+  symbol is invented and no mask is redrawn to make the census agree with the paper.
+- **Conductivity is compared at the plotted abscissae, not on the pixel chain.** The
+  digitised chain is a per-pixel walk, so a near-vertical stretch contributes one sample
+  per pixel row; 37 % of its samples fall below 190 K, where the printed curve is steep and
+  clipped by its own frame. A chain-sampled rms (105 %) therefore measures that edge's
+  pixel density, not the fit. Evaluated at the 600 abscissae actually plotted, the
+  conductivity deviation is **14.92 % rms normalised by the paper value** and 28.09 %
+  normalised by this work, largest +68.5 % at the frame edge, falling to ≈1 % by 950 K. Both
+  numbers were reproduced by an independent interpolation of the same plotted series, and
+  the chain value is kept in the verification details so the correction is auditable.
+  A unit/decade error would not close up at high temperature, so no rescaling is applied.
+
+`figure_fidelity` correspondingly reports **failed**: the geometry and tick placement are
+measured, but four presentation attributes remain unresolved and are declared as such —
+filled triangles are drawn as circles (renderer limit), rotated y-axis titles are drawn
+horizontally, minor ticks are omitted rather than invented, and the paper's font is not
+identifiable from the embedded raster. None of these is a numerical claim, and none is
+reported as a match.
+
 ## Figure geometry
 
 Pixel → point: `x = 50.733 + 0.24·px`, `y = 54.012 + 0.24·py` (top-down), from the

@@ -226,6 +226,84 @@ def order_component(pixels):
     return path
 
 
+def excluded_regions(panel):
+    """Panel geometry that `dark_inside` cannot see: the axis band and the annotation masks."""
+    left, top, right, bottom = panel["frame"]
+    band = 2 * BAND
+    regions = [
+        ("frame band", "frame band (left)", (left + 1, top + 1, left + band, bottom - 1)),
+        ("frame band", "frame band (right)", (right - band, top + 1, right - 1, bottom - 1)),
+        ("frame band", "frame band (top)", (left + 1, top + 1, right - 1, top + band)),
+        ("frame band", "frame band (bottom)", (left + 1, bottom - band, right - 1, bottom - 1)),
+    ]
+    # Mask 0 of each panel is the legend box (its symbols are legend glyphs, not data); mask 1 is
+    # the "(a)"/"(b)" panel label, which sits over the lower-left of the plotting area and can
+    # therefore hide real symbols.
+    kinds = ("legend box", "panel label")
+    for index, rect in enumerate(panel["masks"]):
+        kind = kinds[index] if index < len(kinds) else "annotation mask"
+        regions.append((kind, f"{kind} #{index}", tuple(rect)))
+    return regions
+
+
+def census(dump, panel, calibration):
+    """Count the filled symbols the committed extraction is structurally unable to see.
+
+    The model line and the axis ticks are thin, so a 3x3 erosion removes them; a filled
+    comparison symbol survives.  This does not change `experiments` - it measures how many
+    published symbols the panel geometry hides, so the verifier can report the extraction as
+    incomplete instead of 7 triangles being passed off as the panel's symbol set.
+    """
+    hidden = []
+    for kind, reason, (x0, y0, x1, y1) in excluded_regions(panel):
+        x0, y0 = max(x0, panel["frame"][0] + 1), max(y0, panel["frame"][1] + 1)
+        x1, y1 = min(x1, panel["frame"][2] - 1), min(y1, panel["frame"][3] - 1)
+        if x1 - x0 < 5 or y1 - y0 < 5:
+            continue
+        inside = lambda x, y, x0=x0, y0=y0, x1=x1, y1=y1: x0 <= x < x1 and y0 <= y < y1
+        seeds = set()
+        for y in range(y0 + 1, y1 - 1):
+            for x in range(x0 + 1, x1 - 1):
+                if not dump.dark(x, y):
+                    continue
+                if all(dump.dark(x + dx, y + dy) for dx in (-1, 0, 1) for dy in (-1, 0, 1)):
+                    seeds.add((x, y))
+        seen = set()
+        for seed in sorted(seeds):
+            if seed in seen:
+                continue
+            stack, pts = [seed], []
+            seen.add(seed)
+            while stack:
+                cx, cy = stack.pop()
+                pts.append((cx, cy))
+                for dx in (-1, 0, 1):
+                    for dy in (-1, 0, 1):
+                        nxt = (cx + dx, cy + dy)
+                        if nxt in seeds and nxt not in seen:
+                            seen.add(nxt)
+                            stack.append(nxt)
+            width = max(q[0] for q in pts) - min(q[0] for q in pts) + 1
+            height = max(q[1] for q in pts) - min(q[1] for q in pts) + 1
+            if len(pts) < 12 or width < 4 or height < 4 or not 0.5 <= width / height <= 2.0:
+                continue          # glyph stroke, tick residue or anti-aliased speck
+            if sum(1 for q in pts if inside(*q)) < len(pts) / 2:
+                continue          # component straddles the region edge, not a symbol
+            cx = sum(q[0] for q in pts) / len(pts)
+            cy = sum(q[1] for q in pts) / len(pts)
+            hidden.append({
+                "x": round(pixel_to_value(calibration, panel, panel["x"], cx), 4),
+                "y": round(pixel_to_value(calibration, panel, panel["y"], cy), 6),
+                "pixel": [round(cx, 2), round(cy, 2)],
+                "core_pixels": len(pts),
+                "core_bbox_px": [width, height],
+                "excluded_by": reason,
+                "region_kind": kind,
+            })
+    hidden.sort(key=lambda item: item["x"])
+    return hidden
+
+
 def pixel_to_value(calibration, panel, axis, pixel):
     mapping = calibration[axis]
     return mapping["value_intercept"] + mapping["value_per_pixel"] * pixel
@@ -276,6 +354,10 @@ def digitise(dump, calibration, name):
         "model_x_range": [min(seg[0]["x"] for seg in segments), max(seg[-1]["x"] for seg in segments)]
                         if segments else None,
         "experiments": experiments,
+        # Symbols the panel geometry hides.  `extraction_complete` is False whenever this list
+        # is non-empty: the seven (or five) kept symbols are then not the panel's symbol set, and
+        # the verifier must say so rather than let the masks decide which data the paper contains.
+        "hidden_symbols": census(dump, panel, calibration),
         "frame_width_px": span,
     }
 
