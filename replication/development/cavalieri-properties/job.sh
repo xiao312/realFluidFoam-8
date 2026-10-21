@@ -52,11 +52,14 @@ say "start $(date -u +%Y-%m-%dT%H:%M:%SZ)"
 # ---------------------------------------------------------------------------
 # 1. code identity: the SHA256 of every file this run executes, recorded inside the job
 # ---------------------------------------------------------------------------
-sha256sum "$CASE/srk_chung.py" "$CASE/sweep_properties.py" "$CASE/compare_reference.py" \
+if sha256sum "$CASE/srk_chung.py" "$CASE/sweep_properties.py" "$CASE/compare_reference.py" \
     "$CASE/test_srk_chung.py" "$CASE/checks.py" "$CASE/job.sh" \
     "$CASE/render_figures.mjs" "$CASE/figure1-vector.json" \
-    > "$RUN/hashes.txt" 2>&1
-hashes_rc=$?
+    > "$RUN/hashes.txt" 2>&1; then
+    hashes_rc=0
+else
+    hashes_rc=$?
+fi
 say "hashes rc=$hashes_rc"
 printf '%s\n' "$hashes_rc" > "$RUN/hashes.rc"
 
