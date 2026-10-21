@@ -374,6 +374,7 @@ const receipt = {
   target: 'cavalieri2025-fig-1',
   source_commit: commit,
   ...(jobId ? { scheduler_job_id: jobId } : {}),
+  canvas: CANVAS,
   data: basename(dataPath), data_sha256: sha256(dataPath),
   plot: basename(svgPath), plot_sha256: sha256(svgPath),
   recipe: basename(recipePath), recipe_sha256: sha256(recipePath),

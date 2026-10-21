@@ -1,4 +1,11 @@
-"""Probe the Cantera 3.2 build for the models needed by Cavalieri et al. (2025) Fig. 1.
+"""DEPRECATED - kept as the record of a probe that did not become the pipeline.
+
+The model is now implemented directly from the paper in srk_chung.py (pure Python, SRK with
+the Graboski-Daubert alpha and the Chung 1988 correlation); this trial's Cantera
+qualification is C++ SDK only and Cantera has no Graboski-Daubert alpha option. Do not run
+this file as part of the evidence.
+
+Original purpose: probe the Cantera 3.2 build for the models needed by Cavalieri et al. (2025) Fig. 1.
 
 Fig. 1 needs, for pure O2 and pure CH4 at 56 bar and 100-400 K:
   * an SRK equation of state for density and isobaric specific heat,

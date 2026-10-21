@@ -5,26 +5,91 @@ thermal conductivity of pure O2 (solid curve) and pure CH4 (dashed curve) at 56 
 between 100 K and 400 K, with NIST reference points, computed with an SRK equation of
 state and the Chung high-pressure transport model.
 
-## Why this directory
+## What is computed, and from which equations
 
-The published figure is vector art embedded in the PDF (`/Title (gr1.eps)`, page index
-6, `/BBox [0 0 360 276.108]`, 1400 stroked/filled paths, 476 marker circles, and all
-axis text as glyph outlines — there is no `Tj`/`TJ` text operator anywhere in the
-form). The reference markers and the two model curves are therefore recovered from the
-path geometry, not from a raster, and the axis labels/limits are cross-checked against
-the 921x718 page raster in `/references/library/objects/64d5178f...png`.
+| quantity | model | source of the equations |
+| --- | --- | --- |
+| density, enthalpy, cp | Soave–Redlich–Kwong, Graboski–Daubert alpha | paper Eqs. (2)–(4) |
+| ideal-gas cp, h | NASA7 (GRI30 coefficients, O2 and CH4) | retained `replication/validation/inputs/property-thermo.inputData` |
+| viscosity, conductivity | Chung, Ajlan & Lee (1988) dense-gas correlation | paper Eqs. (9)–(12); coefficients from Chung et al., *Int. J. Thermophys.* 9 (1988) Tables II and IV |
+
+`srk_chung.py` is pure Python 3 standard library: no Cantera, no numpy, no compiled
+extension, so every coefficient is auditable in the file that runs. The Chung coefficient
+tables were transcribed from the published tables and cross-checked against this
+repository's own OpenFOAM port
+(`src/thermophysicalModels/specie/transport/chungKinetic/chungKineticTransportI.H`),
+which carries the same ten A-coefficient sets and seven B-coefficient sets; that port was
+*not* used at run time (it is C++ inside a solver library), it is the independent check
+that the transcription is right.
+
+Constants are the paper's Table 1:
+
+| fluid | Tc (K) | pc (bar) | omega | vc (cm3/mol) | M (g/mol) |
+| --- | --- | --- | --- | --- | --- |
+| O2 | 154.58 | 50.430 | 0.0222 | 73.529 | 31.9988 |
+| CH4 | 190.60 | 46.100 | 0.0110 | 98.600 | 16.0428 |
+
+Both fluids are nonpolar, so the dipole moment and the association factor are zero. The
+alpha coefficient of Eq. (4) is `c = 0.48508 + 1.55171 w - 0.15613 w^2`, which gives
+0.519451 for O2 and 0.502130 for CH4.
+
+### Two ambiguities, declared instead of silently resolved
+
+- **Eq. (2) prints `0.427`.** The Soave constant is 0.42748, and it is 0.42748 that makes
+  the printed `b = 0.08664 R Tc / pc` give the SRK critical compressibility 1/3.
+  `A_COEFF = 0.42748` is used and `A_COEFF_PRINTED = 0.427` is kept, so the size of the
+  rounding is measured rather than argued: it moves density by at most 0.007 %, cp by
+  0.025 %, viscosity by 0.005 % and conductivity by 0.005 % over 100–400 K (recorded in
+  `sweep.json` → `sensitivity`).
+- **Acentric factor.** The repository mechanism carries `omega = 0.025` for O2, the paper
+  tabulates 0.0222. The figure uses the paper's value; the repository value is the
+  declared sensitivity (0.08 % in density, 1.1 % in viscosity, 0.9 % in conductivity).
+  CH4 agrees exactly (0.011 both).
+
+Note that at exactly `(Tc, pc)` the published five-digit constants do **not** give
+`Z = 1/3`: the reduced cubic there is a near-triple root, so a 1e-7 coefficient residual
+is amplified to ~2e-2 in Z. The test therefore checks the equation of state residual at
+the critical point to 1e-12 and only brackets `Zc`, rather than pretending the printed
+constants are exact.
 
 ## Contents
 
-- `digitise_fig1.py` — stdlib-only extractor for that form. Scans the PDF objects,
-  decompresses the content stream, tokenises it with dash-array tracking, classifies
-  every path (frame, tick, curve, marker, glyph, legend sample), finds the four panel
-  frames and their tick grids, then walks the marker circles and assigns each one to
-  the curve it lies on. Writes `figure1-vector.json`.
-- `probe_models.py` — Cantera probe used to confirm which real-gas EoS and transport
-  models this build actually accepts (`RedlichKwong`/`PengRobinson`, `high-pressure`
-  transport) before the sweep is written. Runs only in the batch image.
-- `job.sh` — batch wrapper for the probe (never writes into the repository).
+- `digitise_fig1.py` — stdlib-only extractor for the embedded vector form. Writes
+  `figure1-vector.json` (committed: it is the reference vector, 195 kB).
+- `srk_chung.py` — SRK + Chung model, SI molar units.
+- `test_srk_chung.py` — 12 tests / 23 subtests; ideal-gas limits, `cp` against a
+  numerical `dh/dT`, `h_dep` against a pressure integral, `cv < cp`, single-phase root
+  selection at 56 bar, the dilute Chung limit, Chung viscosity against Chapman–Enskog
+  with independent Lennard-Jones parameters, conductivity against Eucken, coarse physical
+  ranges, and provenance of every NASA7/critical constant against the retained mechanism
+  file.
+- `sweep_properties.py` — 0.25 K grid, 100–400 K, 1201 samples per fluid, 56 bar →
+  `sweep.csv` (16 columns, every column named with its unit) and `sweep.json`
+  (`forge-property-sweep-v1`, the renderer's input, plus constants and sensitivities).
+- `compare_reference.py` — residuals against the two reference sets, kept apart (below).
+- `render_figures.mjs` — four `renderPaperComparison` calls composed into one `<svg>`.
+- `checks.py` — the five campaign checks, computed from the files the job produced.
+- `job.sh` — the batch payload (bash, correct under the adapter's `set -euo pipefail`).
+- `probe_models.py` — **deprecated**. An earlier plan used Cantera's `RedlichKwong` and
+  high-pressure transport; this trial's Cantera qualification is C++ SDK only, and the
+  paper's alpha function (Graboski–Daubert) is not one of Cantera's options, so the model
+  is implemented directly from the paper instead. The file is kept as the record of that
+  probe, not as part of the pipeline.
+
+## Two reference sets, never merged
+
+- **Published curve** — the model curve drawn in the paper, from the PDF path geometry.
+  A deviation here measures how faithfully this implementation reproduces the paper's own
+  SRK+Chung model.
+- **Published symbols** — the NIST comparison points printed in the same panels. A
+  deviation here is a model-versus-data difference, i.e. the paper's result, not this
+  implementation's.
+
+`figure1-vector.json` holds both, `cavalieri2025-fig-1-data.json` tags every series with
+`origin: paper` or `origin: computed`, and `compare_reference.py` reports the two residual
+families separately — plus a third number, the printed symbols' own deviation from the
+printed curve, which is what the model-versus-data residual must be compared against
+before blaming the implementation.
 
 ## Measured figure geometry (declared)
 
@@ -58,8 +123,7 @@ Markers whose distance to the assigned curve exceeds **40 % of the panel span** 
 rejected as non-markers (glyph outlines, axis artefacts). The earlier 6 % limit was
 wrong: it discarded genuine low-temperature NIST points that the paper's own SRK+Chung
 curves do not follow (for example panel (c) at 105 K, curve 1.3258 vs marker 1.4483,
-9.3 % relative). Those residuals are now kept and reported: the largest in-frame
-residual is 7.8 % of span in (a), 21.6 % in (b), 6.8 % in (c) and 10.1 % in (d).
+9.3 % relative). Those residuals are kept and reported.
 
 ## Composite rendering (`render_figures.mjs`)
 
@@ -85,16 +149,17 @@ the published layout, all of them layout-only:
   are pushed 6.8 pt below the frame and the axis title 14.6 pt below it, because 6.5 pt
   type does not fit in a 5 pt offset.
 
-The 155 K (O₂) and 190 K (CH₄) peaks in panels (a) and (b) are the paper's own critical
-anomalies, not extraction artefacts: they are present in the extracted curves and in the
-paper raster. A synthetic self-test sweep made by resampling the paper curve on a 5 K
-grid was used once to check the layout end to end; it is **layout evidence only and is
-never published as computed data** — the published series must come from the Cantera
-SRK/Chung sweep.
+## Batch payload
+
+`job.sh <source-root> <run-dir>` runs, in this order: file-hash inventory, the unit tests,
+the sweep, the reference comparison, the figure build through `/forge/plots/paper-style.mjs`,
+the campaign checks, and an output inventory; it writes `rc.txt` with every stage status
+and exits nonzero if any stage failed. It reads no file outside `<source-root>` and writes
+nothing into the repository. It is written for `bash -euo pipefail` with no pipeline whose
+reader can close early, because the control adapter runs it under exactly those options.
 
 ## Status
 
-Digitisation is complete and reproducible (single run, ~1 s, no network, no third-party
-packages). The composite recipe and renderer are written and replay deterministically
-from `figure1-vector.json`; the Cantera SRK/Chung sweep is not run yet because the model
-probe has not resolved which EoS and transport model the batch build accepts.
+Model, tests, sweep, comparison, renderer and checks are complete and replay
+byte-identically. The figure is built from the sweep produced in the same scheduler job;
+the computed curves are never mixed with the extracted reference vectors.
