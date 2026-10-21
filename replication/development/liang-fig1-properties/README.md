@@ -121,5 +121,24 @@ python3 checks.py --probe run/fig1-probe.csv --digitised … --data … --plot �
 ```
 
 `digitize_fig1.py` is not part of the job: it measures the paper once and its output
-(`liang-fig1-digitised.json`) is retained as raw evidence with the RGBA dump digest inside
-it. It is re-runnable from the PDF alone.
+`liang-fig1-digitised.json` is retained as raw evidence, with the digests of every input
+inside it (`source.paper_sha256`, `source.embedded_jpeg_sha256`,
+`source.rgba_dump_sha256`).
+
+Reproducing the digitisation takes two steps, because the figure is a JPEG XObject inside
+the PDF and the Python tool reads raw pixels:
+
+1. the embedded JPEG stream (`775x1371` px, sha256
+   `b28ef871c4ad92031d7eeaf24e8a20d0fde6e83f9842c88c0f98ea645068c9ea`) is extracted from
+   the PDF page with a standard-library stream reader;
+2. that JPEG is decoded to a raw RGBA dump (`4250128` bytes, sha256
+   `89f3812ced9292b85e909de218e620eb8dfb358173baeb9647632ab3b7099a8c`) by a small Node
+   tool that uses the renderer's canvas binding (`@napi-rs/canvas` from `/forge`) and is
+   therefore kept in trial storage rather than committed here;
+3. `python3 digitize_fig1.py --rgba liang-fig1.rgba \
+        --calibration ../liang-properties/figure1-calibration.json --out liang-fig1-digitised.json`
+
+Re-running step 3 on that dump reproduces the retained JSON byte for byte (`sha256
+daec539ae6e09d81069623091174f85be7a424062b1f9edc6bb9d678028f83ff`), so the digitisation is
+deterministic given the declared inputs.
+
