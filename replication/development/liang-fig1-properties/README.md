@@ -38,6 +38,25 @@ Probe CSV columns: `T_K, rho_srk_kg_m3, Z_srk, v_srk_m3_kmol, cp_ideal_J_molK,
 cp_res_J_molK, cp_J_molK, lambda_eh_W_mK, cpR_ideal`. `SrkKernel.h` returns the *residual*
 cp only, so `cp_J_molK = cp_ideal + cp_res`.
 
+### Units of the ideal-gas Cp ratio
+
+`SrkKernel.h` is kmol-based: `liang::R = 8314.46261815324 J/(kmol K)`, while the Shomate
+fit returns J/(mol K). The dimensionless `Cp/R` needed by `ElyHanley.H` (its `Species::cp_R`)
+and reported in the `cpR_ideal` column is therefore `1000·cp_ideal/liang::R`. The first
+version of this probe omitted the factor 1000, which made `Cp/R = 0.00353` at 300 K, tripped
+the repository's own `Cp/R < 2.5` guard in `ElyHanley.H` for every temperature and produced a
+header-only CSV while still exiting 0 (job `125192215`, run
+`/workspace/forge-out/runs/liang-fig1-probe2-5c20c46/`, retained as failed evidence).
+
+The probe now pins the conversion twice and refuses to report an incomplete sweep:
+
+* `unit_check` on stderr: `liang::R` must equal 8314.462618 J/(kmol K) to 1e-4 and
+  `Cp/R(300 K)` must be 3.53 ± 0.05 (0.00353 and 3530 both fail); exit status 2 otherwise;
+* every state must have `3.30 ≤ Cp/R ≤ 4.20`, the audited O₂ window 150–1000 K;
+* every printed value is checked finite;
+* `coverage rows N expected M rejected K` is reported, and any rejection, `N = 0` or
+  `N ≠ M` exits with status 3 so `job.sh` (which propagates the payload status) fails too.
+
 ## Why the published data are digitised
 
 Fig. 1 is a raster XObject inside the PDF — there is no vector path to extract, unlike
