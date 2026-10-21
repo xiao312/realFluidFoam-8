@@ -49,11 +49,11 @@ const TARGETS = [
         model: 'uncorrected PR EoS (paper Eq. 8)' },
     ],
     paperSeries: [
-      { id: 'paper-vta', source: 'paper-vta', label: 'paper: PR-VTA EoS',
+      { id: 'paper-vta', source: 'paper-vta', label: 'paper: PR-VTA',
         color: '#000000', lineWidth: 1.2, mark: 'line' },
-      { id: 'paper-pr', source: 'paper-pr', label: 'paper: PR EoS',
+      { id: 'paper-pr', source: 'paper-pr', label: 'paper: PR',
         color: '#000000', lineWidth: 1.2, mark: 'line', dash: [3, 2] },
-      { id: 'paper-nist', source: 'paper-nist', label: 'paper: NIST WebBook',
+      { id: 'paper-nist', source: 'paper-nist', label: 'paper: NIST',
         color: '#000000', lineWidth: 0.7, mark: 'points', markerRadius: 1.9, markerWidth: 0.7 },
     ],
   },
@@ -72,9 +72,9 @@ const TARGETS = [
     ],
     paperSeries: [
       // the paper draws the Fig. 1(b) PR cp curve dashed, as in Fig. 1(a)
-      { id: 'paper-pr', source: 'paper-pr', label: 'paper: cp (PR EoS)',
+      { id: 'paper-pr', source: 'paper-pr', label: 'paper: cp (PR)',
         color: '#000000', lineWidth: 1.2, mark: 'line', dash: [3, 2] },
-      { id: 'paper-nist', source: 'paper-nist', label: 'paper: NIST WebBook',
+      { id: 'paper-nist', source: 'paper-nist', label: 'paper: NIST',
         color: '#000000', lineWidth: 0.7, mark: 'points', markerRadius: 1.9, markerWidth: 0.7 },
     ],
   },
