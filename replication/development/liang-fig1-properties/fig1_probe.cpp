@@ -56,15 +56,22 @@ int main(int argc, char **argv) {
     std::printf("T_K,rho_srk_kg_m3,Z_srk,v_srk_m3_kmol,cp_ideal_J_molK,cp_res_J_molK,cp_J_molK,"
                 "lambda_eh_W_mK,cpR_ideal\n");
     for (double T = Tmin; T <= Tmax + 1e-9; T += step) {
-        const auto z = liang::evaluate(T, P_FIG1, x, srk);
-        const double cp_i = cp_ideal(T);
-        const double cp_res = z.cp / 1000.0;             // J/kmol/K -> J/mol/K
-        std::vector<rfElyHanley::Species> eh = {{TC_O2, PC_O2, VC_O2, W_O2, OMEGA_O2, cp_i / liang::R}};
-        const std::vector<double> X = {1.0}, Vbar = {z.v};
-        const double lambda = rfElyHanley::conductivity(T, z.v, eh, X, Vbar);
-        std::printf("%.4f,%.6f,%.6f,%.8f,%.6f,%.6f,%.6f,%.8f,%.6f\n",
-                    T, W_O2 / z.v, P_FIG1 * z.v / (liang::R * T), z.v, cp_i, cp_res, cp_i + cp_res,
-                    lambda, cp_i / liang::R);
+        try {
+            const auto z = liang::evaluate(T, P_FIG1, x, srk);
+            const double cp_i = cp_ideal(T);
+            const double cp_res = z.cp / 1000.0;             // J/kmol/K -> J/mol/K
+            const std::vector<rfElyHanley::Species> eh = {
+                {TC_O2, PC_O2, VC_O2, W_O2, OMEGA_O2, cp_i / liang::R}};
+            const std::vector<double> X = {1.0}, Vbar = {z.v};
+            const double lambda = rfElyHanley::conductivity(T, z.v, eh, X, Vbar);
+            std::printf("%.4f,%.6f,%.6f,%.8f,%.6f,%.6f,%.6f,%.8f,%.6f\n",
+                        T, W_O2 / z.v, P_FIG1 * z.v / (liang::R * T), z.v, cp_i, cp_res, cp_i + cp_res,
+                        lambda, cp_i / liang::R);
+        } catch (const std::exception &error) {
+            // Keep the sweep alive and leave the rejected state on stderr; the row is
+            // omitted rather than filled with a substituted value.
+            std::fprintf(stderr, "rejected_T %.4f %s\n", T, error.what());
+        }
     }
     // Explicit join report for the Shomate splice at 700 K.
     const double lo = cp_ideal(700.0 - 1e-6), hi = cp_ideal(700.0 + 1e-6);

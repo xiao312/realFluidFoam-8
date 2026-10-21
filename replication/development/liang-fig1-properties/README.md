@@ -1,85 +1,106 @@
-# Liang et al. (2019) Fig. 1 — density and thermal conductivity of O2 at 100 atm
+# Liang et al. (2019) Fig. 1 — density and thermal conductivity of O₂ at 100 atm
 
-Target `liang-1` of the V&V ladder. The published figure compares a real-fluid model with
-NIST data for pure oxygen at 100 atm: panel (a) density, panel (b) thermal conductivity,
-both from 200 K to 1000 K.
+Target `liang-1` of the Forge V&V ladder. Reference: Liang, Li & Law, *Proc. Combust.
+Inst.* 37 (2019) 1513–1521, doi `10.1016/j.proci.2018.06.070`, PDF sha256
+`24163be0…aca6fe`, page 3. Caption: “Comparison of model and experimental data of (a)
+density and (b) thermal conductivity for oxygen at 100 atm”.
 
-* Liang, Li, Law (2019), *Proc. Combust. Inst.* 37, doi `10.1016/j.proci.2018.06.070`
-* paper PDF sha256 `24163be0124e0fa6cd28ddb1d369b813e64e82bd7446e9f9218a340445aca6fe`
-* Fig. 1 = page 3 of the PDF; the figure itself is an **embedded JPEG raster**
-  (DeviceGray, 775x1371 px, sha256 `b28ef871c4ad92031d7eeaf24e8a20d0fde6e83f9842c88c0f98ea645068c9ea`),
-  so every published reading is a pixel measurement, not a vector path.
+Everything here is standard library / repository headers. No numpy, no PyMuPDF, no
+matplotlib: the batch image has none of them (job 125185651) and the local image has no
+numpy either.
 
-## What is compared
+## Files
 
-| series | origin |
+| file | role |
 | --- | --- |
-| `paper-model` | model curve of Fig. 1, digitised from the embedded raster (this directory) |
-| `paper-experiment` | filled triangles of Fig. 1, digitised from the same raster (NIST data as plotted) |
-| `computed` | SRK density and Ely–Hanley conductivity at 100 atm, from repository source |
+| `fig1_probe.cpp` | C++17 sweep of the repository's own SRK kernel and Ely–Hanley conductivity over 150–1000 K at 100 atm; writes the CSV |
+| `job.sh` | builds and runs the probe in a scheduler job (`sh job.sh CASE RUN`) |
+| `pr_density.py` | sweeps the independent Peng–Robinson module `../oxygen-properties` at the same pressure |
+| `digitize_fig1.py` | measures the published curves and symbols out of the PDF's embedded raster |
+| `render_figures.mjs` | builds `forge-series-v1` data and two `forge-paper-style-v1` recipes, then renders the composite SVG |
+| `checks.py` | six checks and the `forge-campaign-checks-v1` verification file |
 
-The paper states that its transport model uses the Ely–Hanley correlation for thermal
-conductivity and the Takahashi high-pressure correction for binary diffusion.  Panel (a)
-does not name the equation of state; the density model is therefore compared with **SRK**
-(`../cantera-liang/SrkKernel.h`) and, as a cross-check, with the Peng–Robinson
-implementation of `../oxygen-properties/oxygen_properties.py`.  Both are computed here;
-the report states which one the paper's own numbers agree with.
+## Why the probe is C++
 
-## Method
+`replication/development/liang-properties/SrkKernel.h` and `ElyHanley.H` are header-only
+and SDK-free, so the Liang workflow's own `liang::evaluate` and
+`rfElyHanley::conductivity` are used verbatim instead of a re-derivation. The Peng–Robinson
+variant stays in Python (`../oxygen-properties`) so `numerical_comparison` compares the
+SRK curve against an *independent* equation-of-state implementation.
 
-`fig1_probe.cpp` (header-only, no Cantera SDK, one thread) evaluates
+Constants (pure O₂): `Tc = 154.581 K`, `Pc = 5.043e6 Pa`, `Vc = 0.0734 m³/kmol`,
+`W = 31.9988 kg/kmol`, `ω = 0.022`; `p = 100 atm = 10 132 500 Pa`. Ideal-gas cp is the
+NIST Shomate fit in both of its ranges; the two ranges agree to 0.002 % at the 700 K
+splice, which is reported at run time (`shomate_join_700K` on stderr) and re-checked by
+`checks.py`.
 
-* SRK volume and residual `cp` from `liang::evaluate` (`../cantera-liang/SrkKernel.h`,
-  molar SI units: kmol, m3, K, Pa, J);
-* thermal conductivity from `rfElyHanley::conductivity`
-  (`../liang-properties/ElyHanley.H`), pure O2 with `cp_R` from the ideal-gas fit;
-* ideal-gas `cp` from the NIST Shomate fit of O2, lower range 100–700 K and upper range
-  700–6000 K, with the 700 K splice written to stderr (`shomate_join_700K`) so the join
-  can be verified rather than assumed.
+Probe CSV columns: `T_K, rho_srk_kg_m3, Z_srk, v_srk_m3_kmol, cp_ideal_J_molK,
+cp_res_J_molK, cp_J_molK, lambda_eh_W_mK, cpR_ideal`. `SrkKernel.h` returns the *residual*
+cp only, so `cp_J_molK = cp_ideal + cp_res`.
 
-O2 constants (Liang et al. Fig. 1 conditions): `Tc = 154.581 K`, `Pc = 5.043 MPa`,
-`Vc = 0.0734 m3/kmol`, `W = 31.9988 kg/kmol`, `omega = 0.022`, `p = 100 atm = 10.1325 MPa`.
+## Why the published data are digitised
 
-`digitize_fig1.py` measures the published figure with the Python standard library only:
+Fig. 1 is a raster XObject inside the PDF — there is no vector path to extract, unlike
+Müller & Pfitzner Fig. 1. The chain is:
 
-1. the axis calibration of `../liang-properties/figure1-calibration.json` is **re-fitted**
-   from its own tick lists and the residuals reported (worst tick residual below 1 px);
-2. filled triangles are found from 3x3-erosion cores, which rejects the 2–3 px model line
-   and the inward axis ticks (a core must be 5x5 px or larger and roughly isotropic);
-3. the triangle cores and their rims are removed, the remaining line mask is thinned with
-   Zhang–Suen, and each ridge component is walked into an ordered polyline, so steep
-   branches are traced correctly instead of being flattened to one value per column;
-4. a break in the ridge is kept as a **gap**, never interpolated: the model line is hidden
-   where a filled symbol is printed on top of it.  The gaps are listed in the output and
-   drawn as separate segments in the plot.
+1. the PDF text/objects are parsed, the figure's image XObject is extracted as a
+   775×1371 DeviceGray DCTDecode JPEG (sha256 `b28ef871…68c9ea`) — byte-identical to the
+   `image_sha256` recorded in `../liang-properties/figure1-calibration.json`;
+2. that JPEG is decoded to RGBA (sha256 recorded in the digitisation JSON);
+3. the retained axis calibration is refitted from its own tick list (residual ≤ 0.75 px,
+   agreement with the retained coefficients 2.4e-13) and applied to the pixels;
+4. the model curves are traced by Zhang–Suen thinning of the line mask plus an ordered
+   per-component walk; the published triangles are found as 3×3-erosion cores with a shape
+   filter (25–600 core pixels, bbox ≥ 5×5, aspect 0.5–2.0) after rejecting the frame,
+   inward ticks, tick labels and the near-vertical stroke at the left.
 
-## Uncertainty and limitations
+Stretches where a filled triangle hides the model line are recorded as **gaps**, never
+interpolated. Declared uncertainty: 1 px ≈ 1.19 K / 0.38 kg/m³ in panel (a) and ≈ 1.34 K /
+2.3×10⁻⁴ W/(m·K) in panel (b); line centre ±1 px, triangle centre ±2 px.
 
-* 1 px is about 1.19 K and 0.38 kg/m3 horizontally/vertically in panel (a), and about
-  1.34 K and 2.3x10^-4 W/(m K) in panel (b).  Line centre and triangle centre add about
-  1 px and 2 px respectively; the totals are reported per series in the evidence.
-* Panel (a): the digitised model curve starts at **238 K**, because below that the curve is
-  drawn against the axis frame and its inward ticks and cannot be separated from them in
-  the raster.  Panel (b): the model peak is **cut off by the top frame** (about
-  0.155 W/(m K)); only the clipped maximum is readable.
-* The published axes carry no minor ticks that survive the raster, and the raster has no
-  vector text, so the reproduction draws the axis labels from the measured positions
-  (`labels` in the recipe) instead of glyph paths.  Tick values and limits follow the
-  fitted calibration, not the artist's original layout.
-* Fig. 1 alone cannot separate the paper's equation of state from its transport model; the
-  report therefore reports both EoS candidates and does not claim that either one is the
-  author's.
+Measurable ranges are limited by the figure, not by the extraction: panel (a) model only
+for T ≳ 238 K (below that the curve overlaps the axis frame and the inward ticks), panel
+(b) model peak clipped by the top frame at ≈ 0.155 W/(m·K) so the reading starts at
+≈ 171 K.
 
-## Reproduction
+## Figure geometry
+
+Pixel → point: `x = 50.733 + 0.24·px`, `y = 54.012 + 0.24·py` (top-down), from the
+placement rectangle of the 775×1371 raster on the page. ViewBox
+`[50.733, 44.0, 190.0, 339.0]`, canvas 792×1413. Panel (a) frame
+`[72.333, 54.012, 230.733, 198.852]`, x `[219.04, 1004.64]`, y `[0, 230.60]`; panel (b)
+frame `[72.333, 224.412, 230.733, 369.132]`, x `[116.2, 1000.9]`, y
+`[0.01079, 0.15039]`.
+
+The composite SVG is one root element whose children are the unmodified bodies of the two
+`renderPaperComparison()` calls (`/forge/plots/paper-style.mjs`), both drawn on the same
+canvas and viewBox. Nothing is re-projected, so each panel is byte-reproducible from
+`data.json` + its panel recipe in `raw/`.
+
+Declared fidelity gaps, all caused by the renderer, not by the data:
+
+* axis text is placed as measured text (`labels[]`), not the paper's own vector glyphs —
+  the raster has none;
+* the y-axis titles are horizontal, because the renderer has no rotation;
+* the published triangles are drawn as circles, because the renderer has only circle
+  markers;
+* the paper's inward minor ticks are not drawn, and the grid is left empty rather than
+  inventing grid lines the paper does not have;
+* legend text is shortened to fit inside the frame and the legend rows are moved to empty
+  regions of each panel; the paper's legend order is kept.
+
+## Runs
 
 ```sh
-sh job.sh "$PWD" /path/to/run-dir          # build + probe, writes fig1-probe.csv
-python3 digitize_fig1.py --rgba fig1.rgba \
-    --calibration ../liang-properties/figure1-calibration.json --out digitised.json
-node render_figures.mjs --probe run-dir/fig1-probe.csv --digitised digitised.json --out out-dir
-python3 checks.py --probe ... --digitised ... --out verification.json
+sh job.sh "$PWD" /path/to/run          # env cantera32, 1 rank, OMP/OPENBLAS = 1
+python3 pr_density.py --out run/liang-1-pr-100atm.csv
+node render_figures.mjs --probe run/fig1-probe.csv \
+     --digitised liang-fig1-digitised.json --pr-csv run/liang-1-pr-100atm.csv \
+     --out-dir run --source-commit "$(git rev-parse HEAD)" --run-job-id "$JOB"
+python3 checks.py --probe run/fig1-probe.csv --digitised … --data … --plot … \
+     --recipe … --out run/verification.json --commit "$(git rev-parse HEAD)"
 ```
 
-`fig1.rgba` is the decoded raster of the embedded JPEG, produced by
-`node tools/jpeg2raw.mjs` (`@napi-rs/canvas`); its sha256 is recorded in the digitisation
-output.  Nothing here writes into the repository at run time.
+`digitize_fig1.py` is not part of the job: it measures the paper once and its output
+(`liang-fig1-digitised.json`) is retained as raw evidence with the RGBA dump digest inside
+it. It is re-runnable from the PDF alone.

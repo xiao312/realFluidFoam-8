@@ -21,7 +21,11 @@ say "run $RUN"
 say "compiler $CXX"
 "$CXX" --version 2>&1 | head -1 >> "$RUN/status.txt" || true
 
-if "$CXX" -std=c++17 -O2 -Wall -Wextra -o "$RUN/fig1-probe" "$CASE/fig1_probe.cpp" \
+# The batch image's g++ finds its own libstdc++ headers but not the glibc headers of the
+# host; -isystem/-B point at them, exactly as the qualified Cantera build does.
+CXXFLAGS="-std=c++17 -O2 -Wall -Wextra -isystem /usr/include/x86_64-linux-gnu -L/usr/lib/x86_64-linux-gnu -B/usr/lib/x86_64-linux-gnu/"
+say "flags $CXXFLAGS"
+if "$CXX" $CXXFLAGS -o "$RUN/fig1-probe" "$CASE/fig1_probe.cpp" \
         > "$RUN/build.log" 2>&1; then
     say "build OK"
 else
