@@ -31,7 +31,7 @@ if "$CXX" $CXXFLAGS -o "$RUN/fig1-probe" "$CASE/fig1_probe.cpp" \
 else
     say "build FAILED (see build.log)"
     printf 'FAILED\n' > "$RUN/rc.txt"
-    exit 0
+    exit 1
 fi
 
 "$RUN/fig1-probe" 150 1000 1 > "$RUN/fig1-probe.csv" 2> "$RUN/probe.err"
@@ -47,4 +47,5 @@ printf '%s\n' "--- provenance ---" >> "$RUN/status.txt"
 sha256sum "$CASE/fig1_probe.cpp" 2>/dev/null >> "$RUN/status.txt" || true
 sha256sum "$RUN/fig1-probe.csv" >> "$RUN/status.txt" || true
 printf '%s\n' "rc=$rc" > "$RUN/rc.txt"
+[ "$rc" -eq 0 ] || exit "$rc"
 exit 0
