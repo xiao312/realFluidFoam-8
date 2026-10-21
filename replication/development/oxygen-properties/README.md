@@ -151,9 +151,9 @@ pseudo-critical knee (157-160 K), where markers 1 K apart differ by 2-40 % and
 
 The 150–165 K band is the pseudo-critical region, where `dρ/dT` reaches
 -90 kg/m³/K; the 1.2 % discrepancy there is equivalent to an **abscissa
-difference of 0.06 K**, i.e. at the resolution of the vector extraction
-(1 px ≈ 0.21 K horizontally), not a model discrepancy. Outside that band the
-density agreement is 0.02–0.07 %.
+difference of about 0.1 K**, i.e. at the resolution of the reference figure
+(1 px = 0.437 K horizontally, 4.7 kg/m³ vertically in the 200 dpi crop), not a
+model discrepancy. Outside that band the density agreement is 0.02–0.07 %.
 
 ## Open discrepancy: published cp below ≈130 K
 
