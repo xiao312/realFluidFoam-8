@@ -108,11 +108,26 @@ the extraction provenance) and from the published NIST markers, `T = 85–299.5 
 | ρ_VTA | 1.35 % max (158.2 K), rms 0.21 % | 0.067 % | 1.35 % | 0.064 % |
 | cp (PR) | 20.9 % max (85 K), rms 4.1 % | 20.9 % | 11.4 % | 0.157 % |
 
-| vs NIST markers | max deviation | at | at 85 K |
-| --- | --- | --- | --- |
-| ρ_PR | 12.84 % | 85 K | +12.84 % |
-| ρ_VTA | 1.21 % | 157.1 K | **-0.071 %** |
-| cp (PR) | 14.6 % | 158.5 K | -5.83 % |
+Every published NIST marker is compared at its own abscissa (all 48 density
+markers, all 54 cp markers; the model is evaluated at the marker temperature,
+no reference ordinate is moved, dropped or synthesised):
+
+| vs NIST markers | max deviation | at | rms | at 85 K | 85-130 K |
+| --- | --- | --- | --- | --- | --- |
+| ρ_PR | 12.84 % | 85 K | 6.11 % | +12.84 % | +12.84 % to +8.59 % |
+| ρ_VTA | 8.54 % | 160 K | 2.74 % | **-0.071 %** | -0.07 % to +0.94 % |
+| cp (PR) | 22.8 % | 157 K | 7.71 % | -5.83 % | -5.83 % to +5.35 % |
+
+The low-temperature band 85-130 K is the one the paper's argument rests on:
+there ρ_VTA stays within **0.94 %** of every NIST marker and ρ_PR is
++8.6 % to +12.8 % high, i.e. the volume translation is doing exactly what the
+paper says it does (+12.84 % → -0.07 % at 85 K). Our cp stays within
+5.8 % of every marker in that band and changes sign near 112 K, whereas the
+published cp **curve** is 22.1 % below its own 85 K NIST marker.
+
+The three large marker deviations left in the table are all inside the
+pseudo-critical knee (157-160 K), where markers 1 K apart differ by 2-40 % and
+`dρ/dT` reaches -90 kg·m⁻³/K.
 
 The 150–165 K band is the pseudo-critical region, where `dρ/dT` reaches
 -90 kg/m³/K; the 1.2 % discrepancy there is equivalent to an **abscissa
@@ -123,7 +138,10 @@ density agreement is 0.02–0.07 %.
 ## Open discrepancy: published cp below ≈130 K
 
 The published PR `cp` curve in Fig. 1(b) is reproduced to 0.16 % for
-`T > 165 K`. In the pseudo-critical peak the comparison is limited by abscissa
+`T > 165 K` and to 0.28 % at 150 K, but the published *curve* is itself
+inconsistent with the published *markers* at low temperature: at 85 K the
+curve reads 1298.8 J/(kg K), 22.1 % below the NIST marker 1667.6 J/(kg K) at
+the same temperature. Our model gives 1570.3 there (-5.8 % vs the marker). In the pseudo-critical peak the comparison is limited by abscissa
 resolution rather than by the model: at 157.5 K the published curve gives
 16208 J/(kg K) and ours 17701 (+9.2 %), while at 156 K the published 9605 is
 matched to -2.2 % by our 9397 and at 158 K the two agree to 0.1 %

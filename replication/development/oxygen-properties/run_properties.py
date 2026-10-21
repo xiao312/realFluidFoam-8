@@ -94,7 +94,7 @@ def interp_points(points, x):
     return None
 
 
-def compare(rows, refdir):
+def compare(rows, refdir, PRESSURE):
     out = {"reference_dir": refdir, "series": {}}
     files = {
         "density": "muller2015-fig1a-density-props-r2-series.json",
@@ -160,20 +160,21 @@ def compare(rows, refdir):
                 "band_T_150_165_pseudocritical": band(150.0, 165.0),
                 "band_T_165_300": band(165.0, 299.6),
             }
-        # marker comparison: only at the published marker temperatures
+        # Marker comparison: EVERY published marker is compared at its own
+        # abscissa. The model is evaluated at the marker temperature; that is not
+        # interpolation of reference data, because the reference ordinates stay
+        # exactly as extracted and no marker is moved, dropped or synthesised.
         mk = ser.get("paper-nist")
         if mk:
-            rows_by_T = {round(r["T_K"], 6): r for r in rows}
             cmp_rows = []
             for q in mk["points"]:
-                r = rows_by_T.get(round(q["x"], 6))
-                if r is None:
-                    continue
+                T = q["x"]
+                st = op.state(T, PRESSURE)
                 if field == "rho":
-                    vals = {"rho_PR": r["rho_PR_kg_m3"], "rho_VTA": r["rho_VTA_kg_m3"]}
+                    vals = {"rho_PR": st["rho_PR"], "rho_VTA": st["rho_VTA"]}
                 else:
-                    vals = {"cp_PR": r["cp_PR_J_kgK"]}
-                item = {"T_K": q["x"], "reference": q["y"]}
+                    vals = {"cp_PR": st["cp_PR_J_kgK"]}
+                item = {"T_K": T, "reference": q["y"]}
                 for k, v in vals.items():
                     item[k] = v
                     item[k + "_rel_dev_percent"] = 100.0 * (v - q["y"]) / q["y"]
@@ -193,6 +194,7 @@ def compare(rows, refdir):
                 "reference_provenance": mk.get("provenance"),
                 "n_markers_total": len(mk["points"]),
                 "n_markers_compared": len(cmp_rows),
+                "model_value_source": "state(T_marker, p) evaluated at each published marker abscissa", 
                 "summary": summary,
                 "per_marker": cmp_rows,
             }
@@ -218,7 +220,7 @@ def main(argv=None):
                 ("%.10g" % r[k]) if isinstance(r[k], float) else str(r[k])
                 for k in CSV_HEADER.split(",")) + "\n")
 
-    dev = compare(rows, args.reference_dir)
+    dev = compare(rows, args.reference_dir, args.p)
     dev["schema"] = "oxygen-properties-deviations-v1"
     dev["pressure_Pa"] = args.p
     dev["n_samples"] = len(rows)
