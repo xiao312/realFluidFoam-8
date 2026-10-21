@@ -31,9 +31,27 @@ import argparse
 import hashlib
 import json
 import math
+import sys
 from pathlib import Path
 
-R = 8314.46261815324  # J/(kmol K), the constant used by SrkKernel.h
+# Two molar constants are needed and they are not interchangeable.  SrkKernel.h works in
+# kmol, so the ideal-gas volume it returns is m3/kmol and the cubic needs R in
+# J/(kmol K).  The probe's caloric column is cp_J_molK, i.e. J/(mol K), so the
+# dimensionless cp/R must divide by the mol-based constant.  Dividing a J/(mol K) column
+# by the kmol constant is the dimensional defect this file previously repeated; keep the
+# two names distinct so the mistake cannot reappear by accident.
+R_KMOL = 8314.46261815324  # J/(kmol K), the constant used by SrkKernel.h
+R_MOL = 8.31446261815324  # J/(mol K), for cp_J_molK
+# The probe pins its own canary at cp/R(300 K) = 3.53 +/- 0.05; the audited band used by
+# fig1_probe.cpp is [3.30, 4.20].  A wrong cp scale cannot pass both this band and the
+# whole-column range below.
+CP_R_300K_BAND = (3.30, 4.20)
+CP_R_RANGE = (3.00, 14.00)
+# Declared tolerances for the comparison check (see README).  A claim, not a fit.
+TOL_DENSITY_RMS_PCT = 5.0
+TOL_CONDUCTIVITY_RMS_PCT = 10.0
+TOL_PR_RMS_PCT = 5.0
+STAGES = ("probe", "pr_density", "digitize_fig1", "render_figures", "git_diff_check")
 T_C = 154.581
 P_C = 5.043e6
 W_O2 = 31.9988
@@ -52,9 +70,9 @@ def cp_ideal(T):
 def srk_state(T, p):
     """Closed-form SRK Z and molal volume; independent of the C++ kernel."""
     m = 0.48 + 1.574 * OMEGA - 0.176 * OMEGA ** 2
-    a = 0.42747 * (R * T_C) ** 2 / P_C * (1 + m * (1 - math.sqrt(T / T_C))) ** 2
-    b = 0.08664 * R * T_C / P_C
-    A, B = a * p / (R * T) ** 2, b * p / (R * T)
+    a = 0.42747 * (R_KMOL * T_C) ** 2 / P_C * (1 + m * (1 - math.sqrt(T / T_C))) ** 2
+    b = 0.08664 * R_KMOL * T_C / P_C
+    A, B = a * p / (R_KMOL * T) ** 2, b * p / (R_KMOL * T)
     c, d = A - B - B * B, -A * B
     pp, qq = c - 1.0 / 3.0, -2.0 / 27.0 + c / 3.0 + d
     disc = qq * qq / 4.0 + pp ** 3 / 27.0
@@ -63,7 +81,7 @@ def srk_state(T, p):
     else:
         z = 1.0 / 3.0 + 2.0 * math.sqrt(-pp / 3.0) * math.cos(
             math.acos(max(-1.0, min(1.0, -qq / (2.0 * math.sqrt(-(pp ** 3) / 27.0))))) / 3.0)
-    return z, z * R * T / p
+    return z, z * R_KMOL * T / p
 
 
 def _cbrt(value):
@@ -116,7 +134,33 @@ def main():
     parser.add_argument("--out", type=Path, required=True)
     parser.add_argument("--commit", required=True)
     parser.add_argument("--job", default=None)
+    parser.add_argument(
+        "--stage", action="append", default=[], metavar="NAME|COMMAND|RC",
+        help="one measured pipeline stage and its real exit status; every name in "
+             "STAGES must be supplied, there is no default verdict")
     args = parser.parse_args()
+
+    # Handoff verdicts are measurements.  A stage that is not supplied is a hard error:
+    # a verification artifact that can assert 'passed' without having run anything is
+    # worthless, so refuse to write one.
+    stages = {}
+    for item in args.stage:
+        name, _, rest = item.partition("|")
+        command, _, rc_text = rest.rpartition("|")
+        if not name or not command or not rc_text.strip():
+            raise SystemExit(f"malformed --stage {item!r}: expected NAME|COMMAND|RC")
+        try:
+            stages[name] = (command, int(rc_text))
+        except ValueError:
+            raise SystemExit(f"--stage {name!r} has a non-integer exit status {rc_text!r}")
+    missing = [name for name in STAGES if name not in stages]
+    if missing:
+        raise SystemExit(
+            "missing measured stage(s): " + ", ".join(missing)
+            + "; pass --stage NAME|COMMAND|RC for every stage, including its real rc")
+    unknown = sorted(set(stages) - set(STAGES))
+    if unknown:
+        raise SystemExit("unexpected stage name(s): " + ", ".join(unknown))
 
     checks = []
     head, rows = read_csv(args.probe)
@@ -133,13 +177,31 @@ def main():
         problems.append(f"expected 851 rows, found {len(rows)}")
     if t_values != sorted(t_values) or t_values[0] != 150.0 or abs(t_values[-1] - 1000.0) > 1e-9:
         problems.append("temperature grid is not the declared 150-1000 K step 1 K sweep")
+    cp_over_r = {row["T_K"]: row["cp_J_molK"] / R_MOL for row in rows}
+    cp_min = min(cp_over_r.values())
+    cp_max = max(cp_over_r.values())
+    cp_300 = cp_over_r.get(300.0)
+    # Z above 1 is physical (repulsion-dominated states at high T, low p) up to roughly 1.2
+    # for these conditions; the bound rejects a failed root solve, not a real gas.
     for row in rows:
-        if not (0.0 < row["Z_srk"] <= 1.0) or row["rho_srk_kg_m3"] <= 0 or row["lambda_eh_W_mK"] <= 0:
+        if not (0.0 < row["Z_srk"] <= 1.5) or row["rho_srk_kg_m3"] <= 0 or row["lambda_eh_W_mK"] <= 0:
             problems.append(f"non-physical state at T={row['T_K']}: {row}")
             break
-        if row["cp_J_molK"] / R < 3.0:
-            problems.append(f"cp below 3R at T={row['T_K']}")
-            break
+    # The probe's 300 K canary is an ideal-gas number: it pins cpR_ideal, the column that
+    # must equal cp_ideal/(J/(mol K))/R_MOL.  The total cp/R at 100 atm carries the residual
+    # part and is legitimately larger, so it is range-checked, not band-checked.
+    ideal_300 = next((row["cpR_ideal"] for row in rows if row["T_K"] == 300.0), None)
+    if ideal_300 is None:
+        problems.append("the 300 K canary row is missing from the sweep")
+    elif not (CP_R_300K_BAND[0] <= ideal_300 <= CP_R_300K_BAND[1]):
+        problems.append(
+            f"ideal cp/R(300 K) = {ideal_300:.4f} outside the audited band "
+            f"[{CP_R_300K_BAND[0]}, {CP_R_300K_BAND[1]}]")
+    cp_300 = ideal_300
+    if cp_min < CP_R_RANGE[0] or cp_max > CP_R_RANGE[1]:
+        problems.append(
+            f"total cp/R spans [{cp_min:.4f}, {cp_max:.4f}], outside the physical range "
+            f"[{CP_R_RANGE[0]}, {CP_R_RANGE[1]}] - a wrong cp scale looks like this")
     worst = 0.0
     worst_at = None
     for row in rows:
@@ -167,7 +229,10 @@ def main():
             f"[{min(r['Z_srk'] for r in rows):.5f}, {max(r['Z_srk'] for r in rows):.5f}], "
             f"rho {min(r['rho_srk_kg_m3'] for r in rows):.3f}-{max(r['rho_srk_kg_m3'] for r in rows):.3f} kg/m3, "
             f"lambda {min(r['lambda_eh_W_mK'] for r in rows):.5f}-{max(r['lambda_eh_W_mK'] for r in rows):.5f} W/(m K), "
-            f"cp/R >= {min(r['cp_J_molK'] for r in rows) / R:.3f}. A closed-form SRK cubic written "
+            f"total cp/R in [{cp_min:.4f}, {cp_max:.4f}] with ideal cp/R(300 K) = "
+            f"{cp_300 if cp_300 is None else round(cp_300, 4)} inside the audited band "
+            f"[{CP_R_300K_BAND[0]}, {CP_R_300K_BAND[1]}] (J/(mol K) divided by R = {R_MOL} "
+            f"J/(mol K), not by the kmol constant used by the cubic). A closed-form SRK cubic written "
             f"independently in Python reproduces the kernel volume at every state; worst relative "
             f"density difference {worst:.2e} at T={worst_at} K (tolerance 1e-6). The two NIST Shomate "
             f"ranges of O2 give {lo:.6f} and {hi:.6f} J/(mol K) at the 700 K splice (relative jump "
@@ -315,9 +380,16 @@ def main():
         if value:
             pr_dev.append((row["T_K"], 100.0 * (row["rho_PR_kg_m3"] - value) / value))
     pr_rms, pr_extreme = stats(pr_dev)
+    problems = []
+    if density_rms > TOL_DENSITY_RMS_PCT:
+        problems.append(f"density rms {density_rms:.2f} % > {TOL_DENSITY_RMS_PCT} %")
+    if cond_rms > TOL_CONDUCTIVITY_RMS_PCT:
+        problems.append(f"conductivity rms {cond_rms:.2f} % > {TOL_CONDUCTIVITY_RMS_PCT} %")
+    if pr_rms > TOL_PR_RMS_PCT:
+        problems.append(f"PR-vs-SRK rms {pr_rms:.2f} % > {TOL_PR_RMS_PCT} %")
     checks.append({
         "id": "numerical_comparison",
-        "result": "passed",
+        "result": "passed" if not problems else "failed",
         "details":
             f"Paper model minus this work at the digitised abscissae: density {len(density_dev)} "
             f"points, rms {density_rms:.2f} %, largest {density_extreme[1]:+.2f} % at "
@@ -331,7 +403,15 @@ def main():
             f"diffusion for transport, so agreement within a few percent is the expected outcome, not "
             f"evidence of identity. The one clearly visible disagreement is the conductivity peak at "
             f"the low-temperature frame edge, which the published curve clips and this work resolves "
-            f"to {max(r['lambda_eh_W_mK'] for r in rows):.4f} W/(m K) near 150 K.",
+            f"to {max(r['lambda_eh_W_mK'] for r in rows):.4f} W/(m K) near 150 K. Verdict is "
+            f"measured against declared rms tolerances density {TOL_DENSITY_RMS_PCT} %, "
+            f"conductivity {TOL_CONDUCTIVITY_RMS_PCT} %, PR-vs-SRK {TOL_PR_RMS_PCT} %. The "
+            f"conductivity digitisation is unresolved and is reported as such: the published "
+            f"curve read off panel (b) sits about a factor of two above the computed Ely-Hanley "
+            f"column over 171-837 K, which a factor-consistency check of the panel (b) y "
+            f"calibration must explain before that panel can be called reproduced. Panel (a) "
+            f"needs no such caveat."
+            + ("" if not problems else " Problems: " + " | ".join(problems)),
     })
 
     result = {
@@ -339,19 +419,14 @@ def main():
         "source_commit": args.commit,
         "target": "liang-1",
         "checks": checks,
+        # Derived from the exit status supplied for each stage, never from a literal.
         "handoff_checks": [
-            {"command": "sh job.sh <case-dir> <run-dir>", "result": "passed", "revision": args.commit},
-            {"command": "python3 pr_density.py --out <csv>", "result": "passed", "revision": args.commit},
-            {"command": "python3 digitize_fig1.py --rgba <dump> --calibration <json> --out <json>",
-             "result": "passed", "revision": args.commit},
-            {"command": "node render_figures.mjs --probe <csv> --digitised <json> --pr-csv <csv> "
-                        "--out-dir <dir> --source-commit <sha>", "result": "passed",
-             "revision": args.commit},
-            {"command": "python3 checks.py --probe <csv> --digitised <json> --data <json> "
-                        "--plot <svg> --recipe <json> --pr-csv <csv> --repeat-plot <svg> "
-                        "--repeat-pr <csv> --out <json> --commit <sha>", "result": "passed",
-             "revision": args.commit},
+            {"command": stages[name][0],
+             "result": "passed" if stages[name][1] == 0 else "failed",
+             "revision": args.commit}
+            for name in STAGES
         ],
+        "stage_exit_status": {name: stages[name][1] for name in STAGES},
         "failed_checks": [check["id"] for check in checks if check["result"] != "passed"],
     }
     if args.job:
@@ -359,8 +434,14 @@ def main():
     args.out.write_text(json.dumps(result, indent=1) + "\n")
     for check in checks:
         print(f"{check['id']}: {check['result']}")
+    print(f"stages: " + ", ".join(f"{n}={stages[n][1]}" for n in STAGES))
     print(f"failed: {result['failed_checks']}")
+    stage_failures = [name for name in STAGES if stages[name][1] != 0]
+    if stage_failures or result["failed_checks"]:
+        print("FAILED stages: " + ", ".join(stage_failures) if stage_failures else "no stage failures")
+        return 1
+    return 0
 
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())
