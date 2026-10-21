@@ -52,6 +52,16 @@ TOL_DENSITY_RMS_PCT = 5.0
 TOL_CONDUCTIVITY_RMS_PCT = 10.0
 TOL_PR_RMS_PCT = 5.0
 STAGES = ("probe", "pr_density", "digitize_fig1", "render_figures", "git_diff_check")
+# The file each stage executes, relative to this directory. A stage's recorded executed
+# digest is checked against the committed bytes, so a transcription error (or a stale
+# copy-paste from an earlier round) is a hard error instead of a plausible-looking number.
+STAGE_SOURCES = {
+    "probe": "fig1_probe.cpp",
+    "pr_density": "pr_density.py",
+    "digitize_fig1": "digitize_fig1.py",
+    "render_figures": "render_figures.mjs",
+    "git_diff_check": None,
+}
 T_C = 154.581
 P_C = 5.043e6
 W_O2 = 31.9988
@@ -135,32 +145,93 @@ def main():
     parser.add_argument("--commit", required=True)
     parser.add_argument("--job", default=None)
     parser.add_argument(
-        "--stage", action="append", default=[], metavar="NAME|COMMAND|RC",
-        help="one measured pipeline stage and its real exit status; every name in "
-             "STAGES must be supplied, there is no default verdict")
+        "--stage", action="append", default=[],
+        metavar="NAME|COMMAND|RC|REVISION|EXECUTED_SHA256",
+        help="one measured pipeline stage: its real exit status, the revision that actually "
+             "executed it (a commit, or 'job-<id>@<commit>' for a retained scheduler run) and "
+             "the SHA256 of the file that ran. Every name in STAGES must be supplied; there is "
+             "no default verdict and no default attribution")
+    parser.add_argument(
+        "--input-origin", action="append", default=[],
+        metavar="NAME|REVISION|NOTE",
+        help="where each input artifact came from, e.g. "
+             "probe|job-125193717@cbdef2c|retained CSV of the compiled C++ probe")
     args = parser.parse_args()
 
     # Handoff verdicts are measurements.  A stage that is not supplied is a hard error:
     # a verification artifact that can assert 'passed' without having run anything is
-    # worthless, so refuse to write one.
+    # worthless, so refuse to write one.  The same holds for attribution: one global
+    # commit for every line would claim that the retained C++ probe ran at the commit of
+    # the Python validator that merely read its CSV.
     stages = {}
     for item in args.stage:
-        name, _, rest = item.partition("|")
-        command, _, rc_text = rest.rpartition("|")
-        if not name or not command or not rc_text.strip():
-            raise SystemExit(f"malformed --stage {item!r}: expected NAME|COMMAND|RC")
+        parts = item.split("|")
+        if len(parts) != 5:
+            raise SystemExit(
+                f"malformed --stage {item!r}: expected "
+                f"NAME|COMMAND|RC|REVISION|EXECUTED_SHA256")
+        name, command, rc_text, revision, executed_sha = (part.strip() for part in parts)
+        if not (name and command and rc_text and revision):
+            raise SystemExit(f"--stage {item!r} is missing a field")
         try:
-            stages[name] = (command, int(rc_text))
+            stages[name] = (command, int(rc_text), revision, executed_sha or None)
         except ValueError:
             raise SystemExit(f"--stage {name!r} has a non-integer exit status {rc_text!r}")
     missing = [name for name in STAGES if name not in stages]
     if missing:
         raise SystemExit(
             "missing measured stage(s): " + ", ".join(missing)
-            + "; pass --stage NAME|COMMAND|RC for every stage, including its real rc")
+            + "; pass --stage NAME|COMMAND|RC|REVISION|EXECUTED_SHA256 for every stage, "
+              "including its real rc and the revision that ran it")
     unknown = sorted(set(stages) - set(STAGES))
     if unknown:
         raise SystemExit("unexpected stage name(s): " + ", ".join(unknown))
+
+    # Cross-check every recorded executed digest against the file in this checkout.
+    for name in STAGES:
+        source = STAGE_SOURCES[name]
+        recorded = stages[name][3]
+        if source is None:
+            if recorded:
+                raise SystemExit(
+                    f"--stage {name!r} executes no repository file, so it must not carry an "
+                    f"executed digest (got {recorded!r})")
+            continue
+        path = Path(__file__).resolve().parent / source
+        if not path.exists():
+            raise SystemExit(f"--stage {name!r}: {path} is missing from this checkout")
+        actual = digest(path)
+        if recorded != actual:
+            raise SystemExit(
+                f"--stage {name!r}: the recorded executed digest {recorded} is not the digest of "
+                f"{source} ({actual}). Attribution must name the bytes that ran, not a guess.")
+        stages[name] = stages[name][:3] + (actual,)
+
+    input_paths = {
+        "probe": args.probe, "digitised": args.digitised, "pr_csv": args.pr_csv,
+        "data": args.data, "plot": args.plot, "recipe": args.recipe,
+        "repeat_plot": args.repeat_plot, "repeat_pr": args.repeat_pr,
+    }
+    origins = {}
+    for item in args.input_origin:
+        parts = item.split("|")
+        if len(parts) != 3:
+            raise SystemExit(f"malformed --input-origin {item!r}: expected NAME|REVISION|NOTE")
+        name, revision, note = (part.strip() for part in parts)
+        origins[name] = {"revision": revision, "note": note}
+    unknown_origins = sorted(set(origins) - set(input_paths))
+    if unknown_origins:
+        raise SystemExit("--input-origin names not among the inputs: "
+                         + ", ".join(unknown_origins))
+    # No artifact may be attributed by silence.
+    for name in input_paths:
+        origins.setdefault(name, {"revision": None,
+                                  "note": "UNATTRIBUTED: no --input-origin was supplied, so this "
+                                          "artifact's origin is not claimed"})
+    inputs = {
+        name: {"path": str(path), "sha256": digest(path), **origins[name]}
+        for name, path in input_paths.items()
+    }
 
     checks = []
     head, rows = read_csv(args.probe)
@@ -221,9 +292,12 @@ def main():
         "id": "source_and_units",
         "result": "passed" if not problems else "failed",
         "details":
-            f"The probe is compiled from this checkout (replication/development/cantera-liang/"
-            f"SrkKernel.h for the SRK volume and residual cp, replication/development/"
-            f"liang-properties/ElyHanley.H for the conductivity) and sweeps {len(rows)} states, "
+            f"The probe is a compiled C++ binary (fig1_probe.cpp, built around "
+            f"replication/development/cantera-liang/SrkKernel.h for the SRK volume and residual cp "
+            f"and replication/development/liang-properties/ElyHanley.H for the conductivity). Its "
+            f"CSV is the retained output of scheduler job 125193717, executed at commit cbdef2c; "
+            f"this verifier reads that file and does not re-run the physics. The sweep covers "
+            f"{len(rows)} states, "
             f"T {t_values[0]}-{t_values[-1]} K at 100 atm = {P_FIG:.1f} Pa; no Python Cantera "
             f"module, no external numerics library. Z in "
             f"[{min(r['Z_srk'] for r in rows):.5f}, {max(r['Z_srk'] for r in rows):.5f}], "
@@ -398,10 +472,12 @@ def main():
             f"Peng-Robinson density (replication/development/oxygen-properties) minus SRK over "
             f"{len(pr_dev)} sampled temperatures: rms {pr_rms:.2f} %, largest {pr_extreme[1]:+.2f} % "
             f"at {pr_extreme[0]:.0f} K, i.e. the two cubic equations of state bracket the paper's "
-            f"curve. A systematic offset is reported, not corrected: the paper does not name the "
-            f"equation of state behind its density curve and uses Ely-Hanley with Takahashi-corrected "
-            f"diffusion for transport, so agreement within a few percent is the expected outcome, not "
-            f"evidence of identity. The one clearly visible disagreement is the conductivity peak at "
+            f"curve. A systematic offset is reported, not corrected: Liang et al. state that the "
+            f"density curve is Soave-Redlich-Kwong, but they do not publish the alpha function, the "
+            f"critical-constant set or the transport mixing rule used for that curve, so agreement "
+            f"within a few percent is the expected outcome, not evidence of identity; the paper's "
+            f"transport is Ely-Hanley with Takahashi-corrected diffusion, which this work also "
+            f"instantiates. The one clearly visible disagreement is the conductivity peak at "
             f"the low-temperature frame edge, which the published curve clips and this work resolves "
             f"to {max(r['lambda_eh_W_mK'] for r in rows):.4f} W/(m K) near 150 K. Verdict is "
             f"measured against declared rms tolerances density {TOL_DENSITY_RMS_PCT} %, "
@@ -414,19 +490,41 @@ def main():
             + ("" if not problems else " Problems: " + " | ".join(problems)),
     })
 
+    validator = Path(__file__).resolve()
     result = {
         "schema": "forge-campaign-checks-v1",
+        # The commit below is the one that ran THIS validator, not the one that produced the
+        # retained probe CSV: those are different executions and are attributed separately.
         "source_commit": args.commit,
         "target": "liang-1",
+        "validator": {"path": str(validator), "sha256": digest(validator),
+                      "revision": args.commit},
         "checks": checks,
-        # Derived from the exit status supplied for each stage, never from a literal.
+        # Derived from the exit status supplied for each stage, never from a literal, and each
+        # line keeps the revision and file digest that actually ran it.
         "handoff_checks": [
             {"command": stages[name][0],
              "result": "passed" if stages[name][1] == 0 else "failed",
-             "revision": args.commit}
+             "revision": stages[name][2]}
+            for name in STAGES
+        ],
+        "stages": [
+            {"name": name, "command": stages[name][0], "exit_status": stages[name][1],
+             "result": "passed" if stages[name][1] == 0 else "failed",
+             "revision": stages[name][2], "executed_sha256": stages[name][3]}
             for name in STAGES
         ],
         "stage_exit_status": {name: stages[name][1] for name in STAGES},
+        "inputs": inputs,
+        "acceptance_boundary": (
+            "These five check ids and the numerical tolerances in this file (density "
+            f"{TOL_DENSITY_RMS_PCT} %, conductivity {TOL_CONDUCTIVITY_RMS_PCT} %, PR-vs-SRK "
+            f"{TOL_PR_RMS_PCT} %, cp/R band [{CP_R_300K_BAND[0]}, {CP_R_300K_BAND[1]}]) are "
+            "preparation diagnostics chosen by this worker to catch unit and digitisation "
+            "defects. They are not registered human scientific acceptance of liang-1, which "
+            "also remains unsubmittable because its registered operating conditions are "
+            "placeholders. A 'passed' here means the numbers above reproduce the stated "
+            "measurements; it does not mean a reviewer or a human accepted the science."),
         "failed_checks": [check["id"] for check in checks if check["result"] != "passed"],
     }
     if args.job:
