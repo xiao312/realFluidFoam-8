@@ -194,7 +194,7 @@ def compare(rows, refdir, PRESSURE):
                 "reference_provenance": mk.get("provenance"),
                 "n_markers_total": len(mk["points"]),
                 "n_markers_compared": len(cmp_rows),
-                "model_value_source": "state(T_marker, p) evaluated at each published marker abscissa", 
+                "model_value_source": "state(T_marker, p) evaluated at each published marker abscissa",
                 "summary": summary,
                 "per_marker": cmp_rows,
             }
