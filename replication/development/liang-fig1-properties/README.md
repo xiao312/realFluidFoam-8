@@ -141,4 +141,3 @@ the PDF and the Python tool reads raw pixels:
 Re-running step 3 on that dump reproduces the retained JSON byte for byte (`sha256
 daec539ae6e09d81069623091174f85be7a424062b1f9edc6bb9d678028f83ff`), so the digitisation is
 deterministic given the declared inputs.
-
