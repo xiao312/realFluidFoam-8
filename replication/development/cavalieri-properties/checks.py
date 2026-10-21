@@ -34,6 +34,14 @@ def sha256(path):
     return hashlib.sha256(Path(path).read_bytes()).hexdigest()
 
 
+def digest(path):
+    return sha256(path)
+
+
+PHASES = ("complete", "compute", "render")
+INPUT_FILES = ("sweep.csv", "sweep.json", "comparison.json")
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--src", required=True)
@@ -42,23 +50,61 @@ def main():
     parser.add_argument("--commit", required=True)
     parser.add_argument("--job-id", default=None)
     parser.add_argument("--expect-pdf-sha256", default=None)
+    parser.add_argument(
+        "--phase", choices=PHASES, default="complete",
+        help="compute: the scheduler job, which has no /forge mount, so the figure is not built "
+             "there and its two checks are reported as unknown rather than asserted; render: the "
+             "native phase that builds the figure and measures them; complete: both in one place")
+    parser.add_argument(
+        "--base", default=None,
+        help="compute-phase verification.json, required with --phase render; its input hashes "
+             "must match the files this phase renders, or the phases are not the same run")
+    parser.add_argument("--repeat-sweep-csv", type=Path, default=None)
+    parser.add_argument("--repeat-sweep-json", type=Path, default=None)
+    parser.add_argument("--repeat-plot", type=Path, default=None)
+    parser.add_argument("--out", type=Path, default=None,
+                        help="verification file to write (default RUN/verification.json)")
     args = parser.parse_args()
+    if args.phase == "render" and not args.base:
+        parser.error("--phase render needs --base <compute-phase verification.json>")
+    if args.phase == "compute" and args.base:
+        parser.error("--base belongs to the render phase")
+    if args.phase == "compute":
+        if args.repeat_sweep_csv is None or args.repeat_sweep_json is None:
+            parser.error("--phase compute needs --repeat-sweep-csv and --repeat-sweep-json: the "
+                         "second sweep run that makes the reproducibility verdict a measurement")
+    for name in ("repeat_plot",):
+        value = getattr(args, name)
+        if value is not None and not Path(value).exists():
+            parser.error("--%s does not exist: %s" % (name.replace("_", "-"), value))
 
     src = Path(args.src)
     run = Path(args.run_dir)
     out = run / "out"
     checks = []
+    # The compute phase cannot build the figure: /forge/plots/paper-style.mjs is not mounted in
+    # the batch container (measured: job 125197601 failed with ERR_MODULE_NOT_FOUND).  Rendering
+    # therefore happens natively, from the very files the job produced, and the two phases are
+    # joined by input hashes rather than by a claim.
+    renders_here = args.phase in ("complete", "render")
 
     def add(check_id, ok, details):
         checks.append({"id": check_id, "result": "passed" if ok else "failed",
                        "details": details})
         return ok
 
+    def add_unknown(check_id, details):
+        checks.append({"id": check_id, "result": "unknown", "details": details})
+        return False
+
     vector = json.loads(Path(args.vector).read_text(encoding="utf-8"))
     sweep = json.loads((out / "sweep.json").read_text(encoding="utf-8"))
     comparison = json.loads((out / "comparison.json").read_text(encoding="utf-8"))
-    build = json.loads((out / "figure-build.json").read_text(encoding="utf-8"))
-    data = json.loads((out / "cavalieri2025-fig-1-data.json").read_text(encoding="utf-8"))
+    build = data = None
+    if renders_here:
+        build = json.loads((out / "figure-build.json").read_text(encoding="utf-8"))
+        data = json.loads((out / "cavalieri2025-fig-1-data.json").read_text(encoding="utf-8"))
+    input_hashes = {name: sha256(out / name) for name in INPUT_FILES if (out / name).exists()}
 
     # ------------------------------------------------------------------ #
     # 1. source and units
@@ -134,70 +180,93 @@ def main():
     # ------------------------------------------------------------------ #
     # 3. figure fidelity
     # ------------------------------------------------------------------ #
-    computed = [item for item in data["series"] if item["origin"] == "computed"]
-    paper = [item for item in data["series"] if item["origin"] == "paper"]
-    ids_computed = {item["id"] for item in computed}
-    expected_computed = {f"{key}-computed-{fluid}" for key in "abcd" for fluid in ("o2", "ch4")}
-    svg_path = out / build["plot"]
-    svg_text = svg_path.read_text(encoding="utf-8")
-    fidelity_ok = (build["schema"] == "forge-figure-build-v1" and len(build["panels"]) == 4
-                   and ids_computed == expected_computed
-                   and sha256(svg_path) == build["plot_sha256"]
-                   and sha256(out / build["data"]) == build["data_sha256"]
-                   and len(paper) == 16 and len(computed) == 8
-                   and all(item["provenance"]["origin"] == "this work" for item in computed)
-                   and svg_text.count("<clip") == 4 and svg_text.count("<g") >= 4
-                   and svg_text.count("<path") == sum(1 for item in data["series"]
-                                                      if item.get("mark") == "line")
-                   and svg_text.count("<circle")
-                   >= sum(len(item["points"]) for item in data["series"]
-                          if item.get("mark") == "points"))
-    add("figure_fidelity", fidelity_ok, (
-        "The plot is produced by the shared renderer /forge/plots/paper-style.mjs "
-        "(renderPaperComparison), one call per panel, composed by the committed "
-        "replication/development/cavalieri-properties/render_figures.mjs into a single root <svg> on "
-        "the PDF form's own coordinate system (canvas viewBox %s, no re-projection). Each of the four "
-        "panels carries the published model curve, the published comparison symbols and the computed "
-        "curve; origin fields 'paper' and 'computed' are distinct in the data file, so an extracted "
-        "vector cannot be read as a computed value. 16 paper series + 8 computed series, %d symbols, "
-        "4 clipped panel groups. Build receipt: svg %s (%d bytes, SHA256 %s), data %s (SHA256 %s), "
-        "4 recipe entries. Axis text is re-typeset at the measured glyph height and the legend is "
-        "moved out of panel (a) into an added strip, because the published legend box sits on the "
-        "density curve; both substitutions are declared in the recipe rather than presented as "
-        "measurements."
-        % (json.dumps(build.get("canvas", {})), svg_text.count("<circle"),
-           build["plot"], len(svg_text), build["plot_sha256"],
-           build["data"], build["data_sha256"])))
+    if not renders_here:
+        add_unknown("figure_fidelity", (
+            "Deferred to the render phase: this run is the compute phase inside the scheduler job, "
+            "where /forge/plots/paper-style.mjs is not mounted (job 125197601 measured that failure "
+            "as ERR_MODULE_NOT_FOUND), so no figure is built here and a fidelity verdict would be an "
+            "assertion about bytes that do not exist in this directory. The render phase rebuilds the "
+            "figure from this run's own sweep.json/comparison.json in the native allocation, records "
+            "the build receipt beside it, and emits the merged verification with this check measured."))
+    computed = [item for item in data["series"] if item["origin"] == "computed"] if renders_here else []
+    paper = [item for item in data["series"] if item["origin"] == "paper"] if renders_here else []
+    if renders_here:
+        ids_computed = {item["id"] for item in computed}
+        expected_computed = {f"{key}-computed-{fluid}" for key in "abcd" for fluid in ("o2", "ch4")}
+        svg_path = out / build["plot"]
+        svg_text = svg_path.read_text(encoding="utf-8")
+        fidelity_ok = (build["schema"] == "forge-figure-build-v1" and len(build["panels"]) == 4
+                       and ids_computed == expected_computed
+                       and sha256(svg_path) == build["plot_sha256"]
+                       and sha256(out / build["data"]) == build["data_sha256"]
+                       and len(paper) == 16 and len(computed) == 8
+                       and all(item["provenance"]["origin"] == "this work" for item in computed)
+                       and svg_text.count("<clip") == 4 and svg_text.count("<g") >= 4
+                       and svg_text.count("<path") == sum(1 for item in data["series"]
+                                                          if item.get("mark") == "line")
+                       and svg_text.count("<circle")
+                       >= sum(len(item["points"]) for item in data["series"]
+                              if item.get("mark") == "points"))
+        add("figure_fidelity", fidelity_ok, (
+            "The plot is produced by the shared renderer /forge/plots/paper-style.mjs "
+            "(renderPaperComparison), one call per panel, composed by the committed "
+            "replication/development/cavalieri-properties/render_figures.mjs into a single root <svg> on "
+            "the PDF form's own coordinate system (canvas viewBox %s, no re-projection). Each of the four "
+            "panels carries the published model curve, the published comparison symbols and the computed "
+            "curve; origin fields 'paper' and 'computed' are distinct in the data file, so an extracted "
+            "vector cannot be read as a computed value. 16 paper series + 8 computed series, %d symbols, "
+            "4 clipped panel groups. Build receipt: svg %s (%d bytes, SHA256 %s), data %s (SHA256 %s), "
+            "4 recipe entries. Axis text is re-typeset at the measured glyph height and the legend is "
+            "moved out of panel (a) into an added strip, because the published legend box sits on the "
+            "density curve; both substitutions are declared in the recipe rather than presented as "
+            "measurements."
+            % (json.dumps(build.get("canvas", {})), svg_text.count("<circle"),
+               build["plot"], len(svg_text), build["plot_sha256"],
+               build["data"], build["data_sha256"])))
 
     # ------------------------------------------------------------------ #
-    # 4. reproducibility (re-run the sweep and the render from the same inputs)
+    # 4. reproducibility (re-execute the deterministic stages and compare bytes)
     # ------------------------------------------------------------------ #
-    rerun = run / "repro"
-    if rerun.exists():
-        shutil.rmtree(rerun)
-    rerun.mkdir(parents=True)
-    rc = subprocess.call([sys.executable, str(src / "sweep_properties.py"),
-                          "--out-dir", str(rerun)], cwd=str(src))
-    render_rc = subprocess.call([
-        "node", str(src / "render_figures.mjs"), "--vector", str(Path(args.vector)),
-        "--out-dir", str(rerun), "--source-commit", args.commit,
-        "--sweep", str(rerun / "sweep.json")]
-        + (["--run-job-id", args.job_id] if args.job_id else []), cwd=str(src))
-    same = {
-        "sweep.csv": sha256(rerun / "sweep.csv") == sha256(out / "sweep.csv"),
-        "sweep.json": sha256(rerun / "sweep.json") == sha256(out / "sweep.json"),
-        "figure.svg": sha256(rerun / "cavalieri2025-fig-1.svg")
-        == sha256(out / "cavalieri2025-fig-1.svg"),
-    }
-    add("reproducibility", rc == 0 and render_rc == 0 and all(same.values()), (
-        "The whole pipeline is re-executed inside the same scheduler job from the same committed "
-        "sources into a second directory: sweep rc %d, render rc %d. Byte-identical outputs: %s. "
-        "Both runs read the same frozen source archive; the job records the SHA256 of every file it "
-        "executed in hashes.txt, so the code identity does not rest on a commit message."
-        % (rc, render_rc, ", ".join("%s %s" % (name, "identical" if ok else "DIFFERS")
-                                    for name, ok in same.items()))))
+    # Every pair below is a measurement: a first artifact produced by this pipeline and a second
+    # one produced by running the same committed script again on the same inputs. A pair that has
+    # not been produced yet is NOT called identical - it is deferred and named, and the check stays
+    # 'unknown' until it has been measured.
+    pairs = []
+    if args.repeat_sweep_csv is not None and args.repeat_sweep_json is not None:
+        pairs.append(("sweep.csv", out / "sweep.csv", Path(args.repeat_sweep_csv)))
+        pairs.append(("sweep.json", out / "sweep.json", Path(args.repeat_sweep_json)))
+    else:
+        pairs.append(("sweep.csv", out / "sweep.csv", None))
+    if renders_here:
+        pairs.append(("figure.svg", out / build["plot"],
+                      Path(args.repeat_plot) if args.repeat_plot else None))
+    differing, measured, deferred = [], [], []
+    for name, first, second in pairs:
+        if second is None:
+            deferred.append(name)
+            continue
+        if not second.exists() or not first.exists():
+            deferred.append(name + " (artifact missing)")
+            continue
+        a, b = digest(first), digest(second)
+        if a == b:
+            measured.append("%s %s... twice" % (name, a[:16]))
+        else:
+            measured.append("%s DIFFERS (%s vs %s)" % (name, a[:12], b[:12]))
+            differing.append(name)
+    if not renders_here:
+        deferred.append("figure.svg (measured in the render phase)")
+    repro_result = "unknown" if deferred else ("passed" if measured and not differing else "failed")
+    repro_details = (
+        "Deterministic stages re-executed from the same committed sources. Measured: "
+        + ("; ".join(measured) if measured else "nothing in this phase")
+        + ". Deferred, not claimed: " + ("; ".join(deferred) if deferred else "nothing")
+        + ". The code identity of every executed file is recorded here as its SHA256 "
+          "(executed_files_sha256) and inside the scheduler job in hashes.txt, so it does not rest "
+          "on a commit message; the phases of this two-environment figure are joined by the input "
+          "hashes in input_files_sha256 rather than by assumption.")
+    checks.append({"id": "reproducibility", "result": repro_result, "details": repro_details})
 
-    # ------------------------------------------------------------------ #
     # 5. numerical comparison
     # ------------------------------------------------------------------ #
     lines = []
@@ -253,17 +322,55 @@ def main():
         "schema": "forge-campaign-checks-v1",
         "source_commit": args.commit,
         "target": "cavalieri2025-fig-1",
+        "phase": args.phase,
         "scheduler_job_id": args.job_id,
         "checks": checks,
         "executed_files_sha256": executed,
+        "input_files_sha256": input_hashes,
         "reference_pdf_sha256": pdf_sha,
         "model": sweep["model"],
+        "phase_boundary": (
+            "This figure needs two environments: the scheduler container has Python and node but "
+            "no /forge mount, so /forge/plots/paper-style.mjs cannot be imported there (measured in "
+            "job 125197601), while the renderer and the checks that read a built figure need it. "
+            "The compute phase measures source/units, reference coverage, sweep reproducibility and "
+            "the numerical comparison, and reports figure_fidelity as unknown because no figure "
+            "exists in its directory. The render phase rebuilds the figure from the compute phase's "
+            "own sweep.json and re-checks it. Neither phase asserts a result it did not measure."),
     }
-    (run / "verification.json").write_text(json.dumps(verification, indent=2) + "\n",
-                                           encoding="utf-8")
+    if args.base:
+        base_path = Path(args.base)
+        base = json.loads(base_path.read_text(encoding="utf-8"))
+        if base.get("target") != "cavalieri2025-fig-1":
+            raise SystemExit(f"{base_path} is not a cavalieri2025-fig-1 verification")
+        base_inputs = base.get("input_files_sha256") or {}
+        disagreeing = {name: {"compute_phase": base_inputs.get(name), "render_phase": value}
+                       for name, value in input_hashes.items()
+                       if base_inputs.get(name) not in (None, value)}
+        if disagreeing:
+            raise SystemExit(
+                "the render phase is not looking at the files the compute phase produced: "
+                + json.dumps(disagreeing))
+        verification["compute_phase"] = {
+            "path": str(base_path),
+            "sha256": sha256(base_path),
+            "scheduler_job_id": base.get("scheduler_job_id"),
+            "source_commit": base.get("source_commit"),
+            "checks": [{"id": check["id"], "result": check["result"]}
+                       for check in base["checks"]],
+            "input_files_sha256": base_inputs,
+        }
+    out_path = Path(args.out) if args.out else (run / "verification.json")
+    out_path.write_text(json.dumps(verification, indent=2) + "\n", encoding="utf-8")
     for check in checks:
         print("%-22s %s" % (check["id"], check["result"]))
-    failed = [check["id"] for check in checks if check["result"] != "passed"]
+    # 'unknown' is a measurement that has not been made in THIS phase, and the phase that can
+    # make it says so in the details.  Only a measured failure makes this script exit nonzero,
+    # so the compute phase of the two-environment split is not reported as a failed job.
+    failed = [check["id"] for check in checks if check["result"] == "failed"]
+    unknown = [check["id"] for check in checks if check["result"] == "unknown"]
+    if unknown:
+        print("checks deferred to the other phase: %s" % ", ".join(unknown))
     if failed:
         print("failed checks: %s" % ", ".join(failed), file=sys.stderr)
         return 3

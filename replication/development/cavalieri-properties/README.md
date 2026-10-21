@@ -68,8 +68,11 @@ constants are exact.
   (`forge-property-sweep-v1`, the renderer's input, plus constants and sensitivities).
 - `compare_reference.py` — residuals against the two reference sets, kept apart (below).
 - `render_figures.mjs` — four `renderPaperComparison` calls composed into one `<svg>`.
-- `checks.py` — the five campaign checks, computed from the files the job produced.
-- `job.sh` — the batch payload (bash, correct under the adapter's `set -euo pipefail`).
+- `checks.py` — the five campaign checks, computed from the files the job produced. It runs
+  in two phases (`--phase compute`, `--phase render`) because the two environments are not
+  the same environment; see *Compute and render are separate phases* below.
+- `job.sh` — the batch payload: the compute phase only (bash, correct under the adapter's
+  `set -euo pipefail`).
 - `probe_models.py` — **deprecated**. An earlier plan used Cantera's `RedlichKwong` and
   high-pressure transport; this trial's Cantera qualification is C++ SDK only, and the
   paper's alpha function (Graboski–Daubert) is not one of Cantera's options, so the model
@@ -149,17 +152,52 @@ the published layout, all of them layout-only:
   are pushed 6.8 pt below the frame and the axis title 14.6 pt below it, because 6.5 pt
   type does not fit in a 5 pt offset.
 
+## Compute and render are separate phases
+
+The scheduler container has `python3` and `node`, but it does not mount `/forge`, and
+`/forge/plots/paper-style.mjs` — the campaign renderer both this module and the campaign
+contract use — lives only there. A first attempt to render inside the job therefore died on
+`ERR_MODULE_NOT_FOUND` after the numerics had already succeeded. The honest repair is not to
+vendor a copy of the renderer (that would fork the plot contract) and not to call the job a
+failure when its numerics are complete; it is to split the verifier into two phases whose
+outputs are joined by hashes:
+
+| phase | where | command | produces |
+|---|---|---|---|
+| compute | batch (`cantera32`) | `job.sh <source-root> <run-dir>` | `out/sweep.{csv,json}`, `out/comparison.json`, `repro/out/` second sweep, `verification-compute.json` |
+| render | agent environment | `node render_figures.mjs … && checks.py --phase render --base verification-compute.json` | `out/cavalieri2025-fig-1.svg`, `verification.json` |
+
+`checks.py --phase compute` needs the repeat sweep and checks `source_and_units`,
+`reference_coverage`, `numerical_comparison` and `reproducibility` on the pairs it can
+actually measure; `figure_fidelity` is reported `unknown` there, citing the missing mount.
+`--phase render` takes `--base verification-compute.json`, re-checks `figure_fidelity` and
+the render pair, and copies the compute checks forward. If any input hash disagrees between
+the phases it exits with a hard error — `the render phase is not looking at the files the
+compute phase produced`.
+
+`unknown` is not a failure: `checks.py` exits 0 while a check is merely deferred to the other
+phase and prints `checks deferred to the other phase: …`; only a measured `failed` returns 3.
+That keeps a compute job green when its numerics are right and its figure is deferred, which
+is what actually happened.
+
 ## Batch payload
 
 `job.sh <source-root> <run-dir>` runs, in this order: file-hash inventory, the unit tests,
-the sweep, the reference comparison, the figure build through `/forge/plots/paper-style.mjs`,
-the campaign checks, and an output inventory; it writes `rc.txt` with every stage status
-and exits nonzero if any stage failed. It reads no file outside `<source-root>` and writes
-nothing into the repository. It is written for `bash -euo pipefail` with no pipeline whose
-reader can close early, because the control adapter runs it under exactly those options.
+the sweep, the reference comparison, a second independent sweep into `repro/out` for the
+reproducibility pair, the compute-phase campaign checks, and an output inventory; it writes
+`rc.txt` with every stage status (`payload_rc= hashes_rc= tests_rc= sweep_rc= compare_rc=
+sweep_repro_rc= checks_rc=`) and exits nonzero if any stage failed. It reads no file outside
+`<source-root>` and writes nothing into the repository. It is written for
+`bash -euo pipefail` with no pipeline whose reader can close early, because the control
+adapter runs it under exactly those options, and it says out loud that the figure build is
+deferred (`figure build deferred to the render phase (no /forge mount here)`) instead of
+attempting it and failing.
 
 ## Status
 
-Model, tests, sweep, comparison, renderer and checks are complete and replay
-byte-identically. The figure is built from the sweep produced in the same scheduler job;
-the computed curves are never mixed with the extracted reference vectors.
+Model, tests, sweep and comparison are complete and replay byte-identically; the two-phase
+verifier is exercised end to end — the compute phase on the artifacts of scheduler job
+`125197601`, the render phase natively on the same files, byte-identical sweep
+(`a777b603…`) in both environments, 5/5 checks after joining. The figure is built from the
+sweep produced in the same scheduler job and joined to it by input hash; the computed curves
+are never mixed with the extracted reference vectors.

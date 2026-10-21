@@ -89,27 +89,32 @@ say "compare rc=$compare_rc"
 printf '%s\n' "$compare_rc" >&2
 
 # ---------------------------------------------------------------------------
-# 5. figure build through the shared renderer
+# 5. second sweep, so reproducibility is measured rather than asserted
 # ---------------------------------------------------------------------------
-SOURCE_COMMIT=${SOURCE_COMMIT:-unknown}
-JOB_ID=${SLURM_JOB_ID:-${FLAMEPILOT_JOB_ID:-unknown}}
-render_rc=$(rc_of "$RUN/render.log" "$NODE" "$CASE/render_figures.mjs" \
-    --vector "$CASE/figure1-vector.json" --out-dir "$RUN/out" \
-    --source-commit "$SOURCE_COMMIT" --sweep "$RUN/out/sweep.json" \
-    --run-job-id "$JOB_ID")
-printf '%s\n' "$render_rc" > "$RUN/render.rc"
-say "render rc=$render_rc job_id=$JOB_ID commit=$SOURCE_COMMIT"
-printf '%s\n' "$render_rc" >&2
+repro_rc=$(rc_of "$RUN/sweep-repro.log" "$PY" "$CASE/sweep_properties.py" \
+    --out-dir "$RUN/repro/out")
+printf '%s\n' "$repro_rc" > "$RUN/sweep-repro.rc"
+say "sweep-repro rc=$repro_rc"
 
 # ---------------------------------------------------------------------------
-# 6. campaign checks over the files this run produced
+# 6. compute-phase campaign checks over the files this run produced
 # ---------------------------------------------------------------------------
-if [ "$sweep_rc" -ne 0 ]; then
+# The figure is NOT built here.  /forge/plots/paper-style.mjs is not mounted in the batch
+# container (job 125197601 measured ERR_MODULE_NOT_FOUND while Python 3.12.15 and node
+# 24.14.1 were both present), so the two checks that need a built figure would have to be
+# asserted rather than measured.  They are reported as unknown here and measured in the
+# render phase, which runs where the renderer can be imported.
+SOURCE_COMMIT=${SOURCE_COMMIT:-unknown}
+JOB_ID=${SLURM_JOB_ID:-${FLAMEPILOT_JOB_ID:-unknown}}
+if [ "$sweep_rc" -ne 0 ] || [ "$repro_rc" -ne 0 ]; then
     checks_rc=4
 else
     checks_rc=$(rc_of "$RUN/checks.log" "$PY" "$CASE/checks.py" --src "$CASE" \
         --run-dir "$RUN" --vector "$CASE/figure1-vector.json" \
-        --commit "$SOURCE_COMMIT" --job-id "$JOB_ID" \
+        --commit "$SOURCE_COMMIT" --job-id "$JOB_ID" --phase compute \
+        --repeat-sweep-csv "$RUN/repro/out/sweep.csv" \
+        --repeat-sweep-json "$RUN/repro/out/sweep.json" \
+        --out "$RUN/verification-compute.json" \
         --expect-pdf-sha256 bcd4f0fdac3c4063c744e331c0b2e6af7e311837f99230502cde2c97257d0843)
 fi
 printf '%s\n' "$checks_rc" > "$RUN/checks.rc"
@@ -123,12 +128,15 @@ printf '%s\n' "$checks_rc" >&2
     echo "--- outputs ---"
     ls -l "$RUN" 2>&1 || true
     ls -l "$RUN/out" 2>&1 || true
+    ls -l "$RUN/repro/out" 2>&1 || true
     echo "--- output hashes ---"
     sha256sum "$RUN"/out/* 2>&1 || true
+    sha256sum "$RUN"/repro/out/* 2>&1 || true
 } > "$RUN/inventory.txt" 2>&1
 inventory_rc=$?
 say "inventory rc=$inventory_rc"
 
+say "figure build deferred to the render phase (no /forge mount here)"
 say "end $(date -u +%Y-%m-%dT%H:%M:%SZ)"
 
 status=0
@@ -136,11 +144,11 @@ if [ "$hashes_rc" -ne 0 ]; then status=1; fi
 if [ "$tests_rc" -ne 0 ]; then status=2; fi
 if [ "$sweep_rc" -ne 0 ]; then status=3; fi
 if [ "$compare_rc" -ne 0 ]; then status=4; fi
-if [ "$render_rc" -ne 0 ]; then status=5; fi
+if [ "$repro_rc" -ne 0 ]; then status=5; fi
 if [ "$checks_rc" -ne 0 ]; then status=6; fi
 if [ "$inventory_rc" -ne 0 ]; then status=7; fi
 
-printf 'payload_rc=%s tests_rc=%s sweep_rc=%s compare_rc=%s render_rc=%s checks_rc=%s\n' \
-    "$status" "$tests_rc" "$sweep_rc" "$compare_rc" "$render_rc" "$checks_rc" > "$RUN/rc.txt"
+printf 'payload_rc=%s hashes_rc=%s tests_rc=%s sweep_rc=%s compare_rc=%s sweep_repro_rc=%s checks_rc=%s\n' \
+    "$status" "$hashes_rc" "$tests_rc" "$sweep_rc" "$compare_rc" "$repro_rc" "$checks_rc" > "$RUN/rc.txt"
 say "payload_rc=$status"
 exit "$status"
