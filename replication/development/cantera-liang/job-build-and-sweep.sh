@@ -11,7 +11,7 @@
 # Usage: job-build-and-sweep.sh MODULE INPUTS RUN STAGES PHIS
 #   STAGES  comma list, e.g. 1,2
 #   PHIS    comma list of equivalence ratios
-# Environment: PER_RUN_TIMEOUT, WALL_BUDGET (forwarded to job-sweep.sh)
+# Environment: PER_RUN_TIMEOUT, WALL_BUDGET, PRESSURE_ATM (forwarded to job-sweep.sh)
 set -euo pipefail
 
 module=${1:?module directory}
@@ -22,8 +22,9 @@ phis=${5:?comma separated equivalence ratios}
 
 mkdir -p "$run"
 printf 'combined start %s\n' "$(date -u +%Y-%m-%dT%H:%M:%SZ)" > "$run/combined.txt"
-printf 'stages=%s phis=%s per_run_timeout=%s wall_budget=%s\n' \
-    "$stages" "$phis" "${PER_RUN_TIMEOUT:-1200}" "${WALL_BUDGET:-6300}" >> "$run/combined.txt"
+printf 'stages=%s phis=%s per_run_timeout=%s wall_budget=%s pressure_atm=%s\n' \
+    "$stages" "$phis" "${PER_RUN_TIMEOUT:-1200}" "${WALL_BUDGET:-6300}" "${PRESSURE_ATM:-100}" \
+    >> "$run/combined.txt"
 
 rc=0
 bash "$module/job-batch.sh" build "$module" "$inputs" "$run" || rc=$?

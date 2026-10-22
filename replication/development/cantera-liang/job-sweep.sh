@@ -22,8 +22,13 @@ build=${4:?build directory (from job-batch.sh build)}
 stages=${5:?comma separated stages}
 phis=${6:?comma separated equivalence ratios}
 
-variant=full
-pressure=100
+variant=${VARIANT:-full}
+# Pressure is an operating condition, not a model choice: the driver accepts 1--100 atm
+# and the staged model is applied at whatever pressure is set. The 100 atm default keeps
+# every Fig. 8(a) sweep unchanged; an explicit PRESSURE_ATM is used only by the bounded
+# 1 atm control that separates a transport-implementation failure from high-pressure
+# stiffness.
+pressure=${PRESSURE_ATM:-100}
 rtol=1e-5
 atol=1e-11
 per_run_timeout=${PER_RUN_TIMEOUT:-1200}
