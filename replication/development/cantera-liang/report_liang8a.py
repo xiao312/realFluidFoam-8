@@ -540,7 +540,7 @@ def main():
     w('paper.')
     w('')
 
-    w('### 6.x How far the conductivity would have to be to explain the case-4 sign')
+    w('### 6.2 How far the conductivity would have to be to explain the case-4 sign')
     w('')
     w('The stage-3 to stage-4 step changes only the conductivity model, so the pair measures')
     w('the sensitivity of the flame speed to the conductivity directly: the speed rises')
