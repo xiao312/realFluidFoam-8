@@ -117,10 +117,10 @@ def control_dict(cfg, application='realFluidReactingFoam'):
     ).format(app=application, end=cfg['end_time'], dt=cfg['delta_t'], wi=cfg['write_interval'])
 
 
-def scalar_field(obj, values, boundary):
+def scalar_field(obj, values, boundary, dimensions='[0 0 0 0 0 0 0]'):
     body = '\n'.join(repr(float(v)) for v in values)
     return FOAMFILE.format(cls='volScalarField', obj=obj) + (
-        'dimensions      [0 0 0 0 0 0 0];\n'
+        'dimensions      %s;\n' % dimensions) + (
         'internalField   nonuniform List<scalar>\n{n}\n(\n{body}\n)\n;\n'
         'boundaryField\n{{\n{bc}}}\n'
     ).format(n=len(values), body=body, bc=boundary)
@@ -205,23 +205,25 @@ def write_case(out, variant, mechanism_source, source_commit):
             '    nCorrectors 2;\n    nNonOrthogonalCorrectors 0;\n}\n'
         ))
 
+    # Closed box: adiabatic, impermeable, rigid walls. A waveTransmissive patch would let
+    # mass and energy leave the domain, which would contradict the declared conserved
+    # quantity (sum(rho*he)*V with no mass flux) and turn any conservation statement into a
+    # boundary-flux statement that this case does not measure.
     wall = 'left { type zeroGradient; } right { type zeroGradient; } sides { type empty; }'
-    pressure_wall = ('left { type waveTransmissive; phi phi; psi thermo:psi; gamma 1; '
-                     'fieldInf %r; lInf 0.004; value uniform %r; } '
-                     'right { type waveTransmissive; phi phi; psi thermo:psi; gamma 1; '
-                     'fieldInf %r; lInf 0.004; value uniform %r; } sides { type empty; }'
-                     % (cfg['pressure'], cfg['pressure'], cfg['pressure'], cfg['pressure']))
+    pressure_wall = 'left { type zeroGradient; } right { type zeroGradient; } sides { type empty; }'
 
     for name in names:
         values = [cfg['composition'].get(name, 0.0)] * n
         (zero / name).write_text(scalar_field(name, values, wall))
-    (zero / 'T').write_text(scalar_field('T', temperature_profile(cfg), wall))
+    (zero / 'T').write_text(scalar_field('T', temperature_profile(cfg), wall,
+                                         dimensions='[0 0 0 1 0 0 0]'))
     (zero / 'p').write_text(FOAMFILE.format(cls='volScalarField', obj='p') + (
         'dimensions      [1 -1 -2 0 0 0 0];\n'
         'internalField   uniform %r;\n'
         'boundaryField\n{\n%s\n}\n' % (cfg['pressure'], pressure_wall)))
     (zero / 'U').write_text(vector_field('U', [(0.0, 0.0, 0.0)] * n,
-                                         'left { type zeroGradient; } right { type zeroGradient; } '
+                                         'left { type fixedValue; value uniform (0 0 0); } '
+                                         'right { type fixedValue; value uniform (0 0 0); } '
                                          'sides { type empty; }'))
 
     files = {}
@@ -252,8 +254,11 @@ def write_case(out, variant, mechanism_source, source_commit):
             'he (sensibleEnthalpy): thermophysicalProperties declares '
             'energy sensibleEnthalpy, so he = hs and hf is excluded'),
         expected_conserved_quantity=(
-            'chemistry off: sum(rho*he)*V with adiabatic walls and zero mass flux; '
+            'chemistry off: sum(rho*he)*V with adiabatic, impermeable, rigid walls (p and T '
+            'zeroGradient, U fixedValue 0) so there is no mass or energy flux; '
             'chemistry on: sum(rho*(ha - p/rho))*V, ha = hs + hf'),
+        boundary_conditions=dict(p='zeroGradient', T='zeroGradient',
+                                 species='zeroGradient', U='fixedValue (0 0 0)'),
         controls=dict(startFrom='startTime', startTime=0.0, stopAt='endTime',
                       endTime=cfg['end_time'], deltaT=cfg['delta_t'],
                       adjustTimeStep='no', writeInterval=cfg['write_interval'],
