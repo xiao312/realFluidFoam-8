@@ -100,7 +100,7 @@ before blaming the implementation.
 | --- | --- | --- | --- | --- |
 | (a) | density | 27.388 171.921 168.268 273.46 | 0–1200 kg/m³ | 7 (step 200) |
 | (b) | cp | 206.257 171.921 354.589 273.46 | 0–25 kJ/(kg K) | 6 (step 5) |
-| (c) | viscosity | 21.797 32.839 168.268 134.378 | 0–2 ×10⁻⁴ Pa s | 5 (step 0.5) |
+| (c) | viscosity | 21.797 32.839 168.268 134.378 | 0–2, ordinate = µ ×10⁴ Pa s | 5 (step 0.5) |
 | (d) | conductivity | 211.846 32.839 354.589 134.378 | 0–0.25 W/(m K) | 6 (step 0.05) |
 
 All four panels share x = 100–400 K with 7 ticks (step 50). Frames and ticks are
@@ -108,6 +108,32 @@ All four panels share x = 100–400 K with 7 ticks (step 50). Frames and ticks a
 markers are filled circles of 2.856–2.859 pt outer diameter with a 2.111–2.114 pt inner
 disc at the same centre (476 of them); axis glyphs are 4.5–4.9 pt tall, i.e. about
 6.5 pt type. The dashed CH₄ curve uses dash array `[1.9881, 1.9881]`.
+
+### Axis units, and the mistake they caused
+
+Panel (c) is drawn on the paper's own scale: the ticks run 0, 0.5, 1, 1.5, 2 and the
+published axis text carries the multiplier, `µ [Pa s] · 10⁻⁴`. The plotted ordinates are
+therefore **µ × 10⁴**: the sweep stores SI `mu_Pas` = 1.0e-5…1.6e-4 and
+`render_figures.mjs` multiplies by `1e4` when it builds the series. The first revision
+of the renderer re-typeset the title as `Viscosity (Pa s)` and dropped the multiplier,
+so the figure claimed that an ordinate of 1.5 was 1.5 Pa s — four orders of magnitude
+wrong — while the numbers in the data file were right. That is exactly the failure mode
+a self-check must not excuse, so the verdict is now derived from two measurements
+rather than from the label:
+
+1. `source_and_units` takes the largest `mu_Pas` in the sweep for each fluid, multiplies
+   it by 1e4 and divides by the maximum of the *published* panel (c) curve. The ratio is
+   **0.99996 (O₂)** and **0.99999 (CH₄)**: the scaling is the paper's. If the figure
+   plotted raw Pa s the ratio would be 1e-4 and the check fails.
+2. In the render phase the same check walks every one of the 2 402 plotted panel (c)
+   ordinates and requires `y == mu_Pas × 1e4` to a relative 1e-9, and `figure_fidelity`
+   requires the string `1e-4 Pa s` in both the panel (c) recipe and the composed SVG.
+
+Retained negative controls (`/workspace/forge-out/runs/cav-fig1-r3-preflight/negatives-c`)
+run the *new* verifier over the *old* artifacts: the r3 SVG without the multiplier fails
+`figure_fidelity`, and a copy whose panel (c) ordinates are raw Pa s fails
+`source_and_units`. The old SVG (`db9d45b5…`), its verification (`db8cc968…`) and the
+failed render job's receipts are kept untouched; the corrected figure is a new file.
 
 ## Marker series
 
@@ -151,6 +177,23 @@ the published layout, all of them layout-only:
   clamped onto the declared limits and de-duplicated before labelling. Tick baselines
   are pushed 6.8 pt below the frame and the axis title 14.6 pt below it, because 6.5 pt
   type does not fit in a 5 pt offset.
+- **Panel letters.** The published figure sets `(a)`–`(d)` *beneath* the x-axis title,
+  centred on their frame. A first revision put them above each frame at the left edge;
+  they are now placed at `x` = frame centre and `y` = frame bottom + 22.4 pt, which
+  clears the 6.5 pt axis title by 7.8 pt. The glyphs are re-typeset, not extracted.
+- **Y-axis titles stay horizontal.** The published titles are rotated 90° in the left
+  margin (`ρ [kg/m³]`, `c_p [kJ/kgK]`, `µ [Pa·s]·10⁻⁴`, `λ [W/mK]`).
+  `renderPaperComparison` emits only horizontal `<text>` elements — it accepts `labels`
+  as `{x, y, text}` and applies no `transform` — so the re-typeset titles sit above their
+  frames instead. This is a **declared, unresolved** difference: it is not measured
+  fidelity, and the axis *content* is preserved (quantity, symbol and unit) even though
+  the placement is not.
+- **Typography.** Labels are re-typeset in a Times serif at the measured 6.5 pt; the
+  paper is Computer Modern. A metric-substituted font is used for raster previews and
+  the substitution is reported by `svg-render.mjs`, not hidden.
+- **Legend shape.** Three in-frame rows (solid O₂, dashed CH₄, open circle NIST) in panel
+  (a) become one external 6-row strip, because the renderer emits one row per series and
+  the two origins have to stay visibly distinct. Declared.
 
 ## Compute and render are separate phases
 

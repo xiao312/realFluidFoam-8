@@ -98,6 +98,7 @@ def main():
         return False
 
     vector = json.loads(Path(args.vector).read_text(encoding="utf-8"))
+    PANEL_C_UNIT = vector["panels"]["c"]["unit"]
     sweep = json.loads((out / "sweep.json").read_text(encoding="utf-8"))
     comparison = json.loads((out / "comparison.json").read_text(encoding="utf-8"))
     build = data = None
@@ -124,10 +125,47 @@ def main():
                    for species in sc.SPECIES.values()]
     pdf_sha = vector["source_pdf_sha256"]
     pdf_ok = args.expect_pdf_sha256 is None or pdf_sha == args.expect_pdf_sha256
+    # --- panel (c) axis units, derived rather than asserted -----------------------------
+    # The published panel (c) is labelled mu [Pa s] * 10^-4 and plots mu * 1e4.  Two independent
+    # measurements decide whether this run honours that: (1) the declared unit string must name
+    # the multiplier, and (2) the largest computed viscosity in SI units, scaled by 1e4, must
+    # land on the published curve's own maximum -- if the figure plotted raw Pa s, that ratio
+    # would be 1e-4 and the check fails instead of passing on a wording change.
+    mu_col = header.index("mu_Pas")
+    species_col = header.index("species")
+    mu_max_si = {}
+    for row in rows:
+        value = float(row[mu_col])
+        mu_max_si[row[species_col]] = max(mu_max_si.get(row[species_col], 0.0), value)
+    paper_mu_max = {fluid: max(point[1] for point in vector["panels"]["c"]["curves"][fluid.lower()])
+                    for fluid in ("O2", "CH4")}
+    mu_ratio = {fluid: mu_max_si[fluid] * 1e4 / paper_mu_max[fluid] for fluid in paper_mu_max}
+    c_unit_declared = "1e-4" in PANEL_C_UNIT and "Pa s" in PANEL_C_UNIT
+    mu_axis_ok = c_unit_declared and all(0.95 <= ratio <= 1.05 for ratio in mu_ratio.values())
+    mu_plotted_ok = True
+    mu_plotted_detail = "not measurable in the compute phase (no data.json in the run directory)"
+    if data is not None:
+        by_id = {series["id"]: series for series in data["series"]}
+        worst = 0.0
+        for fluid in ("O2", "CH4"):
+            points = (by_id.get("c-computed-%s" % fluid.lower()) or {}).get("points") or []
+            si = [float(row[mu_col]) for row in rows if row[species_col] == fluid]
+            if len(points) != len(si):
+                mu_plotted_ok = False
+                mu_plotted_detail = (f"panel (c) {fluid}: {len(points)} plotted ordinates for "
+                                     f"{len(si)} sweep rows")
+                break
+            for point, value in zip(points, si):
+                worst = max(worst, abs(point["y"] - value * 1e4) / (value * 1e4))
+        else:
+            mu_plotted_ok = worst < 1e-9
+            mu_plotted_detail = ("every plotted panel (c) ordinate equals the sweep's mu[Pa s] * "
+                                 "1e4 to a relative %.2e" % worst)
     tests_rc = (run / "tests.rc").read_text().strip() if (run / "tests.rc").exists() else "?"
     source_ok = (len(rows) == expected_rows and temp_ok
                  and all(abs(value - 1.0) < 1e-12 for value in alpha_at_tc)
                  and abs(sweep["pressure_Pa"] - 56e5) < 1e-6 and pdf_ok
+                 and mu_axis_ok and mu_plotted_ok
                  and tests_rc == "0")
     add("source_and_units", source_ok, (
         "Model implemented in replication/development/cavalieri-properties/srk_chung.py from the "
@@ -143,11 +181,20 @@ def main():
         "0.25 K grid (verified row by row). Unit self-checks in test_srk_chung.py: %d tests, "
         "scheduler exit %s; the Chung viscosity and conductivity are checked against the "
         "independent Chapman-Enskog and Eucken correlations (different coefficients, different "
-        "Lennard-Jones parameters) and the departure functions against a pressure integral."
+        "Lennard-Jones parameters) and the departure functions against a pressure integral. "
+        "Panel (c) units: the published axis is mu [Pa s] * 10^-4, so its ordinates are mu * 1e4. "
+        "Declared unit %r names the multiplier (%s); measured max mu (SI) * 1e4 over the published "
+        "curve maximum is %s; plotted ordinate against mu * 1e4: %s."
         % (sc.R, sc.SPECIES["O2"]["Tc"], sc.SPECIES["O2"]["pc"] / 1e5, sc.SPECIES["O2"]["omega"],
            sc.SPECIES["O2"]["vc"] * 1e6, sc.SPECIES["CH4"]["Tc"], sc.SPECIES["CH4"]["pc"] / 1e5,
            sc.SPECIES["CH4"]["omega"], sc.SPECIES["CH4"]["vc"] * 1e6, ", ".join(header),
-           len(rows), sweep["samples_per_fluid"], 12, tests_rc)))
+           len(rows), sweep["samples_per_fluid"], 12, tests_rc,
+           PANEL_C_UNIT,
+           "declared" if c_unit_declared else "NOT declared",
+           ", ".join("%s %.5f (max %.6g Pa s * 1e4 = %.4f vs %.4f)"
+                     % (fluid, mu_ratio[fluid], mu_max_si[fluid], mu_max_si[fluid] * 1e4,
+                        paper_mu_max[fluid]) for fluid in ("O2", "CH4")),
+           mu_plotted_detail)))
 
     # ------------------------------------------------------------------ #
     # 2. reference coverage
@@ -195,7 +242,18 @@ def main():
         expected_computed = {f"{key}-computed-{fluid}" for key in "abcd" for fluid in ("o2", "ch4")}
         svg_path = out / build["plot"]
         svg_text = svg_path.read_text(encoding="utf-8")
-        fidelity_ok = (build["schema"] == "forge-figure-build-v1" and len(build["panels"]) == 4
+        # panel (c) must SAY the multiplier it plots: read the labels the renderer actually wrote
+        # into that panel's recipe and require the same text in the composed SVG.
+        c_recipe = json.loads((out / "cavalieri2025-fig-1c-recipe.json").read_text(encoding="utf-8"))
+        c_label_texts = [label["text"] for label in c_recipe["labels"]]
+        c_label_ok = (any("1e-4 Pa s" in text for text in c_label_texts)
+                      and "1e-4 Pa s" in svg_text)
+        c_label_detail = (
+            "panel (c) quantity title(s) %s; the composed SVG %s the multiplier '1e-4 Pa s'"
+            % (json.dumps([text for text in c_label_texts if "iscosity" in text]),
+               "carries" if "1e-4 Pa s" in svg_text else "DOES NOT carry"))
+        fidelity_ok = (c_label_ok
+                       and build["schema"] == "forge-figure-build-v1" and len(build["panels"]) == 4
                        and ids_computed == expected_computed
                        and sha256(svg_path) == build["plot_sha256"]
                        and sha256(out / build["data"]) == build["data_sha256"]
@@ -219,10 +277,17 @@ def main():
             "4 recipe entries. Axis text is re-typeset at the measured glyph height and the legend is "
             "moved out of panel (a) into an added strip, because the published legend box sits on the "
             "density curve; both substitutions are declared in the recipe rather than presented as "
-            "measurements."
+            "measurements. Axis-label units are derived, not asserted: panel (c) plots mu * 1e4, %s, "
+            "and the sweep-to-figure conversion is checked in source_and_units. Declared remaining "
+            "differences: the quantity titles stay horizontal above their frames (the published "
+            "figure sets them rotated in the left margin, and the shared renderer emits horizontal "
+            "text only), the legend is one external 6-row strip instead of the paper's 3-row in-frame "
+            "box, the panel letters now sit beneath each frame as published but are re-typeset in "
+            "Times rather than Computer Modern, and every tick label is re-typeset at 6.5 pt instead "
+            "of extracted."
             % (json.dumps(build.get("canvas", {})), svg_text.count("<circle"),
                build["plot"], len(svg_text), build["plot_sha256"],
-               build["data"], build["data_sha256"])))
+               build["data"], build["data_sha256"], c_label_detail)))
 
     # ------------------------------------------------------------------ #
     # 4. reproducibility (re-execute the deterministic stages and compare bytes)
