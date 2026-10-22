@@ -61,6 +61,12 @@ solution are unedited; `startTime` stays 0, `deltaT` stays 1e-10 s and
   worktree file hashes to `eedf15b8…`).
 - `job-build-v2.sh` — the same build with a proven toolchain configuration in front
   of it (see `RUNS.md`), sha256 `3e24e40e…`.
+- `job-build-v5.sh` — the build that succeeds (see **Build record**). Verifies
+  `members.sha256` on the resumed tree, pre-builds `thermophysicalModels/chemistryModel`
+  serially at `-j 1`, then runs `src/Allwmake -j 2` and the solver link under a
+  `BUILD_BUDGET`, writing `status.txt`, `libraries.log`, `chemistry-serial.log`,
+  `libs.sha256`, `exe.sha256`, `ldd.txt`, `solver-help.txt`, `compiler.sha256`,
+  `toolchain-identity.txt` and `compile-config.txt`.
 - `job-smoke.sh` — `blockMesh`, `checkMesh`, then the solver for 100 ns
   (1 000 steps of 1e-10 s, serial). Keeps the generated case immutable by copying
   it into the run directory, records input and field hashes, and rewrites
@@ -88,6 +94,39 @@ g++ 11.2.0, one CPU, `python3` at `/opt/python/bin/python3`, **no git**,
 `/workspace/forge-out/runs/of8-probe/timing.json`: 578 s startup/conversion, 1 s
 payload, 24 s cleanup — therefore ~6 600 s of payload at most inside a 7 200 s
 allocation, and the build gets its own allocation.
+
+## Build record
+
+Job `125270465` (`of8-build-v5`, 4 ranks, 4 GiB, 7 200 s, environment `openfoam8`,
+submitted 2026-10-23T01:27:50) produced a complete solver from the frozen archive:
+
+- compile configuration `wrapper-isystem` (the probe that chose it is retained in
+  `probe/attempts.txt`); compiler `/opt/gcc-11.2.0/bin/g++` sha256 `f1f617fe…`,
+  `gcc` sha256 `2ab85310…`, wrapper sha256 `32cd1f00…`;
+- serial pre-build of `thermophysicalModels/chemistryModel` at `-j 1`, rc = 0, 645 log
+  lines (17:39:41Z to 17:56:11Z);
+- `src/Allwmake -j 2`, rc = 0 in 1 838 s, 165 compile lines, **15 libraries** in
+  `lib/` — including `libchemistryModel.so` `723a84d9…`,
+  `libcombustionModels.so` `1118a1e9…`, `libreactionThermophysicalModels.so`
+  `32532fc9…` and `librhoReactionThermophysicalTransportModels.so` `10986b8e…`;
+- the solver link, rc = 0 in 43 s, produced `bin/realFluidReactingFoam` sha256
+  `a1a4f6b8db32ebbf2b5922f29fd6464775a14970d2efef999e40b80bbf85d4f6`, with 45 `ldd`
+  lines and 37 lines of `-help`;
+- payload 1 966 s inside the allocation, against 578 s of SIF sandbox conversion.
+
+**What blocked it before, and why the fix was a schedule rather than a rewrite.** Attempt
+`of8-build-v4` (job `125267677`) died after 848 s with `g++: fatal error: Killed signal
+terminated program cc1plus` while five libraries were compiling at `-j 3`: the 4 GiB job
+cap, not a source error. Attempt 5 lowered the parallelism to `-j 2` and compiled the
+heaviest templated translation unit (`chemistryModel`) alone first, then resumed the rest.
+The OOM-killed unit is now built, so the mitigation is confirmed on the failing target and
+not only in principle.
+
+**Provenance limit, unchanged.** `members.sha256` proves the source members are the ones in
+the archive; it says nothing about the object files copied in from the earlier tree, and
+the five libraries that already existed are copied rather than rebuilt. `libs.sha256` and
+`exe.sha256` record what the job actually produced, and `job-diag-v1.sh` re-verifies both
+before running anything. A build from an empty tree at `-j 2` has not been run.
 
 ## Measurements on the run
 
