@@ -40,11 +40,20 @@ IFS=',' read -r -a phi_list <<< "$phis"
 done_count=0
 failed_count=0
 skipped_count=0
+existing_count=0
 
 for stage in "${stage_list[@]}"; do
     for phi in "${phi_list[@]}"; do
         case_dir=$run/cases/stage-${stage}-phi-${phi}
         mkdir -p "$case_dir"
+        # A resumed job must not re-solve or overwrite a point that already converged:
+        # the driver refuses an existing output directory, so re-running would turn a
+        # finished point into a spurious failure and would relabel frozen identities.
+        if grep -q '^COMPLETED ' "$case_dir/flame.log" 2>/dev/null; then
+            printf 'EXISTING stage=%s phi=%s\n' "$stage" "$phi" >> "$run/sweep.txt"
+            existing_count=$((existing_count + 1))
+            continue
+        fi
         # Freeze the identities next to the result so the check is per operating point.
         cp "$run/module.sha256" "$case_dir/module.sha256"
         cp "$run/inputs.sha256" "$case_dir/inputs.sha256"
@@ -74,8 +83,9 @@ for stage in "${stage_list[@]}"; do
     done
 done
 
-printf 'sweep done completed=%s failed=%s not_attempted=%s elapsed=%ss\n' \
-    "$done_count" "$failed_count" "$skipped_count" "$(( $(date +%s) - start ))" >> "$run/sweep.txt"
-printf 'SWEEP completed=%s failed=%s not_attempted=%s\n' \
-    "$done_count" "$failed_count" "$skipped_count" > "$run/status.txt"
+printf 'sweep done completed=%s failed=%s not_attempted=%s existing=%s elapsed=%ss\n' \
+    "$done_count" "$failed_count" "$skipped_count" "$existing_count" \
+    "$(( $(date +%s) - start ))" >> "$run/sweep.txt"
+printf 'SWEEP completed=%s failed=%s not_attempted=%s existing=%s\n' \
+    "$done_count" "$failed_count" "$skipped_count" "$existing_count" > "$run/status.txt"
 [ "$failed_count" -eq 0 ] && [ "$skipped_count" -eq 0 ]
