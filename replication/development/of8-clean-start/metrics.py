@@ -52,9 +52,19 @@ def species_table(thermo_text):
 
 
 def janaf_h_over_R(coeffs, temperature):
+    """Dimensionless enthalpy h/R [K] of a NASA-7 (JANAF) species.
+
+    The stored coefficients `a1..a7` are the standard NASA-7 set, for which
+    `h/(R T) = a1 + a2 T/2 + a3 T^2/3 + a4 T^3/4 + a5 T^4/5 + a6/T`, so
+    `h/R = T * (that)` = `a1 T + a2 T^2/2 + ... + a6`. The multiplication by T
+    is written out here; without it the a6 term is divided by T and the result
+    is off by a factor of order T (a defect that a synthetic round-trip test
+    cannot see, so `test_metrics.py` also checks a hard-coded absolute value).
+    """
     a1, a2, a3, a4, a5, a6, _a7 = coeffs
     t = temperature
-    return (a1 + a2 * t / 2 + a3 * t * t / 3 + a4 * t ** 3 / 4 + a5 * t ** 4 / 5 + a6 / t)
+    return (a1 * t + a2 * t * t / 2 + a3 * t ** 3 / 3 + a4 * t ** 4 / 4
+            + a5 * t ** 5 / 5 + a6)
 
 
 def sensible_enthalpy_MJ(entry, temperature):

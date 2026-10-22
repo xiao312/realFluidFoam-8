@@ -143,6 +143,26 @@ class MetricsTest(unittest.TestCase):
         row = self.run_metrics(case, times='0')['times'][0]
         self.assertFalse(row['finite']['all_finite'])
 
+    def test_janaf_absolute_anchors(self):
+        """Absolute checks the synthetic round-trip cannot make: the JANAF
+        polynomial must reproduce published molar enthalpies.
+
+        N2: h(1000 K) - h(298.15 K) = 21 463 J/mol (JANAF table; 28.0134 g/mol).
+        N2: cp(1000 K) ~ 1169 J/(kg K).
+        CH4: hf(298.15 K) = -74.87 kJ/mol, i.e. the a6 term is a real formation
+        enthalpy and not a fitting constant to be dropped.
+        """
+        n2 = self.table['N2']
+        self.assertEqual(M.sensible_enthalpy_MJ(n2, M.TREF), 0.0)
+        h1000 = M.sensible_enthalpy_MJ(n2, 1000.0)
+        self.assertAlmostEqual(h1000 / (21463.0 / 0.0280134), 1.0, delta=5e-3)
+        cp = (M.sensible_enthalpy_MJ(n2, 1001.0) - M.sensible_enthalpy_MJ(n2, 999.0)) / 2.0
+        self.assertAlmostEqual(cp / 1169.0, 1.0, delta=2e-2)
+
+        import expected_energy as E
+        hf_ch4 = E.formation_enthalpy(self.table['CH4']) * 0.016043
+        self.assertAlmostEqual(hf_ch4 / -74870.0, 1.0, delta=1e-2)
+
     def test_field_size_mismatch_is_rejected(self):
         case, _ = build_case(Path(self.root) / 'short')
         path = case / '0/p'
