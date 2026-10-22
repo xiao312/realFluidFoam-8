@@ -1,0 +1,282 @@
+"""Tests for the bounded 2-D cold-mixing case generator and its metrics.
+
+The tests do not touch the solver. They check the parts that a wrong implementation would
+get wrong silently:
+
+  * the 3-species thermo file keeps each specie block byte-identical to the frozen file
+    (a transcribed coefficient would be a silently changed mechanism),
+  * the generated inlet profile carries exactly the registered G2 mass-flux ratio and the
+    inlet flux recorded in the receipt equals the integral of the profile,
+  * the flux balance closes for a state that is uniform along x (steady, no accumulation)
+    and the imbalance is detected when the outlet flux is deliberately doubled,
+  * the mixing width of a sharp interface is one cell and the metric reports the crossings.
+
+Run: python3 -B -m unittest test_mixing.py -v
+"""
+import json
+import shutil
+import subprocess
+import sys
+import tempfile
+import unittest
+from pathlib import Path
+
+HERE = Path(__file__).resolve().parent
+sys.path.insert(0, str(HERE))
+
+import mixing_metrics as mm  # noqa: E402
+import prepare_mixing_case as pm  # noqa: E402
+
+TOY_THERMO = """species
+3
+(
+CH4
+O2
+N2
+)
+;
+
+CH4
+{
+    specie
+    {
+        molWeight       16.043;
+    }
+    thermodynamics
+    {
+        Tlow            200;
+        Thigh           3500;
+        Tcommon         1000;
+        highCpCoeffs    ( 0.0748515 0.0133909 -5.73286e-06 1.22293e-09 -1.01815e-13 -9468.34 18.4373 );
+        lowCpCoeffs     ( 5.14988 -0.013671 4.91801e-05 -4.84743e-08 1.66694e-11 -10246.6 -4.6413 );
+    }
+    dataForKineticTrans
+    {
+        epsilonOverKb   141.4;
+        sigmvi          3.758;
+    }
+}
+
+O2
+{
+    specie
+    {
+        molWeight       31.998;
+    }
+    thermodynamics
+    {
+        Tlow            200;
+        Thigh           3500;
+        Tcommon         1000;
+        highCpCoeffs    ( 3.78246 -2.99673e-03 9.84730e-06 -9.68129e-09 3.24372e-12 -1063.94 3.65767 );
+        lowCpCoeffs     ( 3.78246 -2.99673e-03 9.84730e-06 -9.68129e-09 3.24372e-12 -1063.94 3.65767 );
+    }
+    dataForKineticTrans
+    {
+        epsilonOverKb   107.4;
+        sigmvi          3.458;
+    }
+}
+
+N2
+{
+    specie
+    {
+        molWeight       28.014;
+    }
+    thermodynamics
+    {
+        Tlow            200;
+        Thigh           3500;
+        Tcommon         1000;
+        highCpCoeffs    ( 2.92664 1.48798e-03 -5.68476e-07 1.00970e-10 -6.75335e-15 -922.798 5.98053 );
+        lowCpCoeffs     ( 3.29868 1.40824e-03 -3.96322e-06 5.64152e-09 -2.44485e-12 -1020.90 3.95037 );
+    }
+    dataForKineticTrans
+    {
+        epsilonOverKb   71.4;
+        sigmvi          3.621;
+    }
+}
+"""
+
+
+def make_mechanism(root):
+    root.mkdir(parents=True, exist_ok=True)
+    for name in ('thermophysicalProperties', 'combustionProperties', 'momentumTransport',
+                 'reactionsGRI'):
+        (root / name).write_text('// stub, never parsed by the metrics\n')
+    (root / 'thermo.inputData_GRI').write_text(TOY_THERMO)
+    return root
+
+
+def streams_from_receipt(receipt):
+    """Per-transverse-row (rho, u, T, species) taken from the receipt."""
+    ny = receipt['mesh']['ny']
+    streams = receipt['streams']
+    rho = streams['ideal_gas_density_kg_m3']
+    rows = []
+    for iy in range(ny):
+        if iy < ny // 2:
+            rows.append(dict(rho=rho['fuel'], u=streams['fuel']['velocity_m_per_s'],
+                             T=streams['fuel']['temperature_K'],
+                             species=streams['fuel']['species']))
+        else:
+            rows.append(dict(rho=rho['oxidiser'],
+                             u=streams['oxidiser']['velocity_m_per_s'],
+                             T=streams['oxidiser']['temperature_K'],
+                             species=streams['oxidiser']['species']))
+    return rows
+
+
+def write_fields(case, receipt, time_name, outlet_scale=1.0):
+    """Write a state that is uniform along x, with the receipt's two-stream profile.
+
+    Because the profile is uniform along x and identical at the inlet and the outlet
+    columns, the exact inlet fluxes of the receipt must equal the integrated outlet fluxes,
+    so any nonzero imbalance is an implementation error rather than physics.
+    """
+    from prepare_mixing_case import scalar_field, vector_field
+    nx, ny = receipt['mesh']['nx'], receipt['mesh']['ny']
+    p0 = receipt['pressure_Pa']
+    rows = streams_from_receipt(receipt)
+    names = list(receipt['streams']) and [receipt['streams']['fuel']['species'],
+                                          receipt['streams']['oxidiser']['species'], 'N2']
+    names = [n for i, n in enumerate(names) if n not in names[:i]]
+    d = case / time_name
+    d.mkdir(parents=True, exist_ok=True)
+
+    def per_cell(key):
+        return [rows[iy][key] for iy in range(ny) for _ in range(nx)]
+
+    (d / 'rho').write_text(scalar_field('rho', per_cell('rho'),
+                                        'inlet { type zeroGradient; } outlet { type zeroGradient; }'))
+    (d / 'p').write_text(scalar_field('p', [p0] * (nx * ny),
+                                      'inlet { type zeroGradient; } outlet { type zeroGradient; }'))
+    (d / 'T').write_text(scalar_field('T', per_cell('T'),
+                                      'inlet { type zeroGradient; } outlet { type zeroGradient; }',
+                                      dimensions='[0 0 0 1 0 0 0]'))
+    ux = per_cell('u')
+    if outlet_scale != 1.0:
+        for iy in range(ny):
+            ux[(nx - 1) + nx * iy] *= outlet_scale
+    (d / 'U').write_text(vector_field('U', [(u, 0.0, 0.0) for u in ux],
+                                      'inlet { type zeroGradient; } outlet { type zeroGradient; }'))
+    for name in names:
+        values = [1.0 if rows[iy]['species'] == name else 0.0
+                  for iy in range(ny) for _ in range(nx)]
+        (d / name).write_text(scalar_field(name, values,
+                                           'inlet { type zeroGradient; } outlet { type zeroGradient; }'))
+
+
+class ThermoSubsetTest(unittest.TestCase):
+    def test_blocks_are_verbatim(self):
+        keep = ['CH4', 'O2', 'N2']
+        out = pm.write_thermo_subset(TOY_THERMO, keep)
+        self.assertIn('species 3 (CH4 O2 N2);', out)
+        blocks = pm.specie_blocks(TOY_THERMO)
+        for name in keep:
+            self.assertIn(blocks[name].strip(), out.strip())
+
+    def test_missing_species_is_an_error(self):
+        with self.assertRaises(SystemExit):
+            pm.write_thermo_subset(TOY_THERMO, ['CH4', 'H2'])
+
+
+class StreamPropertiesTest(unittest.TestCase):
+    def test_g2_mass_flux_ratio_is_matched(self):
+        cfg = dict(pm.DEFAULTS)
+        props = pm.stream_properties(cfg)
+        ratio = props['inlet_mass_flux_ox'] / props['inlet_mass_flux_fuel']
+        self.assertAlmostEqual(ratio, cfg['g2_oxygen_mass_flow'] / cfg['g2_fuel_mass_flow'],
+                               places=12)
+        self.assertAlmostEqual(props['u_ox'], 0.5403, places=3)
+
+    def test_densities_are_ideal_gas(self):
+        cfg = dict(pm.DEFAULTS)
+        props = pm.stream_properties(cfg)
+        self.assertAlmostEqual(props['rho_fuel'], 101325 * 16.043 / (8314.46261815324 * 288.0),
+                               places=10)
+        self.assertAlmostEqual(props['rho_ox'], 101325 * 31.998 / (8314.46261815324 * 100.0),
+                               places=10)
+
+
+class FluxBalanceTest(unittest.TestCase):
+    def setUp(self):
+        self.tmp = Path(tempfile.mkdtemp(prefix='mix-test-'))
+        make_mechanism(self.tmp / 'mech')
+
+    def tearDown(self):
+        shutil.rmtree(self.tmp, ignore_errors=True)
+
+    def generate(self, name='case', nx=8, ny=4):
+        case = self.tmp / name
+        subprocess.run([sys.executable, '-B', str(HERE / 'prepare_mixing_case.py'),
+                        '--out', str(case), '--mechanism-source', str(self.tmp / 'mech'),
+                        '--source-commit', 'test', '--nx', str(nx), '--ny', str(ny),
+                        '--end-time', '4e-4', '--delta-t', '2e-7',
+                        '--write-interval', '2e-4'],
+                       check=True, capture_output=True)
+        return case, json.loads(Path(str(case) + '.receipt.json').read_text())
+
+    def run_metrics(self, case, receipt_path):
+        out = self.tmp / 'metrics.json'
+        subprocess.run([sys.executable, '-B', str(HERE / 'mixing_metrics.py'),
+                        '--case', str(case), '--receipt', str(receipt_path),
+                        '--out', str(out)], check=True, capture_output=True, cwd=str(HERE))
+        return json.loads(out.read_text())
+
+    def test_steady_state_balance_closes(self):
+        case, receipt = self.generate()
+        for t in ('0', '2e-4'):
+            write_fields(case, receipt, t)
+        result = self.run_metrics(case, Path(str(case) + '.receipt.json'))
+        self.assertTrue(result['balances'])
+        for balance in result['balances']:
+            self.assertAlmostEqual(balance['mass_imbalance_fraction'], 0.0, places=10)
+            self.assertAlmostEqual(balance['energy_imbalance_fraction'], 0.0, places=9)
+
+    def test_imbalance_is_detected(self):
+        case, receipt = self.generate(name='case2')
+        write_fields(case, receipt, '0')
+        write_fields(case, receipt, '2e-4', outlet_scale=2.0)
+        result = self.run_metrics(case, Path(str(case) + '.receipt.json'))
+        self.assertGreater(abs(result['balances'][0]['mass_imbalance_fraction']), 0.1)
+
+    def test_sharp_interface_width_is_one_cell(self):
+        case, receipt = self.generate(name='case3')
+        write_fields(case, receipt, '0')
+        write_fields(case, receipt, '2e-4')
+        result = self.run_metrics(case, Path(str(case) + '.receipt.json'))
+        width = result['per_time'][0]['mixing']['width_10_90']
+        self.assertAlmostEqual(width, 0.8 * receipt['mesh']['dy'], places=9)
+
+    def test_receipt_records_registered_ratio_and_deviations(self):
+        _, receipt = self.generate(name='case4')
+        self.assertAlmostEqual(receipt['inlet_flux']['oxidiser_mass_flux_kg_per_s']
+                               / receipt['inlet_flux']['fuel_mass_flux_kg_per_s'],
+                               44.4 / 143.1, places=9)
+        self.assertEqual(len(receipt['deviations_from_registered_target']), 3)
+        self.assertIn('NOT a G2 replication', receipt['purpose'])
+
+
+class FormationEnthalpyTest(unittest.TestCase):
+    def test_hf_plus_hs_reproduces_the_tabulated_enthalpy(self):
+        names, table = mm.species_table(TOY_THERMO)
+        entry = table['CH4']
+        hf = mm.formation_enthalpy_J(entry)
+        expected = mm.R_UNIVERSAL / entry['weight'] * mm.janaf_h_over_R(
+            entry['coeffs']['low'], mm.TREF)
+        self.assertAlmostEqual(hf, expected, places=6)
+        self.assertLess(hf, 0.0)
+        # hs + hf must equal the bare tabulated h(T) with no reference subtraction
+        for temperature in (250.0, 298.15, 900.0, 1800.0):
+            band = 'low' if temperature <= entry['tcommon'] else 'high'
+            bare = mm.R_UNIVERSAL / entry['weight'] * mm.janaf_h_over_R(
+                entry['coeffs'][band], temperature)
+            self.assertAlmostEqual(mm.sensible_enthalpy_MJ(entry, temperature) + hf, bare,
+                                   delta=abs(bare) * 1e-12 + 1e-6)
+
+
+if __name__ == '__main__':
+    unittest.main()
