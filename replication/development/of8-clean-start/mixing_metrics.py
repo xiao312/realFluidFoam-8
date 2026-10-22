@@ -265,6 +265,9 @@ def main():
         scale_e = max(abs(balance['energy_net_in']), 1e-30)
         balance['mass_imbalance_fraction'] = (
             balance['mass_accumulation'] - balance['mass_net_in']) / scale_m
+        scale_q = max(abs(balance['momentum_net_in']), 1e-30)
+        balance['momentum_imbalance_fraction'] = (
+            balance['momentum_accumulation'] - balance['momentum_net_in']) / scale_q
         balance['energy_imbalance_fraction'] = (
             balance['energy_accumulation'] - balance['energy_net_in']) / scale_e
         balances.append(balance)
