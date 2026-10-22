@@ -216,6 +216,51 @@ The built solver does not write its energy variable, so the integral is recomput
 written `T` and `Y` through the JANAF table and the source used is recorded per write
 (`inversion.energy_source`).
 
+## Energy diagnostic v2 — corrected total-energy accounting (`of8-energy-diag-v2`)
+
+Job `125287686` (1 rank, 2400 s wall, source commit `85eff53`, `overall=0`, 246 s inside the
+allocation) reruns exactly the two v1 cases through the corrected `expected_energy.py`, so
+the number in the summary and the number the solver conserves are the same quantity and
+come from one commit. Both cases again report `rc=0`, an `End` marker, `last Time` equal to
+`endTime` and 4 of 4 writes (`caseA.stop.txt`, `caseB.stop.txt`); the in-allocation self-test
+ran 10 tests OK.
+
+`caseA` (chemistry off, 300|1200 K, to 1e-5 s), declared quantity `total_energy_J_per_m2`,
+`E = sum(rho*(hs + hf - p/rho + 0.5|u|^2))*V` over the closed rigid box:
+
+| t (s) | E (J/m2) | sensible | sum(pV) | K | E rel. first write |
+|---|---|---|---|---|---|
+| 2.5e-6 | -490.885690 | 632.277890 | 405.4827 | 2.47e-4 | 0 |
+| 5e-6 | -490.886707 | 632.424173 | 405.6299 | 1.93e-4 | +2.07e-6 |
+| 7.5e-6 | -490.890382 | 632.537439 | 405.7468 | 1.58e-4 | +9.56e-6 |
+| 1e-5 | -490.888390 | 632.641544 | 405.8489 | 1.55e-4 | +5.50e-6 |
+
+The sensible enthalpy rises by 5.75e-4 relative while `sum(pV)` rises by 0.366 J/m2: that
+rise is pressure work inside the box, not an energy defect, and the total energy moves by
+5.5e-6 of |E| with mass constant to 1.1e-12. The offset from the analytic expectation falls
+from -2.18e-5 to -1.63e-5 relative over the run, consistent with the initial pressure
+equilibration transient (|u| up to 1.96 m/s). `caseB` (chemistry on, 1500 K, to 1e-6 s) is
+flat: `E = 754.802093` J/m2 at every write (-4.4e-11 against the first write, -1.37e-6
+against the analytic value), mass constant, `T = 1500.00` K, chemistry inactive in 1 us as
+expected, `sum(pV)` constant to 1e-5 J/m2. Inversion residuals are at the round-trip floor
+(<= 3.8e-16), no cell fails, species closure <= 1.7e-13, ideal-gas density closure 9.0e-7
+and solver `Cp` against the independent JANAF evaluation 9.0e-7 on every write.
+
+Limits: 1 us and 10 us startup windows at 1 atm on 32 cells; no flame, no flame speed, no
+convergence claim, and the integral is recomputed from `T`, `Y` rather than read from a
+solver energy field (the build does not write one).
+
+## The CH4 sensible-enthalpy "discrepancy" was my arithmetic error
+
+An earlier note carried an unresolved item: `hs_CH4(1000 K) = 2.409 MJ/kg` measured against
+an "expected 1.895 MJ/kg", suspected to implicate the JANAF band switch at
+`Tcommon = 1000`. There is no such value. NIST Shomate coefficients for 298-1300 K give
+2.3797 MJ/kg, so GRI is 1.24 percent high, which is the known inconsistency of the GRI CH4
+enthalpy polynomial; O2 agrees with NIST to 0.03 percent and N2 to 0.03 percent at 1000 K.
+`test_ch4_and_o2_sensible_enthalpy_anchors` now pins those numbers against the committed GRI
+file, so the item is closed by a test rather than by another estimate. No coefficient was
+changed.
+
 ## Contact-advection cases (`schmitt2020-fig-5`, numerics only)
 
 The registered target asks for oxygen at 6 MPa, `rho` 1000 -> 100 kg/m3, `u = 10 m/s`,
