@@ -79,7 +79,11 @@ const FONT_SIZE = 6.5;
 const QUANTITY = {
   a: { label: 'Density (kg/m3)', letter: '(a)' },
   b: { label: 'cp (kJ/(kg K))', letter: '(b)' },
-  c: { label: 'Viscosity (Pa s)', letter: '(c)' },
+  // Panel (c) is plotted on the paper's own axis: the published ticks run 0, 0.5, 1, 1.5, 2
+  // and the published axis label carries the multiplier, mu [Pa s] * 10^-4.  The plotted
+  // numbers are therefore mu * 1e4, and the re-typeset title must say so; without it the
+  // axis reads as Pa s and every value is off by four orders of magnitude.
+  c: { label: 'Viscosity (1e-4 Pa s)', letter: '(c)' },
   d: { label: 'Conductivity (W/(m K))', letter: '(d)' },
 };
 const SERIES_KEY = { a: 'rho', b: 'cp', c: 'mu', d: 'kappa' };
@@ -155,9 +159,16 @@ function axisLabels(geometry) {
   }
   const { label, letter } = QUANTITY[geometry.key];
   labels.push({ x: (left + right) / 2 - 9.0 * 0.28 * FONT_SIZE, y: bottom + 14.6, text: 'Temperature (K)' });
-  // quantity title above the frame with the panel letter to its left, both re-typeset
+  // The published figure prints the panel letter BENEATH the x-axis title, centred on its
+  // frame; the earlier revision of this renderer put it above the frame at the left edge.
+  // The letter is measurably placed here now (x = frame centre, y = bottom + 22.4 pt, which
+  // clears the 6.5 pt x-axis title at bottom + 14.6 pt by 7.8 pt).
+  labels.push({ x: (left + right) / 2 - letter.length * 0.28 * FONT_SIZE, y: bottom + 22.4,
+                text: letter });
+  // The quantity title stays above the frame: the published figure sets it rotated 90 deg in
+  // the left margin, and renderPaperComparison() emits horizontal <text> only.  This is a
+  // declared difference, not a measurement -- see README.
   labels.push({ x: left, y: top - 3.4, text: label });
-  labels.push({ x: left - 12.5, y: top - 3.4, text: letter });
   return labels;
 }
 
@@ -338,7 +349,14 @@ const data = {
   target: 'cavalieri2025-fig-1',
   units: {
     x: 'K',
-    y: 'kg/m3 (a), kJ/(kg K) (b), Pa s (c), W/(m K) (d); series ids start with the panel letter',
+    y: 'kg/m3 (a), kJ/(kg K) (b), 1e-4 Pa s (c), W/(m K) (d); series ids start with the panel letter',
+    panels: { a: 'kg/m3', b: 'kJ/(kg K)', c: '1e-4 Pa s', d: 'W/(m K)' },
+    panel_c_multiplier: {
+      applied: 1e4,
+      reason: 'the published panel (c) axis is labelled mu [Pa s] * 10^-4 with ticks 0-2, so the '
+        + 'plotted ordinates are mu * 1e4; the data file stores the plotted numbers and the unit '
+        + 'string above names the multiplier',
+    },
   },
   provenance: {
     paper: 'Cavalieri et al. (2025) Fig. 1, digitised from the PDF form gr1.eps',
