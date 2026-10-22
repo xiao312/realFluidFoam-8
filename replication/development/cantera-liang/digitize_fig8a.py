@@ -362,6 +362,17 @@ def main():
     case1 = sample_curve(black_points, 'Case 1', 0.02)
     case5 = sample_curve(blue_points, 'Case 5', 0.02)
 
+    # Flat stage/speed rows in the reference schema consumed by compare_reference.py.
+    paper_rows = []
+    for stage, key in ((1, 'case1_curve'), (2, 'case2_markers'), (3, 'case3_markers'),
+                       (4, 'case4_markers'), (5, 'case5_curve')):
+        for row in dict(case1_curve=case1, case2_markers=diamonds, case3_markers=case3,
+                        case4_markers=case4, case5_curve=case5)[key]:
+            paper_rows.append(dict(stage=stage, phi=row['phi'], speed_cm_s=row['speed_cm_s'],
+                                   x_pixel=row['x_pixel'], y_pixel=row['y_pixel'],
+                                   uncertainty_cm_s=row['uncertainty_cm_s']))
+    paper_rows.sort(key=lambda r: (r['stage'], r['phi']))
+
     result = dict(
         paper_sha256=PAPER_SHA,
         raster=dict(path=args.raster, sha256=raw_sha, width=width, height=height),
@@ -377,6 +388,7 @@ def main():
             y_residuals_px=yres, y_rms_px=yrms,
             cm_s_per_pixel=abs(yfit[1]), phi_per_pixel=abs(xfit[1])),
         trace=dict(case1=black_stats, case5=blue_stats),
+        paper_rows=paper_rows,
         rows=dict(case1_curve=case1, case2_markers=diamonds,
                   case3_markers=case3, case4_markers=case4, case5_curve=case5),
         counts=dict(case1_curve=len(case1), case2_markers=len(diamonds),
