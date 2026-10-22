@@ -266,6 +266,12 @@ def write_case(out, cfg, mechanism_source, source_commit):
             T.append(fuel['temperature'] if is_fuel[iy] else ox['temperature'])
             ux.append(props['u_fuel'] if is_fuel[iy] else props['u_ox'])
 
+    # The inlet is the x = 0 patch, so it has ny faces, one per row, ordered by iy. The
+    # internal field has nx*ny cells; using the cell list as the patch value is what job
+    # 125291239 did, and OpenFOAM rejected it: "size 3200 is not equal to 40".
+    T_inlet = [fuel['temperature'] if is_fuel[iy] else ox['temperature'] for iy in range(ny)]
+    ux_inlet = [props['u_fuel'] if is_fuel[iy] else props['u_ox'] for iy in range(ny)]
+
     inlet = ('inlet { type fixedValue; value nonuniform List<%s> %d ( %s ); } '
              'outlet { type zeroGradient; } '
              'walls { type zeroGradient; } front { type empty; } back { type empty; }')
@@ -273,17 +279,21 @@ def write_case(out, cfg, mechanism_source, source_commit):
         values = [1.0 if (name == fuel['species'] and is_fuel[iy])
                   else (1.0 if (name == ox['species'] and not is_fuel[iy]) else 0.0)
                   for iy in range(ny) for ix in range(nx)]
-        patch = (inlet % ('scalar', n, ' '.join(repr(v) for v in values)))
+        face_values = [1.0 if (name == fuel['species'] and is_fuel[iy])
+                       else (1.0 if (name == ox['species'] and not is_fuel[iy]) else 0.0)
+                       for iy in range(ny)]
+        patch = (inlet % ('scalar', len(face_values),
+                          ' '.join(repr(v) for v in face_values)))
         (zero / name).write_text(scalar_field(name, values, patch))
 
-    t_patch = (inlet % ('scalar', n, ' '.join(repr(v) for v in T)))
+    t_patch = (inlet % ('scalar', len(T_inlet), ' '.join(repr(v) for v in T_inlet)))
     (zero / 'T').write_text(scalar_field('T', T, t_patch, dimensions='[0 0 0 1 0 0 0]'))
-    u_strings = ' '.join('(%r 0 0)' % v for v in ux)
+    u_strings = ' '.join('(%r 0 0)' % v for v in ux_inlet)
     (zero / 'U').write_text(vector_field(
         'U', [(v, 0.0, 0.0) for v in ux],
         'inlet { type fixedValue; value nonuniform List<vector> %d ( %s ); } '
         'outlet { type zeroGradient; } walls { type slip; } front { type empty; } '
-        'back { type empty; }' % (n, u_strings)))
+        'back { type empty; }' % (len(ux_inlet), u_strings)))
     (zero / 'p').write_text(FOAMFILE.format(cls='volScalarField', obj='p') + (
         'dimensions      [1 -1 -2 0 0 0 0];\n'
         'internalField   uniform %r;\n'

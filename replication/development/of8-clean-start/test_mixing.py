@@ -14,6 +14,7 @@ get wrong silently:
 Run: python3 -B -m unittest test_mixing.py -v
 """
 import json
+import re
 import shutil
 import subprocess
 import sys
@@ -248,6 +249,25 @@ class FluxBalanceTest(unittest.TestCase):
         text = (case / 'system' / 'controlDict').read_text()
         self.assertIn('deltaT          2e-07;', text)
         self.assertIn('endTime         0.0004;', text)
+
+    def test_boundary_lists_match_patch_face_counts(self):
+        """Each nonuniform boundary list must have as many entries as its patch has faces.
+
+        Job 125291239 died in the solver reading `0/T`: "size 3200 is not equal to the
+        given value of 40", because the inlet patch values were the nx*ny cell list. The
+        inlet is the x = 0 plane, so it has ny faces.
+        """
+        case, _ = self.generate(name='patches', nx=8, ny=4)
+        for name in ('T', 'U', 'CH4', 'O2', 'N2'):
+            path = case / '0' / name
+            if not path.exists():
+                continue
+            text = path.read_text()
+            for match in re.finditer(r'List<(scalar|vector)> (\d+) \(', text):
+                declared = int(match.group(2))
+                self.assertEqual(declared, 4,
+                                 '%s: boundary list has %d entries for a 4-face inlet'
+                                 % (name, declared))
 
     def test_steady_state_balance_closes(self):
         case, receipt = self.generate()
