@@ -50,6 +50,9 @@ if (!Array.isArray(sweep.results) || !sweep.results.length) throw new Error('No 
 if (!Array.isArray(reference.rows) || !reference.rows.length) throw new Error('No digitised reference rows');
 
 const series = [];
+const solvedStages = new Set(
+  sweep.results.map(row => row.stage),
+);
 for (const stage of [1, 2, 3, 4, 5]) {
   const computed = sweep.results
     .filter(row => row.stage === stage)
@@ -81,13 +84,19 @@ for (const stage of [1, 2, 3, 4, 5]) {
     .sort((a, b) => a.x - b.x);
   if (!paper.length) continue;
   const kind = stage === 1 || stage === 5 ? 'traced curve' : 'symbol centres';
+  // A paper trace whose stage was never solved is a reference, not a comparison: say so
+  // in the legend rather than letting it read as a matched computed series.
+  const unreferenced = !solvedStages.has(stage);
   series.push({
     id: `paper-${stage}`,
-    label: `Case ${stage}: ${MODELS[stage]} (paper)`,
+    label: unreferenced
+      ? `Case ${stage}: ${MODELS[stage]} (paper; no computed counterpart - not compared)`
+      : `Case ${stage}: ${MODELS[stage]} (paper)`,
     origin: 'paper',
     engine: 'paper',
     case: String(stage),
     points: paper,
+    ...(unreferenced ? { comparison: 'unreferenced' } : {}),
     provenance: {
       origin: 'Liang et al. Fig. 8(a), raster digitisation of the campaign library crop',
       extraction: kind,
