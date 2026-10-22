@@ -6,6 +6,8 @@ import json
 import math
 from pathlib import Path
 
+MARKER_PHI_TOLERANCE = 0.002
+
 
 def compare(results, reference):
     rows = []
@@ -20,8 +22,11 @@ def compare(results, reference):
             raise ValueError('Expected screened 100-atm results')
         points = sorted([r for r in reference if r['stage'] == stage], key=lambda r: r['phi'])
         if stage in (2, 3, 4):
-            # Original marker centers differ slightly from their nominal phi.
-            matches = [r for r in points if abs(r['phi']-phi) < .001]
+            # Marker centres are digitised, so they sit a fraction of a pixel away from
+            # the nominal equivalence ratio of the sweep grid.  The calibration is
+            # 0.0010363 phi/px, so 0.002 phi is under two pixels; the residual offset is
+            # carried in every row as `phi_offset` instead of being silently ignored.
+            matches = [r for r in points if abs(r['phi']-phi) < MARKER_PHI_TOLERANCE]
             if not matches:
                 excluded.append(dict(stage=stage, phi=phi, reason='No paper marker at this operating condition'))
                 continue
@@ -29,6 +34,7 @@ def compare(results, reference):
                 raise ValueError('Ambiguous paper marker')
             value = matches[0]['speed_cm_s']
             uncertainty = matches[0]['uncertainty_cm_s']
+            phi_offset = matches[0]['phi']-phi
         else:
             xs = [r['phi'] for r in points]
             if phi < xs[0] or phi > xs[-1]:
@@ -39,11 +45,13 @@ def compare(results, reference):
             fraction = (phi-a['phi'])/(b['phi']-a['phi'])
             value = a['speed_cm_s']+fraction*(b['speed_cm_s']-a['speed_cm_s'])
             uncertainty = max(a['uncertainty_cm_s'], b['uncertainty_cm_s'])
+            phi_offset = 0.0
         error = row['speed_cm_s']-value
         # Declared numerical comparison screen, not author model identification.
         limit = max(.05, .01*value)+uncertainty
         rows.append(dict(stage=stage, phi=phi, job=row['job'], computed_cm_s=row['speed_cm_s'],
                          paper_cm_s=value, image_uncertainty_cm_s=uncertainty,
+                         phi_offset=phi_offset,
                          error_cm_s=error, error_percent=100*error/value,
                          limit_cm_s=limit, within_screen=abs(error)<=limit))
     stages = {}
