@@ -77,6 +77,11 @@ for stage in "${stage_list[@]}"; do
                 "$(grep '^COMPLETED ' "$case_dir/flame.log")" >> "$run/sweep.txt"
         else
             failed_count=$((failed_count + 1))
+            # The case-level status must describe the latest attempt: a killed solve leaves
+            # whatever the previous job wrote, and an attempt that only lives in the sweep
+            # log is invisible to the collector.
+            printf 'FAILED rc=%s timeout=%s at %s\n' "$rc" "$limit" \
+                "$(date -u +%Y-%m-%dT%H:%M:%SZ)" > "$case_dir/status.txt"
             printf 'FAILED stage=%s phi=%s rc=%s timeout=%s\n' "$stage" "$phi" "$rc" "$limit" \
                 >> "$run/sweep.txt"
         fi

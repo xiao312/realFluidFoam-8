@@ -38,6 +38,16 @@ def sha256(path):
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
+NOT_ATTEMPTED = re.compile(r'^NOT_ATTEMPTED\b')
+
+
+def classify_unfinished(status):
+    """('reason', 'not_attempted'|'failed') for a case with no COMPLETED line."""
+    if NOT_ATTEMPTED.match(status) or status == 'MISSING':
+        return ('the sweep budget ended before this point ran', 'not_attempted')
+    return ('the case started but produced no COMPLETED line (interrupted solve)', 'failed')
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('run', type=Path, nargs='+')
@@ -56,7 +66,7 @@ def main():
     if duplicates:
         raise ValueError('the same operating point appears in more than one run: %s' % duplicates)
 
-    results, failed, observed = [], [], []
+    results, failed, not_attempted, observed = [], [], [], []
     for case in cases:
         match = re.match(r'stage-(\d+)-phi-([0-9.]+)$', case.name)
         stage, phi = int(match.group(1)), float(match.group(2))
@@ -70,8 +80,14 @@ def main():
         found = COMPLETED.search(log)
         record = dict(job=slurm, case=case.name, stage=stage, phi=phi, status=status)
         if not found:
-            record['reason'] = 'no COMPLETED line in flame.log'
-            failed.append(record)
+            # A point the wall budget never reached is not a failed solve, and a solve that
+            # was killed is not a point that was never tried: distinguish them so the
+            # evidence does not borrow one number for the other.
+            record['reason'], record['outcome'] = classify_unfinished(status)
+            if record['outcome'] == 'not_attempted':
+                not_attempted.append(record)
+            else:
+                failed.append(record)
             continue
         log_stage, log_phi, log_speed = int(found.group(1)), float(found.group(2)), float(found.group(3))
         if log_stage != stage or abs(log_phi - phi) > 1e-12:
@@ -117,7 +133,9 @@ def main():
         schema='forge-fig8a-sweep-v1',
         results=results,
         failed=failed,
-        counts=dict(completed=len(results), failed=len(failed)),
+        not_attempted=not_attempted,
+        counts=dict(completed=len(results), failed=len(failed),
+                    not_attempted=len(not_attempted)),
         notes=['screen_passed is a numerical screen (check.py), not paper agreement',
                'scientific acceptance is not claimed by this collector'],
     )

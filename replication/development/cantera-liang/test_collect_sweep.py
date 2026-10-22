@@ -40,5 +40,19 @@ class LogLineTest(unittest.TestCase):
         self.assertIsNone(sweep.COMPLETED.search('REFINED stage=1 phi=1 speed_cm_s=6.9'))
 
 
+class UnfinishedTest(unittest.TestCase):
+    def test_budget_stop_is_not_a_failure(self):
+        self.assertEqual(sweep.classify_unfinished('NOT_ATTEMPTED stage=5 phi=1.4 elapsed=5821s'),
+                         ('the sweep budget ended before this point ran', 'not_attempted'))
+
+    def test_never_started_is_not_a_failure(self):
+        self.assertEqual(sweep.classify_unfinished('MISSING')[1], 'not_attempted')
+
+    def test_interrupted_solve_stays_a_failure(self):
+        reason, outcome = sweep.classify_unfinished('FAILED rc=124 timeout=563 at 2026-10-22T09:20:00Z')
+        self.assertEqual(outcome, 'failed')
+        self.assertIn('interrupted', reason)
+
+
 if __name__ == '__main__':
     unittest.main()
