@@ -66,6 +66,14 @@ solution are unedited; `startTime` stays 0, `deltaT` stays 1e-10 s and
   it into the run directory, records input and field hashes, and rewrites
   `endTime` to the last written time if the allocation nears its wall so the run
   stops and writes cleanly instead of being killed.
+- `job-diag-v1.sh` — the bounded clean-start diagnostic on the built executable:
+  verifies `exe.sha256`/`libs.sha256` against the build directory, copies the
+  frozen slab case and hashes its bytes, runs `blockMesh`/`checkMesh`, solves
+  1 000 fixed 1e-10 s steps from time 0 with five writes, then runs `metrics.py`
+  on the written fields and self-tests `test_metrics.py` in the same allocation.
+  A nonzero solver exit, an inversion residual above the enthalpy round-trip
+  floor, a negative mass fraction or a drifting total mass/energy is recorded as
+  the result; no flame speed, convergence or acceptance is claimed.
 - `metrics.py` — serial post-processing, stdlib only.
 - `test_metrics.py` — 7 unit tests on a synthetic slab case (no solver, no network).
 

@@ -139,3 +139,19 @@ too:
   attempt still hashes to the same value; the cache contributes objects, not source bytes.
 
 No source, no flag and no compiler changed between attempts 4 and 5.
+
+## Diagnostic — bounded clean start on the built executable (`of8-diag-v1`)
+
+`job-diag-v1.sh` is the measurement the build exists for. It accepts only a build
+directory whose `status.txt` starts with `BUILT` and whose `exe.sha256` and
+`libs.sha256` still verify, copies the frozen 1-D methane/air slab without editing
+it, records the hashes of `0`, `constant` and `system`, runs `blockMesh` and
+`checkMesh`, solves 1 000 fixed steps of 1e-10 s from `startTime 0` with five
+writes, and then measures the saved fields with `metrics.py`: the enthalpy ->
+temperature round-trip residual (a temperature inversion appears here), species
+positivity with the ideal-gas density closure, and total mass and total sensible
+energy at every write. The checker is self-tested in the same allocation, because
+a broken checker reports a clean run for a dirty one.
+
+Scope: a startup window, not a flame. A failure of any check is the finding; a pass
+is bounded startup evidence and nothing more.
