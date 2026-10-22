@@ -53,6 +53,12 @@ mkdir -p "$run"
 : > "$log"
 log() { printf '%s %s\n' "$(date -u +%Y-%m-%dT%H:%M:%SZ)" "$*" >> "$log"; }
 
+# Every unexpected exit must leave a machine-readable marker: without it a failed
+# compile looks like a job that produced nothing, and the next attempt cannot tell
+# which step died.
+step=start
+trap 'rc=$?; if [ "$rc" -ne 0 ] && [ ! -f "$run/status.txt" ]; then printf "FAILED %s step=%s rc=%s\n" "$mode" "$step" "$rc" > "$run/status.txt"; log "ABORT step=$step rc=$rc"; fi' EXIT
+
 log "job-batch start mode=$mode host=$(hostname) slurm=${SLURM_JOB_ID:-unset}"
 log "module=$module inputs=$inputs sdk=$sdk compiler=$compiler"
 
@@ -109,8 +115,10 @@ if ! "$compiler" -std=c++17 "$run/probe.cpp" -o "$run/probe" >> "$run/probe-atte
 else
     echo "base OK" >> "$run/probe-attempts.txt"
 fi
+flags_core=""
 if [ "$config" = registry ]; then
-    flags="$flags -isystem /usr/include/x86_64-linux-gnu -B/usr/lib/x86_64-linux-gnu/"
+    flags_core="-isystem /usr/include/x86_64-linux-gnu -B/usr/lib/x86_64-linux-gnu/"
+    flags="$flags $flags_core"
 fi
 printf '%s\n' "$config" > "$run/compile-config.txt"
 log "compile configuration $config"
@@ -119,24 +127,32 @@ if [ "$mode" = build ]; then
     # Same sequence and same negative controls as job.sh: a control that starts
     # passing is an error, so `if <control>; then exit 1; fi`.
     unset CPLUS_INCLUDE_PATH C_INCLUDE_PATH CPATH LIBRARY_PATH
-    "$compiler" -std=c++17 -O2 -D_GLIBCXX_USE_CXX11_ABI=1 "$module/test_srk.cpp" -o "$run/test-srk" > "$run/compile-srk.log" 2>&1
-    "$run/test-srk" > "$run/kernel-check.txt"
-    "$compiler" -std=c++17 -O2 "$module/test_alpha.cpp" -o "$run/test-alpha" > "$run/compile-alpha.log" 2>&1
+    step=compile-srk
+    "$compiler" -std=c++17 -O2 $flags_core -D_GLIBCXX_USE_CXX11_ABI=1 "$module/test_srk.cpp" -o "$run/test-srk" > "$run/compile-srk.log" 2>&1
+    log "compiled test-srk"
+"$run/test-srk" > "$run/kernel-check.txt"
+    step=compile-alpha
+    "$compiler" -std=c++17 -O2 $flags_core "$module/test_alpha.cpp" -o "$run/test-alpha" > "$run/compile-alpha.log" 2>&1
     "$run/test-alpha" > "$run/alpha-check.txt"
+    step=compile-takahashi
     "$compiler" -std=c++17 -O2 "$module/test_takahashi.cpp" $flags -Wl,-rpath,"$sdk/lib" -o "$run/test-takahashi" > "$run/compile-takahashi.log" 2>&1
     "$run/test-takahashi" > "$run/takahashi-check.txt"
     if "$run/test-takahashi" legacy > "$run/takahashi-legacy-control.txt"; then
         log "NEGATIVE CONTROL PASSED: takahashi legacy control must fail"; printf 'FAILED legacy-control\n' > "$run/status.txt"; exit 1; fi
     if "$run/test-alpha" legacy > "$run/alpha-legacy-control.txt"; then
         log "NEGATIVE CONTROL PASSED: alpha legacy control must fail"; printf 'FAILED alpha-control\n' > "$run/status.txt"; exit 1; fi
+    step=compile-soret
     "$compiler" -std=c++17 -O2 -D_GLIBCXX_USE_CXX11_ABI=1 "$module/test_soret.cpp" \
         $flags -Wl,-rpath,"$sdk/lib" -o "$run/test-soret" > "$run/compile-soret.log" 2>&1
     "$run/test-soret" "$inputs" "$inputs/guess.csv" > "$run/soret-check.txt"
+    step=compile-conservative
     "$compiler" -std=c++17 -O2 -D_GLIBCXX_USE_CXX11_ABI=1 "$module/test_conservative.cpp" \
         $flags -Wl,-rpath,"$sdk/lib" -o "$run/test-conservative" > "$run/compile-conservative.log" 2>&1
     "$run/test-conservative" "$inputs/ideal.yaml" > "$run/conservative-check.txt"
+    step=compile-flame
     "$compiler" -std=c++17 -O2 -D_GLIBCXX_USE_CXX11_ABI=1 "$module/flame.cpp" \
         $flags -Wl,-rpath,"$sdk/lib" -o "$run/liang-flame" > "$run/compile-flame.log" 2>&1
+    step=compile-probe
     "$compiler" -std=c++17 -O2 -D_GLIBCXX_USE_CXX11_ABI=1 "$module/model_probe.cpp" \
         $flags -Wl,-rpath,"$sdk/lib" -o "$run/model-probe" > "$run/compile-probe.log" 2>&1
     (cd "$run" && sha256sum liang-flame > binary.sha256 && sha256sum model-probe > probe-binary.sha256)
@@ -155,6 +171,7 @@ sha256sum "$inputs"/* > "$run/input-sha256.txt"
 cp "$build/binary.sha256" "$run/executable.sha256"
 printf '%q ' "$build/liang-flame" "$inputs" "$stage" "$phi" "$run/result" "$variant" "$pressure" "$steady_rtol" "$steady_atol" > "$run/command.txt"
 printf '\n' >> "$run/command.txt"
+step=solve
 start=$(date +%s)
 rc=0
 "$build/liang-flame" "$inputs" "$stage" "$phi" "$run/result" "$variant" "$pressure" \

@@ -84,10 +84,10 @@ def main():
                 variants.add(line.split('variant=')[-1].strip())
             if line.startswith('pressure'):
                 pressures.add(line.split('=', 1)[-1].strip())
-        tv = case / 'model-variant.txt'
+        tv = case / 'result' / 'model-variant.txt'
         if tv.exists():
             variants.add(tv.read_text().strip())
-        tp = case / 'pressure-Pa.txt'
+        tp = case / 'result' / 'pressure-Pa.txt'
         if tp.exists():
             pressures.add(tp.read_text().strip())
         for name in ('module.sha256', 'inputs.sha256'):
