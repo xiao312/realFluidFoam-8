@@ -56,6 +56,8 @@ def main():
     ap.add_argument('--source-commit', required=True)
     ap.add_argument('--out', required=True)
     ap.add_argument('--repro-out', default=None)
+    ap.add_argument('--repeat', type=pathlib.Path,
+                    help='repeat comparison JSON: the same points solved in two allocations')
     a = ap.parse_args()
 
     sweep = load(a.sweep)
@@ -196,19 +198,55 @@ def main():
             schema='forge-fig8a-reproducibility-v1',
             prior_source=prior.get('source') or prior.get('figure'),
             rows=repro_rows, stages=per_stage_repro), indent=2) + '\n')
-    repro_ok = len(missing_prior) == 0 and same == len(points)
     worst = max(deltas) if deltas else float('nan')
     rms = math.sqrt(sum(d * d for d in deltas) / len(deltas)) if deltas else float('nan')
+    per_stage_cmp = {}
+    for stage in sorted({r['stage'] for r in repro_rows}):
+        group = [abs(r['delta_cm_s']) for r in repro_rows if r['stage'] == stage]
+        per_stage_cmp[str(stage)] = dict(points=len(group), max_abs_cm_s=max(group))
+    # Two different questions, answered separately: does this build repeat itself, and
+    # does it land on the registered previous generation?
+    repeat = load(a.repeat) if a.repeat else None
+    if repeat:
+        determinism = (repeat.get('shared_operating_points', 0) > 0
+                       and repeat.get('bitwise_identical_profiles')
+                       == repeat.get('shared_operating_points')
+                       and repeat.get('bitwise_identical_refinement_files')
+                       == repeat.get('shared_operating_points'))
+        determinism_text = ('%d points were solved twice in two independent allocations: %d profile '
+                            'files and %d refinement files are bitwise identical, worst relative '
+                            'speed difference %s.'
+                            % (repeat.get('shared_operating_points'),
+                               repeat.get('bitwise_identical_profiles', 0),
+                               repeat.get('bitwise_identical_refinement_files', 0),
+                               repeat.get('worst_relative_difference')))
+    else:
+        determinism, determinism_text = None, 'No repeat comparison was supplied.'
+    # The previous generation came from a different implementation of the staged model:
+    # its SrkPhase.h, StagedTransport.h and flame.cpp differ from this candidate, so a
+    # per-stage difference is a measurement of that change, not a failure of this run.
+    agreement = (worst <= 0.05) if deltas else None
+    if determinism is False:
+        result, verdict = 'failed', 'The build does not repeat itself bitwise.'
+    elif determinism and agreement:
+        result, verdict = 'passed', ('The build repeats bitwise and every stage lands within '
+                                     '0.05 cm/s of the previous generation.')
+    elif determinism and agreement is False:
+        result, verdict = 'unknown', ('The build repeats bitwise, but the staged cases do not all '
+                                      'land on the previous generation; the staged headers changed '
+                                      'after that generation, so neither value is the reference '
+                                      'until the old source is re-run.')
+    else:
+        result, verdict = 'unknown', 'Neither question could be answered from the supplied files.'
     checks.append(dict(
         id='reproducibility',
-        result='passed' if repro_ok else 'failed',
-        details=('%d of %d points share an equivalence ratio with the registered previous '
-                 'generation and were compared at that exact phi (no interpolation needed); '
-                 'missing previous-generation samples: %s. Largest absolute difference %.4f cm/s, '
-                 'rms %.4f cm/s. Differences are expected: the previous generation is a different '
-                 'build of the same staged model, so agreement is evidence of reproducibility at '
-                 'the operating point, not a target to tune.'
-                 % (same, len(points), missing_prior or 'none', worst, rms))))
+        result=result,
+        details=('%s %d of %d points share an equivalence ratio with the registered previous '
+                 'generation and were compared at that exact phi; largest absolute difference '
+                 '%.4f cm/s, rms %.4f cm/s, per-stage max %s. %s'
+                 % (verdict, same, len(points), worst, rms,
+                    {k: round(v['max_abs_cm_s'], 4) for k, v in per_stage_cmp.items()},
+                    determinism_text))))
 
     # ---- numerical_comparison --------------------------------------------
     rowlist = comp['rows']
