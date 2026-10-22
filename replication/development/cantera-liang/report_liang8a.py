@@ -96,6 +96,8 @@ def main():
     ap.add_argument('--source-commit', required=True)
     ap.add_argument('--base-commit', required=True)
     ap.add_argument('--attribution')
+    ap.add_argument('--terms')
+    ap.add_argument('--repro-prior')
     ap.add_argument('--out', required=True)
     a = ap.parse_args()
 
@@ -568,6 +570,71 @@ def main():
     w('`dense-increment` formulation stays declared and unrun.')
     w('')
 
+    # ---- 6.x terms -------------------------------------------------------
+    w('### 6.3 The conductivity term table at frozen states')
+    w('')
+    terms = load(a.terms) if a.terms else None
+    if terms is None:
+        w('The frozen-state term table was not produced for this candidate: the diagnostic')
+        w('job did not report, so the two conductivity forms are still compared only through')
+        w('the solved stage-3/stage-4 pair above. That absence is a gap in this candidate,')
+        w('not evidence that the forms agree.')
+        w('')
+    else:
+        summary = terms['summary']
+        first = terms['table'][0]
+        w('The probe re-evaluates three conductivities at the same states, taken from a')
+        w('solved %.0f K profile at %g atm: the mixture-averaged value at the SRK density (the'
+          % (first['T_K'], summary['pressure_atm']))
+        w('case-3 baseline), the full `rfElyHanley` value (the case-4 model), and the')
+        w('mixture-averaged value plus the Ely-Hanley *dense increment* over its own')
+        w('ideal-gas value. The last is the form that was declared but not run in the')
+        w('sweep, so this table is the only place where it is quantified.')
+        w('')
+        w('| T (K) | rho (kg/m3) | lambda mix | full Ely-Hanley | dense increment |')
+        w('| --- | --- | --- | --- | --- |')
+        for entry in terms['table']:
+            w('| %.0f | %s | %.5f | %.5f | %.5f |' % (
+                entry['T_K'],
+                ('%.2f' % entry['rho_kg_m3']) if entry.get('rho_kg_m3') else 'n/a',
+                entry['lambda_mix_srk_W_mK'], entry['lambda_EH_full_W_mK'],
+                entry['lambda_EH_dense_increment_W_mK']))
+        w('')
+        w('| T (K) | full / baseline | increment / baseline | step implied (full) | step implied (increment) |')
+        w('| --- | --- | --- | --- | --- |')
+        for entry in terms['table']:
+            w('| %.0f | %.4f | %.4f | %+.2f %% | %+.2f %% |' % (
+                entry['T_K'], entry['ratio_full'], entry['ratio_dense_increment'],
+                100 * entry['predicted_step_full'],
+                100 * entry['predicted_step_dense_increment']))
+        w('')
+        w('Across the %d states the ratio to the baseline has median %.4f for the full form'
+          % (summary['states_compared'], summary['full']['median']))
+        w('(range %.4f-%.4f) and median %.4f for the dense increment (range %.4f-%.4f).'
+          % (summary['full']['min'], summary['full']['max'],
+             summary['dense_increment']['median'], summary['dense_increment']['min'],
+             summary['dense_increment']['max']))
+        w('The largest difference between the two forms is %.2e in the ratio: the'
+          % summary['difference_between_forms_max'])
+        w('normalisations are not interchangeable. Neither, however, moves the step by the')
+        w('factor the paper requires. Under the measured sensitivity d ln S / d ln alpha =')
+        w('%.4f they predict a case-4 step of %+.2f %% and %+.2f %%, against the digitised'
+          % (summary['sensitivity_dlnS_dlnalpha'],
+             100 * summary['predicted_step_full_median'],
+             100 * summary['predicted_step_dense_increment_median']))
+        w('paper step of %+.2f %% (case 4 versus case 1). That step needs a conductivity'
+          % (100 * summary['paper_step_case4_vs_case1']))
+        w('ratio of %.4f, i.e. below the baseline rather than above it in either form.'
+          % summary['required_ratio_for_paper_step'])
+        w('This is the same statement section 6.2 made from the solved pair alone, now')
+        w('confirmed on states where no flame is involved, so it does not depend on the')
+        w('flame solver, its grid or its tolerances.')
+        w('')
+        w('Both forms are reported side by side against the same screen and neither is')
+        w('adopted; the table exists so the choice stays visible, not so that the form that')
+        w('lands closer can be selected.')
+        w('')
+
     # ---- 7 ----------------------------------------------------------------
     w('## 7. Reproducibility against the registered previous generation')
     w('')
@@ -584,6 +651,54 @@ def main():
     w('Differences from the previous generation are expected wherever the build, the')
     w('transport implementation or the solver path changed; they are reported, not zeroed.')
     w('')
+    w('### 7.1 The previous generation re-run from its own source commit')
+    w('')
+    prior_rerun = load(a.repro_prior) if a.repro_prior else None
+    if prior_rerun is None:
+        w('The previous generation was not rebuilt in this candidate, so these differences are')
+        w('**unattributed**: the table above measures them but does not say whether they come')
+        w('from the machine, the grid or the staged model. The rebuild is the next job; until it')
+        w('reports, reproducibility stays `unknown` rather than `passed`.')
+        w('')
+    else:
+        w('The registered previous generation is the payload\'s own data file, and each of its')
+        w('rows names the source commit `%s` that produced the value. That commit is an'
+          % prior_rerun['prior_source_commit'])
+        w('ancestor in this repository, so the generation is not lost: its `cantera-liang` module')
+        w('was archived, hashed as a frozen input, rebuilt with this campaign\'s compiler and SDK')
+        w('(binary sha256 `%s`) and driven with the same frozen inputs at one' % prior_rerun['prior_binary_sha256'])
+        w('point per stage. A failed case is recorded as failed, not dropped.')
+        w('')
+        w('| stage | points | completed | within %g cm/s | rms (cm/s) | max abs (cm/s) |'
+          ' fewest grid points |' % prior_rerun['threshold_cm_s'])
+        w('| --- | --- | --- | --- | --- | --- | --- |')
+        for stage in sorted(prior_rerun['stages'], key=int):
+            s = prior_rerun['stages'][stage]
+            w('| %s | %d | %d | %d | %s | %s | %s |' % (
+                stage, s['points'], s['completed'], s['reproduced'],
+                ('%.6f' % s['rms_cm_s']) if s['rms_cm_s'] is not None else 'n/a',
+                ('%.6f' % s['max_abs_cm_s']) if s['max_abs_cm_s'] is not None else 'n/a',
+                s['min_points'] if s['min_points'] is not None else 'n/a'))
+        w('')
+        w('| stage | phi | declared (cm/s) | re-run (cm/s) | delta (cm/s) | reading |')
+        w('| --- | --- | --- | --- | --- | --- |')
+        for row in prior_rerun['rows']:
+            w('| %d | %.2f | %.5f | %s | %s | %s |' % (
+                row['stage'], row['phi'], row['declared_prior_cm_s'],
+                ('%.5f' % row['computed_cm_s']) if row['computed_cm_s'] is not None else 'not completed',
+                ('%+.5f' % row['delta_cm_s']) if row['delta_cm_s'] is not None else 'n/a',
+                row['reason']))
+        w('')
+        w('Verdict of the re-run, by its own declared rules: `%s`.' % prior_rerun['verdict'])
+        w('')
+        w('Stage 1 is the harness control: it uses the ideal-gas phase and mixture-averaged')
+        w('transport, so it exercises none of the staged-model code that cases 2-5 add. Reading')
+        w('the table that way separates three questions that were previously one:')
+        w('whether the same bytes on the same machine reproduce, whether the grid was fine')
+        w('enough, and whether this reconstruction\'s staged model is the one the previous')
+        w('generation used. A stage-1 agreement together with a stage-2/3/4 difference is a')
+        w('statement about the staged model; the reverse would be a statement about the harness.')
+        w('')
 
     # ---- 8 ----------------------------------------------------------------
     w('## 8. Figure')
