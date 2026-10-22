@@ -269,6 +269,29 @@ this failure names the entry instead of surfacing as a mesh tool error. `status.
 `FAILED blockMesh`; no fields were produced and nothing from this attempt is used as a
 result. Resubmitted as `of8-mixing-v2`.
 
+## Mixing diagnostic v2 — mesh and dictionaries accepted, inlet patch rejected (`of8-mixing-v2`)
+
+Job `125291239` (1 rank, 3000 s wall, source commit `89bfba9`) is the first mixing attempt with
+terminated time controls: `blockMesh` built 3200 cells and `checkMesh` reported `Mesh OK`, so
+`b295c0a` fixed the dictionary. The solver then refused the initial field in 0 s:
+
+```
+--> FOAM FATAL IO ERROR:
+size 3200 is not equal to the given value of 40
+file: .../mix-80x40/0/T/boundaryField/inlet from line 3217 to line 3217
+```
+
+The inlet is the `x = 0` plane and therefore has `ny = 40` faces; the generator had written
+the `nx*ny` cell list as the patch value as well. Fixed in `e1e4eae`: `T`, `U` and every
+species write a 40-entry face list for the inlet and keep the cell list for the internal
+field, with a test that each boundary list length equals the patch face count. `status.txt`
+is `FAILED overall=1`; no time directory was written and nothing here is used as a result.
+Resubmitted as `of8-mixing-v3`.
+
+Two dictionary/field defects in a row on this generator, both invisible in a diff read and
+both caught only by the solver: this is the practical reason the bounded cases go through a
+scheduler allocation before any figure work is attempted.
+
 ## Contact advection on the built solver (`of8-advection-v1`, numerics only)
 
 Job `125289267` (1 rank, 3000 s wall, source commit `995bcb6`, `overall=0`, 226 s inside the
