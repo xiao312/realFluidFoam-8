@@ -55,6 +55,21 @@ reported conductivity by at most 4.59e-04 relative (CH4 at 400 K). Both calorie
 definitions are 0.07 % apart, far below the 1.5 % conductivity tolerance, so the earlier
 verdicts stand; the corrected numbers are what this round reports.
 
+**Round 5: the same slip one level down, in the conductivity prefactor.** The caloric
+line was fixed but `kappa_cond` still multiplied the Chung Eq. (12) result by
+`CAL_CM_S_K_TO_W_M = 418.6798`, which is the International-Table calorie per cm -> m
+(`100 x 4.186798`), so every reported `lambda` carried a uniform +6.694e-04 relative
+offset while the README claimed one definition. The factor is now derived from
+`CAL_PER_JOULE` (`100/CAL_PER_JOULE = 418.4000`); the printed value is retained as
+`CAL_CM_S_K_TO_W_M_INTERNATIONAL` so a test can pin the difference, and one test pins
+`kappa(O2, 300 K, 56 bar)` against a value whose constituent terms (`alpha`, `psi`,
+`h2`, `lambda0`) are recorded beside it, so the constant cannot drift again. Neither
+calorie is knowable as Chung's intent from the correlation itself; what is knowable is
+that one module must use one definition, and that 0.067 % is far below the 1.5 %
+conductivity tolerance. The frozen Cavalieri figure was produced with 418.6798 and
+therefore predates this change by that uniform factor; it must be regenerated before
+any submission cites it again.
+
 Note that at exactly `(Tc, pc)` the published five-digit constants do **not** give
 `Z = 1/3`: the reduced cubic there is a near-triple root, so a 1e-7 coefficient residual
 is amplified to ~2e-2 in Z. The test therefore checks the equation of state residual at

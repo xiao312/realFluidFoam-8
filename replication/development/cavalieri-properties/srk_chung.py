@@ -46,7 +46,20 @@ R = 8.31446261815324          # J/(mol K)
 # Chung cv (and hence the conductivity) by 6.7e-04 relative.
 CAL_PER_JOULE = 1.0 / 4.184   # thermochemical calorie, exact by definition
 R_CAL = R * CAL_PER_JOULE     # cal/(mol K) = 1.9872042586
-CAL_CM_S_K_TO_W_M = 418.6798  # cal/(cm s K) -> W/(m K), as published for Eq. (12)
+# cal/(cm s K) -> W/(m K) is the same calorie, converted twice: one calorie is
+# 1/CAL_PER_JOULE joule and one centimetre is 0.01 m, so the factor is
+# 100/CAL_PER_JOULE = 418.4000.  The conversion that is usually printed for the
+# Chung conductivity, 418.6798, encodes the International-Table calorie
+# (4.1868 J/cal) instead: 418.6798/418.4 = 1.0006694, a uniform +6.694e-04
+# relative offset on every reported kappa.  Round 4 found the module claiming one
+# definition while applying the other one level down, so the factor is derived
+# here from CAL_PER_JOULE and the alternative is pinned by a test rather than
+# left as a comment.  Which calorie Chung et al. intended for Eq. (12) is not
+# knowable from the correlation; what is knowable is that this module must not
+# mix the two, and that the difference is two orders of magnitude below the 1.5 %
+# conductivity tolerance the figure is judged with.
+CAL_CM_S_K_TO_W_M = 100.0 / CAL_PER_JOULE   # = 418.4000, thermochemical calorie
+CAL_CM_S_K_TO_W_M_INTERNATIONAL = 418.6798  # the printed factor, retained for the test
 P_PER_CAL = 0.1               # poise -> Pa s
 
 A_COEFF = 0.42748             # Soave (1972) attractive constant, Eq. (2)

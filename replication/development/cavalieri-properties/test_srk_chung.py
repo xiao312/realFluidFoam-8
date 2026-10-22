@@ -180,6 +180,42 @@ class Transport(unittest.TestCase):
                     self.assertLess(rel(state["kappa"], eucken), 0.12,
                                     "Chung %g vs Eucken %g" % (state["kappa"], eucken))
 
+    def test_conductivity_prefactor_is_the_thermochemical_calorie(self):
+        """kappa carries one calorie definition, and the printed one is 6.694e-04 away.
+
+        Round 4 found `kappa_cond` multiplying by 418.6798 (International-Table
+        calorie) while `cv_cal` used 1/4.184.  The factor is now derived from
+        CAL_PER_JOULE, and this test pins both the derivation and the size of the
+        offset the old constant carried, so a future edit cannot quietly reintroduce
+        a second definition.
+        """
+        self.assertAlmostEqual(sc.CAL_CM_S_K_TO_W_M, 100.0 / sc.CAL_PER_JOULE, places=12)
+        self.assertAlmostEqual(sc.CAL_CM_S_K_TO_W_M, 418.4, places=12)
+        offset = sc.CAL_CM_S_K_TO_W_M_INTERNATIONAL / sc.CAL_CM_S_K_TO_W_M - 1.0
+        self.assertLess(rel(offset, 6.694e-04), 1e-3,
+                        "the two calorie definitions differ by %g" % offset)
+        # kappa is the prefactor times the raw cal/(cm s K) correlation value, so the
+        # prefactor cannot enter anywhere else without breaking this identity.
+        state = sc.chung_state(sc.SPECIES["O2"], 300.0, 56e5)
+        raw = state["lambda_k"] + state["lambda_p"]
+        self.assertLess(rel(state["kappa"], raw * sc.CAL_CM_S_K_TO_W_M), 1e-14)
+
+    def test_conductivity_is_pinned_for_one_state(self):
+        """One hand-computed state, with its terms, so the constants cannot drift.
+
+        O2 at 300 K and 56 bar.  alpha (Eq. 9) = 1.0345725252670, psi (Eq. 11) =
+        1.33240503514327, h2 (Eq. 12) = 0.860081029887503, lambda0 = 6.376939233246657e-05
+        cal/(cm s K), lambda_k = 6.411073456498698e-05, lambda_p = 3.0351272733410096e-06,
+        kappa = 418.4 * (lambda_k + lambda_p) = 0.028093828593156435 W/(m K).
+        """
+        state = sc.chung_state(sc.SPECIES["O2"], 300.0, 56e5)
+        self.assertLess(rel(state["alpha_eucken"], 1.0345725252670004), 1e-12)
+        self.assertLess(rel(state["psi"], 1.332405035143271), 1e-12)
+        self.assertLess(rel(state["h2"], 0.8600810298875033), 1e-12)
+        self.assertLess(rel(state["lambda0"], 6.376939233246657e-05), 1e-12)
+        self.assertLess(rel(state["kappa"], 0.028093828593156435), 1e-12)
+        self.assertLess(rel(state["mu"], 2.1382480546358256e-05), 1e-12)
+
     def test_dense_correction_increases_viscosity(self):
         for name, species in sc.SPECIES.items():
             with self.subTest(species=name):
