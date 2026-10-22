@@ -552,3 +552,30 @@ allocation: at 100 atm the flame is roughly ten times thinner than the 1 atm pro
 the guess was taken from, so almost all of those 2126 points are unnecessary and
 cost both memory and Newton iterations. That change touches the driver and therefore
 the frozen module hash, so it is not mixed into the measurement above.
+
+## Attributing the stage-4 shift to the conductivity replacement
+
+`conductivity_attribution.py` reads the retained `result/profile.csv` files of stages 1-4
+at one equivalence ratio and answers a narrower question than the comparison report: is
+the stage-4 speed shift the size that the model change predicts? The solver writes
+`lambda_W_mK`, `rho`, `cp` and `T` at every grid point, so the conductivity ratio between
+stages is measured, not argued from the source.
+
+At `phi = 0.95`, 100 atm, stage 3 to stage 4 differs by exactly one term - the full
+`rfElyHanley::conductivity` replacement. That term raises the speed by 16.9 % while the
+conductivity at the hot side of the front rises 15.7 % and the profile-wide median
+relative change is +16.8 % (max +29.1 %, min +5.3 %, 2125 shared points). A pure
+`S_L ~ alpha^0.5` scaling would predict +7.6 %, so the response is super-linear through
+the Lewis number; the sign and size of the shift are a transport-model effect, not a
+numerical one. Stages 2 and 3 change alpha by only +2.2 % and +0.5 % while losing 0.95 %
+and 6.9 % of speed, with an 18.85 K adiabatic-temperature drop at stage 3, so those
+shifts are caloric rather than transport.
+
+The consequence is stated in the report rather than repaired: the paper's case 4 sits
+*below* its case 1, while ours sits above, and this analysis localises the opposite sign
+to the full-replacement conductivity. The `dense-increment` variant stays declared and
+unrun.
+
+Run it with `FP_CASES`, `FP_RESULTS`, `FP_OUTPUT` and `FP_PHI` (defaults point at the
+retained trial directories); `test_conductivity_attribution.py` checks the normalisation
+and the pointwise block on a synthetic case.
