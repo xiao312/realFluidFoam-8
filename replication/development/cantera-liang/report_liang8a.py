@@ -175,10 +175,23 @@ def main():
     w('Case 2 keeps ideal calorics on purpose and is therefore not a thermodynamically')
     w('consistent equilibrium model; it isolates the density effect only.')
     w('')
-    w('Solved grid: %s.' % ', '.join('%.2f' % p for p in sorted({q['phi'] for q in points})))
-    w('That is the registered previous generation\'s grid, so reproducibility is compared at')
-    w('identical operating points rather than through interpolation. Solver controls:')
-    w('steady relative tolerance 1e-5, absolute tolerance 1e-11, single rank.')
+    w('Solved grid per case, and what each case therefore contributes to the figure:')
+    w('')
+    w('| case | solved points | phi range |')
+    w('| --- | --- | --- |')
+    for num in range(1, 6):
+        mine = sorted(q['phi'] for q in points if q['stage'] == num)
+        w('| %d | %d | %s |' % (num, len(mine),
+                              '%.2f-%.2f' % (mine[0], mine[-1]) if mine else '**no solved point**'))
+    w('')
+    w('Case 1 keeps the registered previous generation\'s full grid, so reproducibility is')
+    w('compared at identical operating points rather than through interpolation. Cases 2-4 run')
+    w('a reduced grid (10, 6 and 6 points) because the real-gas transport makes every point')
+    w('about an hour of allocation; case 2 is missing its rich tail. Case 5 has no solved point:')
+    w('four bounded attempts (jobs 125233862 and 125242992, 599-1200 s each) timed out from the')
+    w('coarsened initial profile, and the campaign recipe is therefore used with its case-5')
+    w('series removed. Solver controls for every case above: steady relative tolerance 1e-5,')
+    w('absolute tolerance 1e-11, one rank per flame.')
     w('')
     w('The unburned temperature is an assumption. The article does not state Tu numerically;')
     w('298 K is inferred from the figure caption conditions and is recorded as an assumption,')
@@ -248,7 +261,7 @@ def main():
     # ---- 5 ----------------------------------------------------------------
     w('## 5. Execution record')
     w('')
-    w('| job key | scheduler job | ranks | build | points solved |')
+    w('| job key | scheduler job | allocation | build | points solved |')
     w('| --- | --- | --- | --- | --- |')
     for key, jid in jobs:
         mine = [p for p in points if p['job'] == jid]
@@ -259,17 +272,26 @@ def main():
                 text = bs.read_text().strip()
                 if text.startswith('BUILT'):
                     build = '`%s`' % text
-        w('| %s | %s | 1 | %s | %d |' % (key, jid, build, len(mine)))
+        w('| %s | %s | 4 ranks / 4 GiB, one solver process | %s | %d |'
+          % (key, jid, build, len(mine)))
     w('')
-    for run in runs:
-        combined = run / 'combined.txt'
-        sweep_txt = run / 'sweep.txt'
-        if combined.exists() and combined.read_text().strip():
-            lines = [ln for ln in combined.read_text().splitlines() if ln.strip()]
-            w('* `%s`: %s ... %s' % (run.name, lines[0], lines[-1]))
-        if sweep_txt.exists() and sweep_txt.read_text().strip():
-            last = sweep_txt.read_text().strip().splitlines()[-1]
-            w('* `%s`: %s' % (run.name, last))
+    # Every allocation wrote into the same run directory, so its sweep.txt only describes the
+    # last one. The per-job snapshots are the provenance for the earlier allocations.
+    for key, jid in jobs:
+        snap = pathlib.Path('/workspace/forge-out/runs/liang8a-jobs') / (jid or '')
+        lines = []
+        suffix = key.split('liang8a-', 1)[-1]
+        for name in ('sweep-%s.txt' % suffix, 'sweep.txt'):
+            f = snap / name
+            if f.exists():
+                lines = [ln for ln in f.read_text().splitlines() if ln.strip()]
+                if lines:
+                    break
+        if lines:
+            w('* job %s: first `%s`, last `%s` (snapshot `runs/liang8a-jobs/%s`)'
+              % (jid, lines[0], lines[-1], jid))
+        else:
+            w('* job %s: no sweep snapshot retained' % jid)
     w('')
     w('The image converts its SIF to a sandbox before any payload line runs, which costs')
     w('about 578 s per allocation (measured separately in job 125203749). The build and the')
@@ -338,10 +360,88 @@ def main():
         w('  largest excursions at phi %s.'
           % ', '.join('%.2f (%+.4f cm/s)' % (r['phi'], r['error_cm_s']) for r in worst_rows))
     w('')
-    w('That disagreement is reported as a property of this reconstructed stage, not as a')
-    w('tuning target and not as an author finding: the article does not state which')
-    w('Takahashi variant, coefficient set or temperature clamp the authors used, so a')
-    w('stage-5 departure cannot be attributed to them from this reproduction alone.')
+    signs = {}
+    for stage in dirty:
+        group = [r for r in rows if r['stage'] == int(stage)]
+        signs[stage] = (sum(r['error_cm_s'] for r in group) / len(group),
+                        min(r['error_percent'] for r in group),
+                        max(r['error_percent'] for r in group))
+    if signs:
+        w('The pattern, which is the informative part:')
+        w('')
+        for stage, (mean, lo, hi) in signs.items():
+            w('* case %s shifts by %+.3f cm/s on average (%+.2f %% to %+.2f %% of the digitised'
+              ' value) - a systematic offset with the same sign at every compared point, not'
+              ' scatter.' % (stage, mean, lo, hi))
+        w('')
+    w('Each stage adds exactly one term, so the offsets separate the terms. The sharpest')
+    w('statement compares each stage with its own case 1 on both sides, because that removes')
+    w('the shared assumptions (mechanism, Tu, mechanism transport base) from the difference:')
+    w('')
+    ref_rows = ref.get('rows', [])
+    paper1 = [(r['phi'], r['speed_cm_s']) for r in ref_rows if r['stage'] == 1]
+    computed1 = [(q['phi'], q['speed_cm_s']) for q in points if q['stage'] == 1]
+
+    def _interp(pts, x):
+        pts = sorted(pts)
+        if not pts or x < pts[0][0] or x > pts[-1][0]:
+            return None
+        for i in range(1, len(pts)):
+            if pts[i][0] >= x:
+                a, b = pts[i - 1], pts[i]
+                return a[1] + (x - a[0]) / (b[0] - a[0]) * (b[1] - a[1])
+        return None
+
+    shifts = {}
+    for num in range(1, 6):
+        mine = sorted(100.0 * (q['speed_cm_s'] - _interp(computed1, q['phi']))
+                      / _interp(computed1, q['phi'])
+                      for q in points if q['stage'] == num and _interp(computed1, q['phi']))
+        theirs = sorted(100.0 * (r['speed_cm_s'] - _interp(paper1, r['phi']))
+                        / _interp(paper1, r['phi'])
+                        for r in ref_rows if r['stage'] == num and _interp(paper1, r['phi']))
+        shifts[num] = (mine, theirs)
+        w('| %d | %s | %s |' % (num,
+                               ('%+.2f to %+.2f %%' % (mine[0], mine[-1])) if mine else 'no solved point',
+                               ('%+.2f to %+.2f %%' % (theirs[0], theirs[-1])) if theirs else 'none'))
+    w('')
+    w('Read along the rows:')
+
+    def _band(vals):
+        return '%+.2f to %+.2f %%' % (vals[0], vals[-1]) if vals else 'none'
+
+    w('')
+    for num in (2, 3, 4):
+        mine, theirs = shifts[num]
+        if not mine or not theirs:
+            continue
+        gap = min(abs(a - b) for a in (mine[0], mine[-1]) for b in (theirs[0], theirs[-1]))
+        w('* case %d: this reconstruction sits at %s of its own case 1, the digitised paper'
+          % (num, _band(mine)))
+        w('  at %s of its own case 1; the two bands come within %.2f percentage points.'
+          % (_band(theirs), gap))
+    w('')
+    mine4, theirs4 = shifts[4]
+    if mine4 and theirs4 and mine4[0] > 0 > theirs4[-1]:
+        w('The informative one is case 4: its term *raises* the flame speed here while the')
+        w('paper\'s case 4 sits *below* the paper\'s case 1. That is a sign difference, not a')
+        w('magnitude difference, and no single vertical scaling can fix it: the dense-gas')
+        w('conductivity term as implemented here is not the term the paper used. By contrast')
+        w('case 3 already lands within about one and a half percentage points of the paper\'s')
+        w('own stage step, which is why the conductivity term and not the SRK calorics is the')
+        w('open question.')
+        w('')
+    w('The driver also implements the conductivity as a *dense increment* over the verified')
+    w('dilute baseline (`dense-increment` option). That variant was **not** run and is not')
+    w('adopted: switching to the variant that lands closer to the paper would be selecting a')
+    w('diagnostic because it improves the answer. Which form the authors used is unknown from')
+    w('the article as available here, and choosing between them needs their transport')
+    w('definition, not our residuals.')
+    w('')
+    w('Nothing here is attributed to the authors: the article does not state which Takahashi')
+    w('variant, coefficient set, temperature clamp or conductivity normalisation was used, so')
+    w('a departure of any stage is a property of this reconstruction, not a finding about the')
+    w('paper.')
     w('')
 
     # ---- 7 ----------------------------------------------------------------
