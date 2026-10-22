@@ -501,3 +501,26 @@ digits). This serialization change preserves binary coordinate/temperature
 values during offline reconstruction of thin-grid gradients. It changes no
 transport coefficient, residual or convergence criterion. Older 16-digit exports
 remain historical evidence and retain their measured reconstruction limits.
+
+## Build qualification in the registered `cantera32` image
+
+Measured in job `125207262` (2026-10-22T02:26Z, host `a01r4n18`, GCC 11.2.0 from
+`/opt/gcc-11.2.0/bin/g++`, SDK `/opt/cantera-sdk`): a translation unit that includes
+only `<cstdint>` fails with
+
+```
+/usr/include/features.h:461:12: fatal error: sys/cdefs.h: No such file or directory
+```
+
+because the upstream compiler does not add this image's Debian multiarch include
+directory. The registry documents `-isystem /usr/include/x86_64-linux-gnu` and
+`-B/usr/lib/x86_64-linux-gnu/` for the image; with those flags the same probe
+compiles and links. `job-batch.sh` probes base and then the registry flags on a
+trivial unit, records the choice in `compile-config.txt`, and now applies the chosen
+include directory to **every** compile, including the Cantera-free fixtures: the
+first version appended it only to the Cantera flag set, so `test_srk.cpp` still saw
+the broken header path and aborted. An `EXIT` trap writes `status.txt =
+FAILED <mode> step=<step> rc=<rc>` so an aborted step is never indistinguishable from
+an allocation that produced nothing. `job-build-and-sweep.sh` runs the build and the
+sweep in one allocation because the SIF-to-sandbox conversion costs about 578 s of
+every job before any payload line runs.
