@@ -469,6 +469,15 @@ def main():
                  pointwise['max_relative_conductivity_change']))
             w('median thermal-diffusivity ratio is %.4f.' % pointwise['median_alpha_ratio'])
             w('')
+            control = attribution.get('self_comparison_control') or {}
+            if control.get('passes'):
+                w('The same measurement applied to one profile and itself, as a control, returns')
+                w('exactly %.1f change and a %.1f thermal-diffusivity ratio at all %d shared'
+                  % (control['max_abs_relative_conductivity_change'],
+                     control['median_alpha_ratio'], control['points']))
+                w('points, so the shift above is not an artefact of the interpolation or of the')
+                w('relative-difference arithmetic.')
+                w('')
         w('Reading, with its limits stated: the stage-4 term raises the speed by more than a')
         w('pure `S_L ~ alpha^0.5` scaling of the measured diffusivity ratio predicts, because')
         w('raising lambda at fixed diffusivity also raises the Lewis number; the point is the')

@@ -105,22 +105,27 @@ def main():
                 out["stages"][s]["speed_ratio"] = r
                 out["stages"][s]["alpha_ratio_for_that_speed"] = r * r
     # pointwise conductivity difference along the whole profile, interpolated on stage 1
-    if 4 in profiles:
-        four = profiles[4][0]
-        x4 = [r["x_m"] for r in four]
+    def pointwise(other):
+        """Relative conductivity change and alpha ratio of `other` evaluated at base x.
+
+        Kept as a function so the same code can also be run against a profile compared
+        with itself: that self-comparison is the control for this measurement. If the
+        interpolation or the arithmetic could manufacture a shift, it would also show up
+        there.
+        """
+        xs = [r["x_m"] for r in other]
         diffs, phys = [], []
         for r in base_rows:
             x = r["x_m"]
-            if x < x4[0] or x > x4[-1]:
+            if x < xs[0] or x > xs[-1]:
                 continue
-            # linear interpolation of the stage-4 conductivity at stage-1 x
-            i = bisect.bisect_left(x4, x)
+            i = bisect.bisect_left(xs, x)
             if i == 0:
-                lam4, rho4, cp4 = four[0]["lambda_W_mK"], four[0]["rho_kg_m3"], four[0]["cp_J_kgK"]
-            elif i >= len(x4):
-                lam4, rho4, cp4 = four[-1]["lambda_W_mK"], four[-1]["rho_kg_m3"], four[-1]["cp_J_kgK"]
+                lam4, rho4, cp4 = other[0]["lambda_W_mK"], other[0]["rho_kg_m3"], other[0]["cp_J_kgK"]
+            elif i >= len(xs):
+                lam4, rho4, cp4 = other[-1]["lambda_W_mK"], other[-1]["rho_kg_m3"], other[-1]["cp_J_kgK"]
             else:
-                a, b = four[i - 1], four[i]
+                a, b = other[i - 1], other[i]
                 w = 0.0 if b["x_m"] == a["x_m"] else (x - a["x_m"]) / (b["x_m"] - a["x_m"])
                 lam4 = a["lambda_W_mK"] + w * (b["lambda_W_mK"] - a["lambda_W_mK"])
                 rho4 = a["rho_kg_m3"] + w * (b["rho_kg_m3"] - a["rho_kg_m3"])
@@ -132,19 +137,36 @@ def main():
             a4 = lam4 / (rho4 * cp4)
             if a1 > 0:
                 phys.append(a4 / a1)
-        if diffs:
-            n = len(diffs)
-            diffs_sorted = sorted(diffs)
-            phys_sorted = sorted(phys)
-            out["pointwise"] = {
-                "points": n,
-                "mean_relative_conductivity_change": sum(diffs) / n,
-                "median_relative_conductivity_change": diffs_sorted[n // 2],
-                "max_relative_conductivity_change": diffs_sorted[-1],
-                "min_relative_conductivity_change": diffs_sorted[0],
-                "mean_alpha_ratio": sum(phys) / n,
-                "median_alpha_ratio": phys_sorted[len(phys) // 2],
-            }
+        if not diffs:
+            return None
+        n = len(diffs)
+        diffs_sorted = sorted(diffs)
+        phys_sorted = sorted(phys)
+        return {
+            "points": n,
+            "mean_relative_conductivity_change": sum(diffs) / n,
+            "median_relative_conductivity_change": diffs_sorted[n // 2],
+            "max_relative_conductivity_change": diffs_sorted[-1],
+            "min_relative_conductivity_change": diffs_sorted[0],
+            "mean_alpha_ratio": sum(phys) / n,
+            "median_alpha_ratio": phys_sorted[len(phys) // 2],
+        }
+
+    if 4 in profiles:
+        four = profiles[4][0]
+        got = pointwise(four)
+        if got:
+            out["pointwise"] = got
+        # Control: the identical measurement applied to a profile and itself must return
+        # exactly zero change and a unit alpha ratio at every shared point.
+        control = pointwise(base_rows)
+        if control:
+            control["max_abs_relative_conductivity_change"] = max(
+                abs(control["max_relative_conductivity_change"]),
+                abs(control["min_relative_conductivity_change"]))
+            control["passes"] = (control["max_abs_relative_conductivity_change"] == 0.0
+                                 and control["median_alpha_ratio"] == 1.0)
+            out["self_comparison_control"] = control
     out["inputs"] = {"cases": ROOT, "results": RESULTS, "phi": float(PHI)}
     json.dump(out, open(OUTPUT, "w"), indent=1)
     print(json.dumps(out, indent=1))

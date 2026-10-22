@@ -68,6 +68,22 @@ class ConductivityAttributionTest(unittest.TestCase):
         self.assertAlmostEqual(pointwise["min_relative_conductivity_change"], 0.16, places=8)
         self.assertAlmostEqual(pointwise["median_alpha_ratio"], 1.16, places=8)
 
+    def test_self_comparison_control_is_exactly_zero_while_the_measurement_is_not(self):
+        """The same routine compared with itself must return 0 and 1, not a small shift.
+
+        Without this control the pointwise block would only show that numbers came out.
+        With it, the +16.8 % conductivity change of the real measurement cannot be an
+        artefact of the interpolation or of the relative-difference arithmetic, because
+        that arithmetic returns exactly zero on identical inputs.
+        """
+        data = self.run_script()
+        control = data["self_comparison_control"]
+        self.assertEqual(control["points"], 6)
+        self.assertEqual(control["max_abs_relative_conductivity_change"], 0.0)
+        self.assertEqual(control["median_alpha_ratio"], 1.0)
+        self.assertTrue(control["passes"])
+        self.assertGreater(data["pointwise"]["median_relative_conductivity_change"], 0.1)
+
     def test_inputs_are_recorded_so_the_analysis_is_reproducible(self):
         data = self.run_script()
         self.assertEqual(data["inputs"]["phi"], 0.95)
