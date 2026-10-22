@@ -155,3 +155,83 @@ a broken checker reports a clean run for a dirty one.
 
 Scope: a startup window, not a flame. A failure of any check is the finding; a pass
 is bounded startup evidence and nothing more.
+
+## Defect found in the shared metric module (fixed)
+
+`janaf_h_over_R` evaluated `a1 + a2*T/2 + ... + a6/T`, i.e. `h/(R*T)`, while every caller
+treated the result as `h/R`. Every sensible enthalpy, every inversion target and every
+energy integral was therefore wrong by a factor of order `T` - about 1000 at 1000 K, and
+temperature dependent, so a comparison between two temperatures was wrong by more than a
+constant. The synthetic round-trip test could not see it because it built `he` with the
+same function.
+
+Fixed in `metrics.py` and `expected_energy.py`; `test_metrics.py` now also pins absolute
+anchors (N2 `hs(1000 K)` = 21 463 J/mol = 766.2 kJ/kg within 0.5 percent, N2 `cp(1000 K)`
+= 1169 J/(kg K) within 2 percent, CH4 `hf` = -74.87 kJ/mol within 1 percent). All eight
+tests pass. Commits `86b6a26`, `f62a5ef`.
+
+## Postprocess of the retained incomplete field (`of8-diag-v1`, 2e-08 s)
+
+Read-only, with the fixed metric, on the one field that job saved before it hit the wall
+(**not** a bounded run and **not** a conservation result):
+
+| quantity | value |
+| --- | --- |
+| cells, dx | 8000, 5e-7 m |
+| T range | 298 - 2232.32 K |
+| p range | 10.1325 - 10.1966 MPa |
+| rho range | 14.76 - 113.03 kg/m3 |
+| species sum error | 1.2e-12 |
+| ideal-gas rho closure | 9.0e-7 |
+| solver `Cp` vs JANAF polynomial | 9.0e-7 |
+| inversion round-trip (T -> hs -> T) | 4.1e-16 |
+| mass, sensible-energy integral | 0.430678 kg/m2, 7746.82 J/m2 |
+
+The `Cp` agreement is the useful part: the solver's own heat capacity and the independent
+JANAF evaluation agree to 1e-6, so the fixed enthalpy polynomial really is the solver's
+thermodynamics, and that time zero state is thermodynamically consistent. It says nothing
+about conservation over time.
+
+## Bounded clean-start energy diagnostic (`of8-energy-diag-v1`)
+
+`job-energy-diag.sh` runs two 32-cell cases that provably reach `endTime`, generated from
+inspectable dictionaries by `prepare_energy_case.py`, both at `startTime 0` with no
+carried-over field and with no `endTime` rewriting anywhere in the wrapper:
+
+* `caseA` chemistry off, 300 K | 1200 K step, 1000 fixed 1e-8 s steps to 1e-5 s, four
+  writes. Conserved quantity: `sum(rho*he)*V` (sensible enthalpy).
+* `caseB` chemistry on, GRI-3.0, uniform 1500 K, 100 steps to 1e-6 s, four writes.
+  Conserved quantity: `sum(rho*(ha - p/rho))*V` with `ha = hs + hf`, because
+  `sensibleEnthalpy` drops the formation term from the solver's variable.
+
+The stop is verified rather than assumed: `rc = 0`, an `End` marker in the log, the last
+`Time =` equal to `endTime`, and the expected number of written time directories; each of
+those is recorded per case in `<case>.stop.txt`. Boundary conditions were corrected before
+the run to an adiabatic, impermeable, rigid box (`p`, `T`, species `zeroGradient`, `U`
+`fixedValue 0`), because a wave-transmissive patch would let mass and energy leave the
+domain and the declared conservation statement would have been false. The temperature field
+was also given its temperature dimensions. Commit `6f95e1e`.
+
+The built solver does not write its energy variable, so the integral is recomputed from the
+written `T` and `Y` through the JANAF table and the source used is recorded per write
+(`inversion.energy_source`).
+
+## Contact-advection cases (`schmitt2020-fig-5`, numerics only)
+
+The registered target asks for oxygen at 6 MPa, `rho` 1000 -> 100 kg/m3, `u = 10 m/s`,
+`dx = 0.01 m`, `n_x = 2/4/6`, `t = 20 ms`. The frozen build is `hePsiThermo` +
+`perfectGas`: it has no real-fluid equation of state, and 1000 kg/m3 oxygen at 6 MPa is a
+supercritical liquid-like state that an ideal gas cannot represent at any temperature.
+That is a blocker, recorded in every receipt. `prepare_advection_case.py` builds what the
+binary can test: a periodic 1-D ideal-gas domain at 1 atm, `u = 10 m/s`, an error-function
+temperature contact 300 K -> 3000 K (density ratio 10, the ratio the target uses) with
+width `n_x*dx`, chemistry off, to 20 ms. Periodicity means no boundary flux at all, so
+mass, momentum and formation-inclusive total energy are exactly conserved in exact
+arithmetic, and the exact solution is a rigid shift of the initial profile.
+
+`job-advection.sh` runs `nx2`, `nx4`, `nx6` and `advection_metrics.py` reports, per write,
+the mass/momentum/energy integrals, `max|p-p0|/p0` and `max|U-u0|` (the two quantities the
+target plots), density positivity, species closure, `Cp` against the JANAF polynomial and
+the L2 error against the shifted initial profile. `test_advection.py` (10 tests) checks the
+geometry, the periodicity, the time controls and that the metric recovers the exact answer
+on a synthetic pure shift: zero drift, `T` L2 1e-11 K.
