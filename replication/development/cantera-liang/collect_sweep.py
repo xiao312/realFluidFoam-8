@@ -25,13 +25,21 @@ def sha256(path):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('run', type=Path)
+    parser.add_argument('run', type=Path, nargs='+')
     parser.add_argument('output', type=Path)
     args = parser.parse_args()
-    run = args.run.resolve(strict=True)
-    cases = sorted((run / 'cases').glob('stage-*-phi-*'))
-    if not cases:
-        raise ValueError('no case directories under %s' % (run / 'cases'))
+    runs = [r.resolve(strict=True) for r in args.run]
+    cases = []
+    for run in runs:
+        found = sorted((run / 'cases').glob('stage-*-phi-*'))
+        if not found:
+            raise ValueError('no case directories under %s' % (run / 'cases'))
+        cases.extend(found)
+    # One operating point must have one directory: a point solved twice is ambiguous.
+    keys = [c.name for c in cases]
+    duplicates = sorted({k for k in keys if keys.count(k) > 1})
+    if duplicates:
+        raise ValueError('the same operating point appears in more than one run: %s' % duplicates)
 
     results, failed, observed = [], [], []
     for case in cases:
@@ -90,7 +98,7 @@ def main():
 
     results.sort(key=lambda r: (r['stage'], r['phi']))
     document = dict(
-        run=str(run),
+        run=[str(r) for r in runs],
         schema='forge-fig8a-sweep-v1',
         results=results,
         failed=failed,

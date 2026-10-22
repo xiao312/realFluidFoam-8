@@ -62,7 +62,14 @@ def main():
     prior = load(a.prior)
     receipt = load(a.receipt)
     reference = load(a.reference)
-    run = pathlib.Path(a.sweep_dir)
+    runs = [pathlib.Path(part) for part in a.sweep_dir.split(',')]
+    index = {}
+    for run in runs:
+        for case in sorted((run / 'cases').glob('stage-*-phi-*')):
+            index.setdefault(case.name, []).append(case)
+    duplicated = sorted(k for k, v in index.items() if len(v) > 1)
+    if duplicated:
+        raise SystemExit('operating point present in more than one run: %s' % duplicated)
     checks = []
 
     # ---- source_and_units -------------------------------------------------
@@ -70,7 +77,11 @@ def main():
     stages = sorted({p['stage'] for p in points})
     variants, pressures, identities, bad_logs = set(), set(), set(), []
     for p in points:
-        case = run / 'cases' / ('stage-%d-phi-%s' % (p['stage'], p['phi']))
+        found = index.get('stage-%d-phi-%s' % (p['stage'], p['phi']))
+        if not found:
+            bad_logs.append('no case directory for stage %d phi %s' % (p['stage'], p['phi']))
+            continue
+        case = found[0]
         log = case / 'batch.log'
         try:
             text = log.read_text(errors='replace')
