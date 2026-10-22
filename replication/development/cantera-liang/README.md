@@ -247,6 +247,24 @@ profile ties; the nearest saved phi supplies a numerical guess when necessary.
 `plan.json` records target phi and guess phi separately. The inlet uses target phi.
 Each stage uses `submit.sh plan|apply ROOT RELEASE SDK INPUTS STAGE BUILD PHI`.
 
+`job-batch.sh build|case MODULE INPUTS RUN [BUILD STAGE PHI VARIANT PRESSURE_ATM RTOL ATOL]`
+is the batch adaptation of `job.sh` for the registered `cantera32` image, added in
+this campaign. `job.sh` and `submit.sh` are retained unchanged as the legacy site
+wrappers: they bind the old project root, a `release/` tree, the SDK under that
+root and the site compiler `/public/software/compiler/gcc/11.2.0/bin/g++`, none of
+which exists here. The adaptation changes only those bindings (compiler
+`/opt/gcc-11.2.0/bin/g++`, SDK `/opt/cantera-sdk` through
+`pkg-config --define-variable=prefix=/opt/cantera-sdk`, this checkout's module
+directory, and a frozen inputs directory) and keeps the same build sequence, the
+same flags and the same two negative controls, which must still fail. Before it
+compiles or solves anything it verifies `RUN/module.sha256` and
+`RUN/inputs.sha256`, both frozen by the submitter, so a job cannot silently build
+a different tree than the receipt names; it also probes whether this image needs
+`-isystem /usr/include/x86_64-linux-gnu -B/usr/lib/x86_64-linux-gnu/` to see the
+Debian multiarch headers and records the configuration that actually linked in
+`RUN/compile-config.txt`. Cases reuse `BUILD/liang-flame` after re-checking its
+sha256 and never recompile.
+
 `equilibrium_guess.py plan|apply BASE_INPUTS HP_CSV OUTPUT` builds a separate
 temperature/composition ramp from the supplied HP products. It needs Python
 Cantera 3.2 for molecular weights. The copied ideal velocity is only a numerical
