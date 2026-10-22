@@ -85,26 +85,36 @@ def pressure_of(rho, T):
 def primitive_at(T, rho):
     """Everything the fluxes need at a (T, rho) state, per unit mass.
 
-    The pressure comes from the EOS at this density and temperature; the caloric departures are
-    taken from `srk_chung.srk_state` and combined with the ideal-gas polynomials here, so one
-    call covers the whole state instead of evaluating the cubic twice.
+    The caloric departures are evaluated directly from the molar volume that belongs to this
+    density, not by re-solving the cubic at (T, p): when the SRK cubic has several mechanically
+    stable roots, a (T, p) call can return a different branch than the density implies, and the
+    energy would then describe a state the cell does not have. The formulas are the ones in
+    `cavalieri-properties/srk_chung.py`; only the root selection differs, and here the root is
+    the density itself.
     """
     v = _molar_volume(rho)
-    a, a_t, _ = srk_chung.alpha_terms(O2, T)
     b = srk_chung.b_term(O2)
     if v <= b:
         raise ValueError('molar volume %g is below the SRK covolume %g' % (v, b))
+    a, a_t, a_tt = srk_chung.alpha_terms(O2, T)
     p = R_UNIVERSAL * T / (v - b) - a / (v * (v + b))
-    st = srk_chung.srk_state(O2, T, p)
+    p_v = -R_UNIVERSAL * T / (v - b) ** 2 + a * (2.0 * v + b) / (v * (v + b)) ** 2
+    p_t = R_UNIVERSAL / (v - b) - a_t / (v * (v + b))
+    if not (p_v < 0.0):
+        raise ValueError('SRK state is not mechanically stable at T=%g rho=%g' % (T, rho))
+    v_t = -p_t / p_v
+    log_term = math.log1p(b / v)
+    c_term = T * a_t - a
+    h_dep = R_UNIVERSAL * T * b / (v - b) - a / (v + b) + c_term * log_term / b
+    cp_dep = p * v_t - R_UNIVERSAL + T * a_tt * log_term / b - c_term * v_t / (v * (v + b))
+    cv_dep = cp_dep + T * p_t * p_t / p_v
     cp0 = srk_chung.cp_ideal(O2, T)
     h0 = srk_chung.h_ideal(O2, T)
-    cp = (cp0 + st['cp_dep']) / M_O2
-    cv = (cp0 - R_UNIVERSAL + st['cv_dep']) / M_O2
-    h = (h0 + st['h_dep']) / M_O2
-    p_v = st['p_v']
+    cp = (cp0 + cp_dep) / M_O2
+    cv = (cp0 - R_UNIVERSAL + cv_dep) / M_O2
+    h = (h0 + h_dep) / M_O2
     dpdrho_T = -v * v / M_O2 * p_v
-    dpdT_rho = R_UNIVERSAL / (v - b) - a_t / (v * (v + b))
-    c2 = dpdrho_T + T / (rho * rho) * dpdT_rho * dpdT_rho / cv
+    c2 = dpdrho_T + T / (rho * rho) * p_t * p_t / cv
     ch = srk_chung.chung_state(O2, T, p, rho=rho)
     return {
         'T': T, 'p': p, 'rho': rho, 'h': h, 'cp': cp, 'cv': cv,
@@ -114,6 +124,8 @@ def primitive_at(T, rho):
 
 
 _E_MIN_CACHE = {}
+_E_MIN_TABLE = None
+_TABLE_RHO = (40.0, 1200.0, 160)
 
 
 def _positive_pressure_floor(rho):
@@ -134,30 +146,137 @@ def _positive_pressure_floor(rho):
     return 0.5 * (lo + hi)
 
 
-def _energy_minimum_temperature(rho):
-    """Lowest T above which the SRK internal energy is monotone in T at this density.
+def _positive_pressure_stable(rho, T):
+    """True when this density and temperature give a positive pressure and a stable branch.
 
-    Near the p -> 0 limit of a liquid density the SRK departure enthalpy collapses, so e(T) has
-    a shallow minimum a couple of kelvin above the positive-pressure floor. Bracketing the
-    energy inversion above that minimum makes the bisection fallback well posed; the minimum is
-    found once per density on a coarse scan and cached, because it costs 60 EOS evaluations.
+    Mechanical stability is (dp/dv)_T < 0. Above that limit the SRK polynomial has a second,
+    repulsive root that satisfies the same internal energy, so an energy inversion that only
+    checks p > 0 can return it - at 100 kg/m3 the repulsive root gave 94.6 K where the physical
+    answer is 248.9 K.
     """
-    key = round(math.log(rho), 6)
-    if key in _E_MIN_CACHE:
-        return _E_MIN_CACHE[key]
+    try:
+        props = primitive_at(T, rho)
+    except (ValueError, ZeroDivisionError):
+        return False
+    return props['p'] > 0.0 and math.isfinite(props['c2']) and props['c2'] > 0.0
+
+
+def _scan_energy_minimum(rho):
+    """Temperature of the *global* minimum of e(T) over mechanically stable states.
+
+    SRK's liquid-branch departure enthalpy makes e(T) fall before it rises, and the minimum sits
+    far above the positive-pressure floor (around 150 K at 300-500 kg/m3, in the pseudo-boiling
+    band where cp peaks). Bracketing the energy inversion at floor + 1 K is therefore wrong by
+    about 10 kJ/kg, which is the size of a first-step update: the inversion then rejects states
+    that are perfectly admissible. Two constraints define the window: the state must have p > 0
+    and (dp/dv)_T < 0, because below the mechanical-stability limit the cubic's repulsive branch
+    also solves e(T) = e; a state there is a second, unphysical root of the inversion.
+    """
     floor = _positive_pressure_floor(rho)
-    best_T, best_e = floor + 1.0, None
-    for k in range(61):
-        T = floor + 0.5 + 0.5 * k
+    best_T, best_e = None, None
+    T = floor
+    while T <= floor + 80.0:
         try:
             e = primitive_at(T, rho)['e']
         except Exception:
+            T += 0.25
             continue
         if best_e is None or e < best_e:
             best_T, best_e = T, e
-    value = best_T + 1.0
+        T += 0.25
+    if best_T is None:
+        raise ValueError('no mechanically stable SRK state at rho=%g' % rho)
+    # Refine on a fine scan inside the best bracket; the energy is much too flat near the
+    # minimum for a ternary search to stay on the stable branch, and a scan cannot leave it.
+    lo_T = max(floor, best_T - 0.5)
+    T = lo_T
+    while T <= best_T + 0.5:
+        try:
+            e = primitive_at(T, rho)['e']
+        except Exception:
+            T += 0.005
+            continue
+        if e < best_e:
+            best_T, best_e = T, e
+        T += 0.005
+    # The bracket must sit on the stable branch; walk up until it does.
+    T = best_T
+    while T < best_T + 5.0:
+        try:
+            primitive_at(T, rho)
+            return T
+        except Exception:
+            T += 0.01
+    raise ValueError('no mechanically stable SRK state near the energy minimum at rho=%g' % rho)
+
+
+def _energy_minimum_table():
+    """log-density table of the energy-minimum temperature, built once per process."""
+    global _E_MIN_TABLE
+    if _E_MIN_TABLE is None:
+        lo, hi, count = _TABLE_RHO
+        table = []
+        for k in range(count):
+            frac = k / (count - 1.0)
+            rho = lo * (hi / lo) ** frac
+            try:
+                table.append((math.log(rho), _scan_energy_minimum(rho)))
+            except Exception:
+                table.append((math.log(rho), None))
+        _E_MIN_TABLE = table
+    return _E_MIN_TABLE
+
+
+def _energy_minimum_temperature(rho):
+    """Energy-minimum temperature for this density, interpolated in log density."""
+    key = round(math.log(max(rho, 1.0)), 6)
+    if key in _E_MIN_CACHE:
+        return _E_MIN_CACHE[key]
+    table = [row for row in _energy_minimum_table() if row[1] is not None]
+    lr = math.log(max(rho, 1.0))
+    if lr <= table[0][0]:
+        value = table[0][1]
+    elif lr >= table[-1][0]:
+        value = table[-1][1]
+    else:
+        for k in range(len(table) - 1):
+            if table[k][0] <= lr <= table[k + 1][0]:
+                span = table[k + 1][0] - table[k][0]
+                w = 0.0 if span == 0.0 else (lr - table[k][0]) / span
+                value = table[k][1] + w * (table[k + 1][1] - table[k][1])
+                break
+    value += 0.05
     _E_MIN_CACHE[key] = value
     return value
+
+
+def pressure_derivative_T(rho, T):
+    """(dp/dT)_rho from the EOS, used for the fast temperature Newton."""
+    v = _molar_volume(rho)
+    _, a_t, _ = srk_chung.alpha_terms(O2, T)
+    b = srk_chung.b_term(O2)
+    return R_UNIVERSAL / (v - b) - a_t / (v * (v + b))
+
+
+def temperature_of_rho_p(rho, target_p, T_hint):
+    """Temperature at a given density and pressure, by Newton from a neighbouring temperature.
+
+    Used by the reconstruction, where the pressure is reconstructed rather than the temperature:
+    a uniform pressure field then reconstructs to the same uniform pressure on both sides of a
+    face, so a contact discontinuity carries no spurious pressure jump. Newton from the cell
+    temperature converges in a few iterations because the reconstructed state is close to it.
+    """
+    T = T_hint
+    for _ in range(30):
+        residual = pressure_of(rho, T) - target_p
+        derivative = pressure_derivative_T(rho, T)
+        if derivative == 0.0:
+            break
+        step = residual / derivative
+        T -= step
+        if abs(step) < 1e-9:
+            break
+    return T
 
 
 def temperature_window(rho):
@@ -273,7 +392,46 @@ def rusanov(qL, qR, pL, pR, cL, cR):
     return [0.5 * (fL[k] + fR[k]) - 0.5 * smax * (qR[k] - qL[k]) for k in range(3)]
 
 
-def run(dx, t_end, outdir, order=2):
+def hllc_flux(state_L, state_R):
+    """HLLC flux for a real gas, from (rho, u, p, E, c) on each side.
+
+    The contact-preserving member of the HLL family: the interface speed S_M is computed from
+    the pressure and momentum jumps, and the star states are built from it, so a pure contact
+    advected at a uniform velocity produces no dissipation at all. That is the property the
+    Rusanov form lacks and the reason this test needs it.
+    """
+    rhoL, uL, pL, EL, cL = state_L
+    rhoR, uR, pR, ER, cR = state_R
+    fL = [rhoL * uL, rhoL * uL * uL + pL, uL * (EL + pL)]
+    fR = [rhoR * uR, rhoR * uR * uR + pR, uR * (ER + pR)]
+    SL = min(uL - cL, uR - cR)
+    SR = max(uL + cL, uR + cR)
+    denom = rhoL * (SL - uL) - rhoR * (SR - uR)
+    if abs(denom) < 1e-30:
+        return [0.5 * (fL[k] + fR[k]) for k in range(3)]
+    SM = (pR - pL + rhoL * uL * (SL - uL) - rhoR * uR * (SR - uR)) / denom
+
+    def star(rho, u, p, E, S):
+        # Guard the pressure-work term: S - u can vanish only in a degenerate state.
+        if abs(S - u) < 1e-30:
+            return [rho, rho * u, E]
+        factor = rho * (S - u) / (S - SM)
+        return [factor,
+                factor * SM,
+                factor * (E / rho + (SM - u) * (SM + p / (rho * (S - u))))]
+
+    if SL >= 0.0:
+        return fL
+    if SR <= 0.0:
+        return fR
+    if SM >= 0.0:
+        US = star(rhoL, uL, pL, EL, SL)
+        return [fL[k] + SL * (US[k] - [rhoL, rhoL * uL, EL][k]) for k in range(3)]
+    US = star(rhoR, uR, pR, ER, SR)
+    return [fR[k] + SR * (US[k] - [rhoR, rhoR * uR, ER][k]) for k in range(3)]
+
+
+def run(dx, t_end, outdir, order=2, flux_scheme='hllc'):
     n = int(round(DOMAIN / dx))
     dx = DOMAIN / n
     x = [(i + 0.5) * dx for i in range(n)]
@@ -325,16 +483,17 @@ def run(dx, t_end, outdir, order=2):
             c[j] = math.sqrt(max(props[j]['c2'], 1.0))
 
         dt_acoustic = min(dx / (abs(u[j]) + c[j]) for j in range(NG, NG + n))
-        dt_diffusive = min(dx * dx / (2.0 * max(4.0 * props[j]['mu'] / (3.0 * q[j][0]),
-                                               props[j]['kappa'] / (q[j][0] * props[j]['cv'])))
-                           for j in range(NG, NG + n))
+        alpha_max = max(max(4.0 * props[j]['mu'] / (3.0 * q[j][0]),
+                            props[j]['kappa'] / (q[j][0] * props[j]['cv']))
+                        for j in range(NG, NG + n))
+        dt_diffusive = (dx * dx / (2.0 * alpha_max)) if alpha_max > 0.0 else float('inf')
         dt = CFL * min(dt_acoustic, dt_diffusive)
         if t + dt > t_end:
             dt = t_end - t
         if not (dt > 0.0):
             break
 
-        if order >= 2:
+        if order >= 2 and flux_scheme != 'hllc':
             s_rho = limited_slopes([q[j][0] for j in range(size)])
             s_mom = limited_slopes([q[j][1] for j in range(size)])
             s_E = limited_slopes([q[j][2] for j in range(size)])
@@ -343,12 +502,29 @@ def run(dx, t_end, outdir, order=2):
             s_mom = [0.0] * size
             s_E = [0.0] * size
 
+        s_rho_p = limited_slopes([props[j]['rho'] for j in range(size)]) if order >= 2 else [0.0] * size
+        s_u = limited_slopes([u[j] for j in range(size)]) if order >= 2 else [0.0] * size
+        s_p = limited_slopes([props[j]['p'] for j in range(size)]) if order >= 2 else [0.0] * size
+
         flux = [None] * size
         for j in range(1, size):          # flux[j] = face between cell j-1 and cell j
             i, ip = j - 1, j
-            qL = [q[i][k] + 0.5 * (s_rho, s_mom, s_E)[k][i] for k in range(3)]
-            qR = [q[ip][k] - 0.5 * (s_rho, s_mom, s_E)[k][ip] for k in range(3)]
-            f = rusanov(qL, qR, props[i]['p'], props[ip]['p'], c[i], c[ip])
+            if flux_scheme == 'hllc':
+                sides = []
+                for idx, sign in ((i, 1.0), (ip, -1.0)):
+                    rho_k = max(props[idx]['rho'] + sign * 0.5 * s_rho_p[idx], 1e-3)
+                    u_k = u[idx] + sign * 0.5 * s_u[idx]
+                    p_k = props[idx]['p'] + sign * 0.5 * s_p[idx]
+                    T_k = temperature_of_rho_p(rho_k, p_k, props[idx]['T'])
+                    pk = primitive_at(T_k, rho_k)
+                    sides.append([rho_k, u_k, pk['p'],
+                                  rho_k * (pk['e'] + 0.5 * u_k * u_k),
+                                  math.sqrt(max(pk['c2'], 1.0))])
+                f = hllc_flux(sides[0], sides[1])
+            else:
+                qL = [q[i][k] + 0.5 * (s_rho, s_mom, s_E)[k][i] for k in range(3)]
+                qR = [q[ip][k] - 0.5 * (s_rho, s_mom, s_E)[k][ip] for k in range(3)]
+                f = rusanov(qL, qR, props[i]['p'], props[ip]['p'], c[i], c[ip])
             dudx = (u[ip] - u[i]) / dx
             dTdx = (props[ip]['T'] - props[i]['T']) / dx
             tau = (4.0 / 3.0) * 0.5 * (props[i]['mu'] + props[ip]['mu']) * dudx
@@ -435,9 +611,11 @@ def run(dx, t_end, outdir, order=2):
         't_end_s': t,
         'steps': steps,
         'dt_last_s': dt,
-        'scheme': ('Rusanov flux, %s reconstruction, central viscous and conductive flux, '
-                   'explicit Euler with an adaptive acoustic and diffusive step'
-                   % ('MUSCL/minmod' if order >= 2 else 'first order')),
+        'scheme': ('%s flux, %s reconstruction of (rho, u, T), central viscous and conductive '
+                   'flux, explicit Euler with an adaptive acoustic and diffusive step'
+                   % ('HLLC' if flux_scheme == 'hllc' else 'Rusanov',
+                      'MUSCL/minmod of (rho, u, p), so a uniform pressure reconstructs to a '
+                      'uniform pressure' if order >= 2 else 'first order')),
         'boundaries': 'left: fixed inflow at the dense state, u = 10 m/s; '
                       'right: zero-gradient outflow',
         'thermodynamics': 'SRK pure O2 via cavalieri-properties/srk_chung.py; '
@@ -480,12 +658,13 @@ def main():
     parser.add_argument('--dx', type=float, nargs='+', default=[0.01, 0.005, 0.0025])
     parser.add_argument('--t-end', type=float, default=0.02)
     parser.add_argument('--order', type=int, default=2, choices=(1, 2))
+    parser.add_argument('--flux', default='hllc', choices=('hllc', 'rusanov'))
     args = parser.parse_args()
 
     outdir = pathlib.Path(args.out)
     summary = {'kind': 'forge-schmitt-advection-v1', 'runs': []}
     for dx in args.dx:
-        doc, path = run(dx, args.t_end, outdir, order=args.order)
+        doc, path = run(dx, args.t_end, outdir, order=args.order, flux_scheme=args.flux)
         m = doc['metrics']
         summary['runs'].append({
             'dx_m': doc['dx_m'], 'cells': doc['cells'], 'steps': doc['steps'],

@@ -1,0 +1,34 @@
+{
+ "kind": "forge-schmitt-advection-v1",
+ "runs": [
+  {
+   "dx_m": 0.02,
+   "cells": 30,
+   "steps": 2120,
+   "order": 1,
+   "file": "run-dx-0.02.json",
+   "metrics": {
+    "p_min_Pa": 25974.76709713787,
+    "p_max_Pa": 13830648.145901158,
+    "p_amplitude_rel": 1.3051080243168598,
+    "u_min_m_s": -49.83696823328022,
+    "u_max_m_s": 30.15328068034503,
+    "u_amplitude_rel": 5.983696823328022,
+    "rho_min_kg_m3": 82.61952575676818,
+    "T_min_K": 115.33094378796618,
+    "clamped_cell_steps": 29368,
+    "conservation_residual_rel": {
+     "mass": -4.690495992694574e-16,
+     "momentum": 4.946522165994685e-16,
+     "energy": 0.0
+    },
+    "mass_change_rel": 1.0198083866234102,
+    "interface_x_final_m": null,
+    "interface_travel_m": null,
+    "expected_travel_m": 0.2,
+    "profile_l2_vs_translated_initial": 427.4301219466811,
+    "profile_linf_vs_translated_initial": 716.8868019913339
+   }
+  }
+ ]
+}
