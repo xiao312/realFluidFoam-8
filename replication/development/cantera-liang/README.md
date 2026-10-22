@@ -524,3 +524,31 @@ FAILED <mode> step=<step> rc=<rc>` so an aborted step is never indistinguishable
 an allocation that produced nothing. `job-build-and-sweep.sh` runs the build and the
 sweep in one allocation because the SIF-to-sandbox conversion costs about 578 s of
 every job before any payload line runs.
+
+## Memory: one rank is not enough for this case
+
+The registered campaign limit is 1 GiB per rank and 4 GiB per job. Job `125208987`
+(stages 1-2, 26 flames, one rank) built the driver in 49 s and then lost all 26
+flames to `SIGKILL` within about 8 s each:
+
+```
+job-batch.sh: line 165: 188 Killed  "$build/liang-flame" "$inputs" "$stage" "$phi" ...
+CASE rc=137 stage=1 phi=1.0 variant=full pressure_atm=100
+```
+
+`result/equilibrium.csv`, `numerics.txt`, `pressure-Pa.txt` and
+`property-checks.csv` were written before the kill, and `refinement.csv` /
+`profile.csv` never appeared, so the process died inside the `FreeFlame` setup, not
+in the mechanism or the input parser. The killed step is the one that allocates the
+banded steady-state system: the frozen guess profile carries 2126 grid points, so
+with 53 species the Jacobian has about `2126 x 57` unknowns and a bandwidth of
+around 170, which needs several hundred MiB per matrix and several matrices at once.
+That is above 1 GiB and below 4 GiB, so the same inputs are run in a four-rank
+allocation (4 GiB) with a serial payload; the CPU request is a memory request in this
+harness, and the job records that only one rank did work.
+
+The physically correct fix is a coarser starting grid rather than a bigger
+allocation: at 100 atm the flame is roughly ten times thinner than the 1 atm profile
+the guess was taken from, so almost all of those 2126 points are unnecessary and
+cost both memory and Newton iterations. That change touches the driver and therefore
+the frozen module hash, so it is not mixed into the measurement above.
