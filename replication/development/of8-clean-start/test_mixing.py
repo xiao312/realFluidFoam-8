@@ -226,6 +226,29 @@ class FluxBalanceTest(unittest.TestCase):
                         '--out', str(out)], check=True, capture_output=True, cwd=str(HERE))
         return json.loads(out.read_text())
 
+    def test_control_dict_is_semicolon_terminated(self):
+        """OpenFOAM silently loses an entry whose value line has no semicolon.
+
+        Job 125290253 died in blockMesh with `keyword deltaT is undefined` because the
+        generator wrote `endTime 0.0002` and `deltaT 2e-07` without terminators: the parser
+        folded the next keyword into the previous value. A missing `;` is invisible in a
+        diff and fatal in the allocation, so it is checked here.
+        """
+        case, _ = self.generate(name='syntax')
+        lines = (case / 'system' / 'controlDict').read_text().splitlines()
+        # Skip the FoamFile header block: its members are not terminator-checked here.
+        body = lines[lines.index('}') + 1:]
+        entries = [line for line in body
+                   if line.strip() and not line.strip().startswith(('{', '}', '//'))]
+        for line in entries:
+            self.assertTrue(line.rstrip().endswith(';'), 'unterminated entry: %r' % line)
+        keys = {line.split()[0] for line in entries if len(line.split()) > 1}
+        for key in ('endTime', 'deltaT', 'writeInterval', 'startTime', 'stopAt'):
+            self.assertIn(key, keys)
+        text = (case / 'system' / 'controlDict').read_text()
+        self.assertIn('deltaT          2e-07;', text)
+        self.assertIn('endTime         0.0004;', text)
+
     def test_steady_state_balance_closes(self):
         case, receipt = self.generate()
         for t in ('0', '2e-4'):

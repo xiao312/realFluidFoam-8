@@ -70,6 +70,14 @@ if ! python3 -B "$MODULE/prepare_mixing_case.py" --out "$case_dir" --mechanism-s
     tail -20 "$RUN/mix.prepare.log" >> "$LOG"
     printf 'FAILED case-generation\n' > "$RUN/status.txt"; exit 1
 fi
+# blockMesh reads controlDict, so a missing terminator is fatal before any solve starts
+# (job 125290253 died this way). Fail here with the dictionary named.
+for key in endTime deltaT writeInterval; do
+    if ! grep -qE "^$key +[0-9.eE+-]+;" "$case_dir/system/controlDict"; then
+        log "controlDict entry $key missing or unterminated"
+        printf 'FAILED controlDict-%s\n' "$key" > "$RUN/status.txt"; exit 1
+    fi
+done
 end_time=$(grep -oE '^endTime +[0-9.eE+-]+' "$case_dir/system/controlDict" | awk '{print $2}')
 write_interval=$(grep -oE '^writeInterval +[0-9.eE+-]+' "$case_dir/system/controlDict" | awk '{print $2}')
 expected_writes=$(python3 -c "print(round($end_time/$write_interval))")
