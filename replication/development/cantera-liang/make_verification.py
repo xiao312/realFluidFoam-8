@@ -55,6 +55,7 @@ def main():
     ap.add_argument('--sweep-dir', required=True)
     ap.add_argument('--source-commit', required=True)
     ap.add_argument('--out', required=True)
+    ap.add_argument('--repro-out', default=None)
     a = ap.parse_args()
 
     sweep = load(a.sweep)
@@ -173,6 +174,7 @@ def main():
             prior_pts.setdefault(int(row['case']), []).append((row['phi'], row['value']))
     same, missing_prior = 0, []
     deltas = []
+    repro_rows = []
     for p in points:
         ref = interp(prior_pts.get(p['stage'], []), p['phi'])
         if ref is None:
@@ -180,6 +182,20 @@ def main():
             continue
         same += 1
         deltas.append(abs(p['speed_cm_s'] - ref))
+        repro_rows.append(dict(stage=p['stage'], phi=p['phi'], job=p['job'],
+                               computed_cm_s=p['speed_cm_s'], prior_generation_cm_s=ref,
+                               delta_cm_s=p['speed_cm_s'] - ref))
+    if a.repro_out:
+        per_stage_repro = {}
+        for stage in sorted({r['stage'] for r in repro_rows}):
+            group = [abs(r['delta_cm_s']) for r in repro_rows if r['stage'] == stage]
+            per_stage_repro[str(stage)] = dict(
+                points=len(group), rms_cm_s=math.sqrt(sum(d * d for d in group) / len(group)),
+                max_abs_cm_s=max(group))
+        pathlib.Path(a.repro_out).write_text(json.dumps(dict(
+            schema='forge-fig8a-reproducibility-v1',
+            prior_source=prior.get('source') or prior.get('figure'),
+            rows=repro_rows, stages=per_stage_repro), indent=2) + '\n')
     repro_ok = len(missing_prior) == 0 and same == len(points)
     worst = max(deltas) if deltas else float('nan')
     rms = math.sqrt(sum(d * d for d in deltas) / len(deltas)) if deltas else float('nan')

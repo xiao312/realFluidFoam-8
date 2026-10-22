@@ -11,12 +11,27 @@ turned into a comparison row.
 import argparse
 import hashlib
 import json
+import math
 import re
 import subprocess
 import sys
 from pathlib import Path
 
 COMPLETED = re.compile(r'^COMPLETED stage=(\d+) phi=([0-9.]+) speed_cm_s=([0-9.eE+-]+)$', re.M)
+
+
+def printed_precision_tolerance(value):
+    """Half a unit in the last digit of the driver's 6-significant-digit report.
+
+    flame.cpp prints the speed with the default stream precision (6 significant
+    digits) while profile.csv carries 17. The two are the same number; comparing
+    them with a fixed 1e-9 tolerance instead of the print resolution rejects every
+    converged case.
+    """
+    if value == 0.0:
+        return 5e-7
+    exponent = math.floor(math.log10(abs(value)))
+    return 0.5 * 10.0 ** (exponent - 5) * (1.0 + 1e-9)
 
 
 def sha256(path):
@@ -77,7 +92,7 @@ def main():
             failed.append(record)
             continue
         screen = json.loads(check.stdout)
-        if abs(screen['speed_cm_s'] - log_speed) > 1e-9:
+        if abs(screen['speed_cm_s'] - log_speed) > printed_precision_tolerance(log_speed):
             record['reason'] = 'screened speed differs from the logged speed'
             failed.append(record)
             continue
