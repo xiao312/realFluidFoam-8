@@ -95,6 +95,7 @@ def main():
     ap.add_argument('--job', required=True)
     ap.add_argument('--source-commit', required=True)
     ap.add_argument('--base-commit', required=True)
+    ap.add_argument('--attribution')
     ap.add_argument('--out', required=True)
     a = ap.parse_args()
 
@@ -431,6 +432,53 @@ def main():
         w('own stage step, which is why the conductivity term and not the SRK calorics is the')
         w('open question.')
         w('')
+    # ---- 6.x attribution --------------------------------------------------
+    w('### 6.1 Where the case-4 shift comes from, measured on the retained profiles')
+    w('')
+    attribution = load(a.attribution) if a.attribution else None
+    if attribution is None:
+        w('No attribution measurement was supplied with this report. The case-4 sign')
+        w('difference is then reported without a mechanism, and that absence is explicit')
+        w('rather than filled in.')
+        w('')
+    else:
+        w('Stage 3 to stage 4 changes exactly one term: `MixTransport::thermalConductivity()`')
+        w('is replaced by the full `rfElyHanley::conductivity`. The solver writes `lambda_W_mK`,')
+        w('`rho`, `cp` and `T` at every grid point, so the change the model makes can be')
+        w('measured from the retained profiles at phi = %g instead of argued from the source.'
+          % attribution['phi'])
+        w('')
+        w('| stage | speed (cm/s) | speed / stage 1 | lambda at front / stage 1 | alpha at front / stage 1 | T_ad shift (K) |')
+        w('| --- | --- | --- | --- | --- | --- |')
+        for stage in sorted(attribution['stages'], key=int):
+            r = attribution['stages'][stage]
+            w('| %s | %s | %s | %.4f | %.4f | %+.2f |' % (
+                stage,
+                ('%.5f' % r['speed_cm_s']) if 'speed_cm_s' in r else 'not measured',
+                ('%.4f' % r['speed_ratio']) if 'speed_ratio' in r else 'not measured',
+                r['lambda_ratio'], r['alpha_ratio'], r['T_ad_shift_K']))
+        w('')
+        pointwise = attribution.get('pointwise')
+        if pointwise:
+            w('Over the %d grid points the two profiles share, the relative conductivity'
+              % pointwise['points'])
+            w('change has median %+.4f, mean %+.4f, minimum %+.4f and maximum %+.4f, and the'
+              % (pointwise['median_relative_conductivity_change'],
+                 pointwise['mean_relative_conductivity_change'],
+                 pointwise['min_relative_conductivity_change'],
+                 pointwise['max_relative_conductivity_change']))
+            w('median thermal-diffusivity ratio is %.4f.' % pointwise['median_alpha_ratio'])
+            w('')
+        w('Reading, with its limits stated: the stage-4 term raises the speed by more than a')
+        w('pure `S_L ~ alpha^0.5` scaling of the measured diffusivity ratio predicts, because')
+        w('raising lambda at fixed diffusivity also raises the Lewis number; the point is the')
+        w('sign and the order of magnitude, both of which are a transport-model effect and not')
+        w('a tolerance or grid effect. Stages 2 and 3 change alpha by a couple of per cent at')
+        w('most while losing speed, and stage 3 loses about 19 K of adiabatic temperature, so')
+        w('those shifts are caloric rather than transport. The diagnostic uses retained output')
+        w('only: no flame was re-run for it, no model term was changed for it, and it selects')
+        w('nothing.')
+        w('')
     w('The driver also implements the conductivity as a *dense increment* over the verified')
     w('dilute baseline (`dense-increment` option). That variant was **not** run and is not')
     w('adopted: switching to the variant that lands closer to the paper would be selecting a')
@@ -524,6 +572,8 @@ def main():
     w('')
     w('| artefact | sha256 |')
     w('| --- | --- |')
+    if a.attribution:
+        w('| attribution | `%s` |' % sha(a.attribution))
     for label, path in (('sweep results', a.sweep), ('comparison', a.compare),
                         ('reproducibility', a.repro), ('verification', a.verification),
                         ('reference', a.reference), ('render receipt', a.receipt)):
