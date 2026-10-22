@@ -579,3 +579,44 @@ unrun.
 Run it with `FP_CASES`, `FP_RESULTS`, `FP_OUTPUT` and `FP_PHI` (defaults point at the
 retained trial directories); `test_conductivity_attribution.py` checks the normalisation
 and the pointwise block on a synthetic case.
+
+## The conductivity term table at frozen states
+
+`model_probe.cpp` reports, at nine temperatures of a solved profile and at 1 and 100 atm,
+three conductivities for the same composition: the mixture-averaged value at the SRK density
+(the case-3 baseline), the full `rfElyHanley` value (the case-4 model), and the
+mixture-averaged value plus the Ely-Hanley dense increment over its own ideal-gas value.
+`probe_terms.py` reduces those columns to a ratio table and to the flame-speed step each form
+implies under the sensitivity measured from the solved stage-3/stage-4 pair.
+
+The table exists to keep a choice visible. The article as available here does not say which
+conductivity normalisation the authors used, so both forms are reported against the same
+screen and neither is adopted; in particular the dense-increment form is not run in the sweep
+merely because it would land closer to the paper. At `phi = 0.95`, 100 atm, the full form
+raises the conductivity by a median of about 16 % over the baseline and the increment form by
+about 10 %, while the paper's case-4 curve sits about 5 % *below* its case 1 - a step that
+would need a conductivity *ratio below one*. Both forms therefore have the wrong sign, and the
+report says so instead of switching forms.
+
+`job-terms.sh` runs build, probe, reduce and then both sweep variants into separate
+directories under one allocation; `probe_terms.py` also carries
+`required_ratio_for_paper_step` next to the measured ratio so the gap is a number rather than
+an impression.
+
+## Re-running the registered previous generation
+
+The reproducibility finding said the previous generation misses the current one by
+0.117/0.114/0.920 cm/s per stage and that its source was unavailable. It is available: the
+payload's `liang-8a-data.json` names a source commit per row, and the rows do not all name the
+same commit - stage 1 names `961f6a1f`, stages 2-4 name `cf408344`, its descendant. Both are
+ancestors in this repository, so `job-repro-prior.sh` archives both trees as frozen inputs,
+rebuilds each with this campaign's compiler and SDK, and drives one declared point per stage
+through the tree that declared it. A point run with the wrong tree is rejected rather than
+compared, because that would measure the difference between two builds instead of the
+reproduction.
+
+`reduce_repro_prior.py` keeps three questions apart: the harness (stage 1 is ideal gas plus
+mixture-averaged transport, so it exercises none of the staged code), the grid (a case that
+stopped on a coarse grid is labelled under-refined rather than counted as a model difference),
+and the staged model itself. A stage-1 agreement together with a stage-2/3/4 difference is a
+statement about the staged model; the reverse would be a statement about the harness.
