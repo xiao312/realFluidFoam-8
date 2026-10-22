@@ -15,9 +15,12 @@ EXPECTED = {
     'prior_module_archive_sha256': '1' * 64,
     'cli': 'liang-flame INPUTS CASE PHI NEW_OUTPUT',
     'points': [
-        {'stage': 1, 'phi': 0.95, 'value_cm_s': 6.0, 'declared_job': '1'},
-        {'stage': 2, 'phi': 0.95, 'value_cm_s': 6.5, 'declared_job': '2'},
-        {'stage': 4, 'phi': 1.2, 'value_cm_s': 7.0, 'declared_job': '3'},
+        {'stage': 1, 'phi': 0.95, 'value_cm_s': 6.0, 'declared_job': '1',
+         'declared_source': '9' * 40},
+        {'stage': 2, 'phi': 0.95, 'value_cm_s': 6.5, 'declared_job': '2',
+         'declared_source': '8' * 40},
+        {'stage': 4, 'phi': 1.2, 'value_cm_s': 7.0, 'declared_job': '3',
+         'declared_source': '8' * 40},
     ],
 }
 
@@ -47,33 +50,34 @@ class ReduceTest(unittest.TestCase):
         return json.load(open(self.out, encoding='utf-8'))
 
     def test_reproduced_verdict(self):
-        payload = self.reduce('1|0.95|0|31|410|6.0002\n2|0.95|0|180|402|6.5004\n'
-                              '4|1.2|0|320|398|7.0006\n')
+        payload = self.reduce('1|0.95|99999999|0|31|410|6.0002\n2|0.95|88888888|0|180|402|6.5004\n'
+                              '4|1.2|88888888|0|320|398|7.0006\n')
         self.assertEqual(payload['verdict'], 'reproduced')
         self.assertEqual(payload['stages']['2']['reproduced'], 1)
         self.assertAlmostEqual(payload['rows'][0]['delta_cm_s'], 0.0002, places=12)
 
     def test_harness_reproduced_but_staged_differs(self):
-        payload = self.reduce('1|0.95|0|31|410|6.0001\n2|0.95|0|180|402|6.6000\n'
-                              '4|1.2|0|320|398|7.9000\n')
+        payload = self.reduce('1|0.95|99999999|0|31|410|6.0001\n2|0.95|88888888|0|180|402|6.6000\n'
+                              '4|1.2|88888888|0|320|398|7.9000\n')
         self.assertEqual(payload['verdict'], 'harness_reproduced_staged_model_differs')
         self.assertFalse(payload['rows'][2]['reproduced'])
 
     def test_under_refined_is_labelled(self):
-        payload = self.reduce('1|0.95|0|31|410|6.0\n2|0.95|0|180|120|6.9\n'
-                              '4|1.2|0|320|398|7.0\n')
+        payload = self.reduce('1|0.95|99999999|0|31|410|6.0\n2|0.95|88888888|0|180|120|6.9\n'
+                              '4|1.2|88888888|0|320|398|7.0\n')
         row = payload['rows'][1]
         self.assertEqual(row['reason'], 'under-refined grid')
         self.assertEqual(payload['verdict'], 'not_reproduced')
 
     def test_missing_point_is_incomplete(self):
-        payload = self.reduce('1|0.95|0|31|410|6.0\n')
+        payload = self.reduce('1|0.95|99999999|0|31|410|6.0\n')
         self.assertEqual(payload['verdict'], 'incomplete')
         self.assertEqual(payload['missing'], [{'stage': 2, 'phi': 0.95},
                                               {'stage': 4, 'phi': 1.2}])
 
     def test_failed_case_is_recorded_not_hidden(self):
-        payload = self.reduce('1|0.95|0|31|410|6.0\n2|0.95|124|900|-|-\n4|1.2|0|320|398|7.0\n')
+        payload = self.reduce('1|0.95|99999999|0|31|410|6.0\n2|0.95|88888888|124|900|-|-\n'
+                              '4|1.2|88888888|0|320|398|7.0\n')
         row = payload['rows'][1]
         self.assertIsNone(row['delta_cm_s'])
         self.assertFalse(row['reproduced'])
@@ -82,11 +86,27 @@ class ReduceTest(unittest.TestCase):
 
     def test_undeclared_point_is_an_error(self):
         with self.assertRaises(ValueError):
-            self.reduce('3|1.1|0|100|400|7.0\n')
+            self.reduce('3|1.1|88888888|0|100|400|7.0\n')
+
+    def test_wrong_tree_is_rejected_not_compared(self):
+        payload = self.reduce('1|0.95|88888888|0|31|410|6.0\n2|0.95|88888888|0|180|402|6.5\n'
+                              '4|1.2|88888888|0|320|398|7.0\n')
+        self.assertEqual(payload['verdict'], 'wrong_tree')
+        self.assertFalse(payload['rows'][0]['tree_matches_declared'])
+        self.assertIsNone(payload['rows'][0]['delta_cm_s'])
+        self.assertEqual(payload['rows'][0]['reason'],
+                         'run with a tree other than the one that declared this value')
+
+    def test_per_point_declared_sources_are_kept(self):
+        payload = self.reduce('1|0.95|99999999|0|31|410|6.0\n2|0.95|88888888|0|180|402|6.5\n'
+                              '4|1.2|88888888|0|320|398|7.0\n')
+        self.assertEqual(payload['prior_source_commits'], ['8' * 40, '9' * 40])
+        self.assertEqual(payload['rows'][0]['declared_tree'], '99999999')
+        self.assertEqual(payload['rows'][1]['declared_tree'], '88888888')
 
     def test_bad_width_is_an_error(self):
         with self.assertRaises(ValueError):
-            self.reduce('1|0.95|0|31|410\n')
+            self.reduce('1|0.95|99999999|0|31|410\n')
 
 
 if __name__ == '__main__':

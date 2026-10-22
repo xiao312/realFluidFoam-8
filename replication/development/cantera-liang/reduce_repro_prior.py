@@ -20,8 +20,12 @@ Two things must be kept apart and are reported separately:
 Usage:
   python3 reduce_repro_prior.py --expected EXPECTED.json --cases CASES.txt --out OUT.json
 
-CASES.txt is written by `job-repro-prior.sh`: one `stage|phi|rc|elapsed_s|points|speed`
-line per attempted point, speed empty when the case did not complete.
+CASES.txt is written by `job-repro-prior.sh`: one
+`stage|phi|tree|rc|elapsed_s|points|speed` line per attempted point, speed empty when the
+case did not complete. `tree` is the short commit hash of the archived tree the point was run
+with. The declared rows of the previous generation do not all come from one tree, so a point
+run with a tree other than its own is rejected rather than compared: that would measure the
+two builds against each other, not the reproduction.
 """
 import argparse
 import json
@@ -39,12 +43,13 @@ def read_cases(path):
             if not line or line.startswith('#'):
                 continue
             fields = line.split('|')
-            if len(fields) != 6:
-                raise ValueError(f'case line has {len(fields)} fields, expected 6: {line!r}')
-            stage, phi, rc, elapsed, points, speed = fields
+            if len(fields) != 7:
+                raise ValueError(f'case line has {len(fields)} fields, expected 7: {line!r}')
+            stage, phi, tree, rc, elapsed, points, speed = fields
             cases.append({
                 'stage': int(stage),
                 'phi': float(phi),
+                'tree': tree,
                 'rc': int(rc),
                 'elapsed_s': int(elapsed),
                 'points': int(points) if points not in ('', '-') else None,
@@ -65,6 +70,8 @@ def reduce_table(expected, cases):
         seen.add(key)
         computed = case['speed_cm_s']
         prior = float(declared['value_cm_s'])
+        declared_source = declared.get('declared_source') or expected['prior_source_commit']
+        declared_tree = declared_source[:8]
         row = {
             'stage': case['stage'],
             'phi': case['phi'],
@@ -74,8 +81,16 @@ def reduce_table(expected, cases):
             'elapsed_s': case['elapsed_s'],
             'points': case['points'],
             'declared_job': declared.get('declared_job'),
+            'declared_source': declared_source,
+            'declared_tree': declared_tree,
+            'tree': case['tree'],
+            'tree_matches_declared': case['tree'] == declared_tree,
         }
-        if computed is None:
+        if not row['tree_matches_declared']:
+            row['delta_cm_s'] = None
+            row['reproduced'] = False
+            row['reason'] = 'run with a tree other than the one that declared this value'
+        elif computed is None:
             row['delta_cm_s'] = None
             row['reproduced'] = False
             row['reason'] = 'case did not complete'
@@ -110,6 +125,8 @@ def stage_summary(rows):
 
 
 def verdict(rows, missing):
+    if any(not r['tree_matches_declared'] for r in rows):
+        return 'wrong_tree'
     if missing:
         return 'incomplete'
     if not rows:
@@ -131,21 +148,32 @@ def main():
     parser.add_argument('--expected', required=True)
     parser.add_argument('--cases', required=True)
     parser.add_argument('--out', required=True)
-    parser.add_argument('--prior-commit', default=None)
-    parser.add_argument('--prior-binary-sha256', default=None)
+    parser.add_argument('--binaries', default=None,
+                        help='file of `sha256  path` lines, one per archived tree')
     args = parser.parse_args()
 
     expected = json.load(open(args.expected, encoding='utf-8'))
+    binaries = {}
+    if args.binaries:
+        with open(args.binaries, encoding='utf-8') as handle:
+            for line in handle:
+                line = line.strip()
+                if not line:
+                    continue
+                digest, path = line.split(None, 1)
+                tag = path.rsplit('/', 1)[-1].split('-')[0]
+                binaries[tag] = {'sha256': digest, 'path': path.rsplit('/', 1)[-1]}
     cases = read_cases(args.cases)
     rows, missing = reduce_table(expected, cases)
     payload = {
-        'schema': 'forge-liang8a-prior-rerun-v1',
+        'schema': 'forge-liang8a-prior-rerun-v2',
         'target': 'liang-8a',
         'reference_file': expected['reference_file'],
         'reference_sha256': expected['reference_sha256'],
-        'prior_source_commit': args.prior_commit or expected['prior_source_commit'],
+        'prior_source_commit': expected['prior_source_commit'],
+        'prior_source_commits': sorted({r['declared_source'] for r in rows}),
         'prior_module_archive_sha256': expected['prior_module_archive_sha256'],
-        'prior_binary_sha256': args.prior_binary_sha256,
+        'prior_binaries': binaries,
         'threshold_cm_s': TOL_CM_S,
         'grid_floor_points': GRID_MIN_POINTS,
         'cli': expected['cli'],
@@ -157,7 +185,9 @@ def main():
             'stage 1 is the harness control: it uses the ideal-gas phase and mixture-averaged '
             'transport, so it exercises none of the staged-model code. If it reproduces and '
             'stages 2-4 do not, the divergence is in the staged model that the two '
-            'generations implement differently, not in the machine or the inputs.'),
+            'generations implement differently, not in the machine or the inputs. Each point '
+            'is compared only against the row that its own tree declared, because the '
+            'registered rows do not all come from one tree.'),
         'scope': 'this rerun rebuilds the previous generation from its own source commit and '
                  'its own frozen inputs; it does not assert paper agreement and it does not '
                  'replace the determinism evidence of repeated runs of the current tree.',
