@@ -158,6 +158,14 @@ def main():
     w('of the code that produced one operating point does not depend on the directory tree')
     w('later.')
     w('')
+    w('The count above is the tree that actually compiled and ran, taken from the manifest')
+    w('frozen inside the run directory. It is deliberately not regenerated when a later')
+    w('commit adds report, test or analysis files: those files are not part of the solver')
+    w('and rewriting the count would misdescribe what executed. The candidate commit is')
+    w('named separately in the row above, and the files it adds over the executed tree are')
+    w('report-only or measurement-only (the report generator, the attribution probe and its')
+    w('test).')
+    w('')
 
     # ---- 3 ----------------------------------------------------------------
     w('## 3. Method and reconstructed inputs')
