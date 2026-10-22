@@ -73,12 +73,17 @@ def analyse(case, names, table, dx):
     hf = {name: formation_enthalpy(table[name]) for name in names}
     rows = []
     for name in time_dirs(case):
+        if float(name) == 0.0:
+            continue  # no energy variable is written at t=0; the initial state is
+                      # recomputed analytically by expected_from_initial_state()
         directory = case / name
         n = cell_count(directory)
         T = read_scalar(directory / 'T', n)
         p = read_scalar(directory / 'p', n)
         rho = read_scalar(directory / 'rho', n)
-        he = read_scalar(directory / 'he', n)
+        he_path = directory / 'he'
+        he_field = read_scalar(he_path, n) if he_path.exists() else None
+        energy_source = 'he field' if he_field is not None else 'janaf(T,Y)'
         Uz = read_vector_z(directory / 'U', n)
         Y = {}
         for species in names:
@@ -97,11 +102,13 @@ def analyse(case, names, table, dx):
                 hf_mix += y * hf[species]
             hs_cells.append(hs)
             ha_form_cells.append(hf_mix)
-            sens += rho[i] * he[i] * dx
-            abs_e += rho[i] * (he[i] + hf_mix) * dx
-            total_e += rho[i] * (he[i] + hf_mix + 0.5 * Uz[i] ** 2 - p[i] / rho[i]) * dx
+            he = he_field[i] if he_field is not None else hs
+            sens += rho[i] * he * dx
+            abs_e += rho[i] * (he + hf_mix) * dx
+            total_e += rho[i] * (he + hf_mix + 0.5 * Uz[i] ** 2 - p[i] / rho[i]) * dx
             if T[i] > 0:
-                inversion.append(abs(hs - he[i]) / max(abs(he[i]), 1.0))
+                if he_field is not None:
+                    inversion.append(abs(hs - he_field[i]) / max(abs(he_field[i]), 1.0))
 
         rows.append(dict(
             time_s=float(name),
@@ -114,7 +121,8 @@ def analyse(case, names, table, dx):
                 sensible_energy_J_per_m2=sum(rho[i] * hs_cells[i] for i in range(n)) * dx,
                 formation_offset_J_per_m2=sum(rho[i] * ha_form_cells[i] for i in range(n)) * dx,
             ),
-            he_vs_janaf=dict(max_rel_error=max(inversion) if inversion else None,
+            he_vs_janaf=dict(energy_source=energy_source,
+                             max_rel_error=max(inversion) if inversion else None,
                              median_rel_error=(sorted(inversion)[len(inversion) // 2]
                                                if inversion else None)),
             temperature_K=[min(T), max(T)],

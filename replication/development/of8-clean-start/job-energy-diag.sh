@@ -120,7 +120,9 @@ for spec in "caseA chemOff" "caseB chemOn"; do
         "$name" "$variant" "$rc_solve" "$last_time" "$end_marker" "$steps" "$writes" \
         "$expected_writes" "$stopped" >> "$RUN/$name.stop.txt"
 
-    times=$(cd "$case_dir" && ls -d [0-9]* 2>/dev/null | sort -g | tr '\n' ',' | sed 's/,$//')
+    # time 0 carries no energy variable or rho field, so only the written times are
+    # measured; the initial state is recomputed analytically by expected_energy.py
+times=$(cd "$case_dir" && ls -d [0-9]* 2>/dev/null | sort -g | grep -vx '0' | tr '\n' ',' | sed 's/,$//')
     expect=sensible
     [ "$variant" = chemOn ] && expect=total
     if [ "$(cd "$case_dir" && ls -d [0-9]* 2>/dev/null | grep -vx '0' | wc -l)" -gt 0 ]; then

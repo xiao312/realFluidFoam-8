@@ -67,6 +67,13 @@ def janaf_h_over_R(coeffs, temperature):
             + a5 * t ** 5 / 5 + a6)
 
 
+def janaf_cp_over_R(coeffs, temperature):
+    """Dimensionless heat capacity cp/R [1] of a NASA-7 species."""
+    a1, a2, a3, a4, a5, _a6, _a7 = coeffs
+    t = temperature
+    return a1 + a2 * t + a3 * t * t + a4 * t ** 3 + a5 * t ** 4
+
+
 def sensible_enthalpy_MJ(entry, temperature):
     """Sensible enthalpy per kg (J/kg) for one species relative to TREF."""
     band = 'low' if temperature <= entry['tcommon'] else 'high'
@@ -140,13 +147,16 @@ def read_state(case, time_name, names, table):
     t = read_scalar(directory / 'T', count)
     p = read_scalar(directory / 'p', count)
     rho = read_scalar(directory / 'rho', count)
-    he = read_scalar(directory / 'he', count)
+    he_path = directory / 'he'
+    he = read_scalar(he_path, count) if he_path.exists() else None
+    cp_path = directory / 'Cp'
+    cp = read_scalar(cp_path, count) if cp_path.exists() else None
     uz = read_vector_z(directory / 'U', count)
     ys = {}
     for name in names:
         path = directory / name
         ys[name] = read_scalar(path, count) if path.exists() else [0.0] * count
-    return dict(count=count, T=t, p=p, rho=rho, he=he, Uz=uz, Y=ys)
+    return dict(count=count, T=t, p=p, rho=rho, he=he, cp=cp, Uz=uz, Y=ys)
 
 
 def len_table_probe(directory):
@@ -181,10 +191,17 @@ def analyse_time(case, time_name, names, table, dx):
         rho_ideal.append(state['p'][i] * cell_weight / (R_UNIVERSAL * state['T'][i]))
     rho_error = max(abs(state['rho'][i] / rho_ideal[i] - 1.0) for i in range(n))
 
-    # temperature inversion from stored sensible enthalpy
+    # temperature inversion from sensible enthalpy. The solver does not write its
+    # energy variable by default here, so when `he` is absent it is recomputed from
+    # the stored T and Y with the JANAF table and the source of the number is recorded.
     cells = []
     for i in range(n):
         cells.append([(state['Y'][name][i], table[name]) for name in names])
+    energy_source = 'he field'
+    if state['he'] is None:
+        energy_source = 'janaf(T,Y)'
+        state['he'] = [sum(y * sensible_enthalpy_MJ(entry, state['T'][i]) for y, entry in cells[i])
+                       for i in range(n)]
     residuals = []
     failures = 0
     for i in range(n):
@@ -193,6 +210,17 @@ def analyse_time(case, time_name, names, table, dx):
             failures += 1
             continue
         residuals.append(abs(recovered - state['T'][i]) / state['T'][i])
+
+    cp_error = None
+    if state['cp'] is not None:
+        cp_error = 0.0
+        for i in range(n):
+            cp_janaf = sum(state['Y'][name][i] * R_UNIVERSAL / table[name]['weight']
+                           * janaf_cp_over_R(table[name]['coeffs'][
+                               'low' if state['T'][i] <= table[name]['tcommon'] else 'high'],
+                               state['T'][i]) for name in names)
+            if abs(cp_janaf) > 0.0:
+                cp_error = max(cp_error, abs(state['cp'][i] / cp_janaf - 1.0))
 
     mass = sum(state['rho']) * dx
     energy = sum(state['rho'][i] * state['he'][i] for i in range(n)) * dx
@@ -230,7 +258,8 @@ def analyse_time(case, time_name, names, table, dx):
                             mean_molar_mass_kg_per_kmol=mol_weight),
         inversion=dict(max_rel_residual=max(residuals) if residuals else None,
                        median_rel_residual=sorted(residuals)[len(residuals) // 2] if residuals else None,
-                       failed_cells=failures),
+                       failed_cells=failures, energy_source=energy_source),
+        thermo_cross_check=dict(max_rel_error_Cp_vs_janaf=cp_error),
         conservation=dict(total_mass_kg_per_m2=mass, total_sensible_energy_J_per_m2=energy),
         front=dict(density_deficit_position_m=front,
                    peak_gradient_index=peak_index,
