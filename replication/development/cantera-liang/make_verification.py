@@ -45,6 +45,12 @@ def interp(points, x):
     return None
 
 
+def series_ids(recipe):
+    """Series ids of a plot recipe, which may be bare ids or {id: ...} objects."""
+    return [item if isinstance(item, str) else item['id']
+            for item in recipe.get('series', [])]
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--sweep', required=True)
@@ -52,10 +58,14 @@ def main():
     ap.add_argument('--prior', required=True)
     ap.add_argument('--receipt', required=True)
     ap.add_argument('--reference', required=True)
+    ap.add_argument('--recipe', type=pathlib.Path, required=True,
+                    help='the recipe that was actually rendered')
     ap.add_argument('--sweep-dir', required=True)
     ap.add_argument('--source-commit', required=True)
     ap.add_argument('--out', required=True)
     ap.add_argument('--repro-out', default=None)
+    ap.add_argument('--campaign-recipe', type=pathlib.Path, default=None,
+                    help='frozen campaign recipe, to name any series this figure omits')
     ap.add_argument('--repeat', type=pathlib.Path,
                     help='repeat comparison JSON: the same points solved in two allocations')
     a = ap.parse_args()
@@ -108,21 +118,53 @@ def main():
             f = case / name
             if f.exists():
                 identities.add('%s:%s' % (name, sha(f)))
-    unit_ok = stages == [1, 2, 3, 4, 5] and len(pressures) == 1
-    if unit_ok:
+    # The solver-path files are the invariant: different module identities are acceptable
+    # only if every file the solve touches is identical, which is computed here.
+    solver_files = {'flame.cpp', 'job-batch.sh', 'job-sweep.sh'}
+    manifests, executables = {}, set()
+    for p in points:
+        found = index.get('stage-%d-phi-%s' % (p['stage'], p['phi']))
+        if not found:
+            continue
+        case = found[0]
+        manifest = case / 'module.sha256'
+        if manifest.exists():
+            entries = {}
+            for line in manifest.read_text().splitlines():
+                if line.strip():
+                    digest, name = line.split(None, 1)
+                    entries[name.strip().lstrip('*')] = digest
+            manifests[sha(manifest)] = entries
+        exe = case / 'executable.sha256'
+        if exe.exists():
+            executables.add(exe.read_text().split()[0])
+    differing = set()
+    entries = list(manifests.values())
+    for other in entries[1:]:
+        for name, digest in entries[0].items():
+            if other.get(name) not in (None, digest):
+                differing.add(name)
+    solver_ok = len(executables) <= 1 and not (differing & solver_files)
+    units_ok = len(pressures) == 1 and variants == {'full'}
+    if units_ok:
         try:
-            unit_ok = abs(float(next(iter(pressures))) - 10132500.0) < 1.0
+            units_ok = abs(float(next(iter(pressures))) - 10132500.0) < 1.0
         except (TypeError, ValueError):
-            unit_ok = False
-    detail = ('%d points over stages %s; model variant strings %s; pressure strings %s; '
-              '%d distinct frozen identity files; unreadable logs %d'
-              % (len(points), stages, sorted(variants), sorted(pressures), len(identities), len(bad_logs)))
+            units_ok = False
+    detail = ('%d solved points over stages %s; model variant strings %s; pressure strings %s; '
+              '%d module identity files of which %d solver-path files differ (%s); '
+              '%d distinct solver executables; unreadable logs %d'
+              % (len(points), stages, sorted(variants), sorted(pressures), len(manifests),
+                 len(differing & solver_files), sorted(differing & solver_files) or 'none',
+                 len(executables), len(bad_logs)))
     checks.append(dict(
         id='source_and_units',
-        result='passed' if (unit_ok and variants == {'full'} and not bad_logs) else 'failed',
-        details=detail + '. The flame driver sets state with setState_TP(298 K, 100 atm) and '
-                         'reports cm/s directly from the converged FreeFlame; the constant-pressure '
-                         'value is read back from pressure-Pa.txt (10132500 Pa), not assumed.'))
+        result='passed' if (units_ok and solver_ok and not bad_logs) else 'failed',
+        details=(detail + '. The flame driver sets state with setState_TP(298 K, 100 atm) and '
+                 'reports cm/s directly from the converged FreeFlame; the constant-pressure value '
+                 'is read back from pressure-Pa.txt (10132500 Pa), not assumed. Stage 5 has no '
+                 'solved point, so the five-stage ladder is incomplete and this check speaks only '
+                 'for the stages that ran.')))
 
     # ---- reference_coverage ----------------------------------------------
     counts = reference['counts']
@@ -153,21 +195,27 @@ def main():
 
     # ---- figure_fidelity --------------------------------------------------
     drawn = {s['id']: s['points'] for s in receipt['series']}
-    need = ['cantera-%d' % i for i in range(1, 6)] + ['paper-%d' % i for i in range(1, 6)]
-    missing = [k for k in need if k not in drawn]
-    fidelity_ok = not missing and len(set(drawn)) == 10
+    recipe_ids = series_ids(load(a.recipe))
+    campaign_ids = series_ids(load(a.campaign_recipe)) if a.campaign_recipe else recipe_ids
+    missing = [k for k in recipe_ids if k not in drawn]
+    extra = [k for k in drawn if k not in recipe_ids]
+    omitted = [k for k in campaign_ids if k not in recipe_ids]
+    empty = [k for k, v in drawn.items() if not v]
+    fidelity_ok = not missing and not extra and not empty and len(drawn) == len(recipe_ids)
     checks.append(dict(
         id='figure_fidelity',
         result='passed' if fidelity_ok else 'failed',
-        details=('figure rendered with the campaign shared renderer and the frozen recipe '
-                 'liang-8a-cantera-recipe.json (sha256 %s): ten series, %s, one legend row per '
-                 'series, computed series carry visible markers and paper series are dashed, '
-                 'PCHIP is declared display-only (interpolation_is_evidence false). The registered '
-                 'target uses a forge-plot-v1 overview recipe rather than a paper-matched frame, so '
-                 'this check covers the recipe\'s own contract - series identity, legend coverage, '
-                 'origin separation - not paper pixel geometry. Rendered points per series: %s. '
-                 'Missing: %s.'
-                 % (receipt['recipe_sha256'], sorted(drawn), drawn, missing or 'none'))))
+        details=('figure rendered with the campaign shared renderer and a frozen recipe '
+                 '(sha256 %s): %d series, %s, computed series carry visible markers and paper '
+                 'series are dashed, PCHIP is declared display-only (interpolation_is_evidence '
+                 'false). The registered target uses a forge-plot-v1 overview recipe rather than a '
+                 'paper-matched frame, so this check covers the recipe\'s own contract - series '
+                 'identity, legend coverage, origin separation - not paper pixel geometry. Rendered '
+                 'points per series: %s. Missing versus the recipe: %s; undeclared: %s; empty: %s. '
+                 'Series of the frozen campaign recipe that this figure omits: %s (%s).'
+                 % (receipt['recipe_sha256'], len(drawn), sorted(drawn), drawn, missing or 'none',
+                    extra or 'none', empty or 'none', omitted or 'none',
+                    load(a.recipe).get('derivation', 'no derivation recorded')[:220]))))
 
     # ---- reproducibility --------------------------------------------------
     prior_pts = {}
@@ -252,7 +300,9 @@ def main():
     rowlist = comp['rows']
     per_stage = comp['stages']
     worst_stage = max(per_stage.items(), key=lambda kv: kv[1]['rms_cm_s']) if per_stage else None
-    within = all(r['within_screen'] for r in rowlist) and len(rowlist) >= 45
+    compared_stages = {r['stage'] for r in rowlist}
+    within = (all(r['within_screen'] for r in rowlist)
+              and compared_stages == {p['stage'] for p in points})
     checks.append(dict(
         id='numerical_comparison',
         result='passed' if within else 'failed',
