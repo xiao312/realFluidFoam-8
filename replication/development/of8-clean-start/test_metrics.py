@@ -164,6 +164,32 @@ class MetricsTest(unittest.TestCase):
         hf_ch4 = E.formation_enthalpy(self.table['CH4']) * 0.016043
         self.assertAlmostEqual(hf_ch4 / -74870.0, 1.0, delta=1e-2)
 
+    def test_ch4_and_o2_sensible_enthalpy_anchors(self):
+        """Absolute sensible-enthalpy anchors from NIST Shomate coefficients.
+
+        The GRI-3.0 file committed in this repo must reproduce published enthalpy
+        increments. CH4 at 1000 K: NIST Shomate (298-1300 K coefficients) gives
+        2.3797 MJ/kg; GRI gives 2.4092 (+1.24 percent), consistent with the known
+        small inconsistency of the GRI CH4 enthalpy polynomial. O2 at 1000 K:
+        NIST gives 709.6 kJ/kg and GRI 709.6 kJ/kg.
+
+        This pins down a claim I made earlier and then could not reproduce: an
+        expected CH4 increment of about 1.895 MJ/kg at 1000 K. There is no such
+        value. 2.38-2.41 MJ/kg is the published increment, so the earlier number
+        was my arithmetic error, not a defect in the table or the band switch at
+        Tcommon = 1000 K.
+        """
+        thermo = Path(__file__).resolve().parent.parent.parent / 'validation/inputs/thermo.inputData_GRI'
+        names, table = M.species_table(thermo.read_text())
+        ch4_1000 = M.sensible_enthalpy_MJ(table['CH4'], 1000.0)
+        self.assertAlmostEqual(ch4_1000 / 2.3797e6, 1.0, delta=2e-2)
+        ch4_1500 = M.sensible_enthalpy_MJ(table['CH4'], 1500.0)
+        self.assertAlmostEqual(ch4_1500 / 4.8708e6, 1.0, delta=3e-2)
+        o2_1000 = M.sensible_enthalpy_MJ(table['O2'], 1000.0)
+        self.assertAlmostEqual(o2_1000 / 7.096e5, 1.0, delta=1e-2)
+        n2_1000 = M.sensible_enthalpy_MJ(table['N2'], 1000.0)
+        self.assertAlmostEqual(n2_1000 / 7.6615e5, 1.0, delta=1e-3)
+
     def test_field_size_mismatch_is_rejected(self):
         case, _ = build_case(Path(self.root) / 'short')
         path = case / '0/p'
