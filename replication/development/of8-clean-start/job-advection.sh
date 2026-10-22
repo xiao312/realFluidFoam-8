@@ -151,7 +151,7 @@ for name in ('nx2', 'nx4', 'nx6'):
         last['species_sum_max_error'], last['cp_max_rel_error_vs_janaf']))
 PY
 
-if python3 -B -m unittest discover -s "$MODULE" -p 'test_metrics.py' -t "$MODULE" \
+if python3 -B -m unittest discover -s "$MODULE" -p 'test_*.py' -t "$MODULE" \
         > "$RUN/metrics-selftest.log" 2>&1; then rc_self=0; else rc_self=$?; fi
 log "metrics self-test rc=$rc_self $(grep -E '^OK|FAILED|Ran ' "$RUN/metrics-selftest.log" | tr '\n' ' ')"
 
