@@ -112,3 +112,30 @@ letting the scheduler kill a half-built tree with no status file; and compiler i
 with the `-v` banner and linker/libc versions) is retained next to `libs.sha256` and
 `exe.sha256`. The frozen archive is the same bytes as attempt 1, verified against
 `snapshot.json` inside the job before anything is compiled.
+
+## Attempt 5 — resumed tree, serial pre-build of the unit that was OOM-killed (`of8-build-v5`)
+
+Attempt 4 produced five libraries (`libODE`, `libspecie`, `libthermophysicalProperties`,
+`libfluidThermophysicalModels`, `libreactionThermophysicalModels`) in 848 s and then died
+with
+
+```
+g++: fatal error: Killed signal terminated program cc1plus
+make: *** [.../chemistrySolver/EulerImplicit/EulerImplicitChemistrySolvers.o] Error 1
+trap rc=2 elapsed=848s
+```
+
+which is a kernel kill of a compiler process, not a compile error: `-j 3` held three
+`cc1plus` processes resident inside a 4 GiB job (one GiB per rank). The blocker is
+therefore specific and measurable — parallel translation units of the templated chemistry
+and transport libraries do not fit the allocation's memory — and the response is specific
+too:
+
+* `BUILD_JOBS` defaults to 2, and `thermophysicalModels/chemistryModel` is compiled first
+  and alone (`wmake -j 1`) so the heaviest units never run side by side;
+* the tree is resumed from attempt 4 (`RESUME_TREE`) instead of being re-extracted, so the
+  848 s already spent is kept. A resumed tree is only accepted after
+  `sha256sum -c members.sha256` proves that every source member recorded by the earlier
+  attempt still hashes to the same value; the cache contributes objects, not source bytes.
+
+No source, no flag and no compiler changed between attempts 4 and 5.
