@@ -16,6 +16,7 @@ import unittest
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 import metrics as M  # noqa: E402
+import expected_energy as E  # noqa: E402
 
 REPO = HERE.parents[2]
 THERMO = REPO / 'replication/validation/inputs/thermo.inputData_GRI'
@@ -170,6 +171,74 @@ class MetricsTest(unittest.TestCase):
         path.write_text(text)
         with self.assertRaises(subprocess.CalledProcessError):
             self.run_metrics(case, times='0')
+
+
+class EnergyAccountingTest(unittest.TestCase):
+    """The declared total energy must include every term the solver's equation conserves.
+
+    For sensibleEnthalpy the conserved quantity of the compressible energy equation is the
+    total energy, E = sum(rho*(hs + hf - p/rho + 0.5*|u|^2))*V. Leave out the pressure term
+    and the accounting disagrees with the solver by exactly the pressure work, which the
+    closed-box caseA measures as a 5.8e-4 drift of the sensible enthalpy that is entirely
+    accounted for by +0.366 J/m2 of sum(p*V).
+    """
+
+    def setUp(self):
+        self.tmp = Path(tempfile.mkdtemp(prefix='energy-accounting-'))
+        self.case = self.tmp / 'case'
+        (self.case / '0').mkdir(parents=True)
+        (self.case / 'constant').mkdir()
+        n, self.dx = 32, 0.004 / 32
+        species = {'CH4': 0.055, 'O2': 0.220, 'N2': 0.725}
+        self.species = species
+        thermo = ['FoamFile\n{\n}\n', 'species 3 (CH4 O2 N2);']
+        for name, weight, hf in (('CH4', 16.043, -7.4892e7), ('O2', 31.998, 0.0),
+                                 ('N2', 28.014, 0.0)):
+            thermo.append('%s\n{\n    specie\n    {\n        molWeight %r;\n'
+                          '        Tcommon 1000;\n'
+                          '        lowCpCoeffs (3.0 1e-3 0 0 0 %r 0);\n'
+                          '        highCpCoeffs (3.0 1e-3 0 0 0 %r 0);\n    }\n}'
+                          % (name, weight, hf / (8314.46261815324 / weight),
+                             hf / (8314.46261815324 / weight)))
+        (self.case / 'constant' / 'thermo.inputData_GRI').write_text('\n'.join(thermo))
+
+        def scalar(name, value, dims='[0 0 0 0 0 0 0]'):
+            # a list, not uniform: cell_count() derives the cell count from the list size
+            body = '\n'.join(repr(float(value)) for _ in range(n))
+            (self.case / '0' / name).write_text(
+                'FoamFile\n{\n}\n\ndimensions %s;\n'
+                'internalField nonuniform List<scalar>\n%d\n(\n%s\n)\n;\n'
+                % (dims, n, body))
+        scalar('T', 1500.0, '[0 0 0 1 0 0 0]')
+        scalar('p', 101325.0, '[1 -1 -2 0 0 0 0]')
+        for name, fraction in species.items():
+            scalar(name, fraction)
+        (self.case / '0' / 'U').write_text(
+            'FoamFile\n{\n}\n\ndimensions [0 1 -1 0 0 0 0];\n'
+            'internalField uniform (0 0 0);\n')
+
+    def tearDown(self):
+        import shutil
+        shutil.rmtree(self.tmp, ignore_errors=True)
+
+    def test_expected_total_energy_is_sensible_plus_formation_minus_pressure_volume(self):
+        names, table = M.species_table(
+            (self.case / 'constant' / 'thermo.inputData_GRI').read_text())
+        expected = E.expected_from_initial_state(self.case, names, table, self.dx)
+        recomposed = (expected['sensible_energy_J_per_m2']
+                      + expected['formation_offset_J_per_m2']
+                      - expected['pressure_volume_J_per_m2']
+                      + expected['kinetic_energy_J_per_m2'])
+        self.assertAlmostEqual(expected['total_energy_J_per_m2'], recomposed, places=12)
+        self.assertAlmostEqual(expected['pressure_volume_J_per_m2'],
+                               101325.0 * 0.004, places=9)
+        self.assertAlmostEqual(expected['absolute_enthalpy_J_per_m2'],
+                               expected['sensible_energy_J_per_m2']
+                               + expected['formation_offset_J_per_m2'], places=12)
+        # mass must match the ideal-gas state the solver starts from
+        weight = 1.0 / sum(y / table[s]['weight'] for s, y in self.species.items())
+        rho = 101325.0 * weight / (8314.46261815324 * 1500.0)
+        self.assertAlmostEqual(expected['mass_kg_per_m2'], rho * 0.004, places=12)
 
 
 if __name__ == '__main__':

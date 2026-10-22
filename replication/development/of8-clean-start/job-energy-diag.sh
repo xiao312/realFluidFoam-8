@@ -123,8 +123,10 @@ for spec in "caseA chemOff" "caseB chemOn"; do
     # time 0 carries no energy variable or rho field, so only the written times are
     # measured; the initial state is recomputed analytically by expected_energy.py
 times=$(cd "$case_dir" && ls -d [0-9]* 2>/dev/null | sort -g | grep -vx '0' | tr '\n' ',' | sed 's/,$//')
-    expect=sensible
-    [ "$variant" = chemOn ] && expect=total
+    # both cases conserve the same quantity: total energy of the compressible energy
+    # equation, internal (sensible + formation - p/rho) plus kinetic. The sensible
+    # enthalpy alone is not conserved in a closed rigid box (pressure work).
+    expect=total
     if [ "$(cd "$case_dir" && ls -d [0-9]* 2>/dev/null | grep -vx '0' | wc -l)" -gt 0 ]; then
         python3 -B "$MODULE/metrics.py" --case "$case_dir" --times "$times" \
             --out "$RUN/$name.metrics.json" > "$RUN/$name.metrics.stdout" 2>&1 || overall=1
@@ -134,20 +136,33 @@ times=$(cd "$case_dir" && ls -d [0-9]* 2>/dev/null | sort -g | grep -vx '0' | tr
             > "$RUN/$name.summary.txt" 2>&1 || overall=1
 import json, sys
 m, e = (json.load(open(p)) for p in sys.argv[1:3])
-print('times', [r['time_s'] for r in m['times']])
-for r in m['times']:
-    print('t=%-8g T=[%.2f,%.2f] rho=[%.4f,%.4f] p=[%.2f,%.2f] inv_max=%s inv_med=%s mass=%.12g hs=%.12g'
-          % (r['time_s'], r['finite']['T'][0], r['finite']['T'][1],
-             r['finite']['rho'][0], r['finite']['rho'][1],
-             r['finite']['p'][0], r['finite']['p'][1],
-             r['inversion']['max_rel_residual'], r['inversion']['median_rel_residual'],
-             r['conservation']['total_mass_kg_per_m2'],
-             r['conservation']['total_sensible_energy_J_per_m2']))
-print('expected', json.dumps(e['expected_initial_state'], sort_keys=True))
-for d in e['conservation']:
-    print('t=%-8g conserved=%s measured=%.12g expected=%.12g rel=%.3e rel_to_first=%.3e'
-          % (d['time_s'], e['declared_conserved_quantity'], d['measured_J_per_m2'],
-             d['expected_J_per_m2'], d['relative_to_expected'], d['relative_to_first_write']))
+print('declared conserved quantity:', e['declared_conserved_quantity'])
+print('definition:', e['conserved_quantity_definition'])
+print('expected initial state:', json.dumps(e['expected_initial_state'], sort_keys=True))
+print()
+print('%-9s %-13s %-13s %-13s %-11s %-11s' % ('t', 'E_total', 'sens_enthalpy',
+      'pV', 'K', 'E_rel_first'))
+for r in e['conservation']:
+    print('%-9g %-13.6f %-13.6f %-13.4f %-11.2e %+.3e' % (
+        r['time_s'], r['measured_J_per_m2'], r['sensible_J_per_m2'],
+        r['pressure_volume_J_per_m2'], r['kinetic_J_per_m2'],
+        r['relative_to_first_write']))
+print()
+print('%-9s %-13s %-13s %-13s %-11s' % ('t', 'E_rel_expected', 'sens_rel_first',
+      'mass_rel_first', 'T_range'))
+for r, row in zip(e['conservation'], m['times']):
+    print('%-9g %+.3e %+.3e %+.3e [%.2f,%.2f]' % (
+        r['time_s'], r['relative_to_expected'], r['sensible_relative_to_first_write'],
+        r['mass_relative_to_first_write'], row['finite']['T'][0], row['finite']['T'][1]))
+print()
+print('inversion max_rel_residual per write:', [r['inversion']['max_rel_residual']
+      for r in m['times']])
+print('energy variable source:', [r['inversion']['energy_source'] for r in m['times']])
+print('Cp vs janaf max rel error:', [r['thermo_cross_check']['max_rel_error_Cp_vs_janaf']
+      for r in m['times']])
+print('species positivity:', [r['mass_fractions'] for r in m['times']][:1])
+print('ideal-gas closure:', [r['mass_fractions']['ideal_gas_rho_max_rel_error']
+      for r in m['times']])
 PY
     else
         log "$name: no saved field beyond 0 - nothing to measure"

@@ -90,7 +90,9 @@ def analyse(case, names, table, dx):
             path = directory / species
             Y[species] = read_scalar(path, n) if path.exists() else [0.0] * n
 
-        hs_cells, ha_form_cells, sens, abs_e, total_e = [], [], 0.0, 0.0, 0.0
+        hs_cells, ha_form_cells = [], []
+        sens, abs_e, total_e = 0.0, 0.0, 0.0
+        pressure_volume, kinetic, form = 0.0, 0.0, 0.0
         inversion = []
         for i in range(n):
             hs = 0.0
@@ -104,7 +106,10 @@ def analyse(case, names, table, dx):
             ha_form_cells.append(hf_mix)
             he = he_field[i] if he_field is not None else hs
             sens += rho[i] * he * dx
+            form += rho[i] * hf_mix * dx
             abs_e += rho[i] * (he + hf_mix) * dx
+            pressure_volume += p[i] * dx
+            kinetic += rho[i] * 0.5 * Uz[i] ** 2 * dx
             total_e += rho[i] * (he + hf_mix + 0.5 * Uz[i] ** 2 - p[i] / rho[i]) * dx
             if T[i] > 0:
                 if he_field is not None:
@@ -115,6 +120,9 @@ def analyse(case, names, table, dx):
             cells=n,
             measured=dict(sensible_energy_J_per_m2=sens,
                           absolute_enthalpy_J_per_m2=abs_e,
+                          formation_offset_J_per_m2=form,
+                          pressure_volume_J_per_m2=pressure_volume,
+                          kinetic_energy_J_per_m2=kinetic,
                           total_energy_J_per_m2=total_e,
                           mass_kg_per_m2=sum(rho) * dx),
             janaf_recomputed=dict(
@@ -142,6 +150,7 @@ def expected_from_initial_state(case, names, table, dx):
     mass = 0.0
     sens = 0.0
     form = 0.0
+    pressure_volume = 0.0
     for i in range(n):
         inverse_weight = 0.0
         hs = 0.0
@@ -158,10 +167,14 @@ def expected_from_initial_state(case, names, table, dx):
         mass += rho * dx
         sens += rho * hs * dx
         form += rho * hf_mix * dx
+        pressure_volume += p[i] * dx
     return dict(mass_kg_per_m2=mass,
                 sensible_energy_J_per_m2=sens,
                 formation_offset_J_per_m2=form,
-                absolute_enthalpy_J_per_m2=sens + form)
+                absolute_enthalpy_J_per_m2=sens + form,
+                pressure_volume_J_per_m2=pressure_volume,
+                kinetic_energy_J_per_m2=0.0,
+                total_energy_J_per_m2=sens + form - pressure_volume)
 
 
 def main():
@@ -182,25 +195,46 @@ def main():
     expected = expected_from_initial_state(case, names, table, dx)
     rows = analyse(case, names, table, dx)
 
-    conserved_key = ('sensible_energy_J_per_m2' if args.expect == 'sensible'
-                     else 'total_energy_J_per_m2')
+    # Both cases conserve the same quantity: the total energy of the compressible energy
+    # equation, internal energy (sensible + formation - p/rho) plus kinetic energy. The
+    # sensible enthalpy alone is *not* conserved in a closed rigid box, because compressing
+    # the gas does pressure work: the observed rise of sum(rho*he) is accounted for by the
+    # equal rise of sum(p*V), which the decomposition below reports separately.
+    conserved_key = ('total_energy_J_per_m2' if args.expect != 'sensible'
+                     else 'sensible_energy_J_per_m2')
     drift = []
     for row in rows:
         measured = row['measured'][conserved_key]
-        ideal = (expected['sensible_energy_J_per_m2'] if args.expect == 'sensible'
-                 else expected['sensible_energy_J_per_m2'] + expected['formation_offset_J_per_m2'])
+        ideal = expected[conserved_key]
         drift.append(dict(
             time_s=row['time_s'],
             measured_J_per_m2=measured,
             expected_J_per_m2=ideal,
             relative_to_expected=measured / ideal - 1.0,
             relative_to_first_write=(measured / rows[0]['measured'][conserved_key] - 1.0),
+            sensible_J_per_m2=row['measured']['sensible_energy_J_per_m2'],
+            sensible_relative_to_first_write=(
+                row['measured']['sensible_energy_J_per_m2']
+                / rows[0]['measured']['sensible_energy_J_per_m2'] - 1.0),
+            pressure_volume_J_per_m2=row['measured']['pressure_volume_J_per_m2'],
+            kinetic_J_per_m2=row['measured']['kinetic_energy_J_per_m2'],
+            mass_kg_per_m2=row['measured']['mass_kg_per_m2'],
+            mass_relative_to_first_write=(
+                row['measured']['mass_kg_per_m2']
+                / rows[0]['measured']['mass_kg_per_m2'] - 1.0),
         ))
 
     payload = dict(
         schema='of8-energy-expected-v1',
         case=str(case),
         declared_conserved_quantity=conserved_key,
+        conserved_quantity_definition=(
+            'E = sum(rho*(hs + hf - p/rho + 0.5*|u|^2))*V over the closed rigid box; '
+            'hs = sum_i Y_i*(ha_i(T) - ha_i(298.15 K)), hf = sum_i Y_i*ha_i(298.15 K)'),
+        energy_accounting=(
+            'the domain is closed (p zeroGradient, U fixedValue 0, adiabatic T and species), '
+            'so there is no boundary mass or energy flux; the mass integral and its drift are '
+            'reported so that zero flux is measured rather than assumed'),
         expected_initial_state=expected,
         times=rows,
         conservation=drift,
