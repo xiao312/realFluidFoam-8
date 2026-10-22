@@ -247,6 +247,24 @@ profile ties; the nearest saved phi supplies a numerical guess when necessary.
 `plan.json` records target phi and guess phi separately. The inlet uses target phi.
 Each stage uses `submit.sh plan|apply ROOT RELEASE SDK INPUTS STAGE BUILD PHI`.
 
+`job-batch.sh build|case MODULE INPUTS RUN [BUILD STAGE PHI VARIANT PRESSURE_ATM RTOL ATOL]`
+is the batch adaptation of `job.sh` for the registered `cantera32` image, added in
+this campaign. `job.sh` and `submit.sh` are retained unchanged as the legacy site
+wrappers: they bind the old project root, a `release/` tree, the SDK under that
+root and the site compiler `/public/software/compiler/gcc/11.2.0/bin/g++`, none of
+which exists here. The adaptation changes only those bindings (compiler
+`/opt/gcc-11.2.0/bin/g++`, SDK `/opt/cantera-sdk` through
+`pkg-config --define-variable=prefix=/opt/cantera-sdk`, this checkout's module
+directory, and a frozen inputs directory) and keeps the same build sequence, the
+same flags and the same two negative controls, which must still fail. Before it
+compiles or solves anything it verifies `RUN/module.sha256` and
+`RUN/inputs.sha256`, both frozen by the submitter, so a job cannot silently build
+a different tree than the receipt names; it also probes whether this image needs
+`-isystem /usr/include/x86_64-linux-gnu -B/usr/lib/x86_64-linux-gnu/` to see the
+Debian multiarch headers and records the configuration that actually linked in
+`RUN/compile-config.txt`. Cases reuse `BUILD/liang-flame` after re-checking its
+sha256 and never recompile.
+
 `equilibrium_guess.py plan|apply BASE_INPUTS HP_CSV OUTPUT` builds a separate
 temperature/composition ramp from the supplied HP products. It needs Python
 Cantera 3.2 for molecular weights. The copied ideal velocity is only a numerical
@@ -483,3 +501,54 @@ digits). This serialization change preserves binary coordinate/temperature
 values during offline reconstruction of thin-grid gradients. It changes no
 transport coefficient, residual or convergence criterion. Older 16-digit exports
 remain historical evidence and retain their measured reconstruction limits.
+
+## Build qualification in the registered `cantera32` image
+
+Measured in job `125207262` (2026-10-22T02:26Z, host `a01r4n18`, GCC 11.2.0 from
+`/opt/gcc-11.2.0/bin/g++`, SDK `/opt/cantera-sdk`): a translation unit that includes
+only `<cstdint>` fails with
+
+```
+/usr/include/features.h:461:12: fatal error: sys/cdefs.h: No such file or directory
+```
+
+because the upstream compiler does not add this image's Debian multiarch include
+directory. The registry documents `-isystem /usr/include/x86_64-linux-gnu` and
+`-B/usr/lib/x86_64-linux-gnu/` for the image; with those flags the same probe
+compiles and links. `job-batch.sh` probes base and then the registry flags on a
+trivial unit, records the choice in `compile-config.txt`, and now applies the chosen
+include directory to **every** compile, including the Cantera-free fixtures: the
+first version appended it only to the Cantera flag set, so `test_srk.cpp` still saw
+the broken header path and aborted. An `EXIT` trap writes `status.txt =
+FAILED <mode> step=<step> rc=<rc>` so an aborted step is never indistinguishable from
+an allocation that produced nothing. `job-build-and-sweep.sh` runs the build and the
+sweep in one allocation because the SIF-to-sandbox conversion costs about 578 s of
+every job before any payload line runs.
+
+## Memory: one rank is not enough for this case
+
+The registered campaign limit is 1 GiB per rank and 4 GiB per job. Job `125208987`
+(stages 1-2, 26 flames, one rank) built the driver in 49 s and then lost all 26
+flames to `SIGKILL` within about 8 s each:
+
+```
+job-batch.sh: line 165: 188 Killed  "$build/liang-flame" "$inputs" "$stage" "$phi" ...
+CASE rc=137 stage=1 phi=1.0 variant=full pressure_atm=100
+```
+
+`result/equilibrium.csv`, `numerics.txt`, `pressure-Pa.txt` and
+`property-checks.csv` were written before the kill, and `refinement.csv` /
+`profile.csv` never appeared, so the process died inside the `FreeFlame` setup, not
+in the mechanism or the input parser. The killed step is the one that allocates the
+banded steady-state system: the frozen guess profile carries 2126 grid points, so
+with 53 species the Jacobian has about `2126 x 57` unknowns and a bandwidth of
+around 170, which needs several hundred MiB per matrix and several matrices at once.
+That is above 1 GiB and below 4 GiB, so the same inputs are run in a four-rank
+allocation (4 GiB) with a serial payload; the CPU request is a memory request in this
+harness, and the job records that only one rank did work.
+
+The physically correct fix is a coarser starting grid rather than a bigger
+allocation: at 100 atm the flame is roughly ten times thinner than the 1 atm profile
+the guess was taken from, so almost all of those 2126 points are unnecessary and
+cost both memory and Newton iterations. That change touches the driver and therefore
+the frozen module hash, so it is not mixed into the measurement above.

@@ -269,6 +269,15 @@ def main():
             f"ideal cp/R(300 K) = {ideal_300:.4f} outside the audited band "
             f"[{CP_R_300K_BAND[0]}, {CP_R_300K_BAND[1]}]")
     cp_300 = ideal_300
+    # Round 3 defect: this clause was a fixed string, so the Cp/R = 2.0 canary reported
+    # "inside the audited band" next to a failed verdict.  It is now derived from the same
+    # comparison that decides the verdict, so prose and verdict cannot disagree.
+    if ideal_300 is None:
+        band_state = "UNKNOWN (300 K canary row missing)"
+    elif CP_R_300K_BAND[0] <= ideal_300 <= CP_R_300K_BAND[1]:
+        band_state = "inside"
+    else:
+        band_state = "OUTSIDE"
     if cp_min < CP_R_RANGE[0] or cp_max > CP_R_RANGE[1]:
         problems.append(
             f"total cp/R spans [{cp_min:.4f}, {cp_max:.4f}], outside the physical range "
@@ -304,7 +313,7 @@ def main():
             f"rho {min(r['rho_srk_kg_m3'] for r in rows):.3f}-{max(r['rho_srk_kg_m3'] for r in rows):.3f} kg/m3, "
             f"lambda {min(r['lambda_eh_W_mK'] for r in rows):.5f}-{max(r['lambda_eh_W_mK'] for r in rows):.5f} W/(m K), "
             f"total cp/R in [{cp_min:.4f}, {cp_max:.4f}] with ideal cp/R(300 K) = "
-            f"{cp_300 if cp_300 is None else round(cp_300, 4)} inside the audited band "
+            f"{cp_300 if cp_300 is None else round(cp_300, 4)} {band_state} the audited band "
             f"[{CP_R_300K_BAND[0]}, {CP_R_300K_BAND[1]}] (J/(mol K) divided by R = {R_MOL} "
             f"J/(mol K), not by the kmol constant used by the cubic). A closed-form SRK cubic written "
             f"independently in Python reproduces the kernel volume at every state; worst relative "

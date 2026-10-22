@@ -40,7 +40,12 @@ g/mol, cm3/mol, poise and cal/(cm s K); the conversions are local and explicit.
 import math
 
 R = 8.31446261815324          # J/(mol K)
-R_CAL = R / 4.184             # cal/(mol K) = 1.9872042586
+# Chung et al. publish the correlation in thermochemical calories, so one single
+# conversion is used everywhere in this module.  Round 3 mixed this with the
+# International-Table value 1/4.1868 on the heat-capacity line, which biased the
+# Chung cv (and hence the conductivity) by 6.7e-04 relative.
+CAL_PER_JOULE = 1.0 / 4.184   # thermochemical calorie, exact by definition
+R_CAL = R * CAL_PER_JOULE     # cal/(mol K) = 1.9872042586
 CAL_CM_S_K_TO_W_M = 418.6798  # cal/(cm s K) -> W/(m K), as published for Eq. (12)
 P_PER_CAL = 0.1               # poise -> Pa s
 
@@ -338,7 +343,7 @@ def chung_state(species, T, p, rho=None, cp_ideal_value=None, a_coeff=A_COEFF):
     mu = P_PER_CAL * (eta_k + eta_p)                    # poise -> Pa s
 
     mb = _coefficients((_B0, _B1, _B2, _B3), omega, mu_r4, kappa)
-    cv_cal = (cp_ideal_value - R) * 0.2388458966         # J/(mol K) -> cal/(mol K)
+    cv_cal = (cp_ideal_value - R) * CAL_PER_JOULE        # J/(mol K) -> cal/(mol K)
     alpha = cv_cal / R_CAL - 1.5                        # Eq. (9)
     beta = 0.7862 - 0.7109 * omega + 1.1368 * omega * omega
     tr = T / species["Tc"]

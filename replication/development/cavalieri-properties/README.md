@@ -46,6 +46,15 @@ alpha coefficient of Eq. (4) is `c = 0.48508 + 1.55171 w - 0.15613 w^2`, which g
   declared sensitivity (0.08 % in density, 1.1 % in viscosity, 0.9 % in conductivity).
   CH4 agrees exactly (0.011 both).
 
+**One calorie conversion, thermochemical.** Chung et al. publish the correlation in
+thermochemical calories, so the module now derives `R_CAL` and the ideal-gas `cv` from
+the single constant `CAL_PER_JOULE = 1/4.184`. Round 3 converted the heat capacity with
+the International-Table value `0.2388458966 = 1/4.1868` while using `R/4.184` in the
+denominator of Eq. (9); that mix biased `cv_cal` by 6.68e-04 relative and, with it, the
+reported conductivity by at most 4.59e-04 relative (CH4 at 400 K). Both calorie
+definitions are 0.07 % apart, far below the 1.5 % conductivity tolerance, so the earlier
+verdicts stand; the corrected numbers are what this round reports.
+
 Note that at exactly `(Tc, pc)` the published five-digit constants do **not** give
 `Z = 1/3`: the reduced cubic there is a near-triple root, so a 1e-7 coefficient residual
 is amplified to ~2e-2 in Z. The test therefore checks the equation of state residual at
