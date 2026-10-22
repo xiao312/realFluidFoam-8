@@ -48,6 +48,29 @@ def classify_unfinished(status):
     return ('the case started but produced no COMPLETED line (interrupted solve)', 'failed')
 
 
+def group_cases(cases):
+    """One entry per operating point, plus the retries that produced it.
+
+    A point may be retried in a later run directory only after an attempt that did not
+    complete. Two completed directories for the same point are ambiguous and refused.
+    """
+    by_name = {}
+    for case in cases:
+        by_name.setdefault(case.name, []).append(case)
+    retried, chosen_cases = [], []
+    for name in sorted(by_name):
+        group = by_name[name]
+        completed = [c for c in group if (c / 'flame.log').is_file()
+                     and COMPLETED.search((c / 'flame.log').read_text(errors='replace'))]
+        if len(completed) > 1:
+            raise ValueError('the same operating point completed in more than one run: %s' % [name])
+        if len(group) > 1:
+            retried.append(dict(case=name, directories=[str(c) for c in group],
+                                completed=[str(c) for c in completed]))
+        chosen_cases.append(completed[0] if completed else group[-1])
+    return chosen_cases, retried
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('run', type=Path, nargs='+')
@@ -60,11 +83,11 @@ def main():
         if not found:
             raise ValueError('no case directories under %s' % (run / 'cases'))
         cases.extend(found)
-    # One operating point must have one directory: a point solved twice is ambiguous.
-    keys = [c.name for c in cases]
-    duplicates = sorted({k for k in keys if keys.count(k) > 1})
-    if duplicates:
-        raise ValueError('the same operating point appears in more than one run: %s' % duplicates)
+    # One operating point may appear in a later run only as a retry of a point that did
+    # not complete there. Two completed directories for the same point are ambiguous and
+    # refused; a failed attempt plus a completed retry is one point with one value, and
+    # the failed attempt is still recorded.
+    cases, retried = group_cases(cases)
 
     results, failed, not_attempted, observed = [], [], [], []
     for case in cases:
@@ -134,6 +157,7 @@ def main():
         results=results,
         failed=failed,
         not_attempted=not_attempted,
+        retried_points=retried,
         counts=dict(completed=len(results), failed=len(failed),
                     not_attempted=len(not_attempted)),
         notes=['screen_passed is a numerical screen (check.py), not paper agreement',

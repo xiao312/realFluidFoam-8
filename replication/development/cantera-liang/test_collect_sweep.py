@@ -54,5 +54,45 @@ class UnfinishedTest(unittest.TestCase):
         self.assertIn('interrupted', reason)
 
 
+class CollectorInputTest(unittest.TestCase):
+    """The duplicate rule: one completed value per point, retries stay visible."""
+
+    def setUp(self):
+        import tempfile
+        self.dir = tempfile.TemporaryDirectory()
+        self.root = pathlib.Path(self.dir.name)
+
+    def tearDown(self):
+        self.dir.cleanup()
+
+    def make(self, run, name, completed):
+        case = self.root / run / 'cases' / name
+        case.mkdir(parents=True)
+        (case / 'flame.log').write_text(
+            'COMPLETED stage=5 phi=1.1 speed_cm_s=6.1\n' if completed
+            else 'CanteraWarning: nothing\n')
+        return case
+
+    def test_a_completed_retry_replaces_the_failed_attempt(self):
+        failed = self.make('a', 'stage-5-phi-1.1', completed=False)
+        done = self.make('b', 'stage-5-phi-1.1', completed=True)
+        cases, retried = sweep.group_cases([failed, done])
+        self.assertEqual(cases, [done])
+        self.assertEqual(len(retried), 1)
+        self.assertEqual(retried[0]['completed'], [str(done)])
+
+    def test_two_completed_directories_are_ambiguous(self):
+        self.make('a', 'stage-5-phi-1.1', completed=True)
+        self.make('b', 'stage-5-phi-1.1', completed=True)
+        with self.assertRaises(ValueError):
+            sweep.group_cases(sorted(self.root.glob('*/cases/stage-5-phi-1.1')))
+
+    def test_a_single_failed_attempt_is_kept_as_the_record(self):
+        failed = self.make('a', 'stage-5-phi-1.1', completed=False)
+        cases, retried = sweep.group_cases([failed])
+        self.assertEqual(cases, [failed])
+        self.assertEqual(retried, [])
+
+
 if __name__ == '__main__':
     unittest.main()
