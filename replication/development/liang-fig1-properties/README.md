@@ -38,6 +38,25 @@ Probe CSV columns: `T_K, rho_srk_kg_m3, Z_srk, v_srk_m3_kmol, cp_ideal_J_molK,
 cp_res_J_molK, cp_J_molK, lambda_eh_W_mK, cpR_ideal`. `SrkKernel.h` returns the *residual*
 cp only, so `cp_J_molK = cp_ideal + cp_res`.
 
+### Units of the ideal-gas Cp ratio
+
+`SrkKernel.h` is kmol-based: `liang::R = 8314.46261815324 J/(kmol K)`, while the Shomate
+fit returns J/(mol K). The dimensionless `Cp/R` needed by `ElyHanley.H` (its `Species::cp_R`)
+and reported in the `cpR_ideal` column is therefore `1000·cp_ideal/liang::R`. The first
+version of this probe omitted the factor 1000, which made `Cp/R = 0.00353` at 300 K, tripped
+the repository's own `Cp/R < 2.5` guard in `ElyHanley.H` for every temperature and produced a
+header-only CSV while still exiting 0 (job `125192215`, run
+`/workspace/forge-out/runs/liang-fig1-probe2-5c20c46/`, retained as failed evidence).
+
+The probe now pins the conversion twice and refuses to report an incomplete sweep:
+
+* `unit_check` on stderr: `liang::R` must equal 8314.462618 J/(kmol K) to 1e-4 and
+  `Cp/R(300 K)` must be 3.53 ± 0.05 (0.00353 and 3530 both fail); exit status 2 otherwise;
+* every state must have `3.30 ≤ Cp/R ≤ 4.20`, the audited O₂ window 150–1000 K;
+* every printed value is checked finite;
+* `coverage rows N expected M rejected K` is reported, and any rejection, `N = 0` or
+  `N ≠ M` exits with status 3 so `job.sh` (which propagates the payload status) fails too.
+
 ## Why the published data are digitised
 
 Fig. 1 is a raster XObject inside the PDF — there is no vector path to extract, unlike
@@ -62,6 +81,39 @@ Measurable ranges are limited by the figure, not by the extraction: panel (a) mo
 for T ≳ 238 K (below that the curve overlaps the axis frame and the inward ticks), panel
 (b) model peak clipped by the top frame at ≈ 0.155 W/(m·K) so the reading starts at
 ≈ 171 K.
+
+### Coverage limit and the conductivity comparison
+
+Two things are deliberately *not* claimed, because measuring them showed they would be
+false:
+
+- **The symbol set is incomplete.** The extraction cannot see into the axis band
+  (`2·BAND` px) or into the two annotation rectangles, and the panel-label rectangle sits
+  over the lower-left of the plotting area. An erosion census over those excluded regions
+  (`hidden_symbols` in the digitisation JSON; it reads the same RGBA and applies the same
+  erosion-core shape filter) finds published symbols there: panel (b) is missing four
+  (≈126 K/0.110, 154 K/0.0738, 198 K/0.031, 235 K/0.027 W/(m·K)) and panel (a) one clear
+  one (231 K/199 kg/m³) plus two that are ambiguous with the `(a)` glyph strokes at this
+  raster resolution. Symbols inside the legend box are legend glyphs and are not counted.
+  `reference_coverage` therefore reports **failed** and the curve remains unchanged: no
+  symbol is invented and no mask is redrawn to make the census agree with the paper.
+- **Conductivity is compared at the plotted abscissae, not on the pixel chain.** The
+  digitised chain is a per-pixel walk, so a near-vertical stretch contributes one sample
+  per pixel row; 37 % of its samples fall below 190 K, where the printed curve is steep and
+  clipped by its own frame. A chain-sampled rms (105 %) therefore measures that edge's
+  pixel density, not the fit. Evaluated at the 600 abscissae actually plotted, the
+  conductivity deviation is **14.92 % rms normalised by the paper value** and 28.09 %
+  normalised by this work, largest +68.5 % at the frame edge, falling to ≈1 % by 950 K. Both
+  numbers were reproduced by an independent interpolation of the same plotted series, and
+  the chain value is kept in the verification details so the correction is auditable.
+  A unit/decade error would not close up at high temperature, so no rescaling is applied.
+
+`figure_fidelity` correspondingly reports **failed**: the geometry and tick placement are
+measured, but four presentation attributes remain unresolved and are declared as such —
+filled triangles are drawn as circles (renderer limit), rotated y-axis titles are drawn
+horizontally, minor ticks are omitted rather than invented, and the paper's font is not
+identifiable from the embedded raster. None of these is a numerical claim, and none is
+reported as a match.
 
 ## Figure geometry
 
@@ -102,5 +154,23 @@ python3 checks.py --probe run/fig1-probe.csv --digitised … --data … --plot �
 ```
 
 `digitize_fig1.py` is not part of the job: it measures the paper once and its output
-(`liang-fig1-digitised.json`) is retained as raw evidence with the RGBA dump digest inside
-it. It is re-runnable from the PDF alone.
+`liang-fig1-digitised.json` is retained as raw evidence, with the digests of every input
+inside it (`source.paper_sha256`, `source.embedded_jpeg_sha256`,
+`source.rgba_dump_sha256`).
+
+Reproducing the digitisation takes two steps, because the figure is a JPEG XObject inside
+the PDF and the Python tool reads raw pixels:
+
+1. the embedded JPEG stream (`775x1371` px, sha256
+   `b28ef871c4ad92031d7eeaf24e8a20d0fde6e83f9842c88c0f98ea645068c9ea`) is extracted from
+   the PDF page with a standard-library stream reader;
+2. that JPEG is decoded to a raw RGBA dump (`4250128` bytes, sha256
+   `89f3812ced9292b85e909de218e620eb8dfb358173baeb9647632ab3b7099a8c`) by a small Node
+   tool that uses the renderer's canvas binding (`@napi-rs/canvas` from `/forge`) and is
+   therefore kept in trial storage rather than committed here;
+3. `python3 digitize_fig1.py --rgba liang-fig1.rgba \
+        --calibration ../liang-properties/figure1-calibration.json --out liang-fig1-digitised.json`
+
+Re-running step 3 on that dump reproduces the retained JSON byte for byte (`sha256
+daec539ae6e09d81069623091174f85be7a424062b1f9edc6bb9d678028f83ff`), so the digitisation is
+deterministic given the declared inputs.

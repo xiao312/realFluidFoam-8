@@ -49,12 +49,17 @@ const TARGETS = [
         model: 'uncorrected PR EoS (paper Eq. 8)' },
     ],
     paperSeries: [
+      // Published geometry measured from the PDF graphics state: both curves are
+      // stroked at 0.59776 pt, the dashed one carries the PDF's own dash array
+      // [2.98883 2.98883], and the NIST rings are 4.154 pt across (11.5 px at the
+      // 200 dpi reference raster) stroked at 0.59776 pt, i.e. radius 2.077 pt.
       { id: 'paper-vta', source: 'paper-vta', label: 'paper: PR-VTA',
-        color: '#000000', lineWidth: 1.2, mark: 'line' },
+        color: '#000000', lineWidth: 0.59776, mark: 'line' },
       { id: 'paper-pr', source: 'paper-pr', label: 'paper: PR',
-        color: '#000000', lineWidth: 1.2, mark: 'line', dash: [3, 2] },
+        color: '#000000', lineWidth: 0.59776, mark: 'line', dash: [2.98883, 2.98883] },
       { id: 'paper-nist', source: 'paper-nist', label: 'paper: NIST',
-        color: '#000000', lineWidth: 0.7, mark: 'points', markerRadius: 1.9, markerWidth: 0.7 },
+        color: '#000000', lineWidth: 0.59776, mark: 'points',
+        markerRadius: 2.077, markerWidth: 0.59776 },
     ],
   },
   {
@@ -73,9 +78,11 @@ const TARGETS = [
     paperSeries: [
       // the paper draws the Fig. 1(b) PR cp curve dashed, as in Fig. 1(a)
       { id: 'paper-pr', source: 'paper-pr', label: 'paper: cp (PR)',
-        color: '#000000', lineWidth: 1.2, mark: 'line', dash: [3, 2] },
+        color: '#000000', lineWidth: 0.59776, mark: 'line',
+        dash: [2.98883, 2.98883] },
       { id: 'paper-nist', source: 'paper-nist', label: 'paper: NIST',
-        color: '#000000', lineWidth: 0.7, mark: 'points', markerRadius: 1.9, markerWidth: 0.7 },
+        color: '#000000', lineWidth: 0.59776, mark: 'points',
+        markerRadius: 2.077, markerWidth: 0.59776 },
     ],
   },
 ];

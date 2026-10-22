@@ -51,8 +51,10 @@ const FONT_SIZE = 6.4;
 // last x tick label and the legend rows stay inside the drawing area.
 const CANVAS = { width: 792, height: 1413, viewBox: [50.733, 44.0, 190.0, 339.0] };
 
-const CAL = JSON.parse(readFileSync(
-  '/workspace/science/replication/development/liang-properties/figure1-calibration.json', 'utf8'));
+// Baseline calibration, resolved relative to this file so the renderer runs from any
+// checkout: replication/development/liang-fig1-properties -> ../liang-properties.
+const CAL_PATH = new URL('../liang-properties/figure1-calibration.json', import.meta.url);
+const CAL = JSON.parse(readFileSync(CAL_PATH, 'utf8'));
 const axisValue = (axis, pixel) => CAL.calibration[axis].value_intercept + CAL.calibration[axis].value_per_pixel * pixel;
 const axisPixel = (axis, value) => (value - CAL.calibration[axis].value_intercept) / CAL.calibration[axis].value_per_pixel;
 
