@@ -602,6 +602,19 @@ def main():
     w('  one row per series; the raw samples are retained in the data file and are what the')
     w('  checks above use.')
     w('')
+    if dirty:
+        marked = ', '.join(dirty)
+        unmarked = ', '.join(clean) if clean else 'none'
+        w('The legend labels a computed case `unresolved` with its count of points outside the')
+        w('screen exactly when that case appears in the list above: cases %s are marked and'
+          % marked)
+        w('%s.' % (('case ' + unmarked + ' is not') if clean else 'no case is unlabelled'))
+        w('The label is computed from the comparison file while the figure renders, so the')
+        w('figure cannot call a case `compared` that this report calls failed.')
+        if receipt.get('comparison_sha256'):
+            w('The screen verdicts used for the legend come from `compare.json`, sha256')
+            w('`%s`, the same file tabulated in section 5.' % receipt['comparison_sha256'])
+        w('')
 
     # ---- 9 ----------------------------------------------------------------
     w('## 9. Required checks')
