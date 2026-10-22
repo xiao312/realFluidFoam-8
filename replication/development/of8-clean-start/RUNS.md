@@ -250,6 +250,41 @@ Limits: 1 us and 10 us startup windows at 1 atm on 32 cells; no flame, no flame 
 convergence claim, and the integral is recomputed from `T`, `Y` rather than read from a
 solver energy field (the build does not write one).
 
+## Contact advection on the built solver (`of8-advection-v1`, numerics only)
+
+Job `125289267` (1 rank, 3000 s wall, source commit `995bcb6`, `overall=0`, 226 s inside the
+allocation, 29 module tests OK) ran the three periodic ideal-gas contact cases. All three
+reached `endTime = 0.02 s` with `rc=0`, an `End` marker, `last Time` equal to `endTime` and
+4 of 4 writes; the automatic step took 220 steps at `maxCo = 0.11`.
+
+Every case starts at time 0 from a generated `0/` directory and is periodic in x, so there
+is no boundary flux at all and mass, momentum and total energy have exact conservation
+statements. Measured at the last write:
+
+| case | max\|p-p0\|/p0 | max\|U-u0\| (m/s) | mass drift | momentum drift | total-energy drift | T L2 / jump | T range (K) |
+|---|---|---|---|---|---|---|---|
+| nx2 (2 cells) | 7.18e-2 | 1.01 | -8.96e-7 | -5.1e-3 | +6.87e-2 | 0.275 | 348 - 3046 |
+| nx4 (4 cells) | 6.23e-2 | 1.27 | -8.96e-7 | -6.3e-3 | +5.83e-2 | 0.241 | 376 - 3040 |
+| nx6 (6 cells) | 5.37e-2 | 1.26 | -8.96e-7 | -5.3e-3 | +4.58e-2 | 0.239 | 438 - 3035 |
+
+This is a negative result about the numerical scheme, and it is the useful outcome of the
+case: the rigid shift the target describes is not reproduced. The contact is not merely
+smeared, it heats: the cold side drifts from 300 K to 348/376/438 K, the hot side overshoots
+by up to 1.5 percent, pressure oscillates by 5-7 percent of 1 atm despite a Mach number of
+0.012, and total energy *rises* by 4.6-6.9 percent while mass is conserved to 9e-7. Momentum
+drift is 0.5-0.6 percent. Refining the interface by 3x reduces the pressure excursion by
+only 25 percent and the energy drift by 33 percent, so this is not a marginally resolved
+contact going away with resolution; it is a property of the discretisation at these settings
+(60 cells, central fluxes, `sensibleEnthalpy`, `hePsiThermo` + `perfectGas`).
+
+Consequence for the ladder: nothing downstream of this solver should be read as
+energy-conserving until that is understood. The diagnostic exists precisely so that the
+1-D flame and counterflow work cannot inherit an unmeasured conservation error, and the
+registered `schmitt2020-fig-5` target stays blocked on its real-fluid equation of state
+(6 MPa, 1000 -> 100 kg/m3 oxygen cannot be represented by an ideal gas at any temperature).
+No figure replication is claimed, and the metric's own self-test (synthetic pure shift,
+zero drift, `T` L2 7.8e-12 K) shows the reported drift is the solver's, not the metric's.
+
 ## The CH4 sensible-enthalpy "discrepancy" was my arithmetic error
 
 An earlier note carried an unresolved item: `hs_CH4(1000 K) = 2.409 MJ/kg` measured against
