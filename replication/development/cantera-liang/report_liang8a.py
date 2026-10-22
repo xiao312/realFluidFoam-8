@@ -246,9 +246,11 @@ def main():
     w('| --- | --- | --- | --- | --- |')
     cross = prior_cross_check(ref, prior)
     worst_cross = None
+    cross_rows = []
     for stage, mine, theirs in cross:
         rms = rms_of(mine, theirs) if mine else float('nan')
         biggest = max((abs(v - t) for (_, v), t in zip(mine, theirs)), default=float('nan'))
+        cross_rows.append((stage, len(mine), rms, biggest))
         w('| %d | %d | %.4f-%.4f | %.4f | %.4f |'
           % (stage, len(mine), min(p[0] for p in mine), max(p[0] for p in mine), rms, biggest))
         if worst_cross is None or biggest > worst_cross[1]:
@@ -613,10 +615,23 @@ def main():
     w('   Different Tu shifts the whole curve; this assumption is not removable from the')
     w('   available text and is not hidden inside a fitted parameter here.')
     w('2. **Digitisation is not author data.** The reference is a reading of a raster with')
-    w('   a declared uncertainty of 0.02-0.03 cm/s per sample, bounded by an independent')
-    w('   second digitisation that agrees to ~0.005 cm/s. Systematic misreading of a')
-    w('   legend-to-curve assignment would shift an entire stage and is not detectable')
-    w('   from the raster alone.')
+    w('   a declared uncertainty of 0.02-0.03 cm/s per sample. The independent second')
+    w('   digitisation does not confirm that bound: the two readings of the same printed')
+    traced = [(s, n, r, m) for (s, n, r, m) in cross_rows if s == 1]
+    symbols = [(s, n, r, m) for (s, n, r, m) in cross_rows if s != 1 and s != 5]
+    if traced:
+        s, n, r, m = traced[0]
+        w('   curve differ by %.4f cm/s rms and %.4f cm/s at worst on case %d (%d samples),'
+          % (r, m, s, n))
+    if symbols:
+        w('   whereas the symbol cases agree to %.4f-%.4f cm/s rms, so the screen tolerance'
+          % (min(r for _, _, r, _ in symbols), max(r for _, _, r, _ in symbols)))
+        w('   of 0.02-0.03 cm/s does not bound the case-1 ambiguity - and case 1 is the traced')
+        w('   curve that supplies %d of the %d compared points. That ambiguity is'
+          % (sum(1 for row in rows if row['stage'] == 1), len(rows)))
+    w('   carried in every comparison below rather than absorbed into the screen. Systematic')
+    w('   misreading of a legend-to-curve assignment would shift an entire stage and is not')
+    w('   detectable from the raster alone.')
     w('3. **Case 2 is not a consistent thermodynamic model** (SRK density with ideal')
     w('   calorics) by design, mirroring the stage definition; its agreement must not be')
     w('   read as validation of that combination.')
