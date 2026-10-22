@@ -250,6 +250,25 @@ Limits: 1 us and 10 us startup windows at 1 atm on 32 cells; no flame, no flame 
 convergence claim, and the integral is recomputed from `T`, `Y` rather than read from a
 solver energy field (the build does not write one).
 
+## Mixing diagnostic v1 — killed before the solve by an unterminated dictionary (`of8-mixing-v1`)
+
+Job `125290253` (1 rank, 3000 s wall, source commit `aee51f6`) generated the 80x40 case and
+died in `blockMesh` after 3 s:
+
+```
+--> FOAM FATAL IO ERROR:
+keyword deltaT is undefined in dictionary ".../mix-80x40/system/controlDict"
+```
+
+`prepare_mixing_case.py` wrote `endTime 0.0002`, `deltaT 2e-07` and `writeInterval 5e-05`
+without semicolons, so the dictionary parser folded each following keyword into the previous
+value and the run had no time controls. Fixed in `b295c0a`: terminators added, a generated
+controlDict test asserts every body entry ends in `;`, and `job-mixing.sh` now refuses to
+call `blockMesh` if `endTime`, `deltaT` or `writeInterval` is missing or unterminated, so
+this failure names the entry instead of surfacing as a mesh tool error. `status.txt` is
+`FAILED blockMesh`; no fields were produced and nothing from this attempt is used as a
+result. Resubmitted as `of8-mixing-v2`.
+
 ## Contact advection on the built solver (`of8-advection-v1`, numerics only)
 
 Job `125289267` (1 rank, 3000 s wall, source commit `995bcb6`, `overall=0`, 226 s inside the
