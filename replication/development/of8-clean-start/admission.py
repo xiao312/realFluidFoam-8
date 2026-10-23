@@ -225,12 +225,54 @@ def admission(case, expected_inlet_faces=None):
     return failures
 
 
+
+def import_closure(frozen, module):
+    """Report local modules a frozen source copy imports but does not contain.
+
+    A run freezes a *named list* of files into <run>/src and executes from there. If the
+    list omits a module that an entry script imports, the solve can succeed and the metric
+    step then dies with ModuleNotFoundError — job 125296683 solved to 2e-4 s in 155 s and
+    then lost its measurements because `metrics.py` was never frozen. The freeze is
+    checked against the module tree instead of being trusted.
+    """
+    frozen = Path(frozen)
+    module = Path(module)
+    have = {p.name for p in frozen.glob('*.py')}
+    available = {p.stem for p in module.glob('*.py')}
+    missing = {}
+    for path in sorted(frozen.glob('*.py')):
+        text = path.read_text(errors='replace')
+        names = set()
+        for m in re.finditer(r'^[ \t]*from[ \t]+([A-Za-z_][\w.]*)[ \t]+import', text, re.M):
+            names.add(m.group(1).split('.')[0])
+        for m in re.finditer(r'^[ \t]*import[ \t]+([A-Za-z_][\w.]*(?:[ \t]*,[ \t]*[A-Za-z_][\w.]*)*)', text, re.M):
+            for part in m.group(1).split(','):
+                names.add(part.strip().split('.')[0])
+        for name in sorted(names):
+            if name in available and name + '.py' not in have:
+                missing.setdefault(name, []).append(path.name)
+    return ['%s.py is imported by %s but not frozen'
+            % (name, ', '.join(sorted(set(users)))) for name, users in sorted(missing.items())]
+
+
 def main(argv=None):
     import argparse, json, sys
     ap = argparse.ArgumentParser(description=__doc__)
-    ap.add_argument('--case', required=True, type=Path)
+    ap.add_argument('--case', type=Path)
     ap.add_argument('--inlet-faces', type=int, default=None)
+    ap.add_argument('--imports', type=Path, help='frozen source directory to check')
+    ap.add_argument('--module-dir', type=Path, help='full module tree the freeze came from')
     args = ap.parse_args(argv)
+    if args.imports:
+        problems = import_closure(args.imports, args.module_dir or args.imports)
+        print(json.dumps({'frozen': str(args.imports), 'missing': problems}, indent=2))
+        if problems:
+            for p in problems:
+                print('FAILED: ' + p, file=sys.stderr)
+            return 1
+        return 0
+    if not args.case:
+        ap.error('--case is required unless --imports is given')
     failures = admission(args.case, expected_inlet_faces=args.inlet_faces)
     sizes = patch_sizes(args.case)
     print(json.dumps({'case': str(args.case), 'patch_sizes': sizes,

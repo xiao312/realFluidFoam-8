@@ -242,8 +242,15 @@ def main():
                                         energy_flux=inlet_energy))
     receipt['_geometry'] = geom
 
-    found = sorted([d.name for d in case.iterdir()
-                    if d.is_dir() and re.fullmatch(r'[0-9.eE+-]+', d.name)], key=float)
+    # Only written states carry rho: the generated 0/ directory holds the initial
+    # condition (U, T, p, Y) and no thermo-derived field. Reading 0/ made the metric step
+    # abort on a solve that had succeeded (job 125296683, "No such file or directory: ...
+    # /0/rho"), so the time list is the states that can actually be measured, and the
+    # skipped directories are recorded rather than silently dropped.
+    candidates = sorted([d.name for d in case.iterdir()
+                         if d.is_dir() and re.fullmatch(r'[0-9.eE+-]+', d.name)], key=float)
+    found = [t for t in candidates if (case / t / 'rho').is_file()]
+    skipped = [t for t in candidates if t not in found]
     results = [analyse(case, receipt, t) for t in found]
 
     balances = []
@@ -277,7 +284,7 @@ def main():
         case=str(case),
         receipt=str(args.receipt),
         source_commit=receipt.get('source_commit'),
-        cells=geom['cells'], times=found,
+        cells=geom['cells'], times=found, skipped_states=skipped,
         inlet_flux=dict(total_mass_flux_kg_per_s=inlet_mass,
                         total_momentum_flux_kg_m_per_s2=inlet_momentum,
                         total_energy_flux_J_per_s=inlet_energy),

@@ -411,6 +411,25 @@ class AdmissionTest(unittest.TestCase):
         self.assertRegex(text, r'reactions\s*\{\s*\}')
         self.assertNotRegex(text, r'reactions\s*\(')
 
+    def test_frozen_source_must_cover_its_imports(self):
+        """Job 125296683 solved, then lost its metrics to an unfrozen module."""
+        import tempfile
+        with tempfile.TemporaryDirectory() as module, tempfile.TemporaryDirectory() as frozen:
+            Path(module, 'entry.py').write_text('from helper import f\n')
+            Path(module, 'helper.py').write_text('def f():\n    return 1\n')
+            Path(frozen, 'entry.py').write_text('from helper import f\n')
+            problems = self.A.import_closure(frozen, module)
+            self.assertEqual(len(problems), 1)
+            self.assertIn('helper.py', problems[0])
+            Path(frozen, 'helper.py').write_text('def f():\n    return 1\n')
+            self.assertEqual(self.A.import_closure(frozen, module), [])
+
+    def test_returned_module_is_frozen(self):
+        text = (Path(self.A.__file__).parent / 'job-mixing.sh').read_text()
+        freeze = text.split('freeze_source.sh', 1)[1].split('>', 1)[0]
+        self.assertIn('metrics.py', freeze)
+        self.assertIn('imports', text)
+
     def test_wrong_inlet_patch_size_is_rejected(self):
         """Negative control: job 125291239 died on exactly this."""
         case = self.clone('patch')

@@ -421,3 +421,47 @@ choice, not a capability limit. What is still true: an ideal-gas density of 1000
 flamelet/property targets and `5.59 MPa` to the Singla/Candel G2 targets; the two are not a
 transcription error and the earlier "reconcile 5.59 vs 5.61" note is withdrawn.
 
+
+## Mixing diagnostic v6 (`of8-mixing-v6`, job `125295010`) — solver aborted in chemistry construction
+
+The build was accepted, the source frozen from `9693472`, `blockMesh` built 3200 cells,
+`checkMesh` passed, the static gate passed (3 species, both patches 40 faces) and the
+self-test passed — then the solver aborted while constructing the chemistry model:
+
+```
+FOAM FATAL ERROR: Attempt to return primitive entry ITstream : .../chemistryProperties/reactions,
+    line 10 ... primitiveEntry 'reactions' comprises ... the punctuation token '(' ... as a sub-dictionary
+```
+
+`ReactionList` calls `dict.subDict("reactions")`, so an empty reaction list must still be a
+dictionary block. The generator wrote `reactions ();`, a primitive token list, and the gate
+did not check that form because it only compared the species a reaction list names against
+the thermo table (an empty list names none). Fixed in `777c013`: the generator writes
+`reactions { }`, `admission.reaction_list_form()` rejects the token-list form with the job
+id in its message, and the negative control is in the tests.
+
+## Mixing diagnostic v7 (`of8-mixing-v7`, job `125296683`) — solved, then lost its metrics; the cold stream is outside the JANAF range
+
+`rc_solve=0`, 1000 steps, `t = 2e-4 s`, 4/4 writes, 155 s solver time, `max Co = 4.6e-3`,
+`T` 200–288 K, continuity cumulative `1.9e-8`, `checkMesh` clean. Two separate problems:
+
+1. **The metric step never ran.** The freeze list omitted `metrics.py`, which
+   `mixing_metrics.py` imports, so the post-solve step died with `ModuleNotFoundError`;
+   `mix.metrics.json` does not exist in the run directory. `metrics.py` is now frozen and
+   `freeze_source.sh` refuses to hand a run an import closure it does not cover
+   (`admission.import_closure`), tested with the exact failure. The measurements were later
+   produced from the retained fields by the corrected scripts and are recorded with that
+   provenance; they are *not* a run-time artefact of `125296683`.
+2. **The 100 K oxidiser cannot be represented by this thermophysics.** The solver log
+   carries 1,703,400 `janafThermo ... out of temperature range 200 -> 3500; T = 100`
+   warnings and the cold half of the domain is written at exactly 200.0 K, i.e. the
+   thermo floor, not the inlet temperature. Extending a JANAF fit below 200 K is not
+   physical, so this case is a *numerical solver smoke test only*: it exercises clean
+   start-up, mass-flux-matched inflow, four writes and a verified stop, and it says nothing
+   about cryogenic oxygen mixing or about `schmitt2020-fig-18-g2`. No G2 claim is made here.
+
+The measured mixing quantities are retained as diagnostics; the mass and momentum
+imbalances at this early transient (`1.15e-6` vs `1.12e-6` kg per interval, momentum
+imbalance ≈ 1 because the inlet and outlet pressure terms cancel to 1e-5 of their own
+size) show the outlet-flux estimate is not closed at this resolution and must not be read
+as a validation.

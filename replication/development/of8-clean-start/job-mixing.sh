@@ -58,12 +58,20 @@ if [ -z "$SRC_COMMIT" ] || [ "$SRC_COMMIT" != "$COMMIT" ]; then
 fi
 # Freeze the exact scripts this run executes, from the named commit, before anything runs.
 if ! bash "$MODULE/freeze_source.sh" "$RUN" "$SRC_COMMIT" prepare_mixing_case.py \
-        mixing_metrics.py admission.py freeze_source.sh job-mixing.sh \
+        mixing_metrics.py metrics.py admission.py freeze_source.sh job-mixing.sh \
         > "$RUN/freeze.log" 2>&1; then
     log "source freeze FAILED"; tail -5 "$RUN/freeze.log" >> "$LOG"
     printf 'FAILED source-freeze\n' > "$RUN/status.txt"; exit 1
 fi
 log "frozen source $(grep -c . "$RUN/src/SHA256SUMS") lines in $RUN/src"
+# A named freeze list can omit a module that an entry script imports; the solve then
+# succeeds and the metric step dies. Job 125296683 lost its measurements that way.
+if ! python3 -B "$RUN/src/admission.py" --imports "$RUN/src" --module-dir "$MODULE" \
+        > "$RUN/freeze.imports.json" 2>&1; then
+    log "source freeze does not cover its own imports; refusing to run"
+    cat "$RUN/freeze.imports.json" >> "$LOG"
+    printf 'FAILED source-freeze-imports\n' > "$RUN/status.txt"; exit 1
+fi
 FROZEN="$RUN/src"
 
 export LD_LIBRARY_PATH="$BUILD/lib:${LD_LIBRARY_PATH:-}"
