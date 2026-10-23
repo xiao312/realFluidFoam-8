@@ -620,3 +620,39 @@ mixture-averaged transport, so it exercises none of the staged code), the grid (
 stopped on a coarse grid is labelled under-refined rather than counted as a model difference),
 and the staged model itself. A stage-1 agreement together with a stage-2/3/4 difference is a
 statement about the staged model; the reverse would be a statement about the harness.
+
+## Source closure: a frozen module tree is not a compilable one
+
+Job 125301265 (`liang8a-terms-v2`) froze `replication/development/cantera-liang` from the
+admitted commit, verified all 68 files member by member against its own manifest, and then
+failed at compile time with
+
+    test_srk.cpp:2:10: fatal error: ../liang-properties/ElyHanley.H: No such file or directory
+
+`StagedTransport.h` carries the same include. The header is in the checkout
+(`replication/development/liang-properties/ElyHanley.H`) but not in the archive, so the run
+had a tree whose every byte matched its manifest and which still could not build. A file
+manifest proves what the run *had*; it does not prove what the run *needs*.
+
+`source_closure.py` closes that gap statically, before a compiler is invoked:
+
+    source_closure.py --module cantera-liang --layout-root . [--json OUT]
+
+It reads every quoted include of every `.c/.cpp/.h/.H` file in the module, resolves each one
+the way the compiler will (including file's directory, then the module directory, then the
+layout root), and reports:
+
+- an explicit relative include (`../...`, `./...`) that resolves to nothing: a defect;
+- a relative include that resolves outside the layout root: a defect;
+- an include that resolves inside the tree: counted as a tree dependency;
+- an include that resolves nowhere and is not relative (`cantera/onedmx.h`): counted as an
+  SDK include, since `-I/opt/cantera-sdk/include` supplies it and the environment, not this
+  manifest, identifies it.
+
+Exit status 1 if any defect is reported. `test_source_closure.py` pins all three outcomes
+(6 tests) on synthetic trees, including the missing-`ElyHanley.H` case that failed the job.
+
+A run that freezes this module must therefore archive `replication/development` (both
+`cantera-liang` and `liang-properties`) and run this check after extraction; the next
+submission does both. `source_closure.py` does not check the SDK headers themselves, and a
+pass means "every include the tree names exists in the tree", not "the tree builds".
