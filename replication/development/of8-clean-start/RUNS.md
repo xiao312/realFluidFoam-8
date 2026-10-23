@@ -465,3 +465,47 @@ imbalances at this early transient (`1.15e-6` vs `1.12e-6` kg per interval, mome
 imbalance ≈ 1 because the inlet and outlet pressure terms cancel to 1e-5 of their own
 size) show the outlet-flux estimate is not closed at this resolution and must not be read
 as a validation.
+
+## Mixing diagnostic v8 preparation — the warm in-range baseline and two metric corrections
+
+Nothing below has been run yet; this section records what changed after v7 and why, so the
+next allocation has a case and a metric that can be read.
+
+**1. The 100 K oxidiser stream is retired, not rerun.** The JANAF table carried by this
+build has `Tlow = 200 K` for all three species, and `125296683` solved its 100 K inlet by
+clamping: 1 703 400 out-of-range warnings and the cold half of the domain written at exactly
+200.0 K. Extending a JANAF fit below its range is not a physical boundary condition, so
+`prepare_mixing_case.py` now defaults both streams to 300 K, `--fuel-temperature` and
+`--oxidiser-temperature` override them, and `admission.py` gained a static gate
+(`thermo_ranges`, `inlet_profile`, `inlet_temperature_problems`) that reads `Tlow`/`Thigh`
+from `constant/thermo.inputData_GRI`, takes the species on each inlet face from the largest
+inlet fraction in `0/<species>`, and refuses any face whose temperature is outside its own
+species range — before `blockMesh`, naming species, face and range. The 100 K case is not
+resubmitted: it was invalid as a boundary condition, and a warm case answers the question
+the diagnostic can actually answer (mass-flux-matched two-stream mixing with exact inlet
+fluxes), not the cryogenic question, which needs real-fluid thermophysics.
+
+The receipt now says so in its own words: both streams at in-range ideal-gas temperatures,
+with the registered cryogenic state recorded as a deviation together with the `Tlow = 200 K`
+reason. `test_mixing.py` pins both directions — the generated default case must lie inside
+every species range, and a case with 100 K oxidiser faces must be rejected by the gate
+(27 tests, all passing locally).
+
+**2. Imbalance fractions are now normalised by the fluxes, not by the net.** The v7-era
+numbers (`momentum_imbalance_fraction` 170.9 / 11.0 / 24.8) were `residual / |net_in|`, and
+`net_in` cancels to float noise on a uniform flow: the module's own steady-state self-test
+returned `-1.0` for a residual of `1.4e-20` against a net of `1.4e-20`, and the same
+normalisation is what produced the three-digit fractions. `mixing_metrics.py` now reports
+`<name>_imbalance_fraction = (accumulation - net_in) / max(|inlet flux|, |outlet flux|)` for
+mass, momentum and energy, keeps `<name>_net_in_over_flux` so the reader sees how small the
+net is, and reports `<name>_imbalance_over_net` as `null` unless `|net_in| > 1e-9 * scale`.
+The three v7 numbers above stay in this record as reported; they are not comparable with the
+new normalisation and are superseded by it, not overwritten.
+
+**3. What the baseline measures.** The same 80 x 40, 0.04 m x 0.02 m, 1000-step (2e-4 s),
+five-write case as v7, with `T` = 300 K on both streams, `u_fuel` = 10 m/s and `u_ox` set by
+the registered G2 mass-flow ratio, chemistry off. It measures inlet fluxes against outlet
+fluxes and accumulation, positivity, species closure, pressure excursion, acoustic Mach
+number and the 10/90 % mixing width. It is a warm ideal-gas mixing diagnostic; the
+`schmitt2020-fig-18-g2` state (LOx near 85 K, 5.59 MPa) stays unrepresentable in this build
+and no G2, convergence, or acceptance claim is made from it.

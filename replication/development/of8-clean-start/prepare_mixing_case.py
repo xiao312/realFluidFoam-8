@@ -50,8 +50,12 @@ DEFAULTS = dict(
     ny=40,
     depth=1e-4,
     pressure=101325.0,
-    fuel=dict(name='CH4', species='CH4', temperature=288.0, velocity=10.0),
-    oxidiser=dict(name='O2', species='O2', temperature=100.0, velocity=None),
+    fuel=dict(name='CH4', species='CH4', temperature=300.0, velocity=10.0),
+    # The oxidiser stream is warm because a 100 K stream cannot be represented by the JANAF
+    # table this build carries: Tlow is 200 K and job 125296683 wrote the cold half of its
+    # domain at exactly 200.0 K, the thermo floor, after 1.7e6 out-of-range warnings. The
+    # registered G2 state (LOx near 85 K) stays a recorded deviation, not a simulated state.
+    oxidiser=dict(name='O2', species='O2', temperature=300.0, velocity=None),
     # registered G2 mass flows; the oxidiser velocity is derived from their ratio
     g2_oxygen_mass_flow=44.4e-3,
     g2_fuel_mass_flow=143.1e-3,
@@ -371,8 +375,12 @@ def write_case(out, cfg, mechanism_source, source_commit):
             'pressure 101325 Pa instead of 5.59 MPa: the frozen build is hePsiThermo+perfectGas '
             'and has no real-fluid equation of state; at 85 K and 5.59 MPa the ideal-gas density '
             'of O2 is 254 kg/m3 against a real-fluid value of about 1140 kg/m3',
-            'oxidiser temperature 100 K instead of 85 K: at 101325 Pa, oxygen at 85 K is below '
-            'its 90.19 K normal boiling point and is not a gas',
+            'both streams at in-range ideal-gas temperatures (fuel %.1f K, oxidiser %.1f K) '
+            'instead of the registered cryogenic oxygen near 85 K: at 101325 Pa oxygen at 85 K '
+            'is below its 90.19 K normal boiling point and is not a gas, and the JANAF table '
+            'carried by this build has Tlow = 200 K, so a 100 K stream is a clamped '
+            'extrapolation (job 125296683) rather than a state this thermophysics represents' % (
+                cfg['fuel']['temperature'], cfg['oxidiser']['temperature']),
             'no OH or OH* observable, no mean-field or optical comparison: the registered '
             'schmitt2020-fig-18-g2 observable needs the real-fluid LES this build cannot run',
             'no reaction: GRI reactions reference species outside the 3-species subset, so the '
@@ -404,11 +412,22 @@ def main():
     parser.add_argument('--end-time', type=float, default=DEFAULTS['end_time'])
     parser.add_argument('--delta-t', type=float, default=DEFAULTS['delta_t'])
     parser.add_argument('--write-interval', type=float, default=DEFAULTS['write_interval'])
+    parser.add_argument('--fuel-temperature', type=float,
+                        default=DEFAULTS['fuel']['temperature'],
+                        help='fuel-stream inlet temperature in K; must lie inside the '
+                             'JANAF range the mechanism carries (admission.py checks it)')
+    parser.add_argument('--oxidiser-temperature', type=float,
+                        default=DEFAULTS['oxidiser']['temperature'],
+                        help='oxidiser-stream inlet temperature in K, same range rule')
     args = parser.parse_args()
 
     cfg = dict(DEFAULTS)
     cfg.update(nx=args.nx, ny=args.ny, end_time=args.end_time, delta_t=args.delta_t,
                write_interval=args.write_interval)
+    # Copy the stream dictionaries rather than mutating DEFAULTS, so a caller that changes
+    # one temperature cannot leak it into another case in the same process.
+    cfg['fuel'] = dict(cfg['fuel'], temperature=args.fuel_temperature)
+    cfg['oxidiser'] = dict(cfg['oxidiser'], temperature=args.oxidiser_temperature)
     out = args.out.resolve()
     if out.exists():
         raise SystemExit('refusing to reuse existing output %s' % out)

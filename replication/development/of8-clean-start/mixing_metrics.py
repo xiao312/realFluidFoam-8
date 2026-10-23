@@ -348,15 +348,31 @@ def main():
             energy_accumulation=(b['total_energy'] - a['total_energy']) / dt,
             energy_net_in=b['fluxes']['energy_in'] - b['fluxes']['energy_out'],
         )
-        scale_m = max(abs(balance['mass_net_in']), 1e-30)
-        scale_e = max(abs(balance['energy_net_in']), 1e-30)
+        # Normalise each residual by the size of the fluxes it is made of, not by the net,
+        # because the net can cancel to float noise and then any residual divides by nothing:
+        # the uniform-flow self-test returned a momentum fraction of -1.0 for a residual of
+        # 1.4e-20 against a net of 1.4e-20 (the earlier 170.9-style mass and momentum figures
+        # reported from this run had the same defect). The fraction of the net is kept beside
+        # it, and reported as null when the net is too small to divide by.
+        scale_m = max(abs(b['fluxes']['mass_in']), abs(b['fluxes']['mass_out']), 1e-30)
+        scale_e = max(abs(b['fluxes']['energy_in']), abs(b['fluxes']['energy_out']), 1e-30)
+        scale_q = max(abs(b['fluxes']['momentum_in']), abs(b['fluxes']['momentum_out']), 1e-30)
         balance['mass_imbalance_fraction'] = (
             balance['mass_accumulation'] - balance['mass_net_in']) / scale_m
-        scale_q = max(abs(balance['momentum_net_in']), 1e-30)
         balance['momentum_imbalance_fraction'] = (
             balance['momentum_accumulation'] - balance['momentum_net_in']) / scale_q
         balance['energy_imbalance_fraction'] = (
             balance['energy_accumulation'] - balance['energy_net_in']) / scale_e
+        for name, scale in (('mass', scale_m), ('momentum', scale_q), ('energy', scale_e)):
+            net = balance[name + '_net_in']
+            balance[name + '_net_in_over_flux'] = net / scale
+            balance[name + '_net_significant'] = abs(net) > 1e-9 * scale
+            balance[name + '_imbalance_over_net'] = (
+                (balance[name + '_accumulation'] - net) / abs(net)
+                if balance[name + '_net_significant'] else None)
+        balance['normalisation'] = (
+            'imbalance_fraction = (accumulation - net_in) / max(|inlet flux|, |outlet flux|); '
+            '_imbalance_over_net divides by |net_in| only when |net_in| > 1e-9 * flux scale')
         balances.append(balance)
 
     summary = dict(

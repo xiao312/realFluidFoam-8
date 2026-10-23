@@ -188,6 +188,92 @@ def reaction_list_form(directory):
     return problems
 
 
+def thermo_ranges(directory):
+    """{species: (Tlow, Thigh)} read from the janaf blocks of the thermo data file.
+
+    Called before any OpenFOAM binary runs: job 125296683 solved happily with a 100 K stream
+    against Tlow = 200 K, emitted 1.7e6 out-of-range warnings, and wrote the cold half of its
+    domain at exactly 200.0 K. That is a clamped extrapolation, so the inlet temperatures of
+    a generated case are checked against this table instead of against a guess.
+    """
+    text = (Path(directory) / 'thermo.inputData_GRI').read_text()
+    declared = re.search(r'species\s+(\d+)\s*\((.*?)\)', text, re.S)
+    names = set(declared[2].split()) if declared else set()
+    out = {}
+    for m in re.finditer(r'^\s*([A-Za-z][A-Za-z0-9()]*)\s*\n\s*\{', text, re.M):
+        if m[1] not in names:
+            # `thermodynamics { Tlow ... }` is a nested block, not a species block.
+            continue
+        block = text[m.end():]
+        depth, endpos = 1, len(block)
+        for i, ch in enumerate(block):
+            if ch == '{':
+                depth += 1
+            elif ch == '}':
+                depth -= 1
+                if depth == 0:
+                    endpos = i
+                    break
+        body = block[:endpos]
+        lo = re.search(r'\bTlow\s+([-0-9.eE+]+)\s*;', body)
+        hi = re.search(r'\bThigh\s+([-0-9.eE+]+)\s*;', body)
+        if lo and hi:
+            out[m[1]] = (float(lo[1]), float(hi[1]))
+    return out
+
+
+def inlet_profile(case, field):
+    """Inlet-patch numbers of 0/<field> as a list of floats (empty when not a list)."""
+    path = Path(case) / '0' / field
+    if not path.exists():
+        return []
+    text = path.read_text()
+    pos = text.find('boundaryField')
+    if pos < 0:
+        return []
+    m = re.search(r'inlet\s*\{[^}]*nonuniform\s+List<\w+>\s+(\d+)\s*\(', text[pos:], re.S)
+    if not m:
+        return []
+    body = text[pos + m.end():]
+    close = body.find(')')
+    values = [float(v) for v in body[:close].split()]
+    return values if len(values) == int(m[1]) else []
+
+
+def inlet_temperature_problems(case):
+    """Inlet faces whose temperature is outside the JANAF range of their own species.
+
+    The inlet is a nonuniform profile: fuel below mid-height, oxidiser above it. The species
+    on each face is the one with the largest inlet value in 0/<species>, so the temperature
+    and the species it is attributed to come from the same face index rather than from a
+    positional assumption.
+    """
+    ranges = thermo_ranges(Path(case) / 'constant')
+    temperatures = inlet_profile(case, 'T')
+    if not ranges or not temperatures:
+        return []
+    species = sorted(ranges)
+    fractions = {s: inlet_profile(case, s) for s in species}
+    faces = len(temperatures)
+    failures = []
+    for i in range(faces):
+        present = [(fractions[s][i] if len(fractions[s]) == faces else 0.0, s)
+                   for s in species]
+        value, name = max(present)
+        if value <= 0.0:
+            continue
+        low, high = ranges[name]
+        if not (low <= temperatures[i] <= high):
+            failures.append(
+                'inlet face %d carries %s at %.2f K, outside its JANAF range [%g, %g] K '
+                '(job 125296683 ran a 100 K stream against Tlow = 200 K and wrote the thermo '
+                'floor instead of the inlet temperature)' % (i, name, temperatures[i], low, high))
+    if len(failures) > 5:
+        extra = len(failures) - 5
+        failures = failures[:5] + ['... %d more inlet faces outside their JANAF range' % extra]
+    return failures
+
+
 def admission(case, expected_inlet_faces=None):
     """Return a list of hard failures; empty means the case passed static admission."""
     failures = []
@@ -213,6 +299,7 @@ def admission(case, expected_inlet_faces=None):
         failures.append('reaction species missing from the thermophysical table: %s'
                         % sorted(missing))
     failures.extend(reaction_list_form(case / 'constant'))
+    failures.extend(inlet_temperature_problems(case))
     for s in sorted(names):
         if not (case / '0' / s).exists():
             failures.append('no initial field 0/%s' % s)

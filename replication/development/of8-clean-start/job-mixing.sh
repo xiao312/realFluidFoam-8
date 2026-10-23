@@ -2,10 +2,14 @@
 # Bounded 2-D two-stream cold-mixing diagnostic (G2-related, explicitly not a G2 replication).
 #
 # One case generated from committed dictionaries by prepare_mixing_case.py, starting at
-# startTime 0 with no carried-over field: 80 x 40 uniform cells over 0.04 m x 0.02 m, CH4 at
-# 288 K below mid-height and O2 at 100 K above it, both at 101325 Pa, ideal gas, chemistry
+# startTime 0 with no carried-over field: 80 x 40 uniform cells over 0.04 m x 0.02 m, CH4 below
+# mid-height and O2 above it, both at 101325 Pa, ideal gas, chemistry
 # off, u_fuel = 10 m/s and u_ox set by the registered G2 mass-flow ratio 44.4/143.1, 1000
-# step-steps of 2e-7 s to 2e-4 s with 5 writes.
+# step-steps of 2e-7 s to 2e-4 s with 5 writes. Both stream temperatures default to 300 K
+# (FUEL_T / OX_T override them) because a 100 K stream is outside the JANAF range this
+# thermophysics carries (Tlow 200 K): job 125296683 wrote the thermo floor instead of the
+# inlet temperature, so admission.py now refuses any inlet face outside its own species
+# range before blockMesh runs.
 #
 # Measurements per write: exact inlet mass/momentum/energy flux against the integrated outlet
 # flux and the measured accumulation (mixing_metrics.py), positivity and species closure,
@@ -21,6 +25,8 @@ MODULE=${MODULE:-/workspace/science/replication/development/of8-clean-start}
 SRC_COMMIT=${SRC_COMMIT:-}
 NX=${NX:-80}
 NY=${NY:-40}
+FUEL_T=${FUEL_T:-}
+OX_T=${OX_T:-}
 END_TIME=${END_TIME:-2e-4}
 DELTA_T=${DELTA_T:-2e-7}
 WRITE_INTERVAL=${WRITE_INTERVAL:-4e-5}
@@ -84,9 +90,14 @@ case_dir="$RUN/mix-${NX}x${NY}"
 receipt="$case_dir.receipt.json"
 log "== mix-${NX}x${NY} =="
 rm -rf "$case_dir" "$receipt"
+temperatures=()
+[ -n "$FUEL_T" ] && temperatures+=(--fuel-temperature "$FUEL_T")
+[ -n "$OX_T" ] && temperatures+=(--oxidiser-temperature "$OX_T")
+log "stream temperatures: fuel ${FUEL_T:-default} K, oxidiser ${OX_T:-default} K"
 if ! python3 -B "$FROZEN/prepare_mixing_case.py" --out "$case_dir" --mechanism-source "$MECH" \
         --source-commit "$COMMIT" --nx "$NX" --ny "$NY" --end-time "$END_TIME" \
         --delta-t "$DELTA_T" --write-interval "$WRITE_INTERVAL" \
+        ${temperatures[@]+"${temperatures[@]}"} \
         > "$RUN/mix.prepare.log" 2>&1; then
     log "case generation FAILED"
     tail -20 "$RUN/mix.prepare.log" >> "$LOG"

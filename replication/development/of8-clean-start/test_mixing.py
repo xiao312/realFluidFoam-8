@@ -192,14 +192,18 @@ class StreamPropertiesTest(unittest.TestCase):
         ratio = props['inlet_mass_flux_ox'] / props['inlet_mass_flux_fuel']
         self.assertAlmostEqual(ratio, cfg['g2_oxygen_mass_flow'] / cfg['g2_fuel_mass_flow'],
                                places=12)
-        self.assertAlmostEqual(props['u_ox'], 0.5403, places=3)
+        # Both streams are at 300 K by default since the 100 K stream was retired. Equal
+        # temperature does not mean equal density: the streams have different molar masses,
+        # so matching the mass flux gives u_ox = u_fuel * (M_fuel/M_ox) * (mdot_ox/mdot_fuel).
+        self.assertAlmostEqual(props['u_ox'],
+                               10.0 * (16.043 / 31.998) * (44.4 / 143.1), places=9)
 
     def test_densities_are_ideal_gas(self):
         cfg = dict(pm.DEFAULTS)
         props = pm.stream_properties(cfg)
-        self.assertAlmostEqual(props['rho_fuel'], 101325 * 16.043 / (8314.46261815324 * 288.0),
+        self.assertAlmostEqual(props['rho_fuel'], 101325 * 16.043 / (8314.46261815324 * 300.0),
                                places=10)
-        self.assertAlmostEqual(props['rho_ox'], 101325 * 31.998 / (8314.46261815324 * 100.0),
+        self.assertAlmostEqual(props['rho_ox'], 101325 * 31.998 / (8314.46261815324 * 300.0),
                                places=10)
 
 
@@ -517,6 +521,42 @@ class AdmissionTest(unittest.TestCase):
         freeze = text.split('freeze_source.sh', 1)[1].split('>', 1)[0]
         self.assertIn('metrics.py', freeze)
         self.assertIn('imports', text)
+
+    def test_inlet_temperature_outside_janaf_range_is_rejected(self):
+        """Negative control: job 125296683 ran a 100 K stream against Tlow = 200 K.
+
+        The solver accepted it, emitted 1.7e6 out-of-range warnings and wrote the cold half
+        of the domain at exactly 200.0 K - the thermo floor. The gate has to refuse the case
+        before blockMesh, naming the species, the face and the range it violates.
+        """
+        case = self.clone('cold-inlet')
+        path = case / '0' / 'T'
+        text = path.read_text()
+        # Write the cold stream the way the old generator did: 100 K on the oxidiser faces.
+        text = re.sub(r'List<scalar> %d \((.*?)\)' % self.ny,
+                      lambda m: 'List<scalar> %d (%s)' % (
+                          self.ny, ' '.join('100.0' if float(v) > 0 and i >= self.ny // 2
+                                            else v
+                                            for i, v in enumerate(m[1].split()))),
+                      text, flags=re.S)
+        path.write_text(text)
+        failures = self.A.admission(case, expected_inlet_faces=self.ny)
+        self.assertTrue(any('outside its JANAF range' in f and 'O2' in f for f in failures),
+                        failures)
+        self.assertLessEqual(len(failures), 6)
+        self.assertEqual(self.A.inlet_temperature_problems(self.case), [])
+
+    def test_generated_default_sits_inside_the_janaf_range(self):
+        ranges = self.A.thermo_ranges(self.case / 'constant')
+        self.assertEqual(sorted(ranges), ['CH4', 'N2', 'O2'])
+        receipt = json.loads(Path(str(self.case) + '.receipt.json').read_text())
+        for stream in ('fuel', 'oxidiser'):
+            temperature = receipt['streams'][stream]['temperature_K']
+            low, high = ranges[receipt['streams'][stream]['species']]
+            self.assertGreaterEqual(temperature, low, stream)
+            self.assertLessEqual(temperature, high, stream)
+        joined = ' '.join(receipt['deviations_from_registered_target'])
+        self.assertIn('JANAF table', joined)
 
     def test_wrong_inlet_patch_size_is_rejected(self):
         """Negative control: job 125291239 died on exactly this."""
