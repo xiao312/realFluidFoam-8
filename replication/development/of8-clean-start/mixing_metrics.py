@@ -16,7 +16,20 @@ The balance identities used here are stated rather than assumed:
 
   mass      d/dt sum(rho V)        =  F_in - F_out
   momentum  d/dt sum(rho u V)      =  (M_in - M_out) + (p_in A_in - p_out A_out)
+                                      with the *convective* flux M = rho u^2 A only
   energy    d/dt sum((rho(hs+hf+K) - p) V) = Fin_e - Fout_e  (+ conduction at the open ends)
+
+Batch r6/r12 subtracted the outlet pressure twice: the integrated outlet flux already carried
+rho u^2 + p per unit area and the balance then added p_in A_in - p_out A_out again. That made
+the reported momentum imbalance ~1.0 (an artefact, not physics): with M_in = M_out the
+residual reduced to -p_out A. The convective and pressure parts are now kept apart and the
+pressure is counted exactly once, which a uniform-flow regression in test_mixing.py pins.
+
+The inlet mass and momentum fluxes are the receipt's *nominal* ideal-gas values at the
+requested temperatures. When a requested temperature lies outside the JANAF range of the
+frozen mechanism (the 100 K oxidiser of job 125296683 against Tlow = 200 K) the enthalpy is
+extrapolated by the table and the summary says so, brackets the energy flux at the range
+limits, and no longer calls the inlet flux exact.
 
 `hs` is the sensible enthalpy from the committed JANAF table, `hf` the formation enthalpy
 (R/W * a6 of the NASA-7 low band), `K` the kinetic energy. The energy residual is therefore a
@@ -103,8 +116,19 @@ def conserved_integrals(case, time_name, names, table, geom):
         ux=ux, Y=ys)
 
 
+def momentum_net(outlet_momentum, inlet_momentum, pressure_in, pressure_out):
+    """Net x-momentum into the control volume, with the pressure counted exactly once.
+
+    `outlet_momentum` and `inlet_momentum` are convective fluxes rho u^2 A; `pressure_in`
+    and `pressure_out` are p A on the inlet and outlet patches. A uniform flow has equal
+    convective fluxes and equal p A, so this returns exactly 0.0; the earlier expression
+    returned -p_out A because the outlet momentum flux already contained p.
+    """
+    return (inlet_momentum - outlet_momentum) + (pressure_in - pressure_out)
+
+
 def patch_fluxes(state, names, table, geom):
-    """Inlet (exact, from the receipt profile) and outlet (from the saved fields) fluxes."""
+    """Inlet (nominal, from the receipt profile) and outlet (from the saved fields) fluxes."""
     nx, ny = geom['nx'], geom['ny']
     area = geom['dy'] * geom['depth']
     fuel_cells = sum(1 for iy in range(ny) if iy < ny // 2)
@@ -125,7 +149,7 @@ def patch_fluxes(state, names, table, geom):
         hs, hf = cell_enthalpy(names, table, T, ys, c)
         k = 0.5 * ux[c] * ux[c]
         m_out += rho[c] * ux[c] * area
-        q_out += (rho[c] * ux[c] * ux[c] + p[c]) * area
+        q_out += rho[c] * ux[c] * ux[c] * area          # convective momentum only
         e_out += rho[c] * ux[c] * (hs + hf + k) * area
         p_out += p[c] * area
     return dict(mass_in=m_in, mass_out=m_out, momentum_in=q_in, momentum_out=q_out,
@@ -133,25 +157,52 @@ def patch_fluxes(state, names, table, geom):
 
 
 def mixing_width(state, geom, species):
-    """10/90 % and 50 % crossings of the oxidiser mass fraction at the last x column."""
+    """Crossings of the oxidiser mass fraction at the last x column, in height.
+
+    The column is ordered by physical height (cell-centre height dy*(iy+0.5)); earlier this
+    function sorted the cells from the top down and then paired them with *ascending*
+    heights, so every reported height belonged to a different cell than the value at that
+    height, and an asymmetric profile could be reported mirrored. The crossed height is
+    interpolated in height order, the width is reported signed (y90 - y10) as well as
+    absolute, and the direction says whether the oxidiser mass fraction increases or
+    decreases with height, so a mirrored profile is visible instead of hiding inside an
+    absolute value. `y_at_*` are heights above the bottom wall in metres. The 10/90
+    crossings are searched from the top (oxidiser) down; the first crossing of each level
+    is reported, and `crossings` counts how many were found so a plateau is visible.
+    """
     nx, ny = geom['nx'], geom['ny']
     y = state['Y'][species]
-    col = [(iy, y[(nx - 1) + nx * iy]) for iy in range(ny)]
-    col.sort(key=lambda pair: -pair[0])  # from top (oxidiser) to bottom (fuel)
-    values = [v for _, v in col]
-    heights = [geom['dy'] * (i + 0.5) for i in range(ny)]
+    column = [(geom['dy'] * (iy + 0.5), y[(nx - 1) + nx * iy]) for iy in range(ny)]
+    column.sort(key=lambda pair: pair[0])            # ascending height, values follow
+    heights = [h for h, _ in column]
+    values = [v for _, v in column]
 
-    def crossing(target):
-        for i in range(len(values) - 1):
-            a, b = values[i], values[i + 1]
+    def crossing(target, top_down=True):
+        order = range(len(values) - 1, 0, -1) if top_down else range(len(values) - 1)
+        found = []
+        for i in order:
+            j = i - 1 if top_down else i + 1
+            a, b = values[i], values[j]
             if (a - target) * (b - target) <= 0 and a != b:
                 frac = (a - target) / (a - b)
-                return heights[i] + frac * (heights[i + 1] - heights[i])
-        return None
+                found.append(heights[i] + frac * (heights[j] - heights[i]))
+        return found
 
-    w90, w50, w10 = crossing(0.9), crossing(0.5), crossing(0.1)
+    found90 = crossing(0.9)
+    found50 = crossing(0.5)
+    found10 = crossing(0.1)
+    w90, w50, w10 = (found90[0] if found90 else None,
+                     found50[0] if found50 else None,
+                     found10[0] if found10 else None)
     width = None if (w90 is None or w10 is None) else abs(w90 - w10)
-    return dict(y_at_Y90=w90, y_at_Y50=w50, y_at_Y10=w10, width_10_90=width)
+    signed = None if (w90 is None or w10 is None) else w90 - w10
+    direction = None
+    if len(values) > 1:
+        direction = 'increasing' if values[-1] > values[0] else 'decreasing'
+    return dict(y_at_Y90=w90, y_at_Y50=w50, y_at_Y10=w10, width_10_90=width,
+                width_10_90_signed=signed, oxidiser_profile=direction,
+                crossings=dict(Y90=len(found90), Y50=len(found50), Y10=len(found10)),
+                column_ordered_by_height=True)
 
 
 def analyse(case, receipt, time_name):
@@ -222,11 +273,23 @@ def main():
     fuel_cells = mesh['ny'] // 2
     ox_cells = mesh['ny'] - fuel_cells
 
-    # exact inlet fluxes from the imposed profile (no field read, no interpolation)
+    # Nominal inlet fluxes from the imposed profile (no field read, no interpolation). The
+    # energy flux is evaluated with the frozen JANAF table at the requested temperature; when
+    # that temperature is outside the table's declared range the value is an extrapolation,
+    # so the summary records the range, brackets the energy flux at the range limits and
+    # stops calling the inlet flux exact.
     def stream_energy(rho, u, T, species, n_cells):
         k = 0.5 * u * u
         return rho * u * (sensible_enthalpy_MJ(table[species], T)
                           + formation_enthalpy_J(table[species]) + k) * n_cells * area
+
+    def stream_range(species):
+        entry = table[species]
+        return entry.get('tlow', 200.0), entry.get('thigh', 3500.0)
+
+    def clipped(T, species):
+        tlow, thigh = stream_range(species)
+        return min(max(T, tlow), thigh)
 
     fuel_species = streams['fuel']['species']
     ox_species = streams['oxidiser']['species']
@@ -234,6 +297,17 @@ def main():
     inlet_momentum = (rho_f * u_f * u_f * fuel_cells + rho_o * u_o * u_o * ox_cells) * area
     inlet_energy = (stream_energy(rho_f, u_f, T_f, fuel_species, fuel_cells)
                     + stream_energy(rho_o, u_o, T_o, ox_species, ox_cells))
+    inlet_energy_clipped = (
+        stream_energy(rho_f, u_f, clipped(T_f, fuel_species), fuel_species, fuel_cells)
+        + stream_energy(rho_o, u_o, clipped(T_o, ox_species), ox_species, ox_cells))
+    stream_range_info = {
+        'fuel': dict(requested_T_K=T_f, thermo_T_K=stream_range(fuel_species),
+                     evaluated_at_K=clipped(T_f, fuel_species)),
+        'oxidiser': dict(requested_T_K=T_o, thermo_T_K=stream_range(ox_species),
+                         evaluated_at_K=clipped(T_o, ox_species)),
+    }
+    out_of_range = [name for name, info in stream_range_info.items()
+                    if info['requested_T_K'] != info['evaluated_at_K']]
 
     geom = dict(nx=mesh['nx'], ny=mesh['ny'], cells=mesh['cells'], dx=mesh['dx'],
                 dy=mesh['dy'], depth=mesh['depth'], names=names, table=table,
@@ -263,8 +337,14 @@ def main():
             mass_accumulation=(b['mass'] - a['mass']) / dt,
             mass_net_in=b['fluxes']['mass_in'] - b['fluxes']['mass_out'],
             momentum_accumulation=(b['momentum'] - a['momentum']) / dt,
-            momentum_net_in=(b['fluxes']['momentum_in'] - b['fluxes']['momentum_out']
-                             + b['fluxes']['pressure_in'] - b['fluxes']['pressure_out']),
+            momentum_net_in=momentum_net(b['fluxes']['momentum_out'],
+                                         b['fluxes']['momentum_in'],
+                                         b['fluxes']['pressure_in'],
+                                         b['fluxes']['pressure_out']),
+            momentum_convective_out=b['fluxes']['momentum_out'],
+            momentum_convective_in=b['fluxes']['momentum_in'],
+            pressure_force_in=b['fluxes']['pressure_in'],
+            pressure_force_out=b['fluxes']['pressure_out'],
             energy_accumulation=(b['total_energy'] - a['total_energy']) / dt,
             energy_net_in=b['fluxes']['energy_in'] - b['fluxes']['energy_out'],
         )
@@ -287,7 +367,24 @@ def main():
         cells=geom['cells'], times=found, skipped_states=skipped,
         inlet_flux=dict(total_mass_flux_kg_per_s=inlet_mass,
                         total_momentum_flux_kg_m_per_s2=inlet_momentum,
-                        total_energy_flux_J_per_s=inlet_energy),
+                        total_energy_flux_J_per_s=inlet_energy,
+                        energy_flux_at_thermo_limits_J_per_s=inlet_energy_clipped,
+                        streams=stream_range_info,
+                        out_of_range_temperature=out_of_range,
+                        basis=('nominal frozen-profile values: mass and convective momentum '
+                               'from the receipt densities/velocities, energy from the JANAF '
+                               'table at the requested temperature')),
+        generation=dict(id='posthoc-corrected-r13',
+                        schema='of8-mixing-metrics-v2',
+                        changes=['outlet momentum flux is convective rho u^2 A only; the '
+                                 'pressure force is added once',
+                                 'mixing crossings are paired with their own cell heights '
+                                 'and reported signed',
+                                 'inlet energy flux flags out-of-range temperatures and is '
+                                 'bracketed at the table limits'],
+                        note=('supersedes the momentum and mixing numbers of the earlier '
+                              'of8-mixing-metrics-v1 file for the same saved fields; the '
+                              'solver output is unchanged and no case was rerun')),
         per_time=results, balances=balances,
         scope=('bounded 2-D cold-mixing diagnostic: mass/momentum/energy flux balance, '
                'positivity and species closure only; not a G2 replication'),

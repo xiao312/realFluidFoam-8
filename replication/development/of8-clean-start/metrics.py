@@ -47,7 +47,13 @@ def species_table(thermo_text):
                 raise ValueError('janaf band size ' + name)
             coeffs[band] = values
         tcommon = float(re.search(r'Tcommon\s+([0-9.eE+-]+)\s*;', body)[1])
-        table[name] = dict(weight=weight, coeffs=coeffs, tcommon=tcommon)
+        # Tlow/Thigh are the declared validity range of the JANAF fit. They are carried so a
+        # caller can tell an evaluated state from an extrapolated one (job 125296683 ran a
+        # 100 K oxidiser against Tlow = 200 K).
+        tlow = float(re.search(r'Tlow\s+([0-9.eE+-]+)\s*;', body)[1])
+        thigh = float(re.search(r'Thigh\s+([0-9.eE+-]+)\s*;', body)[1])
+        table[name] = dict(weight=weight, coeffs=coeffs, tcommon=tcommon,
+                           tlow=tlow, thigh=thigh)
     return names, table
 
 

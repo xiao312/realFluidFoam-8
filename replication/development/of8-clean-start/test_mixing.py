@@ -300,6 +300,94 @@ class FluxBalanceTest(unittest.TestCase):
         for balance in result['balances']:
             self.assertAlmostEqual(balance['mass_imbalance_fraction'], 0.0, places=10)
             self.assertAlmostEqual(balance['energy_imbalance_fraction'], 0.0, places=9)
+            # A state that is uniform along x has no accumulation and equal inlet/outlet
+            # fluxes, so the momentum residual must vanish. Batch r6/r12 never asserted
+            # this and shipped a ~1.0 momentum imbalance for a uniform flow because the
+            # outlet pressure was subtracted twice (job 125296683).
+            self.assertAlmostEqual(balance['momentum_net_in'], 0.0, places=12)
+            self.assertAlmostEqual(balance['momentum_imbalance_fraction'], 0.0, places=9)
+
+    def test_pressure_is_counted_once(self):
+        """A uniform flow with equal convective fluxes must balance exactly, not to -p A."""
+        self.assertEqual(mm.momentum_net(3.0, 3.0, 7.0, 7.0), 0.0)
+        self.assertAlmostEqual(mm.momentum_net(3.0, 3.0, 7.0, 9.0), -2.0, places=15)
+        # Doubling the outlet pressure force must not double it again in the residual.
+        self.assertAlmostEqual(mm.momentum_net(0.0, 0.0, 1.0, 3.0), -2.0, places=15)
+
+    def test_momentum_imbalance_detects_a_doubled_outlet_velocity(self):
+        case, receipt = self.generate(name='case5')
+        write_fields(case, receipt, '0')
+        write_fields(case, receipt, '2e-4', outlet_scale=2.0)
+        result = self.run_metrics(case, Path(str(case) + '.receipt.json'))
+        balance = result['balances'][0]
+        self.assertLess(balance['momentum_net_in'], 0.0)
+        self.assertGreater(abs(balance['momentum_imbalance_fraction']), 0.1)
+
+    def test_crossings_are_paired_with_their_own_heights(self):
+        """Mirroring a profile must flip the signed crossings, not shift their heights.
+
+        The earlier implementation sorted the column from the top down and then paired the
+        values with ascending cell heights, so an asymmetric profile was measured against
+        heights that belonged to the other end of the column. Two profiles that are exact
+        mirrors in height must give equal widths and opposite signed widths.
+        """
+        case, receipt = self.generate(name='mirror')
+        write_fields(case, receipt, '0')
+        write_fields(case, receipt, '2e-4')
+        result = self.run_metrics(case, Path(str(case) + '.receipt.json'))
+        mixing = result['per_time'][0]['mixing']
+        self.assertTrue(mixing['column_ordered_by_height'])
+        self.assertEqual(mixing['oxidiser_profile'], 'increasing')
+        self.assertGreater(mixing['y_at_Y90'], mixing['y_at_Y10'])
+        self.assertAlmostEqual(mixing['width_10_90_signed'], mixing['width_10_90'], places=12)
+        self.assertEqual(mixing['crossings'], dict(Y90=1, Y50=1, Y10=1))
+
+        geom = dict(nx=1, ny=8, dx=1.0, dy=1.0, depth=1.0)
+        ascending = dict(Y=dict(A=[0.0, 0.0, 0.2, 0.6, 1.0, 1.0, 1.0, 1.0]))
+        descending = dict(Y=dict(A=[1.0, 1.0, 1.0, 1.0, 0.6, 0.2, 0.0, 0.0]))
+        up = mm.mixing_width(ascending, geom, 'A')
+        down = mm.mixing_width(descending, geom, 'A')
+        self.assertEqual(up['oxidiser_profile'], 'increasing')
+        self.assertEqual(down['oxidiser_profile'], 'decreasing')
+        self.assertAlmostEqual(up['width_10_90'], down['width_10_90'], places=12)
+        self.assertAlmostEqual(up['width_10_90_signed'], -down['width_10_90_signed'], places=12)
+        # A mirrored profile reflects the crossings about the half-height plane y = ny*dy/2.
+        half = 0.5 * geom['ny'] * geom['dy']
+        self.assertAlmostEqual(down['y_at_Y90'], 2 * half - up['y_at_Y90'], places=12)
+        self.assertAlmostEqual(down['y_at_Y10'], 2 * half - up['y_at_Y10'], places=12)
+
+    def test_out_of_range_inlet_temperature_is_flagged(self):
+        """A 100 K inlet against Tlow = 200 K is an extrapolation, not an exact flux."""
+        case, receipt = self.generate(name='cold')
+        receipt['streams']['oxidiser']['temperature_K'] = 100.0
+        path = self.tmp / 'cold.receipt.json'
+        path.write_text(json.dumps(receipt))
+        write_fields(case, receipt, '0')
+        write_fields(case, receipt, '2e-4')
+        result = self.run_metrics(case, path)
+        inlet = result['inlet_flux']
+        self.assertIn('oxidiser', inlet['out_of_range_temperature'])
+        self.assertEqual(inlet['streams']['oxidiser']['evaluated_at_K'], 200.0)
+        self.assertNotEqual(inlet['total_energy_flux_J_per_s'],
+                            inlet['energy_flux_at_thermo_limits_J_per_s'])
+        self.assertIn('nominal', inlet['basis'])
+        self.assertEqual(result['generation']['id'], 'posthoc-corrected-r13')
+
+    def test_in_range_temperatures_are_not_flagged(self):
+        case, receipt = self.generate(name='warm')
+        # The generator's default is the registered G2 pair (100 K oxidiser against a
+        # 200 K table floor), so a warm control has to be set explicitly.
+        receipt['streams']['oxidiser']['temperature_K'] = 300.0
+        receipt['streams']['fuel']['temperature_K'] = 300.0
+        path = self.tmp / 'warm.receipt.json'
+        path.write_text(json.dumps(receipt))
+        write_fields(case, receipt, '0')
+        write_fields(case, receipt, '2e-4')
+        result = self.run_metrics(case, path)
+        self.assertEqual(result['inlet_flux']['out_of_range_temperature'], [])
+        self.assertAlmostEqual(result['inlet_flux']['total_energy_flux_J_per_s'],
+                               result['inlet_flux']['energy_flux_at_thermo_limits_J_per_s'],
+                               places=12)
 
     def test_imbalance_is_detected(self):
         case, receipt = self.generate(name='case2')
