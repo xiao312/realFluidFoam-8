@@ -197,12 +197,15 @@ def thermo_ranges(directory):
     a generated case are checked against this table instead of against a guess.
     """
     text = (Path(directory) / 'thermo.inputData_GRI').read_text()
-    declared = re.search(r'species\s+(\d+)\s*\((.*?)\)', text, re.S)
-    names = set(declared[2].split()) if declared else set()
     out = {}
-    for m in re.finditer(r'^\s*([A-Za-z][A-Za-z0-9()]*)\s*\n\s*\{', text, re.M):
-        if m[1] not in names:
-            # `thermodynamics { Tlow ... }` is a nested block, not a species block.
+    # Species blocks start in column zero; the nested `thermodynamics`, `elements` and
+    # `janaf` blocks are indented, so the anchor is what separates them. Do not filter on
+    # the declared species list instead: `species 53 (... CH2(S) ...)` closes at the
+    # parenthesis inside that name, and a list-derived filter then dropped every block
+    # after it. N2 and AR were silently absent from the ranges for that reason, so a
+    # nitrogen-diluted inlet was never checked against its own Tlow.
+    for m in re.finditer(r'^([A-Za-z][A-Za-z0-9()]*)[ \t]*\n\{[ \t]*\n', text, re.M):
+        if m[1] in ('thermodynamics', 'janaf', 'elements', 'specie'):
             continue
         block = text[m.end():]
         depth, endpos = 1, len(block)
@@ -220,6 +223,33 @@ def thermo_ranges(directory):
         if lo and hi:
             out[m[1]] = (float(lo[1]), float(hi[1]))
     return out
+
+
+def state_range_problems(directory, temperature, composition):
+    """Check a requested (T, composition) against the thermo table before any run.
+
+    `composition` maps species to a mole fraction and may be partial: only the species
+    with a positive fraction are checked. Every entry the table cannot cover is reported
+    with its own floor, so a clamped extrapolation is visible as a named species rather
+    than as a solver warning count.
+    """
+    ranges = thermo_ranges(directory)
+    problems = []
+    if not ranges:
+        return ['no janaf ranges readable from %s' % directory]
+    unknown = sorted(s for s, x in composition.items() if x > 0.0 and s not in ranges)
+    if unknown:
+        problems.append('species without a janaf range: %s' % unknown)
+    for name in sorted(composition):
+        fraction = composition[name]
+        if fraction <= 0.0 or name not in ranges:
+            continue
+        low, high = ranges[name]
+        if not (low <= temperature <= high):
+            side = 'below' if temperature < low else 'above'
+            problems.append('%s at %g K is %s its janaf range [%g, %g] K'
+                            % (name, temperature, side, low, high))
+    return problems
 
 
 def inlet_profile(case, field):

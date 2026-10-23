@@ -220,7 +220,11 @@ class EnergyAccountingTest(unittest.TestCase):
         thermo = ['FoamFile\n{\n}\n', 'species 3 (CH4 O2 N2);']
         for name, weight, hf in (('CH4', 16.043, -7.4892e7), ('O2', 31.998, 0.0),
                                  ('N2', 28.014, 0.0)):
+            # Tlow/Thigh are part of the declared state: species_table() carries them so a
+            # caller can tell an evaluated state from a clamped one, so the fixture declares
+            # a range that contains the 1500 K state it builds below.
             thermo.append('%s\n{\n    specie\n    {\n        molWeight %r;\n'
+                          '        Tlow 200;\n        Thigh 4000;\n'
                           '        Tcommon 1000;\n'
                           '        lowCpCoeffs (3.0 1e-3 0 0 0 %r 0);\n'
                           '        highCpCoeffs (3.0 1e-3 0 0 0 %r 0);\n    }\n}'
