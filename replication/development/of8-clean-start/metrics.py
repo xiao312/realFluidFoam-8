@@ -334,3 +334,42 @@ def main():
 
 if __name__ == '__main__':
     main()
+
+
+def read_energy_field(case, time_name, count):
+    """Read the solver's own conserved energy variable HE = thermo.he() [J/kg].
+
+    `createFields.H` declares HE as AUTO_WRITE, so every write carries it. Refusing to
+    read it made an earlier note claim the build exposes no energy field and made the
+    T -> he -> T inversion look like an independent check. Callers that report an energy
+    budget have to compare against this field.
+    """
+    path = Path(case) / time_name / 'HE'
+    if not path.exists():
+        raise FileNotFoundError('no solver energy field: ' + str(path))
+    return read_scalar(path, count)
+
+
+def energy_field_residual(case, time_name, count, weights, table, temperature,
+                          rel_tol=1e-5):
+    """Compare HE with sum_i Y_i hs_i(T) cell by cell.
+
+    Returns the worst relative residual over cells whose table enthalpy is not
+    negligible, plus the count of failing cells. A missing or inconsistent HE field is a
+    hard failure, not a warning: it means the solver's conserved variable and the
+    reported budget disagree.
+    """
+    he = read_energy_field(case, time_name, count)
+    worst, failing = 0.0, 0
+    for c in range(count):
+        hs = sum(y[c] * sensible_enthalpy_MJ(table[s], temperature[c])
+                 for y, s in weights)
+        scale = max(abs(v) for v in he)
+        if abs(hs) <= 1e-3 * scale:
+            continue
+        rel = abs(he[c] - hs) / abs(hs)
+        worst = max(worst, rel)
+        if rel > rel_tol:
+            failing += 1
+    return dict(cells=count, worst_rel_residual=worst, failing_cells=failing,
+                ok=(failing == 0 and worst <= rel_tol))

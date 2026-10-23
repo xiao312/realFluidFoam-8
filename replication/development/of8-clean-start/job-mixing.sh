@@ -18,6 +18,7 @@ RUN=${RUN:-/workspace/forge-out/runs/of8-mixing-v1}
 BUILD=${1:-/workspace/forge-out/runs/of8-build-v5}
 MECH=${MECH:-/workspace/forge-out/runs/of8-case-v1/case/constant}
 MODULE=${MODULE:-/workspace/science/replication/development/of8-clean-start}
+SRC_COMMIT=${SRC_COMMIT:-}
 NX=${NX:-80}
 NY=${NY:-40}
 END_TIME=${END_TIME:-2e-4}
@@ -51,6 +52,19 @@ COMMIT=$(export PATH=/workspace/.tooling/git-2.30.2/bin:$PATH; \
          git -C /workspace/science rev-parse HEAD 2>/dev/null || echo unrecorded)
 printf '%s\n' "$COMMIT" > "$RUN/source-commit.txt"
 log "source commit ${COMMIT:-unrecorded}"
+if [ -z "$SRC_COMMIT" ] || [ "$SRC_COMMIT" != "$COMMIT" ]; then
+    log "no matching SRC_COMMIT ($SRC_COMMIT) for HEAD $COMMIT; refusing to run unfrozen source"
+    printf 'FAILED source-not-frozen\n' > "$RUN/status.txt"; exit 1
+fi
+# Freeze the exact scripts this run executes, from the named commit, before anything runs.
+if ! bash "$MODULE/freeze_source.sh" "$RUN" "$SRC_COMMIT" prepare_mixing_case.py \
+        mixing_metrics.py admission.py freeze_source.sh job-mixing.sh \
+        > "$RUN/freeze.log" 2>&1; then
+    log "source freeze FAILED"; tail -5 "$RUN/freeze.log" >> "$LOG"
+    printf 'FAILED source-freeze\n' > "$RUN/status.txt"; exit 1
+fi
+log "frozen source $(grep -c . "$RUN/src/SHA256SUMS") lines in $RUN/src"
+FROZEN="$RUN/src"
 
 export LD_LIBRARY_PATH="$BUILD/lib:${LD_LIBRARY_PATH:-}"
 export PATH="$BUILD/bin:${PATH:-}"
@@ -62,7 +76,7 @@ case_dir="$RUN/mix-${NX}x${NY}"
 receipt="$case_dir.receipt.json"
 log "== mix-${NX}x${NY} =="
 rm -rf "$case_dir" "$receipt"
-if ! python3 -B "$MODULE/prepare_mixing_case.py" --out "$case_dir" --mechanism-source "$MECH" \
+if ! python3 -B "$FROZEN/prepare_mixing_case.py" --out "$case_dir" --mechanism-source "$MECH" \
         --source-commit "$COMMIT" --nx "$NX" --ny "$NY" --end-time "$END_TIME" \
         --delta-t "$DELTA_T" --write-interval "$WRITE_INTERVAL" \
         > "$RUN/mix.prepare.log" 2>&1; then
@@ -86,6 +100,14 @@ log "controls endTime=$end_time writeInterval=$write_interval expected_writes=$e
 if ! ( cd "$case_dir" && find 0 constant system -type f -print0 | sort -z | xargs -0 sha256sum ) \
         > "$RUN/mix.inputs.sha256" 2>>"$LOG"; then
     log "input hashing FAILED"; printf 'FAILED input-hashing\n' > "$RUN/status.txt"; exit 1
+fi
+# Static admission before any OpenFOAM binary runs. 125290253 died in blockMesh on an
+# unterminated entry, 125291239 and 125292279 died in the solver on a wrong inlet patch size
+# and on reaction species outside the thermo table; all three are decidable here.
+if ! python3 -B "$FROZEN/admission.py" --case "$case_dir" --inlet-faces "$NY" \
+        > "$RUN/mix.admission.log" 2>&1; then
+    log "static admission FAILED"; cat "$RUN/mix.admission.log" >> "$LOG"
+    printf 'FAILED admission\n' > "$RUN/status.txt"; exit 1
 fi
 if ! blockMesh -case "$case_dir" > "$RUN/mix.blockmesh.log" 2>&1; then
     log "blockMesh FAILED"; tail -20 "$RUN/mix.blockmesh.log" >> "$LOG"
@@ -125,7 +147,7 @@ printf 'case=mix-%sx%s rc_solve=%s last_time=%s end_marker=%s steps=%s writes=%s
 
 times=$(cd "$case_dir" && ls -d [0-9]* 2>/dev/null | sort -g | grep -vx '0' | tr '\n' ',' | sed 's/,$//')
 if [ -n "${times:-}" ]; then
-    python3 -B "$MODULE/mixing_metrics.py" --case "$case_dir" --receipt "$receipt" \
+    python3 -B "$FROZEN/mixing_metrics.py" --case "$case_dir" --receipt "$receipt" \
         --out "$RUN/mix.metrics.json" > "$RUN/mix.metrics.stdout" 2>&1 || overall=1
     python3 - "$RUN" <<'PY' > "$RUN/summary.txt" 2>&1 || overall=1
 import json, sys

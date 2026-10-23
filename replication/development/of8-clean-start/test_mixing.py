@@ -25,6 +25,7 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 
+import admission as adm  # noqa: E402
 import mixing_metrics as mm  # noqa: E402
 import prepare_mixing_case as pm  # noqa: E402
 
@@ -342,3 +343,61 @@ class FormationEnthalpyTest(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+
+
+class AdmissionTest(unittest.TestCase):
+    """The static gate must pass a coherent case and reject the three real failures."""
+
+    @classmethod
+    def setUpClass(cls):
+        import admission as A
+        cls.A = A
+        cls.tmp = tempfile.TemporaryDirectory()
+        base = Path(cls.tmp.name)
+        cfg = dict(pm.DEFAULTS)
+        cls.case = base / 'case'
+        mech = make_mechanism(base / 'mech')
+        pm.write_case(cls.case, cfg, mech, 'test')
+        cls.ny = cfg['ny']
+
+    @classmethod
+    def tearDownClass(cls):
+        cls.tmp.cleanup()
+
+    def clone(self, name):
+        import shutil
+        dst = Path(self.tmp.name) / name
+        shutil.copytree(self.case, dst)
+        return dst
+
+    def test_clean_case_passes(self):
+        self.assertEqual(self.A.admission(self.case, expected_inlet_faces=self.ny), [])
+
+    def test_full_gri_reaction_list_is_rejected(self):
+        """Negative control: job 125292279 died on exactly this."""
+        case = self.clone('gri')
+        full = Path('/workspace/forge-out/runs/of8-case-v1/case/constant/reactionsGRI')
+        if not full.exists():
+            self.skipTest('full GRI reaction file not staged here: %s' % full)
+        (case / 'constant' / 'reactionsGRI').write_bytes(full.read_bytes())
+        failures = self.A.admission(case, expected_inlet_faces=self.ny)
+        self.assertTrue(any('reaction species missing' in f for f in failures), failures)
+
+    def test_unterminated_entry_is_rejected(self):
+        """Negative control: job 125290253 died on exactly this."""
+        case = self.clone('unterminated')
+        path = case / 'system' / 'controlDict'
+        text = re.sub(r'deltaT(\s+)[0-9.eE+-]+;', r'deltaT\g<1>2e-07', path.read_text())
+        path.write_text(text)
+        failures = self.A.admission(case, expected_inlet_faces=self.ny)
+        self.assertTrue(any('controlDict' in f and 'not terminated' in f
+                            for f in failures), failures)
+
+    def test_wrong_inlet_patch_size_is_rejected(self):
+        """Negative control: job 125291239 died on exactly this."""
+        case = self.clone('patch')
+        path = case / '0' / 'T'
+        path.write_text(re.sub(r'List<scalar> %d' % self.ny, 'List<scalar> 3200',
+                               path.read_text()))
+        failures = self.A.admission(case, expected_inlet_faces=self.ny)
+        self.assertTrue(any('inlet patch' in f for f in failures), failures)

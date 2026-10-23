@@ -269,3 +269,53 @@ class EnergyAccountingTest(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main(verbosity=2)
+
+
+class EnergyFieldTest(unittest.TestCase):
+    """HE must be read from the solver, and a wrong or missing HE must fail."""
+
+    def setUp(self):
+        self.tmp = tempfile.TemporaryDirectory()
+        self.case = Path(self.tmp.name)
+        d = self.case / '2e-05'
+        d.mkdir(parents=True)
+        self.count = 4
+        names, table = M.species_table(THERMO.read_text())
+        self.table = table
+        self.species = ['CH4', 'O2', 'N2']
+        y = {'CH4': 0.055, 'O2': 0.22, 'N2': 0.725}
+        self.temps = [400.0, 700.0, 1000.0, 1300.0]
+        (d / 'T').write_text(flat('T', self.temps))
+        self.weights = []
+        for s in self.species:
+            (d / s).write_text(flat(s, [y[s]] * self.count))
+            self.weights.append(([y[s]] * self.count, s))
+        he = [sum(y[s] * M.sensible_enthalpy_MJ(table[s], t) for s in self.species)
+              for t in self.temps]
+        (d / 'HE').write_text(flat('HE', he))
+        self.he = he
+
+    def tearDown(self):
+        self.tmp.cleanup()
+
+    def test_consistent_field_passes(self):
+        r = M.energy_field_residual(self.case, '2e-05', self.count, self.weights,
+                                    self.table, self.temps)
+        self.assertTrue(r['ok'])
+        self.assertEqual(r['failing_cells'], 0)
+        self.assertLess(r['worst_rel_residual'], 1e-12)
+
+    def test_wrong_field_is_detected(self):
+        """Negative control: a 4 percent error in the energy field must not pass."""
+        bad = [h * 1.04 for h in self.he]
+        (self.case / '2e-05' / 'HE').write_text(flat('HE', bad))
+        r = M.energy_field_residual(self.case, '2e-05', self.count, self.weights,
+                                    self.table, self.temps)
+        self.assertFalse(r['ok'])
+        self.assertEqual(r['failing_cells'], self.count)
+        self.assertGreater(r['worst_rel_residual'], 0.03)
+
+    def test_missing_field_is_an_error_not_a_zero(self):
+        (self.case / '2e-05' / 'HE').unlink()
+        with self.assertRaises(FileNotFoundError):
+            M.read_energy_field(self.case, '2e-05', self.count)

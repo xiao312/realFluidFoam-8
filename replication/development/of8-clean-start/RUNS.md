@@ -357,3 +357,67 @@ target plots), density positivity, species closure, `Cp` against the JANAF polyn
 the L2 error against the shifted initial profile. `test_advection.py` (10 tests) checks the
 geometry, the periodicity, the time controls and that the metric recovers the exact answer
 on a synthetic pure shift: zero drift, `T` L2 1e-11 K.
+
+## Corrections after the 08:00 owner inspection (`run-audit`, 2026-10-23 08:30 CST)
+
+Read-only audit of retained fields, no rerun. Three earlier statements were wrong and are
+withdrawn here rather than edited out of the record above.
+
+**1. The solver does write its conserved energy variable.** `createFields.H` declares
+`AUTO_WRITE` `volScalarField HE(thermo.he())` and `realFluidReactingFoam.C` refreshes it
+every step, so `HE` is present in every written time directory of `of8-advection-v1` and
+`of8-energy-diag-v2`. `run-audit/audit3.py` compares the solver's `HE` with
+`sum_i Y_i hs_i(T)` from the same JANAF table the solver was built with:
+
+| case | writes | max cell `|HE-hs|/|hs|` | `rho*HE` vs `rho*hs` (relative) |
+| --- | --- | --- | --- |
+| advection nx2 | 0.005, 0.02 s | 8.96e-7 | 1.0e-6 |
+| energy caseA | 2.5e-6, 1e-5 s | 8.96e-7 | 1.0e-6 |
+| energy caseB | 2.5e-7, 1e-6 s | 8.96e-7 | 1.0e-6 |
+
+The `T -> he -> T` inversion reported above is therefore circular and is *not* an
+independent verification of anything; the residual `3.8e-16` only says the bisection
+inverts its own table. The statement that the build exposes no energy field is wrong.
+What survives is weaker and still useful: the integral `E = sum rho*(hs + hf - p/rho + |u|^2/2) V`
+computed from `T`, `Y`, `p`, `U` agrees with the same integral computed from the solver's
+own `HE` to about 1e-6 relative in all three cases, so the reported drifts are properties
+of the budget built from solver fields and not of the reconstruction. The drift itself
+(energy caseA `+5.50e-6`, advection nx2 `+6.87e-2` of `E` over the run) remains an open
+diagnostic: it is not established as a solver defect, a diffusion effect or a
+discretisation error.
+
+**2. The contact-advection cases do not test mesh refinement.** All three cases have 60
+cells over the same 0.6 m domain; `nx2/4/6` is the number of cells used to *represent the
+initial interface width*, not the cell count. The statement "3x interface refinement removes
+only ~25 percent of the pressure excursion ... so it is a property of the discretisation,
+not a resolution artefact" is withdrawn: interface-width refinement at fixed cell count says
+nothing about mesh convergence. The measured values stay as diagnostics (cold side 300 K ->
+348/376/438 K, pressure excursion 5.4-7.2 percent, `T` L2 0.275/0.241/0.239), and the run is
+described as a single-resolution, three-interface-width measurement.
+
+**3. The configured physical model is not pure advection, and the seam is a second
+interface.** `EEqn.H` keeps conduction (`laplacian(kappa,T)`) and species-enthalpy diffusion,
+`phi` on the periodic patch is shared between the first and last cell, and `p` is a
+thermodynamic pressure that the energy equation does not constrain in a closed box. A rigid
+temperature shift is an inviscid/advection reference solution only; it is not the exact
+solution of the model that was run. Thermal diffusion and the periodic seam both smooth the
+contact, so part of the observed cold-side heating is physical for this configuration. The
+remaining part (energy budget drift, momentum drift `-5.3e-3` to `-6.3e-3`, mass conserved to
+`8.96e-7`) is unresolved.
+
+**4. Real-fluid equations of state are compiled into this build.** The frozen source tree
+`runs/of8-build-v5/src-tree` contains `src/thermophysicalModels/specie/equationOfState/
+{PengRobinson,PengRobinsonGas,soaveRedlichKwong,...}` and
+`psiReactionThermo/psiReactionThermos.C` registers `forSRKchungTakaGases`,
+`forPRchungTakaGases`, `forSRKchungKineticGases`, `forPRchungKineticGases` and
+`forIdKineticGases`; `lib/libfluidThermophysicalModels.so` carries the `PengRobinson`
+symbols. The earlier "the frozen build has no real-fluid equation of state" claim is
+withdrawn. The *case* selected `hePsiThermo` + `perfectGas`/`janaf`, which is a dictionary
+choice, not a capability limit. What is still true: an ideal-gas density of 1000 kg/m3 at
+6 MPa is physically unsuitable for the dense oxygen state in `schmitt2020-fig-5`, and the
+`schmitt2020-fig-18-g2` deviations remain explicit.
+
+**5. Pressure entries are target-specific.** `5.61 MPa` belongs to the Müller
+flamelet/property targets and `5.59 MPa` to the Singla/Candel G2 targets; the two are not a
+transcription error and the earlier "reconcile 5.59 vs 5.61" note is withdrawn.
+
