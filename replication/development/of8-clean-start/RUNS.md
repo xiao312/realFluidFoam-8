@@ -500,7 +500,11 @@ normalisation is what produced the three-digit fractions. `mixing_metrics.py` no
 mass, momentum and energy, keeps `<name>_net_in_over_flux` so the reader sees how small the
 net is, and reports `<name>_imbalance_over_net` as `null` unless `|net_in| > 1e-9 * scale`.
 The three v7 numbers above stay in this record as reported; they are not comparable with the
-new normalisation and are superseded by it, not overwritten.
+new normalisation and are superseded by it, not overwritten. The v7 paragraph's own explanation
+("momentum imbalance ≈ 1 because the inlet and outlet pressure terms cancel to 1e-5 of their
+own size") is withdrawn: the residual *was* about 1e-5 of the pressure terms, and the ≈1 came
+from dividing that residual by a net of the same size - which is the defect described here,
+not a physical statement about the control volume.
 
 **3. What the baseline measures.** The same 80 x 40, 0.04 m x 0.02 m, 1000-step (2e-4 s),
 five-write case as v7, with `T` = 300 K on both streams, `u_fuel` = 10 m/s and `u_ox` set by
