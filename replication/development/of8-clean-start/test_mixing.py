@@ -269,6 +269,25 @@ class FluxBalanceTest(unittest.TestCase):
                                  '%s: boundary list has %d entries for a 4-face inlet'
                                  % (name, declared))
 
+    def test_reaction_list_is_empty_for_the_three_species_subset(self):
+        """A GRI reaction list cannot be carried into a 3-species subset.
+
+        Job 125292279 aborted parsing it: "Specie O not found in table". With CH4/O2/N2 no
+        elementary reaction is representable, so the case is inert by construction and the
+        receipt has to say so.
+        """
+        case, receipt = self.generate(name='inert', nx=8, ny=4)
+        text = (case / 'constant' / 'reactionsGRI').read_text()
+        self.assertIn('reactions ();', text)
+        self.assertNotIn('reaction "', text)
+        chemistry = (case / 'constant' / 'chemistryProperties').read_text()
+        self.assertIn('chemistry       off;', chemistry)
+        self.assertEqual(receipt['chemistry'], 'off')
+        notes = ' '.join(d.get('note', '') for d in receipt['frozen_inputs'])
+        self.assertIn('emptied', notes)
+        joined = ' '.join(receipt['deviations_from_registered_target'])
+        self.assertIn('no reaction', joined)
+
     def test_steady_state_balance_closes(self):
         case, receipt = self.generate()
         for t in ('0', '2e-4'):
@@ -299,7 +318,7 @@ class FluxBalanceTest(unittest.TestCase):
         self.assertAlmostEqual(receipt['inlet_flux']['oxidiser_mass_flux_kg_per_s']
                                / receipt['inlet_flux']['fuel_mass_flux_kg_per_s'],
                                44.4 / 143.1, places=9)
-        self.assertEqual(len(receipt['deviations_from_registered_target']), 3)
+        self.assertEqual(len(receipt['deviations_from_registered_target']), 4)
         self.assertIn('NOT a G2 replication', receipt['purpose'])
 
 

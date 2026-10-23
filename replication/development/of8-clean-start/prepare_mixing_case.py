@@ -204,13 +204,27 @@ def write_case(out, cfg, mechanism_source, source_commit):
         d.mkdir(parents=True, exist_ok=True)
 
     copied = []
-    for name in ('thermophysicalProperties', 'combustionProperties', 'momentumTransport',
-                 'reactionsGRI'):
+    for name in ('thermophysicalProperties', 'combustionProperties', 'momentumTransport'):
         src = mechanism_source / name
         if not src.exists():
             raise SystemExit('missing mechanism input %s' % src)
         (constant / name).write_bytes(src.read_bytes())
         copied.append(dict(name=name, sha256=sha256(src), bytes=src.stat().st_size))
+
+    # The GRI reaction list cannot be carried over: it references species (O, H, OH, CO2,
+    # H2O, ...) that the three-species subset does not contain, and OpenFOAM aborts while
+    # parsing it ("Specie O not found in table"). Job 125292279 died exactly there. With
+    # CH4/O2/N2 only, no elementary reaction is representable at all, so this case is
+    # generated with an empty reaction list and chemistry off, and the receipt says so.
+    (constant / 'reactionsGRI').write_text(
+        FOAMFILE.format(cls='dictionary', obj='reactionsGRI') +
+        '// intentionally empty: the 3-species subset cannot represent a GRI reaction\n'
+        'reactions ();\n')
+    copied.append(dict(name='reactionsGRI',
+                       sha256=sha256(constant / 'reactionsGRI'),
+                       source_sha256=sha256(mechanism_source / 'reactionsGRI'),
+                       note=('emptied: GRI reactions reference species outside the '
+                             '3-species subset; this case is non-reacting by construction')))
 
     source_thermo = (mechanism_source / 'thermo.inputData_GRI')
     source_text = source_thermo.read_text()
@@ -357,6 +371,9 @@ def write_case(out, cfg, mechanism_source, source_commit):
             'its 90.19 K normal boiling point and is not a gas',
             'no OH or OH* observable, no mean-field or optical comparison: the registered '
             'schmitt2020-fig-18-g2 observable needs the real-fluid LES this build cannot run',
+            'no reaction: GRI reactions reference species outside the 3-species subset, so the '
+            'reaction list is empty and chemistry is off. This is a cold-mixing (inert) '
+            'diagnostic of the inlet fluxes, mixing width and conservation, not a flame',
         ],
         controls=dict(startFrom='startTime', startTime=0.0, stopAt='endTime',
                       endTime=cfg['end_time'], deltaT=cfg['delta_t'],
