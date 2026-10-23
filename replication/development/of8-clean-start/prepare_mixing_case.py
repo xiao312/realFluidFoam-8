@@ -216,10 +216,14 @@ def write_case(out, cfg, mechanism_source, source_commit):
     # parsing it ("Specie O not found in table"). Job 125292279 died exactly there. With
     # CH4/O2/N2 only, no elementary reaction is representable at all, so this case is
     # generated with an empty reaction list and chemistry off, and the receipt says so.
+    # OpenFOAM's ReactionList does dict.subDict("reactions"), so `reactions` must be a
+    # dictionary block even when it is empty. Writing `reactions ();` is a primitive token
+    # list and aborts with "Attempt to return primitive entry ITstream ... as a
+    # sub-dictionary" (job 125295010).
     (constant / 'reactionsGRI').write_text(
         FOAMFILE.format(cls='dictionary', obj='reactionsGRI') +
         '// intentionally empty: the 3-species subset cannot represent a GRI reaction\n'
-        'reactions ();\n')
+        'reactions\n{\n}\n')
     copied.append(dict(name='reactionsGRI',
                        sha256=sha256(constant / 'reactionsGRI'),
                        source_sha256=sha256(mechanism_source / 'reactionsGRI'),

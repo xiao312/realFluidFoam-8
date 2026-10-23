@@ -168,6 +168,26 @@ def patch_sizes(case):
     return out
 
 
+def reaction_list_form(directory):
+    """`reactions` must be a dictionary block: ReactionList calls dict.subDict("reactions").
+
+    Writing `reactions ();` (or any token list) produces a primitive entry, and the solver
+    aborts while constructing the chemistry model with "Attempt to return primitive entry
+    ITstream ... as a sub-dictionary" — job 125295010 failed exactly there.
+    """
+    problems = []
+    for path in sorted(Path(directory).glob('*')):
+        if not path.is_file():
+            continue
+        text = path.read_text(errors='replace')
+        for m in re.finditer(r'^[ \t]*reactions[ \t]*\(', text, re.M):
+            line = text[:m.start()].count('\n') + 1
+            problems.append('%s:%d writes `reactions` as a token list; OpenFOAM requires a '
+                            'dictionary block `reactions { ... }` (job 125295010 aborted here)'
+                            % (path.name, line))
+    return problems
+
+
 def admission(case, expected_inlet_faces=None):
     """Return a list of hard failures; empty means the case passed static admission."""
     failures = []
@@ -192,6 +212,7 @@ def admission(case, expected_inlet_faces=None):
     if missing:
         failures.append('reaction species missing from the thermophysical table: %s'
                         % sorted(missing))
+    failures.extend(reaction_list_form(case / 'constant'))
     for s in sorted(names):
         if not (case / '0' / s).exists():
             failures.append('no initial field 0/%s' % s)

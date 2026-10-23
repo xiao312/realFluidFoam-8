@@ -279,7 +279,9 @@ class FluxBalanceTest(unittest.TestCase):
         """
         case, receipt = self.generate(name='inert', nx=8, ny=4)
         text = (case / 'constant' / 'reactionsGRI').read_text()
-        self.assertIn('reactions ();', text)
+        # An empty dictionary block, not `reactions ();`: the latter is a primitive entry and
+        # aborts the chemistry-model construction (job 125295010).
+        self.assertRegex(text, r'reactions\s*\{\s*\}')
         self.assertNotIn('reaction "', text)
         chemistry = (case / 'constant' / 'chemistryProperties').read_text()
         self.assertIn('chemistry       off;', chemistry)
@@ -392,6 +394,22 @@ class AdmissionTest(unittest.TestCase):
         failures = self.A.admission(case, expected_inlet_faces=self.ny)
         self.assertTrue(any('controlDict' in f and 'not terminated' in f
                             for f in failures), failures)
+
+    def test_token_list_reactions_are_rejected(self):
+        """Negative control: job 125295010 died on exactly this.
+
+        `reactions ();` is a primitive entry; ReactionList calls dict.subDict("reactions").
+        """
+        case = self.clone('tokenlist')
+        path = case / 'constant' / 'reactionsGRI'
+        path.write_text(re.sub(r'reactions\s*\{\s*\}', 'reactions ();', path.read_text()))
+        failures = self.A.admission(case, expected_inlet_faces=self.ny)
+        self.assertTrue(any('token list' in f for f in failures), failures)
+
+    def test_generated_reactions_entry_is_a_dictionary_block(self):
+        text = (self.case / 'constant' / 'reactionsGRI').read_text()
+        self.assertRegex(text, r'reactions\s*\{\s*\}')
+        self.assertNotRegex(text, r'reactions\s*\(')
 
     def test_wrong_inlet_patch_size_is_rejected(self):
         """Negative control: job 125291239 died on exactly this."""
