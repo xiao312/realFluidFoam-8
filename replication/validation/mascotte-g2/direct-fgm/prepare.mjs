@@ -4,6 +4,7 @@ import { fileURLToPath } from 'node:url';
 import { spawnSync } from 'node:child_process';
 import { loadPhysicalTable, thermoState } from '../../fgm-of8/direct-verification/physical-input.mjs';
 import { inspectMesh, copyMesh } from './mesh-input.mjs';
+import { inspectCoarseMesh, copyCoarseMesh } from '../coarse-wedge/mesh.mjs';
 import { loadRunControls, decompositionDictionary, functionObjects } from './observations.mjs';
 import { realFluidInput, initializationInput, ignitionDictionary } from './cold-input.mjs';
 import { solverSchemes } from '../../fgm-of8/direct-verification/schemes.mjs';
@@ -11,12 +12,14 @@ import { nasaInversionPolicy } from '../../fgm-of8/direct-verification/thermo-po
 
 const options = {}, args = process.argv.slice(2);
 for (let i = 0; i < args.length; i += 2) {
-  if (!['--table-dir', '--metadata', '--mesh-dir', '--out', '--bounds', '--end-time', '--ranks', '--observations', '--decomposition', '--thermo-mode', '--thermo-dir', '--initialization', '--chemistry', '--initial-dt', '--max-dt', '--nasa-extrapolation'].includes(args[i]) || !args[i + 1]) {
-    throw new Error('Use --table-dir DIR --metadata FILE --mesh-dir DIR [--out NEW_CASE] [--bounds error|clamp] [--end-time S] [--ranks N] [--observations FILE] [--decomposition FILE] [--thermo-mode warm-ideal|cold-real-fluid --thermo-dir DIR] [--initialization FILE]');
+  if (!['--table-dir', '--metadata', '--mesh-dir', '--mesh-mode', '--out', '--bounds', '--end-time', '--ranks', '--observations', '--decomposition', '--thermo-mode', '--thermo-dir', '--initialization', '--chemistry', '--initial-dt', '--max-dt', '--nasa-extrapolation'].includes(args[i]) || !args[i + 1]) {
+    throw new Error('Use --table-dir DIR --metadata FILE --mesh-dir DIR [--mesh-mode registered-200622|coarse-wedge-10000-v1] [--out NEW_CASE] [--bounds error|clamp] [--end-time S] [--ranks N] [--observations FILE] [--decomposition FILE] [--thermo-mode warm-ideal|cold-real-fluid --thermo-dir DIR] [--initialization FILE]');
   }
   options[args[i].slice(2)] = args[i + 1];
 }
 for (const key of ['table-dir', 'metadata', 'mesh-dir']) if (!options[key]) throw new Error(`Missing --${key}`);
+const meshMode = options['mesh-mode'] ?? 'registered-200622';
+if (!['registered-200622', 'coarse-wedge-10000-v1'].includes(meshMode)) throw new Error('Use --mesh-mode registered-200622|coarse-wedge-10000-v1');
 const bounds = options.bounds ?? 'error', endTime = Number(options['end-time'] ?? 2e-5);
 const ranks = Number(options.ranks ?? 2);
 if (!['error', 'clamp'].includes(bounds) || !(endTime > 0 && endTime <= 0.1) ||
@@ -35,7 +38,10 @@ if (realFluid && options['nasa-extrapolation']) throw new Error('Cold input alre
 const nasaPolicy = realFluid ? null : nasaInversionPolicy(input.metadata, options['nasa-extrapolation']);
 const initialization = await initializationInput(options.initialization, input);
 if (!realFluid && initialization.config.mode === 'localized-covered') throw new Error('Localized preparation currently requires the full-runtime Ha initialization path');
-const mesh = await inspectMesh(resolve(options['mesh-dir']));
+const coarseMesh = meshMode === 'coarse-wedge-10000-v1';
+const mesh = await (coarseMesh ? inspectCoarseMesh : inspectMesh)(resolve(options['mesh-dir']));
+const axisBoundaryType = coarseMesh ? 'empty' : 'symmetry';
+if (coarseMesh) controls.observations.axialCoordinate = 'x from explicit coarse co-planar inlet at 0 m; separate diagnostic, not registered/paper injector geometry';
 const pressure = input.receipt.case.pressure_pa;
 if (!(pressure > 0 && Number.isFinite(pressure))) throw new Error('Missing physical table pressure');
 const names = input.metadata.species.map(s => s.name);
@@ -56,7 +62,7 @@ for (const [patch, state] of Object.entries(streams)) {
   state.meanVelocity_m_s = state.massFlow_kg_s / (state.density * mesh.patches[patch].area);
 }
 const slowerInlet = Math.min(...Object.values(streams).map(s => s.meanVelocity_m_s));
-const plan = { schema: 'forge-direct-warm-g2-fgm-v1', startTime: 0, endTime, pressure, ranks,
+const plan = { schema: 'forge-direct-warm-g2-fgm-v1', startTime: 0, endTime, pressure, ranks, meshMode,
   timeControls: { initialDt_s: initialDt, maxDt_s: maxDt, maxCo: 0.4 },
   energyForm: 'absoluteEnthalpy', chemistry, boundsPolicy: bounds, initial, streams, mesh,
   thermodynamics: realFluid?.record ?? { mode: 'warm-ideal', requiresRuntimeHaInitialization: false, nasaPolicy }, initialization,
@@ -66,7 +72,7 @@ const plan = { schema: 'forge-direct-warm-g2-fgm-v1', startTime: 0, endTime, pre
   inputHashes: input.inputHashes, sourceTableCase: input.receipt.case,
   approximations: [...(realFluid ? ['PR/SRK with explicitly declared NASA extrapolation', 'fixed-pressure source table without enthalpy coordinate']
     : ['warm ideal-gas thermo', 'constant viscosity and Prandtl number']), 'unity Lewis diffusion',
-    'laminar resolved diagnostic', 'retained wedge geometry differs from paper',
+    'laminar resolved diagnostic', coarseMesh ? 'separate coarse co-planar wedge; upstream ducts and paper lip omitted' : 'retained wedge geometry differs from paper',
     initialization.interpretation, 'early transient, not steady morphology'],
   convectiveTimes_s: { axial50mm: 0.05 / slowerInlet, chamber200mm: 0.2 / slowerInlet,
     interpretation: realFluid ? 'Ideal-density placeholder estimate only. Use measured ha-initialization-boundaries.csv densities before estimating physical residence times.'
@@ -90,13 +96,13 @@ if (realFluid) {
   if (result.status !== 0) throw new Error(result.stderr || result.stdout || 'Thermo export failed');
   await copyFile(`${out}/thermo-input/thermophysicalProperties`, `${out}/constant/thermophysicalProperties`);
 }
-await copyMesh(resolve(options['mesh-dir']), out);
+await (coarseMesh ? copyCoarseMesh : copyMesh)(resolve(options['mesh-dir']), out);
 await put('constant/physical.tbl', input.raw);
 const scalarBoundary = (fuel, oxygen, initialValue) => `boundaryField {
  geom { type zeroGradient; } slipwalls { type zeroGradient; } noslipwalls { type zeroGradient; }
  ch4inlet { type fixedValue; value uniform ${fuel}; }
  loxinlet { type fixedValue; value uniform ${oxygen}; }
- axisymmetric { type symmetry; }
+ axisymmetric { type ${axisBoundaryType}; }
  outlet { type inletOutlet; inletValue uniform ${initialValue}; value uniform ${initialValue}; }
  planeMinus { type wedge; } planePlus { type wedge; }
 }\n`;
@@ -115,7 +121,7 @@ await put('0/p', header('p', 'volScalarField') + `dimensions [1 -1 -2 0 0 0 0];
 internalField uniform ${pressure};
 boundaryField {
  geom { type zeroGradient; } slipwalls { type zeroGradient; } noslipwalls { type zeroGradient; }
- ch4inlet { type zeroGradient; } loxinlet { type zeroGradient; } axisymmetric { type symmetry; }
+ ch4inlet { type zeroGradient; } loxinlet { type zeroGradient; } axisymmetric { type ${axisBoundaryType}; }
  outlet { type fixedValue; value uniform ${pressure}; }
  planeMinus { type wedge; } planePlus { type wedge; }
 }\n`);
@@ -126,7 +132,7 @@ await put('0/U', header('U', 'volVectorField') + `dimensions [0 1 -1 0 0 0 0];
 internalField uniform (0 0 0);
 boundaryField { geom { type noSlip; } slipwalls { type slip; } noslipwalls { type noSlip; }
  ${velocityInlet('ch4inlet')} ${velocityInlet('loxinlet')}
- axisymmetric { type symmetry; } outlet { type pressureInletOutletVelocity; value uniform (0 0 0); }
+ axisymmetric { type ${axisBoundaryType}; } outlet { type pressureInletOutletVelocity; value uniform (0 0 0); }
  planeMinus { type wedge; } planePlus { type wedge; }
 }\n`);
 await put('constant/momentumTransport', header('momentumTransport') + 'simulationType laminar;\n');

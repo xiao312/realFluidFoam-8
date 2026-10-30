@@ -40,6 +40,14 @@ flowchart LR
   G2 --> Compare
 ```
 
+`validation/mascotte-g2/coarse-wedge` creates a fixed co-planar blockMesh recipe
+and qualifies actual generated ASCII mesh bytes and mesh-tool receipts. It
+depends only on Node built-ins and, for execution, OF8 blockMesh/checkMesh through
+an admitted allocation. `direct-fgm/prepare.mjs` consumes the resulting asset
+only with an explicit coarse mesh mode. The canonical mesh loader and identity
+remain unchanged; the coarse diagnostic has no dependency on canonical mesh
+bytes and does not constitute paper geometry or mesh-convergence qualification.
+
 `development/liang-kinetics` consumes explicitly identified author mechanisms
 and the pinned Cantera 3.2 SDK for Figure 8(b)'s ideal methane controls. It has
 no SRK or OpenFOAM dependency in this initial stage. Input hashes and the

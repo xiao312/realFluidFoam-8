@@ -24,6 +24,14 @@ projecting its area onto x or requiring identical normals on very small faces.
 prints the read-only plan. Add `--out NEW_CASE` to write. Optional `--bounds
 clamp` explicitly permits counted lookup clipping for diagnostic exploration;
 the default is strict `error`. Optional `--end-time SECONDS` defaults to 20 us.
+The mesh default remains `--mesh-mode registered-200622`, with the unchanged
+canonical manifest/hash parser. Explicit `--mesh-mode coarse-wedge-10000-v1`
+selects only a separately qualified asset from `../coarse-wedge`. That co-planar
+10000-cell diagnostic omits upstream ducts and the detailed injector lip. It
+cannot be labelled a coarsening of the original mesh or a matched paper mesh.
+Its axis is a zero-face `empty` patch; canonical axis fields retain `symmetry`.
+The selected mesh identity, measured areas and geometry limitation enter the
+case manifest and all source controls remain unchanged.
 `--ranks N` sets the matching decomposition (default 2); scheduler resources must
 be admitted for that same count.
 `--initial-dt SECONDS` and `--max-dt SECONDS` optionally set the initial and
