@@ -56,7 +56,7 @@ def integrate(axis, rates, rho, initial, duration, rtol):
                          rtol=rtol, atol=rtol*span*1e-2, max_step=duration/200,
                          dense_output=True, events=(lower, upper))
     accepted = solution.y[0]
-    complete = solution.success and solution.status == 0 and solution.t[-1] == duration
+    complete = bool(solution.success and solution.status == 0 and solution.t[-1] == duration)
     covered = bool(np.all(accepted >= axis[0]) and np.all(accepted <= axis[-1]))
     record = {'rtol': rtol, 'atol': rtol*span*1e-2, 'success': bool(solution.success),
               'complete': complete, 'acceptedStatesCovered': covered,
