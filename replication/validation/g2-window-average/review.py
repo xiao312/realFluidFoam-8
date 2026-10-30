@@ -8,6 +8,7 @@ import os
 from pathlib import Path
 import shutil
 import sys
+from inlet_scale import inlet_scale
 
 HERE=Path(__file__).resolve().parent
 sys.path.insert(0,str(HERE.parent/'g2-review'))
@@ -30,6 +31,7 @@ def main():
     parser.add_argument('--x-origin-m',type=float,required=True)
     parser.add_argument('--origin-note',required=True)
     parser.add_argument('--weighting',choices=['reynolds','favre'],default='reynolds')
+    parser.add_argument('--inlet-audit-case',type=Path)
     parser.add_argument('--label',default='Provisional saved-sample finite-window statistics')
     parser.add_argument('--apply',action='store_true')
     args=parser.parse_args()
@@ -47,13 +49,15 @@ def main():
     sharma,original_sharma=shared.paper(args.sharma_reference,args.sharma_pdf)
     for path in [args.sharma_reference,args.sharma_pdf]:hashes[str(path.resolve())]=sha256(path)
     groups=[{**group,'values':read_csv(args.statistics/group['output'])} for group in manifest['groups'] if 'output' in group]
+    velocity_scale=inlet_scale(args.inlet_audit_case,manifest)
+    hashes.update(velocity_scale['inputHashes'])
     mean,rms=('Mean','RMS') if args.weighting=='reynolds' else ('FavreMean','FavreRMS')
     for group in groups:
         if 'T'+mean not in group['values']:raise ValueError('Requested weighting unavailable in '+group['key'])
     plan={'schema':'g2-window-paper-review/v1','label':args.label,'weighting':args.weighting,
         'requestedWindow_s':manifest['requestedWindow_s'],'groups':[g['key'] for g in groups],
         'velocityComparison':{'component':'U_0 (Cartesian x component)','units':'m/s',
-            'normalization':'unavailable-no-executed-inlet-scale-consumed',
+            'normalization':velocity_scale,
             'planningPlaceholderUsed':False,'referenceDigitizationAvailable':False},
         'inputHashes':hashes,'scientificAcceptance':False,'statisticalConvergenceEstablished':False}
     if not args.apply:print(json.dumps(plan,indent=2));return
@@ -105,6 +109,21 @@ def main():
                 fig.text(.12,.04,'No inferred u0 or d normalization. '+radial_note,fontsize=8)
                 panels.append({'name':save(fig,args.out,'schmitt-velocity-window'),'title':'Schmitt axial velocity companion',
                     'reference':'schmitt2020-fig-21','meaning':note+'. Dimensional velocity, not matched paper normalization. '+inlet_note})
+                if velocity_scale['status']=='available-initialized-state-inference':
+                    u0=velocity_scale['velocity_m_s'];diameter=velocity_scale['diameter_m']
+                    fig,ax=plt.subplots(figsize=(7.5,5.5));fig.subplots_adjust(left=.12,right=.97,top=.81,bottom=.26)
+                    x,y=line_with_gaps((values['x']-args.x_origin_m)/diameter,values['U_0'+mean]/u0,.1998/399/diameter)
+                    ax.plot(x,y,color='#553488',lw=2,label='Our provisional '+args.weighting+' mean')
+                    ax.axhline(0,color='#777777',lw=.7)
+                    ax.set(xlabel='Axial distance / measured O2 diameter',ylabel='Axial mean velocity / initialized O2 bulk speed',
+                        title='Schmitt Fig. 21(a) | declared inlet-scale companion',xlim=(0,.2/diameter))
+                    ax.grid(alpha=.18);ax.legend(fontsize=9)
+                    fig.text(.12,.14,note,fontsize=9)
+                    fig.text(.12,.09,f'Our inferred bulk speed={u0:.9g} m/s; measured d={diameter*1000:.9g} mm.',fontsize=8)
+                    fig.text(.12,.04,'Paper u0 identification is an inference. No digitized paper error or statistical convergence.',fontsize=8)
+                    panels.append({'name':save(fig,args.out,'schmitt-velocity-normalized-window'),
+                        'title':'Schmitt velocity with declared initialized inlet scales','reference':'schmitt2020-fig-21',
+                        'meaning':note+'. '+velocity_scale['definition']+'. '+velocity_scale['paperInterpretation']+'. '+inlet_note})
             fig,ax=plt.subplots(figsize=(7.5,5.5));fig.subplots_adjust(left=.12,right=.97,top=.83,bottom=.23)
             for key,color,marker in [('fine','#c25932','s'),('finer','#3164af','o')]:
                 points=np.asarray(sharma['series'][key]['points']);x,y=line_with_gaps(points[:,0],points[:,1],sharma['reading_uncertainty']['x_one_pixel_m'])
@@ -152,7 +171,7 @@ def main():
             caption=shared.CAPTION if reference=='sharma4b' else targets['targets'][reference]['original_caption']
             page+=f'<div><img src="original-{reference}.png"><p>{esc(caption)}</p><a href="#ref-{reference}">Reference</a></div></div>'
         page+='</section>'
-    page+='<section><h2>Coverage and unavailable comparisons</h2><p>Schmitt Fig. 21 panels are provisional companions only: no reliable separated G2 reference curve or matched u0/d normalization is supplied. Velocity appears only when actual U_0 samples are present; the case plan ideal-gas inlet speed is never used. '+esc(radial_note+' '+inlet_note)+' Ground-state OH is not OH* emission. No optical proxy is calculated from mean fields.</p><pre>'
+    page+='<section><h2>Coverage and unavailable comparisons</h2><p>Schmitt Fig. 21 panels are provisional companions only: no reliable separated G2 reference curve is supplied. Any normalized companion uses our explicit initialized-inlet scales, with the identification of paper u0 labelled as an inference. Velocity appears only when actual U_0 samples are present; the case plan ideal-gas inlet speed is never used. '+esc(radial_note+' '+inlet_note)+' Ground-state OH is not OH* emission. No optical proxy is calculated from mean fields.</p><pre>'
     page+=esc(json.dumps([{k:v for k,v in group.items() if k not in ['times_s','fields']} for group in manifest['groups']],indent=2))+'</pre></section><section id="references"><h2>Original captions and references</h2>'
     all_refs={**targets['targets'],'sharma4b':{'paper':{'title':shared.PAPER,'url':shared.URL},'original_caption':shared.CAPTION}}
     for key,target in all_refs.items():
@@ -160,7 +179,7 @@ def main():
         page+=' · '.join(f'<a href="#{p["name"]}">Return: {esc(p["title"])}</a>' for p in panels if p['reference']==key)+'</section>'
     page+='<p><a href="receipt.json">Exact provenance and artifact hashes</a></p></section>'
     (args.out/'index.html').write_text(page,encoding='utf8')
-    dependencies=[Path(__file__),HERE.parent/'g2-review/inputs.py',HERE.parent/'g2-review/plots.py',HERE.parent/'g2-review/review.py',HERE.parent/'g2-paper-review/references.py']
+    dependencies=[Path(__file__),HERE/'inlet_scale.py',HERE.parent/'g2-review/inputs.py',HERE.parent/'g2-review/plots.py',HERE.parent/'g2-review/review.py',HERE.parent/'g2-paper-review/references.py']
     result={**plan,'statisticsManifest':manifest,'panels':panels,'sourceHashes':{str(p.relative_to(HERE.parent)):sha256(p) for p in dependencies},
             'outputHashes':{p.name:sha256(p) for p in args.out.iterdir() if p.is_file()}}
     (args.out/'receipt.json').write_text(json.dumps(result,indent=2)+'\n',encoding='utf8')

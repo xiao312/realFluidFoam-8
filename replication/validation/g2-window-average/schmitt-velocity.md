@@ -28,9 +28,13 @@ unchanged original figure. A later normalized companion must bind the actual
 executed inlet audit and measured mesh diameter, with the interpretation of
 paper u0 labelled as an inference. The current direct-g2-input stream velocity
 is explicitly an ideal-gas planning placeholder; it cannot substitute for that
-audit. This module therefore records normalization as unavailable, rather than
-silently using that value. No digitized paper error, statistical convergence,
-or exact case match is asserted.
+audit. The optional inlet-audit consumer binds all rank CSVs to the actual
+initialization receipt and verifies its case input and job. It derives a
+uniform bulk velocity from configured mass flow divided by measured rho*area,
+then uses twice the measured O2 patch radius for d. Its label states that the
+identification of paper u0 with this O2 bulk scale is an inference. Missing
+audits leave normalization unavailable; the placeholder is never substituted.
+No digitized paper error, statistical convergence, or exact case match is asserted.
 
 Sampling implementation: the official OpenFOAM-8
 [csvSetWriter.C](https://github.com/OpenFOAM/OpenFOAM-8/blob/master/src/fileFormats/sampledSetWriters/csv/csvSetWriter.C)

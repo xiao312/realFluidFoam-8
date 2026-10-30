@@ -64,10 +64,18 @@ so Favre velocity uses actual co-located rho. Output names include `U_0Mean`,
 old scalar-only samples. The current source treats a missing vector component
 in one time slice as a field-set mismatch, not permission to fill it.
 
-The velocity panel is dimensional. Normalized velocity remains unavailable
-without an actual initialization boundary witness; the case plan's ideal-gas
-placeholder speed is never used. A future normalized companion must bind its
-executed inlet audit and measured mesh diameter explicitly. See
+The primary velocity panel is dimensional. Optional `--inlet-audit-case CASE`
+also enables a normalized companion from `cold-initialization.json` and all
+receipt-bound `processorN/ha-initialization-boundaries.csv` files. A serial case
+uses the root boundary CSV only if the receipt includes its hash (older serial
+receipts do not, so that companion remains unavailable). The receipt binds the same case input and job
+as these statistics; all ranks, CSV hashes, patch area and positive finite
+density are checked. The derived uniform bulk speed is configured inlet mass
+flow divided by the measured sum of rho*area, and d is twice the measured O2
+patch radius. This is an initialized-state bulk-speed inference, not directly
+sampled velocity or proof of the paper's u0 definition. Missing audits produce
+an explicit unavailable companion; corrupt or mismatched supplied evidence
+fails. The case plan's ideal-gas placeholder speed is never used. See
 [Schmitt velocity evidence](schmitt-velocity.md). The paper uses Reynolds
 statistics; selecting Favre changes the diagnostic and its labels.
 No secrets, network clients, scheduler or publication calls enter this module.
