@@ -2,6 +2,7 @@
 #define fgmDimixPolicy_H
 
 #include "fvMesh.H"
+#include "Time.H"
 #include "IOdictionary.H"
 #include "Switch.H"
 

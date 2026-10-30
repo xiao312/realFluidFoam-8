@@ -155,7 +155,7 @@ int main(int argc, char *argv[])
         const scalar rho = thermo.rho()()[0], cp = thermo.Cp()()[0], cv = thermo.Cv()()[0];
         const scalar hs = thermo.he()[0], ha = hs + chemical[0];
         const scalar mu = thermo.mu()()[0], kappa = thermo.kappa()()[0];
-        const scalar alpha = thermo.alpha()()[0], correctedT = thermo.T()[0];
+        const scalar alpha = thermo.alpha()[0], correctedT = thermo.T()[0];
         const scalar epsilon = 1e-3;
         thermo.T() = dimensionedScalar("T", dimTemperature, temperature + epsilon);
         const scalar upperH = thermo.he(thermo.p(), thermo.T())()[0];
