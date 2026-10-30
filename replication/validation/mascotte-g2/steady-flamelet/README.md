@@ -18,6 +18,11 @@ pure cold oxygen throughout the chamber at time zero, with actual pure inlet
 states. Any mixture begins reacting through the prescribed steady composition
 as Z is transported. There is no fabricated ignition kernel or evolved CFD.
 Ha is initialized from generated Y/T/p by the same executing full-SRK runtime.
+An explicit initialization file may instead select any covered mixture fraction,
+for example `{ "mode": "uniform-steady", "mixtureFraction": 0.2 }`. This fills
+the chamber with that actual mixed/burning table state as a separate fresh
+ignited diagnostic. It is not a paper startup condition or an evolved CFD state.
+The chosen value and input-file hash are retained; no progress fraction is used.
 
 Dependencies: Node built-ins and shared hashing/thermo/mesh/observation helpers.
 The solver uses the independent C++ reader/model in `src/combustionModels/steadyFlamelet`.
@@ -32,7 +37,7 @@ No standalone parser result establishes a flame or paper match.
 
 `prepare-periodic.mjs INPUT.json --plan` prepares the bounded qualification plan.
 The input has `table`, `metadata`, `thermo` and new `out` paths. `--apply` requires
-an allocation and creates 48 periodic cells, Z=0.2+0.005*sin(...), twenty25ns
+an allocation and creates 48 periodic cells, Z=0.2+0.005*sin(...), twenty 25 ns
 steps, the actual mapped composition and an explicit zero Ha placeholder.
 Run blockMesh/checkMesh, then the exact full-runtime probe with `-initialize-Ha`,
 then the rebuilt solver; `check-periodic.mjs CASE` audits lifecycle, diagnostic

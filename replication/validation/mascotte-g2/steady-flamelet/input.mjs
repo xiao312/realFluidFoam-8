@@ -58,5 +58,9 @@ export async function steadyInitialization(path,input){
   if(Object.keys(config).some(k=>!['mode','mixtureFraction'].includes(k))||config.mode!=='uniform-steady')throw Error('Steady closure requires explicit uniform-steady initialization, without eta/kernel');
   const state=input.lookup(config.mixtureFraction);
   return{config,sha256:raw?digest(raw):null,background:state,hot:state,
-    interpretation:'Fresh uniform physical steady-table composition; c derived from Y only. Default Z=0 is cold pure oxygen, not an evolved CFD state.'};
+    interpretation:config.mixtureFraction===0
+      ? 'Fresh cold pure-O2 chamber fill from the exact physical endpoint; c derived from Y, Ha initialized by the executing thermo model.'
+      : config.mixtureFraction===1
+        ? 'Fresh pure-CH4 chamber fill from the exact physical endpoint; diagnostic initialization, not the paper startup or evolved CFD.'
+        : 'Fresh uniform mixed/burning profile fill from the actual fixed-chi table; an ignited diagnostic, not the paper initialization. All Y/T/c are table-derived and Ha uses the executing thermo model; no evolved CFD.'};
 }
