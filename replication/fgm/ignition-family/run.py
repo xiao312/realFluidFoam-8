@@ -3,6 +3,7 @@ import json
 from pathlib import Path
 import sys
 import time
+import traceback
 
 HERE=Path(__file__).resolve().parent
 sys.path.insert(0,str(HERE.parent/'direct-flamelet'))
@@ -117,6 +118,8 @@ def main():
             'frames':len(selected),'scientific_acceptance':False}),flush=True)
         return 0 if complete else 5
     except Exception as error:
+        (args.out/'traceback.txt').write_text(traceback.format_exc(),encoding='utf8')
+        receipt['failure_traceback_sha256']=sha256(args.out/'traceback.txt')
         failure(args,receipt,error,time.monotonic()-started)
         print(f'FAILED: {type(error).__name__}: {error}',file=sys.stderr,flush=True)
         return 4
