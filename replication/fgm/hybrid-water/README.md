@@ -73,6 +73,30 @@ Use `derive.py --input DIR --input-receipt-sha256 HASH --settings settings.json
 before an allocated exact-runtime derivation. Missing branches, material negatives,
 changed inputs or unsupported policies fail without new physical computation.
 
+## Targeted long-horizon physical follow-up
+
+`extend.py` reads the exact failed original family and reruns only branches whose
+actual selected cap has positive progress source. Each integration starts at its
+unchanged original quench seed, with every species and enthalpy retained. It does
+not continue a reactor or CFD saved state. Unaffected branches keep their exact
+original hashes and per-branch physical source/JobID. A missing extension prevents
+export rather than silently substituting the older short tail.
+
+The horizon is 20 ms, with the first accepted state at/after 0.2, 2 and 20 ms
+reported with its actual time. CVODE relative/absolute tolerances remain
+1e-10/1e-18. Maximum allowed step becomes 10 microseconds to avoid imposing
+20,000 steps on the slow rich relaxation. Adaptive error control still selects
+smaller steps. One independent fresh trajectory at the original largest positive
+cap (Z index107) uses a 2.5 microsecond maximum step; the actual time-aligned
+temperature/species/source differences are reported without a fabricated pass.
+Every physical tail retains its wall/step ceilings and conservation diagnostics.
+
+The merged table uses the same65 training/64 held-out Z nodes and the unchanged
+bounded endpoint policy. Physical cap sources, omissions and held-out failures
+remain visible; even a completed extension cannot automatically qualify CFD.
+Use the same required inputs as `derive.py`, plus `--raw-dir` pointing to the
+original immutable quench trajectory, and run `--plan` before admission.
+
 ## Boundaries and verification
 
 Dependencies are Python, NumPy and the pinned Cantera runtime. The retained
