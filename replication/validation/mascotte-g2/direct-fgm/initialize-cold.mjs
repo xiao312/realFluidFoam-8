@@ -29,9 +29,12 @@ if (manifest.closure === 'steady-flamelet') {
   const combustion = await readFile(join(root,'constant/combustionProperties'),'utf8');
   const control = await readFile(join(root,'system/controlDict'),'utf8');
   const rawTable = await readFile(join(root,'constant/steady.tbl'));
+  const diffusionControls = [...control.matchAll(/\bfgmSkipUnusedDimix\s+(yes|no)\s*;/g)];
+  const diffusionMatches = typeof manifest.skipUnusedDiffusion === 'boolean' &&
+    diffusionControls.length === 1 && diffusionControls[0][1] === (manifest.skipUnusedDiffusion ? 'yes' : 'no');
   if (manifest.schema !== 'forge-direct-g2-steady-flamelet-v1' || manifest.initialization.config.mode !== 'uniform-steady' ||
       !/combustionModel\s+steadyFlamelet\s*;/.test(combustion) || !/fgmProgressSourceEnabled\s+no\s*;/.test(control) ||
-      !/fgmSourceIntegration\s+explicit\s*;/.test(control) || !/fgmSkipUnusedDimix\s+no\s*;/.test(control) ||
+      !/fgmSourceIntegration\s+explicit\s*;/.test(control) || !diffusionMatches ||
       digest(rawTable) !== manifest.inputHashes.table) throw Error('Steady closure/zero-time table initialization contract differs');
 }
 const ha = await readFile(join(root, '0/Ha'), 'utf8');
