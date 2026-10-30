@@ -2,6 +2,7 @@
 #include "fvmSup.H"
 #include "PstreamReduceOps.H"
 #include "IOdictionary.H"
+#include "cyclicFvPatchFields.H"
 #include "Switch.H"
 #include <cmath>
 #include <exception>
@@ -102,10 +103,33 @@ void steadyFlamelet<ReactionThermo>::correct()
     // Preserve case BC types; refresh processor/outlet/gradient data after Y.
     forAll(species, s) species[s].correctBoundaryConditions();
     scalar worstBoundary=0;
-    forAll(Z_.boundaryField(), patchi) forAll(Z_.boundaryField()[patchi], facei)
+    forAll(Z_.boundaryField(), patchi)
     {
+      const bool cyclic=isA<cyclicFvPatchScalarField>(Z_.boundaryField()[patchi]);
+      scalarField localZ, neighbourZ;
+      if (cyclic)
+      {
+          const cyclicFvPatchScalarField& patch=refCast<const cyclicFvPatchScalarField>(Z_.boundaryField()[patchi]);
+          localZ=patch.patchInternalField(); neighbourZ=patch.patchNeighbourField();
+      }
+      forAll(Z_.boundaryField()[patchi], facei)
+      {
         forgeSteady::State state;
-        try { state=table_().lookup(Z_.boundaryField()[patchi][facei]); }
+        try
+        {
+            state=table_().lookup(Z_.boundaryField()[patchi][facei]);
+            if (cyclic)
+            {
+                // Coupled cyclic storage is an interpolated face value; unlike
+                // processor storage, it is not the neighbour cell value.
+                const forgeSteady::State owner=table_().lookup(localZ[facei]);
+                const forgeSteady::State neighbour=table_().lookup(neighbourZ[facei]);
+                const scalar w=Z_.boundaryField()[patchi].patch().weights()[facei];
+                forAll(map_, s) state.y[s]=w*owner.y[s]+(1-w)*neighbour.y[s];
+                state.temperature=w*owner.temperature+(1-w)*neighbour.temperature;
+                state.heatRelease=w*owner.heatRelease+(1-w)*neighbour.heatRelease;
+            }
+        }
         catch (const std::exception& error)
         {
             FatalErrorInFunction << "steadyFlamelet patch=" << patchi << " face=" << facei
@@ -116,6 +140,7 @@ void steadyFlamelet<ReactionThermo>::correct()
         c_.boundaryFieldRef()[patchi][facei]=state.y[co2_]+state.y[co_];
         temperature_.boundaryFieldRef()[patchi][facei]=state.temperature;
         heatRelease_.boundaryFieldRef()[patchi][facei]=state.heatRelease;
+      }
     }
     reduce(worstSum,maxOp<scalar>()); reduce(worstBoundary,maxOp<scalar>());
     reduce(minZ,minOp<scalar>()); reduce(maxZ,maxOp<scalar>());
