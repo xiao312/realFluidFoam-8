@@ -1,0 +1,20 @@
+{
+  "schema": "fresh-seeded-flamelet/v1",
+  "upstream_revision": "735711dc4a426cc7504747d732f2e7fcc3db2c23",
+  "grid_points": 129,
+  "chi_st_cases_s_inverse": [10000.0, 100000.0],
+  "seed": {"peak_product_fraction": 0.9, "mixture_fraction_half_width": 0.06},
+  "final_time_s": 0.0002,
+  "first_step_s": 1e-10,
+  "max_step_s": 2e-6,
+  "temporal_tolerance": 1e-8,
+  "nonlinear_tolerance": 1e-10,
+  "max_steps": 8000,
+  "integration_wall_limit_s": 300,
+  "checkpoint_steps": 25,
+  "checkpoint_wall_s": 10,
+  "max_export_frames": 81,
+  "table_z_points": 201,
+  "table_eta_points": 41,
+  "initialization_limits": {"enthalpy_absolute_J_kg": 0.01, "element_absolute": 1e-10, "mass_sum_absolute": 5e-12}
+}

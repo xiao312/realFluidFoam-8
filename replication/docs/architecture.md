@@ -391,6 +391,12 @@ instantaneous T/rho/OH and phase metadata; it computes the 308 nm LTE population
 approximation before any declared time averaging. Neither module performs LOS
 integration, radiative calibration, solver execution, acceptance or publication.
 
+`fgm/ignition-family` owns the fresh compact product-seed experiment at conserved
+mixed-stream enthalpy. It reuses `direct-flamelet` input/runtime identities and
+physical export helpers, plus the already qualified Cantera/Spitfire runtime.
+Its checkpoints and dual-progress diagnostics describe actual trajectories;
+they do not modify the CFD table, submit jobs, or grant scientific acceptance.
+
 The G2 generator's optional cold mode also consumes the exact real-fluid export
 and the qualified full-fork library receipt. Its initializer computes time-zero
 Ha with that runtime, including backflow reference values. Cold batch execution
