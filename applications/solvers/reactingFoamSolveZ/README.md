@@ -252,3 +252,29 @@ deferred correction for a nonorthogonal scheme. These reports distinguish
 iterative error, continuity mismatch and transport behavior; they impose no
 acceptance criterion or lookup-bound change. The stock compressible continuity
 message instead compares density with its EOS value and is not this residual.
+
+The opt-in `conserveTabulatedDensity yes;` control is a pressure-correction
+candidate for tabulated composition. Its default is off; selecting it with a
+non-tabulated model is an error. OF8 `pressureControl::limit()` returns true
+whenever pressure limits are configured, even when it changes no pressure.
+The inherited caller then replaces continuity-solved density with EOS density.
+Job126434026 measured a resulting local continuity defect that predicts the
+mixture-fraction overshoot; tightening the scalar solve did not remove it.
+
+The candidate retains that pressure/EOS update and then solves the unchanged
+conservative density equation again before the next outer scalar solve. It does
+not add a scalar source, alter pressure bounds or modify Z. With
+`writeMixtureFractionBudget yes;`, stage-labelled continuity records bracket the
+EOS replacement and the optional density solve. Both controls are in
+`system/controlDict`; no new dependency, network access or secrets are involved.
+Verification requires a solver-only allocated build, a fresh baseline that
+reproduces the defect, and a separate fresh candidate retaining the existing
+endpoint and conservation checks. No runtime qualification is claimed here.
+Use the same original Z tolerance in the two cases; the tighter tolerance was
+not a cure. This change does not alter the separate end-of-step EOS assignment:
+the next timestep still begins with the existing continuity solve. The audit
+brackets it as `beforeFinalEOSDensity` / `afterFinalEOSDensity`. Its effect
+on the reported final-state energy/mass balance remains an explicit coupling
+diagnostic, rather than being silently included in this pressure-loop repair.
+The upstream return-value contract is visible in
+[OF8 pressureControl.C](https://github.com/OpenFOAM/OpenFOAM-8/blob/master/src/finiteVolume/cfdTools/general/pressureControl/pressureControl.C).
