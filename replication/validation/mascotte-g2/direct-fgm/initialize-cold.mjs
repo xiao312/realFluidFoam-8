@@ -25,6 +25,15 @@ for (const name of ['constant/fgmHaInitialization', 'cold-initialization.json', 
 }
 const thermo = await readFile(join(root, 'constant/thermophysicalProperties'));
 if (digest(thermo) !== manifest.thermodynamics.dictionarySha256) throw new Error('Case thermo dictionary changed after preparation');
+if (manifest.closure === 'steady-flamelet') {
+  const combustion = await readFile(join(root,'constant/combustionProperties'),'utf8');
+  const control = await readFile(join(root,'system/controlDict'),'utf8');
+  const rawTable = await readFile(join(root,'constant/steady.tbl'));
+  if (manifest.schema !== 'forge-direct-g2-steady-flamelet-v1' || manifest.initialization.config.mode !== 'uniform-steady' ||
+      !/combustionModel\s+steadyFlamelet\s*;/.test(combustion) || !/fgmProgressSourceEnabled\s+no\s*;/.test(control) ||
+      !/fgmSourceIntegration\s+explicit\s*;/.test(control) || !/fgmSkipUnusedDimix\s+no\s*;/.test(control) ||
+      digest(rawTable) !== manifest.inputHashes.table) throw Error('Steady closure/zero-time table initialization contract differs');
+}
 const ha = await readFile(join(root, '0/Ha'), 'utf8');
 if (!/internalField\s+uniform\s+0\s*;/.test(ha)) throw new Error('Expected explicit uninitialized Ha placeholder');
 const receiptRaw = await readFile(join(options.runtime, 'build-qualification.json'));

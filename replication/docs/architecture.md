@@ -1,5 +1,14 @@
 # Replication boundaries
 
+`combustionModels/steadyFlamelet` is a separate fixed-dissipation, delta-PDF
+composition closure for a retained physical burning flamelet. It consumes a
+strict one-dimensional Z table and the full thermo species set; it does not
+depend on the FGM reader or progress-source integrator. `reactingFoamSolveZ`
+refreshes its composition after Z transport and before absolute-Ha transport.
+The real-fluid thermo library retains density and temperature ownership.
+Its case preparation reuses only mesh, observation and thermodynamic input
+utilities; physical exports and run qualification remain explicit inputs.
+
 The [direct FGM development checkpoint](../development/direct-fgm/README.md)
 combines selected source snapshots on the existing reacting integration baseline.
 It is a candidate development branch, not a scientific acceptance or a change to

@@ -1,5 +1,14 @@
 # Warm FGM coupling on the retained G2-related mesh
 
+The explicit alternative `--closure steady-flamelet` selects the separate
+fixed-dissipation one-dimensional model described in `../steady-flamelet`.
+Default `--closure fgm` preserves this module's existing FGM behavior. Steady
+cases require cold-real-fluid, strict bounds, explicit/no-progress-source mode,
+and unused-diffusion suppression off. Their default pure-O2 time-zero fill and
+diagnostic c differ from the partly reacted FGM initialization below. The case
+manifest names the closure and preserves the physical profile's failed steady
+criterion. Neither mode changes the other's table or acceptance requirements.
+
 This module prepares a clean time-zero warm ideal-gas FGM diagnostic on the
 registered `mascotte-legacy-wedge-200622` mesh. It tests the physical table and
 absolute-enthalpy solver under injector advection and mixing. It does not claim

@@ -125,6 +125,15 @@ copied spray source or implicit use of DeepFlame's table-temperature closure.
 
 ## Optional source splitting
 
+The separate `steadyFlamelet` model does not transport c. It maps a single
+physical fixed-dissipation profile from transported Z, then refreshes composition
+before the absolute-Ha equation. `cEqn.H` is entered only when the selected model
+reports `transportsProgress()`. The established FGM lifecycle is unchanged.
+Steady-flamelet cases require explicit/no-progress-source mode and full SRK
+enthalpy inversion; tabulated Q and T remain diagnostics. They are laminar
+delta-PDF diagnostics, not qualified turbulent paper replication. See the model's
+local README for table ownership and approximation/provenance requirements.
+
 `fgmSourceIntegration explicit` is the default and keeps the existing source
 assembly. Opt-in `strangFixedState` requires global Euler time stepping, enabled
 FGM source, absolute enthalpy, and a v2 raw-C table. LTS is refused.
