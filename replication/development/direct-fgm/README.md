@@ -21,6 +21,10 @@ records independent full-chemistry reactors, fresh ignition flamelets and the
 next separate steady-flamelet diagnostic. These are physical development
 results; failed FGM coverage is retained rather than hidden by clipping.
 
+The [steady G2 checkpoint](steady-g2-20261031.md) records the completed 5 us
+startup, measured runtime, new thermophysical qualification and hybrid table
+derivation. Those later results do not erase the failed FGM coverage events.
+
 Independent DOP853 analysis agrees with all six uniform CFD histories within
 7.13e-10 of the progress-variable span. Its Windows environment is NumPy
 2.2.6/SciPy 1.15.3; the allocated Linux repetition also passed. Both the loose

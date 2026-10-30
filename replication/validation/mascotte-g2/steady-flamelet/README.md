@@ -12,7 +12,9 @@ and linear elemental balance. It returns one composition per Z; no progress
 coordinate or source is accepted. Output c is derived Y_CO2+Y_CO only.
 
 Use `direct-fgm/prepare.mjs --closure steady-flamelet` with cold-real-fluid thermo,
-strict bounds, explicit source mode and unused-diffusion suppression disabled.
+strict bounds and explicit source mode. Unused-diffusion suppression is optional
+only under its separate exact-property and fresh-CFD qualification. The generated
+case and initialization receipt must agree on the selected policy.
 The default initialization is `{ "mode": "uniform-steady", "mixtureFraction": 0 }`:
 pure cold oxygen throughout the chamber at time zero, with actual pure inlet
 states. Any mixture begins reacting through the prescribed steady composition
