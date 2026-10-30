@@ -24,6 +24,7 @@ public:
     double pressure, chi, oxidizerTemperature, fuelTemperature;
     explicit Table(const std::string& path);
     State lookup(double z) const;
+    double elementCoordinateDifference(double raw, double used) const;
     std::size_t size() const { return z_.size(); }
 };
 }

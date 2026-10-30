@@ -491,3 +491,8 @@ six-state probes and both tabulated-composition periodic cases. Its concrete
 mixture audit calls the real cell/patch implementation and raw Dimix guard;
 it owns no duplicated property formulas. Rebuilt registrations and exact
 retained-product identities belong to the allocated build receipt.
+
+The steady-only endpoint representation helper is a fixed, explicit numerical
+policy between transported Z and strict table lookup. It leaves the transported
+field unchanged and reports elemental coordinate perturbations. The G2 generator
+selects the policy; neither the table nor the CFD evaluator grants acceptance.

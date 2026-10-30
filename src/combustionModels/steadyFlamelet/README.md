@@ -89,3 +89,30 @@ values and retain direct lookup checks. Physical fixed/gradient boundaries retai
 their declared values and direct lookup check. This diagnostic distinction changes
 no transported field or source. See the upstream OpenFOAM8 coupled and processor
 patch-field implementations for their separate storage semantics.
+
+## Explicit endpoint representation policy
+
+The default `lookupRoundoffPolicy strict` rejects every out-of-range Z. The
+opt-in `endpoint64epsilon` policy permits only an absolute lookup-coordinate
+excursion at most `64*std::numeric_limits<double>::epsilon()` (about1.42e-14).
+It maps that local interpolation coordinate to0 or1; it never changes the
+transported Z field, equation, source or table. Material excursions and nonfinite
+values still fail. This fixed bound is not a user-adjustable tolerance.
+
+Before any lookup, each correction records the complete global cell/patch Z
+range, nonfinite count and maximum outside excursion at17-digit precision.
+Each correction also records global counts of mapped cell/patch lookup calls, maximum
+coordinate change, and maximum endpoint elemental-mass-fraction change implied
+by that coordinate mapping. Cyclic owner/neighbour calls are counted separately
+as patch lookup calls. Counts describe the current correction, not unique mesh
+points or a cumulative event count. Full-precision refusal messages include raw
+Z, signed outside delta, fixed limit and cell/patch location.
+
+The candidate requires a fresh strict first-step reproduction before enabling
+this policy on the same inputs. The measured global excursion must fit the fixed
+bound. Independent material-overshoot controls must still fail, and an interior
+physical run must agree with strict mode. A successful diagnostic is not a
+general bounded-transport proof or paper validation. The standalone
+`endpoint-probe.C` verifies strict defaults, exact endpoint identity, unchanged
+input values, full-table elemental perturbation and material refusal using the
+actual retained table. Compile and run it in the same Slurm allocation.

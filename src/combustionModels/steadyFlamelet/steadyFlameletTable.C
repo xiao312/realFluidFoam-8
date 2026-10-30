@@ -112,6 +112,23 @@ void Table::validate() const
     }
 }
 
+double Table::elementCoordinateDifference(double raw, double used) const
+{
+    require(std::isfinite(raw) && std::isfinite(used), "nonfinite element-audit coordinate");
+    double worst=0;
+    for (const auto& element : elements_)
+    {
+        double oxygen=0, fuel=0;
+        for (std::size_t s=0; s<species.size(); ++s)
+        {
+            oxygen += states_.front().y[s]*element[s];
+            fuel += states_.back().y[s]*element[s];
+        }
+        worst=std::max(worst, std::abs((used-raw)*(fuel-oxygen)));
+    }
+    return worst;
+}
+
 State Table::lookup(double z) const
 {
     require(std::isfinite(z) && z >= 0 && z <= 1, "Z outside [0,1]; no clipping");
