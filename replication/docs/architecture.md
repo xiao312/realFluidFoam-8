@@ -484,3 +484,10 @@ and the C++ steady clock. It measures local inclusive regions and gathers rank
 counters only at existing writes/end; it does not alter the scientific models
 or require a scheduler/runtime service. Operator performance analysis consumes
 its logs separately from conservation and physical acceptance.
+
+`validation/realfluid-g2-thermo/diffusion-setup` qualifies the narrower omission
+of SRK diffusion-matrix construction and copying. It consumes the physical
+six-state probes and both tabulated-composition periodic cases. Its concrete
+mixture audit calls the real cell/patch implementation and raw Dimix guard;
+it owns no duplicated property formulas. Rebuilt registrations and exact
+retained-product identities belong to the allocated build receipt.

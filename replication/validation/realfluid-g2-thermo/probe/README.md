@@ -78,3 +78,14 @@ performance module uses it with actual table compositions. Property output also
 records alpha and recovered T. `-read-Dimix` and `-read-boundary-Dimix` are
 negative controls for the optional unused-diffusion suppression; they must fail
 when suppression is enabled. These additions do not change the default sweep.
+
+`-audit-mixture-setup` reads `constant/mixtureSetupAudit`: the exact ordered species,
+three `pressures`, `temperatures`, and `massFractions` rows. It calls the concrete
+SRK mixture on a cell and a patch for A/B/A physical compositions and writes
+`mixture-setup.csv`. Compare all active properties and corrected X/Y exactly;
+only the four diffusion-matrix row counts should change from 53 to zero under
+the explicit unused-diffusion policy. No property formula is copied into this
+probe. `-read-raw-Dimix` bypasses the public thermo accessor and tests the
+transport object's own guard. The optimized call must fail before indexing;
+the baseline call must complete. These controls require rebuilding the probe
+and both owning thermophysical registration libraries from the same headers.
