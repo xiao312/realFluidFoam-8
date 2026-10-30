@@ -56,6 +56,23 @@ the same mass; every change, elemental/enthalpy effect and recomputed source is
 recorded. Raw arrays never change. Exact selected join states need no negative
 projection; unavoidable floating-point normalization is measured.
 
+## Postprocessing a retained physical family
+
+`derive.py` does not integrate any reactor. It requires the exact original failed
+receipt hash and every branch/receipt hash, a new output directory, and the
+explicit `--endpoint-policy existing-bounded-roundoff-v1`. The original driver
+remains unchanged. Only a negative measured endpoint invokes the already declared
+roundoff bounds. The derived receipt retains species, elemental composition,
+enthalpy, progress source and formation heat release before/after that operation.
+Nonnegative endpoints remain byte-value unchanged; sources are recomputed only
+where the representation changed. A source sign is never forced or accepted.
+The original physical JobID and source remain separate from the derivation job.
+
+Use `derive.py --input DIR --input-receipt-sha256 HASH --settings settings.json
+--mechanism gri30.yaml --endpoint-policy existing-bounded-roundoff-v1 --plan`
+before an allocated exact-runtime derivation. Missing branches, material negatives,
+changed inputs or unsupported policies fail without new physical computation.
+
 ## Boundaries and verification
 
 Dependencies are Python, NumPy and the pinned Cantera runtime. The retained

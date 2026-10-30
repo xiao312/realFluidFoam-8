@@ -473,4 +473,6 @@ on pinned Python/NumPy/Cantera and exact direct-flamelet artifacts. Its separate
 water-progress v2 table is a potential input to the existing OF8 table reader;
 no runtime dependency on the generator enters CFD. It records branch omissions,
 source bounds and independent-Z errors, and cannot replace a table or grant
-scientific acceptance automatically.
+scientific acceptance automatically. Its separate `derive.py` reuses exact
+retained branches without integration, preserving the physical source/job while
+recording any explicitly selected, already bounded endpoint representation.
