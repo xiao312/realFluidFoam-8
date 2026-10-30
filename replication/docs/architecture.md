@@ -10,6 +10,10 @@ equilibrium limits and physical-time Sandia Spitfire flamelets. It exports phase
 metadata and builds a physical raw-progress table with held-out diagnostics.
 Its dependencies are explicit Python scientific packages and a pinned Spitfire
 extension; it does not depend on OpenFOAM or perform scheduler operations.
+`fgm/progress-reactor` independently follows full Cantera/CVODE chemistry from
+hash-bound table T/Y states at constant pressure/enthalpy. It diagnoses coverage
+and progress-coordinate reversal using accepted and requested-time observations,
+without modifying the table or depending on the CFD runtime or Spitfire.
 `src/combustionModels/fgmTable` consumes the declared table and supplies species
 and volumetric sources. `applications/solvers/reactingFoamSolveZ` transports Z
 and raw progress, and offers an opt-in absolute-enthalpy equation. Thermodynamic

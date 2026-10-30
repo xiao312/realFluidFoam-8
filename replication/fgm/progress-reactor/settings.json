@@ -1,0 +1,19 @@
+{
+  "schema": "full-chemistry-progress-diagnostic/v1",
+  "table_sha256": "a2ba27d3b8ae15085fead9480e0da4045f1415c1492cdfd9376d0d9ba700cf57",
+  "mechanism_sha256": "06650b1e0ee0012f6903d5328b1bb218cb6007d07f8ebe375d18f24811039345",
+  "pressure_Pa": 5610000,
+  "states": [
+    {"name": "coverage-edge", "Z": 0.286519345725, "C": 0.5584661180748522},
+    {"name": "source-start", "Z": 0.286519345725, "C": 0.556906478719}
+  ],
+  "end_time_s": 0.002,
+  "max_time_step_s": 0.000001,
+  "rtol": 1e-10,
+  "atol": 1e-18,
+  "max_steps": 100000,
+  "wall_per_integration_s": 120,
+  "observation_points": 401,
+  "limits": {"enthalpy_scaled": 5e-8, "mass_relative": 1e-10, "element_absolute": 1e-10, "pressure_relative": 1e-12, "negative_species_absolute": 1e-12},
+  "progress_significance_absolute": 1e-9
+}
