@@ -96,6 +96,8 @@ def main():
         axes[1].plot([r['Z'] for r in rows],[r['Scwater'] for r in rows],marker,ms=4,label=label)
     axes[1].axhline(0,color='.4',lw=.8)
     axes[1].set(xlabel='Mixture fraction Z',ylabel=r'$S_{C_w}$ [kg m$^{-3}$ s$^{-1}$]',yscale='symlog')
+    all_caps=[row['Scwater'] for key in ['upper_source_bounds','lower_source_bounds'] for row in diagnostics[key]]
+    axes[1].set_ylim(min(min(all_caps)*1.8,-2),max(max(all_caps)*1.8,2))
     axes[1].legend()
     save(fig,'bounds','Physical coverage and source bounds',
         f"Upper outward nodes: {len(diagnostics['outward_upper_nodes'])}; lower outward nodes: {len(diagnostics['outward_lower_nodes'])}. Positive upper source is retained. A written table is not proof that reactions remain inside its bounds.")
