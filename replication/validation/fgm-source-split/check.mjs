@@ -38,12 +38,13 @@ try {
   }
 } catch (error) { failures.push(error.message); }
 const steps = Math.round(input.endTime/input.dt), first = energy[0], last = energy.at(-1);
-add('complete_energy_records', energy.length, steps+1);
 add('missing_energy_records', Math.abs(energy.length-(steps+1)), 0);
 add('complete_written_steps', Math.abs(times.length-steps), 0);
 add('field_read_failures', failures.length, 0);
 add('finite_energy_records', energy.some(r => Object.values(r).some(v => typeof v !== 'number')) ? 1 : 0, 0);
 add('solver_completed', /\nEnd\s*\n/.test(log) ? 0 : 1, 0);
+add('positive_thermodynamic_fields', profiles.some(r => !(r.T > 0 && r.p > 0 && r.rho > 0)) ? 1 : 0, 0);
+add('progress_coverage', profiles.some(r => r.c < input.states[r.cell].cMin || r.c > input.states[r.cell].cMax) ? 1 : 0, 0);
 if (first && last) {
   add('time_zero', Math.abs(first.t), 1e-15);
   add('end_time', Math.abs(last.t-input.endTime), input.dt*1e-5);
@@ -63,11 +64,13 @@ if (input.integration === 'strangFixedState') {
   add('second_stage_each_outer', Math.abs(stages.filter(s => s.stage === 'secondHalf').length-steps*input.outer), 0);
   add('old_time_audit_each_outer', Math.abs(history.length-steps*input.outer), 0);
   add('old_time_immutable', Math.max(...history.flatMap(r => [Math.abs(r.deltaC), Math.abs(r.deltaZ), Math.abs(r.deltaRho)])), input.thresholds.oldTimeAbsolute);
+  add('half_stage_duration', Math.max(...stages.map(r => Math.abs(r.duration-.5*input.dt))), input.dt*1e-12);
   const expected = Array.from({ length: steps }, (_, i) => (i+1)*input.dt);
   add('stage_time_or_outer_errors', expected.reduce((total, t) => {
     const at = r => Math.abs(r.t-t) <= input.dt*1e-5;
     const h = history.filter(at);
     return total + (stages.filter(r => at(r) && r.stage === 'firstHalf').length !== 1 ? 1 : 0)
+      + (stages.filter(r => at(r) && r.stage === 'secondHalf').length !== input.outer ? 1 : 0)
       + (JSON.stringify(h.map(r => r.outer)) !== JSON.stringify(Array.from({ length: input.outer }, (_, i) => i+1)) ? 1 : 0);
   }, 0), 0);
 }
