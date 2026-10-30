@@ -524,3 +524,11 @@ six-state probes and both tabulated-composition periodic cases. Its concrete
 mixture audit calls the real cell/patch implementation and raw Dimix guard;
 it owns no duplicated property formulas. Rebuilt registrations and exact
 retained-product identities belong to the allocated build receipt.
+
+`fgm/hybrid-water` performs a bounded, allocated physical-tail experiment using
+retained quench states and fresh Cantera constant-pressure reactors. It depends
+on pinned Python/NumPy/Cantera and exact direct-flamelet artifacts. Its separate
+water-progress v2 table is a potential input to the existing OF8 table reader;
+no runtime dependency on the generator enters CFD. It records branch omissions,
+source bounds and independent-Z errors, and cannot replace a table or grant
+scientific acceptance automatically.
