@@ -66,6 +66,9 @@ def main():
     plan = {'job_id':receipt['job_id'],'derivation_source':receipt['source_commit'],
             'physical_source':physical_source,'physical_job_id':physical_job,
             'inputs_sha256':inputs,'selected_Z_indices':[r[0] for r in selected],
+            'selected_physical_sources':[{'Z_index':index,'source':case.get('physical_source_commit',physical_source),
+                'job_id':case.get('physical_job_id',physical_job),'retained_original_branch':case.get('retained_original_branch')}
+                for index,case,branch,tail in selected],
             'scientific_acceptance':False}
     if args.plan:
         print(json.dumps(plan,indent=2));return
@@ -152,7 +155,11 @@ def main():
         f"{heldout['count']} covered held-out observations; {len(heldout['coverage_failures'])} outside the training envelope; {len(heldout['missing_heldout_Z_indices'])} missing held-out branches. Energy projection compares −Σhf(dY/dCw)Scw with full mechanism Qf. Different denominators are explicitly labelled; no automatic pass threshold.")
     body = ''.join(f'<section id="{r["name"]}"><h2>{html.escape(r["title"])}</h2><img src="{r["name"]}.png" alt="{html.escape(r["title"])}"><p>{html.escape(r["caption"])}</p></section>' for r in figures)
     source = html.escape(receipt['source_commit'])
+    retained_note=''
+    if receipt.get('previous_physical_source_commit'):
+        retained_note=f" Retained branches also use physical job {html.escape(receipt['previous_physical_job_id'])}, source {html.escape(receipt['previous_physical_source_commit'])}; the manifest identifies every displayed branch."
     page = f'''<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width"><title>Physical water-progress manifold review</title><style>body{{font:17px/1.6 system-ui,sans-serif;max-width:1120px;margin:40px auto;padding:0 24px;color:#16242c}}img{{max-width:100%}}section{{margin:45px 0}}.note{{background:#fff3d6;padding:18px}}code{{overflow-wrap:anywhere}}</style><h1>Physical water-progress manifold review</h1><p class="note">Diagnostic only. This is an ideal-gas GRI, 5.61 MPa quench/chemistry hybrid using CO₂+CO+H₂O. It is neither a paper-replication verdict nor a qualified reacting CFD closure.</p><p>Table job {html.escape(receipt['job_id'])}, source <code>{source}</code>; physical job {html.escape(physical_job)}, source <code>{html.escape(physical_source)}</code>. Original table and failed CFD remain unchanged. <a href="manifest.json">Exact input and rendering record</a>.</p>{body}</html>'''
+    page=page.replace('Original table and failed CFD remain unchanged.', 'Original table and failed CFD remain unchanged.'+retained_note)
     (args.out/'index.html').write_text(page,encoding='utf8')
     plan.update(figures=figures,renderer_sha256=sha(Path(__file__)),artifacts_sha256={p.name:sha(p) for p in args.out.iterdir() if p.is_file()})
     (args.out/'manifest.json').write_text(json.dumps(plan,indent=2),encoding='utf8')
