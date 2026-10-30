@@ -102,7 +102,9 @@ def export_frames(ct, gas, mechanism, streams, config, settings, receipt, args, 
         snapshot = copy.deepcopy(receipt)
         snapshot.update(status=snapshot_kind, physical_export_qualified=qualified,
                         coordinate="mixture_fraction", physical_time_s=metrics["physical_time_s"],
-                        initialization="fresh HP equilibrium at t=0; actual transient integration thereafter" if snapshot_kind == "transient_snapshot" else "fresh equilibrium initial guess for a steady boundary-value solve; no evolved CFD state",
+                        initialization=receipt.get("initialization_description",
+                            "fresh HP equilibrium at t=0; actual transient integration thereafter" if snapshot_kind == "transient_snapshot"
+                            else "fresh equilibrium initial guess for a steady boundary-value solve; no evolved CFD state"),
                         artifacts={name: sha256(destination / name) for name in ("profile.csv", "diagnostics.json")})
         write_json(destination / "receipt.json", snapshot)
         role = "held-out" if len(members) % 5 == 4 and index != len(times) - 1 else "training"

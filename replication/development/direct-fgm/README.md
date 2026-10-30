@@ -14,14 +14,14 @@ not import their historical result directories or commit ancestry.
 | Snapshot | Included paths |
 | --- | --- |
 | `282aa996a78939cbdaf591520231fb2c0476567d` | `src/combustionModels`, `replication/validation/fgm-of8/fixtures` |
-| `e9d8831f287c42856aaa3252c6798e9b3e38fddc` | `applications/solvers/reactingFoamSolveZ`, `replication/validation/fgm-of8/direct-verification`, `replication/validation/mascotte-g2/direct-fgm` |
-| `f0d0e9bb9e34d26d3f2bc03432cae6d887fee25a` | `replication/validation/realfluid-g2-thermo/probe` |
-| `e6de9c72e05da5245761234e84918490459f01d0` | `replication/fgm/direct-flamelet` |
+| `3972fba92af30399a3b657609624507fa3eef199` | `applications/solvers/reactingFoamSolveZ`, `replication/validation/fgm-of8/direct-verification`, `replication/validation/mascotte-g2/direct-fgm`, `replication/validation/realfluid-g2-thermo/probe` |
+| `ed5bacd073c16d4b00876652b252b477e83053d9` | `replication/fgm/direct-flamelet` |
 | `325253221281dabbf4b48612adfdb65880d020d0` | `replication/validation/mascotte-figures` |
 | `0abb643` | `replication/validation/muller-figure2` |
 | `a5fb250` | `replication/validation/realfluid-g2-thermo` |
-| `a662f66727fa95e95c9115d92a8c6057d74ec2e1` | `replication/validation/flamelet-review` |
+| `b2a0229` | `replication/validation/flamelet-review` |
 | `45d3fe91ce215292b3e09a0710ca14e921972a59` | `replication/validation/g2-review` |
+| `6e3a7f8f6af4896a5014a05f6ba998c47edbfccc` | `src/thermophysicalModels/specie/equationOfState/PengRobinson`, `replication/validation/pr-cpmcv` |
 
 The historical [v1 interface contract](../../docs/fgm-of8-interface-contract.md)
 also comes from `5af5cb9`, with a dated scope amendment identifying the current
@@ -126,3 +126,29 @@ unchanged. The new cold-rate evaluator selects a resolved HCN finite-difference
 plateau independently of analytic agreement, reusing the exact earlier compiled
 candidate and retaining its failed receipt. Job 126410535 tests both repairs and
 conditionally attempts a 16-rank warm G2 startup. Its admission is not a result.
+
+That batch completed the fresh cold 129-point trajectory through 1 ms and exported
+the warm table, then failed on a const-incompatible OF8 diagnostic API. The API
+repair compiled in job 126411544. Heating, conversion and contact checks passed.
+The physical closed case had zero mass drift, energy error 4.13e-5 per chemical
+change, and pressure drift 5.91e-4, but two residual reports failed at a temporal
+arithmetic scale around 1.15e13 W. The latest source measures actual matrix
+summands. A narrowly scoped diagnostic exception may permit a subsequent bounded
+flow experiment only if those measured bounds explain both residual failures and
+every independent physical check passes. Original failed verdicts and thresholds
+remain unchanged; the exception is not scientific acceptance.
+
+The actual cold table exports 66 training and 16 held-out profiles. Its retained
+data audit reports maximum temperature error 20.1 K and progress-source error
+1.87% of the global peak, with no above-floor source-sign disagreements. It is
+an ideal-gas chemistry table coupled diagnostically to full SRK CFD, not a real-
+fluid flamelet or the paper's LES/PDF closure. The cold generator now prepares
+separate source-off transport and localized reacting cases with independent
+timesteps, exact runtime Ha, and refreshed inlet kinetic energy. Job 126412917
+executes these candidates; execution and approval remain separate.
+
+The PR correction is source-qualified against independent pressure derivatives
+at 23 original pure-fluid states (maximum relative identity error 5.64e-11).
+Its first selective-rebuild batch failed before compilation on a packaging hash
+error. An immutable LF-byte recovery package is prepared; actual rebuilt-library
+qualification is still pending. The separate PR density discrepancy is unchanged.

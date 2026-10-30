@@ -2,6 +2,7 @@
 #define fgmMatrixResidual_H
 
 #include "fvCFD.H"
+#include <limits>
 
 namespace Foam
 {
@@ -9,15 +10,19 @@ namespace Foam
 // Cell-integrated source - A*psi, including each coupled neighbour once.
 // Unlike fvScalarMatrix::residual(), this does not both update interfaces and
 // subsequently add their same neighbour contribution as another source.
-inline tmp<scalarField> fgmIntegratedResidual(const fvScalarMatrix& matrix)
+inline tmp<scalarField> fgmIntegratedResidual(fvScalarMatrix& matrix)
 {
+    // OF8 exposes boundary/internal coefficients only through non-const
+    // accessors. Keep their owner mutable, but read ldu storage through its
+    // const interface so a symmetric/diagonal operator is never expanded.
+    const fvScalarMatrix& coefficients = matrix;
     const scalarField& psi = matrix.psi().primitiveField();
-    tmp<scalarField> result(new scalarField(matrix.source() - matrix.diag()*psi));
+    tmp<scalarField> result(new scalarField(coefficients.source() - coefficients.diag()*psi));
     scalarField& residual = result.ref();
     if (!matrix.diagonal())
     {
-        const scalarField& upper = matrix.upper();
-        const scalarField& lower = matrix.lower();
+        const scalarField& upper = coefficients.upper();
+        const scalarField& lower = coefficients.lower();
         const labelUList& owner = matrix.lduAddr().lowerAddr();
         const labelUList& neighbour = matrix.lduAddr().upperAddr();
         forAll(upper, facei)
@@ -46,7 +51,7 @@ inline tmp<scalarField> fgmIntegratedResidual(const fvScalarMatrix& matrix)
     return result;
 }
 
-inline tmp<scalarField> fgmCoupledBoundarySource(const fvScalarMatrix& matrix)
+inline tmp<scalarField> fgmCoupledBoundarySource(fvScalarMatrix& matrix)
 {
     tmp<scalarField> result(new scalarField(matrix.psi().size(), scalar(0)));
     forAll(matrix.psi().boundaryField(), patchi)
@@ -66,19 +71,20 @@ inline tmp<scalarField> fgmCoupledBoundarySource(const fvScalarMatrix& matrix)
 // Reconstruct lduMatrix::solver::normFactor for a scalar equation without
 // changing matrix storage. This is a diagnostic of its near-constant-field
 // scale, not a replacement stopping criterion or a tunable acceptance limit.
-inline scalar fgmScalarNormalization(const fvScalarMatrix& matrix)
+inline scalar fgmScalarNormalization(fvScalarMatrix& matrix)
 {
+    const fvScalarMatrix& coefficients = matrix;
     const scalarField& psi = matrix.psi().primitiveField();
-    scalarField rowSum(matrix.diag());
-    scalarField source(matrix.source());
+    scalarField rowSum(coefficients.diag());
+    scalarField source(coefficients.source());
     if (!matrix.diagonal())
     {
         const labelUList& owner = matrix.lduAddr().lowerAddr();
         const labelUList& neighbour = matrix.lduAddr().upperAddr();
-        forAll(matrix.upper(), facei)
+        forAll(coefficients.upper(), facei)
         {
-            rowSum[owner[facei]] += matrix.upper()[facei];
-            rowSum[neighbour[facei]] += matrix.lower()[facei];
+            rowSum[owner[facei]] += coefficients.upper()[facei];
+            rowSum[neighbour[facei]] += coefficients.lower()[facei];
         }
     }
     forAll(matrix.psi().boundaryField(), patchi)
@@ -96,6 +102,65 @@ inline scalar fgmScalarNormalization(const fvScalarMatrix& matrix)
     rowSum *= gAverage(psi, matrix.mesh().comm());
     return gSum((mag(Apsi - rowSum) + mag(source - rowSum))(), matrix.mesh().comm())
         + solverPerformance::small_;
+}
+
+struct fgmResidualArithmeticAudit
+{
+    scalar summandL1W;
+    scalar roundoffBoundW;
+    label operationsPerCell;
+};
+
+// Forward-error bound for evaluating source - A*psi from the stored scalar
+// coefficients, not for matrix assembly, thermo or time discretization.
+inline fgmResidualArithmeticAudit fgmResidualArithmetic(fvScalarMatrix& matrix)
+{
+    const fvScalarMatrix& coefficients = matrix;
+    const scalarField& psi = matrix.psi().primitiveField();
+    scalarField scale(mag(coefficients.source()) + mag(coefficients.diag()*psi));
+    labelList operations(psi.size(), 3);
+    if (!matrix.diagonal())
+    {
+        const labelUList& owner = matrix.lduAddr().lowerAddr();
+        const labelUList& neighbour = matrix.lduAddr().upperAddr();
+        forAll(coefficients.upper(), facei)
+        {
+            scale[owner[facei]] += mag(coefficients.upper()[facei]*psi[neighbour[facei]]);
+            scale[neighbour[facei]] += mag(coefficients.lower()[facei]*psi[owner[facei]]);
+            operations[owner[facei]] += 2;
+            operations[neighbour[facei]] += 2;
+        }
+    }
+    forAll(matrix.psi().boundaryField(), patchi)
+    {
+        const fvPatchScalarField& patch = matrix.psi().boundaryField()[patchi];
+        const labelUList& cells = patch.patch().faceCells();
+        forAll(cells, facei)
+        {
+            scale[cells[facei]] += mag(matrix.internalCoeffs()[patchi][facei]*psi[cells[facei]]);
+            operations[cells[facei]] += 2;
+        }
+        if (patch.coupled())
+        {
+            const tmp<scalarField> neighbour = patch.patchNeighbourField();
+            forAll(cells, facei)
+            {
+                scale[cells[facei]] += mag(matrix.boundaryCoeffs()[patchi][facei]*neighbour()[facei]);
+                operations[cells[facei]] += 2;
+            }
+        }
+        else forAll(cells, facei)
+        {
+            scale[cells[facei]] += mag(matrix.boundaryCoeffs()[patchi][facei]);
+            operations[cells[facei]] += 1;
+        }
+    }
+    // Use the largest row count for a simple reproducible global bound.
+    const label count = gMax(operations);
+    const scalar unitRoundoff = std::numeric_limits<scalar>::epsilon()/2;
+    const scalar gamma = count*unitRoundoff/(1 - count*unitRoundoff);
+    const scalar total = gSum(scale);
+    return {total, gamma*total, count};
 }
 
 }

@@ -52,6 +52,11 @@ and reconstructs its
 [normalization definition](https://github.com/OpenFOAM/OpenFOAM-8/blob/master/src/OpenFOAM/matrices/lduMatrix/lduMatrix/lduMatrixSolver.C).
 Runtime and parallel verification remain necessary; reading those sources alone
 does not qualify this implementation.
+The optional audit also measures the absolute stored matrix summands and a
+per-cell scalar operation count. A gamma_n bound (unit roundoff = epsilon/2)
+describes rounding in residual evaluation, separately from actual physical
+conservation or model error. It does not change the linear solver tolerances,
+acceptance thresholds, coefficients, or equation.
 
 Dependencies are the fork's combustion, thermophysical and transport libraries
 and OF8 finite-volume libraries. The module reads case files only; it does not
@@ -80,7 +85,8 @@ initial energy authority, so initial T is recomputed from Ha and the table's
 composition and initial mass flux is rebuilt. Inlet velocity conditions are
 reevaluated after the initialized density is set,
 so a mass-flow boundary does not retain an ideal-gas placeholder velocity after
-an EOS change. Fixed-temperature and fixed-Ha
+an EOS change. Kinetic energy is refreshed from that velocity before the first
+energy equation, including its inlet patch values. Fixed-temperature and fixed-Ha
 boundaries must represent the same inlet state. The first diagnostic uses
 constant transport, not a claim of matched preferential diffusion or real-fluid
 physics. Solver controls must include Ha. Sources in fvOptions must explicitly
@@ -96,6 +102,15 @@ Mixed/inletOutlet patches are left to their declared boundary conditions; they
 are not treated as fixed temperature merely because `fixesValue()` returns true.
 For real-fluid initialization, first use the runtime thermo probe to construct
 Ha from fresh prescribed p/T/Y; do not copy ideal-gas Ha into the new EOS case.
+Opt-in `fgmRequireHaInitialization yes` requires its time-zero marker and the
+same thermoType dictionary before reading Ha. This prevents executing cold-case
+placeholder energy; the default remains off for existing analytical/warm cases.
+The admitting wrapper must retain the initialized field and runtime hashes.
+`fgmProgressSourceEnabled no` is an explicit nonreacting transport diagnostic:
+the table still supplies composition, but its progress source is not applied.
+It requires absolute-enthalpy mode, where Q is already diagnostic only. The
+default is `yes`. Logs retain both tabulated and applied integrated source;
+disabled-source runs must not be presented as reacting flame calculations.
 Qualification requires a fixed-T pressure perturbation (Ha changes with PR/SRK
 departure) and a negative case with incompatible Ha boundary type, as well as
 the unchanged periodic heating/contact/conversion checks. These source changes

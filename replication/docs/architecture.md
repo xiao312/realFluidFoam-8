@@ -368,3 +368,14 @@ time-mean profiles, retains missing image points, original captions and unresolv
 axial alignment, and labels OH mass fraction separately from optical OH*.
 It depends on the observation contract and reference extraction, not the solver
 runtime, scheduler or publication service.
+
+The G2 generator's optional cold mode also consumes the exact real-fluid export
+and the qualified full-fork library receipt. Its initializer computes time-zero
+Ha with that runtime, including backflow reference values. Cold batch execution
+reuses those libraries read-only and builds only the identified solver/probe.
+Source-off and reacting cases retain separate time controls and result identities.
+
+`validation/pr-cpmcv` checks the PengRobinson heat-capacity identity against
+independent finite-difference pressure derivatives. It reads the actual header
+expression, preserves the historical failing expression as a negative control,
+and does not substitute algebraic checks for compiled property/inversion sweeps.

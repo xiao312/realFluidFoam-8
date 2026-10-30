@@ -72,3 +72,22 @@ check modules, Node24, GCC11, wmake, stock OF8 mesh tools and matching OpenMPI.
 
 No secrets are consumed. The module emits stage exit receipts and actual solver
 logs/fields. It neither grants independent code/science approval nor publishes.
+
+A bounded diagnostic exception exists only for the physical closed case when
+its failed criteria are exactly the assembled residual and legacy-identity
+checks, while all conservation, pressure, endpoint and clipping checks pass.
+The fresh executable must record the actual absolute matrix summands and
+operation counts. `allow-physical-diagnostic.mjs` independently checks the
+standard gamma_n floating-point bound for evaluating those stored coefficients;
+every residual must be within that bound and every legacy identity error within
+three such bounds. This addresses cancellation at a tiny physical time step,
+not a physical model discrepancy. The original failed verdict and thresholds
+remain untouched. A hash-bound exception receipt permits only the subsequent
+bounded diagnostic; it confers no code/science approval. Missing evidence or
+any other failure stops the batch. Older logs without measured summands cannot
+be used for this exception.
+
+The separate `cold-run.sh` path is specified in `../cold-runtime.md`. It reuses
+the verified complete fork library build and rebuilds only solver/probe; it
+does not replace the warm batch's stock-thermodynamics baseline or silently
+change the chosen physical table.

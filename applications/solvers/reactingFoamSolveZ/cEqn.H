@@ -53,7 +53,12 @@
 
     // Held in a named tmp: the progress source is owned by that tmp until the
     // matrix has consumed it.
-    const tmp<volScalarField> tProgressSource(reaction->progressSource());
+    tmp<volScalarField> tProgressSource(reaction->progressSource());
+    const scalar tabulatedIntegral = fvc::domainIntegrate(tProgressSource()).value();
+    if (!fgmProgressSourceEnabled) tProgressSource.ref() *= scalar(0);
+    Info<< "fgmAppliedSource enabled=" << (fgmProgressSourceEnabled ? 1 : 0)
+        << " tabulatedKg_s=" << tabulatedIntegral
+        << " appliedKg_s=" << fvc::domainIntegrate(tProgressSource()).value() << endl;
 
     fvScalarMatrix cEqn
     (

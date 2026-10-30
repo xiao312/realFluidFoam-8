@@ -30,7 +30,9 @@ def write_html(out, summary, config):
     case, models, control = summary["case"], summary["models"], summary["steady_control"]
     pressure_mpa = case["pressure_pa"] / 1e6
     fuel_t, oxidizer_t = case["fuel"]["temperature_k"], case["oxidizer"]["temperature_k"]
-    steady_note = ("The independent steady control returned; its scientific acceptance remains separate."
+    steady_note = ("The independent steady control was explicitly skipped; it supplies no convergence evidence."
+                   if control.get("status") == "explicitly_skipped" else
+                  "The independent steady control returned; its scientific acceptance remains separate."
                    if control.get("solver_returned") else
                    "The independent steady control failed and was not reused for this transient: " + str(control.get("error_type", "failure")))
     upper = models["mechanism_temperature_range_k"][1]

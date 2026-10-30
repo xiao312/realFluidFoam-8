@@ -37,6 +37,18 @@ time zero and a case-owned Ha field with deliberately selected boundary types.
 It overwrites Ha values with the executing full-library Hs plus species formation
 enthalpy. This is preparation from prescribed p/T/Y, not a CFD restart. It avoids
 reusing ideal-gas Ha after changing EOS. Save its log and input/output hashes.
+For an `inletOutlet` Ha patch it also initializes the stored backflow refValue;
+ordinary field assignment alone would leave the generator's zero placeholder
+there. Its prescribed reference p/T/Y is the initial patch state. This does not
+invent a pressure-dependent inlet condition for a different mixed boundary.
+After a successful write it creates `constant/fgmHaInitialization`, identifying
+time zero and the actual thermoType dictionary. Cold G2 preparation enables the
+solver's opt-in marker check. The admitting wrapper additionally checks hashes
+of the initialized fields and complete runtime; the marker is not a scientific
+qualification or a substitute for those immutable input receipts.
+`ha-initialization-boundaries.csv` records actual area-weighted boundary p/T/rho
+and Ha. Use its inlet densities to replace the generator's explicitly labelled
+ideal-density placeholder estimates when discussing residence times.
 Pressure-dependent fixed-T inlet enthalpy must also be kept consistent during
 the subsequent flow solve; initial conversion alone does not qualify that
 runtime boundary coupling. Its dependents are fresh cold-property diagnostics

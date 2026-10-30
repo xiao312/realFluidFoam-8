@@ -18,6 +18,7 @@ function records(prefix) {
   });
 }
 const states = records('energyState '), equations = records('energyEquation '), bounds = records('fgmBounds ');
+const source = records('fgmAppliedSource ');
 const times = (await readdir(root)).filter(name => /^\d+(?:\.\d*)?(?:e[-+]?\d+)?$/i.test(name))
   .map(name => ({ name, time: Number(name) })).filter(row => row.time > 0).sort((a, b) => a.time - b.time);
 const latest = times.at(-1);
@@ -42,6 +43,10 @@ const mechanicalChecks = {
   finiteFinalFields: Object.keys(fields).length === 12 && Object.values(fields).every(row => row.finite),
   positiveThermo: fields.T?.min > 0 && fields.p?.min > 0 && fields.rho?.min > 0,
 };
+if (manifest.chemistry) mechanicalChecks.declaredSourceMode = source.length > 0 && source.every(row =>
+  Number.isFinite(row.tabulatedKg_s) && Number.isFinite(row.appliedKg_s) &&
+  row.enabled === (manifest.chemistry === 'table' ? 1 : 0) &&
+  (manifest.chemistry !== 'disabled' || row.appliedKg_s === 0));
 const corrections = bounds.at(-1)?.cumulativeCorrections ?? null;
 const temperatureDeparture = latest && fields.T.finite && fields.fgmTdiag.finite
   ? { units: 'K', definition: 'executing thermo T minus table diagnostic T',
@@ -58,6 +63,10 @@ const report = { schema: 'forge-direct-warm-g2-diagnostic-v1', inputHashes: mani
   scientificLimitations: manifest.approximations,
   pressureDepartureFromTable: fields.p ? Math.max(Math.abs(fields.p.min / manifest.pressure - 1), Math.abs(fields.p.max / manifest.pressure - 1)) : null,
   clippedLookup: corrections === null ? null : corrections > 0,
+  chemistry: manifest.chemistry ?? 'table', lastAppliedSource: source.at(-1) ?? null,
+  thermodynamics: manifest.thermodynamics ?? {mode:'warm-ideal'},
+  coldInitialization: manifest.thermodynamics?.mode === 'cold-real-fluid'
+    ? JSON.parse(await readFile(`${root}/cold-initialization.json`, 'utf8')) : null,
   status: Object.values(mechanicalChecks).every(Boolean) ? 'diagnostic-run-completed' : 'diagnostic-run-incomplete-or-failed',
   physicalValidationPassed: false, independentScienceApproval: false,
   interpretation: 'Completion and finite fields are execution evidence only. Inspect source signs, clipping, energy fluxes and profiles before accepting any physical claim.' };

@@ -316,7 +316,8 @@ inline Foam::scalar Foam::PengRobinson<Specie>::CpMCv
 
     const scalar Z = this->Z(p, T);
 
-    const scalar M = (sqr(Z) + B*Z)/(Z - B);
+    // Use the PR volume denominator, consistent with Cp() and pressure derivatives.
+    const scalar M = (sqr(Z) + 2*B*Z - sqr(B))/(Z - B);
     const scalar N = daAlpha*B/(b_*RR);
 
     return this->R()*sqr(M - N)/(sqr(M) - 2*A*(Z + B));

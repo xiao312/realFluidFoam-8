@@ -51,10 +51,13 @@ for kind in heating contact conversion; do
     ' bash "$kind"; then :; else failed=1; fi
 done
 [[ $failed == 0 ]] || { echo 'G2_REFUSED: repaired solver numerical verification failed'; exit 30; }
-run_stage physical 360 bash -euo pipefail -c '
+if run_stage physical 360 bash -euo pipefail -c '
     node "$DRIVER/prepare-physical.mjs" --table-dir "$TABLE" --metadata "$METADATA" --out "$CASE-physical"
     bash -euo pipefail "$DRIVER/run.sh" "$CASE-physical" "$SOLVER"
-'
+'; then :; else
+    run_stage physical-arithmetic-exception 30 node "$HERE/allow-physical-diagnostic.mjs" \
+        "$CASE-physical" "$CASE-physical/solver.log" "$OUT/physical-diagnostic-exception.json"
+fi
 
 # Only runtime-local OpenMPI is allowed. Force one-host direct fork launching;
 # this does not call Slurm, rsh or ssh from inside the allocation.

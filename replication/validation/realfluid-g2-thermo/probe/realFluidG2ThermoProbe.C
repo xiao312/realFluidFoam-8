@@ -2,6 +2,7 @@
 // No EOS or caloric correlation is implemented in this diagnostic.
 #include "fvCFD.H"
 #include "psiReactionThermo.H"
+#include "mixedFvPatchFields.H"
 #include "../../../../applications/solvers/reactingFoamSolveZ/fgmBoundaryEnthalpy.H"
 #include <fstream>
 #include <iomanip>
@@ -59,7 +60,50 @@ int main(int argc, char *argv[])
         );
         // Forced assignment preserves the case-owned boundary types.
         Ha == thermo.he(thermo.p(), thermo.T()) + chemical;
-        Ha.write();
+        forAll(Ha.boundaryField(), patchi)
+        {
+            if (Ha.boundaryField()[patchi].type() == "inletOutlet")
+            {
+                mixedFvPatchScalarField& outlet =
+                    refCast<mixedFvPatchScalarField>(Ha.boundaryFieldRef()[patchi]);
+                outlet.refValue() = Ha.boundaryField()[patchi];
+            }
+        }
+        forAll(Ha, celli)
+            if (!std::isfinite(Ha[celli])) FatalErrorInFunction << "Nonfinite initialized Ha" << exit(FatalError);
+        forAll(Ha.boundaryField(), patchi)
+            forAll(Ha.boundaryField()[patchi], facei)
+                if (!std::isfinite(Ha.boundaryField()[patchi][facei]))
+                    FatalErrorInFunction << "Nonfinite initialized boundary Ha" << exit(FatalError);
+        if (!Ha.write()) FatalErrorInFunction << "Failed to write initialized Ha" << exit(FatalError);
+        const tmp<volScalarField> density = thermo.rho();
+        std::ofstream initial((runTime.path()/"ha-initialization-boundaries.csv").c_str());
+        initial << std::setprecision(16) << "patch,area_m2,T_K,p_Pa,rho_kg_m3,Ha_J_kg\n";
+        forAll(mesh.boundary(), patchi)
+        {
+            const scalarField& areas = mesh.magSf().boundaryField()[patchi];
+            const scalar area = gSum(areas);
+            if (area <= 0) continue;
+            initial << mesh.boundary()[patchi].name() << ',' << area << ','
+                << gSum(areas*thermo.T().boundaryField()[patchi])/area << ','
+                << gSum(areas*thermo.p().boundaryField()[patchi])/area << ','
+                << gSum(areas*density().boundaryField()[patchi])/area << ','
+                << gSum(areas*Ha.boundaryField()[patchi])/area << '\n';
+        }
+        initial.close();
+        if (!initial) FatalErrorInFunction << "Failed to write initialization boundary audit" << exit(FatalError);
+        IOdictionary initialization
+        (
+            IOobject
+            (
+                "fgmHaInitialization", runTime.constant(), mesh,
+                IOobject::NO_READ, IOobject::AUTO_WRITE
+            )
+        );
+        initialization.add("preparedTime", scalar(0));
+        initialization.add("thermoType", thermo.subDict("thermoType"));
+        if (!initialization.regIOobject::write())
+            FatalErrorInFunction << "Failed to write Ha initialization marker" << exit(FatalError);
         Info<< "Initialized Ha using full runtime EOS departure and formation basis" << nl;
         return 0;
     }

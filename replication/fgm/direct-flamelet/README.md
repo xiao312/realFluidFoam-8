@@ -324,3 +324,39 @@ per-species residual is retained. No stable plateau means unresolved qualificati
 not permission to select whichever step matches the Jacobian best. Optional
 `--previous-qualification JSON` binds the preserved failed receipt and requires the
 same compiled extension, so this evaluator repair cannot hide a runtime change.
+
+## Paper-condition steady continuation
+
+`paper_branch.py` prepares Müller Figures 2/3 flamelets at the declared cold case
+conditions. It uses a short explicit Newton solve followed, when needed, by bounded
+physical relaxation and one final Newton attempt. It does not use the upstream
+recursive pseudo-transient restart tree. Each case saves its initial state and
+accepted-step checkpoints before export, so a wall limit preserves usable evidence.
+
+`paper-branch-settings.json` defines the grid, scalar-dissipation sequence, explicit
+predecessor for each case, convergence criterion, and soft/hard wall limits. A
+predecessor supplies only a flamelet numerical initial guess, with exact state and
+receipt hashes; this is not a CFD restart or a continuous physical strain history.
+Missing predecessors trigger a recorded fresh equilibrium guess. A supplied
+checkpoint with mismatched identity or an incompatible state is refused.
+Physical relaxation time is local to each case. The final profile is called steady
+only when its recomputed scaled RHS satisfies the unchanged 1e-6 criterion. Finite
+approximate profiles retain their residuals and cannot qualify a steady FGM family.
+
+Inputs are the existing case/mechanism/source/environment identities, both runtime
+patch receipts, and the branch JSON. Outputs are immutable per-case state/profile
+receipts and a branch summary, including approximate and failed cases. This driver
+depends on the pinned Cantera/Spitfire runtime and local export module; downstream
+paper plots consume profiles, while table builders retain their qualification gate.
+It has no network, scheduler, or credential access and writes only a new output
+directory. Run it inside an allocated job; the plan path loads no scientific runtime:
+
+```sh
+python paper_branch.py --config cold.json --branch-config paper-branch-settings.json --plan
+# For execution add the usual mechanism/source/environment/patch arguments and --out NEW_DIR.
+```
+
+Verification: the plan must report all explicit predecessor relationships and the
+hard upper wall bound. Python syntax and configuration checks are local; actual
+steady convergence requires the allocated physical run. The old independent
+`steady_branch.py` and all earlier failed receipts remain unchanged.

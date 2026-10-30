@@ -53,7 +53,7 @@ def time_diagnostics(data, out):
     t = np.array([m["physical_time_s"] for m in metrics]) * 1e6
     axes[0].plot(t, np.array([m["enthalpy_mixing_max_error_J_kg"] for m in metrics]) / 1000,
                  color="#be3c2a", marker="o", markevery=8)
-    axes[0].set(ylabel="Max enthalpy error (kJ/kg)", title="Energy discrepancy remains unresolved")
+    axes[0].set(ylabel="Max enthalpy error (kJ/kg)", title="Enthalpy mixing residual")
     axes[1].plot(t, np.maximum([m["griffon_cantera_max_regularized_rate_error"] for m in metrics], 1e-16),
                  color="#007b91", label="Griffon vs Cantera kinetics")
     axes[1].set(yscale="log", ylabel="Regularized mass-rate error", xlabel="Physical time (microseconds; symmetric log scale)")
@@ -139,5 +139,5 @@ def lookup_errors(data, out):
         ax.grid(alpha=.2)
     axes[0].set_title("Whole held-out profiles | table interpolation errors")
     axes[-1].set(xlabel="Held-out profile index (in receipt order)", xticks=range(1, len(profiles) + 1))
-    fig.text(.18, .025, "Large source errors remain; source cross-check success does not validate interpolation.", fontsize=10)
+    fig.text(.18, .025, "Absolute errors on covered points; excluded states and relative errors remain in the receipt.", fontsize=9)
     save(fig, out, "heldout-errors")

@@ -26,6 +26,10 @@ clamp` explicitly permits counted lookup clipping for diagnostic exploration;
 the default is strict `error`. Optional `--end-time SECONDS` defaults to 20 us.
 `--ranks N` sets the matching decomposition (default 2); scheduler resources must
 be admitted for that same count.
+`--initial-dt SECONDS` and `--max-dt SECONDS` optionally set the initial and
+maximum adaptive time steps. Both must be positive, initial <= maximum <= end
+time. Defaults retain the prior values. These controls are recorded explicitly;
+the Courant bound alone does not control an explicit table chemistry source.
 This is an early transient coupling run, not a steady result. Run inside a
 FlamePilot Slurm admission; never start the solver on a login node.
 
@@ -110,3 +114,30 @@ uses a Map keyed by 1e-8 m bins; there is no pairwise search among faces. Execut
 this optional audit inside the next Slurm allocation with a 30-second timeout.
 An unavailable geometry receipt does not block a labelled warm/cold diagnostic;
 the paper-coordinate transform remains unresolved.
+
+## Opt-in cold real-fluid preparation
+
+`--thermo-mode cold-real-fluid --thermo-dir EXACT_EXPORT` requires a physical
+table with pure CH4 at 288 K, pure O2 at 85 K and 5.61 MPa, including the same
+conditions in its producer receipt. It also requires the exact NASA/mechanism
+identity in a `direct-realfluid-thermo-v1` PR or SRK export. The default remains
+`warm-ideal`. The cold generator writes prescribed time-zero p/T/Y and an Ha
+placeholder, never ideal Ha disguised as real-fluid energy. The full-runtime
+probe must initialize Ha before execution; the solver requires its marker.
+Runtime identity and initialization receipts are specified in `cold-runtime.md`.
+
+Optional `--initialization FILE` selects `uniform-covered` (default) or
+`localized-covered` with `mixtureFraction`, `hotEta`, and, for a localized case,
+`boxMin_m`/`boxMax_m`. The background is the actual table Cmin state at that
+mixture fraction, including any tiny positive raw C. A localized background
+must be no more than 50 K hotter than the warmer inlet, and its selected hot
+state must be at least 1000 K and 300 K above that background. These are explicit
+ignition-recipe checks, not physical acceptance criteria. All Y/T/C values come
+from covered table lookups; no equilibrium or invented source is substituted.
+The raw-coordinate box is applied by setFields at time zero before full-EOS Ha
+initialization. Every initial state and configuration hash is retained.
+`uniform-cmin` accepts only `mixtureFraction` and uses that actual lowest-C
+table state. Together with `--chemistry disabled` it supplies a cold transport
+diagnostic. The source-disabled choice is explicit in the manifest and solver
+log; source values and composition still come from the immutable table.
+`--chemistry table` is the default and applies the table's physical source.

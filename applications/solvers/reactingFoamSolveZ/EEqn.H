@@ -73,9 +73,9 @@
         // individual operator residual gives its signed integrated LHS watts.
         const tmp<scalarField> residual = fgmIntegratedResidual(physicalEquation());
         Info<< "energyEquation t=" << runTime.value()
-            << " ddtW=" << -gSum(fgmIntegratedResidual(energyDdt())())
-            << " convectionW=" << -gSum(fgmIntegratedResidual(energyConvection())())
-            << " diffusionW=" << -gSum(fgmIntegratedResidual(energyDiffusion())())
+            << " ddtW=" << -gSum(fgmIntegratedResidual(energyDdt.ref())())
+            << " convectionW=" << -gSum(fgmIntegratedResidual(energyConvection.ref())())
+            << " diffusionW=" << -gSum(fgmIntegratedResidual(energyDiffusion.ref())())
             << " kineticW=" << fvc::domainIntegrate(kineticTerms).value()
             << " pressureW=" << fvc::domainIntegrate(pressureWork).value()
             << " sourceW=" << fvc::domainIntegrate(heatRelease).value()
@@ -86,6 +86,7 @@
             << endl;
         if (writeEnergyResidualAudit)
         {
+            const fgmResidualArithmeticAudit arithmetic = fgmResidualArithmetic(physicalEquation());
             // Retain the old API as a witness, not as the acceptance metric.
             // Its const residual path requires off-diagonal storage.
             physicalEquation().upper();
@@ -101,6 +102,9 @@
                 << " linearInitialNormalizedResidual=" << energyPerformance.initialResidual()
                 << " linearFinalNormalizedResidual=" << energyPerformance.finalResidual()
                 << " linearIterations=" << energyPerformance.nIterations()
+                << " matrixSummandL1W=" << arithmetic.summandL1W
+                << " residualArithmeticBoundW=" << arithmetic.roundoffBoundW
+                << " arithmeticOperationsPerCell=" << arithmetic.operationsPerCell
                 << endl;
         }
     }
