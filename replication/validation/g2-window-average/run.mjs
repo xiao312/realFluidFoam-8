@@ -12,12 +12,18 @@ function options(argv) {
   for (let i = 0; i < argv.length; ++i) {
     const name = argv[i];
     if (['--favre', '--apply'].includes(name)) result[name.slice(2)] = true;
-    else if (['--case', '--run-record', '--start-s', '--end-s', '--max-gap-s', '--out'].includes(name) && argv[i + 1]) result[name.slice(2)] = argv[++i];
+    else if (['--case', '--run-record', '--start-s', '--end-s', '--max-gap-s', '--max-profile-gap-s', '--max-plane-gap-s', '--out'].includes(name) && argv[i + 1]) result[name.slice(2)] = argv[++i];
     else throw new Error(`Unknown or incomplete option ${name}`);
   }
   for (const key of ['case', 'run-record', 'start-s', 'end-s', 'max-gap-s', 'out']) if (!(key in result)) throw new Error(`Missing --${key}`);
   for (const key of ['start-s', 'end-s', 'max-gap-s']) result[key] = Number(result[key]);
   if (![result['start-s'], result['end-s'], result['max-gap-s']].every(Number.isFinite) || result['start-s'] < 0 || result['end-s'] <= result['start-s'] || result['max-gap-s'] <= 0) throw new Error('Invalid time window or maximum gap');
+  for (const key of ['max-profile-gap-s', 'max-plane-gap-s']) {
+    if (key in result) {
+      result[key] = Number(result[key]);
+      if (!Number.isFinite(result[key]) || result[key] <= 0) throw new Error(`--${key} requires a positive finite duration`);
+    }
+  }
   for (const key of ['case', 'run-record', 'out']) result[key] = path.resolve(result[key]);
   const relative = path.relative(result.case, result.out);
   if (relative === '' || (!relative.startsWith('..') && !path.isAbsolute(relative))) throw new Error('Derived output must be outside the retained case');
@@ -25,7 +31,8 @@ function options(argv) {
 }
 
 function groupStatistics(group, settings) {
-  const quadrature = timeWeights(group.frames.map(f => f.time_s), settings['start-s'], settings['end-s'], settings['max-gap-s']);
+  const maximumGap = settings[group.geometry === 'plane' ? 'max-plane-gap-s' : 'max-profile-gap-s'] ?? settings['max-gap-s'];
+  const quadrature = timeWeights(group.frames.map(f => f.time_s), settings['start-s'], settings['end-s'], maximumGap);
   const identities = {}, duplicateAudit = [], weighted = {}, favre = {};
   let first = null;
   for (const [frameIndex, frame] of group.frames.entries()) {
@@ -50,6 +57,7 @@ function groupStatistics(group, settings) {
     }
   }
   const summary = { key: group.key, name: group.name, geometry: group.geometry,
+    maximumGap_s: maximumGap,
     times_s: group.frames.map(f => f.time_s), quadrature, pointCount: first?.rows.length ?? 0,
     coordinates: first?.coordinates ?? [], fields: first?.fields ?? [],
     removedExactDuplicateRows: duplicateAudit.reduce((sum, row) => sum + row.removedCount, 0),
@@ -99,6 +107,7 @@ const here = path.dirname(fileURLToPath(import.meta.url));
 const report = { schema: 'g2-saved-window-statistics/v1', mode: settings.apply ? 'applied' : 'read-only-plan',
   status: outputs.length ? 'statistics-derived-for-available-groups' : 'unavailable-no-usable-statistics',
   requestedWindow_s: [settings['start-s'], settings['end-s']], maximumGap_s: settings['max-gap-s'],
+  geometryMaximumGaps_s: { line: settings['max-profile-gap-s'] ?? settings['max-gap-s'], plane: settings['max-plane-gap-s'] ?? settings['max-gap-s'] },
   method: 'Trapezoidal endpoint weights for sampled q and q²; stable weighted central moments; no gap bridging or extrapolation',
   varianceConvention: 'Population central moment, not standard error; Favre weights=time*rho when requested and present',
   runIdentity: run, caseInput, inputHashes, groups: groupReports,
