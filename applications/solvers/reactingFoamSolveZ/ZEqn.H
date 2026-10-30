@@ -74,6 +74,7 @@
     fvOptions.correct(Z);
 
     #include "fgmZEquationAudit.H"
+    #include "zRoundoffProjection.H"
 
     // Subtract the endpoint before formatting so even a few-ulp violation is
     // visible independently of the stream's general precision.
