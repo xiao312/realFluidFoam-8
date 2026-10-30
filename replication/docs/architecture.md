@@ -549,3 +549,10 @@ the original streams under mass/enthalpy conservation. It reuses the bounded
 same-coordinate nonuniqueness and missing coverage, and never edits table bounds.
 Its optional NumPy/Matplotlib renderer consumes the retained trajectories and
 unchanged table only; it has no chemistry, scheduler or publication side effects.
+
+`validation/fgm-source-split` can explicitly consume the full-SRK dictionary via
+`mascotte-g2/direct-fgm/cold-input.mjs` and a physical table with generic declared
+progress species. The actual-time-zero thermo probe owns Ha initialization;
+the checker verifies raw progress against that declared species sum. The existing
+ideal-thermo path and its criteria remain unchanged. No table acceptance,
+scheduler operation or source-coordinate substitution occurs in preparation.

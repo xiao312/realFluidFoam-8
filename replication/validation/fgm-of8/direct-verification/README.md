@@ -124,3 +124,9 @@ within 0.2% of the table pressure. Chemistry uses its fixed declared table
 pressure, so this is a bounded coupling diagnostic, not a constant-pressure
 reactor or a counterflow flame comparison. The check requires real progress
 change, total-energy and mass conservation and zero lookup clips.
+# Declared physical progress coordinate
+
+`physical-input.mjs` exposes the table's nonempty, unique `progressSpecies`
+list after checking it against the actual mechanism. Callers must use that list
+when comparing raw transported progress with species fields; CO2+CO is not a
+universal coordinate. The table's mass-fraction/source units remain unchanged.

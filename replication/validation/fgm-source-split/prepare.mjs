@@ -4,9 +4,10 @@ import { fileURLToPath } from 'node:url';
 import { spawnSync } from 'node:child_process';
 import { loadPhysicalTable, thermoState } from '../fgm-of8/direct-verification/physical-input.mjs';
 import { nasaInversionPolicy } from '../fgm-of8/direct-verification/thermo-policy.mjs';
+import { realFluidInput } from '../mascotte-g2/direct-fgm/cold-input.mjs';
 
 const options = {}, args = process.argv.slice(2);
-const allowed = ['table-dir', 'metadata', 'out', 'kind', 'delta-t', 'end-time', 'outer', 'integration', 'nasa-extrapolation', 'initial-eta'];
+const allowed = ['table-dir', 'metadata', 'out', 'kind', 'delta-t', 'end-time', 'outer', 'integration', 'nasa-extrapolation', 'initial-eta', 'initial-z', 'thermo-dir', 'skip-unused-diffusion'];
 for (let i = 0; i < args.length; i += 2) {
   const key = args[i].slice(2);
   if (!args[i].startsWith('--') || !allowed.includes(key) || !args[i+1]) throw new Error('Invalid argument');
@@ -16,21 +17,28 @@ if (!options['table-dir'] || !options.metadata) throw new Error('Use --table-dir
 const kind = options.kind ?? '0d', dt = Number(options['delta-t'] ?? 25e-9);
 const endTime = Number(options['end-time'] ?? 500e-9), outer = Number(options.outer ?? 2);
 const integration = options.integration ?? 'strangFixedState';
-if (!['0d', '1d'].includes(kind) || ![25e-9, 50e-9].includes(dt) ||
+if (!['0d', '1d'].includes(kind) || ![5e-9, 10e-9, 25e-9, 50e-9].includes(dt) ||
     ![1, 2, 3].includes(outer) || !(endTime >= dt && endTime <= 1e-5) ||
     !['explicit', 'strangFixedState'].includes(integration)) throw new Error('Invalid bounded qualification controls');
 const input = await loadPhysicalTable(resolve(options['table-dir']), resolve(options.metadata));
-const nasaPolicy = nasaInversionPolicy(input.metadata, options['nasa-extrapolation']);
+const realFluid = options['thermo-dir'] ? await realFluidInput(resolve(options['thermo-dir']), input) : null;
+if (realFluid && (realFluid.manifest.equationOfState !== 'soaveRedlichKwong' || options['nasa-extrapolation'])) throw new Error('Full-SRK requires its exact declared bounds, without ideal-gas override');
+const skipUnusedDiffusion = options['skip-unused-diffusion'] ?? 'no';
+if (!['yes', 'no'].includes(skipUnusedDiffusion) || (skipUnusedDiffusion === 'yes' && !realFluid)) throw new Error('Suppression requires the explicit full-SRK path');
+const nasaPolicy = realFluid ? null : nasaInversionPolicy(input.metadata, options['nasa-extrapolation']);
+const range = realFluid?.record.effectiveInversionRange_K ?? nasaPolicy.effectiveMixtureIntersection_K;
 const initialEta = Number(options['initial-eta'] ?? .5);
+const initialZ = Number(options['initial-z'] ?? .2);
+if (!Number.isFinite(initialZ) || !(initialZ > 0 && initialZ < 1)) throw new Error('Initial Z must lie strictly inside0..1');
 if (!(initialEta > .03 && initialEta < .97)) throw new Error('initial-eta must remain inside (0.03,0.97)');
 const cells = kind === '0d' ? 8 : 80, velocity = kind === '0d' ? 0 : 10;
 const length = kind === '0d' ? 0.1 : 1e-4;
 const states = Array.from({ length: cells }, (_, i) => {
   const eta = initialEta + (kind === '1d' ? 0.03*Math.sin(2*Math.PI*(i+0.5)/cells) : 0);
-  const state = input.lookup(0.2, eta);
+  const state = input.lookup(initialZ, eta);
   state.thermo = thermoState(input.metadata, state.y, state.temperature);
-  if (!(state.upper > state.lower && state.thermo.cv > 0 && state.temperature >= nasaPolicy.effectiveMixtureIntersection_K[0] && state.temperature <= nasaPolicy.effectiveMixtureIntersection_K[1])) {
-    throw new Error('Actual selected table state lies outside this ideal-thermo qualification range');
+  if (!(state.upper > state.lower && (realFluid || state.thermo.cv > 0) && state.temperature >= range[0] && state.temperature <= range[1])) {
+    throw new Error('Actual selected table state lies outside the declared thermo qualification range');
   }
   return state;
 });
@@ -38,12 +46,14 @@ const pressure = input.receipt.case.pressure_pa;
 if (!(pressure > 0 && Number.isFinite(pressure))) throw new Error('Missing table pressure');
 const plan = { schema: 'fgm-source-split-case-v1', startTime: 0, kind, cells, length, velocity,
   dt, endTime, outer, integration, pressure, inputHashes: input.inputHashes,
-  nasaPolicy, initialEta,
+  nasaPolicy, initialEta, initialZ, progressSpecies: input.progressSpecies,
+  thermodynamics: realFluid?.record ?? {mode:'ideal-gas'}, skipUnusedDiffusion:skipUnusedDiffusion==='yes',
   thresholds: { massRelative: 1e-7, energyPerChemicalChange: 0.01,
     equationResidualRelative: 1e-6, sourceEnergyW: 1e-20,
     oldTimeAbsolute: 0, lookupCorrections: 0,
-    timestepCspanRms: 0.02, outerCspanRms: 0.01, caloricClosureRelative: 1e-8 },
-  assumptions: ['ideal-gas CFD thermo matches table mechanism', 'global Euler transport',
+    timestepCspanRms: 0.02, outerCspanRms: 0.01, caloricClosureRelative: 1e-8,
+    progressRepresentationAbsolute: 1e-8 },
+  assumptions: [realFluid ? 'Full-SRK CFD energy/density coupled to an ideal-gas-derived physical source manifold; thermal consistency is not assumed' : 'ideal-gas CFD thermo matches table mechanism', 'global Euler transport',
     'unity-Lewis diffusion', 'no second-order CFD claim', 'fixed-density source stages only'],
   validation: 'pending', scientificAcceptance: false };
 if (!options.out) { console.log(JSON.stringify({ dryRun: true, ...plan }, null, 2)); process.exit(0); }
@@ -54,9 +64,12 @@ function run(script, argv) {
   if (result.status !== 0) throw new Error(result.stderr || result.stdout || `Failed ${script}`);
 }
 run('prepare.mjs', ['--out', out, '--kind', 'heating', '--cells', String(cells), '--delta-t', String(dt)]);
-run('thermo-export.mjs', [resolve(options.metadata), '--out', `${out}/thermo-input`,
-  ...(options['nasa-extrapolation'] ? ['--nasa-extrapolation', options['nasa-extrapolation']] : [])]);
-await copyFile(`${out}/thermo-input/thermophysicalProperties`, `${out}/constant/thermophysicalProperties`);
+if (realFluid) await writeFile(`${out}/constant/thermophysicalProperties`, realFluid.dictionary);
+else {
+  run('thermo-export.mjs', [resolve(options.metadata), '--out', `${out}/thermo-input`,
+    ...(options['nasa-extrapolation'] ? ['--nasa-extrapolation', options['nasa-extrapolation']] : [])]);
+  await copyFile(`${out}/thermo-input/thermophysicalProperties`, `${out}/constant/thermophysicalProperties`);
+}
 await writeFile(`${out}/constant/constant.tbl`, input.raw);
 // Bind the retained copy explicitly, including when the case is decomposed.
 const combustion = (await readFile(`${out}/constant/combustionProperties`, 'utf8'))
@@ -74,7 +87,7 @@ for (let i = 0; i < input.metadata.species.length; i++) {
 for (const [name, dimensions, pick] of [
   ['p', '1 -1 -2 0 0 0 0', () => pressure], ['T', '0 0 0 1 0 0 0', s => s.temperature],
   ['Z', '0 0 0 0 0 0 0', s => s.z], ['c', '0 0 0 0 0 0 0', s => s.c],
-  ['Ha', '0 2 -2 0 0 0 0', s => s.thermo.enthalpy],
+  ['Ha', '0 2 -2 0 0 0 0', s => realFluid ? 0 : s.thermo.enthalpy],
 ]) await field(name, dimensions, states.map(pick));
 await field('U', '0 1 -1 0 0 0 0', [], true);
 let mesh = await readFile(`${out}/system/blockMeshDict`, 'utf8');
@@ -85,6 +98,7 @@ control = control.replace(/endTime [^;]+;/, `endTime ${endTime};`)
   .replace(/writeInterval [^;]+;/, 'writeInterval 1;')
   .replace('fgmEnergyForm sensibleEnthalpy;', 'fgmEnergyForm absoluteEnthalpy;');
 control += `\nfgmSourceIntegration ${integration};\nfgmProgressSourceEnabled yes;\n`;
+if (realFluid) control += `fgmRequireHaInitialization yes; fgmSkipUnusedDimix ${skipUnusedDiffusion};\n`;
 control += `writeFgmThermoClosure yes; fgmThermoClosureRelativeLimit ${plan.thresholds.caloricClosureRelative};\n`;
 control += `functions { sourceDensity { type writeObjects;
  libs ("libutilityFunctionObjects.so"); objects (rho); writeOption anyWrite;
@@ -95,8 +109,9 @@ const solution = (await readFile(`${out}/system/fvSolution`, 'utf8'))
 await writeFile(`${out}/system/fvSolution`, solution);
 const receipt = JSON.stringify({ ...plan,
   states: states.map(s => ({ z: s.z, eta: s.eta, c: s.c, source: s.source, temperature: s.temperature,
-    cMin: s.lower, cMax: s.upper, Ha: s.thermo.enthalpy,
-    density: pressure/(s.thermo.gasConstant*s.temperature) })) }, null, 2)+'\n';
+    cMin: s.lower, cMax: s.upper, Ha: realFluid ? null : s.thermo.enthalpy,
+    density: realFluid ? null : pressure/(s.thermo.gasConstant*s.temperature),
+    ...(realFluid ? {runtimeHaInitializationRequired:true,idealEstimates:{Ha:s.thermo.enthalpy,density:pressure/(s.thermo.gasConstant*s.temperature)}} : {}) })) }, null, 2)+'\n';
 await writeFile(`${out}/source-split-input.json`, receipt);
 // Replace the base generator's analytic-test receipt; its criteria do not apply.
 await writeFile(`${out}/verification-input.json`, receipt);
