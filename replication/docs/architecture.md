@@ -479,3 +479,8 @@ recording any explicitly selected, already bounded endpoint representation.
 Its `extend.py` selectively performs fresh longer chemical trajectories for
 observed positive source caps, preserving unaffected physical branch identities
 and recording a tighter-step physical spot comparison before table reuse.
+
+`validation/hybrid-water-review` reads immutable `fgm/hybrid-water` results and
+produces offline figures/HTML with input hashes. It has no physics, scheduler or
+publication side effects. Source bounds, independent-Z errors and energy-source
+projection remain separate diagnostics; the renderer never accepts the table.
