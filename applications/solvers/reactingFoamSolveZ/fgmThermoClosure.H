@@ -9,7 +9,7 @@ inline void auditFgmThermoClosure(const Foam::psiReactionThermo& thermo)
     using namespace Foam;
     const Time& time = thermo.T().mesh().time();
     if (!time.controlDict().lookupOrDefault<Switch>("writeFgmThermoClosure", false)) return;
-    if (time.value() != 0 && !time.writeTime()) return;
+    const bool writeSummary = time.value() == 0 || time.writeTime();
     if (thermo.he().name() != "h")
         FatalErrorInFunction << "FGM caloric audit currently requires sensible enthalpy" << exit(FatalError);
     const scalar limit = time.controlDict().lookupOrDefault<scalar>("fgmThermoClosureRelativeLimit", 1e-8);
@@ -51,12 +51,19 @@ inline void auditFgmThermoClosure(const Foam::psiReactionThermo& thermo)
     reduce(boundaryMaxAbsolute, maxOp<scalar>()); reduce(boundaryMaxRelative, maxOp<scalar>());
     reduce(squareSum, sumOp<scalar>()); reduce(cells, sumOp<label>());
     reduce(faces, sumOp<label>()); reduce(invalid, sumOp<label>());
-    Info<< "thermoClosure t=" << time.value() << " initial=" << (time.value() == 0 ? 1 : 0)
-        << " cells=" << cells << " boundaryFaces=" << faces << " invalid=" << invalid
-        << " maxAbs_J_kg=" << maxAbsolute << " rms_J_kg=" << std::sqrt(squareSum/max(label(1), cells))
-        << " maxRelative=" << maxRelative << " boundaryMaxAbs_J_kg=" << boundaryMaxAbsolute
-        << " boundaryMaxRelative=" << boundaryMaxRelative << " limit=" << limit << endl;
-    if (invalid || !cells || maxRelative > limit || boundaryMaxRelative > limit)
+    const bool failed = invalid || !cells || maxRelative > limit || boundaryMaxRelative > limit;
+    // Checking and summary frequency are deliberately separate. Always report
+    // a failure, including one on a timestep which does not write fields.
+    if (writeSummary || failed)
+    {
+        Info<< "thermoClosure t=" << time.value() << " initial=" << (time.value() == 0 ? 1 : 0)
+            << " afterInversion=" << 1
+            << " cells=" << cells << " boundaryFaces=" << faces << " invalid=" << invalid
+            << " maxAbs_J_kg=" << maxAbsolute << " rms_J_kg=" << std::sqrt(squareSum/max(label(1), cells))
+            << " maxRelative=" << maxRelative << " boundaryMaxAbs_J_kg=" << boundaryMaxAbsolute
+            << " boundaryMaxRelative=" << boundaryMaxRelative << " limit=" << limit << endl;
+    }
+    if (failed)
         FatalErrorInFunction << "Stored h is inconsistent with executing h(p,T,Y); see thermoClosure"
             << exit(FatalError);
 }

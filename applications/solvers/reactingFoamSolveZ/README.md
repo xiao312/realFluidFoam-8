@@ -160,10 +160,16 @@ Runtime checks still verify these assumptions with the executing field objects.
 
 `writeFgmThermoClosure yes` recomputes literal executing `thermo.he(p,T)` after
 inversion and compares it with stored sensible enthalpy at initialization and
-written corrections. It reports internal/boundary maximum errors and internal
+every energy correction. Successful summaries are emitted at written times;
+failures are emitted immediately, even between field writes. It reports internal/boundary maximum errors and internal
 RMS in J/kg. The normalized error uses max(1, |h|, |h(p,T)|, |Cp*T|).
 The default is off; enabled default limit is 1e-8. Nonfinite/unstable caloric
 states or excess error are fatal, without overwriting T or h. This catches
 false convergence at a JANAF bound. The source-stage full282 qualification uses
 1e-8 with its 1e-9 temperature iteration tolerance. Original polynomial ranges
 and any explicit diagnostic extrapolation remain separate input records.
+
+The audit runs immediately after thermo inversion, before the following pressure
+equation updates pressure. For a nonideal EOS it therefore qualifies inversion
+closure at that stage, not final post-pressure consistency or PIMPLE convergence.
+The latter still needs coupled residual and outer-iteration diagnostics.

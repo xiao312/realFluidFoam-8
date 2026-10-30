@@ -97,11 +97,14 @@ thermodynamics. Solver caloric closure must still be measured.
 
 The solver's opt-in `writeFgmThermoClosure` recomputes literal h(p,T,Y) through
 the executing library and compares it with stored h after thermo correction,
-at initialization and written times. It reports maximum/RMS error in J/kg and
+at initialization and every energy correction. Successful summaries are written
+at field-output times; failures are reported immediately. It reports maximum/RMS error in J/kg and
 normalizes by max(1, |h|, |h(T)|, |Cp*T|). A configured limit fails the run;
 it does not overwrite h or T. Warm stock-OF8 diagnostics declare 1e-4, matching
 the stock relative temperature iteration tolerance. Full282 source-splitting
 checks use 1e-8 with the tightened 1e-9 temperature iteration tolerance.
+The evaluation precedes the subsequent pressure correction. It does not replace
+a final-state nonideal pressure/enthalpy coupling or outer-convergence check.
 
 `probe-v2.C` is a compact check of the compiled reader: unchanged v1 source
 normalization, v2 raw source/mapping, degenerate pure-stream row and counted
