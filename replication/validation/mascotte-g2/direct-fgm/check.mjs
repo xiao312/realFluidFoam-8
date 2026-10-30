@@ -83,6 +83,9 @@ const report = { schema: 'forge-direct-warm-g2-diagnostic-v1', inputHashes: mani
   thermodynamics: manifest.thermodynamics ?? {mode:'warm-ideal'},
   caloricClosure: { required: Boolean(manifest.caloricClosure?.required), records: closure, rangeWarningCount },
   postPressureCaloricDrift: { records: postPressureClosure,
+    status: !postPressureClosure.length ? 'not-recorded' :
+      finite(postPressureClosure) && postPressureClosure.every(row => row.invalid === 0) ? 'measured' : 'invalid-measurement',
+    finalTimePresent: postPressureClosure.some(row => Math.abs(row.t-manifest.endTime) <= Math.max(1e-14, manifest.endTime*1e-8)),
     interpretation: 'Report-only executing h(p,T,Y) minus stored h after final pressure correction; no inversion-limit gate or field correction is applied. Assess pressure/outer-iteration sensitivity separately.' },
   coldInitialization: manifest.thermodynamics?.mode === 'cold-real-fluid'
     ? JSON.parse(await readFile(`${root}/cold-initialization.json`, 'utf8')) : null,
