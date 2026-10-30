@@ -42,11 +42,16 @@ def main():
     settings=dict(primary['extension_settings'],end_time_s=.02,max_time_step_s=1e-5,max_steps=200000,per_tail_wall_s=30)
     model=StateModel(ct.Solution(str(args.mechanism),transport_model=None),settings)
     if model.gas.species_names!=originals[0]['species_names']:raise ValueError('Mechanism species order differs from original state')
+    models={'phase':model.gas.name,'thermo_model':model.gas.thermo_model,
+        'kinetics_model':model.gas.kinetics_model,'transport_model':model.gas.transport_model,
+        'interpretation':'Ideal-gas GRI bulk kinetics with pressure-derived concentrations; not SRK full chemistry'}
+    if models['thermo_model']!='ideal-gas' or models['kinetics_model']!='bulk':
+        raise ValueError('Unexpected thermodynamic/kinetic model for the retained witnesses')
     args.out.mkdir(parents=True)
     record={**plan,'job_id':os.environ.get('SLURM_JOB_ID'),'source_commit':args.source_commit,
         'environment_sha256':args.environment_sha256,'cantera_extension_sha256':runtime_hash,
         'runtime_matches_original':runtime_hash==old['cantera_extension_sha256'],'audit_only':args.audit_only,
-        'settings':settings,'source_hashes':{p.name:sha(p) for p in HERE.glob('*.py')},
+        'models':models,'settings':settings,'source_hashes':{p.name:sha(p) for p in HERE.glob('*.py')},
         'dependency_hashes':{name:sha(HERE.parent/'hybrid-water'/name) for name in ['states.py','tails.py']},
         'status':'initializing','cases':[]}
     seeds=[];reports=[]
