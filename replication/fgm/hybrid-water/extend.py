@@ -109,8 +109,10 @@ def main():
         previous_physical_source_commit=original['source_commit'],previous_physical_job_id=original['job_id'],
         original_receipt_sha256=args.input_receipt_sha256,extension_settings=long_settings,
         new_fresh_integrations=len(selected)+1,cases=[],scientific_acceptance=False)
+    receipt['source_files']={p.name:sha(p) for p in Path(__file__).parent.glob('*.py')}
     start=time.monotonic()
     write_json(args.out/'inputs.json',plan)
+    write_json(args.out/'extension-settings.json',long_settings)
     shutil.copyfile(args.input/'phase-metadata.json',args.out/'phase-metadata.json')
     failed=[]
     for case in original['cases']:
@@ -124,6 +126,7 @@ def main():
             try:
                 branch,report=build_branch(model,raw,j,long_settings,folder,ct)
                 assert report['seed_index']==reports[j]['seed_index'], 'Fresh seed selection changed'
+                assert report['seed_Cwater']==reports[j]['seed_Cwater'], 'Fresh seed progress changed'
                 branches[j],reports[j]=branch,report
                 result.update(status=report['status'],numerically_complete=report['numerically_complete'],
                     physical_source_commit=args.source_commit,physical_job_id=os.environ['SLURM_JOB_ID'],
@@ -152,10 +155,13 @@ def main():
         receipt.update(status='incomplete_physical_extension',elapsed_s=time.monotonic()-start)
         write_json(args.out/'receipt.json',receipt);return 2
     try:
+        write_json(args.out/'profile-set.json',{'original_receipt_sha256':args.input_receipt_sha256,
+            'physical_branches':receipt['cases'],'source_commit':args.source_commit,
+            'job_id':os.environ['SLURM_JOB_ID']})
         representation=represent(model,branches,raw['Z'])
         write_json(args.out/'endpoint-representation.json',representation)
         axis,eta,limits,values,diagnostics=build(model,branches,reports,raw['Z'],settings,args.out)
-        write_table(args.out/'physical.tbl',model,axis,eta,limits,values,args.source_commit,sha(args.out/'inputs.json'))
+        write_table(args.out/'physical.tbl',model,axis,eta,limits,values,args.source_commit,sha(args.out/'profile-set.json'))
         receipt.update(status='diagnostic_table_exported_not_accepted',
             all_source_caps_inward=not diagnostics['outward_upper_nodes'] and not diagnostics['outward_lower_nodes'],
             full_progress_coverage_qualified=False)
