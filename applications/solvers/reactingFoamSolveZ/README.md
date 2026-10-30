@@ -240,3 +240,15 @@ pending until an admitted run supplies evidence.
 The `fgmZEndpoint` diagnostic subtracts0/1 before formatting the actual global
 Z range. It records out-of-range magnitudes without changing Z or its equation.
 This separates floating-point endpoint representation from material overshoot.
+
+The default-off `writeMixtureFractionBudget` diagnostic records the exact
+assembled Z residual, its ratio to the effective diagonal, and cellwise
+`ddt(rho)+div(phi)` after the scalar solve. A private constant-one field checks
+the conservative operator identity with the same density/flux and patch types.
+It changes neither Z nor rho. Each rank reports its worst out-of-range cell,
+coordinates, old/current Z and density, diagonal, residual and a separately
+reassembled post-solve diffusion witness. That last value is not a stored
+deferred correction for a nonorthogonal scheme. These reports distinguish
+iterative error, continuity mismatch and transport behavior; they impose no
+acceptance criterion or lookup-bound change. The stock compressible continuity
+message instead compares density with its EOS value and is not this residual.
