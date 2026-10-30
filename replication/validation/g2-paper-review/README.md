@@ -60,3 +60,12 @@ The first 100 microseconds are a numerical/startup diagnostic. Inlet speed
 estimates imply about 6.4 mm methane and 0.19 mm oxygen convection in that time;
 these are not developed downstream profiles. A longer transient, mesh/time
 sensitivity and a justified averaging interval remain necessary for M4/M5.
+
+If parallel sampling repeats exact processor-boundary coordinates, run
+`normalize.py --case RAW --run-record RUN.json --out NEW_DERIVATION` first.
+Its default is a read-only plan; `--apply` preserves all raw hashes and writes a
+separate derived snapshot. Only rows identical in every named numeric field at
+exactly identical coordinates can be deduplicated. Conflicting values fail;
+there is no tolerance, averaging or interpolation. The first row/order is
+retained. Use the derived `case/` and `run-record.json` for rendering. The shared
+reader remains strict, and the derivation receipt exposes every removed row.
