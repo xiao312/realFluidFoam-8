@@ -5,6 +5,7 @@
 #include "cyclicFvPatchFields.H"
 #include "Switch.H"
 #include "fgmDimixPolicy.H"
+#include "endpointCoordinate.H"
 #include <cmath>
 #include <exception>
 
@@ -58,6 +59,9 @@ steadyFlamelet<ReactionThermo>::steadyFlamelet
     if (!path.isAbsolute()) refuse("table must have an explicit absolute shared-case path");
     try { table_.reset(new forgeSteady::Table(path.c_str())); }
     catch (const std::exception& error) { refuse(error.what()); }
+    const word endpointPolicy(this->coeffs().template lookupOrDefault<word>("lookupRoundoffPolicy", "strict"));
+    if (endpointPolicy != "strict" && endpointPolicy != "endpoint64epsilon")
+        refuse("unknown lookupRoundoffPolicy; use strict or endpoint64epsilon");
     const scalar fixedChi=this->coeffs().template lookup<scalar>("fixedChi");
     const word definition(this->coeffs().lookup("chiDefinition"));
     if (!std::isfinite(fixedChi) || fixedChi != table_().chi || definition != table_().chiDefinition.c_str())
@@ -76,7 +80,7 @@ steadyFlamelet<ReactionThermo>::steadyFlamelet
     Info<< "steadyFlamelet contract: fixedChi=" << fixedChi << " chiDefinition=" << definition
         << " pressurePa=" << table_().pressure << " points=" << table_().size()
         << " progressTransport=0 source=0 temperatureOwner=thermo energy=Ha"
-        << " closure=laminar-delta-PDF fixedPhysicalProfile=1" << endl;
+        << " closure=laminar-delta-PDF fixedPhysicalProfile=1 lookupRoundoffPolicy=" << endpointPolicy << endl;
     correct();
 }
 
@@ -85,11 +89,50 @@ void steadyFlamelet<ReactionThermo>::correct()
 {
     PtrList<volScalarField>& species=const_cast<ReactionThermo&>(this->thermo()).composition().Y();
     Z_.correctBoundaryConditions();
+    const bool allowEndpointRoundoff = this->coeffs().template lookupOrDefault<word>("lookupRoundoffPolicy", "strict") == "endpoint64epsilon";
+    // Complete global input evidence is recorded before any rank can refuse a
+    // lookup. A first failing cell alone cannot establish a global bound.
+    scalar rawMinimum=GREAT, rawMaximum=-GREAT;
+    label nonfiniteCount=0;
+    const auto inspectCoordinate = [&](const scalar value)
+    {
+        if (!std::isfinite(value)) ++nonfiniteCount;
+        else { rawMinimum=min(rawMinimum,value); rawMaximum=max(rawMaximum,value); }
+    };
+    forAll(Z_, celli) inspectCoordinate(Z_[celli]);
+    forAll(Z_.boundaryField(), patchi)
+        forAll(Z_.boundaryField()[patchi], facei)
+            inspectCoordinate(Z_.boundaryField()[patchi][facei]);
+    reduce(rawMinimum,minOp<scalar>()); reduce(rawMaximum,maxOp<scalar>());
+    reduce(nonfiniteCount,sumOp<label>());
+    std::ostringstream inputEvidence;
+    inputEvidence << std::setprecision(17) << "steadyEndpointInput t=" << this->mesh().time().value()
+        << " rawMinZ=" << rawMinimum << " rawMaxZ=" << rawMaximum
+        << " belowZero=" << max(scalar(0),-rawMinimum)
+        << " aboveOne=" << max(scalar(0),rawMaximum-1)
+        << " maxOutsideDelta=" << max(max(scalar(0),-rawMinimum),max(scalar(0),rawMaximum-1))
+        << " nonfiniteCount=" << nonfiniteCount << " limit=" << forgeSteady::endpointRoundoffLimit()
+        << " policy=" << (allowEndpointRoundoff ? "endpoint64epsilon" : "strict");
+    Info<< inputEvidence.str().c_str() << endl;
+    label mappedCells=0, mappedPatchCalls=0;
+    scalar maxCoordinateDelta=0, maxElementCoordinateDelta=0;
+    const auto sample = [&](const scalar raw, const bool cell) -> forgeSteady::State
+    {
+        const forgeSteady::EndpointCoordinate coordinate=forgeSteady::endpointCoordinate(raw, allowEndpointRoundoff);
+        if (coordinate.delta != 0)
+        {
+            if (cell) ++mappedCells; else ++mappedPatchCalls;
+            maxCoordinateDelta=max(maxCoordinateDelta, mag(coordinate.delta));
+            maxElementCoordinateDelta=max(maxElementCoordinateDelta,
+                table_().elementCoordinateDifference(raw, coordinate.value));
+        }
+        return table_().lookup(coordinate.value);
+    };
     scalar worstSum=0, minZ=GREAT, maxZ=-GREAT;
     forAll(Z_, celli)
     {
         forgeSteady::State state;
-        try { state=table_().lookup(Z_[celli]); }
+        try { state=sample(Z_[celli], true); }
         catch (const std::exception& error)
         {
             FatalErrorInFunction << "steadyFlamelet cell=" << celli << " Z=" << Z_[celli]
@@ -119,13 +162,13 @@ void steadyFlamelet<ReactionThermo>::correct()
         forgeSteady::State state;
         try
         {
-            state=table_().lookup(Z_.boundaryField()[patchi][facei]);
+            state=sample(Z_.boundaryField()[patchi][facei], false);
             if (cyclic)
             {
                 // Coupled cyclic storage is an interpolated face value; unlike
                 // processor storage, it is not the neighbour cell value.
-                const forgeSteady::State owner=table_().lookup(localZ[facei]);
-                const forgeSteady::State neighbour=table_().lookup(neighbourZ[facei]);
+                const forgeSteady::State owner=sample(localZ[facei], false);
+                const forgeSteady::State neighbour=sample(neighbourZ[facei], false);
                 const scalar w=Z_.boundaryField()[patchi].patch().weights()[facei];
                 forAll(map_, s) state.y[s]=w*owner.y[s]+(1-w)*neighbour.y[s];
                 state.temperature=w*owner.temperature+(1-w)*neighbour.temperature;
@@ -144,6 +187,14 @@ void steadyFlamelet<ReactionThermo>::correct()
         heatRelease_.boundaryFieldRef()[patchi][facei]=state.heatRelease;
       }
     }
+    reduce(mappedCells,sumOp<label>()); reduce(mappedPatchCalls,sumOp<label>());
+    reduce(maxCoordinateDelta,maxOp<scalar>()); reduce(maxElementCoordinateDelta,maxOp<scalar>());
+    Info<< "steadyEndpointRepresentation t=" << this->mesh().time().value()
+        << " policy=" << (allowEndpointRoundoff ? "endpoint64epsilon" : "strict")
+        << " mappedCells=" << mappedCells << " mappedPatchCalls=" << mappedPatchCalls
+        << " maxCoordinateDelta=" << maxCoordinateDelta
+        << " maxElementCoordinateDelta=" << maxElementCoordinateDelta
+        << " limit=" << forgeSteady::endpointRoundoffLimit() << " transportedZModified=0" << endl;
     reduce(worstSum,maxOp<scalar>()); reduce(worstBoundary,maxOp<scalar>());
     reduce(minZ,minOp<scalar>()); reduce(maxZ,maxOp<scalar>());
     if (worstSum>1e-8 || worstBoundary>1e-8) refuse("species or boundary lookup consistency failed");

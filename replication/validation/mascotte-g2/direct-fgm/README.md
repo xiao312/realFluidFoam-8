@@ -236,3 +236,9 @@ also enforce the shared hePsiThermo/laminar/Fourier/absolute-enthalpy policy.
 This does not relax the fresh-time-zero, table identity, source or product
 checks. Qualify both property and physical periodic parity before using the
 optimized case for a G2 diagnostic.
+
+`--steady-endpoint-policy strict|endpoint64epsilon` selects the steady-only
+lookup representation contract. Strict is the default. The opt-in is recorded
+in the manifest and combustion dictionary; it does not bound transported Z.
+The fixed64-epsilon limit and required physical qualification are documented in
+`src/combustionModels/steadyFlamelet/README.md`. It is invalid for FGM closure.

@@ -14,7 +14,7 @@ import { nasaInversionPolicy } from '../../fgm-of8/direct-verification/thermo-po
 
 const options = {}, args = process.argv.slice(2);
 for (let i = 0; i < args.length; i += 2) {
-  if (!['--closure', '--table-dir', '--metadata', '--mesh-dir', '--mesh-mode', '--transport-tolerance', '--out', '--bounds', '--end-time', '--ranks', '--observations', '--decomposition', '--thermo-mode', '--thermo-dir', '--initialization', '--chemistry', '--initial-dt', '--max-dt', '--max-co', '--outer', '--nasa-extrapolation', '--source-integration', '--skip-unused-diffusion'].includes(args[i]) || !args[i + 1]) {
+  if (!['--steady-endpoint-policy', '--closure', '--table-dir', '--metadata', '--mesh-dir', '--mesh-mode', '--transport-tolerance', '--out', '--bounds', '--end-time', '--ranks', '--observations', '--decomposition', '--thermo-mode', '--thermo-dir', '--initialization', '--chemistry', '--initial-dt', '--max-dt', '--max-co', '--outer', '--nasa-extrapolation', '--source-integration', '--skip-unused-diffusion'].includes(args[i]) || !args[i + 1]) {
     throw new Error('Use --table-dir DIR --metadata FILE --mesh-dir DIR [--mesh-mode registered-200622|coarse-wedge-10000-v1] [--transport-tolerance VALUE] [--out NEW_CASE] [--bounds error|clamp] [--end-time S] [--ranks N] [--observations FILE] [--decomposition FILE] [--thermo-mode warm-ideal|cold-real-fluid --thermo-dir DIR] [--initialization FILE]');
   }
   options[args[i].slice(2)] = args[i + 1];
@@ -23,6 +23,8 @@ for (const key of ['table-dir', 'metadata', 'mesh-dir']) if (!options[key]) thro
 const closure = options.closure ?? 'fgm';
 if (!['fgm', 'steady-flamelet'].includes(closure)) throw Error('Use --closure fgm|steady-flamelet');
 const steady = closure === 'steady-flamelet';
+const endpointPolicy = options['steady-endpoint-policy'] ?? 'strict';
+if (!['strict', 'endpoint64epsilon'].includes(endpointPolicy) || (!steady && options['steady-endpoint-policy'])) throw Error('Endpoint policy is steady-only: strict|endpoint64epsilon');
 const meshMode = options['mesh-mode'] ?? 'registered-200622';
 if (!['registered-200622', 'coarse-wedge-10000-v1', 'paper-exit-wedge-10000-v1'].includes(meshMode)) throw new Error('Use --mesh-mode registered-200622|coarse-wedge-10000-v1|paper-exit-wedge-10000-v1');
 const transportTolerance = Number(options['transport-tolerance'] ?? 1e-10);
@@ -91,7 +93,7 @@ for (const [patch, state] of Object.entries(streams)) {
 }
 const slowerInlet = Math.min(...Object.values(streams).map(s => s.meanVelocity_m_s));
 const plan = { schema: steady ? 'forge-direct-g2-steady-flamelet-v1' : 'forge-direct-warm-g2-fgm-v1', closure,
-  ...(steady ? { steadyFlamelet: { fixedChi: input.chi, chiDefinition: input.chiDefinition, transportedProgress: false, addedHeatSource: false,
+  ...(steady ? { steadyFlamelet: { lookupRoundoffPolicy: endpointPolicy, endpointRoundoffLimit: 64*Number.EPSILON, fixedChi: input.chi, chiDefinition: input.chiDefinition, transportedProgress: false, addedHeatSource: false,
     originalSteadyConverged: input.receipt.original_steady_numerically_converged, originalResidual: input.receipt.original_final_state_diagnostics,
     temperatureOwner: 'full-SRK thermo inversion of transported Ha', tableTemperature: 'diagnostic and initialization only', pdf: 'laminar delta',
     originalModels: input.receipt.original_models } } : {}), startTime: 0, endTime, pressure, ranks, meshMode,
@@ -175,7 +177,7 @@ await put('constant/momentumTransport', header('momentumTransport') + 'simulatio
 await put('constant/thermophysicalTransport', header('thermophysicalTransport') + 'laminar { model Fourier; }\n');
 await put('constant/combustionProperties', header('combustionProperties') + (steady
   ? `combustionModel steadyFlamelet;
-steadyFlameletCoeffs { table "${resolve(out,'constant/steady.tbl').replaceAll('\\','/')}"; fixedChi ${input.chi}; chiDefinition ${input.chiDefinition}; }\n`
+steadyFlameletCoeffs { table "${resolve(out,'constant/steady.tbl').replaceAll('\\','/')}"; fixedChi ${input.chi}; chiDefinition ${input.chiDefinition}; lookupRoundoffPolicy ${endpointPolicy}; }\n`
   : `combustionModel fgmTable;
 fgmTableCoeffs { table "physical.tbl"; boundsPolicy ${bounds}; mixtureFractionField Z;
  progressField c; speciesSumLimit 1e-8; }\n`));

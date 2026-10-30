@@ -556,3 +556,8 @@ progress species. The actual-time-zero thermo probe owns Ha initialization;
 the checker verifies raw progress against that declared species sum. The existing
 ideal-thermo path and its criteria remain unchanged. No table acceptance,
 scheduler operation or source-coordinate substitution occurs in preparation.
+
+The steady-only endpoint representation helper is a fixed, explicit numerical
+policy between transported Z and strict table lookup. It leaves the transported
+field unchanged and reports elemental coordinate perturbations. The G2 generator
+selects the policy; neither the table nor the CFD evaluator grants acceptance.

@@ -236,3 +236,7 @@ and on: the fields and scientific verdicts must agree, enabled logs must contain
 finite nonnegative counters, and rank identities/call counts must match the
 executed serial/MPI configuration. Compilation and that parity check remain
 pending until an admitted run supplies evidence.
+
+The `fgmZEndpoint` diagnostic subtracts0/1 before formatting the actual global
+Z range. It records out-of-range magnitudes without changing Z or its equation.
+This separates floating-point endpoint representation from material overshoot.

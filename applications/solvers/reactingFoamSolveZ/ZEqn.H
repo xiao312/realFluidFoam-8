@@ -73,6 +73,12 @@
 
     fvOptions.correct(Z);
 
+    // Subtract the endpoint before formatting so even a few-ulp violation is
+    // visible independently of the stream's general precision.
+    Info<< "fgmZEndpoint t=" << runTime.value()
+        << " belowZero=" << max(scalar(0), -min(Z).value())
+        << " aboveOne=" << max(scalar(0), max(Z).value()-scalar(1))
+        << " transportedZModified=0" << endl;
     Info<< "fgmZ: transported mixture fraction " << Z.name()
         << " min/max " << min(Z).value() << " " << max(Z).value()
         << " (the table reports its own Z bounds on the next correct())" << endl;
