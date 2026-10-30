@@ -383,6 +383,14 @@ axial alignment, and labels OH mass fraction separately from optical OH*.
 It depends on the observation contract and reference extraction, not the solver
 runtime, scheduler or publication service.
 
+`validation/g2-paper-review` composes that named-sample reader and axial plotter
+with `mascotte-review`'s identified reference assets. It renders preliminary
+Cavalieri station profiles and instantaneous T/rho/OH maps without fabricating
+statistics. Optional `oh-lte-proxy` postprocessing consumes co-located actual
+instantaneous T/rho/OH and phase metadata; it computes the 308 nm LTE population
+approximation before any declared time averaging. Neither module performs LOS
+integration, radiative calibration, solver execution, acceptance or publication.
+
 The G2 generator's optional cold mode also consumes the exact real-fluid export
 and the qualified full-fork library receipt. Its initializer computes time-zero
 Ha with that runtime, including backflow reference values. Cold batch execution
