@@ -32,6 +32,12 @@ const equationRelative = equations.map(row => Math.abs(row.residualL1W) /
     .map(key => Math.abs(row[key]))));
 add('assembled_equation_relative_residual', Math.max(...equationRelative),
   manifest.thresholds.equationResidualRelative);
+const residualAudit = records('energyResidualAudit');
+if (manifest.requiresResidualAudit) {
+  add('coupled_residual_audit_present', residualAudit.length === equations.length ? 0 : 1, 0);
+  add('legacy_residual_duplicate_identity_W', residualAudit.length
+    ? Math.max(...residualAudit.map(row => row.duplicateIdentityErrorL1W)) : Infinity, 1e-8);
+}
 const rho0 = initial.mass / initial.volume;
 const analytical = {};
 if (manifest.kind === 'heating' || manifest.kind === 'conversion') {
@@ -103,6 +109,14 @@ const result = {
   qualification: 'numerical verification only; not independent review or scientific acceptance',
   kind: manifest.kind, input: manifest, initial, final, stateCount: states.length,
   equationCount: equations.length, analytical, checks,
+  residualAudit: residualAudit.length ? {
+    maxLegacyL1W: Math.max(...residualAudit.map(row => row.legacyL1W)),
+    maxActualFinalAbsoluteL1W: Math.max(...residualAudit.map(row => row.linearFinalAbsoluteL1W)),
+    minimumReconstructedInitialNormW: Math.min(...residualAudit.map(row => row.reconstructedInitialNormW)),
+    maximumIterations: Math.max(...residualAudit.map(row => row.linearIterations)),
+    iterationCeilingCount: residualAudit.filter(row => row.linearIterations >= 1000).length,
+    interpretation: 'Normalized iteration ceilings and dimensional matrix errors are reported separately; no solver tolerance or scientific acceptance was relaxed.',
+  } : null,
 };
 await writeFile(`${caseDir}/verification.json`, JSON.stringify(result, null, 2) + '\n');
 console.log(JSON.stringify({ status: result.status, kind: result.kind, checks }, null, 2));

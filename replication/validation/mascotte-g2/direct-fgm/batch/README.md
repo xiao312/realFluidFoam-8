@@ -3,7 +3,7 @@
 This module rebuilds the solver against the retained, hash-qualified custom
 combustion library and stock OF8 thermodynamics. It then runs fresh heating,
 contact, formation-energy conversion, and physical-table closed-state cases.
-Only after those numerical checks pass does it qualify a four-rank MPI contact
+Only after those numerical checks pass does it qualify an admitted-rank MPI contact
 case against serial and execute the warm G2-mesh startup diagnostic. A failed
 or absent prerequisite produces a retained refusal, not a fabricated pass.
 These are coupled-solver diagnostics, not cryogenic G2 or paper acceptance.
@@ -16,10 +16,38 @@ The table is explicit and immutable; do not silently select the previous
 Spitfire table if its energy formulation is known to be flawed. The generator's
 own input receipts still validate all scientific identities.
 
+Optional `ranks` defaults to 4 and accepts 1..32 on one admitted node;
+`memoryGiB` records the requested total memory (default 4). Optional `g2`
+contains `endTime_s` (default 0.00002), `observations` and `decomposition`, using
+the parent generator's configuration schemas. At 16 ranks the default geometric
+split is hierarchical [8,2,1]; at 32 it is [8,4,1]. Other counts use [N,1,1].
+The serial and parallel contact cases use the same max(80,4*N) fresh cells.
+MPI tests require the actual N-rank sum N*(N-1)/2. Admission resources remain
+the coordinator's responsibility; this wrapper verifies the actual task and
+node counts and records the configuration rather than inventing an allocation.
+
+Example additional manifest fields for the first 16-rank startup:
+
+```json
+{
+  "ranks": 16,
+  "memoryGiB": 16,
+  "g2": {
+    "endTime_s": 0.00002,
+    "observations": {
+      "profileInterval_s": 0.000001,
+      "fieldInterval_s": 0.000005,
+      "imageGrid": { "axialPoints": 401, "radialPoints": 81 }
+    },
+    "decomposition": { "method": "hierarchical", "n": [8,2,1], "order": "xyz" }
+  }
+}
+```
+
 Run `bash run.sh MANIFEST --plan` to inspect the plan without mutation.
-`--apply` requires an admitted f46 OF8 environment, four Slurm tasks, a single
-node, and new output/case paths. The existing adapter caps this request at 4 GiB
-total. This script never submits or cancels scheduler jobs. The coordinator owns
+`--apply` requires an admitted f46 OF8 environment, the exact requested Slurm
+task count, a single node, and new output/case paths. This script never submits
+or cancels scheduler jobs. The coordinator owns
 admission, source staging, deadlines and accounting. All generated state remains
 under the trial workspace, including HOME, TMPDIR and MPI session files.
 
@@ -32,11 +60,11 @@ linked library paths are recorded after the rebuild. Full realFluidFoam EOS
 libraries are deliberately outside this warm ideal-gas batch.
 
 MPI uses the allocation's OF8/OpenMPI launcher and libraries, with isolated
-single-host launching and no scheduler/rsh spawning. Its actual four-rank
+single-host launching and no scheduler/rsh spawning. Its actual requested-rank
 allreduce and serial/MPI contact agreement are required. A successful launcher
 version/help check alone is insufficient. Per-stage timeouts preserve failures;
 the overall scheduler wall allowance remains authoritative. The G2 stage is
-strict-bounds, fresh time zero, four ranks and 20 us. No clipped fallback or
+strict-bounds and fresh time zero. No clipped fallback or
 restart is attempted. Local verification is `bash -n run.sh build.sh` and
 `node --check preflight.mjs compare-contact.mjs`; actual qualification requires
 the admitted batch and retained results. Dependencies are the sibling case and

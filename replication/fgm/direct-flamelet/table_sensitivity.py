@@ -37,6 +37,9 @@ def main():
     parser.add_argument("--source-commit", required=True)
     parser.add_argument("--out", type=Path)
     parser.add_argument("--plan", action="store_true")
+    parser.add_argument("--branch-policy", choices=["post-peak-extinction/v1"])
+    parser.add_argument("--zero-endpoint-policy", choices=["zero-progress-numerical-tail/v1"])
+    parser.add_argument("--mechanism", type=Path)
     args = parser.parse_args()
     if not re.fullmatch("[0-9a-f]{40}", args.source_commit):
         parser.error("--source-commit requires the full source commit")
@@ -47,6 +50,8 @@ def main():
                "input_manifest_sha256": sha256(args.manifest), "metadata_sha256": sha256(args.metadata),
                "holdout_ids": [row["id"] for row in original["members"] if row["role"] == "held-out"],
                "grids": GRIDS, "raw_physics_modified": False, "scientific_acceptance": False,
+               "branch_policy": args.branch_policy,
+               "zeroEndpointPolicy": args.zero_endpoint_policy,
                "limitation": "Lookup density cannot resolve missing physical sampling or multi-valued states", "results": []}
     if args.plan:
         print(json.dumps(receipt, indent=2))
@@ -58,6 +63,10 @@ def main():
     for nz, nc in GRIDS:
         manifest = copy.deepcopy(original)
         manifest.update(z_points=nz, eta_points=nc)
+        if args.branch_policy is not None:
+            manifest["branch_policy"] = args.branch_policy
+        if args.zero_endpoint_policy is not None:
+            manifest["zeroEndpointPolicy"] = args.zero_endpoint_policy
         for member in manifest["members"]:
             path = Path(member["directory"])
             member["directory"] = str((path if path.is_absolute() else args.manifest.parent / path).resolve())
@@ -65,10 +74,13 @@ def main():
         manifest_path = args.out / (name + "-manifest.json")
         write_json(manifest_path, manifest)
         started = time.monotonic()
-        with (args.out / (name + ".log")).open("w") as log:
-            completed = subprocess.run([sys.executable, str(Path(__file__).with_name("table.py")),
+        command = [sys.executable, str(Path(__file__).with_name("table.py")),
                 "--manifest", str(manifest_path), "--metadata", str(args.metadata.resolve()),
-                "--source-commit", args.source_commit, "--out", str(args.out / name)], stdout=log, stderr=subprocess.STDOUT)
+                "--source-commit", args.source_commit, "--out", str(args.out / name)]
+        if args.mechanism is not None:
+            command += ["--mechanism", str(args.mechanism.resolve())]
+        with (args.out / (name + ".log")).open("w") as log:
+            completed = subprocess.run(command, stdout=log, stderr=subprocess.STDOUT)
         result = {"grid": [nz, nc], "exit": completed.returncode, "elapsed_s": time.monotonic() - started,
                   "manifest_sha256": sha256(manifest_path), "log_sha256": sha256(args.out / (name + ".log"))}
         if completed.returncode == 0:

@@ -29,10 +29,29 @@ records in the solver log and writes the actual `rho` and `he` fields. The
 before pressure correction or thermodynamic reconstruction. `energyState`
 reports actual discrete state integrals in joules and kilograms. Diagnostics
 retain additional matrices, so leave them disabled for routine production.
-The diagnostic matrices explicitly allocate zero off-diagonal storage where
-the operator is purely diagonal. OF8's residual API otherwise aborts on the
-standalone transient operator. This allocation happens after the equation solve
-and changes storage representation only, not the transported equation.
+The direct residual evaluator handles purely diagonal operators without
+accessing absent off-diagonal storage. Only the optional legacy-API witness
+allocates zero off-diagonal storage after solving, because that API otherwise
+aborts on a diagonal matrix. This changes diagnostic storage only.
+
+The equation budget now evaluates cell-integrated `source - A*he` explicitly
+from internal and boundary coefficients, counting each coupled neighbour once.
+OF8's scalar residual() applies coupled interfaces and then adds their source
+again. The retained r5 constant periodic cases exposed this exactly: the contact
+error was phi*h plus both cyclic diffusion coefficients times h. The new helper
+does not change the solved equation, coefficients or acceptance threshold.
+`writeEnergyResidualAudit yes` adds a diagnostic comparison against that legacy
+API and the predicted extra coupled contribution. It also reports the initial
+absolute residual and independently reconstructed OF8 normalization scale,
+alongside the actual solver iteration count. Near-constant fields can make that
+normalization scale approach roundoff and hit an iteration ceiling despite a
+small dimensional residual; the two facts must be reported separately.
+The implementation follows the actual coefficients used by OF8's
+[scalar solve](https://github.com/OpenFOAM/OpenFOAM-8/blob/master/src/finiteVolume/fvMatrices/fvScalarMatrix/fvScalarMatrix.C)
+and reconstructs its
+[normalization definition](https://github.com/OpenFOAM/OpenFOAM-8/blob/master/src/OpenFOAM/matrices/lduMatrix/lduMatrix/lduMatrixSolver.C).
+Runtime and parallel verification remain necessary; reading those sources alone
+does not qualify this implementation.
 
 Dependencies are the fork's combustion, thermophysical and transport libraries
 and OF8 finite-volume libraries. The module reads case files only; it does not

@@ -361,3 +361,10 @@ It has no runtime chemistry, scheduler or scientific approval dependency.
 The flamelet module's optional upstream patch is independently identified by
 original/patched source hashes; its energy and progress audits do not modify
 the physical data they inspect.
+
+`validation/g2-review` consumes explicit sampled CSV fields from the G2 generator
+and the identified Sharma Figure 4b reference. It separates instantaneous and
+time-mean profiles, retains missing image points, original captions and unresolved
+axial alignment, and labels OH mass fraction separately from optical OH*.
+It depends on the observation contract and reference extraction, not the solver
+runtime, scheduler or publication service.

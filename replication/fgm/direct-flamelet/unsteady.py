@@ -11,6 +11,7 @@ from common import failure, gas_and_streams, inputs, sha256, write_json
 def arguments(parser):
     parser.add_argument("--integration-config", type=Path, required=True)
     parser.add_argument("--upstream-patch-receipt", type=Path)
+    parser.add_argument("--upstream-cold-patch-receipt", type=Path)
 
 
 def main():
@@ -24,6 +25,8 @@ def main():
     for name in ("grid_points", "max_steps", "max_export_frames", "table_z_points", "table_eta_points"):
         if type(settings[name]) is not int or settings[name] < 3:
             raise ValueError(f"{name} must be an integer >= 3")
+    if type(settings.get("run_steady_control", True)) is not bool:
+        raise ValueError("run_steady_control must be boolean")
     if args.plan:
         print(json.dumps({"integration": settings, "initial_state": "fresh HP equilibrium", "physical_time_start_s": 0.0}))
         return 0
@@ -37,7 +40,7 @@ def main():
         from transient_export import check_rate_interface, export_frames
         from transient_monitor import ClippingMonitor
         from spitfire_identity import runtime_identity
-        receipt["spitfire_runtime"] = runtime_identity(settings, args.upstream_patch_receipt)
+        receipt["spitfire_runtime"] = runtime_identity(settings, args.upstream_patch_receipt, args.upstream_cold_patch_receipt)
         gas, streams = gas_and_streams(ct, args, config, receipt)
         mechanism = ChemicalMechanismSpec(cantera_solution=gas)
         fuel = mechanism.stream("TPX", (config["fuel"]["temperature_k"], config["pressure_pa"], config["fuel"]["mole_fractions"]))
@@ -60,35 +63,44 @@ def main():
             raise ValueError("Griffon/Cantera finite-rate kernel check failed; inspect rate-interface.json")
         np.savez_compressed(args.out / "initial.npz", Z=flamelet.mixfrac_grid,
                             interior_state=flamelet.initial_interior_state, chi=flamelet.dissipation_rate)
-        control = Flamelet(FlameletSpec(mech_spec=mechanism, fuel_stream=fuel, oxy_stream=oxidizer,
-                           initial_condition="equilibrium", grid_points=settings["grid_points"], grid_type="clustered",
-                           stoich_dissipation_rate=settings["steady_control_chi_st_s_inverse"],
-                           heat_transfer="adiabatic", include_enthalpy_flux=True, include_variable_cp=True))
-        try:
-            steady = control.compute_steady_state(tolerance=1e-6, verbose=True,
-                        newton_args={"max_iterations": 20}, psitc_args={"max_iterations": 100},
-                        transient_args={"extra_integrator_args": {"maximum_time_step_count": 1000}})
-            np.savez_compressed(args.out / "steady-control.npz", Z=steady.mixture_fraction_values,
-                                T_K=steady["temperature"], Y=np.stack([steady["mass fraction " + name] for name in gas.species_names], axis=1),
-                                species=np.array(gas.species_names), chi_st=settings["steady_control_chi_st_s_inverse"])
-            # The upstream time-step cap can return before steady convergence.
-            # This diagnostic uses the exact pinned operator and its variable scales.
-            residual = float(np.max(abs(control._adiabatic_rhs(0.0, control.current_interior_state) / control._variable_scales)))
-            receipt["steady_control"] = {"solver_returned": True, "scaled_rhs_max": residual,
-                                         "steady_residual_below_1e_minus_6": residual <= 1e-6,
-                                         "peak_temperature_k": float(np.max(steady["temperature"])),
-                                         "artifact_sha256": sha256(args.out / "steady-control.npz"),
-                                         "scientific_acceptance": False, "reused_for_transient": False}
-        except Exception as control_error:
-            receipt["steady_control"] = {"solver_returned": False, "error_type": type(control_error).__name__,
-                                         "error": str(control_error), "scientific_acceptance": False,
-                                         "reused_for_transient": False}
-            if hasattr(control_error, "times") and hasattr(control_error, "states"):
-                np.savez_compressed(args.out / "steady-control-partial.npz", time_s=control_error.times,
-                                    interior_state=control_error.states, Z=control.mixfrac_grid)
-                receipt["steady_control"]["partial_sha256"] = sha256(args.out / "steady-control-partial.npz")
+        receipt["phase_elapsed_s"] = {"initialization_and_rate_check": time.monotonic() - started}
+        control_started = time.monotonic()
+        if settings.get("run_steady_control", True):
+            control = Flamelet(FlameletSpec(mech_spec=mechanism, fuel_stream=fuel, oxy_stream=oxidizer,
+                               initial_condition="equilibrium", grid_points=settings["grid_points"], grid_type="clustered",
+                               stoich_dissipation_rate=settings["steady_control_chi_st_s_inverse"],
+                               heat_transfer="adiabatic", include_enthalpy_flux=True, include_variable_cp=True))
+            try:
+                steady = control.compute_steady_state(tolerance=1e-6, verbose=True,
+                            newton_args={"max_iterations": 20}, psitc_args={"max_iterations": 100},
+                            transient_args={"extra_integrator_args": {"maximum_time_step_count": 1000}})
+                np.savez_compressed(args.out / "steady-control.npz", Z=steady.mixture_fraction_values,
+                                    T_K=steady["temperature"], Y=np.stack([steady["mass fraction " + name] for name in gas.species_names], axis=1),
+                                    species=np.array(gas.species_names), chi_st=settings["steady_control_chi_st_s_inverse"])
+                # The upstream time-step cap can return before steady convergence.
+                # This diagnostic uses the exact pinned operator and its variable scales.
+                residual = float(np.max(abs(control._adiabatic_rhs(0.0, control.current_interior_state) / control._variable_scales)))
+                receipt["steady_control"] = {"solver_returned": True, "scaled_rhs_max": residual,
+                                             "steady_residual_below_1e_minus_6": residual <= 1e-6,
+                                             "peak_temperature_k": float(np.max(steady["temperature"])),
+                                             "artifact_sha256": sha256(args.out / "steady-control.npz"),
+                                             "scientific_acceptance": False, "reused_for_transient": False}
+            except Exception as control_error:
+                receipt["steady_control"] = {"solver_returned": False, "error_type": type(control_error).__name__,
+                                             "error": str(control_error), "scientific_acceptance": False,
+                                             "reused_for_transient": False}
+                if hasattr(control_error, "times") and hasattr(control_error, "states"):
+                    np.savez_compressed(args.out / "steady-control-partial.npz", time_s=control_error.times,
+                                        interior_state=control_error.states, Z=control.mixfrac_grid)
+                    receipt["steady_control"]["partial_sha256"] = sha256(args.out / "steady-control-partial.npz")
+        else:
+            receipt["steady_control"] = {"status": "explicitly_skipped", "solver_returned": False,
+                "reason": "Independent control disabled in hashed integration settings; no control qualification claimed",
+                "scientific_acceptance": False, "reused_for_transient": False}
+        receipt["phase_elapsed_s"]["steady_control"] = time.monotonic() - control_started
         write_json(args.out / "receipt.json", receipt)
         monitor = ClippingMonitor(gas)
+        transient_started = time.monotonic()
         try:
             with monitor:
                 solution = flamelet.integrate_to_time(settings["final_time_s"], first_time_step=settings["first_step_s"],
@@ -109,6 +121,7 @@ def main():
                 writer.writerow(["physical_time_s", "negative_species_entries", "minimum_species_before_clip",
                                  "minimum_temperature_before_clip_K", "maximum_species_correction", "maximum_element_correction"])
                 writer.writerows(monitor.rows)
+        receipt["phase_elapsed_s"]["physical_transient"] = time.monotonic() - transient_started
         times = solution.time_values
         z = solution.mixture_fraction_values
         temperatures = solution["temperature"]
@@ -122,7 +135,9 @@ def main():
             raise ValueError("Nonfinite transient solution; raw trajectory retained")
         if times[0] != 0.0 or abs(times[-1] - settings["final_time_s"]) > 1e-10 * settings["final_time_s"]:
             raise ValueError("Integrator did not cover the requested physical time interval; raw trajectory retained")
+        export_started = time.monotonic()
         metrics = export_frames(ct, gas, mechanism, streams, config, settings, receipt, args, z, times, temperatures, fractions)
+        receipt["phase_elapsed_s"]["frame_export"] = time.monotonic() - export_started
         write_json(args.out / "diagnostics.json", metrics)
         receipt.update(status="transient_exported_not_accepted", elapsed_s=time.monotonic() - started,
                        completed_at=datetime.now(timezone.utc).isoformat(),

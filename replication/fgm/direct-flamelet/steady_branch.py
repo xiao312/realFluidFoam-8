@@ -13,6 +13,7 @@ def arguments(parser):
     parser.add_argument("--branch-config", type=Path, required=True)
     parser.add_argument("--case-index", type=int)
     parser.add_argument("--upstream-patch-receipt", type=Path)
+    parser.add_argument("--upstream-cold-patch-receipt", type=Path)
 
 
 def validate(settings):
@@ -38,7 +39,7 @@ def solve_case(args, config, receipt, settings):
     flamelet = None
     try:
         from spitfire_identity import runtime_identity
-        receipt["spitfire_runtime"] = runtime_identity(settings, args.upstream_patch_receipt)
+        receipt["spitfire_runtime"] = runtime_identity(settings, args.upstream_patch_receipt, args.upstream_cold_patch_receipt)
         chi = settings["chi_st_s_inverse"][args.case_index]
         gas, streams = gas_and_streams(ct, args, config, receipt)
         mechanism = ChemicalMechanismSpec(cantera_solution=gas)
@@ -120,6 +121,8 @@ def run_branch(args, receipt, settings):
                    "--out", str(output.resolve())]
         if args.upstream_patch_receipt is not None:
             command += ["--upstream-patch-receipt", str(args.upstream_patch_receipt.resolve())]
+        if args.upstream_cold_patch_receipt is not None:
+            command += ["--upstream-cold-patch-receipt", str(args.upstream_cold_patch_receipt.resolve())]
         case_started = time.monotonic()
         with (args.out / f"chi-{index:02d}.log").open("w") as log:
             try:

@@ -109,6 +109,10 @@ const Switch writeEnergyBudget
 (
     runTime.controlDict().lookupOrDefault<Switch>("writeEnergyBudget", false)
 );
+const Switch writeEnergyResidualAudit
+(
+    runTime.controlDict().lookupOrDefault<Switch>("writeEnergyResidualAudit", false)
+);
 if (writeEnergyBudget)
 {
     rho.writeOpt() = IOobject::AUTO_WRITE;

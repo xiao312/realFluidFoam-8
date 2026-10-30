@@ -36,3 +36,11 @@ temperature-versus-scalar-dissipation curves. Its logarithmic abscissa is
 calibrated independently. The published branch endpoint is not a calculated
 extinction bracket; establishing that requires both burning and extinguished
 calculations, with their inlet temperatures and numerical settings identified.
+
+`branch_compare.py --branch RUN --reference FIG3_JSON --output NEW_DIR` verifies
+the branch receipt and retained NPZ hashes without writing. Add `--apply` to
+render both the burning range and all retained peak temperatures, plus CSVs for
+Figure 2. Failed residual/process verdicts remain in the result and figure
+legend. It does not infer extinction convergence from a cold final state. The
+initial supported run has a known upstream energy-index defect; this limitation
+is recorded explicitly. A tampered receipt or profile fails before rendering.

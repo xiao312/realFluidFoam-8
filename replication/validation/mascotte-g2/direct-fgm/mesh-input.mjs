@@ -50,7 +50,59 @@ function readFaces(raw, pointCount) {
   } };
 }
 
-export async function inspectMesh(root) {
+function boundaryGeometry(boundary, pointList, faceList) {
+  const result = {};
+  for (const match of boundary.toString().matchAll(/(\w+)\s*\{([^{}]*)\}/g)) {
+    const count = /nFaces\s+(\d+)\s*;/.exec(match[2]);
+    const start = /startFace\s+(\d+)\s*;/.exec(match[2]);
+    if (!count || !start) continue;
+    const patch = { type: /type\s+(\w+)\s*;/.exec(match[2])?.[1], faces: Number(count[1]),
+      minX: Infinity, maxX: -Infinity, minRadius: Infinity, maxRadius: -Infinity, axialPlanes: [] };
+    // The two wedge planes contain almost all boundary faces, but are not
+    // injector surfaces. Do not walk 2*cells merely to infer the lip location.
+    if (patch.type === 'wedge') {
+      result[match[1]] = { type: patch.type, faces: patch.faces, inspected: false,
+        reason: 'Azimuthal wedge plane excluded from injector-surface audit' };
+      continue;
+    }
+    const planes = new Map();
+    for (let face = Number(start[1]); face < Number(start[1]) + patch.faces; face++) {
+      const vertices = faceList.face(face).map(n => Array.from(pointList.points.slice(n * 3, n * 3 + 3)));
+      let minX = Infinity, maxX = -Infinity, minR = Infinity, maxR = -Infinity;
+      for (const [x, y, z] of vertices) {
+        minX = Math.min(minX, x); maxX = Math.max(maxX, x);
+        const r = Math.hypot(y, z); minR = Math.min(minR, r); maxR = Math.max(maxR, r);
+      }
+      patch.minX = Math.min(patch.minX, minX); patch.maxX = Math.max(patch.maxX, maxX);
+      patch.minRadius = Math.min(patch.minRadius, minR); patch.maxRadius = Math.max(patch.maxRadius, maxR);
+      // Compact face-plane audit. Only genuinely near-constant-x faces qualify;
+      // sloped/chamber surfaces are not forced into an injection plane.
+      if (maxX - minX <= 1e-8) {
+        let axialArea = 0;
+        const first = vertices[0];
+        for (let i = 1; i < vertices.length - 1; i++) {
+          axialArea += ((vertices[i][1] - first[1]) * (vertices[i + 1][2] - first[2]) -
+            (vertices[i][2] - first[2]) * (vertices[i + 1][1] - first[1])) / 2;
+        }
+        if (Math.abs(axialArea) <= 1e-20) continue;
+        const key = Math.round((minX + maxX) / 2 / 1e-8);
+        if (!planes.has(key)) planes.set(key, { groupedX_m: key * 1e-8, minX, maxX,
+          minRadius: minR, maxRadius: maxR, faces: 0, signedAxialArea_m2: 0, absoluteAxialArea_m2: 0 });
+        const plane = planes.get(key);
+        plane.faces++; plane.signedAxialArea_m2 += axialArea; plane.absoluteAxialArea_m2 += Math.abs(axialArea);
+        plane.minX = Math.min(plane.minX, minX); plane.maxX = Math.max(plane.maxX, maxX);
+        plane.minRadius = Math.min(plane.minRadius, minR); plane.maxRadius = Math.max(plane.maxRadius, maxR);
+      }
+    }
+    patch.axialPlanes = [...planes.values()].sort((a, b) => a.groupedX_m - b.groupedX_m);
+    if (!patch.faces) patch.minX = patch.maxX = patch.minRadius = patch.maxRadius = null;
+    result[match[1]] = patch;
+  }
+  return { coordinateUnits: 'm', axialPlaneGrouping_m: 1e-8, patches: result,
+    paperAxialOrigin_m: null, interpretation: 'Measured non-wedge boundary geometry only. A paper-origin transform requires injector-surface interpretation and a cited drawing.' };
+}
+
+export async function inspectMesh(root, options = {}) {
   const manifestRaw = await readFile(`${root}/manifest.json`);
   if (digest(manifestRaw) !== registeredManifest) throw new Error('Mesh is not the registered immutable asset');
   const manifest = JSON.parse(manifestRaw);
@@ -113,7 +165,9 @@ export async function inspectMesh(root) {
   }
   return { schema: 'registered-g2-mesh-inlet-audit-v1', manifestSha256: registeredManifest,
     meshSha256: manifest.mesh_sha256, pointCount: pointList.count, faceCount: faceList.count,
-    patches, files, paperGeometryQualified: false };
+    cellCount: manifest.counts.cells,
+    patches, files, paperGeometryQualified: false,
+    ...(options.boundaryGeometry ? { boundaryGeometry: boundaryGeometry(buffers.boundary, pointList, faceList) } : {}) };
 }
 
 export async function copyMesh(root, out) {

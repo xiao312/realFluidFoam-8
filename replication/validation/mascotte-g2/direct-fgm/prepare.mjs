@@ -4,11 +4,12 @@ import { fileURLToPath } from 'node:url';
 import { spawnSync } from 'node:child_process';
 import { loadPhysicalTable, thermoState } from '../../fgm-of8/direct-verification/physical-input.mjs';
 import { inspectMesh, copyMesh } from './mesh-input.mjs';
+import { loadRunControls, decompositionDictionary, functionObjects } from './observations.mjs';
 
 const options = {}, args = process.argv.slice(2);
 for (let i = 0; i < args.length; i += 2) {
-  if (!['--table-dir', '--metadata', '--mesh-dir', '--out', '--bounds', '--end-time', '--ranks'].includes(args[i]) || !args[i + 1]) {
-    throw new Error('Use --table-dir DIR --metadata FILE --mesh-dir DIR [--out NEW_CASE] [--bounds error|clamp] [--end-time S] [--ranks N]');
+  if (!['--table-dir', '--metadata', '--mesh-dir', '--out', '--bounds', '--end-time', '--ranks', '--observations', '--decomposition'].includes(args[i]) || !args[i + 1]) {
+    throw new Error('Use --table-dir DIR --metadata FILE --mesh-dir DIR [--out NEW_CASE] [--bounds error|clamp] [--end-time S] [--ranks N] [--observations FILE] [--decomposition FILE]');
   }
   options[args[i].slice(2)] = args[i + 1];
 }
@@ -17,6 +18,7 @@ const bounds = options.bounds ?? 'error', endTime = Number(options['end-time'] ?
 const ranks = Number(options.ranks ?? 2);
 if (!['error', 'clamp'].includes(bounds) || !(endTime > 0 && endTime <= 0.1) ||
     !Number.isInteger(ranks) || ranks < 1 || ranks > 64) throw new Error('Invalid diagnostic bounds, duration or ranks');
+const controls = await loadRunControls(options.observations, options.decomposition, endTime, ranks);
 const input = await loadPhysicalTable(resolve(options['table-dir']), resolve(options.metadata));
 const mesh = await inspectMesh(resolve(options['mesh-dir']));
 const pressure = input.receipt.case.pressure_pa;
@@ -39,6 +41,7 @@ for (const [patch, state] of Object.entries(streams)) {
 const slowerInlet = Math.min(...Object.values(streams).map(s => s.meanVelocity_m_s));
 const plan = { schema: 'forge-direct-warm-g2-fgm-v1', startTime: 0, endTime, pressure, ranks,
   energyForm: 'absoluteEnthalpy', boundsPolicy: bounds, initial, streams, mesh,
+  ...controls,
   inputHashes: input.inputHashes, sourceTableCase: input.receipt.case,
   approximations: ['warm ideal-gas thermo', 'constant viscosity and Prandtl number', 'unity Lewis diffusion',
     'laminar resolved diagnostic', 'retained wedge geometry differs from paper',
@@ -113,29 +116,17 @@ await put('system/fvSolution', header('fvSolution') + `solvers {
 PIMPLE { pMin 1000; pMax 1e8; pRef ${pressure}; momentumPredictor yes;
  nOuterCorrectors 2; nCorrectors 2; nNonOrthogonalCorrectors 0; }
 relaxationFactors { equations { ".*" 1; } }\n`);
-await put('system/decomposeParDict', header('decomposeParDict') + `numberOfSubdomains ${ranks};
-method simple; simpleCoeffs { n (${ranks} 1 1); delta 0.001; }\n`);
+await put('system/decomposeParDict', header('decomposeParDict') + decompositionDictionary(controls.decomposition, ranks));
 await put('system/controlDict', header('controlDict') + `application reactingFoamSolveZ;
 libs ("libcombustionModels.so"); startFrom startTime; startTime 0;
 stopAt endTime; endTime ${endTime}; deltaT ${Math.min(1e-9, endTime / 100)};
 adjustTimeStep yes; maxCo 0.4; maxDeltaT ${Math.min(1e-7, endTime / 20)};
-writeControl adjustableRunTime; writeInterval ${endTime / 4}; purgeWrite 0;
+writeControl adjustableRunTime; writeInterval ${controls.observations.fieldInterval_s}; purgeWrite 0;
 writeFormat ascii; writePrecision 12; writeCompression off;
 timeFormat general; timePrecision 12; runTimeModifiable no;
 fgmEnergyForm absoluteEnthalpy; writeEnergyBudget yes;
 functions {
- samples { type sets; libs ("libsampling.so"); writeControl writeTime;
-  interpolationScheme cellPoint; setFormat raw; fields (T Z c CH4 O2 CO2 CO OH Ha);
-  sets (
-   nearAxis { type uniform; axis x; start (0.0001 0.0001 0); end (0.1999 0.0001 0); nPoints 400; }
-   radial30mm { type uniform; axis y; start (0.03 0.0001 0); end (0.03 0.0248 0); nPoints 200; }
-   radial60mm { type uniform; axis y; start (0.06 0.0001 0); end (0.06 0.0248 0); nPoints 200; }
-  );
- }
- ${['ch4inlet', 'loxinlet', 'outlet'].map(patch => `massFlux_${patch} {
-  type surfaceFieldValue; libs ("libfieldFunctionObjects.so"); writeControl timeStep; writeInterval 10;
-  regionType patch; name ${patch}; operation sum; fields (phi); writeFields no; log yes;
- }`).join('\n')}
+ ${functionObjects(controls.observations)}
 }\n`);
 await put('direct-g2-input.json', JSON.stringify(plan, null, 2) + '\n');
 await put('mesh-input-audit.json', JSON.stringify(mesh, null, 2) + '\n');

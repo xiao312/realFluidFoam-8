@@ -8,14 +8,29 @@ import numpy as np
 from common import sha256, write_json
 from table_io import heldout_report, interpolate_profile, load_member
 from table_projection import project
+from table_branch import POLICY, select as select_branch
+from table_endpoint import POLICY as ZERO_ENDPOINT_POLICY, close as close_zero_endpoint
 
 
-def build(members, z_axis, eta_axis):
+def build(members, z_axis, eta_axis, branch_policy=None):
     profiles = np.array([interpolate_profile(member, z_axis) for member in members])
     output = np.empty((len(z_axis), len(eta_axis), profiles.shape[2]))
-    lower, upper, degeneracies, reversals = [], [], [], []
+    lower, upper, degeneracies, reversals, branch_audits = [], [], [], [], []
+    if branch_policy is not None:
+        if branch_policy != POLICY or any(member["receipt"]["status"] != "transient_snapshot" for member in members):
+            raise ValueError("Extinction policy requires a matched transient family")
+        times = np.array([member["receipt"]["physical_time_s"] for member in members])
+        if not np.all(np.isfinite(times)):
+            raise ValueError("Finite physical frame times required")
+        identities = {(member["receipt"]["source_commit"], member["receipt"]["started_at"],
+                       member["receipt"]["integration_config_sha256"]) for member in members}
+        if len(identities) != 1:
+            raise ValueError("Branch selection cannot combine different physical trajectories")
     for j, mixture in enumerate(z_axis):
         states = profiles[:, j, :]
+        if branch_policy is not None:
+            states, audit = select_branch(states, times, members[0]["columns"], mixture)
+            branch_audits.append(audit)
         progress = states[:, 2]
         low, high = float(np.min(progress)), float(np.max(progress))
         lower.append(low)
@@ -42,7 +57,9 @@ def build(members, z_axis, eta_axis):
                                           for k in range(states.shape[1])])
     return {"z": z_axis, "eta": eta_axis, "c_min": np.array(lower), "c_max": np.array(upper),
             "values": output, "columns": members[0]["columns"],
-            "degenerate_rows": degeneracies, "family_order_reversal_Z": reversals}
+            "degenerate_rows": degeneracies, "family_order_reversal_Z": reversals,
+            "branch_policy": branch_policy, "branch_selection": branch_audits,
+            "branch_start_times_s": [row["start_time_s"] for row in branch_audits]}
 
 
 def write_of8(path, model, species, source_commit, combined_hash):
@@ -70,6 +87,7 @@ def main():
     parser.add_argument("--manifest", required=True, type=Path)
     parser.add_argument("--metadata", required=True, type=Path)
     parser.add_argument("--source-commit", required=True)
+    parser.add_argument("--mechanism", type=Path)
     parser.add_argument("--out", type=Path)
     parser.add_argument("--plan", action="store_true")
     args = parser.parse_args()
@@ -102,31 +120,56 @@ def main():
     if type(z_count) is not int or z_count < 3 or type(eta_count) is not int or eta_count < 2:
         parser.error("grid point counts invalid")
     kinds = sorted({item["receipt"]["status"] for item in members})
+    if manifest.get("branch_policy") not in (None, POLICY):
+        parser.error("unknown branch_policy")
+    if manifest.get("zeroEndpointPolicy") not in (None, ZERO_ENDPOINT_POLICY):
+        parser.error("unknown zeroEndpointPolicy")
     plan = {"training": [item["id"] for item in training], "held_out": [item["id"] for item in members if item["role"] == "held-out"],
             "grid": [z_count, eta_count], "species": len(species), "physical_profile_kinds": kinds,
+            "branch_policy": manifest.get("branch_policy"),
+            "zeroEndpointPolicy": manifest.get("zeroEndpointPolicy"),
             "scope": "finite-rate data on measured C coverage; no claim of a complete manifold"}
     if args.plan:
         print(json.dumps(plan, indent=2))
         return 0
     if args.out is None or args.out.exists():
         parser.error("--out must be a new directory")
-    model = build(training, np.linspace(0, 1, z_count), np.linspace(0, 1, eta_count))
+    model = build(training, np.linspace(0, 1, z_count), np.linspace(0, 1, eta_count), manifest.get("branch_policy"))
     projection = project(model, metadata)
+    endpoint_projection = {"policy": None, "applied_to_new_derivation": False}
+    if manifest.get("zeroEndpointPolicy") is not None:
+        import cantera as ct
+        mechanism_path = args.mechanism or Path(metadata["mechanism"])
+        if ct.__version__ != "3.2.0" or sha256(mechanism_path) != metadata["mechanismSha256"]:
+            raise ValueError("Endpoint policy requires the exact mechanism and Cantera3.2.0")
+        gas = ct.Solution(str(mechanism_path))
+        if gas.species_names != species:
+            raise ValueError("Endpoint mechanism species order differs from table")
+        endpoint_projection = close_zero_endpoint(ct, gas, model, first["case"]["pressure_pa"])
+        args.out.mkdir(parents=True)
+        write_json(args.out / "zero-endpoint-projection.json", endpoint_projection)
+        if not endpoint_projection["within_numerical_bounds"]:
+            raise ValueError("Endpoint correction is not numerical; retained audit refuses publication")
     peaks = np.max(np.array([np.max(abs(item["values"]), axis=0) for item in members]), axis=0)
-    reports = {item["id"]: heldout_report(model, item["z"], item["values"], peaks) for item in members if item["role"] == "held-out"}
-    spatial = {item["id"]: heldout_report(model, item["spatial_holdout_z"], item["spatial_holdout_values"], peaks) for item in training}
+    reports = {item["id"]: heldout_report(model, item["z"], item["values"], peaks, item["receipt"].get("physical_time_s")) for item in members if item["role"] == "held-out"}
+    spatial = {item["id"]: heldout_report(model, item["spatial_holdout_z"], item["spatial_holdout_values"], peaks, item["receipt"].get("physical_time_s")) for item in training}
     source_hashes = {item["id"]: item["profile_sha256"] for item in training}
     combined = hashlib.sha256(json.dumps(source_hashes, sort_keys=True).encode()).hexdigest()
     coverage = {"Z": model["z"].tolist(), "C_min": model["c_min"].tolist(), "C_max": model["c_max"].tolist(),
                 "degenerate_Z": model["degenerate_rows"], "family_order_reversal_Z": model["family_order_reversal_Z"],
                 "cold_unreacted_interior_covered": bool(np.all(model["c_min"][1:-1] <= 1e-12)),
+                "cold_C_zero_strictly_covered": bool(np.all(model["c_min"][1:-1] == 0)),
+                "branch_policy": model["branch_policy"],
+                "zeroEndpointPolicy": manifest.get("zeroEndpointPolicy"),
                 "full_unsteady_manifold": False, "presumed_PDF": False, "out_of_range": "refuse",
                 "python_holdout_progress_endpoint_tolerance": 1e-12,
                 "python_holdout_degenerate_span_threshold": 1e-12,
                 "OF8_admissibility": "C++ strict default has no endpoint tolerance and only exactly zero span is degenerate; diagnostic clamp is separate",
                 "progress": "transport raw Y_CO2+Y_CO; eta is only a local lookup coordinate, not Sharma normalized progress"}
-    args.out.mkdir(parents=True)
+    args.out.mkdir(parents=True, exist_ok=True)
     write_json(args.out / "composition-projection.json", projection)
+    write_json(args.out / "branch-selection.json", {"policy": model["branch_policy"], "rows": model["branch_selection"], "scientific_acceptance": False})
+    write_json(args.out / "zero-endpoint-projection.json", endpoint_projection)
     write_of8(args.out / "physical.tbl", model, species, args.source_commit, combined)
     write_json(args.out / "coverage.json", coverage)
     write_json(args.out / "heldout.json", {"whole_profile": reports, "within_profile_every_fifth": spatial,
@@ -139,7 +182,7 @@ def main():
         "training_profiles": source_hashes, "combined_training_hash": combined,
         "heldout_profiles": {item["id"]: item["profile_sha256"] for item in members if item["role"] == "held-out"},
         "case": first["case"], "mechanism_sha256": first["mechanism_sha256"], "scientific_acceptance": False,
-        "artifacts": {name: sha256(args.out / name) for name in ("physical.tbl", "coverage.json", "heldout.json", "table.json", "composition-projection.json")}})
+        "artifacts": {name: sha256(args.out / name) for name in ("physical.tbl", "coverage.json", "heldout.json", "table.json", "composition-projection.json", "branch-selection.json", "zero-endpoint-projection.json")}})
     print(json.dumps({"status": "table_built_not_accepted", **plan}))
     return 0
 

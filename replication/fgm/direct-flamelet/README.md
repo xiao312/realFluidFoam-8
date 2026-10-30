@@ -251,3 +251,76 @@ returns success after preserving measurements, including observed failures;
 No chemistry source changes are applied. Run its `--plan` first, then use
 `--mechanism FILE --mechanism-sha256 SHA --source-commit COMMIT
 --upstream-patch-receipt PATCH --out NEW_JSON` in an allocation.
+
+Repeated diagnostic trajectories may use `unsteady-settings-diagnostic.json`,
+which explicitly sets `run_steady_control: false`. The ordinary configurations
+retain the independent control. Skipping creates a receipt stating that no control
+qualification was performed; it never reuses an old state. Initial-state/rate-check,
+steady-control, physical-transient, and export elapsed times are recorded separately.
+
+`prepare_cold_patch.py` prepares an undeployed stable-log candidate from the exact
+735711dc scalar production kernel and three sensitivity kernels. It writes only
+an external new diff/manifest directory; the upstream checkout is read-only.
+Use `--checkout SOURCE --plan` before `--checkout SOURCE --out NEW_DIRECTORY`.
+The scope is elementary and third-body Arrhenius arithmetic. Existing falloff,
+special-order, concentration-product, and derivative formulas remain explicit;
+the legacy vectorized `flamelet_rhs_test1` is outside this candidate's supported
+execution path. The normal scalar flamelet RHS uses the corrected scalar kernel.
+Neither generation nor a successful patch application qualifies the candidate.
+See `COLD-RATE-NOTE.md` for the required allocated probe/derivative/physical checks.
+
+`apply_cold_patch.py --checkout SOURCE --candidate CANDIDATE_DIRECTORY
+--energy-patch-receipt ENERGY_JSON --plan` verifies the candidate against an isolated
+source with only the eight-site energy correction applied. Its explicit `--apply
+--receipt NEW_JSON` operation verifies every resulting file and binds both patches.
+Drivers accept the additional `--upstream-cold-patch-receipt NEW_JSON`; runtime
+receipts retain both manifests and the loaded extension hash.
+
+`cold_kernel_qualification.py` requires the retained original eight-state probe to
+reproduce the full and isolated reaction-229 failure at 85 K. In the separately built
+candidate runtime it repeats those points, then checks actual dense/sparse rate
+derivatives in temperature, density and H/CN/HCN composition directions at three
+declared evaluator states. Two difference steps expose numerical cancellation.
+The no-TBAF option is checked for finiteness only. A positive result is software
+qualification, not cold-flame or paper acceptance. Use `--baseline-probe JSON
+--mechanism FILE --source-commit COMMIT --upstream-patch-receipt ENERGY_JSON
+--upstream-cold-patch-receipt COLD_JSON --out NEW_DIRECTORY`. The normal `--plan`
+performs baseline and input checks without loading the candidate runtime.
+
+## Explicit extinction branch
+
+An opt-in manifest `branch_policy: "post-peak-extinction/v1"` selects, at each Z,
+only the physical states at and after the local maximum CO2+CO. It records the
+cut time and all excluded states. A terminal C<=1e-12 tail is collapsed to its last
+physical state only when T, composition, density and sources satisfy declared
+small-distance bounds; all discarded differences remain in `branch-selection.json`.
+Material rebound or incompatible equal-C states still fail. The ordinary builder
+and its ambiguity check are unchanged when this policy is absent.
+Held-out points earlier than the selected local cut are explicitly refused and
+counted, not silently scored as accepted. This is a bounded extinction-path closure,
+not a complete manifold or a Sharma figure reproduction. `table_sensitivity.py`
+accepts `--branch-policy post-peak-extinction/v1` to write separate derived manifests.
+
+An independent opt-in manifest `zeroEndpointPolicy:
+"zero-progress-numerical-tail/v1"` closes only positive Cmin<=1e-24 numerical tails.
+It subtracts `(1-eta)*old_Cmin` from CO/CO2 across each affected row and restores
+removed mass to the largest non-progress species. Raw profiles and the original
+table remain immutable. The stored raw C is the actual species sum. The new
+`zero-endpoint-projection.json` retains original tails, mapping/mass/element errors,
+and Cantera endpoint enthalpy/source differences. A material correction is refused;
+sources and temperature remain unchanged only after the measured changes pass the
+declared numerical bounds. This policy requires the hash-qualified mechanism from
+`--mechanism FILE` or phase metadata and Cantera3.2.0. C++ bounds stay strict.
+`table_sensitivity.py --zero-endpoint-policy zero-progress-numerical-tail/v1`
+selects this derivation explicitly. Remaining source-sign witnesses are recorded
+independently in the held-out report, including Z, C, time, measured and predicted rates.
+
+The cold derivative qualifier uses a bounded HCN step sweep of 0.01, 0.05, 0.1,
+0.25 and 0.5 times the declared trace mass fraction. It selects the larger step in
+the first adjacent stable plateau using only finite-difference self-agreement and
+cross-step agreement, with the unchanged 1e-3 criterion and 1e-6 peak-relative floor.
+Analytic Jacobians are examined only after selection. Every candidate step and
+per-species residual is retained. No stable plateau means unresolved qualification,
+not permission to select whichever step matches the Jacobian best. Optional
+`--previous-qualification JSON` binds the preserved failed receipt and requires the
+same compiled extension, so this evaluator repair cannot hide a runtime change.

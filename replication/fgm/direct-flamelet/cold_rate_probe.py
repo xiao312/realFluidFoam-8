@@ -21,6 +21,7 @@ def main():
     parser.add_argument("--mechanism-sha256", required=True)
     parser.add_argument("--source-commit", required=True)
     parser.add_argument("--upstream-patch-receipt", type=Path)
+    parser.add_argument("--upstream-cold-patch-receipt", type=Path)
     parser.add_argument("--out", type=Path)
     parser.add_argument("--plan", action="store_true")
     parser.add_argument("--require-finite", action="store_true")
@@ -47,7 +48,7 @@ def main():
     if ct.__version__ != "3.2.0":
         raise ValueError("Cantera3.2.0 required")
     result.update(cantera=ct.__version__, script_sha256=sha256(__file__),
-                  spitfire_runtime=runtime_identity({"upstream_revision": UPSTREAM}, args.upstream_patch_receipt))
+                  spitfire_runtime=runtime_identity({"upstream_revision": UPSTREAM}, args.upstream_patch_receipt, args.upstream_cold_patch_receipt))
     gas = ct.Solution(str(args.mechanism))
     full = ChemicalMechanismSpec(cantera_solution=gas)
     reaction_index = 229

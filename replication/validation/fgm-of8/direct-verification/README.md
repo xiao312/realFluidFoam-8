@@ -35,6 +35,15 @@ not establish physical success. `run.sh CASE SOLVER` runs blockMesh and the
 solver only inside an already-admitted FlamePilot Slurm allocation. Build and
 run identities are the operator's immutable admission record.
 
+The three analytic cases also enable `writeEnergyResidualAudit`. Their unchanged
+1e-6 assembled-residual criterion now uses the once-only coupled-neighbour
+evaluation. The audit separately checks that the legacy OF8 residual differs
+by exactly its duplicate coupled source (within 1e-8 W) and reports absolute
+linear residual, reconstructed normalization scale and iteration ceilings.
+This catches the executed r5 periodic diagnostic defect without changing the
+equation or accepting a large dimensional error. A high normalized residual
+on a near-constant field is not by itself proof of a large physical error.
+
 Dependencies: Node.js >=18 for preparation/analysis, the qualified OF8 solver,
 and `blockMesh` at runtime. Outputs are dictionaries, a manifest, logs and
 small JSON summaries. No credentials, remote connections or scheduler access

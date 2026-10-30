@@ -54,34 +54,55 @@
 
     fvOptions.constrain(EEqn);
 
-    EEqn.solve();
+    scalar initialAbsoluteResidual = 0;
+    scalar reconstructedNormalization = 0;
+    if (writeEnergyBudget && writeEnergyResidualAudit)
+    {
+        initialAbsoluteResidual = gSum(mag(fgmIntegratedResidual(EEqn)()));
+        reconstructedNormalization = fgmScalarNormalization(EEqn);
+    }
+    const solverPerformance energyPerformance = EEqn.solve();
+    const scalar finalAbsoluteResidual = writeEnergyBudget && writeEnergyResidualAudit
+      ? gSum(mag(fgmIntegratedResidual(EEqn)())) : 0;
 
     fvOptions.correct(he);
 
     if (writeEnergyBudget)
     {
-        // OF8 residual() reads off-diagonal storage even for a purely diagonal
-        // operator such as fvm::ddt. The non-const upper() accessor allocates
-        // explicit zeros if both triangles are absent, or copies the existing
-        // symmetric triangle. Do this only on the retained diagnostic matrices,
-        // after the real EEqn has been solved; no equation coefficient changes.
-        energyDdt.ref().upper();
-        energyConvection.ref().upper();
-        energyDiffusion.ref().upper();
-        physicalEquation().upper();
-        // fvMatrix::residual is source - A*he, already cell integrated.
-        // Negating a standalone operator residual gives its signed LHS watts.
-        const tmp<scalarField> residual = physicalEquation().residual();
+        // Source - A*he, counting each coupled neighbour once. Negating an
+        // individual operator residual gives its signed integrated LHS watts.
+        const tmp<scalarField> residual = fgmIntegratedResidual(physicalEquation());
         Info<< "energyEquation t=" << runTime.value()
-            << " ddtW=" << -gSum(energyDdt().residual()())
-            << " convectionW=" << -gSum(energyConvection().residual()())
-            << " diffusionW=" << -gSum(energyDiffusion().residual()())
+            << " ddtW=" << -gSum(fgmIntegratedResidual(energyDdt())())
+            << " convectionW=" << -gSum(fgmIntegratedResidual(energyConvection())())
+            << " diffusionW=" << -gSum(fgmIntegratedResidual(energyDiffusion())())
             << " kineticW=" << fvc::domainIntegrate(kineticTerms).value()
             << " pressureW=" << fvc::domainIntegrate(pressureWork).value()
             << " sourceW=" << fvc::domainIntegrate(heatRelease).value()
             << " residualW=" << -gSum(residual())
             << " residualL1W=" << gSum(mag(residual()))
+            << " linearIterations=" << energyPerformance.nIterations()
+            << " linearFinalNormalizedResidual=" << energyPerformance.finalResidual()
             << endl;
+        if (writeEnergyResidualAudit)
+        {
+            // Retain the old API as a witness, not as the acceptance metric.
+            // Its const residual path requires off-diagonal storage.
+            physicalEquation().upper();
+            const tmp<scalarField> legacy = physicalEquation().residual();
+            const tmp<scalarField> coupled = fgmCoupledBoundarySource(physicalEquation());
+            Info<< "energyResidualAudit t=" << runTime.value()
+                << " legacyL1W=" << gSum(mag(legacy()))
+                << " coupledSourceW=" << gSum(coupled())
+                << " duplicateIdentityErrorL1W=" << gSum(mag(legacy() - residual() - coupled()))
+                << " linearInitialAbsoluteL1W=" << initialAbsoluteResidual
+                << " linearFinalAbsoluteL1W=" << finalAbsoluteResidual
+                << " reconstructedInitialNormW=" << reconstructedNormalization
+                << " linearInitialNormalizedResidual=" << energyPerformance.initialResidual()
+                << " linearFinalNormalizedResidual=" << energyPerformance.finalResidual()
+                << " linearIterations=" << energyPerformance.nIterations()
+                << endl;
+        }
     }
 
     if (absoluteEnthalpyFGM)

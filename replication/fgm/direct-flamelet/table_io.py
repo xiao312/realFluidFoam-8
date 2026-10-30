@@ -84,12 +84,18 @@ def lookup(model, z, progress):
     return (1 - weight) * left + weight * right
 
 
-def heldout_report(model, z, actual, global_physical_peaks=None):
-    expected, predicted, rejected = [], [], []
+def heldout_report(model, z, actual, global_physical_peaks=None, physical_time_s=None):
+    expected, predicted, rejected, accepted_z = [], [], [], []
     for mixture, row in zip(z, actual):
         try:
+            if model.get("branch_policy") is not None:
+                if physical_time_s is None:
+                    raise ValueError("physical_time_required_for_branch_qualification")
+                if physical_time_s < np.interp(mixture, model["z"], model["branch_start_times_s"]):
+                    raise ValueError("outside_selected_extinction_branch")
             predicted.append(lookup(model, float(mixture), float(row[2])))
             expected.append(row)
+            accepted_z.append(float(mixture))
         except ValueError as error:
             rejected.append({"Z": float(mixture), "C": float(row[2]), "reason": str(error)})
     report = {"attempted": len(z), "evaluated": len(expected), "out_of_coverage": len(rejected),
@@ -111,6 +117,12 @@ def heldout_report(model, z, actual, global_physical_peaks=None):
             "rms_floor_relative_error": float(np.sqrt(np.mean(relative ** 2))),
             "resolved_points": int(np.sum(resolved)),
             "sign_disagreements_above_floor": int(np.sum(resolved & (predicted[:, k] * expected[:, k] < 0)))}
+        if name in ("omega_CO2_plus_CO_kg_m3_s", "Qdot_formation_298K_W_m3"):
+            indices = np.flatnonzero(resolved & (predicted[:, k] * expected[:, k] < 0))
+            report["fields"][name]["sign_witnesses"] = [{"Z": accepted_z[i], "C": float(expected[i, 2]),
+                "physical_time_s": physical_time_s, "measured": float(expected[i, k]),
+                "predicted": float(predicted[i, k]), "absolute_error": float(abs(difference[i])),
+                "resolved_floor": floor} for i in indices]
         if global_physical_peaks is not None:
             peak = float(global_physical_peaks[k])
             report["fields"][name].update(global_physical_peak=peak,

@@ -27,6 +27,7 @@ const manifest = {
   heatRelease: kind === 'contact' ? 0 : 1e6,
   progressSource: kind === 'contact' ? 0 : 0.1,
   energyForm: conversion ? 'absoluteEnthalpy' : 'sensibleEnthalpy',
+  requiresResidualAudit: true,
   chemicalEnergyDrop_J_kg_progress: conversion ? 1e6 : 0,
   tableKind: conversion ? 'analytic-formation-energy-conversion-not-a-flamelet' : 'analytic-constant-composition-not-a-flamelet',
   thresholds: { massRelative: 1e-7, energyRelative: 0.005,
@@ -84,6 +85,7 @@ writeControl timeStep; writeInterval ${Math.max(1, Math.round(manifest.endTime /
 purgeWrite 0; writeFormat ascii; writePrecision 15; writeCompression off;
 timeFormat general; timePrecision 12; runTimeModifiable no;
 writeEnergyBudget yes;
+writeEnergyResidualAudit yes;
 fgmEnergyForm ${manifest.energyForm};
 `);
 await put('system/fvSchemes', header('fvSchemes') + `

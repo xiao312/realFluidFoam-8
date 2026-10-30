@@ -14,11 +14,14 @@ not import their historical result directories or commit ancestry.
 | Snapshot | Included paths |
 | --- | --- |
 | `282aa996a78939cbdaf591520231fb2c0476567d` | `src/combustionModels`, `replication/validation/fgm-of8/fixtures` |
-| `f0d0e9bb9e34d26d3f2bc03432cae6d887fee25a` | `applications/solvers/reactingFoamSolveZ`, `replication/validation/fgm-of8/direct-verification`, `replication/validation/mascotte-g2/direct-fgm`, `replication/validation/realfluid-g2-thermo/probe` |
-| `1ad921ccfae6daf7ba89c666cdbd4f389cbc9529` | `replication/fgm/direct-flamelet` |
-| `325253221281dabbf4b48612adfdb65880d020d0` | `replication/validation/muller-figure2`, `replication/validation/mascotte-figures` |
+| `e9d8831f287c42856aaa3252c6798e9b3e38fddc` | `applications/solvers/reactingFoamSolveZ`, `replication/validation/fgm-of8/direct-verification`, `replication/validation/mascotte-g2/direct-fgm` |
+| `f0d0e9bb9e34d26d3f2bc03432cae6d887fee25a` | `replication/validation/realfluid-g2-thermo/probe` |
+| `e6de9c72e05da5245761234e84918490459f01d0` | `replication/fgm/direct-flamelet` |
+| `325253221281dabbf4b48612adfdb65880d020d0` | `replication/validation/mascotte-figures` |
+| `0abb643` | `replication/validation/muller-figure2` |
 | `a5fb250` | `replication/validation/realfluid-g2-thermo` |
 | `a662f66727fa95e95c9115d92a8c6057d74ec2e1` | `replication/validation/flamelet-review` |
+| `45d3fe91ce215292b3e09a0710ca14e921972a59` | `replication/validation/g2-review` |
 
 The historical [v1 interface contract](../../docs/fgm-of8-interface-contract.md)
 also comes from `5af5cb9`, with a dated scope amendment identifying the current
@@ -102,3 +105,24 @@ three-dimensional turbulent flame or a converged mean. Its batch first checks
 energy, scalar transport, physical-table coupling and MPI consistency. The local
 review module aligns retained trajectories with original Sharma figure crops
 and documents operating-condition differences without claiming acceptance.
+
+The full real-fluid fork has subsequently built at `282aa99`, with pure-fluid
+SRK/PR evaluation receipts. This does not qualify a reacting mixture. SRK oxygen
+density at 85 K and 5.61 MPa is 1181.227 kg/m3 against the paper's 1177.2. PR
+exposes an inconsistent Cp-Cv expression and separate density disagreement.
+
+Corrected 129/257-point physical transients reduced maximum enthalpy-mixing error
+from 153156.62 to 1465.36/383.64 J/kg. The optional post-peak extinction branch
+policy retains excluded early-branch points. Its numerical-zero endpoint policy
+removes only audited roundoff tails, with measured maximum species change
+4.05e-28. A held-out source-sign discrepancy remains. These policies define a
+diagnostic table, not a fully qualified manifold or an adjusted physical model.
+
+Fresh heating, conversion and contact cases reached their intended end times and
+passed their analytic checks. Their first assembled residual check double-counted
+coupled sources; the latest candidate evaluates source-minus-Apsi once and retains
+the legacy difference as an independent identity check. Acceptance limits are
+unchanged. The new cold-rate evaluator selects a resolved HCN finite-difference
+plateau independently of analytic agreement, reusing the exact earlier compiled
+candidate and retaining its failed receipt. Job 126410535 tests both repairs and
+conditionally attempts a 16-rank warm G2 startup. Its admission is not a result.

@@ -50,6 +50,7 @@ Description
 #include "fvcSmooth.H"
 #include "fgmChemicalEnthalpy.H"
 #include "fgmBoundaryEnthalpy.H"
+#include "fgmMatrixResidual.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 

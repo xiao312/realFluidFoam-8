@@ -7,6 +7,7 @@ import numpy as np
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
+from matplotlib.lines import Line2D
 
 COLORS={'T':'#166cbb','rho_PRVTA':'#166cbb','Y_O2':'#2472b3','Y_CH4':'#be513f','Y_H2O':'#1a8b66','Y_CO2':'#9554aa','Y_CO':'#b38b16','Y_OH':'#cf573d','Y_H2':'#326ab5'}
 
@@ -53,10 +54,19 @@ def main():
                     'rms_fraction_of_reference_span':float(np.sqrt(np.mean(error**2))/span),'sample_count':len(sample),
                     'Z_range':[float(sample[0]),float(sample[-1])],'computed_peak':float(v.max()),'paper_peak':float(reference[:,1].max())}
         ax.set(xlabel='Mixture fraction Z',ylabel=ylabel,xlim=(0,1),ylim=ylim)
-        ax.grid(alpha=.18);ax.legend(fontsize=7,ncol=2,frameon=False)
+        ax.grid(alpha=.18)
+        if len(quantities)>1:
+            ax.legend(handles=[Line2D([],[],color=COLORS[q],lw=1.5,label=q.removeprefix('Y_'))
+                               for q in quantities],fontsize=9,ncol=3,frameon=False)
         if quantities==['rho_PRVTA'] and not any('rho_PRVTA' in d.dtype.names for d in profiles):
             ax.text(.45,.7,'Computed PR-VTA density pending',transform=ax.transAxes,ha='center',fontsize=10)
     fig.suptitle('Müller & Pfitzner (2015), Figure 2 — labelled development comparison',fontsize=13)
+    styles=[Line2D([],[],color='#333333',lw=1.5,label='Paper GRI30'),
+            Line2D([],[],color='#888888',lw=1,ls='--',label='Paper reduced')]
+    styles += [Line2D([],[],color='#333333',lw=.9,ls=':' if i==0 else '-.',
+                      marker=['o','s','^'][i%3],markerfacecolor='white',markersize=4,
+                      label='Computed: '+name) for i,name in enumerate(args.label)]
+    fig.legend(handles=styles,loc='outside lower center',ncol=2,frameon=False,fontsize=9)
     args.output.mkdir(parents=True,exist_ok=True)
     fig.savefig(args.output/'comparison.png');fig.savefig(args.output/'comparison.svg');plt.close(fig)
     result={'schema':'muller-figure2-comparison-v1','reference_sha256':hashlib.sha256(args.reference.read_bytes()).hexdigest(),

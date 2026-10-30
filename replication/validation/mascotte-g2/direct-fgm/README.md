@@ -78,3 +78,35 @@ required raw-C range. A narrow family of burning profiles alone may not cover
 it; clipping a cold unburnt state onto a burning branch does not supply the
 missing physics. This generator intentionally exposes that coverage limitation
 rather than inventing an unregistered ignition state or reaction source.
+
+Observation and scaling inputs for subsequent fresh runs are described in
+`progression.md`. The optional `--observations FILE` and `--decomposition FILE`
+JSON inputs are parsed by `observations.mjs`. Their exact contents and hashes
+are recorded in the case manifest. Defaults preserve four full field writes,
+while CSV profiles carry explicit column names. An optional time average uses
+OF8's time-weighted fieldAverage; its actual Properties counters must accompany
+any mean plot. No mean is enabled by default. The observation module generates
+small case dictionaries only, uses no network or credentials, and does not
+submit jobs. It depends on OF8 libsampling and libfieldFunctionObjects.
+
+`node forecast.mjs CASE --durations 0.0001,0.001 --ranks 16,32` reads the actual
+solver ClockTime/physical-time records and predicts fresh-run cost from the
+last completed steps. Rank projections are explicitly ideal scaling bounds,
+not measured speedups. It prints JSON and never changes a case. Check both
+modules with `node --check`; run `node observations.test.mjs` for configuration,
+time-average labelling and decomposition rejection checks. These parser checks
+do not qualify the generated function objects or physical results: the next
+admitted clean-start case must do that.
+
+The optional read-only API `inspectMesh(MESH, { boundaryGeometry: true })`
+also measures non-wedge patches' x/r extent and near-axial boundary-face planes.
+It reuses the same hash-checked binary parser and emits compact geometry only.
+It does not infer a paper coordinate origin from a patch name or presumed lip
+position. The coordinator must interpret the measured injector surfaces against
+the paper drawing before selecting a comparison transform.
+The two azimuthal wedge planes are explicitly excluded because they contain
+almost all boundary faces and do not identify the injector lip. Plane grouping
+uses a Map keyed by 1e-8 m bins; there is no pairwise search among faces. Execute
+this optional audit inside the next Slurm allocation with a 30-second timeout.
+An unavailable geometry receipt does not block a labelled warm/cold diagnostic;
+the paper-coordinate transform remains unresolved.
