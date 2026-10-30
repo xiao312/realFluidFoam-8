@@ -20,8 +20,8 @@ export function observationConfig(input, endTime) {
     imageGrid: input.imageGrid ?? null,
     axialCoordinate: 'raw registered mesh x; injector-exit paper transform not qualified',
     nearAxisRadius_m: 0.0001,
-    instantaneousFields: ['T', 'Z', 'c', 'OH', 'CH4', 'O2', 'CO2', 'CO', 'Ha', 'fgmTdiag'],
-    meanFields: ['T', 'Z', 'c', 'OH'],
+    instantaneousFields: ['T', 'rho', 'Z', 'c', 'OH', 'CH4', 'O2', 'CO2', 'CO', 'Ha', 'fgmTdiag'],
+    meanFields: ['T', 'rho', 'Z', 'c', 'OH'],
   };
   for (const name of ['profileInterval_s', 'fieldInterval_s']) finite(config[name], name, Number.MIN_VALUE, endTime);
   const fullWrites = endTime / config.fieldInterval_s;
@@ -97,7 +97,7 @@ function sample(name, fields, config, mean = false, image = false) {
 }
 export function functionObjects(config) {
   let text = sample('instantaneousProfiles', config.instantaneousFields, config);
-  if (config.imageGrid) text += sample('instantaneousImagePlane', ['T', 'Z', 'c', 'OH'], config, false, true);
+  if (config.imageGrid) text += sample('instantaneousImagePlane', ['T', 'rho', 'Z', 'c', 'OH'], config, false, true);
   if (config.averageStart_s !== null) {
     text = `timeAverage { type fieldAverage; libs ("libfieldFunctionObjects.so");
  timeStart ${config.averageStart_s}; executeControl timeStep; executeInterval 1; writeControl writeTime;

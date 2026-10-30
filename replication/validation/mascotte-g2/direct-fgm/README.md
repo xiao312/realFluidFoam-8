@@ -194,3 +194,15 @@ These selectors do not qualify the composed runtime. Source stages, the optional
 diffusion optimization and their combined solver still require their respective
 allocated evidence. Euler transport remains first order; no scheme-order claim
 follows from the splitting name. All cases must start from fresh time zero.
+
+Line samples and image-plane samples include co-located `T`, `rho`, and ordinary
+species mass fraction `OH`; optional time averaging includes `rhoMean` too.
+An optical proxy must consume instantaneous co-located values before averaging
+nonlinear quantities. OH is not OH*. Sampling alone does not qualify an optical
+model or a paper-coordinate transform.
+
+The solver's separate `thermoPostPressureClosure` records are exported under
+`postPressureCaloricDrift`. They measure h(p,T,Y)-versus-stored-h drift after
+the final pressure correction. The checker does not apply the stricter
+after-inversion limit to this report-only witness; coupled refinement is
+required to interpret it. These diagnostics never overwrite h, T, or pressure.

@@ -438,6 +438,10 @@ inversion-range declarations and per-species original/effective records.
 Source-stage preparation consumes that policy. The solver owns the opt-in
 executing-thermo closure audit; evaluators require its records and reject
 range-clamped false convergence. Neither module changes NASA coefficients.
+The solver separately reports post-pressure caloric drift; evaluators retain it
+without treating the inversion limit as a coupled-convergence criterion.
+G2 sampling supplies co-located instantaneous T/rho/OH to independent optical
+postprocessing, keeping ordinary OH and excited OH diagnostics distinct.
 `validation/realfluid-g2-thermo/diffusion-performance` prepares paired full-SRK
 property/inversion cases from the exact physical table. It depends on that
 module's runtime probe and `fgm-of8/direct-verification/physical-input.mjs`.

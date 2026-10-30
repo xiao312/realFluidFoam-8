@@ -9,7 +9,9 @@ const measured = observationConfig({ profileInterval_s: 1e-6, fieldInterval_s: 1
   averageStart_s: 1e-5, imageGrid: { axialPoints: 3, radialPoints: 2 } }, 2e-5);
 const text = functionObjects(measured);
 assert.ok(text.includes('base time; mean yes; prime2Mean no;'));
-assert.ok(text.includes('timeMeanImagePlane') && text.includes('fields (TMean ZMean cMean OHMean)'));
+assert.ok(text.includes('timeMeanImagePlane') && text.includes('fields (TMean rhoMean ZMean cMean OHMean)'));
+assert.ok(text.includes('fields (T rho Z c OH)'));
+assert.ok(measured.instantaneousFields.includes('rho'));
 assert.ok(text.includes('type lineUniform;') && text.includes('type points; ordered no;'));
 assert.ok(!text.includes('type uniform;') && !text.includes('type cloud;'));
 assert.ok(text.indexOf('type fieldAverage') < text.indexOf('timeMeanProfiles'));

@@ -20,6 +20,7 @@ function records(prefix) {
 const states = records('energyState '), equations = records('energyEquation '), bounds = records('fgmBounds ');
 const source = records('fgmAppliedSource ');
 const closure = records('thermoClosure ');
+const postPressureClosure = records('thermoPostPressureClosure ');
 const rangeWarningCount = (log.match(/out of temperature range/g) ?? []).length;
 const times = (await readdir(root)).filter(name => /^\d+(?:\.\d*)?(?:e[-+]?\d+)?$/i.test(name))
   .map(name => ({ name, time: Number(name) })).filter(row => row.time > 0).sort((a, b) => a.time - b.time);
@@ -81,6 +82,8 @@ const report = { schema: 'forge-direct-warm-g2-diagnostic-v1', inputHashes: mani
   skipUnusedDiffusion: manifest.skipUnusedDiffusion ?? null,
   thermodynamics: manifest.thermodynamics ?? {mode:'warm-ideal'},
   caloricClosure: { required: Boolean(manifest.caloricClosure?.required), records: closure, rangeWarningCount },
+  postPressureCaloricDrift: { records: postPressureClosure,
+    interpretation: 'Report-only executing h(p,T,Y) minus stored h after final pressure correction; no inversion-limit gate or field correction is applied. Assess pressure/outer-iteration sensitivity separately.' },
   coldInitialization: manifest.thermodynamics?.mode === 'cold-real-fluid'
     ? JSON.parse(await readFile(`${root}/cold-initialization.json`, 'utf8')) : null,
   status: Object.values(mechanicalChecks).every(Boolean) ? 'diagnostic-run-completed' : 'diagnostic-run-incomplete-or-failed',

@@ -2,14 +2,20 @@
 #define fgmThermoClosure_H
 #include <cmath>
 
-// Audit the executing library immediately after inversion, before pressure is
-// changed by a later equation. Never reconstruct h from a separate polynomial.
-inline void auditFgmThermoClosure(const Foam::psiReactionThermo& thermo)
+// The enforcing audit runs after inversion. The separate report-only witness
+// measures subsequent pressure-coupling drift, without correcting a field.
+// Never reconstruct h from a separate polynomial.
+inline void auditFgmThermoClosure
+(
+    const Foam::psiReactionThermo& thermo,
+    const bool enforceInversion = true
+)
 {
     using namespace Foam;
     const Time& time = thermo.T().mesh().time();
     if (!time.controlDict().lookupOrDefault<Switch>("writeFgmThermoClosure", false)) return;
     const bool writeSummary = time.value() == 0 || time.writeTime();
+    if (!enforceInversion && !writeSummary) return;
     if (thermo.he().name() != "h")
         FatalErrorInFunction << "FGM caloric audit currently requires sensible enthalpy" << exit(FatalError);
     const scalar limit = time.controlDict().lookupOrDefault<scalar>("fgmThermoClosureRelativeLimit", 1e-8);
@@ -56,14 +62,15 @@ inline void auditFgmThermoClosure(const Foam::psiReactionThermo& thermo)
     // a failure, including one on a timestep which does not write fields.
     if (writeSummary || failed)
     {
-        Info<< "thermoClosure t=" << time.value() << " initial=" << (time.value() == 0 ? 1 : 0)
-            << " afterInversion=" << 1
+        Info<< (enforceInversion ? "thermoClosure t=" : "thermoPostPressureClosure t=")
+            << time.value() << " initial=" << (time.value() == 0 ? 1 : 0)
+            << " afterInversion=" << (enforceInversion ? 1 : 0)
             << " cells=" << cells << " boundaryFaces=" << faces << " invalid=" << invalid
             << " maxAbs_J_kg=" << maxAbsolute << " rms_J_kg=" << std::sqrt(squareSum/max(label(1), cells))
             << " maxRelative=" << maxRelative << " boundaryMaxAbs_J_kg=" << boundaryMaxAbsolute
             << " boundaryMaxRelative=" << boundaryMaxRelative << " limit=" << limit << endl;
     }
-    if (failed)
+    if (failed && enforceInversion)
         FatalErrorInFunction << "Stored h is inconsistent with executing h(p,T,Y); see thermoClosure"
             << exit(FatalError);
 }

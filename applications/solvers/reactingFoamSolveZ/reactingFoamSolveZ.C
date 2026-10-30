@@ -134,6 +134,10 @@ int main(int argc, char *argv[])
 
         rho = thermo.rho();
 
+        // A changed nonideal pressure can move h(p,T,Y) after the last inversion.
+        // Measure that coupling drift separately; do not mutate or reject it as
+        // an inversion error while it awaits another PIMPLE correction.
+        auditFgmThermoClosure(thermo, false);
         #include "energyState.H"
 
         runTime.write();

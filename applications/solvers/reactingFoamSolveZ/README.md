@@ -173,3 +173,11 @@ The audit runs immediately after thermo inversion, before the following pressure
 equation updates pressure. For a nonideal EOS it therefore qualifies inversion
 closure at that stage, not final post-pressure consistency or PIMPLE convergence.
 The latter still needs coupled residual and outer-iteration diagnostics.
+
+At written timesteps, `thermoPostPressureClosure` records the same measured
+quantity after the final pressure correction. It is a separate report-only
+witness: no field is changed and the inversion limit is not enforced there.
+Nonideal pressure dependence can produce a departure after a successful
+inversion; compare this drift under timestep and PIMPLE-outer refinement.
+The `limit` field is retained only as the inversion diagnostic's reference
+scale, not as post-pressure acceptance. Invalid counts remain visible.
