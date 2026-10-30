@@ -114,6 +114,7 @@
         thermo.he() == fgmAbsoluteEnthalpy() - fgmChemicalEnthalpy(mesh, composition);
     }
     thermo.correct();
+    auditFgmThermoClosure(thermo);
 
     Info<< "min/max(T) = "
         << min(T).value() << ", " << max(T).value() << endl;

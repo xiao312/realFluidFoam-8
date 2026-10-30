@@ -86,6 +86,23 @@ still load and exercise it before qualification. Heat-release tables for this
 energy convention must use formation enthalpies at 298.15 K, not the separate
 current-temperature total heat-release diagnostic.
 
+`--nasa-extrapolation 200,6000` explicitly extends inversion limits for a warm
+diagnostic. It changes no NASA coefficient, transition temperature or molecular
+weight. The export receipt retains every original and effective species range.
+Without the option, original ranges remain; OF8 mixture arithmetic intersects
+them (GRI30: 300–3000 K). A flamelet above 3000 K is therefore not qualified by
+the default dictionary. Cantera evaluates the existing polynomial outside its
+declared range; the option reproduces that evaluation policy, not new validated
+thermodynamics. Solver caloric closure must still be measured.
+
+The solver's opt-in `writeFgmThermoClosure` recomputes literal h(p,T,Y) through
+the executing library and compares it with stored h after thermo correction,
+at initialization and written times. It reports maximum/RMS error in J/kg and
+normalizes by max(1, |h|, |h(T)|, |Cp*T|). A configured limit fails the run;
+it does not overwrite h or T. Warm stock-OF8 diagnostics declare 1e-4, matching
+the stock relative temperature iteration tolerance. Full282 source-splitting
+checks use 1e-8 with the tightened 1e-9 temperature iteration tolerance.
+
 `probe-v2.C` is a compact check of the compiled reader: unchanged v1 source
 normalization, v2 raw source/mapping, degenerate pure-stream row and counted
 diagnostic clipping. The positive invocation takes `positive linear.tbl

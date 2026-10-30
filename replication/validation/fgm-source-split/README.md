@@ -86,3 +86,16 @@ and numerical failures are retained even if another case passes. The identity
 transport probe separately requires <=1e-10 C-span outer nonaccumulation; CFD
 outer results need not be bit-identical because pressure and density are coupled.
 An optional explicit baseline is reported separately and cannot qualify splitting.
+
+For the allocated cold-table/ideal-thermo diagnostic, explicitly supply
+`--nasa-extrapolation 200,6000`. NASA coefficients and transition temperatures
+remain unchanged. Every species' original/effective bounds are retained;
+no extrapolation is silently enabled by the generator. The full282 run requires
+literal executing h(p,T,Y)-versus-stored-h closure <=1e-8 at every correction,
+scaled by max(1, |h|, |h(p,T,Y)|, |Cp*T|), and no JANAF range warnings.
+
+`--initial-eta 0.95` prepares a bounded hot-state control. The batch separately
+replaces its declared extended dictionary with an original-range dictionary,
+preserving both hashes and requiring the runtime caloric audit to reject the
+known 3000 K clipping defect. This deliberately invalid input is not a successful
+physical run. Main comparison cases retain initial eta=0.5.

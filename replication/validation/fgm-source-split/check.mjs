@@ -17,6 +17,7 @@ function rows(label) {
 const energy = rows('energyState'), equations = rows('energyEquation');
 const history = rows('fgmSourceOldTime'), stages = rows('fgmSourceStage');
 const bounds = rows('fgmBounds'), audit = rows('energyResidualAudit');
+const closure = rows('thermoClosure');
 const profiles = [], times = (await readdir(root)).filter(name => Number.isFinite(Number(name)) && Number(name) > 0)
   .sort((a, b) => Number(a) - Number(b));
 async function field(time, name) {
@@ -43,6 +44,11 @@ add('complete_written_steps', Math.abs(times.length-steps), 0);
 add('field_read_failures', failures.length, 0);
 add('finite_energy_records', energy.some(r => Object.values(r).some(v => typeof v !== 'number')) ? 1 : 0, 0);
 add('solver_completed', /\nEnd\s*\n/.test(log) ? 0 : 1, 0);
+add('janaf_range_warnings', (log.match(/out of temperature range/g) ?? []).length, 0);
+add('caloric_closure_records', Math.abs(closure.length-(steps*input.outer+1)), 0);
+add('caloric_closure_invalid', Math.max(...closure.map(r => r.invalid)), 0);
+add('caloric_closure_relative', Math.max(...closure.flatMap(r => [r.maxRelative, r.boundaryMaxRelative])), input.thresholds.caloricClosureRelative);
+add('caloric_closure_declared_limit', closure.every(r => r.limit === input.thresholds.caloricClosureRelative) ? 0 : 1, 0);
 add('positive_thermodynamic_fields', profiles.some(r => !(r.T > 0 && r.p > 0 && r.rho > 0)) ? 1 : 0, 0);
 add('progress_coverage', profiles.some(r => r.c < input.states[r.cell].cMin || r.c > input.states[r.cell].cMax) ? 1 : 0, 0);
 if (first && last) {
@@ -76,7 +82,7 @@ if (input.integration === 'strangFixedState') {
 }
 const execution = [...log.matchAll(/ExecutionTime = ([\d.e+-]+) s\s+ClockTime = ([\d.e+-]+) s/g)].at(-1);
 const result = { schema: 'fgm-source-split-result-v1', input, status: checks.every(x => x.pass) ? 'pass' : 'fail',
-  checks, failures, initial: first ?? null, final: last ?? null, energy,
+  checks, failures, initial: first ?? null, final: last ?? null, energy, caloricClosure: closure,
   runtime: execution ? { cpuSeconds: Number(execution[1]), wallSeconds: Number(execution[2]) } : null,
   finalProfile: profiles.filter(p => Math.abs(p.t-input.endTime) <= input.dt*1e-5),
   qualification: 'bounded ideal-thermo CFD using cold-inlet physical table; not SRK/PR or paper agreement',

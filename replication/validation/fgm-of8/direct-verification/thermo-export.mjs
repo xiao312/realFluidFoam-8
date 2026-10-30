@@ -1,11 +1,15 @@
 import { readFile, mkdir, writeFile } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
 import { resolve } from 'node:path';
+import { nasaInversionPolicy } from './thermo-policy.mjs';
 
-const [inputPath, option, outputPath] = process.argv.slice(2);
-if (!inputPath || (option && (option !== '--out' || !outputPath))) {
-  throw new Error('Usage: thermo-export.mjs INPUT.json [--out NEW_DIR]');
+const [inputPath, ...args] = process.argv.slice(2), options = {};
+if (!inputPath) throw new Error('Usage: thermo-export.mjs INPUT.json [--out NEW_DIR] [--nasa-extrapolation MIN_K,MAX_K]');
+for (let i = 0; i < args.length; i += 2) {
+  if (!['--out', '--nasa-extrapolation'].includes(args[i]) || !args[i+1] || options[args[i]]) throw new Error('Invalid thermo export option');
+  options[args[i]] = args[i+1];
 }
+const outputPath = options['--out'];
 const raw = await readFile(inputPath);
 const data = JSON.parse(raw);
 if (!/^[a-f0-9]{64}$/.test(data.mechanismSha256 ?? '')) throw new Error('Missing mechanismSha256');
@@ -40,6 +44,7 @@ const rows = data.species.map(species => {
     formationEnthalpyFork_J_kg: hOverR * forkR / weights,
     formationReferenceWithinDeclaredRange: ranges[0] <= t && t <= ranges[1] };
 });
+const inversionPolicy = nasaInversionPolicy(data, options['--nasa-extrapolation']);
 const manifest = {
   schema: 'forge-of8-thermo-export-v1', inputSha256: createHash('sha256').update(raw).digest('hex'),
   mechanism: data.mechanism ?? null, phase: data.phase ?? null,
@@ -52,7 +57,7 @@ const manifest = {
   gasConstantQualification: 'fork source constant; actual linked runtime must be measured separately',
   transport: { model: 'const', mu_Pa_s: 1.8e-5, Pr: 0.72,
     qualification: 'declared diagnostic only; not matching Cantera mixture transport' },
-  formationEnthalpies: rows, executedInOpenFoam: false,
+  formationEnthalpies: rows, inversionPolicy, executedInOpenFoam: false,
 };
 if (!outputPath) {
   console.log(JSON.stringify(manifest, null, 2));
@@ -71,7 +76,7 @@ species (${names.map(q).join(' ')});
 `;
 for (const species of data.species) {
   const thermo = species.thermo;
-  const [low, common, high] = thermo.temperatureRanges;
+  const [low, common, high] = inversionPolicy.species.find(s => s.name === species.name).effectiveRange_K;
   dictionary += `${q(species.name)} {
  specie { molWeight ${species.molecularWeight_kg_kmol}; }
  thermodynamics { Tlow ${low}; Thigh ${high}; Tcommon ${common};

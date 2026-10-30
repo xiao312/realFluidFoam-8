@@ -51,6 +51,7 @@ Description
 #include "fgmChemicalEnthalpy.H"
 #include "fgmBoundaryEnthalpy.H"
 #include "fgmMatrixResidual.H"
+#include "fgmThermoClosure.H"
 #include "fgmTable.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //

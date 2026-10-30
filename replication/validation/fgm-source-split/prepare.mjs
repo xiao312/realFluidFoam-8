@@ -3,9 +3,10 @@ import { resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { spawnSync } from 'node:child_process';
 import { loadPhysicalTable, thermoState } from '../fgm-of8/direct-verification/physical-input.mjs';
+import { nasaInversionPolicy } from '../fgm-of8/direct-verification/thermo-policy.mjs';
 
 const options = {}, args = process.argv.slice(2);
-const allowed = ['table-dir', 'metadata', 'out', 'kind', 'delta-t', 'end-time', 'outer', 'integration'];
+const allowed = ['table-dir', 'metadata', 'out', 'kind', 'delta-t', 'end-time', 'outer', 'integration', 'nasa-extrapolation', 'initial-eta'];
 for (let i = 0; i < args.length; i += 2) {
   const key = args[i].slice(2);
   if (!args[i].startsWith('--') || !allowed.includes(key) || !args[i+1]) throw new Error('Invalid argument');
@@ -19,13 +20,16 @@ if (!['0d', '1d'].includes(kind) || ![25e-9, 50e-9].includes(dt) ||
     ![1, 2, 3].includes(outer) || !(endTime >= dt && endTime <= 1e-5) ||
     !['explicit', 'strangFixedState'].includes(integration)) throw new Error('Invalid bounded qualification controls');
 const input = await loadPhysicalTable(resolve(options['table-dir']), resolve(options.metadata));
+const nasaPolicy = nasaInversionPolicy(input.metadata, options['nasa-extrapolation']);
+const initialEta = Number(options['initial-eta'] ?? .5);
+if (!(initialEta > .03 && initialEta < .97)) throw new Error('initial-eta must remain inside (0.03,0.97)');
 const cells = kind === '0d' ? 8 : 80, velocity = kind === '0d' ? 0 : 10;
 const length = kind === '0d' ? 0.1 : 1e-4;
 const states = Array.from({ length: cells }, (_, i) => {
-  const eta = 0.5 + (kind === '1d' ? 0.03*Math.sin(2*Math.PI*(i+0.5)/cells) : 0);
+  const eta = initialEta + (kind === '1d' ? 0.03*Math.sin(2*Math.PI*(i+0.5)/cells) : 0);
   const state = input.lookup(0.2, eta);
   state.thermo = thermoState(input.metadata, state.y, state.temperature);
-  if (!(state.upper > state.lower && state.thermo.cv > 0 && state.temperature >= 200 && state.temperature <= 6000)) {
+  if (!(state.upper > state.lower && state.thermo.cv > 0 && state.temperature >= nasaPolicy.effectiveMixtureIntersection_K[0] && state.temperature <= nasaPolicy.effectiveMixtureIntersection_K[1])) {
     throw new Error('Actual selected table state lies outside this ideal-thermo qualification range');
   }
   return state;
@@ -34,10 +38,11 @@ const pressure = input.receipt.case.pressure_pa;
 if (!(pressure > 0 && Number.isFinite(pressure))) throw new Error('Missing table pressure');
 const plan = { schema: 'fgm-source-split-case-v1', startTime: 0, kind, cells, length, velocity,
   dt, endTime, outer, integration, pressure, inputHashes: input.inputHashes,
+  nasaPolicy, initialEta,
   thresholds: { massRelative: 1e-7, energyPerChemicalChange: 0.01,
     equationResidualRelative: 1e-6, sourceEnergyW: 1e-20,
     oldTimeAbsolute: 0, lookupCorrections: 0,
-    timestepCspanRms: 0.02, outerCspanRms: 0.01 },
+    timestepCspanRms: 0.02, outerCspanRms: 0.01, caloricClosureRelative: 1e-8 },
   assumptions: ['ideal-gas CFD thermo matches table mechanism', 'global Euler transport',
     'unity-Lewis diffusion', 'no second-order CFD claim', 'fixed-density source stages only'],
   validation: 'pending', scientificAcceptance: false };
@@ -49,7 +54,8 @@ function run(script, argv) {
   if (result.status !== 0) throw new Error(result.stderr || result.stdout || `Failed ${script}`);
 }
 run('prepare.mjs', ['--out', out, '--kind', 'heating', '--cells', String(cells), '--delta-t', String(dt)]);
-run('thermo-export.mjs', [resolve(options.metadata), '--out', `${out}/thermo-input`]);
+run('thermo-export.mjs', [resolve(options.metadata), '--out', `${out}/thermo-input`,
+  ...(options['nasa-extrapolation'] ? ['--nasa-extrapolation', options['nasa-extrapolation']] : [])]);
 await copyFile(`${out}/thermo-input/thermophysicalProperties`, `${out}/constant/thermophysicalProperties`);
 await writeFile(`${out}/constant/constant.tbl`, input.raw);
 // Bind the retained copy explicitly, including when the case is decomposed.
@@ -79,6 +85,7 @@ control = control.replace(/endTime [^;]+;/, `endTime ${endTime};`)
   .replace(/writeInterval [^;]+;/, 'writeInterval 1;')
   .replace('fgmEnergyForm sensibleEnthalpy;', 'fgmEnergyForm absoluteEnthalpy;');
 control += `\nfgmSourceIntegration ${integration};\nfgmProgressSourceEnabled yes;\n`;
+control += `writeFgmThermoClosure yes; fgmThermoClosureRelativeLimit ${plan.thresholds.caloricClosureRelative};\n`;
 control += `functions { sourceDensity { type writeObjects;
  libs ("libutilityFunctionObjects.so"); objects (rho); writeOption anyWrite;
  writeControl timeStep; writeInterval 1; } }\n`;

@@ -156,3 +156,14 @@ The history handling follows OF8's
 The first-stage correction follows the stored `rho.oldTime()*c.oldTime()` source
 in its [Euler matrix](https://github.com/OpenFOAM/OpenFOAM-8/blob/master/src/finiteVolume/finiteVolume/ddtSchemes/EulerDdtScheme/EulerDdtScheme.C).
 Runtime checks still verify these assumptions with the executing field objects.
+# Caloric closure with source stages
+
+`writeFgmThermoClosure yes` recomputes literal executing `thermo.he(p,T)` after
+inversion and compares it with stored sensible enthalpy at initialization and
+written corrections. It reports internal/boundary maximum errors and internal
+RMS in J/kg. The normalized error uses max(1, |h|, |h(p,T)|, |Cp*T|).
+The default is off; enabled default limit is 1e-8. Nonfinite/unstable caloric
+states or excess error are fatal, without overwriting T or h. This catches
+false convergence at a JANAF bound. The source-stage full282 qualification uses
+1e-8 with its 1e-9 temperature iteration tolerance. Original polynomial ranges
+and any explicit diagnostic extrapolation remain separate input records.

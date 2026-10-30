@@ -423,3 +423,10 @@ Its opt-in cold initializer consumes the complete full-build product receipt,
 checks actual solver/probe dynamic bindings, and uses that probe to initialize
 time-zero Ha. The probe writes the matching thermoType marker consumed only by
 guarded cold solver cases. It does not submit jobs or grant physical approval.
+# Caloric qualification
+
+`validation/fgm-of8/direct-verification/thermo-policy.mjs` owns explicit NASA
+inversion-range declarations and per-species original/effective records.
+Source-stage preparation consumes that policy. The solver owns the opt-in
+executing-thermo closure audit; evaluators require its records and reject
+range-clamped false convergence. Neither module changes NASA coefficients.
