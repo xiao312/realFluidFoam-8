@@ -99,3 +99,17 @@ replaces its declared extended dictionary with an original-range dictionary,
 preserving both hashes and requiring the runtime caloric audit to reject the
 known 3000 K clipping defect. This deliberately invalid input is not a successful
 physical run. Main comparison cases retain initial eta=0.5.
+
+## Independent uniform reference
+
+`python reference.py --table physical.tbl --case-result CASE/source-split-result.json`
+is a read-only plan. Add `--out NEW_REPORT.json` to compare a completed uniform
+0D case with adaptive SciPy DOP853 at two tolerances. Dependencies are Python
+3.11+, NumPy and SciPy; no Cantera runtime or C++ exact-step kernel is used.
+The fixed density is the actual time-zero CFD mass/volume, and the source is
+independently read from the hash-bound physical table. The reference reports
+density drift and spatial nonuniformity, and requires its own refinement to
+agree within 1e-7 of the local C span before numerical-reference confidence.
+No CFD or scientific pass is granted by this extra diagnostic. Boundary events
+terminate integration; linear endpoint continuation only locates events in
+rejected RK stages. Accepted states must remain covered, with no clipping.

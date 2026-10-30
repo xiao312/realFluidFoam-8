@@ -415,6 +415,9 @@ splitting and unchanged oldTime storage; thermodynamics retains energy and densi
 `validation/fgm-source-split` supplies the allocated source-stage probe and
 actual-table 0D/1D qualification plan. No runtime dependency on Python, Spitfire
 or the flamelet generator is introduced into the CFD solver.
+Its offline `reference.py` independently integrates the uniform fixed-density
+table-source ODE with SciPy DOP853 and compares retained CFD time histories;
+this analysis dependency never enters the production solver.
 
 `validation/mascotte-g2/direct-fgm` prepares fresh warm diagnostic cases on the
 registered wedge. It consumes hashed physical tables/NASA metadata through
