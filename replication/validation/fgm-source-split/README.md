@@ -104,7 +104,10 @@ physical run. Main comparison cases retain initial eta=0.5.
 
 `python reference.py --table physical.tbl --case-result CASE/source-split-result.json`
 is a read-only plan. Add `--out NEW_REPORT.json` to compare a completed uniform
-0D case with adaptive SciPy DOP853 at two tolerances. Dependencies are Python
+0D case with adaptive SciPy DOP853 at three tolerances (1e-9/1e-11/1e-13).
+The last pair establishes refinement; the coarser pair remains reported because
+1e-9/1e-11 narrowly missed the declared self-refinement criterion in the first
+Windows analysis. Dependencies are Python
 3.11+, NumPy and SciPy; no Cantera runtime or C++ exact-step kernel is used.
 The fixed density is the actual time-zero CFD mass/volume, and the source is
 independently read from the hash-bound physical table. The reference reports

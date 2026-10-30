@@ -83,7 +83,7 @@ def evaluate(table, result_path):
     times = np.array([row['t'] for row in result['energy']])
     observed = np.array([row['cmean'] for row in result['energy']])
     assert len(times) > 1 and np.all(np.diff(times) > 0) and times[-1] <= case['endTime']*(1+1e-8)
-    solutions = [integrate(axis, rates, rho, initial['cmean'], case['endTime'], tol) for tol in [1e-9, 1e-11]]
+    solutions = [integrate(axis, rates, rho, initial['cmean'], case['endTime'], tol) for tol in [1e-9, 1e-11, 1e-13]]
     span = axis[-1]-axis[0]
     usable = all(record['complete'] and record['acceptedStatesCovered'] for _, record in solutions)
     rows, comparison = [], None
@@ -91,11 +91,13 @@ def evaluate(table, result_path):
     final = result['finalProfile']
     uniformity = float((max(row['c'] for row in final)-min(row['c'] for row in final))/span) if final else None
     if usable:
-        loose, tight = [sol.sol(times)[0] for sol, _ in solutions]
+        coarse, loose, tight = [sol.sol(times)[0] for sol, _ in solutions]
         self_error = float(np.max(np.abs(tight-loose))/span)
         delta = observed-tight
         comparison = {'referenceRefinementMax_Cspan': self_error, 'referenceRefinementLimit_Cspan': 1e-7,
                       'referenceConverged': self_error <= 1e-7,
+                      'coarseReferenceRefinementMax_Cspan': float(np.max(np.abs(loose-coarse))/span),
+                      'selectedReferenceTolerances': [1e-11, 1e-13],
                       'CFDMaxError_Cspan': float(np.max(np.abs(delta))/span),
                       'CFDRmsError_Cspan': float(np.sqrt(np.mean(delta**2))/span),
                       'CFDFinalError_Cspan': float(delta[-1]/span)}
@@ -120,7 +122,7 @@ def main():
     args = parser.parse_args()
     if args.out is None:
         print(json.dumps({'dryRun': True, 'table': str(args.table), 'CFDResult': str(args.case_result),
-                          'method': 'DOP853', 'rtol': [1e-9, 1e-11], 'referenceRefinementLimit_Cspan': 1e-7}))
+                          'method': 'DOP853', 'rtol': [1e-9, 1e-11, 1e-13], 'referenceRefinementLimit_Cspan': 1e-7}))
         return
     assert not args.out.exists(), 'Refuse to replace a retained comparison'
     report = evaluate(args.table, args.case_result)
