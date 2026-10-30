@@ -12,6 +12,11 @@
   "build": "/workspace/build/of8-unused-diffusion-r1",
   "out": "/workspace/results/of8-unused-diffusion-r1",
   "table": "/workspace/results/spitfire-cold-129-table-r2",
+  "tableSha256": "a2ba27d3b8ae15085fead9480e0da4045f1415c1492cdfd9376d0d9ba700cf57",
+  "tableReceiptSha256": "fde105940d892e5b77220ea110ae8558f9dfc98d477943e3f44e41c81b27693e",
   "metadata": "/workspace/results/spitfire-cold-129-r2/phase-metadata.json",
-  "thermo": "/workspace/inputs/EXACT_SRK_EXPORT"
+  "metadataSha256": "8bd5a769976354b5d59ea4589c2ec7dc4c1e7584255e4e1127d5b33e3c4c303e",
+  "thermo": "/workspace/inputs/g2-runtime-r4",
+  "thermoDictionarySha256": "6bb267b6c2ff64a38ac6d95e5170f950dd449aeb46cc5ac1bf98040ae3964d98",
+  "thermoManifestSha256": "ce4690395f0f2ca1643ba34395b9d67d70eddfbcc8247f471ea99116e303f459"
 }

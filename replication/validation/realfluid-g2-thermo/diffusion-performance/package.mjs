@@ -21,6 +21,11 @@ const blobs = JSON.parse(await checkFile(m.sourceBlobs, m.sourceBlobsSha256));
 if (blobs.source !== m.source || blobs.schema !== 'full-git-source-blobs-v1') throw new Error('Wrong blob manifest');
 if (['--plan', '--inputs'].includes(action)) {
   await checkFile(m.sourceArchive, m.sourceArchiveSha256);
+  for (const [path, expected] of [
+    [`${m.table}/physical.tbl`, m.tableSha256], [`${m.table}/receipt.json`, m.tableReceiptSha256],
+    [m.metadata, m.metadataSha256], [`${m.thermo}/thermophysicalProperties`, m.thermoDictionarySha256],
+    [`${m.thermo}/manifest.json`, m.thermoManifestSha256],
+  ]) await checkFile(path, expected);
   for (const p of retained) { const raw = await checkFile(`${m.fullRuntime}/${p.file}`, p.sha256); if (raw.length !== p.bytes) throw new Error('Product size mismatch'); }
   for (const path of [m.build, m.out]) {
     try { await access(path); throw new Error(`Refuse existing output ${path}`); } catch (e) { if (e.code !== 'ENOENT') throw e; }
