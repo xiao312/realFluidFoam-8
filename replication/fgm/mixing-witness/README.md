@@ -39,3 +39,12 @@ CVODE tolerances remain1e-10/1e-18; maximum step10microseconds; each case is bou
 to20s CPU-wall observation and200000 accepted steps. Numerical completion and
 scientific acceptance stay separate. Verification uses actual initial states
 and allocated physical trajectories, not a synthetic pass battery.
+
+`render.py --input RETAINED_RUN --table-dir RETAINED_LONG_TABLE --out NEW_REVIEW`
+plots the exact accepted reactor trajectories and the unchanged table slices.
+It depends additionally on Matplotlib; no chemistry integration is performed.
+The same-Z/C pair is not exactly equal in enthalpy, so its differences do not
+prove failure of an enthalpy-augmented closure. Reversals and out-of-table
+states remain visible. The output receipt binds every input and figure hash.
+Omit `--out` for a read-only input/identity check; rendering into an existing
+directory is refused. Visually inspect both figures after rendering.

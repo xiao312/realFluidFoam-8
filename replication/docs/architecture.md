@@ -489,3 +489,5 @@ projection remain separate diagnostics; the renderer never accepts the table.
 the original streams under mass/enthalpy conservation. It reuses the bounded
 `hybrid-water` state/reactor routines for four fresh physical witnesses, records
 same-coordinate nonuniqueness and missing coverage, and never edits table bounds.
+Its optional NumPy/Matplotlib renderer consumes the retained trajectories and
+unchanged table only; it has no chemistry, scheduler or publication side effects.
