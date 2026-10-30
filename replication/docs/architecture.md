@@ -466,3 +466,11 @@ only after explicit FGM/Fourier/absolute-enthalpy checks; public Dimix reads fai
 while suppressed. The class layout and default full calculation remain intact.
 This module records numerical parity and timings, not scientific acceptance;
 subsequent identical fresh CFD comparisons qualify actual solver use.
+
+`fgm/hybrid-water` performs a bounded, allocated physical-tail experiment using
+retained quench states and fresh Cantera constant-pressure reactors. It depends
+on pinned Python/NumPy/Cantera and exact direct-flamelet artifacts. Its separate
+water-progress v2 table is a potential input to the existing OF8 table reader;
+no runtime dependency on the generator enters CFD. It records branch omissions,
+source bounds and independent-Z errors, and cannot replace a table or grant
+scientific acceptance automatically.
