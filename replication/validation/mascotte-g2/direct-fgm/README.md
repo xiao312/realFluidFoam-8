@@ -226,3 +226,13 @@ required to interpret it. These diagnostics never overwrite h, T, or pressure.
 refinement. Their values are bound in the case manifest and emitted to the
 solver dictionaries. The generator does not certify a larger timestep merely
 because the source integrator can integrate it.
+# Guarded steady diffusion setup
+
+For an explicitly selected steadyFlamelet cold-real-fluid case, the initializer
+requires the single `fgmSkipUnusedDimix` control to match the boolean recorded in
+`direct-g2-input.json`. The default remains false. The executing runtime must
+also enforce the shared hePsiThermo/laminar/Fourier/absolute-enthalpy policy.
+This does not relax the fresh-time-zero, table identity, source or product
+checks. Qualify both property and physical periodic parity before using the
+optimized case for a G2 diagnostic.
+
