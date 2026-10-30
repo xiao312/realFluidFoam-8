@@ -81,6 +81,17 @@ autoPtr<CombustionModel<psiReactionThermo>> reaction
     CombustionModel<psiReactionThermo>::New(thermo, turbulence())
 );
 
+const Switch conserveTabulatedDensity
+(
+    runTime.controlDict().lookupOrDefault<Switch>("conserveTabulatedDensity", false)
+);
+if (conserveTabulatedDensity && !reaction->compositionTabulated())
+{
+    FatalErrorInFunction
+        << "conserveTabulatedDensity requires a tabulated composition model"
+        << exit(FatalError);
+}
+
 Info<< "Creating field dpdt\n" << endl;
 volScalarField dpdt
 (

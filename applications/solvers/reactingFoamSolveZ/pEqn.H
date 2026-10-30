@@ -115,10 +115,21 @@ U.correctBoundaryConditions();
 fvOptions.correct(U);
 K = 0.5*magSqr(U);
 
+auditFgmContinuityStage("beforePressureLimit", rho, phi);
 if (pressureControl.limit(p))
 {
     p.correctBoundaryConditions();
     rho = thermo.rho();
+    auditFgmContinuityStage("afterPressureEOSDensity", rho, phi);
+    // OF8 limit() reports configured bounds, not whether p was changed.
+    // Keep its pressure/EOS update, then restore conservative rho for the
+    // next outer transport solve. The scalar equation and its bounds stay
+    // unchanged; this is the same density equation already used above.
+    if (conserveTabulatedDensity)
+    {
+        #include "rhoEqn.H"
+        auditFgmContinuityStage("afterPressureDensitySolve", rho, phi);
+    }
 }
 
 if (thermo.dpdt())

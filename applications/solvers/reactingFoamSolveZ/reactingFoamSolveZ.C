@@ -56,6 +56,7 @@ Description
 #include "fgmTiming.H"
 #include <sstream>
 #include <iomanip>
+#include "fgmContinuityStage.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -164,7 +165,9 @@ int main(int argc, char *argv[])
             }
         }
 
+        auditFgmContinuityStage("beforeFinalEOSDensity", rho, phi);
         rho = thermo.rho();
+        auditFgmContinuityStage("afterFinalEOSDensity", rho, phi);
 
         // A changed nonideal pressure can move h(p,T,Y) after the last inversion.
         // Measure that coupling drift separately; do not mutate or reject it as
