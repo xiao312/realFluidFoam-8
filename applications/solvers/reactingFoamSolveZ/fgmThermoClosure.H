@@ -53,7 +53,7 @@ inline void auditFgmThermoClosure(const Foam::psiReactionThermo& thermo)
     reduce(faces, sumOp<label>()); reduce(invalid, sumOp<label>());
     Info<< "thermoClosure t=" << time.value() << " initial=" << (time.value() == 0 ? 1 : 0)
         << " cells=" << cells << " boundaryFaces=" << faces << " invalid=" << invalid
-        << " maxAbs_J_kg=" << maxAbsolute << " rms_J_kg=" << sqrt(squareSum/max(label(1), cells))
+        << " maxAbs_J_kg=" << maxAbsolute << " rms_J_kg=" << std::sqrt(squareSum/max(label(1), cells))
         << " maxRelative=" << maxRelative << " boundaryMaxAbs_J_kg=" << boundaryMaxAbsolute
         << " boundaryMaxRelative=" << boundaryMaxRelative << " limit=" << limit << endl;
     if (invalid || !cells || maxRelative > limit || boundaryMaxRelative > limit)
