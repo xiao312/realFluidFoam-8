@@ -15,6 +15,15 @@ still differ, that establishes non-uniqueness for these two compositions in a
 global Z/C/h description. It does not disprove a deliberately restricted,
 physically selected manifold or establish a replacement closure.
 
+The exact phase reports `thermo_model=ideal-gas`, `kinetics_model=bulk`, phase
+`gri30`, and `transport_model=none` in Cantera3.2.0. These are ordinary gas-phase
+GRI rates with the ideal-gas concentration/pressure relation, not an SRK
+full-chemistry reactor. The matching extension binary hash establishes runtime
+identity, not automatic activation of a nonideal model. Execution records these
+actual model identifiers and rejects an unexpected thermo/kinetics selection.
+This experiment isolates manifold composition/history for this declared model;
+it does not qualify nonideal chemistry or change the SRK CFD closure.
+
 ## Interface and provenance
 
 `run.py` consumes the hash-bound mixing-witness receipt, the two initial-state
