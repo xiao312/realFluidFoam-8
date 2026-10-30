@@ -46,6 +46,9 @@ are rank-local files; summing by physical patch name is an explicit analysis
 step, avoiding unmatched collectives across differing processor-patch lists.
 The batch first runs `qualify-parallel.sh` on fresh small pure-O2 and pure-CH4
 cases, comparing serial and reconstructed parallel Ha and all rank markers.
+Reconstruction explicitly selects `-withZero -time 0`; OF8 otherwise excludes
+the initial time even when `-time 0` is supplied. A missing time is a preparation
+failure, never permission to reuse an evolved field.
 This is initialization parity, not a flame or G2 validation result.
 
 The guard is enabled only for these cold cases and requires time zero with a

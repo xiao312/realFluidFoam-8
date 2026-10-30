@@ -103,7 +103,8 @@ if(ranks>1){
     rankOutputs.push({rank,HaSha256:digest(field),markerSha256:digest(rawMarker),
       boundaryAuditSha256:digest(await readFile(join(prefix,'ha-initialization-boundaries.csv')))});
   }
-  await run('reconstructPar',['-case',root,'-time','0','-fields','(Ha)'],'log.initialize-reconstruct-Ha');
+  // OF8 excludes time zero by default, even with an explicit -time selector.
+  await run('reconstructPar',['-case',root,'-withZero','-time','0','-fields','(Ha)'],'log.initialize-reconstruct-Ha');
   await copyFile(join(root,'processor0/constant/fgmHaInitialization'),join(root,'constant/fgmHaInitialization'));
 }else await run(options.probe, ['-case', root, '-initialize-Ha'], 'log.initialize-Ha');
 const marker = await readFile(join(root, 'constant/fgmHaInitialization'));
