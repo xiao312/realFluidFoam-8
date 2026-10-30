@@ -9,8 +9,9 @@ Job 126428092 reached the initial-state evaluator but stopped before integration
 because the enthalpy-error reduction used Python `abs` on a list. The correction
 uses NumPy's array-aware absolute value and retains the same 0.01 J/kg criterion.
 Failure receipts now bind a complete traceback. This repair changes neither the
-seeded physical state nor the reused chemistry runtime; a new allocated physical
-run remains necessary.
+seeded physical state nor the reused chemistry runtime. Subsequent job 126428728
+completed both trajectories to 200 microseconds. The 10000/s seed burns while the
+100000/s seed quenches; this is transient evidence, not steady acceptance.
 
 The pinned cold Cantera/Spitfire runtime is reused without a rebuild. The model
 is an ideal-gas, adiabatic, constant-pressure, unity-Lewis diffusion flamelet in
@@ -77,3 +78,12 @@ initialization checks and physical transient in Slurm. Inspect reached time and
 raw/checkpoint receipts, not just process exit. The initial experiment contains
 no broad synthetic test suite. Source and packet are exact Git archives with LF
 and SHA256 receipts; no Windows checkout files become untracked runtime inputs.
+
+`plot.py --input RETAINED_FAMILY --plan` inspects the phase receipt without writes.
+Use `--out NEW_DIRECTORY` to plot the actual accepted raw states. This optional
+offline consumer requires Matplotlib and NumPy, the retained phase receipt, both
+raw trajectories and their coordinate-audit hash receipts. It verifies raw hashes
+and source identities, labels the actual selected Z nodes, and uses no curve fit
+or resampling. Its fixed panels apply only to the declared two-case85/288K,
+5.61MPa experiment; they are not a generic case renderer. Inspect the resulting
+image and retained plot receipt. No paper agreement or acceptance is inferred.

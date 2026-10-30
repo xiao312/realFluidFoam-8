@@ -396,6 +396,8 @@ mixed-stream enthalpy. It reuses `direct-flamelet` input/runtime identities and
 physical export helpers, plus the already qualified Cantera/Spitfire runtime.
 Its checkpoints and dual-progress diagnostics describe actual trajectories;
 they do not modify the CFD table, submit jobs, or grant scientific acceptance.
+Its optional offline plot consumer uses NumPy/Matplotlib and retained raw/hash
+receipts; it has no dependency on the scheduler, solver or publication service.
 
 The G2 generator's optional cold mode also consumes the exact real-fluid export
 and the qualified full-fork library receipt. Its initializer computes time-zero
