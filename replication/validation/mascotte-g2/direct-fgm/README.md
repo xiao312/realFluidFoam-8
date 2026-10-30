@@ -4,7 +4,7 @@ The explicit alternative `--closure steady-flamelet` selects the separate
 fixed-dissipation one-dimensional model described in `../steady-flamelet`.
 Default `--closure fgm` preserves this module's existing FGM behavior. Steady
 cases require cold-real-fluid, strict bounds, explicit/no-progress-source mode,
-and unused-diffusion suppression off. Their default pure-O2 time-zero fill and
+and the explicit guarded diffusion policy (suppression defaults off). Their default pure-O2 time-zero fill and
 diagnostic c differ from the partly reacted FGM initialization below. The case
 manifest names the closure and preserves the physical profile's failed steady
 criterion. Neither mode changes the other's table or acceptance requirements.
@@ -226,6 +226,7 @@ required to interpret it. These diagnostics never overwrite h, T, or pressure.
 refinement. Their values are bound in the case manifest and emitted to the
 solver dictionaries. The generator does not certify a larger timestep merely
 because the source integrator can integrate it.
+
 # Guarded steady diffusion setup
 
 For an explicitly selected steadyFlamelet cold-real-fluid case, the initializer
