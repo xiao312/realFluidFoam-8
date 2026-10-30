@@ -45,4 +45,3 @@ test('actual recipe has positive blocks, matched interfaces and complete externa
     (recipe.axialCells-1)*recipe.radialCells.reduce((a,b)=>a+b,0),expectedCounts.internalFaces);
   assert.match(blockMeshDictionary(),/axisymmetric \{ type empty;/);
 });
-
