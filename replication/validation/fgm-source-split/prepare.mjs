@@ -64,7 +64,11 @@ function run(script, argv) {
   if (result.status !== 0) throw new Error(result.stderr || result.stdout || `Failed ${script}`);
 }
 run('prepare.mjs', ['--out', out, '--kind', 'heating', '--cells', String(cells), '--delta-t', String(dt)]);
-if (realFluid) await writeFile(`${out}/constant/thermophysicalProperties`, realFluid.dictionary);
+if (realFluid) {
+  await writeFile(`${out}/constant/thermophysicalProperties`, realFluid.dictionary);
+  await writeFile(`${out}/constant/thermophysicalTransport`,
+    'FoamFile { version 2.0; format ascii; class dictionary; object thermophysicalTransport; }\nlaminar { model Fourier; }\n');
+}
 else {
   run('thermo-export.mjs', [resolve(options.metadata), '--out', `${out}/thermo-input`,
     ...(options['nasa-extrapolation'] ? ['--nasa-extrapolation', options['nasa-extrapolation']] : [])]);
