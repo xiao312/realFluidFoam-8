@@ -30,7 +30,7 @@ License
 template<class BasicPsiThermo, class MixtureType>
 void Foam::hePsiThermo<BasicPsiThermo, MixtureType>::calculate()
 {
-    const bool skipDimix = validateFgmDimixSuppression(this->T_.mesh());
+    const bool skipDimix = fgmDimixSuppressed(this->T_.mesh());
     const scalarField& hCells = this->he_;
     const scalarField& pCells = this->p_;
 
@@ -177,6 +177,9 @@ Foam::hePsiThermo<BasicPsiThermo, MixtureType>::hePsiThermo
     }
     //
 
+    // The opt-in requires immutable configuration. Validate dictionaries once
+    // before any diffusivity suppression, without adding shared object state.
+    validateFgmDimixSuppression(mesh);
     calculate();
 
     if (fgmDimixSuppressed(mesh))

@@ -15,8 +15,9 @@ finite-rate/species diffusion models. Without the switch, behavior is unchanged.
 
 Fields and class layout remain unchanged. Both public Dimix accessors refuse
 access while suppressed; no caller can silently consume the uncomputed fields.
-The policy is rechecked on correction, and dictionary reads are unregistered to
-avoid collisions with subsequently constructed transport/combustion objects.
+The full policy is checked once before the first calculation; subsequent
+corrections read only the existing in-memory control flag. Dictionary reads are
+unregistered to avoid collisions with later transport/combustion objects.
 Runtime modification is refused so a process cannot turn the option off and
 read stale fields between corrections. No credentials or external state are used.
 

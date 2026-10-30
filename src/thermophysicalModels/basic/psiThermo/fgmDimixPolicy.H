@@ -17,7 +17,8 @@ inline bool fgmDimixSuppressed(const fvMesh& mesh)
     );
 }
 
-// Called before the first calculation and every subsequent correction. Do not
+// Called once before the first calculation. Runtime modification is prohibited.
+// Subsequent corrections read only the existing in-memory control flag. Do not
 // infer Fourier from an absent dictionary: this optimization needs an explicit
 // selection, and its public Dimix accessors remain guarded independently.
 inline bool validateFgmDimixSuppression(const fvMesh& mesh)
