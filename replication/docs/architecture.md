@@ -14,6 +14,8 @@ extension; it does not depend on OpenFOAM or perform scheduler operations.
 hash-bound table T/Y states at constant pressure/enthalpy. It diagnoses coverage
 and progress-coordinate reversal using accepted and requested-time observations,
 without modifying the table or depending on the CFD runtime or Spitfire.
+Its separate Matplotlib renderer consumes hash-bound collected traces; plotting
+adds no dependency to the reactor integration path.
 `src/combustionModels/fgmTable` consumes the declared table and supplies species
 and volumetric sources. `applications/solvers/reactingFoamSolveZ` transports Z
 and raw progress, and offers an opt-in absolute-enthalpy equation. Thermodynamic

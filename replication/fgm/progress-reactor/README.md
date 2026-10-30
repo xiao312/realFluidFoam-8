@@ -51,3 +51,9 @@ No synthetic pass substitutes for these physical checks.
 
 Primary API references: [Cantera constant-pressure reactor example](https://cantera.org/3.2/examples/python/reactors/reactor1.html)
 and [ReactorNet API](https://cantera.org/3.2/python/zerodim.html).
+
+`plot.py --input RETAINED_SNAPSHOT --out NEW_FIGURE_DIRECTORY` is an offline
+consumer requiring Matplotlib. It checks selected-column curve hashes against
+the collection receipt and original full CSV hashes against the scientific run
+receipt. It plots accepted steps without fitted curves or new interpolation;
+its output identity is separate from the executed reactor source.
