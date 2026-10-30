@@ -12,13 +12,18 @@ checkpoint; reacting MASCOTTE agreement and scientific acceptance remain pending
 | Thermophysical library | Full fork built; SRK O2 density at 85 K/5.61 MPa is 1181.227 kg/m3 versus the paper's 1177.2. Compiled PR Cp-Cv repair passed four pure-fluid regressions in job 126415466. | PR density discrepancy and low-temperature NASA extrapolation remain. Pure-fluid checks do not validate reacting mixtures. |
 | Physical CH4/O2 flamelets | Müller Fig. 2 temperature RMS difference 23.28 K; at strain 575000/s, peak T is 3126.0 K versus about 3126.7 K in Fig. 3. | Strict steady-residual criteria failed; high-strain extinction still occurs earlier. Approximate matches support further diagnostics, not acceptance. |
 | Physical table | Cold 129-node transient through 1 ms; 66 training/16 held-out profiles; maximum held-out T error 20.1 K and progress-source error 1.87% of global peak. | Ideal-gas chemistry, one trajectory family and two coordinates; no enthalpy-coordinate/PDF closure. |
-| Source/energy coupling | Job 126421653 passed 12 fresh 0D/1D cases and 14 timestep/outer-iteration comparisons. Maximum energy error/chemical change 0.1632%; mass drift 1.15e-13. | Larger timestep and full-SRK source-on coupling require separate evidence. The explicit-source control failed its energy criterion. |
-| Cost reduction | Job 126418954 gave identical six property/inversion pairs and source-off full-SRK CFD results. Thermo corrections ran 4.03–4.63 times faster. | Source-on equivalence and larger-flow cost remain separate checks. |
-| Reacting G2 | Job 126424490 was admitted with exact-source build, source-on parity and a fresh 100 microsecond pilot behind mesh/coupling checks. | Admission is not execution. Developed profiles and morphology are not yet demonstrated. |
+| Source/energy coupling | Job 126421653 passed 12 fresh 0D/1D cases and 14 timestep/outer-iteration comparisons. Maximum energy error/chemical change 0.1632%; mass drift 1.15e-13. Linux independent DOP853 repetition passed in job 126424490. | Longer-flow conservation remains separate. The explicit-source control failed its energy criterion. |
+| Cost reduction | Job 126418954 gave identical six property/inversion pairs and source-off full-SRK CFD results. Thermo corrections ran 4.03–4.63 times faster. Job 126424490 also passed exact source-on SRK parity. | Larger-flow cost remains a separate measurement. |
+| Reacting G2 | Job 126424490 built the exact runtime and qualified the exit mesh, then failed table coverage at 1.411 microseconds. Fresh job 126426676 failed at 0.837 microseconds when its source reached Cmax. | Full-chemistry CVODE confirms that the scalar table closure misses progress reversal. Developed profiles and morphology are not yet demonstrated. |
+
+The [31 October progress-coordinate diagnosis](progress-coordinate-20261031.md)
+records independent full-chemistry reactors, fresh ignition flamelets and the
+next separate steady-flamelet diagnostic. These are physical development
+results; failed FGM coverage is retained rather than hidden by clipping.
 
 Independent DOP853 analysis agrees with all six uniform CFD histories within
 7.13e-10 of the progress-variable span. Its Windows environment is NumPy
-2.2.6/SciPy 1.15.3; the allocated Linux repetition is separate. Both the loose
+2.2.6/SciPy 1.15.3; the allocated Linux repetition also passed. Both the loose
 reference's failed self-refinement and the tighter result are retained. No CFD
 acceptance limit was changed. Useful approximate agreement can justify the next
 independent experiment while failed criteria remain failed.
