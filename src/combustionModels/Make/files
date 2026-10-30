@@ -23,6 +23,9 @@ noCombustion/noCombustions.C
 fgmTable/fgmTableReader.C
 fgmTable/fgmTables.C
 
+steadyFlamelet/steadyFlameletTable.C
+steadyFlamelet/steadyFlamelets.C
+
 functionObjects/Qdot/Qdot.C
 
 radiationModels/absorptionEmissionModels/greyMeanCombustion/greyMeanCombustion.C

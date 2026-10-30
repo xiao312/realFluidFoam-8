@@ -9,16 +9,20 @@ import { inspectPaperExitMesh, copyPaperExitMesh } from '../paper-exit-wedge/mes
 import { loadRunControls, decompositionDictionary, functionObjects } from './observations.mjs';
 import { realFluidInput, initializationInput, ignitionDictionary } from './cold-input.mjs';
 import { solverSchemes } from '../../fgm-of8/direct-verification/schemes.mjs';
+import { loadSteadyTable, steadyInitialization } from '../steady-flamelet/input.mjs';
 import { nasaInversionPolicy } from '../../fgm-of8/direct-verification/thermo-policy.mjs';
 
 const options = {}, args = process.argv.slice(2);
 for (let i = 0; i < args.length; i += 2) {
-  if (!['--table-dir', '--metadata', '--mesh-dir', '--mesh-mode', '--transport-tolerance', '--out', '--bounds', '--end-time', '--ranks', '--observations', '--decomposition', '--thermo-mode', '--thermo-dir', '--initialization', '--chemistry', '--initial-dt', '--max-dt', '--max-co', '--outer', '--nasa-extrapolation', '--source-integration', '--skip-unused-diffusion'].includes(args[i]) || !args[i + 1]) {
+  if (!['--closure', '--table-dir', '--metadata', '--mesh-dir', '--mesh-mode', '--transport-tolerance', '--out', '--bounds', '--end-time', '--ranks', '--observations', '--decomposition', '--thermo-mode', '--thermo-dir', '--initialization', '--chemistry', '--initial-dt', '--max-dt', '--max-co', '--outer', '--nasa-extrapolation', '--source-integration', '--skip-unused-diffusion'].includes(args[i]) || !args[i + 1]) {
     throw new Error('Use --table-dir DIR --metadata FILE --mesh-dir DIR [--mesh-mode registered-200622|coarse-wedge-10000-v1] [--transport-tolerance VALUE] [--out NEW_CASE] [--bounds error|clamp] [--end-time S] [--ranks N] [--observations FILE] [--decomposition FILE] [--thermo-mode warm-ideal|cold-real-fluid --thermo-dir DIR] [--initialization FILE]');
   }
   options[args[i].slice(2)] = args[i + 1];
 }
 for (const key of ['table-dir', 'metadata', 'mesh-dir']) if (!options[key]) throw new Error(`Missing --${key}`);
+const closure = options.closure ?? 'fgm';
+if (!['fgm', 'steady-flamelet'].includes(closure)) throw Error('Use --closure fgm|steady-flamelet');
+const steady = closure === 'steady-flamelet';
 const meshMode = options['mesh-mode'] ?? 'registered-200622';
 if (!['registered-200622', 'coarse-wedge-10000-v1', 'paper-exit-wedge-10000-v1'].includes(meshMode)) throw new Error('Use --mesh-mode registered-200622|coarse-wedge-10000-v1|paper-exit-wedge-10000-v1');
 const transportTolerance = Number(options['transport-tolerance'] ?? 1e-10);
@@ -37,7 +41,7 @@ if (!Number.isFinite(maxCo) || !(maxCo > 0 && maxCo <= 1) || !Number.isInteger(o
 }
 if (![initialDt,maxDt].every(Number.isFinite) || !(initialDt>0 && initialDt<=maxDt && maxDt<=endTime)) throw new Error('Require positive initial-dt <= max-dt <= end-time');
 const controls = await loadRunControls(options.observations, options.decomposition, endTime, ranks);
-const input = await loadPhysicalTable(resolve(options['table-dir']), resolve(options.metadata));
+const input = await (steady ? loadSteadyTable : loadPhysicalTable)(resolve(options['table-dir']), resolve(options.metadata));
 const thermoMode = options['thermo-mode'] ?? 'warm-ideal';
 const chemistry = options.chemistry ?? 'table';
 if (!['table', 'disabled'].includes(chemistry)) throw new Error('Use --chemistry table|disabled');
@@ -51,10 +55,11 @@ if (!['yes', 'no'].includes(skipUnusedDiffusion) || (skipUnusedDiffusion === 'ye
   throw new Error('Unused diffusion suppression requires the qualified full real-fluid runtime');
 }
 if (!['warm-ideal', 'cold-real-fluid'].includes(thermoMode) || (thermoMode === 'warm-ideal' && options['thermo-dir'])) throw new Error('Explicit valid thermo mode required; a warm case cannot consume a real-fluid directory');
+if (steady && (thermoMode !== 'cold-real-fluid' || bounds !== 'error' || chemistry !== 'table' || sourceIntegration !== 'explicit' || skipUnusedDiffusion !== 'no')) throw Error('Steady closure requires cold-real-fluid, strict bounds, table composition, explicit/no split and full diffusivity');
 const realFluid = thermoMode === 'cold-real-fluid' ? await realFluidInput(options['thermo-dir'], input) : null;
 if (realFluid && options['nasa-extrapolation']) throw new Error('Cold input already binds its declared thermodynamic ranges');
 const nasaPolicy = realFluid ? null : nasaInversionPolicy(input.metadata, options['nasa-extrapolation']);
-const initialization = await initializationInput(options.initialization, input);
+const initialization = await (steady ? steadyInitialization : initializationInput)(options.initialization, input);
 if (!realFluid && initialization.config.mode === 'localized-covered') throw new Error('Localized preparation currently requires the full-runtime Ha initialization path');
 const coarseMesh = meshMode === 'coarse-wedge-10000-v1';
 const paperExitMesh = meshMode === 'paper-exit-wedge-10000-v1';
@@ -84,9 +89,13 @@ for (const [patch, state] of Object.entries(streams)) {
   state.meanVelocity_m_s = state.massFlow_kg_s / (state.density * mesh.patches[patch].area);
 }
 const slowerInlet = Math.min(...Object.values(streams).map(s => s.meanVelocity_m_s));
-const plan = { schema: 'forge-direct-warm-g2-fgm-v1', startTime: 0, endTime, pressure, ranks, meshMode,
+const plan = { schema: steady ? 'forge-direct-g2-steady-flamelet-v1' : 'forge-direct-warm-g2-fgm-v1', closure,
+  ...(steady ? { steadyFlamelet: { fixedChi: input.chi, chiDefinition: input.chiDefinition, transportedProgress: false, addedHeatSource: false,
+    originalSteadyConverged: input.receipt.original_steady_numerically_converged, originalResidual: input.receipt.original_final_state_diagnostics,
+    temperatureOwner: 'full-SRK thermo inversion of transported Ha', tableTemperature: 'diagnostic and initialization only', pdf: 'laminar delta',
+    originalModels: input.receipt.original_models } } : {}), startTime: 0, endTime, pressure, ranks, meshMode,
   timeControls: { initialDt_s: initialDt, maxDt_s: maxDt, maxCo, outerCorrectors: outer },
-  linearSolverControls: { transportTolerance, transportFields: ['U', 'h', 'Ha', 'Z', 'c', 'Yi'],
+  linearSolverControls: { transportTolerance, transportFields: steady ? ['U', 'h', 'Ha', 'Z'] : ['U', 'h', 'Ha', 'Z', 'c', 'Yi'],
     pressureTolerance: 1e-9, densityTolerance: 1e-10, relativeTolerance: 0,
     interpretation: 'Linear normalized residual control only; conservation and physical acceptance criteria are unchanged.' },
   energyForm: 'absoluteEnthalpy', chemistry, sourceIntegration,
@@ -123,7 +132,7 @@ if (realFluid) {
   await copyFile(`${out}/thermo-input/thermophysicalProperties`, `${out}/constant/thermophysicalProperties`);
 }
 await copySelectedMesh(resolve(options['mesh-dir']), out);
-await put('constant/physical.tbl', input.raw);
+await put(steady ? 'constant/steady.tbl' : 'constant/physical.tbl', input.raw);
 const scalarBoundary = (fuel, oxygen, initialValue) => `boundaryField {
  geom { type zeroGradient; } slipwalls { type zeroGradient; } noslipwalls { type zeroGradient; }
  ch4inlet { type fixedValue; value uniform ${fuel}; }
@@ -163,9 +172,12 @@ boundaryField { geom { type noSlip; } slipwalls { type slip; } noslipwalls { typ
 }\n`);
 await put('constant/momentumTransport', header('momentumTransport') + 'simulationType laminar;\n');
 await put('constant/thermophysicalTransport', header('thermophysicalTransport') + 'laminar { model Fourier; }\n');
-await put('constant/combustionProperties', header('combustionProperties') + `combustionModel fgmTable;
+await put('constant/combustionProperties', header('combustionProperties') + (steady
+  ? `combustionModel steadyFlamelet;
+steadyFlameletCoeffs { table "${resolve(out,'constant/steady.tbl').replaceAll('\\','/')}"; fixedChi ${input.chi}; chiDefinition ${input.chiDefinition}; }\n`
+  : `combustionModel fgmTable;
 fgmTableCoeffs { table "physical.tbl"; boundsPolicy ${bounds}; mixtureFractionField Z;
- progressField c; speciesSumLimit 1e-8; }\n`);
+ progressField c; speciesSumLimit 1e-8; }\n`));
 await put('system/fvSchemes', header('fvSchemes') + solverSchemes());
 await put('system/fvSolution', header('fvSolution') + `solvers {
  "p.*" { solver GAMG; smoother GaussSeidel; tolerance 1e-9; relTol 0; }
@@ -187,7 +199,7 @@ timeFormat general; timePrecision 12; runTimeModifiable no;
 fgmEnergyForm absoluteEnthalpy; writeEnergyBudget yes;
 writeFgmThermoClosure yes; fgmThermoClosureRelativeLimit ${plan.caloricClosure.relativeLimit};
 fgmRequireHaInitialization ${realFluid ? 'yes' : 'no'};
-fgmProgressSourceEnabled ${chemistry === 'table' ? 'yes' : 'no'};
+fgmProgressSourceEnabled ${!steady && chemistry === 'table' ? 'yes' : 'no'};
 fgmSourceIntegration ${sourceIntegration}; fgmSkipUnusedDimix ${skipUnusedDiffusion};
 functions {
  ${functionObjects(controls.observations)}

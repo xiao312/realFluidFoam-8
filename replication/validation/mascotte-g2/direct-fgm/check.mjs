@@ -6,6 +6,8 @@ const [directory] = process.argv.slice(2);
 if (!directory) throw new Error('Usage: check.mjs RECONSTRUCTED_CASE');
 const root = resolve(directory);
 const manifest = JSON.parse(await readFile(`${root}/direct-g2-input.json`, 'utf8'));
+const steady = manifest.closure === 'steady-flamelet';
+const diagnosticTemperature = steady ? 'steadyTdiag' : 'fgmTdiag';
 const log = await readFile(`${root}/log.solver`, 'utf8');
 function records(prefix) {
   return log.split(/\r?\n/).filter(line => line.startsWith(prefix)).map(line => {
@@ -30,13 +32,13 @@ const fieldValues = {};
 async function fieldSummary(name) {
   const raw = await readFile(`${root}/${latest.name}/${name}`, 'utf8');
   const values = scalarValues(raw, name);
-  if (['T', 'fgmTdiag'].includes(name)) fieldValues[name] = values;
+  if (['T', diagnosticTemperature, 'c', 'CO2', 'CO'].includes(name)) fieldValues[name] = values;
   let min = Infinity, max = -Infinity, sum = 0;
   for (const value of values) { min = Math.min(min, value); max = Math.max(max, value); sum += value; }
   return { min, max, cellArithmeticMean: sum / values.length, finite: values.every(Number.isFinite), count: values.length };
 }
 const fields = {};
-if (latest) for (const name of ['T', 'p', 'rho', 'Z', 'c', 'Ha', 'CH4', 'O2', 'CO2', 'CO', 'OH', 'fgmTdiag']) fields[name] = await fieldSummary(name);
+if (latest) for (const name of ['T', 'p', 'rho', 'Z', 'c', 'Ha', 'CH4', 'O2', 'CO2', 'CO', 'OH', diagnosticTemperature]) fields[name] = await fieldSummary(name);
 const mechanicalChecks = {
   cleanTimeZero: states[0]?.t === 0 && manifest.startTime === 0,
   reachedEndTime: Math.abs((states.at(-1)?.t ?? -1) - manifest.endTime) <= Math.max(1e-14, manifest.endTime * 1e-8),
@@ -53,21 +55,35 @@ if (manifest.caloricClosure?.required) {
   mechanicalChecks.caloricClosureConsistent = closure.length > 0 && closure.every(r => r.invalid === 0 &&
     r.limit === manifest.caloricClosure.relativeLimit && r.maxRelative <= r.limit && r.boundaryMaxRelative <= r.limit);
 }
-if (manifest.chemistry) mechanicalChecks.declaredSourceMode = source.length > 0 && source.every(row =>
+if (!steady && manifest.chemistry) mechanicalChecks.declaredSourceMode = source.length > 0 && source.every(row =>
   Number.isFinite(row.tabulatedKg_s) && Number.isFinite(row.appliedKg_s) &&
   row.enabled === (manifest.chemistry === 'table' ? 1 : 0) &&
   (manifest.chemistry !== 'disabled' || row.appliedKg_s === 0));
-if (manifest.sourceIntegration) mechanicalChecks.executedSourceIntegration = source.length > 0 &&
+if (!steady && manifest.sourceIntegration) mechanicalChecks.executedSourceIntegration = source.length > 0 &&
   source.every(row => row.integration === manifest.sourceIntegration);
 if (manifest.skipUnusedDiffusion !== undefined) mechanicalChecks.executedDiffusionPolicy =
   /FGM_DIMIX_POLICY calculation=suppressed access=forbidden transport=Fourier energy=absoluteEnthalpy/.test(log) === manifest.skipUnusedDiffusion;
+if (steady) {
+  const refreshes = records('steadyFlamelet ').filter(row => Number.isFinite(row.t));
+  mechanicalChecks.steadyCompositionRefreshed = refreshes.length >= equations.length+1 && refreshes.every(row =>
+    row.compositionRefreshed===1 && row.transportedProgress===0 && row.addedHeatSource===0 && row.maxSumError<=1e-8 && row.maxBoundaryLookupError<=1e-8);
+  mechanicalChecks.noProgressEquationOrSource = source.length===0 && !/Solving for c,/.test(log) && !/fgmSourceStage /.test(log);
+  mechanicalChecks.noAddedHeatRelease = equations.length>0 && equations.every(row => row.sourceW===0);
+  const count=Math.max(...['c','CO','CO2'].map(name=>fieldValues[name]?.length??0));
+  mechanicalChecks.derivedProgress = count>0 && Array.from({length:count},(_,i)=>{
+    const value=name=>fieldValues[name]?.[fieldValues[name]?.length===1?0:i];
+    return Math.abs(value('c')-value('CO')-value('CO2'))<=1e-10;
+  }).every(Boolean);
+}
 const corrections = bounds.at(-1)?.cumulativeCorrections ?? null;
-const temperatureDeparture = latest && fields.T.finite && fields.fgmTdiag.finite
+const temperatureDeparture = latest && fields.T.finite && fields[diagnosticTemperature].finite
   ? { units: 'K', definition: 'executing thermo T minus table diagnostic T',
-    ...differenceSummary(fieldValues.T, fieldValues.fgmTdiag),
-    interpretation: 'Measures departure from the two-coordinate manifold; no enthalpy-coordinate correction or acceptance threshold is implied.' }
+    ...differenceSummary(fieldValues.T, fieldValues[diagnosticTemperature]),
+    interpretation: steady ? 'Measures full-SRK Ha temperature versus fixed-chi ideal-gas table temperature; no agreement threshold is implied.'
+      : 'Measures departure from the two-coordinate manifold; no enthalpy-coordinate correction or acceptance threshold is implied.' }
   : null;
-const report = { schema: 'forge-direct-warm-g2-diagnostic-v1', inputHashes: manifest.inputHashes,
+const report = { schema: steady ? 'forge-direct-steady-flamelet-diagnostic-v1' : 'forge-direct-warm-g2-diagnostic-v1', closureModel: manifest.closure ?? 'fgm',
+  steadyFlamelet: manifest.steadyFlamelet ?? null, inputHashes: manifest.inputHashes,
   time: latest?.time ?? null, mechanicalChecks, fields, initialEnergy: states[0] ?? null,
   finalEnergy: states.at(-1) ?? null, finalEquation: equations.at(-1) ?? null,
   lookupBounds: bounds.at(-1) ?? null,
@@ -76,7 +92,7 @@ const report = { schema: 'forge-direct-warm-g2-diagnostic-v1', inputHashes: mani
   averaging: latest ? await averagingAudit(root, latest.name, manifest.observations, manifest.ranks) : null,
   scientificLimitations: manifest.approximations,
   pressureDepartureFromTable: fields.p ? Math.max(Math.abs(fields.p.min / manifest.pressure - 1), Math.abs(fields.p.max / manifest.pressure - 1)) : null,
-  clippedLookup: corrections === null ? null : corrections > 0,
+  clippedLookup: steady ? false : corrections === null ? null : corrections > 0,
   chemistry: manifest.chemistry ?? 'table', lastAppliedSource: source.at(-1) ?? null,
   sourceIntegration: manifest.sourceIntegration ?? 'unrecorded-legacy',
   skipUnusedDiffusion: manifest.skipUnusedDiffusion ?? null,

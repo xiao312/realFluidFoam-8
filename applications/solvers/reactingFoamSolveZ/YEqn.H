@@ -58,7 +58,9 @@ else
     // the solver performs no further bookkeeping: the inert species is not
     // overwritten here, because that would be a second, silent repair of a
     // quantity the model owns.
-    reaction->correct();
+    // Progress models retain their established pre-Z/source lifecycle.
+    // Non-progress steady tables refresh after Z in the main loop instead.
+    if (reaction->transportsProgress()) reaction->correct();
 
     volScalarField Ysum(0.0*Y[0]);
     forAll(Y, i)

@@ -112,7 +112,16 @@ int main(int argc, char *argv[])
             #include "UEqn.H"
             #include "YEqn.H"
             #include "ZEqn.H"
-            #include "cEqn.H"
+            if (reaction->transportsProgress())
+            {
+                #include "cEqn.H"
+            }
+            else if (reaction->compositionTabulated())
+            {
+                // A steady flamelet owns Y(Z), not a transported progress field.
+                // Refresh the just-transported composition before Ha inversion.
+                reaction->correct();
+            }
             #include "EEqn.H"
 
             // --- Pressure corrector loop
