@@ -54,6 +54,8 @@ Description
 #include "fgmThermoClosure.H"
 #include "fgmTable.H"
 #include "fgmTiming.H"
+#include <sstream>
+#include <iomanip>
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
