@@ -16,7 +16,9 @@ tmp<fv::convectionScheme<scalar>> mvConvection
 // took before this guard existed.
 if (!reaction->compositionTabulated())
 {
+    const auto fgmReactionStart = fgmTiming.start();
     reaction->correct();
+    fgmTiming.stop(fgmWallTiming::reactionCorrection, fgmReactionStart);
     volScalarField Yt(0.0*Y[0]);
 
     forAll(Y, i)
@@ -58,7 +60,9 @@ else
     // the solver performs no further bookkeeping: the inert species is not
     // overwritten here, because that would be a second, silent repair of a
     // quantity the model owns.
+    const auto fgmReactionStart = fgmTiming.start();
     reaction->correct();
+    fgmTiming.stop(fgmWallTiming::reactionCorrection, fgmReactionStart);
 
     volScalarField Ysum(0.0*Y[0]);
     forAll(Y, i)

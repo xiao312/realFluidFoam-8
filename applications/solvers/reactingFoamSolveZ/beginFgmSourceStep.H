@@ -1,6 +1,7 @@
 // Exactly once after runTime++ and before rhoEqn/PIMPLE. Never assign oldTime().
 if (splitFgmSource)
 {
+    const auto fgmFirstSourceStart = fgmTiming.start();
     if (mesh.moving())
         FatalErrorInFunction << "strangFixedState currently requires a stationary mesh" << exit(FatalError);
     if (fgmSourceTimeIndex == runTime.timeIndex())
@@ -22,4 +23,5 @@ if (splitFgmSource)
         fgmSourceOldRho*(firstHalf-fgmSourceOldC)/runTime.deltaTValue();
     sourceC.primitiveFieldRef() = firstHalf;
     sourceC.correctBoundaryConditions();
+    fgmTiming.stop(fgmWallTiming::sourceFirstHalf, fgmFirstSourceStart);
 }
