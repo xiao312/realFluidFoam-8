@@ -561,3 +561,11 @@ The steady-only endpoint representation helper is a fixed, explicit numerical
 policy between transported Z and strict table lookup. It leaves the transported
 field unchanged and reports elemental coordinate perturbations. The G2 generator
 selects the policy; neither the table nor the CFD evaluator grants acceptance.
+
+`validation/g2-window-average` consumes retained named instantaneous samples and
+explicit completed-time provenance to calculate saved-sample Reynolds/Favre
+window statistics with Node standard libraries. It preserves gaps, exact duplicate
+audits and partial coverage; it does not manufacture solver averaging counters.
+Its optional Python paper consumer depends on NumPy/Matplotlib/PyMuPDF and the
+existing G2 reference readers. Solver, scheduler and instantaneous renderers do
+not depend on this module; no publication or acceptance side effects are owned.
