@@ -79,3 +79,11 @@ out-of-domain refusal, then an allocated full-SRK build and fresh small
 transport/enthalpy case. Check the model sees transported Z, composition is
 updated before E, c has no equation/source, Ha has no added Q and initial Y/T/p
 produce Ha with the executing runtime. Compilation is not physical validation.
+
+Cyclic boundary audits use the same weighted owner/neighbour composition as
+OpenFOAM8 `coupledFvPatchField::evaluate`; nonlinear lookup of the averaged Z
+is not an equivalent operation. Processor patches store their received neighbour
+values and retain direct lookup checks. Physical fixed/gradient boundaries retain
+their declared values and direct lookup check. This diagnostic distinction changes
+no transported field or source. See the upstream OpenFOAM8 coupled and processor
+patch-field implementations for their separate storage semantics.
