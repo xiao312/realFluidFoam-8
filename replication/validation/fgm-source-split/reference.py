@@ -89,7 +89,7 @@ def evaluate(table, result_path):
     rows, comparison = [], None
     density_drift = max(abs(row['mass']/row['volume']/rho-1) for row in result['energy'])
     final = result['finalProfile']
-    uniformity = (max(row['c'] for row in final)-min(row['c'] for row in final))/span if final else None
+    uniformity = float((max(row['c'] for row in final)-min(row['c'] for row in final))/span) if final else None
     if usable:
         loose, tight = [sol.sol(times)[0] for sol, _ in solutions]
         self_error = float(np.max(np.abs(tight-loose))/span)
