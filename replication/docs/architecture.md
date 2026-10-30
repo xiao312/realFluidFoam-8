@@ -534,3 +534,11 @@ source bounds and independent-Z errors, and cannot replace a table or grant
 scientific acceptance automatically. Its separate `derive.py` reuses exact
 retained branches without integration, preserving the physical source/job while
 recording any explicitly selected, already bounded endpoint representation.
+
+`validation/g2-window-average` consumes retained named instantaneous samples and
+explicit completed-time provenance to calculate saved-sample Reynolds/Favre
+window statistics with Node standard libraries. It preserves gaps, exact duplicate
+audits and partial coverage; it does not manufacture solver averaging counters.
+Its optional Python paper consumer depends on NumPy/Matplotlib/PyMuPDF and the
+existing G2 reference readers. Solver, scheduler and instantaneous renderers do
+not depend on this module; no publication or acceptance side effects are owned.
