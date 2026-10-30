@@ -51,6 +51,8 @@ def main():
             axis.set_xlabel('Physical time (ns)');axis.set_xlim(0,.5);axis.axhline(0,color='#8c929a',linewidth=.7)
         else:
             axis.set_xscale('symlog',linthresh=1e-4,linscale=.4)
+            axis.set_xticks([0,1e-3,1e-1,10,1000])
+            axis.set_xticklabels(['0','10⁻³','10⁻¹','10¹','10³'])
             axis.set_xlim(0,2000);axis.set_xlabel('Physical time (µs; logarithmic after 0.0001 µs)')
     axes[0,0].legend(loc='best',frameon=False)
     fig.suptitle('The CO₂ + CO coordinate reverses under full chemistry',fontsize=15,fontweight='bold')
