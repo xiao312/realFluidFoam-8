@@ -10,6 +10,12 @@ convergence. Saved-sample statistics cannot resolve fluctuations between writes.
 
 The Node CLI requires `--case`, `--run-record`, `--start-s`, `--end-s`,
 `--max-gap-s` and `--out`. `--favre` requests density-weighted means and RMS.
+Optional `--max-profile-gap-s` and `--max-plane-gap-s` override the fallback
+`--max-gap-s` only for their respective geometries. The actual selected bound is
+recorded in every group. For 50 microsecond profiles and 500 microsecond planes,
+for example, use `--max-gap-s 0.000075 --max-plane-gap-s 0.00075`: a missing
+450 microsecond profile interval remains excluded without discarding normal
+500 microsecond plane intervals. The cadence does not imply resolved fluctuations.
 Default execution is read-only; `--apply` creates a new output directory.
 The case contains `direct-g2-input.json` and the existing named instantaneous
 profile/plane CSVs. The run record must identify `jobId`, source/runtime and a
@@ -56,7 +62,7 @@ All input snapshots remain read-only; derived outputs must be separate.
 ```sh
 node replication/validation/g2-window-average/run.mjs \
   --case /retained/case --run-record /retained/run-record.json \
-  --start-s 0.0001 --end-s 0.001 --max-gap-s 0.000025 \
+  --start-s 0.0001 --end-s 0.001 --max-gap-s 0.000075 --max-plane-gap-s 0.00075 \
   --favre --out /derived/window --apply
 ```
 

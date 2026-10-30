@@ -27,3 +27,13 @@ test('large gaps and uncovered boundaries are not filled; constants have zero RM
   assert.equal(finish(state).rms[0], 0);
   assert.equal(timeWeights([1], 0, 10, 2).duration_s, 0);
 });
+
+test('50us profiles and 500us planes retain distinct declared gap limits', () => {
+  const profile = timeWeights([0, 50e-6, 500e-6, 550e-6], 0, 1e-3, 75e-6);
+  const plane = timeWeights([0, 500e-6, 1e-3], 0, 1e-3, 750e-6);
+  assert.equal(profile.gaps.length, 1);
+  assert.ok(Math.abs(profile.duration_s - 100e-6) < 1e-18);
+  assert.equal(plane.gaps.length, 0);
+  assert.equal(plane.duration_s, 1e-3);
+  assert.equal(timeWeights([0, 500e-6, 1e-3], 0, 1e-3, 75e-6).duration_s, 0);
+});
