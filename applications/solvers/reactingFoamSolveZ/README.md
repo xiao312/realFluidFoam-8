@@ -195,6 +195,10 @@ scale, not as post-pressure acceptance. Invalid counts remain visible.
 
 `writeFgmTiming yes;` in `system/controlDict` enables a local steady-clock
 diagnostic; the default is off and the setting is read once at solver startup.
+The timer is declared in `createFields.H`, before field initialization. OF8 also
+includes this header through its post-processing path, so initialization timing
+must not depend on a variable declared only in the normal solve path. That path
+does not emit a timing summary or add a gather.
 It does not change equations, solver tolerances, guards or model selection.
 It times startup after mesh creation, complete steps, the main equations,
 source half-stages, reaction/table updates, thermo correction, caloric checks,
