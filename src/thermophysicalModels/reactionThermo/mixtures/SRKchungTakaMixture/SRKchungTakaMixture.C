@@ -26,6 +26,7 @@ License
 #include "SRKchungTakaMixture.H"
 #include "thermodynamicConstants.H"
 #include "fgmDimixPolicy.H"
+#include <cmath>
 
 using namespace Foam::constant::thermodynamic;
 
@@ -160,10 +161,14 @@ void Foam::SRKchungTakaMixture<ThermoType>::calculateRealGas
 
     scalar sigma3M = 0, epsilonkM0 = 0, omegaM0 = 0, MM0 = 0, miuiM0 = 0;
 
+    const bool omitZeroPairs = fgmDimixSuppressed(Y_[0].mesh());
     forAll(COEF1_, i)
     {
+        if (omitZeroPairs && X[i] == 0) continue;
         forAll(COEF1_, j)
         {
+            // Exact zeros only. Preserve every nonzero term and its order.
+            if (omitZeroPairs && X[j] == 0) continue;
             //- For SRK
             coef1      = coef1 + (X[i]*X[j])*COEF1_[i][j];
             coef2      = coef2 + (X[i]*X[j])*COEF2_[i][j];
@@ -245,7 +250,7 @@ Foam::SRKchungTakaMixture<ThermoType>::SRKchungTakaMixture
 {
     // heThermo queries this mixture in its initializer, before hePsiThermo.
     // Validate the explicit immutable policy before that first property query.
-    validateFgmDimixSuppression(mesh);
+    const bool omitZeroPairs = validateFgmDimixSuppression(mesh);
     correctMassFractions();
 
 
@@ -341,6 +346,25 @@ Foam::SRKchungTakaMixture<ThermoType>::SRKchungTakaMixture
 
             nSIGMD[j] = 
                 pow(specieThermos_[i].sigmvi(), 1.0/3) + pow(specieThermos_[j].sigmvi(), 1.0/3);
+
+            if (omitZeroPairs)
+            {
+                // Skipping zero products must not hide nonfinite coefficients.
+                const scalar coefficients[] =
+                {
+                    nCOEF1[j], nCOEF2[j], nCOEF3[j], nSIGMA3M[j],
+                    nEPSILONKM0[j], nOMEGAM0[j], nMM0[j], nMIUIM0[j], nKAPPAIM[j]
+                };
+                for (const scalar coefficient : coefficients)
+                {
+                    if (!std::isfinite(coefficient))
+                    {
+                        FatalErrorInFunction
+                            << "Nonfinite SRK/Chung pair coefficient for species "
+                            << i << ", " << j << exit(FatalError);
+                    }
+                }
+            }
 
         }
 
