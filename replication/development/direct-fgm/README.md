@@ -1,175 +1,104 @@
 # Direct FGM development checkpoint
 
-This branch preserves the current solver, flamelet and comparison candidates as
-a reviewable source checkpoint on `develop/reacting`. The implementations are
-under development; paper agreement, reacting MASCOTTE capability and scientific
-acceptance are not established by this commit.
+The current branch is `draft/direct-fgm-20261031`, based on
+`a73a6caa7b54ca32e112cd79adac1f7d36d875f6`. It combines the reacting solver,
+physical flamelet/table tools and comparison evaluators. This is a source
+checkpoint; reacting MASCOTTE agreement and scientific acceptance remain pending.
 
-## Source boundaries and provenance
+## Current progression
 
-The baseline is `a73a6caa7b54ca32e112cd79adac1f7d36d875f6`. The selected paths
-retain the exact Git blobs from these development revisions. This branch does
-not import their historical result directories or commit ancestry.
+| Stage | Retained evidence | Remaining qualification |
+| --- | --- | --- |
+| Thermophysical library | Full fork built; SRK O2 density at 85 K/5.61 MPa is 1181.227 kg/m3 versus the paper's 1177.2. Compiled PR Cp-Cv repair passed four pure-fluid regressions in job 126415466. | PR density discrepancy and low-temperature NASA extrapolation remain. Pure-fluid checks do not validate reacting mixtures. |
+| Physical CH4/O2 flamelets | Müller Fig. 2 temperature RMS difference 23.28 K; at strain 575000/s, peak T is 3126.0 K versus about 3126.7 K in Fig. 3. | Strict steady-residual criteria failed; high-strain extinction still occurs earlier. Approximate matches support further diagnostics, not acceptance. |
+| Physical table | Cold 129-node transient through 1 ms; 66 training/16 held-out profiles; maximum held-out T error 20.1 K and progress-source error 1.87% of global peak. | Ideal-gas chemistry, one trajectory family and two coordinates; no enthalpy-coordinate/PDF closure. |
+| Source/energy coupling | Job 126421653 passed 12 fresh 0D/1D cases and 14 timestep/outer-iteration comparisons. Maximum energy error/chemical change 0.1632%; mass drift 1.15e-13. | Larger timestep and full-SRK source-on coupling require separate evidence. The explicit-source control failed its energy criterion. |
+| Cost reduction | Job 126418954 gave identical six property/inversion pairs and source-off full-SRK CFD results. Thermo corrections ran 4.03–4.63 times faster. | Source-on equivalence and larger-flow cost remain separate checks. |
+| Reacting G2 | Job 126424490 was admitted with exact-source build, source-on parity and a fresh 100 microsecond pilot behind mesh/coupling checks. | Admission is not execution. Developed profiles and morphology are not yet demonstrated. |
 
-| Snapshot | Included paths |
-| --- | --- |
-| `282aa996a78939cbdaf591520231fb2c0476567d` | `src/combustionModels`, `replication/validation/fgm-of8/fixtures` |
-| `3972fba92af30399a3b657609624507fa3eef199` | `applications/solvers/reactingFoamSolveZ`, `replication/validation/fgm-of8/direct-verification`, `replication/validation/mascotte-g2/direct-fgm`, `replication/validation/realfluid-g2-thermo/probe` |
-| `ed5bacd073c16d4b00876652b252b477e83053d9` | `replication/fgm/direct-flamelet` |
-| `325253221281dabbf4b48612adfdb65880d020d0` | `replication/validation/mascotte-figures` |
-| `0abb643` | `replication/validation/muller-figure2` |
-| `a5fb250` | `replication/validation/realfluid-g2-thermo` |
-| `b2a0229` | `replication/validation/flamelet-review` |
-| `45d3fe91ce215292b3e09a0710ca14e921972a59` | `replication/validation/g2-review` |
-| `6e3a7f8f6af4896a5014a05f6ba998c47edbfccc` | `src/thermophysicalModels/specie/equationOfState/PengRobinson`, `replication/validation/pr-cpmcv` |
+Independent DOP853 analysis agrees with all six uniform CFD histories within
+7.13e-10 of the progress-variable span. Its Windows environment is NumPy
+2.2.6/SciPy 1.15.3; the allocated Linux repetition is separate. Both the loose
+reference's failed self-refinement and the tighter result are retained. No CFD
+acceptance limit was changed. Useful approximate agreement can justify the next
+independent experiment while failed criteria remain failed.
 
-The historical [v1 interface contract](../../docs/fgm-of8-interface-contract.md)
-also comes from `5af5cb9`, with a dated scope amendment identifying the current
-v2, transported-Z and energy conventions. Its older proposal remains visible;
-the linked module READMEs define the current candidate interface.
+## Code and execution boundaries
 
-The [solver](../../../applications/solvers/reactingFoamSolveZ/README.md) consumes
-the [FGM table interface](../../../src/combustionModels/fgmTable/README.md).
-The [flamelet module](../../fgm/direct-flamelet/README.md) produces profiles,
-phase metadata and physical table candidates. The
-[finite-volume verification module](../../validation/fgm-of8/direct-verification/README.md)
-supplies clean-start energy, progress-source and scalar-transport checks.
-The paper evaluators accept explicit local PDFs and numerical result paths.
-Their reference extraction is independent of candidate simulation results.
+The [solver](../../../applications/solvers/reactingFoamSolveZ/README.md) transports
+raw `C=Y_CO2+Y_CO` and mixture fraction Z. Optional source-stage integration
+preserves oldTime, repeats the second half from each fresh transport solve,
+and uses absolute Ha without adding formation heat twice. The
+[table model](../../../src/combustionModels/fgmTable/README.md) owns interpolation
+and coverage events. Default explicit integration remains available.
 
-Configuration lives in the module's JSON inputs, explicit file arguments and
-OpenFOAM dictionaries. Output directories must be new. Raw fields, profiles,
-tables generated by runs, plots, paper PDFs, machine profiles and credentials
-remain outside Git. The committed `.tbl` files are small analytical fixtures,
-not physical run output. No module in this checkpoint manages credentials or
-submits compute; the operator uses the separate FlamePilot Slurm adapter.
+The [flamelet module](../../fgm/direct-flamelet/README.md) uses pinned Spitfire
+revision `735711dc4a426cc7504747d732f2e7fcc3db2c23`. Its retained fixes address
+interior-node energy indexing and cryogenic reverse-rate overflow. Excluded
+multivalued progress states and numerical-species projections are reported.
+The [source-coupling checks](../../validation/fgm-source-split/README.md) exercise
+actual OF8 equations; their independent reference does not call the C++ source
+integrator. Python/SciPy never enter the CFD solver.
 
-## Execution and verification
+The [diffusivity optimization](../../validation/realfluid-g2-thermo/diffusion-performance/README.md)
+is opt-in and restricted to the qualified FGM/laminar/Fourier/absolute-Ha path;
+attempted access to skipped Dimix fields fails. Executing-thermo h(p,T,Y) is
+checked after each energy inversion. Successful summaries may be sparse;
+checking is independent of output cadence. A separate non-mutating post-pressure
+witness measures coupling drift. NASA range extensions retain coefficients and
+identify extrapolation.
 
-Build Linux source from an exact Git archive or case-sensitive checkout. Do not
-copy the complete source tree through a case-insensitive Windows checkout.
-OpenFOAM compiler options and environment identity belong in the immutable
-build receipt. The current diagnostic builds combine stock OF8 libraries with
-the custom combustion module; they do not qualify the full real-fluid stack.
+## Geometry and observables
 
-The Cantera/Spitfire environment must be qualified separately. Spitfire is pinned
-to Sandia revision `735711dc4a426cc7504747d732f2e7fcc3db2c23`; the extension,
-dependencies and upstream license are external runtime inputs. It eagerly
-imports Matplotlib through its reactor module, even for a non-plotting flamelet
-driver. Reuse of a built wheel requires its exact recorded hash.
+The canonical 200622-cell wedge places the injector exit at raw x=10 mm. Its
+upstream O2 inlet radius is 1.6 mm; the exit radius is 2.5 mm. These are distinct
+areas and origins. The [paper-exit coarse mesh](../../validation/mascotte-g2/paper-exit-wedge/README.md)
+uses co-planar exits at x=0 with O2 radius 2.5 mm, a 0.3 mm lip, and methane radii
+2.8–5 mm. Original meshes remain unchanged. This partial geometry still omits
+upstream ducts, square chamber corners and 3D turbulence.
 
-For a read-only case proposal, run:
+At the retained SRK densities, 44.4 g/s O2 and 143.1 g/s methane give exit
+velocities about 1.914 and 63.568 m/s and momentum-flux ratio 38.98. A 100
+microsecond startup cannot establish developed 15/45/70 mm profiles. Longer fresh
+stages follow measured cost, conservation and coverage; no evolved restart is implied.
 
-```sh
-node replication/validation/fgm-of8/direct-verification/prepare.mjs --kind heating
-```
+[G2 inputs](../../validation/mascotte-g2/direct-fgm/README.md) record source,
+table, thermo, mesh, initialization and sampling controls. Instantaneous profiles
+remain separate from time means and RMS. Original figures/captions and comparison
+contracts are prepared by [mascotte-review](../../validation/mascotte-review/README.md)
+and [g2-review](../../validation/g2-review/README.md).
 
-Expected output identifies the zero-time analytical problem without writing or
-solving. Run `git diff --check`, syntax-check the Python/JavaScript/Bash sources,
-then execute the documented reader and finite-volume checks in the pinned Slurm
-environment. Physical flamelet/table runs and held-out comparisons follow their
-module README. Synthetic lookup checks are not physical validation.
+[Conservation auditing](../../validation/mascotte-g2/conservation/README.md) uses
+actual inventories, assembled operators and boundary flux histories. It separates
+pressure/enthalpy staging from equation residuals and reports missing steps. Its
+reconstructed kinetic boundary flux is explicitly an estimate. The
+[308 nm LTE proxy](../../validation/oh-lte-proxy/README.md) transforms instantaneous
+T/rho/OH before optional averaging. Ordinary OH, thermal OH* population, calibrated
+emission and line-of-sight intensity remain distinct quantities.
 
-Keep compile failures, process returns, evaluator outcomes and paper agreement
-separate. A published source checkpoint does not change a running job's revision
-or imply reviewer approval. Independent code/science review and human acceptance
-remain separate decisions; unresolved property and flamelet discrepancies stay
-visible while independent diagnostics proceed.
+## Reproducible source and artifacts
 
-The 31 October diagnostic build at `5af5cb9` successfully linked the custom
-combustion library but failed on `Info.precision(15)` in the solver. Revision
-`282aa99` uses the OF8 stream returned by `Info()` and adds the physical-table
-closed-state diagnostic. Its actual solver build and finite-volume results
-remain separate execution receipts. The real-fluid dictionary exporter retains
-identified NASA coefficients and author critical parameters; its optional
-temperature-bound extensions explicitly record extrapolation.
+Job 126424490 uses source `f368f8bf894dceff3e9a781d108a3f6a133e8928` and overlay
+archive `5277f09dd78a6b4830af43d1e6d3e9a56c93343dcba9c612657a5cf368e99d06`.
+All 174 files were compared with actual Git objects before admission. The runtime
+retains 14 libraries with individual ce76/282 source identities and rebuilds
+combustion/solver/probe. The separately compiled PR repair is not in those inherited
+thermo libraries and is not claimed as executing in this SRK run.
 
-The subsequent solver revision fixes a diagnostic-only diagonal-matrix residual
-crash, refreshes fixed-temperature enthalpy boundaries using current pressure and
-composition, and corrects inlet velocity after initial density evaluation. These
-are exercised by the fresh finite-volume and conditional G2 batch; committing
-them does not establish that the batch passed.
+Build on a case-sensitive Linux filesystem. Freeze Windows archives with explicit
+`git -c core.autocrlf=false -c core.eol=lf archive`, then compare each member with
+actual Git objects. A blob-shaped hash computed from archive bytes does not prove
+Git identity. The retained source-split archive had 99 CRLF-only conversions,
+eight literal matches and no other changes. Its executed archive/binary hashes
+remain authoritative, with the provenance correction retained separately.
 
-The first actual Spitfire transient completed but exposed a large enthalpy
-mixing error and a multivalued progress mapping. The new source preserves its
-energy/progress audits, an exact upstream interior-node indexing patch, and
-independent 129/257-point reruns. The patch changes eight energy chi accesses;
-it does not change kinetics. Separate cold-rate probes investigate nonfinite
-Griffon rates without silently replacing them. Tiny table species roundoff is
-projected under an explicit bounded policy, preserving raw progress and
-reporting elemental changes; raw physical profiles remain untouched.
+Raw fields, physical tables, plots, PDFs, private paths and credentials stay outside
+Git. The optical and conservation modules retain source selections from `c7de56b`
+and `a4c504a`; neither changes a live solver. A source checkpoint does not update
+a running job or constitute independent code/science approval or human acceptance.
 
-The mesh-qualified warm G2 case is an ideal-gas, laminar, axisymmetric startup
-diagnostic on the retained 200622-cell wedge. It is not the paper's cold-inlet,
-three-dimensional turbulent flame or a converged mean. Its batch first checks
-energy, scalar transport, physical-table coupling and MPI consistency. The local
-review module aligns retained trajectories with original Sharma figure crops
-and documents operating-condition differences without claiming acceptance.
-
-The full real-fluid fork has subsequently built at `282aa99`, with pure-fluid
-SRK/PR evaluation receipts. This does not qualify a reacting mixture. SRK oxygen
-density at 85 K and 5.61 MPa is 1181.227 kg/m3 against the paper's 1177.2. PR
-exposes an inconsistent Cp-Cv expression and separate density disagreement.
-
-Corrected 129/257-point physical transients reduced maximum enthalpy-mixing error
-from 153156.62 to 1465.36/383.64 J/kg. The optional post-peak extinction branch
-policy retains excluded early-branch points. Its numerical-zero endpoint policy
-removes only audited roundoff tails, with measured maximum species change
-4.05e-28. A held-out source-sign discrepancy remains. These policies define a
-diagnostic table, not a fully qualified manifold or an adjusted physical model.
-
-Fresh heating, conversion and contact cases reached their intended end times and
-passed their analytic checks. Their first assembled residual check double-counted
-coupled sources; the latest candidate evaluates source-minus-Apsi once and retains
-the legacy difference as an independent identity check. Acceptance limits are
-unchanged. The new cold-rate evaluator selects a resolved HCN finite-difference
-plateau independently of analytic agreement, reusing the exact earlier compiled
-candidate and retaining its failed receipt. Job 126410535 tests both repairs and
-conditionally attempts a 16-rank warm G2 startup. Its admission is not a result.
-
-That batch completed the fresh cold 129-point trajectory through 1 ms and exported
-the warm table, then failed on a const-incompatible OF8 diagnostic API. The API
-repair compiled in job 126411544. Heating, conversion and contact checks passed.
-The physical closed case had zero mass drift, energy error 4.13e-5 per chemical
-change, and pressure drift 5.91e-4, but two residual reports failed at a temporal
-arithmetic scale around 1.15e13 W. The latest source measures actual matrix
-summands. A narrowly scoped diagnostic exception may permit a subsequent bounded
-flow experiment only if those measured bounds explain both residual failures and
-every independent physical check passes. Original failed verdicts and thresholds
-remain unchanged; the exception is not scientific acceptance.
-
-The actual cold table exports 66 training and 16 held-out profiles. Its retained
-data audit reports maximum temperature error 20.1 K and progress-source error
-1.87% of the global peak, with no above-floor source-sign disagreements. It is
-an ideal-gas chemistry table coupled diagnostically to full SRK CFD, not a real-
-fluid flamelet or the paper's LES/PDF closure. The cold generator now prepares
-separate source-off transport and localized reacting cases with independent
-timesteps, exact runtime Ha, and refreshed inlet kinetic energy. Job 126412917
-executes these candidates; execution and approval remain separate.
-
-The PR correction is source-qualified against independent pressure derivatives
-at 23 original pure-fluid states (maximum relative identity error 5.64e-11).
-Its first selective-rebuild batch failed before compilation on a packaging hash
-error. An immutable LF-byte recovery package is prepared; actual rebuilt-library
-qualification is still pending. The separate PR density discrepancy is unchanged.
-
-## 31 October, 03:12 Shanghai checkpoint
-
-The completed ten-case Müller sweep supplies approximate Figure 2/3 comparisons.
-Figure 2 temperature RMS is 23.28 K, and the largest species RMS relative to its
-plotted range is H2 at 3.52%. At scalar dissipation 575000/s, peak temperature is
-3126.04 K versus approximately 3126.73 K in the digitized paper. Every strict
-steady-residual check remains failed, and two higher-strain cases collapse.
-These useful comparisons support further diagnostics without qualifying the
-extinction limit or concealing residual failures.
-
-Job 126414523 passed actual-table C++ source-step parity and the 16-rank contact
-comparison (maximum Z difference 2.37e-11). G2 startup then failed on a missing
-viscous-divergence scheme. Source 73e4954 declares all selected operators and
-adds parallel full-runtime initialization; job 126416068 tests fresh warm/cold
-cases. No completed G2 flow timestep is claimed at this checkpoint. The source
-integrator prototype has not yet qualified an OF8 source-splitting implementation.
-
-PR selective rebuild recovery is job 126415466. Source, execution and independent
-scientific approval remain separate; this development branch is not a qualified
-scientific release. Raw outputs and paper assets stay in the retained trial store.
+Module READMEs define dry-run commands and affected checks. Compile and solve
+through the qualified FlamePilot Slurm adapter; every CFD starts at zero. Preserve
+errors and receipts, check product identities before reuse, and keep failures
+distinct from current qualified results. The fixed figure catalogue and its
+publication boundaries remain intact.

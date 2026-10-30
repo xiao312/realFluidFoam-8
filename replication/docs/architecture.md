@@ -460,3 +460,14 @@ only after explicit FGM/Fourier/absolute-enthalpy checks; public Dimix reads fai
 while suppressed. The class layout and default full calculation remain intact.
 This module records numerical parity and timings, not scientific acceptance;
 subsequent identical fresh CFD comparisons qualify actual solver use.
+
+`validation/mascotte-g2/conservation` is an offline Node auditor of retained
+energyState/energyEquation records and boundary phi histories. It uses exact
+printed step identities to separate final-state coupling drift from assembled
+residuals; it neither changes a solver nor chooses acceptance thresholds.
+
+`validation/oh-lte-proxy` consumes co-located instantaneous T/rho/OH and the exact
+phase molecular weight to calculate the paper's 308 nm LTE population proxy.
+It transforms before averaging and does not infer LOS intensity or optical
+calibration. Both modules depend only on Node standard libraries and explicit
+input files; future review renderers consume their separate retained outputs.

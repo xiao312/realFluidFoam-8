@@ -1,0 +1,11 @@
+{
+  "schema": "oh-lte-samples/v1",
+  "phaseMetadata": "/data/phase-metadata.json",
+  "sampling": {"kind": "instantaneous-cfd", "instantaneous": true},
+  "provenance": {"source_commit": "REPLACE_WITH_EXACT_SOURCE", "job_id": "REPLACE_WITH_ACTUAL_JOB"},
+  "frames": [
+    {"time_s": 0.001, "files": ["/data/0.001/midplane_T_OH_rho.csv"]},
+    {"time_s": 0.0011, "files": ["/data/0.0011/midplane_T_OH_rho.csv"]}
+  ],
+  "averaging": {"method": "trapezoidal-samples", "start_s": 0.001, "end_s": 0.0011}
+}

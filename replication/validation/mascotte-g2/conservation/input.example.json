@@ -1,0 +1,32 @@
+{
+  "schema": "g2-discrete-conservation-input-v1",
+  "jobId": "REPLACE",
+  "solverSourceCommit": "REPLACE_WITH_40_HEX",
+  "solverExecutableSha256": "REPLACE_WITH_64_HEX",
+  "staticMesh": true,
+  "energyForm": "absoluteEnthalpy",
+  "log": { "path": "CASE/log.solver", "sha256": "REPLACE" },
+  "sourceFiles": {
+    "EEqn.H": { "path": "SOURCE/applications/solvers/reactingFoamSolveZ/EEqn.H", "sha256": "REPLACE" },
+    "energyState.H": { "path": "SOURCE/applications/solvers/reactingFoamSolveZ/energyState.H", "sha256": "REPLACE" },
+    "pEqn.H": { "path": "SOURCE/applications/solvers/reactingFoamSolveZ/pEqn.H", "sha256": "REPLACE" },
+    "reactingFoamSolveZ.C": { "path": "SOURCE/applications/solvers/reactingFoamSolveZ/reactingFoamSolveZ.C", "sha256": "REPLACE" }
+  },
+  "caseFiles": {
+    "controlDict": { "path": "CASE/system/controlDict", "sha256": "REPLACE" },
+    "fvSchemes": { "path": "CASE/system/fvSchemes", "sha256": "REPLACE" }
+  },
+  "executionReceipt": { "path": "RECEIPT.json", "sha256": "REPLACE" },
+  "massFluxFiles": {
+    "ch4inlet": [{ "path": "CASE/postProcessing/massFlux_ch4inlet/0/surfaceFieldValue.dat", "sha256": "REPLACE" }],
+    "loxinlet": [{ "path": "CASE/postProcessing/massFlux_loxinlet/0/surfaceFieldValue.dat", "sha256": "REPLACE" }],
+    "outlet": [{ "path": "CASE/postProcessing/massFlux_outlet/0/surfaceFieldValue.dat", "sha256": "REPLACE" }]
+  },
+  "boundaryCoverage": {
+    "zeroFluxPatches": ["geom", "slipwalls", "noslipwalls", "axisymmetric", "planeMinus", "planePlus"],
+    "unverifiedPatches": [],
+    "justification": "Replace with the executed boundary-condition/mesh evidence; this list alone does not prove zero flux."
+  },
+  "unloggedMassSources": "not independently accounted",
+  "unloggedEnergySources": "Compare assembled term sum with residualW; no independent fvOptions power supplied"
+}
