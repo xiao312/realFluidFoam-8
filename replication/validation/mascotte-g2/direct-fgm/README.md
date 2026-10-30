@@ -235,4 +235,3 @@ also enforce the shared hePsiThermo/laminar/Fourier/absolute-enthalpy policy.
 This does not relax the fresh-time-zero, table identity, source or product
 checks. Qualify both property and physical periodic parity before using the
 optimized case for a G2 diagnostic.
-
