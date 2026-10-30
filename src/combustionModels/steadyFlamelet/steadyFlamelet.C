@@ -51,10 +51,13 @@ steadyFlamelet<ReactionThermo>::steadyFlamelet
         this->mesh(), IOobject::MUST_READ, IOobject::NO_WRITE, false));
     const IOdictionary transport(IOobject("thermophysicalTransport", this->mesh().time().constant(),
         this->mesh(), IOobject::MUST_READ, IOobject::NO_WRITE, false));
-    if (momentum.lookupOrDefault<word>("simulationType", "") != "laminar"
-     || !transport.found("laminar")
-     || transport.subDict("laminar").lookupOrDefault<word>("model", "") != "Fourier")
-        refuse("only the explicit laminar delta-PDF / Fourier diagnostic is supported");
+    const bool ransUnityLe=validateFgmRansUnityLeDiagnostic
+        (this->mesh(), momentum, transport, "steadyFlamelet");
+    const bool laminarFourier=momentum.lookupOrDefault<word>("simulationType", "") == "laminar"
+     && transport.found("laminar")
+     && transport.subDict("laminar").lookupOrDefault<word>("model", "") == "Fourier";
+    if (!laminarFourier && !ransUnityLe)
+        refuse("requires laminar/Fourier or the explicit RAS kEpsilon/unity-Le diagnostic");
     const fileName path(this->coeffs().lookup("table"));
     if (!path.isAbsolute()) refuse("table must have an explicit absolute shared-case path");
     try { table_.reset(new forgeSteady::Table(path.c_str())); }
@@ -80,7 +83,8 @@ steadyFlamelet<ReactionThermo>::steadyFlamelet
     Info<< "steadyFlamelet contract: fixedChi=" << fixedChi << " chiDefinition=" << definition
         << " pressurePa=" << table_().pressure << " points=" << table_().size()
         << " progressTransport=0 source=0 temperatureOwner=thermo energy=Ha"
-        << " closure=laminar-delta-PDF fixedPhysicalProfile=1 lookupRoundoffPolicy=" << endpointPolicy << endl;
+        << " closure=" << (ransUnityLe ? "RAS-kEpsilon-delta-PDF-diagnostic" : "laminar-delta-PDF")
+        << " fixedPhysicalProfile=1 lookupRoundoffPolicy=" << endpointPolicy << endl;
     correct();
 }
 

@@ -597,3 +597,9 @@ CLI and reuses its optional executed-inlet audit. Primary panels keep dimensiona
 CFD separate from paper-normalized axes; optional normalization states its
 inference. Dependencies are NumPy, Matplotlib, Pillow, PyMuPDF and the existing
 G2 input reader. It owns no CFD, scheduler, publication or scientific acceptance.
+`validation/mascotte-g2/rans-diagnostic` is an explicit fresh-case modifier for
+the existing direct-G2/steady-table route. It selects stock kEpsilon and
+unity-Lewis eddyDiffusivity with declared turbulence inputs. The shared Dimix
+policy and steadyFlamelet constructor allow only that named opt-in combination;
+they retain all other guards and need exact-runtime qualification. No RANS/LES
+equivalence or presumed-PDF closure is inferred from this diagnostic.

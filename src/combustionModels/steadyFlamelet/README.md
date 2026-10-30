@@ -1,7 +1,7 @@
 # Fixed-dissipation steady-flamelet diagnostic
 
 `steadyFlamelet` maps transported mixture fraction Z to composition on one
-retained physical burning flamelet. It is a separate laminar, delta-PDF,
+retained physical burning flamelet. Its default is a separate laminar, delta-PDF,
 fixed-dissipation diagnostic; it is not the FGM progress-variable closure and
 does not qualify a turbulent presumed-PDF or LES model. Retained profiles which
 failed their steady criterion remain labelled approximate steady in provenance.
@@ -21,6 +21,14 @@ Fourier/unity-Lewis transport. An explicit unused-Dimix switch uses the same
 constructor-validated hePsi/absolute-Ha/laminar/Fourier policy as fgmTable; the
 steady model has no bypass. This named-model extension requires its own actual
 property and fresh CFD parity receipts before adoption. The default remains off.
+
+`fgmRansUnityLeDiagnostic yes;` explicitly selects a separate development path:
+RAS kEpsilon with turbulence on and eddyDiffusivity Prt0.7. Both Ha and Z use the
+same effective diffusion, and no Dimix query is made. This is still a delta-PDF
+fixed-chi composition map, with no turbulent scalar variance or chemistry PDF.
+All other RAS/LES combinations remain refused. The
+[case module](../../../replication/validation/mascotte-g2/rans-diagnostic/README.md)
+declares the adopted inlet/initial turbulence assumptions and qualification.
 
 Outputs: mapped Y, c, steadyTdiag, steadyQdot and lookup diagnostics. Source and
 Q values are not used in transport equations. Z outside [0,1], nonfinite data,

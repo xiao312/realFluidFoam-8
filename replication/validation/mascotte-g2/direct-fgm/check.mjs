@@ -10,6 +10,7 @@ if (!directory) throw new Error('Usage: check.mjs RECONSTRUCTED_CASE');
 const root = resolve(directory);
 const manifest = JSON.parse(await readFile(`${root}/direct-g2-input.json`, 'utf8'));
 const steady = manifest.closure === 'steady-flamelet';
+const rans = Boolean(manifest.ransDiagnostic);
 const diagnosticTemperature = steady ? 'steadyTdiag' : 'fgmTdiag';
 const scanned = logMode === '--stream-log' ? await scanSolverLog(`${root}/log.solver`) : null;
 const log = scanned ? scanned.markerText : await readFile(`${root}/log.solver`, 'utf8');
@@ -43,13 +44,14 @@ async function fieldSummary(name) {
 }
 const fields = {};
 if (latest) for (const name of ['T', 'p', 'rho', 'Z', 'c', 'Ha', 'CH4', 'O2', 'CO2', 'CO', 'OH', diagnosticTemperature]) fields[name] = await fieldSummary(name);
+if (latest && rans) for (const name of ['k', 'epsilon', 'nut', 'alphat']) fields[name] = await fieldSummary(name);
 const mechanicalChecks = {
   cleanTimeZero: states[0]?.t === 0 && manifest.startTime === 0,
   reachedEndTime: Math.abs((states.at(-1)?.t ?? -1) - manifest.endTime) <= Math.max(1e-14, manifest.endTime * 1e-8),
   wroteEndTime: latest && Math.abs(latest.time - manifest.endTime) <= Math.max(1e-14, manifest.endTime * 1e-8),
   terminatedNormally: /\nEnd\s*(?:\n|$)/.test(log) && !/FOAM FATAL|Floating point exception/.test(log),
   finiteEnergyRecords: finite(states) && finite(equations),
-  finiteFinalFields: Object.keys(fields).length === 12 && Object.values(fields).every(row => row.finite),
+  finiteFinalFields: Object.keys(fields).length === (rans ? 16 : 12) && Object.values(fields).every(row => row.finite),
   positiveThermo: fields.T?.min > 0 && fields.p?.min > 0 && fields.rho?.min > 0,
   noThermoRangeWarnings: rangeWarningCount === 0,
 };
@@ -66,7 +68,15 @@ if (!steady && manifest.chemistry) mechanicalChecks.declaredSourceMode = source.
 if (!steady && manifest.sourceIntegration) mechanicalChecks.executedSourceIntegration = source.length > 0 &&
   source.every(row => row.integration === manifest.sourceIntegration);
 if (manifest.skipUnusedDiffusion !== undefined) mechanicalChecks.executedDiffusionPolicy =
-  /FGM_DIMIX_POLICY calculation=suppressed access=forbidden transport=Fourier energy=absoluteEnthalpy/.test(log) === manifest.skipUnusedDiffusion;
+  log.includes(`FGM_DIMIX_POLICY calculation=suppressed access=forbidden transport=${rans ? 'RAS-eddyDiffusivity' : 'Fourier'} energy=absoluteEnthalpy`) === manifest.skipUnusedDiffusion;
+if (rans) {
+  mechanicalChecks.declaredRansClosure = steady && manifest.ransDiagnostic.config.model === 'kEpsilon' &&
+    manifest.ransDiagnostic.config.transport === 'eddyDiffusivity' && manifest.ransDiagnostic.config.Prt === 0.7 &&
+    /Selecting RAS turbulence model kEpsilon/.test(log) &&
+    /Selecting RAS thermophysical transport model eddyDiffusivity/.test(log) &&
+    /closure=RAS-kEpsilon-delta-PDF-diagnostic/.test(log);
+  mechanicalChecks.nonnegativeTurbulence = ['k', 'epsilon', 'nut', 'alphat'].every(name => fields[name]?.min >= 0);
+}
 if (steady) {
   const refreshes = records('steadyFlamelet ').filter(row => Number.isFinite(row.t));
   mechanicalChecks.steadyCompositionRefreshed = refreshes.length >= equations.length+1 && refreshes.every(row =>

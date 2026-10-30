@@ -259,3 +259,12 @@ identified `../log-stream` reader and incremental report writer. The default
 short-run path remains unchanged. Every scientific record parser, field check
 and acceptance threshold is identical; the streamed report adds full raw-log
 identity and original line mappings. A changed or over-budget log fails openly.
+# Optional RANS diagnostic
+
+The separate [RANS configurator](../rans-diagnostic/README.md) can prepare a new
+cold steady-flamelet case with an explicitly declared kEpsilon/eddyDiffusivity
+closure. The result checker then requires the exact model-selection messages,
+the corresponding guarded diffusion policy, and finite nonnegative k, epsilon,
+nut and alphat in addition to the unchanged thermodynamic and flow checks.
+Laminar cases keep their original checks. This extension does not qualify a
+turbulent paper comparison or change the table, initializer or scalar bounds.
