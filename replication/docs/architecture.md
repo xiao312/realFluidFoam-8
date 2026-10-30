@@ -484,3 +484,8 @@ and recording a tighter-step physical spot comparison before table reuse.
 produces offline figures/HTML with input hashes. It has no physics, scheduler or
 publication side effects. Source bounds, independent-Z errors and energy-source
 projection remain separate diagnostics; the renderer never accepts the table.
+
+`fgm/mixing-witness` reads exact retained hybrid cap states and mixes them with
+the original streams under mass/enthalpy conservation. It reuses the bounded
+`hybrid-water` state/reactor routines for four fresh physical witnesses, records
+same-coordinate nonuniqueness and missing coverage, and never edits table bounds.
