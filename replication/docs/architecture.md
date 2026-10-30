@@ -502,3 +502,9 @@ phase molecular weight to calculate the paper's 308 nm LTE population proxy.
 It transforms before averaging and does not infer LOS intensity or optical
 calibration. Both modules depend only on Node standard libraries and explicit
 input files; future review renderers consume their separate retained outputs.
+
+The solver's optional `fgmTiming.H` depends only on OF8 communication containers
+and the C++ steady clock. It measures local inclusive regions and gathers rank
+counters only at existing writes/end; it does not alter the scientific models
+or require a scheduler/runtime service. Operator performance analysis consumes
+its logs separately from conservation and physical acceptance.

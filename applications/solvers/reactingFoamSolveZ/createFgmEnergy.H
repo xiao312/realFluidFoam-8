@@ -60,8 +60,12 @@ if (absoluteEnthalpyFGM)
     );
     updateFgmFixedTemperatureEnthalpy(thermo, composition, fgmAbsoluteEnthalpy());
     thermo.he() == fgmAbsoluteEnthalpy() - fgmChemicalEnthalpy(mesh, composition);
+    const auto fgmThermoStart = fgmTiming.start();
     thermo.correct();
+    fgmTiming.stop(fgmWallTiming::thermoCorrection, fgmThermoStart);
+    const auto fgmCaloricStart = fgmTiming.start();
     auditFgmThermoClosure(thermo);
+    fgmTiming.stop(fgmWallTiming::caloricAudit, fgmCaloricStart);
     rho = thermo.rho();
     // Density-dependent inlet velocity must use this initialized EOS state,
     // not a placeholder velocity serialized by a different thermodynamic model.

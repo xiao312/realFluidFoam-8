@@ -16,7 +16,9 @@ tmp<fv::convectionScheme<scalar>> mvConvection
 // took before this guard existed.
 if (!reaction->compositionTabulated())
 {
+    const auto fgmReactionStart = fgmTiming.start();
     reaction->correct();
+    fgmTiming.stop(fgmWallTiming::reactionCorrection, fgmReactionStart);
     volScalarField Yt(0.0*Y[0]);
 
     forAll(Y, i)
@@ -60,7 +62,12 @@ else
     // quantity the model owns.
     // Progress models retain their established pre-Z/source lifecycle.
     // Non-progress steady tables refresh after Z in the main loop instead.
-    if (reaction->transportsProgress()) reaction->correct();
+    if (reaction->transportsProgress())
+    {
+        const auto fgmReactionStart = fgmTiming.start();
+        reaction->correct();
+        fgmTiming.stop(fgmWallTiming::reactionCorrection, fgmReactionStart);
+    }
 
     volScalarField Ysum(0.0*Y[0]);
     forAll(Y, i)
