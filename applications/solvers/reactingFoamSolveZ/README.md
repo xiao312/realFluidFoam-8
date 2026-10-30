@@ -122,3 +122,37 @@ and the hs/ha distinction in its
 [energy equation](https://github.com/deepmodeling/deepflame-dev/blob/7cb3294b275525cb8829ada3d3fbc067ab9323eb/applications/solvers/dfLowMachFoam/EEqn.H).
 The compressible kinetic/pressure terms here remain those of OF8. There is no
 copied spray source or implicit use of DeepFlame's table-temperature closure.
+
+## Optional source splitting
+
+`fgmSourceIntegration explicit` is the default and keeps the existing source
+assembly. Opt-in `strangFixedState` requires global Euler time stepping, enabled
+FGM source, absolute enthalpy, and a v2 raw-C table. LTS is refused.
+The mesh must remain stationary.
+
+At each physical timestep, the first half source stage uses old C, Z and density
+once. The solver keeps the original oldTime fields unchanged. Its source-free
+transport equation receives `rho.oldTime()*deltaC_half/deltaT`, which changes the
+transport initial state to the cached half-reacted state. Scalar under-relaxation
+is omitted on this opt-in transport solve, so previous outer-iteration reaction
+cannot enter through an under-relaxed matrix source.
+
+Each PIMPLE outer iteration solves transport from that same initial state.
+The second half source stage starts from the freshly solved transport field,
+never the preceding outer iteration's reacted field. Composition then updates
+through the existing table lookup. Ha remains the energy authority; no extra
+chemical Q is added. Existing inlet and coupled boundary conditions remain owned
+by the case. Any source-domain exit stops with its event evidence.
+
+The source stages freeze Z and density separately at their input state. Global
+Euler transport and variable-density coupling do not give a second-order CFD
+method. Refine the physical timestep and compare outer-corrector counts.
+The [verification plan](../../../replication/validation/fgm-source-split/README.md)
+uses actual table source curves and clean-start 0D/1D cases. Neither a source-ODE
+pass nor synthetic tests qualify a reacting G2 calculation.
+
+The history handling follows OF8's
+[GeometricField storage](https://github.com/OpenFOAM/OpenFOAM-8/blob/master/src/OpenFOAM/fields/GeometricFields/GeometricField/GeometricField.C).
+The first-stage correction follows the stored `rho.oldTime()*c.oldTime()` source
+in its [Euler matrix](https://github.com/OpenFOAM/OpenFOAM-8/blob/master/src/finiteVolume/finiteVolume/ddtSchemes/EulerDdtScheme/EulerDdtScheme.C).
+Runtime checks still verify these assumptions with the executing field objects.

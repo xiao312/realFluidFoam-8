@@ -52,3 +52,27 @@ cases. Example: the `fgmTableCoeffs` dictionary selects a table file and
 `boundsPolicy error`. Verify v1 fixtures with the retained table probe, then v2
 mapping/zero-span/refusal cases and an actual clean-start physical table run.
 Compilation and synthetic lookup checks alone do not qualify combustion.
+
+## Optional fixed-state source integration
+
+The reader's `advanceSource(Z,rho,C,dt)` integrates its piecewise-linear raw-C
+source exactly while Z and density remain fixed. `sourceCurve` exposes the same
+interpolated C/source arrays for independent allocated probes. Both require a
+v2 mass-fraction-mapped table. The scalar kernel is copied unchanged from
+`direct-flamelet/source_ode.hpp` at `c67dfe2910dc2275270d3dccc2a5f3fedb75862a`.
+Its local name is `fgmSourceOde.H`, which OF8's include-directory generator finds.
+It introduces only C++ standard-library dependencies.
+
+`fgmTable::advanceProgressSource` applies that kernel to explicit input fields
+and returns a new internal scalar field. It does not modify the input fields,
+oldTime storage, species, temperature or energy. It reports stage duration,
+segment crossings and integrated progress change. An outward domain event is
+fatal, including its cell, state and elapsed time; no source is zeroed or clipped.
+This refusal applies even when ordinary lookup uses `boundsPolicy clamp`.
+Zero-span pure-stream rows can remain fixed only with exactly zero source.
+
+The optional solver coupling is documented in the solver README and
+`replication/validation/fgm-source-split/README.md`. The default explicit source
+path is unchanged. The source table still describes its generating ideal-gas
+flamelets; coupling it to SRK/PR does not establish matching chemistry or thermal
+states. Source integration cannot repair this model discrepancy.

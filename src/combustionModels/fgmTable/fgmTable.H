@@ -210,6 +210,15 @@ public:
         //  of the variable the solver actually transports
         virtual tmp<volScalarField> progressSource() const;
 
+        //- Explicit stage inputs remain unchanged. Domain events are fatal.
+        scalarField advanceProgressSource
+        (
+            const scalarField& mixture, const scalarField& density,
+            const scalarField& initial, const scalar duration, const word& stage
+        ) const;
+
+        bool sourceIntegrationSupported() const { return table_().mappedMassFraction(); }
+
         //- Tabulated source of the composition progress variable Yc, exactly as
         //  the table block states it [kg/m3/s]
         const volScalarField& Sc() const

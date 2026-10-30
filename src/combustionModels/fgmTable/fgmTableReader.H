@@ -51,6 +51,7 @@ SourceFiles
 #include "wordList.H"
 #include "scalarField.H"
 #include "dictionary.H"
+#include "fgmSourceOde.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -293,7 +294,20 @@ public:
             return normalisedCoordinate() ? Sc/progressDYc_ : Sc;
         }
 
-        //- Interpolate every block at (Z, c).  ``Y`` is resized to the number
+        //- Strict v2 fixed-Z source curve and integration. No lookup clipping.
+        void sourceCurve
+        (
+            const scalar Z, std::vector<double>& coordinates,
+            std::vector<double>& sources
+        ) const;
+
+        forgeFgm::SourceAdvance advanceSource
+        (
+            const scalar Z, const scalar density,
+            const scalar initial, const scalar duration
+        ) const;
+
+        //- Interpolate every block at (Z, c). ``Y`` is resized to the number
         //  of tabulated species and filled in table order.
         void lookup
         (

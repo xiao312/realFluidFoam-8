@@ -503,4 +503,52 @@ bool Foam::combustionModels::fgmTable<ReactionThermo>::read()
 }
 
 
+template<class ReactionThermo>
+Foam::scalarField
+Foam::combustionModels::fgmTable<ReactionThermo>::advanceProgressSource
+(
+    const scalarField& mixture, const scalarField& density,
+    const scalarField& initial, const scalar duration, const word& stage
+) const
+{
+    if (mixture.size() != initial.size() || density.size() != initial.size()
+     || initial.size() != this->mesh().nCells())
+        refuse("Source stage field sizes differ from the mesh");
+    scalarField advanced(initial);
+    scalar crossings = 0, changeKg = 0;
+    forAll(initial, celli)
+    {
+        try
+        {
+            const forgeFgm::SourceAdvance result = table_().advanceSource
+                (mixture[celli], density[celli], initial[celli], duration);
+            if (result.outwardBoundary || result.elapsed != duration)
+            {
+                FatalErrorInFunction << "FGM source domain event stage=" << stage
+                    << " cell=" << celli << " t=" << this->mesh().time().value()
+                    << " Z=" << mixture[celli] << " rho=" << density[celli]
+                    << " initialC=" << initial[celli] << " eventC=" << result.progress
+                    << " elapsed=" << result.elapsed << " requested=" << duration
+                    << exit(FatalError);
+            }
+            advanced[celli] = result.progress;
+            crossings += result.crossedSegments;
+            changeKg += density[celli]*(result.progress-initial[celli])*this->mesh().V()[celli];
+        }
+        catch (const std::exception& error)
+        {
+            FatalErrorInFunction << "FGM source stage=" << stage << " cell=" << celli
+                << " Z=" << mixture[celli] << " rho=" << density[celli]
+                << " C=" << initial[celli] << " duration=" << duration
+                << ": " << error.what() << exit(FatalError);
+        }
+    }
+    reduce(crossings, sumOp<scalar>());
+    reduce(changeKg, sumOp<scalar>());
+    Info<< "fgmSourceStage stage=" << stage << " t=" << this->mesh().time().value()
+        << " duration=" << duration << " crossings=" << crossings
+        << " changeKg=" << changeKg << endl;
+    return advanced;
+}
+
 // ************************************************************************* //

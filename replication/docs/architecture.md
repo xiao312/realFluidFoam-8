@@ -398,3 +398,28 @@ targets for the existing catalogue. It extracts Cavalieri Figure 6 vector data,
 retains original captions, and records numerical versus optical comparison
 contracts. CFD refresh requires source, mesh, origin and sampling identities;
 instantaneous results cannot populate invented RMS or statistical acceptance.
+
+`combustionModels/fgmTable` optionally uses the standard-C++ fixed-state source
+kernel copied from direct-flamelet commit `c67dfe2910dc2275270d3dccc2a5f3fedb75862a`.
+The reader owns conversion from its v2 table to fixed-Z source curves. The model
+applies those curves to explicit stage inputs. `reactingFoamSolveZ` owns time
+splitting and unchanged oldTime storage; thermodynamics retains energy and density.
+`validation/fgm-source-split` supplies the allocated source-stage probe and
+actual-table 0D/1D qualification plan. No runtime dependency on Python, Spitfire
+or the flamelet generator is introduced into the CFD solver.
+
+`validation/mascotte-g2/direct-fgm` prepares fresh warm diagnostic cases on the
+registered wedge. It consumes hashed physical tables/NASA metadata through
+`validation/fgm-of8/direct-verification`, plus a separately registered mesh.
+Its observation/decomposition module emits OF8 sampling and averaging settings;
+its read-only diagnostics consume actual fields, boundary phi, averaging
+counters and solver clock records. These modules do not submit work or grant
+scientific acceptance. The configurable single-node batch wrapper depends on the
+qualified stock OF8 environment and a pinned custom combustion library.
+Full real-fluid preparation separately depends on the complete fork runtime
+and `validation/realfluid-g2-thermo/probe`; changing an input dictionary alone
+does not qualify the runtime or cold-table coupling.
+Its opt-in cold initializer consumes the complete full-build product receipt,
+checks actual solver/probe dynamic bindings, and uses that probe to initialize
+time-zero Ha. The probe writes the matching thermoType marker consumed only by
+guarded cold solver cases. It does not submit jobs or grant physical approval.

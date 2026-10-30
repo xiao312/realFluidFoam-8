@@ -48,7 +48,9 @@
     // and every later step would apply a source frozen at the initial c.  A
     // field written by a solve in which the table was consulted needs the
     // lookup inside the loop, not only at construction.
-    reaction->correct();
+    // Split transport does not need a source lookup at new Z with untransported C.
+    // Its source curve is sampled only after the joint transport state is available.
+    if (!splitFgmSource) reaction->correct();
     tabulatedHeatRelease = reaction->Qdot();
 
     // Held in a named tmp: the progress source is owned by that tmp until the
@@ -56,9 +58,25 @@
     tmp<volScalarField> tProgressSource(reaction->progressSource());
     const scalar tabulatedIntegral = fvc::domainIntegrate(tProgressSource()).value();
     if (!fgmProgressSourceEnabled) tProgressSource.ref() *= scalar(0);
+    if (splitFgmSource)
+    {
+        if (fgmSourceTimeIndex != runTime.timeIndex())
+            FatalErrorInFunction << "Missing first source stage" << exit(FatalError);
+        const scalar oldCChange = gMax(mag(c.oldTime().primitiveField()-fgmSourceOldC));
+        const scalar oldZChange = gMax(mag(fgmSourceModel->Z().oldTime().primitiveField()-fgmSourceOldZ));
+        const scalar oldRhoChange = gMax(mag(rho.oldTime().primitiveField()-fgmSourceOldRho));
+        if (oldCChange != 0 || oldZChange != 0 || oldRhoChange != 0)
+            FatalErrorInFunction << "Source splitting oldTime state changed" << exit(FatalError);
+        Info<< "fgmSourceOldTime t=" << runTime.value() << " outer=" << ++fgmSourceOuterCount
+            << " deltaC=" << oldCChange << " deltaZ=" << oldZChange
+            << " deltaRho=" << oldRhoChange << endl;
+        // Euler transport starts from rho_old*C_half while history stays C_old.
+        tProgressSource.ref() == fgmFirstHalfRate();
+    }
     Info<< "fgmAppliedSource enabled=" << (fgmProgressSourceEnabled ? 1 : 0)
         << " tabulatedKg_s=" << tabulatedIntegral
-        << " appliedKg_s=" << fvc::domainIntegrate(tProgressSource()).value() << endl;
+        << " appliedKg_s=" << fvc::domainIntegrate(tProgressSource()).value()
+        << " integration=" << fgmSourceIntegration << endl;
 
     fvScalarMatrix cEqn
     (
@@ -70,13 +88,26 @@
       + fvOptions(rho, c)
     );
 
-    cEqn.relax();
+    // Under-relaxation would reintroduce the previous outer iteration's reacted C.
+    if (!splitFgmSource) cEqn.relax();
 
     fvOptions.constrain(cEqn);
 
     cEqn.solve();
 
     fvOptions.correct(c);
+
+    if (splitFgmSource)
+    {
+        // Recomputed from this transport solution; never advance the last outer's result.
+        const scalarField transportedC(c.primitiveField());
+        c.primitiveFieldRef() = fgmSourceModel->advanceProgressSource
+        (
+            fgmSourceModel->Z().primitiveField(), rho.primitiveField(), transportedC,
+            0.5*runTime.deltaTValue(), "secondHalf"
+        );
+        c.correctBoundaryConditions();
+    }
 
     // Refresh composition before thermo inverts the newly solved energy.
     // Keep Q from the same pre-solve state as Sc; do not silently move only

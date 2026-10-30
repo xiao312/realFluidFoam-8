@@ -24,6 +24,7 @@ License
 \*---------------------------------------------------------------------------*/
 
 #include "fgmTableReader.H"
+#include "fgmTableSourceI.H"
 
 #include "error.H"
 

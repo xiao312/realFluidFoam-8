@@ -51,6 +51,7 @@ Description
 #include "fgmChemicalEnthalpy.H"
 #include "fgmBoundaryEnthalpy.H"
 #include "fgmMatrixResidual.H"
+#include "fgmTable.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -96,6 +97,8 @@ int main(int argc, char *argv[])
         }
 
         runTime++;
+
+        #include "beginFgmSourceStep.H"
 
         Info<< "Time = " << runTime.timeName() << nl << endl;
 
