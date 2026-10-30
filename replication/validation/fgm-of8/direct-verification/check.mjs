@@ -57,6 +57,21 @@ if (manifest.kind === 'heating' || manifest.kind === 'conversion') {
     analytical.temperatureIncrement), manifest.thresholds.temperatureIncrementRelative);
   add('progress_source_relative_error', relative(final.cmean - initial.cmean,
     analytical.progressIncrement), manifest.thresholds.progressIncrementRelative);
+} else if (manifest.kind === 'physical-conversion') {
+  const chemicalChange = Math.abs(final.Hchemical - initial.Hchemical);
+  add('total_energy_error_per_chemical_change', Math.abs(final.E - initial.E) / Math.max(chemicalChange, 1e-12),
+    manifest.thresholds.energyRelative);
+  add('no_table_Q_in_absolute_energy_equation', Math.max(...equations.map(r => Math.abs(r.sourceW))), 1e-20);
+  add('pressure_drift_from_fixed_table_pressure', Math.max(...states.map(r =>
+    relative(r.pmean, manifest.sourcePressure))), manifest.thresholds.pressureRelative);
+  add('physical_progress_changed', Math.abs(final.cmean - initial.cmean) > 1e-12 ? 0 : 1, 0);
+  const bounds = records('fgmBounds');
+  if (!bounds.length) throw new Error('Missing physical lookup bound records');
+  add('no_lookup_clipping', Math.max(...bounds.map(r => r.cumulativeCorrections)), 0);
+  analytical.note = 'Actual finite-rate manifold state; conservation test, not a homogeneous kinetics or flame-speed validation';
+  analytical.temperatureChange = final.Tmean - initial.Tmean;
+  analytical.progressChange = final.cmean - initial.cmean;
+  analytical.chemicalEnergyChange = final.Hchemical - initial.Hchemical;
 } else {
   const times = (await readdir(caseDir)).filter(name => /^\d+(?:\.\d+)?(?:e[-+]?\d+)?$/i.test(name))
     .sort((a, b) => Number(a) - Number(b));

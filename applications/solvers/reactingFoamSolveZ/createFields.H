@@ -113,7 +113,7 @@ if (writeEnergyBudget)
 {
     rho.writeOpt() = IOobject::AUTO_WRITE;
     thermo.he().writeOpt() = IOobject::AUTO_WRITE;
-    Info.precision(15);
+    Info().precision(15);
 }
 
 #include "createMRF.H"

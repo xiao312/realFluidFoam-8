@@ -338,3 +338,10 @@ It depends on the pinned Cantera SDK, `ideal-baseline` inputs and the shared
 adapter owns a separate ideal Cantera phase; the SRK flow phase remains separate.
 Frozen-state and energy-flux probes qualify these diagnostic options before
 figure comparisons. Production OpenFOAM solvers do not depend on this module.
+
+`validation/realfluid-g2-thermo` combines the exact phase metadata from
+`fgm/direct-flamelet` with identified Nguyen tutorial critical and transport
+parameters. It prepares inputs for the full SRK/PR library stack and records
+optional NASA extrapolation bounds. It neither executes CFD nor qualifies
+the resulting real-fluid properties. The full-fork G2 case is its dependent;
+stock-OF8 combustion-only diagnostics cannot qualify this interface.

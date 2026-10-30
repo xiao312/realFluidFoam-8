@@ -13,9 +13,10 @@ not import their historical result directories or commit ancestry.
 
 | Snapshot | Included paths |
 | --- | --- |
-| `5af5cb92f0bd088a48df422fbe1084d1aec3240a` | `src/combustionModels`, `applications/solvers/reactingFoamSolveZ`, `replication/validation/fgm-of8/direct-verification`, `replication/validation/fgm-of8/fixtures` |
+| `282aa996a78939cbdaf591520231fb2c0476567d` | `src/combustionModels`, `applications/solvers/reactingFoamSolveZ`, `replication/validation/fgm-of8/direct-verification`, `replication/validation/fgm-of8/fixtures` |
 | `f3f47bd78ea7374f68849f8f97e48039e6d4142f` | `replication/fgm/direct-flamelet` |
 | `325253221281dabbf4b48612adfdb65880d020d0` | `replication/validation/muller-figure2`, `replication/validation/mascotte-figures` |
+| `a5fb250` | `replication/validation/realfluid-g2-thermo` |
 
 The historical [v1 interface contract](../../docs/fgm-of8-interface-contract.md)
 also comes from `5af5cb9`, with a dated scope amendment identifying the current
@@ -69,3 +70,11 @@ separate. A published source checkpoint does not change a running job's revision
 or imply reviewer approval. Independent code/science review and human acceptance
 remain separate decisions; unresolved property and flamelet discrepancies stay
 visible while independent diagnostics proceed.
+
+The 31 October diagnostic build at `5af5cb9` successfully linked the custom
+combustion library but failed on `Info.precision(15)` in the solver. Revision
+`282aa99` uses the OF8 stream returned by `Info()` and adds the physical-table
+closed-state diagnostic. Its actual solver build and finite-volume results
+remain separate execution receipts. The real-fluid dictionary exporter retains
+identified NASA coefficients and author critical parameters; its optional
+temperature-bound extensions explicitly record extrapolation.

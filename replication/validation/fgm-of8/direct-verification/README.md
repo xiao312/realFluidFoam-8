@@ -72,3 +72,14 @@ mapped-v2.tbl`; the negative invocation takes `negative` and the same paths and
 must fail specifically on an inadmissible raw C at zero span. Build and execute
 inside the same Slurm environment as the library, then proceed to actual
 finite-volume physical cases; these four arithmetic checks are not a flame.
+
+`prepare-physical.mjs --table-dir DIR --metadata FILE [--out NEW_CASE]` prepares
+a uniform eight-cell constant-volume diagnostic from a hashed finite-rate v2
+table. It samples Z=0.2 and interior lookup eta=0.5, exports every NASA7 species,
+and initializes raw C, Y and absolute enthalpy consistently. Without an output
+it validates and prints a plan. The short duration is reduced until the
+projected constant-volume pressure drift is below 0.1%; the actual run must stay
+within 0.2% of the table pressure. Chemistry uses its fixed declared table
+pressure, so this is a bounded coupling diagnostic, not a constant-pressure
+reactor or a counterflow flame comparison. The check requires real progress
+change, total-energy and mass conservation and zero lookup clips.
