@@ -5,6 +5,13 @@ to explore burning states missing from the single extreme-extinction table.
 It does not replace that table, integrate CFD, change a progress definition in
 the solver, claim steady convergence, or publish/accept results.
 
+Job 126428092 reached the initial-state evaluator but stopped before integration
+because the enthalpy-error reduction used Python `abs` on a list. The correction
+uses NumPy's array-aware absolute value and retains the same 0.01 J/kg criterion.
+Failure receipts now bind a complete traceback. This repair changes neither the
+seeded physical state nor the reused chemistry runtime; a new allocated physical
+run remains necessary.
+
 The pinned cold Cantera/Spitfire runtime is reused without a rebuild. The model
 is an ideal-gas, adiabatic, constant-pressure, unity-Lewis diffusion flamelet in
 mixture-fraction space, with variable Cp and enthalpy-flux terms. It is not an

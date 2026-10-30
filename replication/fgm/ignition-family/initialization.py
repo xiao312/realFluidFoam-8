@@ -36,7 +36,7 @@ def prepare(gas, mechanism, streams, config, settings, grid):
     t=np.array(temperatures);y=np.array(fractions)
     limits=settings['initialization_limits']
     metrics={'kind':'fresh compact equilibrium-product seed at conserved inlet-mixed enthalpy',
-        'stoichiometric_Z':zst,'seed':seed,'enthalpy_error_max_J_kg':float(np.max(abs(enthalpy_errors))),
+        'stoichiometric_Z':zst,'seed':seed,'enthalpy_error_max_J_kg':float(np.max(np.abs(enthalpy_errors))),
         'element_error_max':max(element_errors),'species_sum_error_max':float(np.max(abs(y.sum(axis=1)-1))),
         'species_min':float(y.min()),'temperature_min_K':float(t.min()),'temperature_max_K':float(t.max()),
         'pure_endpoints_exact':bool(np.array_equal(y[0],streams['oxidizer']['Y']) and np.array_equal(y[-1],streams['fuel']['Y'])
