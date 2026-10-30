@@ -30,6 +30,7 @@ License
 template<class BasicPsiThermo, class MixtureType>
 void Foam::hePsiThermo<BasicPsiThermo, MixtureType>::calculate()
 {
+    const bool skipDimix = validateFgmDimixSuppression(this->T_.mesh());
     const scalarField& hCells = this->he_;
     const scalarField& pCells = this->p_;
 
@@ -55,7 +56,7 @@ void Foam::hePsiThermo<BasicPsiThermo, MixtureType>::calculate()
         muCells[celli] = mixture_.mu(pCells[celli], TCells[celli]);
         alphaCells[celli] = mixture_.alphah(pCells[celli], TCells[celli]);
      
-        forAll(Dimix_, i)
+        if (!skipDimix) forAll(Dimix_, i)
         {
             Dimix_[i].primitiveFieldRef()[celli] 
           = mixture_.Dimix(i, pCells[celli], TCells[celli]);
@@ -104,7 +105,7 @@ void Foam::hePsiThermo<BasicPsiThermo, MixtureType>::calculate()
                 pmu[facei] = mixture_.mu(pp[facei], pT[facei]);
                 palpha[facei] = mixture_.alphah(pp[facei], pT[facei]);
 
-                forAll(Dimix_, i)
+                if (!skipDimix) forAll(Dimix_, i)
                 {
                     Dimix_[i].boundaryFieldRef()[patchi][facei]
                   = mixture_.Dimix(i, pp[facei], pT[facei]);
@@ -126,7 +127,7 @@ void Foam::hePsiThermo<BasicPsiThermo, MixtureType>::calculate()
                 pmu[facei] = mixture_.mu(pp[facei], pT[facei]);
                 palpha[facei] = mixture_.alphah(pp[facei], pT[facei]);
 
-                forAll(Dimix_, i)
+                if (!skipDimix) forAll(Dimix_, i)
                 {
                     Dimix_[i].boundaryFieldRef()[patchi][facei]
                   = mixture_.Dimix(i, pp[facei], pT[facei]);
@@ -177,6 +178,12 @@ Foam::hePsiThermo<BasicPsiThermo, MixtureType>::hePsiThermo
     //
 
     calculate();
+
+    if (fgmDimixSuppressed(mesh))
+    {
+        Info<< "FGM_DIMIX_POLICY calculation=suppressed access=forbidden "
+            << "transport=Fourier energy=absoluteEnthalpy" << endl;
+    }
 
     Info << " *** Nam: checking in hePsiThermo class " << endl;
     Info << " Number of species is : " << numberOfSpecies_ << endl; 

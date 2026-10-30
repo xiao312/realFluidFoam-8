@@ -71,3 +71,10 @@ the explicit incompatible-Ha error under the same command. The default
 `--boundary gradient` preserves the ordinary property sweep. This probe includes
 the solver-owned helper from the same frozen archive; it does not reimplement
 its boundary update. These checks do not require CFD or evolved state reuse.
+
+The optional `timingCorrections` probe setting repeats unchanged-state thermo
+corrections and records actual steady-clock wall time. The paired diffusion
+performance module uses it with actual table compositions. Property output also
+records alpha and recovered T. `-read-Dimix` and `-read-boundary-Dimix` are
+negative controls for the optional unused-diffusion suppression; they must fail
+when suppression is enabled. These additions do not change the default sweep.

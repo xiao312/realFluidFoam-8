@@ -37,6 +37,7 @@ SourceFiles
 
 #include "psiThermo.H"
 #include "heThermo.H"
+#include "fgmDimixPolicy.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -92,12 +93,14 @@ public:
         // - Diffusion coefficient of specie ith in the mixture [m^2/s] - Nam
         virtual tmp<volScalarField> Dimix( const label speciei) const
         {
+            requireCalculatedDimix(this->T_.mesh());
             return Dimix_[speciei];
         }
 
         // - Diffusion coefficient of specie ith in the mixture for patch [m^2/s] - Nam
         virtual tmp<scalarField> Dimix( const label speciei, const label patchi) const
         {
+            requireCalculatedDimix(this->T_.mesh());
             return Dimix_[speciei].boundaryField()[patchi];
         }
 

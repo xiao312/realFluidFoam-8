@@ -7,11 +7,14 @@
 #include <fstream>
 #include <iomanip>
 #include <cmath>
+#include <chrono>
 
 int main(int argc, char *argv[])
 {
     argList::addBoolOption("initialize-Ha", "Initialize existing Ha from fresh prescribed p,T,Y at time zero");
     argList::addBoolOption("boundary-pressure", "Verify fixed-T Ha update after a ten-percent pressure change");
+    argList::addBoolOption("read-Dimix", "Negative control: read internal diffusivity while suppressed");
+    argList::addBoolOption("read-boundary-Dimix", "Negative control: read boundary diffusivity while suppressed");
     #include "setRootCase.H"
     #include "createTime.H"
     #include "createMesh.H"
@@ -20,6 +23,16 @@ int main(int argc, char *argv[])
     Info<< "FGM_HA_PHASE stage=thermo-construction-complete elapsedWall_s=" << runTime.elapsedClockTime() << endl;
     psiReactionThermo& thermo = model();
     basicSpecieMixture& composition = thermo.composition();
+    if (args.optionFound("read-Dimix"))
+    {
+        Info<< "Dimix access value " << thermo.Dimix(0)()[0] << endl;
+        return 0;
+    }
+    if (args.optionFound("read-boundary-Dimix"))
+    {
+        Info<< "Boundary Dimix access value " << thermo.Dimix(0, 0)()[0] << endl;
+        return 0;
+    }
     volScalarField chemical
     (
         IOobject("probeChemicalEnthalpy", runTime.timeName(), mesh), mesh,
@@ -129,7 +142,7 @@ int main(int argc, char *argv[])
     std::ofstream properties((runTime.path()/"cold-properties.csv").c_str());
     std::ofstream inversion((runTime.path()/"cold-inversion.csv").c_str());
     properties << std::setprecision(16)
-        << "p_Pa,T_K,rho_kg_m3,Cp_J_kg_K,Cv_J_kg_K,Hs_J_kg,Ha_J_kg,mu_Pa_s,kappa_W_m_K,dHs_dT_J_kg_K\n";
+        << "p_Pa,T_K,rho_kg_m3,Cp_J_kg_K,Cv_J_kg_K,Hs_J_kg,Ha_J_kg,mu_Pa_s,kappa_W_m_K,dHs_dT_J_kg_K,alpha_kg_m_s,T_recovered_K\n";
     inversion << std::setprecision(16)
         << "p_Pa,T_start_K,delta_T_K,T_target_K,T_guess_K,T_recovered_K,error_K,Hs_target_J_kg,Hs_recovered_J_kg\n";
     label failures = 0;
@@ -142,16 +155,18 @@ int main(int argc, char *argv[])
         const scalar rho = thermo.rho()()[0], cp = thermo.Cp()()[0], cv = thermo.Cv()()[0];
         const scalar hs = thermo.he()[0], ha = hs + chemical[0];
         const scalar mu = thermo.mu()()[0], kappa = thermo.kappa()()[0];
+        const scalar alpha = thermo.alpha()()[0], correctedT = thermo.T()[0];
         const scalar epsilon = 1e-3;
         thermo.T() = dimensionedScalar("T", dimTemperature, temperature + epsilon);
         const scalar upperH = thermo.he(thermo.p(), thermo.T())()[0];
         thermo.T() = dimensionedScalar("T", dimTemperature, temperature - epsilon);
         const scalar lowerH = thermo.he(thermo.p(), thermo.T())()[0];
         const scalar derivative = (upperH - lowerH)/(2*epsilon);
-        const bool finite = std::isfinite(rho+cp+cv+hs+ha+mu+kappa+derivative);
-        if (!finite || min(rho, min(cp, min(cv, min(mu, kappa)))) <= 0) ++failures;
+        const bool finite = std::isfinite(rho+cp+cv+hs+ha+mu+kappa+derivative+alpha+correctedT);
+        if (!finite || min(rho, min(cp, min(cv, min(mu, min(kappa, alpha))))) <= 0) ++failures;
         properties << pressure << ',' << temperature << ',' << rho << ',' << cp << ',' << cv
-            << ',' << hs << ',' << ha << ',' << mu << ',' << kappa << ',' << derivative << std::endl;
+            << ',' << hs << ',' << ha << ',' << mu << ',' << kappa << ',' << derivative
+            << ',' << alpha << ',' << correctedT << std::endl;
         for (const scalar increment : increments)
         {
             const scalar target = temperature + increment;
@@ -171,6 +186,23 @@ int main(int argc, char *argv[])
     }
     properties.close(); inversion.close();
     if (!properties || !inversion) return 2;
+    const label timingCorrections = configuration.lookupOrDefault<label>("timingCorrections", 0);
+    if (timingCorrections < 0 || timingCorrections > 1000)
+        FatalErrorInFunction << "timingCorrections must be in 0..1000" << exit(FatalError);
+    if (timingCorrections)
+    {
+        const auto start = std::chrono::steady_clock::now();
+        for (label repeat = 0; repeat < timingCorrections; ++repeat) thermo.correct();
+        const double wall = std::chrono::duration<double>
+        (
+            std::chrono::steady_clock::now() - start
+        ).count();
+        std::ofstream timing((runTime.path()/"thermo-correction-timing.csv").c_str());
+        timing << std::setprecision(16) << "corrections,cells,wall_s\n"
+            << timingCorrections << ',' << mesh.nCells() << ',' << wall << '\n';
+        timing.close();
+        if (!timing) return 2;
+    }
     Info<< "Cold runtime diagnostic numerical failures: " << failures << nl;
     return failures ? 3 : 0;
 }
