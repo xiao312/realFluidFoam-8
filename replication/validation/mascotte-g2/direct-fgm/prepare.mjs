@@ -56,7 +56,7 @@ if (!['yes', 'no'].includes(skipUnusedDiffusion) || (skipUnusedDiffusion === 'ye
   throw new Error('Unused diffusion suppression requires the qualified full real-fluid runtime');
 }
 if (!['warm-ideal', 'cold-real-fluid'].includes(thermoMode) || (thermoMode === 'warm-ideal' && options['thermo-dir'])) throw new Error('Explicit valid thermo mode required; a warm case cannot consume a real-fluid directory');
-if (steady && (thermoMode !== 'cold-real-fluid' || bounds !== 'error' || chemistry !== 'table' || sourceIntegration !== 'explicit' || skipUnusedDiffusion !== 'no')) throw Error('Steady closure requires cold-real-fluid, strict bounds, table composition, explicit/no split and full diffusivity');
+if (steady && (thermoMode !== 'cold-real-fluid' || bounds !== 'error' || chemistry !== 'table' || sourceIntegration !== 'explicit')) throw Error('Steady closure requires cold-real-fluid, strict bounds, table composition and explicit/no split');
 const realFluid = thermoMode === 'cold-real-fluid' ? await realFluidInput(options['thermo-dir'], input) : null;
 if (realFluid && options['nasa-extrapolation']) throw new Error('Cold input already binds its declared thermodynamic ranges');
 const nasaPolicy = realFluid ? null : nasaInversionPolicy(input.metadata, options['nasa-extrapolation']);

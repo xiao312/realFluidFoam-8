@@ -244,7 +244,22 @@ public:
             const List<List<scalar>>& sigmd
         );
 
-        //- Functions return member data for testing mixture  
+        //- Explicitly omit unused mass-diffusion data; raw Dimix then refuses.
+        inline void updateTRANSWithoutDiffusion
+        (
+            const scalar& sigmaM,
+            const scalar& epsilonkM,
+            const scalar& MM,
+            const scalar& VcM,
+            const scalar& TcM,
+            const scalar& omegaM,
+            const scalar& miuiM,
+            const scalar& kappaiM,
+            const List<scalar>& Ymd,
+            const List<scalar>& Xmd
+        );
+
+        //- Functions return member data for testing mixture
         inline scalar sigmaM() const;
         inline scalar epsilonkM() const;
         inline scalar MM() const;
