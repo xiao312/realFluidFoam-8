@@ -360,3 +360,39 @@ Verification: the plan must report all explicit predecessor relationships and th
 hard upper wall bound. Python syntax and configuration checks are local; actual
 steady convergence requires the allocated physical run. The old independent
 `steady_branch.py` and all earlier failed receipts remain unchanged.
+
+## Fixed-state source integration diagnostic
+
+`source_ode.py` reads a hash-bound exported table and measures the scalar equation
+`dC/dt = Sc(Z,C)/rho` at fixed Z and positive, fixed density. It locates source roots
+and integrates each linear table segment analytically, stopping explicitly at an
+outward coverage boundary. A separately adaptive SciPy DOP853 calculation and macro
+step refinement check the result. No source coefficient, endpoint, or physical state
+is clipped or changed. This is a scientific ODE prototype, not an OpenFOAM integrator;
+variable density, species/enthalpy coupling and transport still require their own
+verification. A root in the projected progress source is not full chemical equilibrium.
+
+Inputs: `--table-dir` containing table.json/receipt.json, exact `--mechanism`, and
+`--out NEW_DIRECTORY`. `--plan` verifies input identities without solving. Outputs
+are source slices, root/coverage events, adaptive comparisons, and a JSON receipt.
+Dependencies: existing Cantera3.2, NumPy, and SciPy1.15.3 for the independent baseline.
+There is no network, scheduler or credential access; only the new output directory
+is written. Verification uses the actual cold table plus the baseline and refinement
+errors recorded in its output; it does not claim CFD or scientific acceptance.
+
+`source_ode.hpp` is an independent C++11 implementation of the same fixed-state
+segment integration. `source_ode_probe.cpp` reads an actual source-slice CSV and
+prints its measured endpoint/event. It has no OpenFOAM dependency and does not
+modify any solver. An outward event returns its actual elapsed time; callers must
+not treat that partial advance as a completed chemistry step. Compile in Slurm:
+`g++ -std=c++11 -O2 source_ode_probe.cpp -o source_ode_probe`; then compare its
+`CSV RHO INITIAL_C DT` output with the Python receipt. Build success alone does not
+qualify source integration. Density/EOS and transport splitting remain separate.
+
+`source_splitting.py` is a one-dimensional scalar diagnostic with the actual table,
+fixed Z/rho, a declared top-hat hot patch, constant velocity, and an upwind spatial
+operator. Strang splitting uses exact scalar source advances and a matrix
+exponential for that same advection operator. An independent adaptive Radau method
+integrates the coupled semidiscrete equations. Step refinement measures splitting
+error; it is not an OpenFOAM flame or a MASCOTTE simulation. Inputs and output
+directory arguments are the same as `source_ode.py`, including its read-only plan.

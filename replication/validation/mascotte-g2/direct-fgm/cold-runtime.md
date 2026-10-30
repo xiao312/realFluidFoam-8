@@ -30,6 +30,23 @@ types. It then writes the opt-in solver marker. The wrapper records before/after
 field hashes and does not submit jobs, run CFD, or change model coefficients.
 Only then decompose and execute the admitted solver. Initialization errors
 retain their start receipt and log; do not reuse that directory for a new run.
+Child stdout/stderr stream directly into the retained log from process start;
+the wrapper does not buffer a long thermodynamic initialization in memory.
+Timestamped wrapper boundaries and probe phase markers distinguish thermodynamic
+construction, Ha evaluation and output. The full-mesh serial initialization has
+a 900-second stage limit; observed timings should determine a later qualified
+parallel implementation, not repeated unobserved 300-second retries.
+
+`initialize-cold.mjs --parallel-ranks N` is opt-in and must match the admitted
+single-node task count. It applies any fresh ignition recipe serially, then
+decomposes, runs the same full-runtime probe on all ranks, verifies every rank's
+Ha and marker, and reconstructs only Ha at time zero. It does not run CFD or
+import an evolved field. The caller must not decompose again. Boundary audits
+are rank-local files; summing by physical patch name is an explicit analysis
+step, avoiding unmatched collectives across differing processor-patch lists.
+The batch first runs `qualify-parallel.sh` on fresh small pure-O2 and pure-CH4
+cases, comparing serial and reconstructed parallel Ha and all rank markers.
+This is initialization parity, not a flame or G2 validation result.
 
 The guard is enabled only for these cold cases and requires time zero with a
 matching thermoType marker. It prevents accidental execution of zero Ha

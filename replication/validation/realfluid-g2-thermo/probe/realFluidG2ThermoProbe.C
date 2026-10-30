@@ -15,7 +15,9 @@ int main(int argc, char *argv[])
     #include "setRootCase.H"
     #include "createTime.H"
     #include "createMesh.H"
+    Info<< "FGM_HA_PHASE stage=thermo-construction-start elapsedWall_s=" << runTime.elapsedClockTime() << endl;
     autoPtr<psiReactionThermo> model(psiReactionThermo::New(mesh));
+    Info<< "FGM_HA_PHASE stage=thermo-construction-complete elapsedWall_s=" << runTime.elapsedClockTime() << endl;
     psiReactionThermo& thermo = model();
     basicSpecieMixture& composition = thermo.composition();
     volScalarField chemical
@@ -27,6 +29,7 @@ int main(int argc, char *argv[])
     {
         chemical += dimensionedScalar("Hf", dimEnergy/dimMass, composition.Hf(i))*composition.Y()[i];
     }
+    Info<< "FGM_HA_PHASE stage=formation-basis-complete elapsedWall_s=" << runTime.elapsedClockTime() << endl;
     Info<< "Executed thermo: " << thermo.type() << nl;
     if (args.optionFound("boundary-pressure"))
     {
@@ -59,7 +62,9 @@ int main(int argc, char *argv[])
             IOobject("Ha", runTime.timeName(), mesh, IOobject::MUST_READ, IOobject::AUTO_WRITE), mesh
         );
         // Forced assignment preserves the case-owned boundary types.
+        Info<< "FGM_HA_PHASE stage=Ha-evaluation-start elapsedWall_s=" << runTime.elapsedClockTime() << endl;
         Ha == thermo.he(thermo.p(), thermo.T()) + chemical;
+        Info<< "FGM_HA_PHASE stage=Ha-evaluation-complete elapsedWall_s=" << runTime.elapsedClockTime() << endl;
         forAll(Ha.boundaryField(), patchi)
         {
             if (Ha.boundaryField()[patchi].type() == "inletOutlet")
@@ -75,6 +80,7 @@ int main(int argc, char *argv[])
             forAll(Ha.boundaryField()[patchi], facei)
                 if (!std::isfinite(Ha.boundaryField()[patchi][facei]))
                     FatalErrorInFunction << "Nonfinite initialized boundary Ha" << exit(FatalError);
+        Info<< "FGM_HA_PHASE stage=Ha-output-start elapsedWall_s=" << runTime.elapsedClockTime() << endl;
         if (!Ha.write()) FatalErrorInFunction << "Failed to write initialized Ha" << exit(FatalError);
         const tmp<volScalarField> density = thermo.rho();
         std::ofstream initial((runTime.path()/"ha-initialization-boundaries.csv").c_str());
@@ -82,13 +88,15 @@ int main(int argc, char *argv[])
         forAll(mesh.boundary(), patchi)
         {
             const scalarField& areas = mesh.magSf().boundaryField()[patchi];
-            const scalar area = gSum(areas);
+            // Each rank has a different processor-patch list. Do not put
+            // collective reductions inside this local boundary loop.
+            const scalar area = sum(areas);
             if (area <= 0) continue;
             initial << mesh.boundary()[patchi].name() << ',' << area << ','
-                << gSum(areas*thermo.T().boundaryField()[patchi])/area << ','
-                << gSum(areas*thermo.p().boundaryField()[patchi])/area << ','
-                << gSum(areas*density().boundaryField()[patchi])/area << ','
-                << gSum(areas*Ha.boundaryField()[patchi])/area << '\n';
+                << sum(areas*thermo.T().boundaryField()[patchi])/area << ','
+                << sum(areas*thermo.p().boundaryField()[patchi])/area << ','
+                << sum(areas*density().boundaryField()[patchi])/area << ','
+                << sum(areas*Ha.boundaryField()[patchi])/area << '\n';
         }
         initial.close();
         if (!initial) FatalErrorInFunction << "Failed to write initialization boundary audit" << exit(FatalError);
@@ -101,9 +109,12 @@ int main(int argc, char *argv[])
             )
         );
         initialization.add("preparedTime", scalar(0));
+        initialization.add("preparedRank", Pstream::myProcNo());
+        initialization.add("preparedRanks", Pstream::nProcs());
         initialization.add("thermoType", thermo.subDict("thermoType"));
         if (!initialization.regIOobject::write())
             FatalErrorInFunction << "Failed to write Ha initialization marker" << exit(FatalError);
+        Info<< "FGM_HA_PHASE stage=Ha-initialization-complete elapsedWall_s=" << runTime.elapsedClockTime() << endl;
         Info<< "Initialized Ha using full runtime EOS departure and formation basis" << nl;
         return 0;
     }

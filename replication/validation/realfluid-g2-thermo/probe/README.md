@@ -49,6 +49,14 @@ qualification or a substitute for those immutable input receipts.
 `ha-initialization-boundaries.csv` records actual area-weighted boundary p/T/rho
 and Ha. Use its inlet densities to replace the generator's explicitly labelled
 ideal-density placeholder estimates when discussing residence times.
+`FGM_HA_PHASE` markers with actual elapsed wall time surround runtime thermo
+construction, formation-basis assembly, Ha evaluation and output. Use these
+with the streaming initializer log to diagnose full-mesh initialization cost;
+an absent completed marker is not a successful prepared state.
+The probe supports `-parallel` for initialization. Boundary CSV reductions are
+local to each rank, since processor-patch lists differ. Its marker records rank
+and process count. `prepare.mjs --cells N` supplies small fresh meshes for
+serial/parallel Ha qualification; this retains the same full-library physics.
 Pressure-dependent fixed-T inlet enthalpy must also be kept consistent during
 the subsequent flow solve; initial conversion alone does not qualify that
 runtime boundary coupling. Its dependents are fresh cold-property diagnostics

@@ -57,6 +57,10 @@ MPI_ARGS=(--mca plm isolated --mca ras '^slurm' --host "localhost:$RANKS" --bind
 run_stage mpi 60 /usr/bin/mpirun "${MPI_ARGS[@]}" "$OUT/mpi-interface" "$RANKS"
 EXPECTED_SUM=$(( RANKS*(RANKS-1)/2 ))
 for ((rank=0;rank<RANKS;rank++)); do grep -Fx "MPI_INTERFACE rank=$rank size=$RANKS sum=$EXPECTED_SUM" "$OUT/logs/mpi.log"; done
+if (( RANKS > 1 )); then
+ run_stage initialize-parallel-qualification 600 bash -euo pipefail "$HERE/qualify-parallel.sh" \
+  "$CASE-init" "$FULL" "$PROBE" "$SOLVER" "$THERMO" "$RANKS" "$OUT"
+fi
 for kind in transport reacting; do
  current=$CASE-$kind; chemistry=table; [[ $kind != transport ]] || chemistry=disabled
  offset=15; [[ $kind != reacting ]] || offset=18
@@ -67,9 +71,10 @@ for kind in transport reacting; do
   --observations "$OUT/$kind-observations.json" --decomposition "$OUT/decomposition.json")
  run_stage "$kind-plan" 120 node "$G2/prepare.mjs" "${args[@]}"
  run_stage "$kind-prepare" 120 node "$G2/prepare.mjs" "${args[@]}" --out "$current"
+ run_stage "$kind-table-binding" 30 node "$HERE/bind-table.mjs" "$current" --apply
  run_stage "$kind-checkMesh" 180 checkMesh -case "$current"
- run_stage "$kind-initialize" 300 node "$G2/initialize-cold.mjs" --case "$current" --runtime "$FULL" --probe "$PROBE" --solver "$SOLVER" --apply
- run_stage "$kind-decompose" 180 decomposePar -case "$current"
+ run_stage "$kind-initialize" 900 node "$G2/initialize-cold.mjs" --case "$current" --runtime "$FULL" --probe "$PROBE" --solver "$SOLVER" --parallel-ranks "$RANKS" --apply
+ if (( RANKS == 1 )); then run_stage "$kind-decompose" 180 decomposePar -case "$current"; fi
  run_stage "$kind-solver" 2700 /usr/bin/mpirun "${MPI_ARGS[@]}" "$SOLVER" -case "$current" -parallel
  cp "$OUT/logs/$kind-solver.log" "$current/log.solver"
  run_stage "$kind-reconstruct" 300 reconstructPar -case "$current"

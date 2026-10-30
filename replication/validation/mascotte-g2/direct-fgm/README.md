@@ -45,6 +45,12 @@ Dependencies: `fgm-of8/direct-verification` provides table loading and NASA
 conversion; OF8 provides flowRateInletVelocity, mesh tools and the solver.
 The module writes its own explicit schemes, including `div(phi,Ha)` and the
 multivariate `div(phi,Yi_h)` scheme; it does not import historical case files.
+The shared `fgm-of8/direct-verification/schemes.mjs` also supplies the explicit
+Stokes viscous-stress divergence required on the G2 mesh. Warm and cold modes
+use the same scheme dictionary. Named pressure advection, kinetic energy,
+progress and mixture-fraction entries accompany default gradient/Laplacian
+rules. PIMPLE explicitly selects its existing nontransonic, nonconsistent
+branch; no unselected turbulence closure is implied.
 The source and table identities must be frozen with the admission. Verification
 starts with checkMesh, then measured field bounds, mass/energy budgets,
 source/state consistency and clipping counts. Plot T/Z/C and selected species

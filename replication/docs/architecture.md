@@ -379,3 +379,22 @@ Source-off and reacting cases retain separate time controls and result identitie
 independent finite-difference pressure derivatives. It reads the actual header
 expression, preserves the historical failing expression as a negative control,
 and does not substitute algebraic checks for compiled property/inversion sweeps.
+
+`validation/fgm-of8/direct-verification/schemes.mjs` owns the explicit finite-volume
+operators selected by the verification and G2 generators. Its consumers retain
+their separate physical inputs and acceptance rules. The G2 initializer can
+decompose fresh fields, evaluate full-runtime Ha on each rank, and reconstruct
+time zero after a small serial/parallel parity qualification.
+
+`fgm/direct-flamelet/source_ode.py` and its C++ counterpart integrate the actual
+table's piecewise-linear source at fixed Z and density. They report outward
+coverage events rather than altering table endpoints. The Python 1D splitting
+experiment is a source/transport prototype; it does not change the OF8 solver.
+`validation/muller-figure2/paper_compare.py` consumes exact-source continuation
+receipts to render Figure 2/3, preserving unconverged states and extinct points.
+
+`validation/mascotte-review` prepares pinned Cavalieri, Schmitt, Singla and Sharma
+targets for the existing catalogue. It extracts Cavalieri Figure 6 vector data,
+retains original captions, and records numerical versus optical comparison
+contracts. CFD refresh requires source, mesh, origin and sampling identities;
+instantaneous results cannot populate invented RMS or statistical acceptance.

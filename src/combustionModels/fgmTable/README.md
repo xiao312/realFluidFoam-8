@@ -36,6 +36,15 @@ review, not a scientific pass. Species sums or malformed tables remain fatal
 under either policy. Written source fields and species boundary conditions are
 refreshed by the model; fixed species inlet data remain owned by the case.
 
+Relative table names first resolve through `Time::path()/caseConstant()`.
+In OF8 a processor case's `caseConstant()` is `../constant`, so every rank
+reads the same case-owned input instead of searching only processorN/constant.
+This follows the upstream TimePaths API. An explicit absolute table path is
+also supported. The validation batch binds that absolute case-owned path and
+its hash before decomposition, permitting existing frozen libraries to execute
+without copying the large table once per rank. Neither path uses a donor CFD
+state or changes table bytes. Actual serial/MPI parity remains required.
+
 Build as part of `src/combustionModels` in the qualified OF8 environment.
 Dependencies: OpenFOAM field/dictionary types and the fork's combustion base
 interface. Dependents: `reactingFoamSolveZ`, table/field probes and validation

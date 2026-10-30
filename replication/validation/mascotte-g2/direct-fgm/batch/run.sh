@@ -100,6 +100,7 @@ for (( rank=0; rank<RANKS; rank++ )); do grep -Fx "MPI_INTERFACE rank=$rank size
 
 stage=contact-mpi-preparation
 node "$DRIVER/prepare.mjs" --out "$CASE-contact-mpi" --kind contact --cells "$CONTACT_CELLS" > "$OUT/logs/contact-mpi-prepare.log"
+node "$HERE/bind-table.mjs" "$CASE-contact-mpi" --apply > "$OUT/logs/contact-mpi-table-binding.json"
 cat > "$CASE-contact-mpi/system/decomposeParDict" <<DICT
 FoamFile { version 2.0; format ascii; class dictionary; object decomposeParDict; }
 numberOfSubdomains $RANKS; method simple; simpleCoeffs { n ($RANKS 1 1); delta 0.001; }
@@ -120,6 +121,7 @@ node "$G2/prepare.mjs" --table-dir "$TABLE" --metadata "$METADATA" \
     --mesh-dir /references/mascotte-mesh-20261026 --bounds error --ranks "$RANKS" --end-time "$G2_END_TIME" \
     --observations "$OUT/observations.json" --decomposition "$OUT/decomposition.json" \
     --out "$CASE-g2" > "$OUT/logs/g2-prepare.json"
+run_stage g2-table-binding 30 node "$HERE/bind-table.mjs" "$CASE-g2" --apply
 run_stage g2-checkMesh 180 checkMesh -case "$CASE-g2"
 run_stage g2-decompose 180 decomposePar -case "$CASE-g2"
 run_stage g2 2700 "$MPI" "${MPI_ARGS[@]}" "$SOLVER" -case "$CASE-g2" -parallel

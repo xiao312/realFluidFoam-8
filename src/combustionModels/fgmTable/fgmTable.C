@@ -64,7 +64,10 @@ Foam::combustionModels::fgmTable<ReactionThermo>::resolveTablePath() const
         caseRoot = caseRoot/runTime.caseName();
     }
 
-    DynamicList<fileName> candidates(3);
+    DynamicList<fileName> candidates(4);
+    // OF8 caseConstant() supplies ../constant in decomposed processor cases.
+    // The table belongs to the shared case, not to each processor's mesh dir.
+    candidates.append(runTime.path()/runTime.caseConstant()/given);
     candidates.append(caseRoot/"constant"/given);
     candidates.append(runTime.constant()/given);
     candidates.append(given);
@@ -80,7 +83,7 @@ Foam::combustionModels::fgmTable<ReactionThermo>::resolveTablePath() const
     std::string tried;
     forAll(candidates, i)
     {
-        tried += "    " + candidates[i].name() + "\n";
+        tried += "    " + std::string(candidates[i].c_str()) + "\n";
     }
 
     FatalErrorInFunction

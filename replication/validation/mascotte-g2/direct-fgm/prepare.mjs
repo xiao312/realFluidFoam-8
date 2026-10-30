@@ -6,6 +6,7 @@ import { loadPhysicalTable, thermoState } from '../../fgm-of8/direct-verificatio
 import { inspectMesh, copyMesh } from './mesh-input.mjs';
 import { loadRunControls, decompositionDictionary, functionObjects } from './observations.mjs';
 import { realFluidInput, initializationInput, ignitionDictionary } from './cold-input.mjs';
+import { solverSchemes } from '../../fgm-of8/direct-verification/schemes.mjs';
 
 const options = {}, args = process.argv.slice(2);
 for (let i = 0; i < args.length; i += 2) {
@@ -126,20 +127,13 @@ await put('constant/momentumTransport', header('momentumTransport') + 'simulatio
 await put('constant/combustionProperties', header('combustionProperties') + `combustionModel fgmTable;
 fgmTableCoeffs { table "physical.tbl"; boundsPolicy ${bounds}; mixtureFractionField Z;
  progressField c; speciesSumLimit 1e-8; }\n`);
-await put('system/fvSchemes', header('fvSchemes') + `ddtSchemes { default Euler; }
-gradSchemes { default Gauss linear; }
-divSchemes { default none; div(phi,U) Gauss upwind; div(phi,Yi_h) Gauss upwind;
- div(phi,Z) Gauss upwind; div(phi,c) Gauss upwind; div(phi,h) Gauss upwind;
- div(phi,Ha) Gauss upwind; div(phi,K) Gauss upwind; div(phiv,p) Gauss linear; }
-laplacianSchemes { default Gauss linear corrected; }
-interpolationSchemes { default linear; }
-snGradSchemes { default corrected; }
-fluxRequired { default no; p; }\n`);
+await put('system/fvSchemes', header('fvSchemes') + solverSchemes());
 await put('system/fvSolution', header('fvSolution') + `solvers {
  "p.*" { solver GAMG; smoother GaussSeidel; tolerance 1e-9; relTol 0; }
  "(rho|U|h|Ha|Z|c|Yi).*" { solver smoothSolver; smoother symGaussSeidel; tolerance 1e-10; relTol 0; }
 }
 PIMPLE { pMin 1000; pMax 1e8; pRef ${pressure}; momentumPredictor yes;
+ transonic no; consistent no;
  nOuterCorrectors 2; nCorrectors 2; nNonOrthogonalCorrectors 0; }
 relaxationFactors { equations { ".*" 1; } }\n`);
 await put('system/decomposeParDict', header('decomposeParDict') + decompositionDictionary(controls.decomposition, ranks));

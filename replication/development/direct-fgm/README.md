@@ -152,3 +152,24 @@ at 23 original pure-fluid states (maximum relative identity error 5.64e-11).
 Its first selective-rebuild batch failed before compilation on a packaging hash
 error. An immutable LF-byte recovery package is prepared; actual rebuilt-library
 qualification is still pending. The separate PR density discrepancy is unchanged.
+
+## 31 October, 03:12 Shanghai checkpoint
+
+The completed ten-case Müller sweep supplies approximate Figure 2/3 comparisons.
+Figure 2 temperature RMS is 23.28 K, and the largest species RMS relative to its
+plotted range is H2 at 3.52%. At scalar dissipation 575000/s, peak temperature is
+3126.04 K versus approximately 3126.73 K in the digitized paper. Every strict
+steady-residual check remains failed, and two higher-strain cases collapse.
+These useful comparisons support further diagnostics without qualifying the
+extinction limit or concealing residual failures.
+
+Job 126414523 passed actual-table C++ source-step parity and the 16-rank contact
+comparison (maximum Z difference 2.37e-11). G2 startup then failed on a missing
+viscous-divergence scheme. Source 73e4954 declares all selected operators and
+adds parallel full-runtime initialization; job 126416068 tests fresh warm/cold
+cases. No completed G2 flow timestep is claimed at this checkpoint. The source
+integrator prototype has not yet qualified an OF8 source-splitting implementation.
+
+PR selective rebuild recovery is job 126415466. Source, execution and independent
+scientific approval remain separate; this development branch is not a qualified
+scientific release. Raw outputs and paper assets stay in the retained trial store.

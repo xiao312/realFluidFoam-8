@@ -1,5 +1,6 @@
 import { mkdir, writeFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
+import { solverSchemes } from './schemes.mjs';
 
 const args = process.argv.slice(2);
 const options = {};
@@ -88,16 +89,7 @@ writeEnergyBudget yes;
 writeEnergyResidualAudit yes;
 fgmEnergyForm ${manifest.energyForm};
 `);
-await put('system/fvSchemes', header('fvSchemes') + `
-ddtSchemes { default Euler; }
-gradSchemes { default Gauss linear; }
-divSchemes { default Gauss linear; div(phi,U) Gauss upwind;
- div(phi,Yi_h) Gauss upwind; div(phi,K) Gauss upwind; div(phiv,p) Gauss linear; }
-laplacianSchemes { default Gauss linear corrected; }
-interpolationSchemes { default linear; }
-snGradSchemes { default corrected; }
-fluxRequired { default no; p; }
-`);
+await put('system/fvSchemes', header('fvSchemes') + solverSchemes('Gauss linear'));
 await put('system/fvSolution', header('fvSolution') + `
 solvers {
  "p.*" { solver PCG; preconditioner DIC; tolerance 1e-12; relTol 0; }

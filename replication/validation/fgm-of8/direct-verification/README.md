@@ -4,6 +4,18 @@ This module isolates energy-source sign, closed-domain energy conservation and
 mixture-fraction transport before larger MASCOTTE diagnostics. Its tables are
 explicitly analytic fixtures, not chemical flamelets or paper replication data.
 
+`schemes.mjs` owns the explicit discretization entries needed by the selected
+reactingFoamSolveZ/Stokes/Fourier operators. Both verification cases and the
+warm/cold G2 generator consume it. The analytic default remains Gauss linear;
+G2 retains `default none` with named entries. Stokes calls the explicit tensor
+divergence `div(((rho*nuEff)*dev2(T(grad(U)))))`, also present in the official
+OF8 counterflow tutorial. Fourier's species/enthalpy terms use the declared
+default Laplacian. `node --test schemes.test.mjs` checks this runtime operator
+contract; it does not replace the actual first CFD step or model validation.
+Primary-source audit: [OF8 viscous stress](https://github.com/OpenFOAM/OpenFOAM-8/blob/master/src/MomentumTransportModels/momentumTransportModels/linearViscousStress/linearViscousStress.C),
+[Fourier transport](https://github.com/OpenFOAM/OpenFOAM-8/blob/master/src/ThermophysicalTransportModels/laminar/Fourier/Fourier.C),
+and [counterflow schemes](https://github.com/OpenFOAM/OpenFOAM-8/blob/master/tutorials/combustion/reactingFoam/laminar/counterFlowFlame2D/system/fvSchemes).
+
 `prepare.mjs --out DIR --kind heating|contact|conversion [--cells N] [--delta-t S]`
 creates a new case, refusing an existing destination. Without `--out`, it prints
 the inputs and expected analytical problem without writing. All cases start at

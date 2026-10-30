@@ -1,0 +1,336 @@
+{
+  "schema": "g2-paper-review-targets/v1",
+  "catalogue_source": "apps/forge/publication/mascotte.json",
+  "targets": [
+    {
+      "id": "cavalieri2025-fig-6",
+      "paper": {
+        "id": "cavalieri2025",
+        "title": "Characterization of turbulent pseudo-boiling in transcritical and doubly-transcritical oxygen–methane flames",
+        "authors": "D. Cavalieri, D. Schintu, P. P. Ciottoli, P. E. Lapenna, F. Creta",
+        "year": 2025,
+        "doi": "10.1016/j.ijheatmasstransfer.2025.127284",
+        "url": "https://doi.org/10.1016/j.ijheatmasstransfer.2025.127284",
+        "short": "Cavalieri 2025",
+        "pdf_sha256": "bcd4f0fdac3c4063c744e331c0b2e6af7e311837f99230502cde2c97257d0843",
+        "rights": "© 2025 The Authors. CC BY 4.0, printed on page 1. Third-party experimental images retain their source attribution. Data available on request."
+      },
+      "filename": "1-s2.0-S0017931025006234-main.pdf",
+      "page_index": 8,
+      "crop_pt": [
+        65,
+        383,
+        526,
+        619
+      ],
+      "original_caption": "Fig. 6. Grid sensitivity analysis for the TF case. Radial temporal mean (first row) and root mean square (second row) temperature profiles at x = 15 mm, x = 45 mm, and x = 70 mm from the injector.",
+      "caption_policy": "Verbatim wording; line wraps, formula typography and microsecond glyph normalized from PDF text. Original figure retained.",
+      "plot_spec": {
+        "quantity": "Reynolds temporal mean and RMS of resolved temperature",
+        "reference_kind": "numerical LES grid sensitivity, not measured temperature",
+        "stations_mm": [
+          15,
+          45,
+          70
+        ],
+        "r_mm": [
+          0,
+          20
+        ],
+        "mean_K": [
+          0,
+          2050
+        ],
+        "rms_K": [
+          0,
+          1500
+        ],
+        "averaging_s": 0.06,
+        "prerequisites": [
+          "qualified injector origin",
+          "matched 85/288 K, 5.61 MPa streams",
+          "initial transient discarded",
+          "sample window and effective sample count",
+          "separate mesh/statistics uncertainty"
+        ],
+        "views": [
+          "six panels; M3 primary, M1/M2 optional context",
+          "one station per detail view",
+          "instantaneous development view has no statistical acceptance"
+        ]
+      }
+    },
+    {
+      "id": "schmitt2020-fig-21",
+      "paper": {
+        "id": "schmitt2020",
+        "title": "Large-Eddy Simulations of the Mascotte Test Cases Operating at Supercritical Pressure",
+        "authors": "Thomas Schmitt",
+        "year": 2020,
+        "doi": "10.1007/s10494-019-00096-y",
+        "url": "https://doi.org/10.1007/s10494-019-00096-y",
+        "short": "Schmitt 2020",
+        "pdf_sha256": "f138b430e2cac438acf139d9a7f56d38e53adb11513346c69922734c1c419879",
+        "rights": "© Springer Nature B.V. 2020. No reuse license printed."
+      },
+      "filename": "s10494-019-00096-y.pdf",
+      "page_index": 21,
+      "crop_pt": [
+        44,
+        484,
+        395,
+        592
+      ],
+      "original_caption": "Fig. 21 Flame length. Centerline profiles of a mean axial velocity and b mean (continuous) and rms (dashed) oxygen mass fraction",
+      "caption_policy": "Verbatim wording; line wraps, formula typography and microsecond glyph normalized from PDF text. Original figure retained.",
+      "plot_spec": {
+        "quantity": "Reynolds mean axial velocity/u_O2, mean Y_O2, RMS Y_O2",
+        "reference_kind": "numerical LES",
+        "averaging_s": 0.05,
+        "x_over_d": [
+          0,
+          80
+        ],
+        "diameter_definition": "paper oxygen injector diameter; current retained 3.2 mm mesh is not paper geometry qualified",
+        "flame_length_definition": "first centerline mean Y_O2 below 0.1, reported near 12d for G2",
+        "views": [
+          "G2 only, three aligned panels; A60/C60 optional context"
+        ],
+        "prerequisites": [
+          "verified diameter and inlet velocity normalization",
+          "one convective time discarded before statistics",
+          "centerline mean distinct from maximum temperature and OH* peak"
+        ],
+        "digitization_status": "original raster retained; G2 solid/dashed overlap not yet separated reliably"
+      }
+    },
+    {
+      "id": "singla2005-fig4cd-g2-ohstar",
+      "paper": {
+        "id": "singla2005",
+        "title": "Transcritical oxygen/transcritical or supercritical methane combustion",
+        "authors": "G. Singla, P. Scouflaire, C. Rolon, S. Candel",
+        "year": 2005,
+        "doi": "10.1016/j.proci.2004.08.063",
+        "short": "Singla 2005",
+        "pdf_sha256": "1b0001ed36aa5393eec106cb8b12f4f34bae86836aeed55862dbc68917710fd2",
+        "url": "https://doi.org/10.1016/j.proci.2004.08.063",
+        "rights": "Selected excerpt from a user-supplied paper, attributed for scholarly comparison. Copyright retained by the original rights holder; no open license established."
+      },
+      "filename": "1-s2.0-S008207840400116X-main.pdf",
+      "page_index": 4,
+      "crop_pt": [
+        70,
+        430,
+        216,
+        592
+      ],
+      "original_caption": "Fig. 4. (A and C) Average images of OH* emission, calculated from 200 instantaneous images with exposure time 30 μs. (B and D) Combined Abel transformed emission and backlighting images. The color scale corresponds to a slice of OH* emission and the light to dark blue scale to the average jet position. (A and B) Point of operation G1. (C and D) Point of operation G2.",
+      "caption_policy": "Verbatim wording; line wraps, formula typography and microsecond glyph normalized from PDF text. Original figure retained.",
+      "plot_spec": {
+        "quantity": "panel c: line-of-sight mean OH* emission; panel d: Abel-transformed emission plus backlighting",
+        "reference_kind": "experimental optical morphology",
+        "exposures": 200,
+        "exposure_duration_s": 3e-05,
+        "intensity_units": "uncalibrated, no absolute OH* concentration",
+        "views": [
+          "c alongside computed line-of-sight emission only when emission model exists",
+          "d alongside matching Abel/plane operator and dense-core image",
+          "ground OH diagnostic shown separately with non-equivalence label"
+        ],
+        "prohibited_scores": [
+          "pixel color to ground OH mass fraction RMS",
+          "absolute intensity agreement without calibration",
+          "length score without image-to-geometry registration"
+        ],
+        "prerequisites": [
+          "explicit measurement operator",
+          "origin/scale registration uncertainty",
+          "mean sampling duration"
+        ]
+      }
+    },
+    {
+      "id": "sharma2023-fig-9",
+      "paper": {
+        "id": "sharma2023",
+        "title": "Numerical Investigation of Supercritical Combustion Dynamics in a Multi-Element LOx-Methane Combustor Using Flamelet-Generated Manifold Approach",
+        "authors": "Abhishek Sharma, Ashoke De, S. Sunil Kumar",
+        "year": 2023,
+        "doi": "10.1063/5.0172100",
+        "url": "https://arxiv.org/abs/2311.15034",
+        "short": "Sharma 2023",
+        "pdf_sha256": "65ae91e8734d8006f4274c70f548f969ab18ca698d8aad8d3b3384882356349c",
+        "rights": "Downloaded arXiv v1 manuscript. No reuse license found in the PDF. Data available from corresponding author on reasonable request."
+      },
+      "filename": "2311.15034v1.pdf",
+      "page_index": 13,
+      "crop_pt": [
+        181,
+        300,
+        415,
+        444
+      ],
+      "original_caption": "FIG.9. OH concentration comparison with G2 test case",
+      "caption_policy": "Verbatim wording; line wraps, formula typography and microsecond glyph normalized from PDF text. Original figure retained.",
+      "plot_spec": {
+        "quantity": "top: ensemble mean computed ground-state OH mass fraction; bottom: experimental Abel-transformed OH* emission",
+        "reference_kind": "qualitative morphology, mixed measurement operators",
+        "sampling_interval_s": 0.0001,
+        "sample_duration_s": null,
+        "reported_flame_end_m": 0.06,
+        "axes_m": {
+          "x": [
+            0,
+            0.07
+          ],
+          "y": [
+            -0.02,
+            0.02
+          ]
+        },
+        "views": [
+          "separate OH and OH* panels with their own scale and labels",
+          "annotate anchoring, opening near 40 mm, reported termination near 60 mm"
+        ],
+        "prohibited_scores": [
+          "equal OH/OH* color scales imply equal concentrations",
+          "numeric intensity error against experimental image"
+        ],
+        "prerequisites": [
+          "qualified origin",
+          "reported sample duration",
+          "ground OH and OH* distinction retained"
+        ]
+      }
+    }
+  ],
+  "cavalieri_vector_panels": [
+    {
+      "station_mm": 15,
+      "statistic": "mean",
+      "paths": {
+        "M1": 290,
+        "M2": 291,
+        "M3": 292
+      },
+      "x_ticks_pt": [
+        94.044,
+        217.18
+      ],
+      "y_ticks_pt": [
+        491.36,
+        403.308
+      ],
+      "y_values_K": [
+        0,
+        2000
+      ]
+    },
+    {
+      "station_mm": 45,
+      "statistic": "mean",
+      "paths": {
+        "M1": 372,
+        "M2": 373,
+        "M3": 374
+      },
+      "x_ticks_pt": [
+        246.733,
+        369.87
+      ],
+      "y_ticks_pt": [
+        491.36395,
+        403.12396
+      ],
+      "y_values_K": [
+        0,
+        2000
+      ]
+    },
+    {
+      "station_mm": 70,
+      "statistic": "mean",
+      "paths": {
+        "M1": 226,
+        "M2": 227,
+        "M3": 228
+      },
+      "x_ticks_pt": [
+        399.425,
+        522.561
+      ],
+      "y_ticks_pt": [
+        491.36,
+        403.308
+      ],
+      "y_values_K": [
+        0,
+        2000
+      ]
+    },
+    {
+      "station_mm": 15,
+      "statistic": "rms",
+      "paths": {
+        "M1": 162,
+        "M2": 163,
+        "M3": 164
+      },
+      "x_ticks_pt": [
+        94.044,
+        217.18
+      ],
+      "y_ticks_pt": [
+        601.296,
+        513.244
+      ],
+      "y_values_K": [
+        0,
+        1500
+      ]
+    },
+    {
+      "station_mm": 45,
+      "statistic": "rms",
+      "paths": {
+        "M1": 437,
+        "M2": 438,
+        "M3": 439
+      },
+      "x_ticks_pt": [
+        246.733,
+        369.87
+      ],
+      "y_ticks_pt": [
+        601.296,
+        513.244
+      ],
+      "y_values_K": [
+        0,
+        1500
+      ]
+    },
+    {
+      "station_mm": 70,
+      "statistic": "rms",
+      "paths": {
+        "M1": 508,
+        "M2": 510,
+        "M3": 509
+      },
+      "x_ticks_pt": [
+        399.425,
+        522.561
+      ],
+      "y_ticks_pt": [
+        601.296,
+        513.244
+      ],
+      "y_values_K": [
+        0,
+        1500
+      ]
+    }
+  ]
+}

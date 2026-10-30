@@ -4,11 +4,13 @@ import { createHash } from 'node:crypto';
 
 const options = {}, args = process.argv.slice(2);
 for (let i = 0; i < args.length; i += 2) {
-  if (!['--thermo-dir', '--species', '--out', '--boundary'].includes(args[i]) || !args[i + 1]) throw new Error('Use --thermo-dir DIR --species O2|CH4 [--out NEW_CASE] [--boundary gradient|fixed|bad-ha]');
+  if (!['--thermo-dir', '--species', '--out', '--boundary', '--cells'].includes(args[i]) || !args[i + 1]) throw new Error('Use --thermo-dir DIR --species O2|CH4 [--out NEW_CASE] [--boundary gradient|fixed|bad-ha] [--cells N]');
   options[args[i].slice(2)] = args[i + 1];
 }
 if (!options['thermo-dir'] || !['O2', 'CH4'].includes(options.species)) throw new Error('Explicit thermo directory and O2|CH4 species required');
 const boundary = options.boundary ?? 'gradient';
+const cells = Number(options.cells ?? 1);
+if (!Number.isInteger(cells) || cells < 1 || cells > 512) throw new Error('Probe cells must be an integer1..512');
 if (!['gradient', 'fixed', 'bad-ha'].includes(boundary)) throw new Error('Unknown boundary qualification mode');
 const directory = resolve(options['thermo-dir']);
 const [dictionary, raw] = await Promise.all([readFile(`${directory}/thermophysicalProperties`), readFile(`${directory}/manifest.json`)]);
@@ -28,6 +30,7 @@ if (!(Math.min(...temperatures) - 0.1 >= low && Math.max(...temperatures) + 0.5 
 const hash = bytes => createHash('sha256').update(bytes).digest('hex');
 const selected = manifest.species.find(s => s.name === options.species);
 const plan = { schema: 'direct-realfluid-cold-probe-v1', species: options.species, pressure_Pa: 5610000, boundaryMode: boundary,
+  cells,
   temperatures_K: temperatures, increments_K: increments, initialGuessOffset_K: 0.5,
   equationOfState: manifest.equationOfState, mixture: manifest.mixture,
   volumeTranslated: false, originalNasaRange_K: selected.thermo.temperatureRanges,
@@ -59,7 +62,7 @@ temperatures (${temperatures.join(' ')}); increments (${increments.join(' ')}); 
 await put('system/blockMeshDict', header('blockMeshDict') + `convertToMeters 1;
 vertices ((0 0 0) (0.001 0 0) (0.001 0.001 0) (0 0.001 0)
  (0 0 0.001) (0.001 0 0.001) (0.001 0.001 0.001) (0 0.001 0.001));
-blocks (hex (0 1 2 3 4 5 6 7) (1 1 1) simpleGrading (1 1 1)); edges ();
+blocks (hex (0 1 2 3 4 5 6 7) (${cells} 1 1) simpleGrading (1 1 1)); edges ();
 boundary (walls { type wall; faces ((0 4 7 3) (1 2 6 5) (0 1 5 4) (3 7 6 2) (0 3 2 1) (4 5 6 7)); });
 mergePatchPairs ();\n`);
 await put('system/controlDict', header('controlDict') + `application realFluidG2ThermoProbe;
@@ -72,4 +75,7 @@ laplacianSchemes { default Gauss linear corrected; } interpolationSchemes { defa
 snGradSchemes { default corrected; } fluxRequired { default no; }\n`);
 await put('system/fvSolution', header('fvSolution') + 'solvers {}\n');
 await put('probe-input.json', JSON.stringify(plan, null, 2) + '\n');
+await put('initialization-input.json', JSON.stringify({schema:'full-runtime-ha-qualification-v1',startTime:0,
+  thermodynamics:{mode:'cold-real-fluid',requiresRuntimeHaInitialization:true,dictionarySha256:hash(dictionary)},
+  initialization:{config:{mode:'uniform-prescribed'}},inputHashes:{table:null},physicalValidation:false},null,2)+'\n');
 console.log(JSON.stringify({ created: out, ...plan }, null, 2));

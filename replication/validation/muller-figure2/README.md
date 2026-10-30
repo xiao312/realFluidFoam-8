@@ -44,3 +44,22 @@ Figure 2. Failed residual/process verdicts remain in the result and figure
 legend. It does not infer extinction convergence from a cold final state. The
 initial supported run has a known upstream energy-index defect; this limitation
 is recorded explicitly. A tampered receipt or profile fails before rendering.
+
+`paper_compare.py` consumes the newer `paper_branch.py` continuation receipts.
+It requires an explicit expected run-source commit, verifies each completed case
+and NPZ hash, and checks both applied runtime patches. It plots the lowest-chi
+available burning profile for Figure 2 and all available peak temperatures for
+Figure 3. A partial sweep is labelled partial; omitted or failed profiles remain
+in the inventory. Individual residuals and process exits are retained in the HTML
+table and JSON. Approximate curves are never promoted to converged results.
+
+Use `--branch RUN --figure2-reference JSON --figure3-reference JSON --pdf PAPER
+--expected-source COMMIT --output NEW_DIRECTORY` for a read-only plan, then add
+`--apply` to create the figures and local review HTML. The PDF must match both
+reference hashes. Original figure crops include the paper captions, and the
+caption text is extracted from that same PDF. The computed density panel stays
+pending unless a separately qualified PR-VTA calculation is supplied; ideal-gas
+density is not substituted. The script adds PyMuPDF to the existing plotting
+dependencies and performs no network access or publication. Verify the rendered
+PNG/HTML visually and retain `comparison.json`; scientific acceptance remains
+separate from rendering and numerical residual checks.

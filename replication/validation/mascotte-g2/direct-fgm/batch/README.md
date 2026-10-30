@@ -73,6 +73,15 @@ check modules, Node24, GCC11, wmake, stock OF8 mesh tools and matching OpenMPI.
 No secrets are consumed. The module emits stage exit receipts and actual solver
 logs/fields. It neither grants independent code/science approval nor publishes.
 
+`node bind-table.mjs NEW_CASE --plan` reads and hashes its case-owned table;
+`--apply` additionally requires Slurm and a fresh undecomposed time-zero case.
+It binds the absolute table path in combustionProperties before decomposition,
+recording original/final dictionary and table hashes. This avoids the older
+library's processor-local relative-path bug without changing the table, copying
+it per rank, or rebuilding libraries. An external table or prior binding is
+refused. Both warm and cold batches use this preparation step. The separately
+corrected library resolver must still receive its own compiled qualification.
+
 A bounded diagnostic exception exists only for the physical closed case when
 its failed criteria are exactly the assembled residual and legacy-identity
 checks, while all conservation, pressure, endpoint and clipping checks pass.
