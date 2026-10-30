@@ -1,4 +1,4 @@
-# G2 and water-progress checkpoint, 31 October 2026, 07:08 Shanghai
+# G2 and water-progress checkpoint, 31 October 2026, 07:47 Shanghai
 
 The optimized full-SRK steady-flamelet diagnostic reached 100 us. The four
 interior water-progress CFD cases also passed their mechanical and timestep
@@ -14,6 +14,8 @@ globally usable transported-progress manifold remain unresolved.
 | 126433289 | `e8801906c4d6c38e28abff3a7d29aeb4829dc694` | COMPLETED, 319 s. Reference-only refinement qualified all four retained CFD histories without new CFD runs or changing the original 1e-7 confidence limit. |
 | 126432193 | Retained runtime `d479bc62125ccd7e2048f38910d13a0e8eb8fc48` | FAILED, 201 s. Fresh pure-CH4 G2 initialization passed, but the first Z update exceeded the strict table endpoint. No completed dynamic timestep. |
 | 126433405 | `029c62bbfdbbcc2bc18fa3e98f268195eaafba02` | FAILED, 450 s. Build, endpoint controls and both 250-measurement interior comparisons passed. Strict mode measured a two-epsilon first-update excursion. Optional mode then rejected a 4.65e-9 excursion during the second outer correction. No completed cold-flow timestep. |
+| 126434026 | `38f9e22928e96128978f0e02fb862191bb39d0b6` | FAILED, 271 s. Three fresh Z-tolerance diagnostics reproduced the same endpoint failure. The measured density/flux continuity defect predicts the overshoot. |
+| 126434575 | `3cc556a46f3f4edad4735928741595d82a40a7c9` | FAILED, 278 s. Build and baseline diagnosis passed. Conservative density restored the local continuity residual near roundoff. The fresh candidate completed 57 steps through 6.461872 us, then rejected accumulated 65-epsilon Z drift against the unchanged 64-epsilon bound. |
 
 The OF8 environment remains
 `f46b172cd5e40693c14e09ae43ca85df418ed3da7556e58fd71fad5b2fca1793`.
@@ -38,6 +40,36 @@ produced 4.645826390259344e-9, above the fixed 1.421085471520200e-14 bound.
 The policy correctly refused that larger value. Equation and local residual
 diagnosis precede another cold run; the bound is not widened to accept failure.
 
+The assembled equation audit identifies a concrete coupling defect. Reducing
+the Z tolerance from 1e-8 to 1e-14 or 1e-16 did not remove the excursion.
+The tighter runs reached their iteration cap, not their printed tolerance.
+Their small local assembled residual nevertheless separates this failure from
+scalar iteration error: minus continuity residual divided by the diagonal
+predicts the measured Z excursion to about four parts per million.
+
+OF8 pressureControl returns true whenever pressure limits are configured.
+The inherited caller then replaces continuity-solved density with EOS density,
+even without pressure clipping. Candidate
+`3cc556a46f3f4edad4735928741595d82a40a7c9` retains pressure limits and optionally
+solves the unchanged density equation after that replacement. The actual baseline
+measured continuity residual increasing from 1.26e-16 to 2.28e-11 kg/s at this
+replacement. The corrected candidate reduced residuals back near roundoff.
+Its failure after 57 completed steps is distinct: a cell started with 63 epsilons
+of accumulated Z drift and ended with 65, exceeding the fixed 64-epsilon bound.
+The original material excursion is removed; 100 us qualification still failed.
+An explicit per-solve roundoff projection with a mass-correction ledger is the
+next candidate. The fixed correction limit and rejection of larger errors remain.
+
+The unchanged final timestep EOS assignment has a maximum measured relative
+mass jump of 3.13e-12. Complete sampled histories account for a cumulative mass
+defect of -1.363e-14 kg and energy defect of 1.573e-4 J through 6.461872 us.
+These remain coupling diagnostics; whole-step conservation is not claimed.
+
+The [window-averaging module](../../validation/g2-window-average/README.md)
+also preserves partial coverage, gaps and colocated-density requirements.
+Its replay on the retained short run covers only 39.9% of the requested window.
+This qualifies the processing path, not developed-flow mean or RMS profiles.
+
 The water-progress coordinate is the declared species sum CO2+CO+H2O. Two
 uniform states at Z=0.1972101464 and 0.2888410024 ran through 1 us at 10 and 5 ns.
 Their maximum timestep differences were 8.69e-15 and 2.08e-15 of the local C span.
@@ -60,8 +92,9 @@ This draft integrates reviewed commits with cherry-pick provenance. Those
 integration commits are not ancestors of every executed revision. Exact file
 blob comparisons establish which source files agree; they do not make the
 combined checkout an executed or scientifically accepted runtime. The coordinator
-also audited 334 newly reachable Git objects and published five exact experimental
-source references. See [source identities](sources-20261031.json). These tags
+also published seven exact experimental source references. The latest source
+audit inspected 302 reachable objects and 328 distinct tip blobs.
+See [source identities](sources-20261031.json). These tags
 preserve successful and failed experiments; they are not accepted releases.
 The older paper-sweep branch contains compiled products and was excluded from
 this tag publication. Its exact retained source archive remains available.

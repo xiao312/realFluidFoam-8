@@ -6,6 +6,8 @@
   "purpose": "Preserve exact experimental revisions independently of cherry-picked integration commits.",
   "verification": "Remote references were compared with the full object IDs after an atomic push. Newly reachable Git objects were audited for source scope, binary artifacts and credentials.",
   "references": [
+    {"revision": "3cc556a46f3f4edad4735928741595d82a40a7c9", "tag": "evidence/direct-20261031/3cc556a46f3f", "scope": "Conservative density/flux diagnosis and opt-in pressure-loop correction; fresh cold qualification remains failed at the fixed roundoff bound."},
+    {"revision": "414a0e0823f62cdfb820ac1f2c4186e1d935184b", "tag": "evidence/direct-20261031/414a0e0823f6", "scope": "Saved-sample finite-window statistics with explicit gaps and partial coverage."},
     {"revision": "029c62bbfdbbcc2bc18fa3e98f268195eaafba02", "tag": "evidence/direct-20261031/029c62bbfdbb", "scope": "Steady-flamelet solver, endpoint qualification and ancestor SRK setup optimization; includes failed qualification."},
     {"revision": "71d1638bac42058241d8ed3e4459e571a5779e5e", "tag": "evidence/direct-20261031/71d1638bac42", "scope": "Physical hybrid-water and mixing witnesses, with their separate plotting code."},
     {"revision": "e8801906c4d6c38e28abff3a7d29aeb4829dc694", "tag": "evidence/direct-20261031/e8801906c4d6", "scope": "Water-progress CFD inputs and independent-reference recovery."},
