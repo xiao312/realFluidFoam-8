@@ -1,3 +1,11 @@
+// OF8 postProcess.H also includes this file before the normal solve path.
+// Keep the timer in the same scope as every field-initialization call.
+fgmWallTiming fgmTiming
+(
+    runTime.controlDict().lookupOrDefault<Switch>("writeFgmTiming", false)
+);
+const auto fgmStartupStart = fgmTiming.start();
+
 #include "createRDeltaT.H"
 
 Info<< "Reading thermophysical properties\n" << endl;

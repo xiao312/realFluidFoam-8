@@ -67,11 +67,6 @@ int main(int argc, char *argv[])
     #include "createControl.H"
     #include "createTimeControls.H"
     #include "initContinuityErrs.H"
-    fgmWallTiming fgmTiming
-    (
-        runTime.controlDict().lookupOrDefault<Switch>("writeFgmTiming", false)
-    );
-    const auto fgmStartupStart = fgmTiming.start();
     #include "createFields.H"
     #include "createFieldRefs.H"
 
