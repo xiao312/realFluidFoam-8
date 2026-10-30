@@ -100,6 +100,17 @@ mesh-input.mjs`, and `node --check check.mjs` must exit zero. The first real inp
 preparation must also execute the read-only plan against the exact physical table
 and registered mesh. No synthetic table is permitted to stand in for that check.
 
+The hashed observation JSON may explicitly set `includeVelocity: true` (default
+false). This adds the existing Cartesian field `U` to the same instantaneous
+profile and plane samples as density; optional field means also include U.
+It changes sampling only, not equations, solver controls, interpolation or
+sample times. OF8 emits split vector CSVs with `U_0,U_1,U_2`; retain them beside
+the scalar CSVs. The saved-window evaluator joins their exact coordinates and
+times and can compute axial Reynolds/Favre statistics. No separate unbound
+dictionary override is needed. Verification: run `node observations.test.mjs`
+and the saved-window vector/parser check; actual vector outputs remain required
+for a physical velocity comparison.
+
 Progression after the startup diagnostic: inspect actual CPU time, table bounds,
 thermodynamic pressure departure and profile stability before selecting a fresh
 0.1 ms run, then fresh longer runs spanning the 50 mm inlet-based convection

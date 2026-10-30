@@ -11,18 +11,24 @@ function finite(value, name, min, max) {
   return value;
 }
 export function observationConfig(input, endTime) {
-  keys(input, ['profileInterval_s', 'fieldInterval_s', 'averageStart_s', 'radialPositions_m', 'imageGrid'], 'observations');
+  keys(input, ['profileInterval_s', 'fieldInterval_s', 'averageStart_s', 'radialPositions_m', 'imageGrid', 'includeVelocity'], 'observations');
+  if (input.includeVelocity !== undefined && typeof input.includeVelocity !== 'boolean') throw new Error('includeVelocity must be boolean');
   const config = {
     profileInterval_s: input.profileInterval_s ?? endTime / 4,
     fieldInterval_s: input.fieldInterval_s ?? endTime / 4,
     averageStart_s: input.averageStart_s ?? null,
     radialPositions_m: input.radialPositions_m ?? [0.03, 0.06],
     imageGrid: input.imageGrid ?? null,
+    includeVelocity: input.includeVelocity ?? false,
     axialCoordinate: 'raw registered mesh x; injector-exit paper transform not qualified',
     nearAxisRadius_m: 0.0001,
     instantaneousFields: ['T', 'rho', 'Z', 'c', 'OH', 'CH4', 'O2', 'CO2', 'CO', 'Ha', 'fgmTdiag'],
     meanFields: ['T', 'rho', 'Z', 'c', 'OH'],
   };
+  if (config.includeVelocity) {
+    config.instantaneousFields.push('U');
+    config.meanFields.push('U');
+  }
   for (const name of ['profileInterval_s', 'fieldInterval_s']) finite(config[name], name, Number.MIN_VALUE, endTime);
   const fullWrites = endTime / config.fieldInterval_s;
   if (Math.abs(fullWrites - Math.round(fullWrites)) > 1e-8) throw new Error('fieldInterval_s must divide endTime so the final fields are written');
@@ -97,7 +103,7 @@ function sample(name, fields, config, mean = false, image = false) {
 }
 export function functionObjects(config) {
   let text = sample('instantaneousProfiles', config.instantaneousFields, config);
-  if (config.imageGrid) text += sample('instantaneousImagePlane', ['T', 'rho', 'Z', 'c', 'OH'], config, false, true);
+  if (config.imageGrid) text += sample('instantaneousImagePlane', ['T', 'rho', 'Z', 'c', 'OH', ...(config.includeVelocity ? ['U'] : [])], config, false, true);
   if (config.averageStart_s !== null) {
     text = `timeAverage { type fieldAverage; libs ("libfieldFunctionObjects.so");
  timeStart ${config.averageStart_s}; executeControl timeStep; executeInterval 1; writeControl writeTime;

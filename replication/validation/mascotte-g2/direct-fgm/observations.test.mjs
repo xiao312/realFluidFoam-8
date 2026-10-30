@@ -5,6 +5,11 @@ import { scalarValues, differenceSummary } from './diagnostics.mjs';
 const plain = observationConfig({}, 2e-5);
 assert.equal(plain.averageStart_s, null);
 assert.ok(!functionObjects(plain).includes('type fieldAverage'));
+assert.ok(!plain.instantaneousFields.includes('U'));
+const velocity = observationConfig({ includeVelocity: true, imageGrid: { axialPoints: 3, radialPoints: 2 } }, 2e-5);
+assert.ok(velocity.instantaneousFields.includes('U') && velocity.instantaneousFields.includes('rho'));
+assert.ok(functionObjects(velocity).includes('fields (T rho Z c OH U)'));
+assert.throws(() => observationConfig({ includeVelocity: 'true' }, 2e-5), /boolean/);
 const measured = observationConfig({ profileInterval_s: 1e-6, fieldInterval_s: 1e-5,
   averageStart_s: 1e-5, imageGrid: { axialPoints: 3, radialPoints: 2 } }, 2e-5);
 const text = functionObjects(measured);

@@ -60,6 +60,11 @@ function groupStatistics(group, settings) {
     maximumGap_s: maximumGap,
     times_s: group.frames.map(f => f.time_s), quadrature, pointCount: first?.rows.length ?? 0,
     coordinates: first?.coordinates ?? [], fields: first?.fields ?? [],
+    velocityComponents: first?.fields.includes('U_0') ? {
+      U_0: 'Cartesian x velocity (m/s), axial for the declared x-aligned geometry',
+      U_1: 'Cartesian y velocity (m/s)', U_2: 'Cartesian z velocity (m/s)',
+      normalization: 'none; no planning inlet velocity consumed',
+    } : null,
     removedExactDuplicateRows: duplicateAudit.reduce((sum, row) => sum + row.removedCount, 0),
     favre: settings.favre ? (first?.fields.includes('rho') ? 'actual-positive-co-located-density' : 'unavailable-no-rho') : 'not-requested',
     status: quadrature.duration_s > 0 ? (quadrature.gaps.length ? 'available-excluded-gaps' : 'available-inside-window-span') : 'unavailable-no-usable-interval',

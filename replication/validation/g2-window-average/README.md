@@ -54,8 +54,22 @@ consumer uses NumPy, Matplotlib and PyMuPDF plus the existing `g2-review` and
 the curves as provisional saved-sample means/RMS. Schmitt's oxygen companion
 retains the differing near-axis coordinate and85/288K versus83/300K conditions;
 no normalized coordinate or numerical paper error is inferred from its crop.
-Velocity comparisons remain unavailable without corresponding sampled velocity
-and reference data.
+Velocity sampling is optional and does not change solver equations. Set
+`"includeVelocity": true` in the hashed observation JSON used for a new case.
+The OF8 CSV writer names Cartesian velocity components `U_0`, `U_1`, `U_2`;
+the first is axial velocity for the declared x-aligned mesh. Separate vector
+and scalar CSVs are joined at the same time and exact spatial coordinates,
+so Favre velocity uses actual co-located rho. Output names include `U_0Mean`,
+`U_0RMS`, `U_0FavreMean`, and `U_0FavreRMS`. No velocity is reconstructed from
+old scalar-only samples. The current source treats a missing vector component
+in one time slice as a field-set mismatch, not permission to fill it.
+
+The velocity panel is dimensional. Normalized velocity remains unavailable
+without an actual initialization boundary witness; the case plan's ideal-gas
+placeholder speed is never used. A future normalized companion must bind its
+executed inlet audit and measured mesh diameter explicitly. See
+[Schmitt velocity evidence](schmitt-velocity.md). The paper uses Reynolds
+statistics; selecting Favre changes the diagnostic and its labels.
 No secrets, network clients, scheduler or publication calls enter this module.
 All input snapshots remain read-only; derived outputs must be separate.
 
@@ -82,7 +96,7 @@ the paper used the same weighting. No optical mean is inferred from these fields
 If no group has a usable time interval, `--apply` retains the unavailable manifest
 and exits 2. A missing plane does not suppress available profile statistics.
 
-Verification: `node --test replication/validation/g2-window-average/statistics.test.mjs`
+Verification: `node --test replication/validation/g2-window-average/*.test.mjs`
 checks the small mathematical contract and gap handling. Then run the read-only
 plan and applied pipeline on retained real samples; verify coverage, duplicate
 counts and output hashes and visually inspect the paper review. Short startup

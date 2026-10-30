@@ -564,7 +564,13 @@ selects the policy; neither the table nor the CFD evaluator grants acceptance.
 
 `validation/g2-window-average` consumes retained named instantaneous samples and
 explicit completed-time provenance to calculate saved-sample Reynolds/Favre
-window statistics with Node standard libraries. It preserves gaps, exact duplicate
+window statistics with Node standard libraries. It can consume OF8's separate
+Cartesian `U_0,U_1,U_2` CSV columns using exact
+coordinate/time joins with sampled density. The direct-G2 observation contract
+offers opt-in U sampling without solver or physics changes; normalized velocity
+requires separate executed-inlet provenance and is not inferred from the
+ideal-gas planning estimate. The default paper companion remains dimensional.
+It preserves gaps, exact duplicate
 audits and partial coverage; it does not manufacture solver averaging counters.
 Its optional Python paper consumer depends on NumPy/Matplotlib/PyMuPDF and the
 existing G2 reference readers. Solver, scheduler and instantaneous renderers do

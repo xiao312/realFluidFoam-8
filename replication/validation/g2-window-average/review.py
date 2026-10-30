@@ -52,6 +52,9 @@ def main():
         if 'T'+mean not in group['values']:raise ValueError('Requested weighting unavailable in '+group['key'])
     plan={'schema':'g2-window-paper-review/v1','label':args.label,'weighting':args.weighting,
         'requestedWindow_s':manifest['requestedWindow_s'],'groups':[g['key'] for g in groups],
+        'velocityComparison':{'component':'U_0 (Cartesian x component)','units':'m/s',
+            'normalization':'unavailable-no-executed-inlet-scale-consumed',
+            'planningPlaceholderUsed':False,'referenceDigitizationAvailable':False},
         'inputHashes':hashes,'scientificAcceptance':False,'statisticalConvergenceEstablished':False}
     if not args.apply:print(json.dumps(plan,indent=2));return
     if any(sha256(path)!=digest for path,digest in hashes.items()):raise ValueError('Inputs changed before rendering')
@@ -89,6 +92,19 @@ def main():
             fig.text(.08,.05,'Paper window: 60 ms. Our transient RMS includes startup; statistical convergence is unestablished.',fontsize=9)
             panels.append({'name':save(fig,args.out,f'cavalieri-window-{selected}mm'),'title':f'Cavalieri radial mean/RMS at {selected} mm','reference':'cavalieri2025-fig-6','meaning':note})
         elif name=='nearAxis':
+            if 'U_0'+mean in values and 'U_0'+rms in values:
+                fig,ax=plt.subplots(figsize=(7.5,5.5));fig.subplots_adjust(left=.12,right=.97,top=.81,bottom=.26)
+                for suffix,label,dash in [(mean,'mean','-'),(rms,'RMS','--')]:
+                    x,y=line_with_gaps((values['x']-args.x_origin_m)*1000,values['U_0'+suffix],.1998/399*1000)
+                    ax.plot(x,y,color='#553488',ls=dash,label='Our provisional '+args.weighting+' '+label,lw=2)
+                ax.axhline(0,color='#777777',lw=.7)
+                ax.set(xlabel='Axial distance from explicit exit (mm)',ylabel='Axial velocity (m/s)',title='Schmitt Fig. 21(a) | dimensional near-axis diagnostic',xlim=(0,200))
+                ax.grid(alpha=.18);ax.legend(fontsize=9)
+                fig.text(.12,.14,note,fontsize=9)
+                fig.text(.12,.09,'U_0 is Cartesian Ux. Paper: Reynolds mean only; 50 ms statistics.',fontsize=8)
+                fig.text(.12,.04,'No inferred u0 or d normalization. '+radial_note,fontsize=8)
+                panels.append({'name':save(fig,args.out,'schmitt-velocity-window'),'title':'Schmitt axial velocity companion',
+                    'reference':'schmitt2020-fig-21','meaning':note+'. Dimensional velocity, not matched paper normalization. '+inlet_note})
             fig,ax=plt.subplots(figsize=(7.5,5.5));fig.subplots_adjust(left=.12,right=.97,top=.83,bottom=.23)
             for key,color,marker in [('fine','#c25932','s'),('finer','#3164af','o')]:
                 points=np.asarray(sharma['series'][key]['points']);x,y=line_with_gaps(points[:,0],points[:,1],sharma['reading_uncertainty']['x_one_pixel_m'])
@@ -108,7 +124,7 @@ def main():
                 fig.text(.12,.085,'No matched paper curve/d-normalization. '+radial_note,fontsize=8)
                 fig.text(.12,.04,inlet_note+' No accepted flame length.',fontsize=8)
                 panels.append({'name':save(fig,args.out,'schmitt-oxygen-window'),'title':'Schmitt oxygen mean/RMS companion','reference':'schmitt2020-fig-21',
-                    'meaning':note+'. Non-equivalent coordinate/conditions; reference digitization and velocity remain unavailable.'})
+                    'meaning':note+'. Non-equivalent coordinate/conditions; reference digitization remains unavailable.'})
         elif group['geometry']=='plane':
             for field,label,cmap in [('T','Temperature (K)','inferno'),('rho','Density (kg/m³)','cividis'),('OH','Ground-state OH mass fraction','viridis')]:
                 if field+mean not in values:continue
@@ -136,7 +152,7 @@ def main():
             caption=shared.CAPTION if reference=='sharma4b' else targets['targets'][reference]['original_caption']
             page+=f'<div><img src="original-{reference}.png"><p>{esc(caption)}</p><a href="#ref-{reference}">Reference</a></div></div>'
         page+='</section>'
-    page+='<section><h2>Coverage and unavailable comparisons</h2><p>Schmitt Fig. 21 oxygen is a provisional companion only: no reliable separated G2 reference curve, matched d-normalization or velocity profile is supplied. '+esc(radial_note+' '+inlet_note)+' Ground-state OH is not OH* emission. No optical proxy is calculated from mean fields.</p><pre>'
+    page+='<section><h2>Coverage and unavailable comparisons</h2><p>Schmitt Fig. 21 panels are provisional companions only: no reliable separated G2 reference curve or matched u0/d normalization is supplied. Velocity appears only when actual U_0 samples are present; the case plan ideal-gas inlet speed is never used. '+esc(radial_note+' '+inlet_note)+' Ground-state OH is not OH* emission. No optical proxy is calculated from mean fields.</p><pre>'
     page+=esc(json.dumps([{k:v for k,v in group.items() if k not in ['times_s','fields']} for group in manifest['groups']],indent=2))+'</pre></section><section id="references"><h2>Original captions and references</h2>'
     all_refs={**targets['targets'],'sharma4b':{'paper':{'title':shared.PAPER,'url':shared.URL},'original_caption':shared.CAPTION}}
     for key,target in all_refs.items():
