@@ -1,0 +1,17 @@
+{
+  "schema": "fgm-diffusion-allocation-v1",
+  "source": "ce76de25f24cfd8572b04324b192ae9544a5dbc9",
+  "packageSource": "REPLACE_WITH_QUALIFICATION_SCRIPT_COMMIT",
+  "packageArchiveSha256": "REPLACE_WITH_QUALIFICATION_SCRIPT_ARCHIVE_SHA256",
+  "sourceArchive": "/workspace/inputs/diffusion-r1/candidate.tar",
+  "sourceArchiveSha256": "REPLACE_FROM_FREEZE_RECEIPT",
+  "sourceBlobs": "/workspace/inputs/diffusion-r1/source-blobs.json",
+  "sourceBlobsSha256": "REPLACE_FROM_FREEZE_RECEIPT",
+  "fullRuntime": "/workspace/build/of8-full-282-r1",
+  "fullReceiptSha256": "43622e1f0ac3ddad9fb343985d5360149cc74f3a95b095604bcfda9a1351a2e9",
+  "build": "/workspace/build/of8-unused-diffusion-r1",
+  "out": "/workspace/results/of8-unused-diffusion-r1",
+  "table": "/workspace/results/spitfire-cold-129-table-r2",
+  "metadata": "/workspace/results/spitfire-cold-129-r2/phase-metadata.json",
+  "thermo": "/workspace/inputs/EXACT_SRK_EXPORT"
+}

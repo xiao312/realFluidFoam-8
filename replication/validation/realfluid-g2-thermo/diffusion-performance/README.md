@@ -61,3 +61,27 @@ No source cache, species cutoff or Takahashi coefficient change is included.
 
 Local verification: `node --check prepare.mjs`, `node --check compare.mjs`, and
 `git diff --check`. Actual parity and negative controls require the full build.
+
+The allocation package is separate from the fixed candidate source archive.
+`freeze.mjs --out NEW_DIR` writes the complete library src/ plus solver/probe Git
+archive and every selected Git blob identity, excluding historical case meshes,
+for candidate `ce76de25f24cfd8572b04324b192ae9544a5dbc9` (04baa plus one-time
+policy validation). Without `--out` it prints a read-only plan. The package's own
+Git revision must also be pinned by its caller. `package.mjs` verifies archive
+SHA256, extracted regular/symlink blob bytes and all retained runtime products
+before compiler-option adjustments. `build.sh MANIFEST --apply` rebuilds only
+basic/reactionThermo and solver/probe, retaining the other thirteen libraries.
+Its result identifies all fifteen library hashes/byte counts, source and build
+adjustments; chemistry is not rebuilt. The manifest schema is illustrated by
+`package.example.json`; runtime paths are supplied explicitly and no secrets
+belong in it. Default `--plan` does not mutate the build.
+
+`allocation.sh MANIFEST --apply` performs that build, properties and negative
+controls, then a paired 48-cell periodic source-disabled CFD diagnostic with
+actual table p/T/Y, small spatial composition variation and full-SRK Ha
+initialization. Both cases start at zero, run 20 identical 1 ns steps, and write
+every fifth step. The actual initializer/solver log is retained. `compare-cfd.mjs`
+checks all written scalar/U fields and all integrated energy-state records at
+1e-12 relative, finite positive thermo, zero clipping, source-disabled status
+and normal completion. Actual conservation drift is reported separately: this
+is equivalence qualification, not acceptance of a new flame/table model.
