@@ -147,3 +147,18 @@ table state. Together with `--chemistry disabled` it supplies a cold transport
 diagnostic. The source-disabled choice is explicit in the manifest and solver
 log; source values and composition still come from the immutable table.
 `--chemistry table` is the default and applies the table's physical source.
+# Caloric range and closure qualification
+
+Warm ideal-gas cases accept explicit `--nasa-extrapolation 200,6000` when their
+flamelet states exceed the original species-range intersection. The default
+preserves original ranges and refuses an initial state outside their common
+domain. Coefficients, molecular weights and NASA transition temperatures are
+unchanged; per-species original/effective ranges remain in the export receipt.
+Cold cases retain their independently bound real-fluid dictionary ranges.
+
+Fresh warm/cold cases request the executing solver's literal h(p,T,Y)-versus-h
+audit at initialization and written corrections. Warm stock OF8 selects 1e-4
+(stock temperature-iterate tolerance); full real-fluid selects 1e-8. The checker
+requires finite, passing initial and final audit records and rejects JANAF range
+warnings. Old receipts are not rewritten. Completion and caloric consistency
+remain distinct from physical validation and independent scientific review.

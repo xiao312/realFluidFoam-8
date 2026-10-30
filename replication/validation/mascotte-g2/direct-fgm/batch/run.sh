@@ -10,6 +10,8 @@ readarray -t INPUTS <<< "$VALUES"
 ARCHIVE=${INPUTS[0]}; BUILD=${INPUTS[1]}; OUT=${INPUTS[2]}; CASE=${INPUTS[3]}
 TABLE=${INPUTS[4]}; METADATA=${INPUTS[5]}; SOURCE=${INPUTS[6]}
 RANKS=${INPUTS[7]}; G2_END_TIME=${INPUTS[8]}; CONTACT_CELLS=${INPUTS[9]}; MEMORY_GIB=${INPUTS[10]}
+NASA_ARGS=()
+if [[ ${INPUTS[13]} != original ]]; then NASA_ARGS=(--nasa-extrapolation "${INPUTS[13]}"); fi
 [[ ${SLURM_NTASKS:-0} == "$RANKS" ]] || { echo 'Actual Slurm task count does not match the frozen manifest'; exit 3; }
 if [[ -n ${SLURM_MEM_PER_NODE:-} && ${SLURM_MEM_PER_NODE:-} =~ ^[0-9]+$ ]]; then
     (( SLURM_MEM_PER_NODE >= MEMORY_GIB*1024 )) || { echo 'Actual Slurm memory is smaller than requested'; exit 3; }
@@ -116,10 +118,12 @@ stage=g2-preparation
 node "$G2/prepare.mjs" --table-dir "$TABLE" --metadata "$METADATA" \
     --mesh-dir /references/mascotte-mesh-20261026 --bounds error --ranks "$RANKS" --end-time "$G2_END_TIME" \
     --observations "$OUT/observations.json" --decomposition "$OUT/decomposition.json" \
+    "${NASA_ARGS[@]}" \
     > "$OUT/logs/g2-read-only-plan.json"
 node "$G2/prepare.mjs" --table-dir "$TABLE" --metadata "$METADATA" \
     --mesh-dir /references/mascotte-mesh-20261026 --bounds error --ranks "$RANKS" --end-time "$G2_END_TIME" \
     --observations "$OUT/observations.json" --decomposition "$OUT/decomposition.json" \
+    "${NASA_ARGS[@]}" \
     --out "$CASE-g2" > "$OUT/logs/g2-prepare.json"
 run_stage g2-table-binding 30 node "$HERE/bind-table.mjs" "$CASE-g2" --apply
 run_stage g2-checkMesh 180 checkMesh -case "$CASE-g2"

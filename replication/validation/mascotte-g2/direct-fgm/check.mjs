@@ -19,6 +19,8 @@ function records(prefix) {
 }
 const states = records('energyState '), equations = records('energyEquation '), bounds = records('fgmBounds ');
 const source = records('fgmAppliedSource ');
+const closure = records('thermoClosure ');
+const rangeWarningCount = (log.match(/out of temperature range/g) ?? []).length;
 const times = (await readdir(root)).filter(name => /^\d+(?:\.\d*)?(?:e[-+]?\d+)?$/i.test(name))
   .map(name => ({ name, time: Number(name) })).filter(row => row.time > 0).sort((a, b) => a.time - b.time);
 const latest = times.at(-1);
@@ -42,7 +44,14 @@ const mechanicalChecks = {
   finiteEnergyRecords: finite(states) && finite(equations),
   finiteFinalFields: Object.keys(fields).length === 12 && Object.values(fields).every(row => row.finite),
   positiveThermo: fields.T?.min > 0 && fields.p?.min > 0 && fields.rho?.min > 0,
+  noThermoRangeWarnings: rangeWarningCount === 0,
 };
+if (manifest.caloricClosure?.required) {
+  mechanicalChecks.caloricClosurePresent = finite(closure) && closure.some(r => r.initial === 1 && r.t === 0) &&
+    closure.some(r => Math.abs(r.t-manifest.endTime) <= Math.max(1e-14, manifest.endTime*1e-8));
+  mechanicalChecks.caloricClosureConsistent = closure.length > 0 && closure.every(r => r.invalid === 0 &&
+    r.limit === manifest.caloricClosure.relativeLimit && r.maxRelative <= r.limit && r.boundaryMaxRelative <= r.limit);
+}
 if (manifest.chemistry) mechanicalChecks.declaredSourceMode = source.length > 0 && source.every(row =>
   Number.isFinite(row.tabulatedKg_s) && Number.isFinite(row.appliedKg_s) &&
   row.enabled === (manifest.chemistry === 'table' ? 1 : 0) &&
@@ -65,6 +74,7 @@ const report = { schema: 'forge-direct-warm-g2-diagnostic-v1', inputHashes: mani
   clippedLookup: corrections === null ? null : corrections > 0,
   chemistry: manifest.chemistry ?? 'table', lastAppliedSource: source.at(-1) ?? null,
   thermodynamics: manifest.thermodynamics ?? {mode:'warm-ideal'},
+  caloricClosure: { required: Boolean(manifest.caloricClosure?.required), records: closure, rangeWarningCount },
   coldInitialization: manifest.thermodynamics?.mode === 'cold-real-fluid'
     ? JSON.parse(await readFile(`${root}/cold-initialization.json`, 'utf8')) : null,
   status: Object.values(mechanicalChecks).every(Boolean) ? 'diagnostic-run-completed' : 'diagnostic-run-incomplete-or-failed',

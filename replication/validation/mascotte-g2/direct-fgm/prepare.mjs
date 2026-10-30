@@ -7,10 +7,11 @@ import { inspectMesh, copyMesh } from './mesh-input.mjs';
 import { loadRunControls, decompositionDictionary, functionObjects } from './observations.mjs';
 import { realFluidInput, initializationInput, ignitionDictionary } from './cold-input.mjs';
 import { solverSchemes } from '../../fgm-of8/direct-verification/schemes.mjs';
+import { nasaInversionPolicy } from '../../fgm-of8/direct-verification/thermo-policy.mjs';
 
 const options = {}, args = process.argv.slice(2);
 for (let i = 0; i < args.length; i += 2) {
-  if (!['--table-dir', '--metadata', '--mesh-dir', '--out', '--bounds', '--end-time', '--ranks', '--observations', '--decomposition', '--thermo-mode', '--thermo-dir', '--initialization', '--chemistry', '--initial-dt', '--max-dt'].includes(args[i]) || !args[i + 1]) {
+  if (!['--table-dir', '--metadata', '--mesh-dir', '--out', '--bounds', '--end-time', '--ranks', '--observations', '--decomposition', '--thermo-mode', '--thermo-dir', '--initialization', '--chemistry', '--initial-dt', '--max-dt', '--nasa-extrapolation'].includes(args[i]) || !args[i + 1]) {
     throw new Error('Use --table-dir DIR --metadata FILE --mesh-dir DIR [--out NEW_CASE] [--bounds error|clamp] [--end-time S] [--ranks N] [--observations FILE] [--decomposition FILE] [--thermo-mode warm-ideal|cold-real-fluid --thermo-dir DIR] [--initialization FILE]');
   }
   options[args[i].slice(2)] = args[i + 1];
@@ -30,6 +31,8 @@ const chemistry = options.chemistry ?? 'table';
 if (!['table', 'disabled'].includes(chemistry)) throw new Error('Use --chemistry table|disabled');
 if (!['warm-ideal', 'cold-real-fluid'].includes(thermoMode) || (thermoMode === 'warm-ideal' && options['thermo-dir'])) throw new Error('Explicit valid thermo mode required; a warm case cannot consume a real-fluid directory');
 const realFluid = thermoMode === 'cold-real-fluid' ? await realFluidInput(options['thermo-dir'], input) : null;
+if (realFluid && options['nasa-extrapolation']) throw new Error('Cold input already binds its declared thermodynamic ranges');
+const nasaPolicy = realFluid ? null : nasaInversionPolicy(input.metadata, options['nasa-extrapolation']);
 const initialization = await initializationInput(options.initialization, input);
 if (!realFluid && initialization.config.mode === 'localized-covered') throw new Error('Localized preparation currently requires the full-runtime Ha initialization path');
 const mesh = await inspectMesh(resolve(options['mesh-dir']));
@@ -38,7 +41,7 @@ if (!(pressure > 0 && Number.isFinite(pressure))) throw new Error('Missing physi
 const names = input.metadata.species.map(s => s.name);
 const streams = { ch4inlet: input.lookup(1, 0), loxinlet: input.lookup(0, 0) };
 const initial = initialization.background;
-const range = realFluid?.record.effectiveInversionRange_K ?? [200, 6000];
+const range = realFluid?.record.effectiveInversionRange_K ?? nasaPolicy.effectiveMixtureIntersection_K;
 for (const state of [...Object.values(streams), initial, initialization.hot]) {
   if (!(state.temperature >= range[0] && state.temperature <= range[1])) throw new Error('Input state exceeds declared thermodynamic initialization bounds');
   state.thermo = thermoState(input.metadata, state.y, state.temperature);
@@ -56,7 +59,9 @@ const slowerInlet = Math.min(...Object.values(streams).map(s => s.meanVelocity_m
 const plan = { schema: 'forge-direct-warm-g2-fgm-v1', startTime: 0, endTime, pressure, ranks,
   timeControls: { initialDt_s: initialDt, maxDt_s: maxDt, maxCo: 0.4 },
   energyForm: 'absoluteEnthalpy', chemistry, boundsPolicy: bounds, initial, streams, mesh,
-  thermodynamics: realFluid?.record ?? { mode: 'warm-ideal', requiresRuntimeHaInitialization: false }, initialization,
+  thermodynamics: realFluid?.record ?? { mode: 'warm-ideal', requiresRuntimeHaInitialization: false, nasaPolicy }, initialization,
+  caloricClosure: { required: true, relativeLimit: realFluid ? 1e-8 : 1e-4,
+    definition: 'executing sensible h(p,T,Y) versus stored h, scaled by max(1,abs(h),abs(h(p,T,Y)),abs(Cp*T))' },
   ...controls,
   inputHashes: input.inputHashes, sourceTableCase: input.receipt.case,
   approximations: [...(realFluid ? ['PR/SRK with explicitly declared NASA extrapolation', 'fixed-pressure source table without enthalpy coordinate']
@@ -80,7 +85,8 @@ if (realFluid) {
   await put('constant/thermophysicalProperties', realFluid.dictionary);
 } else {
   const result = spawnSync(process.execPath, [resolve(here, '../../fgm-of8/direct-verification/thermo-export.mjs'),
-    resolve(options.metadata), '--out', `${out}/thermo-input`], { encoding: 'utf8' });
+    resolve(options.metadata), '--out', `${out}/thermo-input`,
+    ...(options['nasa-extrapolation'] ? ['--nasa-extrapolation', options['nasa-extrapolation']] : [])], { encoding: 'utf8' });
   if (result.status !== 0) throw new Error(result.stderr || result.stdout || 'Thermo export failed');
   await copyFile(`${out}/thermo-input/thermophysicalProperties`, `${out}/constant/thermophysicalProperties`);
 }
@@ -145,6 +151,7 @@ writeControl adjustableRunTime; writeInterval ${controls.observations.fieldInter
 writeFormat ascii; writePrecision 12; writeCompression off;
 timeFormat general; timePrecision 12; runTimeModifiable no;
 fgmEnergyForm absoluteEnthalpy; writeEnergyBudget yes;
+writeFgmThermoClosure yes; fgmThermoClosureRelativeLimit ${plan.caloricClosure.relativeLimit};
 fgmRequireHaInitialization ${realFluid ? 'yes' : 'no'};
 fgmProgressSourceEnabled ${chemistry === 'table' ? 'yes' : 'no'};
 functions {

@@ -9,7 +9,10 @@ const ranks = input.ranks ?? 4, memoryGiB = input.memoryGiB ?? 4;
 const endTime = input.g2?.endTime_s ?? 2e-5;
 if (!Number.isInteger(ranks) || ranks < 1 || ranks > 32 || !Number.isInteger(memoryGiB) || memoryGiB < 1 ||
     !Number.isFinite(endTime) || endTime <= 0 || endTime > 0.1) throw new Error('Invalid ranks, memoryGiB or G2 endTime_s');
-for (const key of Object.keys(input.g2 ?? {})) if (!['endTime_s', 'observations', 'decomposition'].includes(key)) throw new Error(`Unknown g2.${key}`);
+for (const key of Object.keys(input.g2 ?? {})) if (!['endTime_s', 'observations', 'decomposition', 'nasaExtrapolation_K'].includes(key)) throw new Error(`Unknown g2.${key}`);
+const nasaBounds = input.g2?.nasaExtrapolation_K;
+if (nasaBounds && (!Array.isArray(nasaBounds) || nasaBounds.length !== 2 || !nasaBounds.every(Number.isFinite) ||
+    !(nasaBounds[0] > 0 && nasaBounds[1] > nasaBounds[0]))) throw new Error('Invalid g2.nasaExtrapolation_K');
 const observations = input.g2?.observations ?? {};
 observationConfig(observations, endTime);
 const defaultDecomposition = [16, 32].includes(ranks)
@@ -42,4 +45,4 @@ for (const [file, expected] of files) {
 // Safe literal path lines, consumed by readarray; never evaluated as shell code.
 console.log([input.sourceArchive, input.buildDirectory, input.resultDirectory, input.casePrefix,
   input.table.directory, input.table.metadata, input.sourceCommit, ranks, endTime, contactCells, memoryGiB,
-  JSON.stringify(observations), JSON.stringify(decomposition)].join('\n'));
+  JSON.stringify(observations), JSON.stringify(decomposition), nasaBounds ? nasaBounds.join(',') : 'original'].join('\n'));

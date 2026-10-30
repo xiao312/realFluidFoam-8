@@ -21,6 +21,11 @@ Optional `ranks` defaults to 4 and accepts 1..32 on one admitted node;
 contains `endTime_s` (default 0.00002), `observations` and `decomposition`, using
 the parent generator's configuration schemas. At 16 ranks the default geometric
 split is hierarchical [8,2,1]; at 32 it is [8,4,1]. Other counts use [N,1,1].
+Optional `g2.nasaExtrapolation_K: [200, 6000]` explicitly authorizes the warm
+diagnostic's unchanged NASA polynomials outside their original species ranges.
+Without it no range extension is selected. The generator records both ranges,
+and the solver/checker must still pass actual caloric closure and reject JANAF
+range warnings. A completed clamped-temperature run cannot qualify this path.
 The serial and parallel contact cases use the same max(80,4*N) fresh cells.
 MPI tests require the actual N-rank sum N*(N-1)/2. Admission resources remain
 the coordinator's responsibility; this wrapper verifies the actual task and
