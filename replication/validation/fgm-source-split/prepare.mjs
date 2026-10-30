@@ -34,6 +34,10 @@ const pressure = input.receipt.case.pressure_pa;
 if (!(pressure > 0 && Number.isFinite(pressure))) throw new Error('Missing table pressure');
 const plan = { schema: 'fgm-source-split-case-v1', startTime: 0, kind, cells, length, velocity,
   dt, endTime, outer, integration, pressure, inputHashes: input.inputHashes,
+  thresholds: { massRelative: 1e-7, energyPerChemicalChange: 0.01,
+    equationResidualRelative: 1e-6, sourceEnergyW: 1e-20,
+    oldTimeAbsolute: 0, lookupCorrections: 0,
+    timestepCspanRms: 0.02, outerCspanRms: 0.01 },
   assumptions: ['ideal-gas CFD thermo matches table mechanism', 'global Euler transport',
     'unity-Lewis diffusion', 'no second-order CFD claim', 'fixed-density source stages only'],
   validation: 'pending', scientificAcceptance: false };
@@ -48,6 +52,10 @@ run('prepare.mjs', ['--out', out, '--kind', 'heating', '--cells', String(cells),
 run('thermo-export.mjs', [resolve(options.metadata), '--out', `${out}/thermo-input`]);
 await copyFile(`${out}/thermo-input/thermophysicalProperties`, `${out}/constant/thermophysicalProperties`);
 await writeFile(`${out}/constant/constant.tbl`, input.raw);
+// Bind the retained copy explicitly, including when the case is decomposed.
+const combustion = (await readFile(`${out}/constant/combustionProperties`, 'utf8'))
+  .replace('table "constant.tbl";', `table "${out.replaceAll('\\', '/')}/constant/constant.tbl";`);
+await writeFile(`${out}/constant/combustionProperties`, combustion);
 const boundary = 'boundaryField { left { type cyclic; } right { type cyclic; } transverse { type empty; } }';
 async function field(name, dimensions, values, vector = false) {
   const raw = vector ? `uniform (${velocity} 0 0)` : `nonuniform List<scalar>\n${cells}\n(\n${values.join('\n')}\n)`;
@@ -71,13 +79,17 @@ control = control.replace(/endTime [^;]+;/, `endTime ${endTime};`)
   .replace(/writeInterval [^;]+;/, 'writeInterval 1;')
   .replace('fgmEnergyForm sensibleEnthalpy;', 'fgmEnergyForm absoluteEnthalpy;');
 control += `\nfgmSourceIntegration ${integration};\nfgmProgressSourceEnabled yes;\n`;
+control += `functions { sourceDensity { type writeObjects;
+ libs ("libutilityFunctionObjects.so"); objects (rho); writeOption anyWrite;
+ writeControl timeStep; writeInterval 1; } }\n`;
 await writeFile(`${out}/system/controlDict`, control);
 const solution = (await readFile(`${out}/system/fvSolution`, 'utf8'))
   .replace(/nOuterCorrectors \d+;/, `nOuterCorrectors ${outer};`).replace(/pRef [^;]+;/, `pRef ${pressure};`);
 await writeFile(`${out}/system/fvSolution`, solution);
 const receipt = JSON.stringify({ ...plan,
   states: states.map(s => ({ z: s.z, eta: s.eta, c: s.c, source: s.source, temperature: s.temperature,
-    Ha: s.thermo.enthalpy, density: pressure/(s.thermo.gasConstant*s.temperature) })) }, null, 2)+'\n';
+    cMin: s.lower, cMax: s.upper, Ha: s.thermo.enthalpy,
+    density: pressure/(s.thermo.gasConstant*s.temperature) })) }, null, 2)+'\n';
 await writeFile(`${out}/source-split-input.json`, receipt);
 // Replace the base generator's analytic-test receipt; its criteria do not apply.
 await writeFile(`${out}/verification-input.json`, receipt);

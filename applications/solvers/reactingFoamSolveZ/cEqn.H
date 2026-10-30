@@ -6,20 +6,19 @@
 // in the same order as the species equations so that a case using tabulated
 // chemistry behaves like one using species transport.
 //
-// Two declared modelling assumptions, neither of them measured:
+// Declared modelling assumptions, not validation results:
 //
 //   * the progress variable is diffused exactly like a species mass fraction,
 //     through the same thermophysical transport model (`divj`).  The table
 //     carries no progress diffusivity and no Lewis number, so inventing one
 //     would be a silent model change;
 //   * ZEqn.H has already transported the model's mixture fraction;
-//   * the source is added explicitly, as the table gives it, with no density
-//     factor and no linearisation in c.  A tabulated Sc(Z, c) is an explicit
-//     function of the transported variable; making it implicit would need a
-//     derivative the table does not carry.
+//   * the default source is explicit, as the table gives it. The opt-in
+//     strangFixedState mode integrates the piecewise-linear table source in
+//     two frozen-Z/rho stages; its first-stage offset enters this Euler matrix.
 //
-// The model's correct() runs first, so the source assembled below is a lookup
-// of this iteration's (Z, c) rather than a value carried in from construction.
+// In explicit mode correct() refreshes the source before assembly. Split mode
+// defers its second source lookup until both Z and c have been transported.
 //
 // The field must remain inside the tabulated box.  That is not enforced here:
 // the model does it, refusing at lookup under boundsPolicy error.
@@ -110,8 +109,9 @@
     }
 
     // Refresh composition before thermo inverts the newly solved energy.
-    // Keep Q from the same pre-solve state as Sc; do not silently move only
-    // the energy source to a different explicit time level.
+    // Explicit mode retains its pre-solve Q time level. Split mode requires
+    // absolute Ha: Q is diagnostic only; composition changes carry formation
+    // energy through the unchanged absolute-energy equation.
     reaction->correct();
 
     Info<< "fgm: progress variable " << c.name()

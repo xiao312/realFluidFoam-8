@@ -66,3 +66,23 @@ CFD outputs must establish source nonaccumulation and energy behavior. The
 fixed-state probe checks immutable input arrays but cannot alone verify OF8's
 lazy oldTime handling; `fgmSourceOldTime` runtime records cover that boundary.
 No numerical criterion or failed paper comparison is relaxed by this candidate.
+
+## Batch checks and predeclared limits
+
+`node check.mjs CASE SOLVER_LOG` writes `source-split-result.json`, per-time
+field CSV and energy histories. Its limits are fixed in the input receipt before
+execution: mass drift 1e-7 relative; closed total energy drift divided by the
+actual formation-energy change 1%; assembled energy residual 1e-6 relative;
+absolute-energy table-Q contribution <=1e-20 W; oldTime changes exactly zero;
+no lookup clipping. A nonzero source must change the progress variable. Missing
+fields, end time, source stages or audit records fail. The conserved closed-box
+energy is integral(rho*Ha + rho*K - p), not integral(rho*Ha).
+
+`node compare.mjs OUTPUT CASE...` requires the twelve split cases (0D/1D,
+25/50 ns, 1/2/3 outers). Before execution, the comparison targets are 2% of the
+local C span RMS for timestep refinement and 1% for outer-count sensitivity.
+These are bounded diagnostic gates, not a paper-agreement criterion. Runtime
+and numerical failures are retained even if another case passes. The identity
+transport probe separately requires <=1e-10 C-span outer nonaccumulation; CFD
+outer results need not be bit-identical because pressure and density are coupled.
+An optional explicit baseline is reported separately and cannot qualify splitting.
