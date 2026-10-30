@@ -25,6 +25,10 @@ states at eta=.6,1us duration and5/10ns. The four cases are not the older twelve
 outer-count campaign. Failed rich-end source bounds and manifold fidelity remain
 separate. Fixed-density DOP853 comparison uses actual initial mass/volume and
 reports any density/nonuniformity violations rather than assuming them away.
+`node compare-interior.mjs NEW_REPORT CASE1 CASE2 CASE3 CASE4` compares only
+these two Z-by-two-dt cases on their actual common recorded times, using the
+existing2%-of-C-span refinement criterion. The per-case checks and independent
+ODE reports remain separate; this comparison cannot establish global coverage.
 
 Dependencies are OF8, the fork's FGM reader and the source kernel copied from
 direct-flamelet commit `c67dfe2910dc2275270d3dccc2a5f3fedb75862a`.
