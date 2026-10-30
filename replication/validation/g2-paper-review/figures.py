@@ -44,6 +44,16 @@ def radial(data, references, out, origin):
 def maps(data, out, origin, proxies):
     panels = []
     missing = []
+    common_bounds = {}
+    for record in data['records']:
+        if record['kind'] != 'instantaneous' or record['geometry'] != 'plane':
+            continue
+        available = {name: record['fields'][name] for name in ('T', 'rho', 'OH') if name in record['fields']}
+        if record['time_s'] in proxies:
+            available['cOHstar_LTE_proxy_mol_m3'] = proxies[record['time_s']]['cOHstar_LTE_proxy_mol_m3']
+        for name, values in available.items():
+            previous = common_bounds.get(name, (float('inf'), -float('inf')))
+            common_bounds[name] = (min(previous[0], float(values.min())), max(previous[1], float(values.max())))
     for record in data['records']:
         if record['kind'] != 'instantaneous' or record['geometry'] != 'plane':
             continue
@@ -54,24 +64,24 @@ def maps(data, out, origin, proxies):
             if field not in fields:
                 missing.append(f"{field}: absent at {record['time_s']:g} s")
                 continue
-            panels.append(map_panel(data, record, fields, field, unit, cmap, out, origin))
+            panels.append(map_panel(data, record, fields, field, unit, cmap, out, origin, common_bounds[field]))
         if record['time_s'] in proxies:
             panels.append(map_panel(data, record, proxies[record['time_s']], 'cOHstar_LTE_proxy_mol_m3',
-                                    '308 nm LTE population proxy (mol/m³)', 'magma', out, origin))
+                                    '308 nm LTE population proxy (mol/m³)', 'magma', out, origin, common_bounds['cOHstar_LTE_proxy_mol_m3']))
     return panels, missing
 
 
-def map_panel(data, record, fields, field, unit, cmap, out, origin):
+def map_panel(data, record, fields, field, unit, cmap, out, origin, shared_bounds):
     x, y, values = image_grid(fields, data['observations']['imageGrid'], field)
     finite = values.compressed()
     if not finite.size:
         raise ValueError('Map contains no retained fluid points')
     lower, upper = float(finite.min()), float(finite.max())
-    if lower == upper:
-        delta = max(abs(lower)*.01, 1e-12)
-        bounds = (lower-delta, upper+delta)
+    if shared_bounds[0] == shared_bounds[1]:
+        delta = max(abs(shared_bounds[0])*.01, 1e-12)
+        bounds = (shared_bounds[0]-delta, shared_bounds[1]+delta)
     else:
-        bounds = (lower, upper)
+        bounds = shared_bounds
     fig, axes = plt.subplots(2, 1, figsize=(10, 6.6), gridspec_kw={'height_ratios': [1, 1.6]})
     fig.subplots_adjust(left=.08, right=.87, top=.82, bottom=.16, hspace=.58)
     color = plt.colormaps[cmap].copy(); color.set_bad('#e6e6e6')
@@ -82,16 +92,17 @@ def map_panel(data, record, fields, field, unit, cmap, out, origin):
                  xlim=limits, ylim=(0, 25), title=heading)
     color_axis = fig.add_axes([.9, .20, .018, .53])
     fig.colorbar(mesh, cax=color_axis).set_label(unit)
-    if lower == upper:
-        color_axis.set_yticks([lower])
+    if shared_bounds[0] == shared_bounds[1]:
+        color_axis.set_yticks([shared_bounds[0]])
     when = record['time_s']*1e6
     fig.suptitle(f'{unit} | instantaneous {when:g} microseconds\nPRELIMINARY STARTUP: no statistical or optical acceptance', fontsize=13)
     missing = int(np.ma.getmaskarray(values).sum())
-    fig.text(.08, .075, f"{values.shape[1]} × {values.shape[0]} requested points; {missing} missing points remain gray. No interpolation or reflection.", fontsize=9)
+    fig.text(.08, .075, f"{values.shape[1]} × {values.shape[0]} points; {missing} missing remain gray. Shared scale across times; no interpolation/reflection.", fontsize=9)
     note = 'LTE thermal population approximation only; no line-of-sight integration or radiative calibration.' if field.startswith('cOHstar') else 'Ground-state OH is not OH* emission. The plotted fields are instantaneous, not time means.'
     fig.text(.08, .035, note, fontsize=9)
     name = save(fig, out, f'map-{field}-{record["time_s"]:.9g}')
     return {'name': name, 'title': f'{unit} at {when:g} microseconds',
             'reference': 'singla2005-fig4cd-g2-ohstar' if field.startswith('cOHstar') else ('sharma2023-fig-9' if field == 'OH' else None),
             'meaning': note, 'time_s': record['time_s'], 'field': field, 'min': lower, 'max': upper,
+            'shared_color_limits': list(bounds),
             'sampled_points': int(finite.size), 'masked_points': missing}

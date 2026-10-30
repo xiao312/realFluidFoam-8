@@ -16,6 +16,15 @@ nav{display:flex;gap:18px;flex-wrap:wrap;margin:25px 0}@media(max-width:760px){.
 </style><main><p>M4 / M5 · RETAINED DEVELOPMENT EVIDENCE</p><h1>G2: the first reacting transient</h1>'''
     body += f'<p>{esc(summary["label"])}. Saved sample times: {esc(", ".join(f"{t*1e6:g} μs" for t in summary["times_s"]))}.</p>'
     body += '<div class="warning"><b>Preliminary startup diagnostic.</b> Paper curves are long-time statistics; these fields are instantaneous. No developed flame, LES, scientific acceptance or optical calibration is claimed. Missing statistics remain missing.</div>'
+    run = summary['run_identity']
+    job = str(run.get('jobId', 'not supplied'))
+    states = [row.split('|')[1] for row in run.get('scheduler', {}).get('accounting', {}).get('stdout', '').splitlines()
+              if row.startswith(job+'|') and len(row.split('|')) > 1]
+    completed = run.get('lastCompletedTime_s')
+    body += f'<p><b>Job {esc(job)}; terminal state: {esc(states[0] if states else "not supplied")}.</b>'
+    if completed is not None:
+        body += f' Last completed CFD step: {completed*1e6:.6g} μs. Only completed sampled outputs are shown.'
+    body += '</p>'
     body += f'<p>Our x = mesh x − {summary["x_origin_m"]:g} m. {esc(summary["origin_note"])}. The 10k co-planar wedge omits the upstream taper and chamber corners.</p>'
     body += '<nav>' + ''.join(f'<a href="#{p["name"]}">{esc(p["title"])}</a>' for p in panels) + '<a href="#references">References</a></nav>'
     for panel in panels:
