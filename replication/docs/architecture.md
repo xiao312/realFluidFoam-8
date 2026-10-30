@@ -431,7 +431,6 @@ Its opt-in cold initializer consumes the complete full-build product receipt,
 checks actual solver/probe dynamic bindings, and uses that probe to initialize
 time-zero Ha. The probe writes the matching thermoType marker consumed only by
 guarded cold solver cases. It does not submit jobs or grant physical approval.
-<<<<<<< HEAD
 # Caloric qualification
 
 `validation/fgm-of8/direct-verification/thermo-policy.mjs` owns explicit NASA
@@ -439,15 +438,6 @@ inversion-range declarations and per-species original/effective records.
 Source-stage preparation consumes that policy. The solver owns the opt-in
 executing-thermo closure audit; evaluators require its records and reject
 range-clamped false convergence. Neither module changes NASA coefficients.
-=======
-Opt-in parallel initialization uses the same full-runtime probe after fresh
-decomposition, verifies every rank's Ha/marker, and reconstructs Ha only at time
-zero. Its small pure-stream serial/parallel qualification reuses the probe case
-generator and the existing ASCII scalar reader; no CFD restart is supplied.
-The verification module's shared scheme dictionary supplies the actual
-reactingFoamSolveZ/Stokes/Fourier operator names to analytical and G2 case
-generators; G2 does not own divergent warm/cold discretization templates.
-
 `validation/realfluid-g2-thermo/diffusion-performance` prepares paired full-SRK
 property/inversion cases from the exact physical table. It depends on that
 module's runtime probe and `fgm-of8/direct-verification/physical-input.mjs`.
@@ -456,4 +446,3 @@ only after explicit FGM/Fourier/absolute-enthalpy checks; public Dimix reads fai
 while suppressed. The class layout and default full calculation remain intact.
 This module records numerical parity and timings, not scientific acceptance;
 subsequent identical fresh CFD comparisons qualify actual solver use.
->>>>>>> 81ce1a2 (perf(thermo): guard suppression of unused FGM diffusivity calculations)
