@@ -10,6 +10,7 @@ from common import failure, gas_and_streams, inputs, sha256, write_json
 
 def arguments(parser):
     parser.add_argument("--integration-config", type=Path, required=True)
+    parser.add_argument("--upstream-patch-receipt", type=Path)
 
 
 def main():
@@ -35,8 +36,8 @@ def main():
         from spitfire.sqa import gitinfo
         from transient_export import check_rate_interface, export_frames
         from transient_monitor import ClippingMonitor
-        if gitinfo.current_hexsha != settings["upstream_revision"]:
-            raise ValueError("Spitfire installed revision differs from pinned integration settings")
+        from spitfire_identity import runtime_identity
+        receipt["spitfire_runtime"] = runtime_identity(settings, args.upstream_patch_receipt)
         gas, streams = gas_and_streams(ct, args, config, receipt)
         mechanism = ChemicalMechanismSpec(cantera_solution=gas)
         fuel = mechanism.stream("TPX", (config["fuel"]["temperature_k"], config["pressure_pa"], config["fuel"]["mole_fractions"]))

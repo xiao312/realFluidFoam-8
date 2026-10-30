@@ -1,0 +1,16 @@
+{
+  "schema": "spitfire-unsteady/v1",
+  "upstream_revision": "735711dc4a426cc7504747d732f2e7fcc3db2c23",
+  "grid_points": 257,
+  "steady_control_chi_st_s_inverse": 1000.0,
+  "chi_st_s_inverse": 1000000.0,
+  "final_time_s": 0.001,
+  "first_step_s": 1E-10,
+  "max_step_s": 1E-05,
+  "temporal_tolerance": 1E-08,
+  "nonlinear_tolerance": 1E-10,
+  "max_steps": 20000,
+  "max_export_frames": 81,
+  "table_z_points": 201,
+  "table_eta_points": 41
+}

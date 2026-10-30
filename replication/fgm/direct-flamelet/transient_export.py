@@ -24,7 +24,8 @@ def check_rate_interface(gas, mechanism, streams, config):
             "max_peak_scaled_error": max(row["peak_scaled_rate_error"] for row in rows), "limit": 1e-8}
 
 
-def export_frames(ct, gas, mechanism, streams, config, settings, receipt, args, z, times, temperatures, fractions):
+def export_frames(ct, gas, mechanism, streams, config, settings, receipt, args, z, times, temperatures, fractions,
+                  snapshot_kind="transient_snapshot"):
     gas.TP = 298.15, 101325.0
     formation_enthalpies = gas.partial_molar_enthalpies / gas.molecular_weights
     progress_indices = [gas.species_index(name) for name in ("CO2", "CO")]
@@ -33,14 +34,21 @@ def export_frames(ct, gas, mechanism, streams, config, settings, receipt, args, 
     progress_st = np.array([np.interp(zst, z, row) for row in progress])
     targets = np.linspace(float(np.min(progress_st)), float(np.max(progress_st)), settings["max_export_frames"])
     selected = sorted({0, len(times) - 1, *[int(np.argmin(np.abs(progress_st - value))) for value in targets]})
+    if "selected_frame_indices" in settings:
+        selected = settings["selected_frame_indices"]
+        if sorted(set(selected)) != selected or not selected or selected[0] < 0 or selected[-1] >= len(times):
+            raise ValueError("Explicit frame indices must be sorted, unique and within the raw trajectory")
+    held_indices = set(settings["heldout_frame_indices"]) if "heldout_frame_indices" in settings else None
+    if held_indices is not None and not held_indices.issubset(selected):
+        raise ValueError("All explicit held-out frames must remain selected")
     metadata = phase_metadata(ct, gas, args.mechanism, args.mechanism_sha256, args.source_commit, args.environment_sha256)
     write_json(args.out / "phase-metadata.json", metadata)
     members, frame_metrics = [], []
     species_names = gas.species_names
     for index in selected:
-        destination = args.out / f"frame-{index:06d}"
+        destination = args.out / (f"frame-{index:06d}" if snapshot_kind == "transient_snapshot" else f"steady-profile-{index:06d}")
         destination.mkdir()
-        rows, energy_errors, element_errors, rate_errors = [], [], [], []
+        rows, energy_errors, element_errors, rate_errors, nonfinite_chemistry = [], [], [], [], []
         for j, mixture in enumerate(z):
             raw_y = fractions[index, j]
             gas.TPY = temperatures[index, j], config["pressure_pa"], raw_y
@@ -48,7 +56,12 @@ def export_frames(ct, gas, mechanism, streams, config, settings, receipt, args, 
             griffon_source = np.zeros(gas.n_species)
             # Upstream Cython parameter names are misleading; C++ and tests take T,rho.
             mechanism.griffon.production_rates(gas.T, gas.density, gas.Y, griffon_source)
-            rate_errors.append(float(np.max(np.abs(source - griffon_source) / (np.abs(source) + 1.0))))
+            if np.all(np.isfinite(source)) and np.all(np.isfinite(griffon_source)):
+                rate_errors.append(float(np.max(np.abs(source - griffon_source) / (np.abs(source) + 1.0))))
+            else:
+                nonfinite_chemistry.append({"Z": float(mixture), "T_K": float(gas.T),
+                    "cantera_nonfinite_species": [species_names[k] for k in np.flatnonzero(~np.isfinite(source))],
+                    "griffon_nonfinite_species": [species_names[k] for k in np.flatnonzero(~np.isfinite(griffon_source))]})
             bilger = gas.mixture_fraction(config["fuel"]["mole_fractions"], config["oxidizer"]["mole_fractions"], basis="mole", element="Bilger")
             mixed_h = mixture * streams["fuel"]["h"] + (1 - mixture) * streams["oxidizer"]["h"]
             energy_errors.append(float(gas.enthalpy_mass - mixed_h))
@@ -70,23 +83,31 @@ def export_frames(ct, gas, mechanism, streams, config, settings, receipt, args, 
                              "Qdot_formation_298K_W_m3", "Y_CO2_plus_CO", "omega_CO2_plus_CO_kg_m3_s"] +
                             ["Y_" + name for name in species_names] + ["omega_Y_" + name + "_kg_m3_s" for name in species_names])
             writer.writerows(rows)
-        metrics = {"physical_time_s": float(times[index]), "peak_temperature_k": float(np.max(temperatures[index])),
+        metrics = {"physical_time_s": float(times[index]) if snapshot_kind == "transient_snapshot" else None,
+                   "peak_temperature_k": float(np.max(temperatures[index])),
                    "C_at_stoichiometry": float(progress_st[index]),
                    "enthalpy_mixing_max_error_J_kg": max(abs(value) for value in energy_errors),
                    "element_mass_fraction_max_error": max(element_errors),
-                   "griffon_cantera_max_regularized_rate_error": max(rate_errors),
+                   "griffon_cantera_max_regularized_rate_error": max(rate_errors) if rate_errors else None,
+                   "nonfinite_chemistry_nodes": nonfinite_chemistry,
+                   "chemistry_csv_nonfinite_policy": "Retain NaN tokens in derived chemistry columns; finite T/Y remain exported; table qualification refused",
                    "rate_error_denominator": "abs(Cantera mass rate) + 1 kg/(m3 s), per species",
                    "species_sum_max_error": float(np.max(abs(fractions[index].sum(axis=1) - 1))),
                    "minimum_species_mass_fraction": float(np.min(fractions[index]))}
-        qualified = metrics["species_sum_max_error"] <= 1e-8 and metrics["minimum_species_mass_fraction"] >= -1e-8
+        qualified = (metrics["species_sum_max_error"] <= 1e-8 and metrics["minimum_species_mass_fraction"] >= -1e-8
+                     and not nonfinite_chemistry)
+        if snapshot_kind == "steady_flamelet":
+            qualified = qualified and receipt.get("steady_numerically_converged", False)
         write_json(destination / "diagnostics.json", metrics)
         snapshot = copy.deepcopy(receipt)
-        snapshot.update(status="transient_snapshot", physical_export_qualified=qualified,
-                        coordinate="mixture_fraction", physical_time_s=float(times[index]),
-                        initialization="fresh HP equilibrium at t=0; actual transient integration thereafter",
+        snapshot.update(status=snapshot_kind, physical_export_qualified=qualified,
+                        coordinate="mixture_fraction", physical_time_s=metrics["physical_time_s"],
+                        initialization="fresh HP equilibrium at t=0; actual transient integration thereafter" if snapshot_kind == "transient_snapshot" else "fresh equilibrium initial guess for a steady boundary-value solve; no evolved CFD state",
                         artifacts={name: sha256(destination / name) for name in ("profile.csv", "diagnostics.json")})
         write_json(destination / "receipt.json", snapshot)
         role = "held-out" if len(members) % 5 == 4 and index != len(times) - 1 else "training"
+        if held_indices is not None:
+            role = "held-out" if index in held_indices else "training"
         members.append({"id": destination.name, "directory": destination.name,
                         "receipt_sha256": sha256(destination / "receipt.json"), "role": role})
         frame_metrics.append(metrics)
@@ -97,6 +118,8 @@ def export_frames(ct, gas, mechanism, streams, config, settings, receipt, args, 
     return {"selected_frames": len(selected), "frame_metrics": frame_metrics,
             "maximum_element_error": max(row["element_mass_fraction_max_error"] for row in frame_metrics),
             "maximum_enthalpy_error_J_kg": max(row["enthalpy_mixing_max_error_J_kg"] for row in frame_metrics),
-            "maximum_kinetics_rate_error": max(row["griffon_cantera_max_regularized_rate_error"] for row in frame_metrics),
+            "maximum_kinetics_rate_error": max((row["griffon_cantera_max_regularized_rate_error"] for row in frame_metrics
+                                               if row["griffon_cantera_max_regularized_rate_error"] is not None), default=None),
+            "nonfinite_chemistry_nodes": sum(len(row["nonfinite_chemistry_nodes"]) for row in frame_metrics),
             "progress_st_start_end": [float(progress_st[0]), float(progress_st[-1])],
             "full_progress_coverage_qualified": False, "scientific_acceptance": False}

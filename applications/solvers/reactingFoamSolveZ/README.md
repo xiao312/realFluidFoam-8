@@ -29,6 +29,10 @@ records in the solver log and writes the actual `rho` and `he` fields. The
 before pressure correction or thermodynamic reconstruction. `energyState`
 reports actual discrete state integrals in joules and kilograms. Diagnostics
 retain additional matrices, so leave them disabled for routine production.
+The diagnostic matrices explicitly allocate zero off-diagonal storage where
+the operator is purely diagonal. OF8's residual API otherwise aborts on the
+standalone transient operator. This allocation happens after the equation solve
+and changes storage representation only, not the transported equation.
 
 Dependencies are the fork's combustion, thermophysical and transport libraries
 and OF8 finite-volume libraries. The module reads case files only; it does not
@@ -54,11 +58,29 @@ Absolute mode requires an explicit time-zero `Ha` field and its boundary
 conditions. It must use sensibleEnthalpy thermodynamics and Fourier or
 eddyDiffusivity transport; other diffusion closures are refused. Ha is the
 initial energy authority, so initial T is recomputed from Ha and the table's
-composition and initial mass flux is rebuilt. Fixed-temperature and fixed-Ha
+composition and initial mass flux is rebuilt. Inlet velocity conditions are
+reevaluated after the initialized density is set,
+so a mass-flow boundary does not retain an ideal-gas placeholder velocity after
+an EOS change. Fixed-temperature and fixed-Ha
 boundaries must represent the same inlet state. The first diagnostic uses
 constant transport, not a claim of matched preferential diffusion or real-fluid
 physics. Solver controls must include Ha. Sources in fvOptions must explicitly
 target Ha if needed.
+
+In absolute mode a fixedValue-class temperature patch must have a fixed-value
+Ha patch. After composition refresh and each pressure correction, the solver
+updates that Ha value to the executing thermo's patch Hs(p,T,Y) plus ideal
+formation enthalpy. This uses the current patch pressure and includes the EOS
+departure exactly once. It does not replace a temperature-gradient or insulated
+boundary with a fixed energy boundary. The same update occurs at initialization.
+Mixed/inletOutlet patches are left to their declared boundary conditions; they
+are not treated as fixed temperature merely because `fixesValue()` returns true.
+For real-fluid initialization, first use the runtime thermo probe to construct
+Ha from fresh prescribed p/T/Y; do not copy ideal-gas Ha into the new EOS case.
+Qualification requires a fixed-T pressure perturbation (Ha changes with PR/SRK
+departure) and a negative case with incompatible Ha boundary type, as well as
+the unchanged periodic heating/contact/conversion checks. These source changes
+do not retroactively qualify an earlier executable or result.
 
 This design follows the source-free absolute-enthalpy branch in
 [DeepFlame baseFGM at 7cb3294](https://github.com/deepmodeling/deepflame-dev/blob/7cb3294b275525cb8829ada3d3fbc067ab9323eb/src/dfCombustionModels/FGM/baseFGM/baseFGM.C)

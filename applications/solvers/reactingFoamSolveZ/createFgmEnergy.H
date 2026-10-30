@@ -29,9 +29,13 @@ if (absoluteEnthalpyFGM)
             mesh
         )
     );
+    updateFgmFixedTemperatureEnthalpy(thermo, composition, fgmAbsoluteEnthalpy());
     thermo.he() == fgmAbsoluteEnthalpy() - fgmChemicalEnthalpy(mesh, composition);
     thermo.correct();
     rho = thermo.rho();
+    // Density-dependent inlet velocity must use this initialized EOS state,
+    // not a placeholder velocity serialized by a different thermodynamic model.
+    U.correctBoundaryConditions();
     phi = fvc::flux(rho*U);
 }
 Info<< "FGM energy form: " << fgmEnergyForm

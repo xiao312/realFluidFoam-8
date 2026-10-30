@@ -1,4 +1,8 @@
 {
+    if (absoluteEnthalpyFGM)
+    {
+        updateFgmFixedTemperatureEnthalpy(thermo, composition, fgmAbsoluteEnthalpy());
+    }
     volScalarField& he = absoluteEnthalpyFGM ? fgmAbsoluteEnthalpy() : thermo.he();
 
     // Retain the assembled operators while diagnosing their budget. In
@@ -56,6 +60,15 @@
 
     if (writeEnergyBudget)
     {
+        // OF8 residual() reads off-diagonal storage even for a purely diagonal
+        // operator such as fvm::ddt. The non-const upper() accessor allocates
+        // explicit zeros if both triangles are absent, or copies the existing
+        // symmetric triangle. Do this only on the retained diagnostic matrices,
+        // after the real EEqn has been solved; no equation coefficient changes.
+        energyDdt.ref().upper();
+        energyConvection.ref().upper();
+        energyDiffusion.ref().upper();
+        physicalEquation().upper();
         // fvMatrix::residual is source - A*he, already cell integrated.
         // Negating a standalone operator residual gives its signed LHS watts.
         const tmp<scalarField> residual = physicalEquation().residual();

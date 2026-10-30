@@ -1,0 +1,11 @@
+{
+  "schema": "spitfire-steady-branch/v1",
+  "upstream_revision": "735711dc4a426cc7504747d732f2e7fcc3db2c23",
+  "grid_points": 129,
+  "chi_st_s_inverse": [1.0, 100.0, 10000.0, 100000.0, 300000.0, 600000.0],
+  "steady_tolerance": 1e-6,
+  "newton_iterations": 20,
+  "psitc_iterations": 100,
+  "fallback_time_steps": 500,
+  "per_case_wall_seconds": 180
+}

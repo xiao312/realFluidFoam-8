@@ -49,6 +49,7 @@ Description
 #include "localEulerDdtScheme.H"
 #include "fvcSmooth.H"
 #include "fgmChemicalEnthalpy.H"
+#include "fgmBoundaryEnthalpy.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -113,6 +114,10 @@ int main(int argc, char *argv[])
             while (pimple.correct())
             {
                 #include "pEqn.H"
+                if (absoluteEnthalpyFGM)
+                {
+                    updateFgmFixedTemperatureEnthalpy(thermo, composition, fgmAbsoluteEnthalpy());
+                }
             }
 
             if (pimple.turbCorr())

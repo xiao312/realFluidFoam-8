@@ -14,7 +14,7 @@ def load_member(member, manifest_dir, species):
     if sha256(receipt_path) != member["receipt_sha256"]:
         raise ValueError(f"{member['id']}: receipt hash mismatch")
     receipt = json.loads(receipt_path.read_text())
-    if receipt["status"] not in ("converged_flame", "transient_snapshot") or not receipt.get("physical_export_qualified"):
+    if receipt["status"] not in ("converged_flame", "transient_snapshot", "steady_flamelet") or not receipt.get("physical_export_qualified"):
         raise ValueError(f"{member['id']}: not a physically exported finite-rate flame")
     profile = directory / "profile.csv"
     if sha256(profile) != receipt["artifacts"]["profile.csv"]:
@@ -84,7 +84,7 @@ def lookup(model, z, progress):
     return (1 - weight) * left + weight * right
 
 
-def heldout_report(model, z, actual):
+def heldout_report(model, z, actual, global_physical_peaks=None):
     expected, predicted, rejected = [], [], []
     for mixture, row in zip(z, actual):
         try:
@@ -111,4 +111,9 @@ def heldout_report(model, z, actual):
             "rms_floor_relative_error": float(np.sqrt(np.mean(relative ** 2))),
             "resolved_points": int(np.sum(resolved)),
             "sign_disagreements_above_floor": int(np.sum(resolved & (predicted[:, k] * expected[:, k] < 0)))}
+        if global_physical_peaks is not None:
+            peak = float(global_physical_peaks[k])
+            report["fields"][name].update(global_physical_peak=peak,
+                max_global_peak_relative_error=float(np.max(abs(difference)) / peak) if peak > 0 else None,
+                rms_global_peak_relative_error=float(np.sqrt(np.mean(difference ** 2)) / peak) if peak > 0 else None)
     return report

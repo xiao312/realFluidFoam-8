@@ -13,10 +13,12 @@ not import their historical result directories or commit ancestry.
 
 | Snapshot | Included paths |
 | --- | --- |
-| `282aa996a78939cbdaf591520231fb2c0476567d` | `src/combustionModels`, `applications/solvers/reactingFoamSolveZ`, `replication/validation/fgm-of8/direct-verification`, `replication/validation/fgm-of8/fixtures` |
-| `f3f47bd78ea7374f68849f8f97e48039e6d4142f` | `replication/fgm/direct-flamelet` |
+| `282aa996a78939cbdaf591520231fb2c0476567d` | `src/combustionModels`, `replication/validation/fgm-of8/fixtures` |
+| `f0d0e9bb9e34d26d3f2bc03432cae6d887fee25a` | `applications/solvers/reactingFoamSolveZ`, `replication/validation/fgm-of8/direct-verification`, `replication/validation/mascotte-g2/direct-fgm`, `replication/validation/realfluid-g2-thermo/probe` |
+| `1ad921ccfae6daf7ba89c666cdbd4f389cbc9529` | `replication/fgm/direct-flamelet` |
 | `325253221281dabbf4b48612adfdb65880d020d0` | `replication/validation/muller-figure2`, `replication/validation/mascotte-figures` |
 | `a5fb250` | `replication/validation/realfluid-g2-thermo` |
+| `a662f66727fa95e95c9115d92a8c6057d74ec2e1` | `replication/validation/flamelet-review` |
 
 The historical [v1 interface contract](../../docs/fgm-of8-interface-contract.md)
 also comes from `5af5cb9`, with a dated scope amendment identifying the current
@@ -78,3 +80,25 @@ closed-state diagnostic. Its actual solver build and finite-volume results
 remain separate execution receipts. The real-fluid dictionary exporter retains
 identified NASA coefficients and author critical parameters; its optional
 temperature-bound extensions explicitly record extrapolation.
+
+The subsequent solver revision fixes a diagnostic-only diagonal-matrix residual
+crash, refreshes fixed-temperature enthalpy boundaries using current pressure and
+composition, and corrects inlet velocity after initial density evaluation. These
+are exercised by the fresh finite-volume and conditional G2 batch; committing
+them does not establish that the batch passed.
+
+The first actual Spitfire transient completed but exposed a large enthalpy
+mixing error and a multivalued progress mapping. The new source preserves its
+energy/progress audits, an exact upstream interior-node indexing patch, and
+independent 129/257-point reruns. The patch changes eight energy chi accesses;
+it does not change kinetics. Separate cold-rate probes investigate nonfinite
+Griffon rates without silently replacing them. Tiny table species roundoff is
+projected under an explicit bounded policy, preserving raw progress and
+reporting elemental changes; raw physical profiles remain untouched.
+
+The mesh-qualified warm G2 case is an ideal-gas, laminar, axisymmetric startup
+diagnostic on the retained 200622-cell wedge. It is not the paper's cold-inlet,
+three-dimensional turbulent flame or a converged mean. Its batch first checks
+energy, scalar transport, physical-table coupling and MPI consistency. The local
+review module aligns retained trajectories with original Sharma figure crops
+and documents operating-condition differences without claiming acceptance.

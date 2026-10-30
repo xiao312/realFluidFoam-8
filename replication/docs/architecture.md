@@ -345,3 +345,19 @@ parameters. It prepares inputs for the full SRK/PR library stack and records
 optional NASA extrapolation bounds. It neither executes CFD nor qualifies
 the resulting real-fluid properties. The full-fork G2 case is its dependent;
 stock-OF8 combustion-only diagnostics cannot qualify this interface.
+
+`validation/mascotte-g2/direct-fgm` consumes the registered binary wedge mesh,
+the physical v2 table and phase metadata to generate new zero-time fields. Its
+batch wrapper depends on the direct finite-volume checks and a qualified OF8
+environment; it records MPI consistency before a bounded warm G2 diagnostic.
+It neither owns scheduler admission nor qualifies cold real-fluid physics.
+`validation/realfluid-g2-thermo/probe` consumes the exporter dictionaries and
+the full fork libraries, separating thermophysical evaluation from CFD.
+
+`validation/flamelet-review` consumes hashed physical trajectories, held-out
+table diagnostics and explicitly calibrated original paper crops. It produces
+local HTML and figures, preserving failed diagnostics and condition differences.
+It has no runtime chemistry, scheduler or scientific approval dependency.
+The flamelet module's optional upstream patch is independently identified by
+original/patched source hashes; its energy and progress audits do not modify
+the physical data they inspect.

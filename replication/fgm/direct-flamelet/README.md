@@ -150,3 +150,104 @@ MPa library is a G2 interface diagnostic, not a reproduction of Sharma. Sharma's
 normalized CO2+CO progress differs from the local table eta. A full paper comparison
 also needs intermediate-progress coverage, the mechanism and boundary conditions,
 and the relevant presumed-PDF/enthalpy treatment.
+
+## Cold steady branch
+
+`steady_branch.py` runs the discrete scalar dissipations in
+`cold-branch-settings.json`, using `cold.json` for the Müller pressure and inlet
+temperatures. Each solve starts from a fresh equilibrium initial guess and runs in
+its own subprocess with a declared wall-time bound. A difficult near-extinction
+case cannot prevent the remaining independent cases. The initial state, raw final
+state, available failure state, partial upstream integration exception data, and
+individual logs are retained. A timeout is separately recorded in the parent
+summary; an interrupted child receipt is not relabeled successful.
+
+```sh
+python steady_branch.py --config cold.json --branch-config cold-branch-settings.json --plan
+# Add the normal pinned mechanism/source/environment/new-output arguments to run.
+```
+
+The upstream returned state is checked with its actual RHS, scaling temperature
+by 1000 K and mass fractions by one. Both scaled and dimensional residuals are
+recorded. A finite but unconverged profile can be retained for diagnosis but is
+ineligible for the physical table. Each exported steady profile has no physical
+time coordinate; numerical steady-solver steps are not an unsteady history. An
+extinguished converged state is recorded as extinguished, not discarded.
+The cold Griffon constant-Cp extension and Cantera polynomial diagnostic properties
+remain distinct and visible. These initial 129-point profiles require refinement
+or additional branch points where measured discrepancies justify them.
+
+## Discrete energy-index correction
+
+`audit_energy.py` reconstructs the discrete enthalpy balance from a hashed retained
+trajectory. It does not solve a new flame. In upstream revision 735711dc, diffusion
+uses the full-grid scalar dissipation at interior node i+1, but the extra energy
+terms use node i. `spitfire_patch.py` provides a read-only plan and an explicit
+apply operation for exactly eight RHS/reference/Jacobian occurrences. It verifies
+the upstream Git revision and complete original file hash before writing, and
+emits a source-change receipt. Rebuilding the extension remains a scheduled job.
+This correction does not make the upstream approximate Jacobian exact.
+
+```sh
+python spitfire_patch.py --checkout /path/new-upstream-copy --plan
+python spitfire_patch.py --checkout /path/new-upstream-copy --apply --receipt /path/new-patch.json
+python unsteady.py --config warm-300.json --integration-config unsteady-settings-257.json --plan
+```
+
+Patched drivers require `--upstream-patch-receipt FILE`. Runtime receipts record
+that receipt and the actual loaded extension hash, independently of the unchanged
+upstream base commit. Unmodified and corrected trajectories remain separate.
+The 129/257 comparison starts independently from fresh HP equilibrium at time zero
+with otherwise unchanged physical and temporal settings. Chemistry interface checks
+remain active. Reduced energy drift requires the physical reruns; source inspection
+or retained-state reconstruction alone does not establish corrected convergence.
+
+## Table derivation checks
+
+The original physical fields remain immutable. Table export permits only explicitly
+reported negative roundoff up to 2e-10 in non-progress species. It clips those tails
+and restores unit mass using the largest non-progress species at each node. It
+refuses negative CO/CO2, material negatives, or a total correction above 2e-9.
+`composition-projection.json` records every changed node, elemental mole-balance
+change, mass/progress changes, and input/output composition hashes. Sources and
+temperature are not adjusted or recalculated to hide the change. This narrow export
+operation does not establish physical accuracy or change the raw trajectory.
+Cold-profile export retains finite temperatures/compositions even if the extrapolated
+chemistry evaluator returns nonfinite rates. It lists affected nodes and species,
+writes explicit NaN tokens only in those derived CSV fields, and refuses table
+qualification. It does not replace nonfinite rates with zero or relax steady residuals.
+
+`table_sensitivity.py` derives new table grids from the same manifest and fixed
+whole-frame holdouts. It writes new manifests and receipts, never overwrites the
+original. Held-out errors include global physical-peak normalization as well as
+the existing near-zero floor. Increasing lookup-grid density cannot repair missing
+physical states or a multi-valued progress coordinate.
+
+```sh
+python table_sensitivity.py --manifest RUN/family-manifest.json --metadata RUN/phase-metadata.json --source-commit COMMIT --plan
+# Add --out NEW_DIRECTORY instead of --plan to derive the four explicit grids.
+```
+
+`audit_progress.py --run RUN --out NEW_JSON` measures Cmax relative to the fresh
+HP-equilibrium C and repeated-C states on different temporal branches. It retains
+folds instead of confusing local eta with Sharma equation 22. It reports actual
+trajectory hashes and linear crossing estimates; no reaction sources are invented.
+`reexport_trajectory.py --run RUN --mechanism FILE --source-commit COMMIT
+--environment-sha256 SHA --out NEW_DIRECTORY` exports every actual accepted frame
+and preserves the original whole-frame holdouts. Exact duplicate profiles are
+retained on disk but excluded from table training, including copies of a held-out
+profile. Use its `--plan` before writing. Apply table sensitivity to the derived
+family to distinguish sparse temporal sampling from lookup-grid density. These
+tools require NumPy; full state re-export also requires the qualified Cantera and
+Spitfire runtime for actual chemistry evaluation.
+
+`cold_rate_probe.py` is a bounded allocated evaluator probe at 85/100/150/300 K,
+5.61 MPa, with pure oxygen and an oxygen mixture containing 1e-8 mole fraction
+methane. It records the actual patched-runtime identity, all nonfinite outputs,
+and reaction 229 arithmetic. A reaction-229-only evaluator isolates that exact
+source path; it is not an alternate production mechanism. The command normally
+returns success after preserving measurements, including observed failures;
+`--require-finite` additionally returns exit 5 for nonfinite Griffon values.
+No chemistry source changes are applied. Run its `--plan` first, then use
+`--mechanism FILE --mechanism-sha256 SHA --source-commit COMMIT
+--upstream-patch-receipt PATCH --out NEW_JSON` in an allocation.

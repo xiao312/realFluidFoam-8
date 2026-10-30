@@ -7,6 +7,7 @@ from pathlib import Path
 import numpy as np
 from common import sha256, write_json
 from table_io import heldout_report, interpolate_profile, load_member
+from table_projection import project
 
 
 def build(members, z_axis, eta_axis):
@@ -110,8 +111,10 @@ def main():
     if args.out is None or args.out.exists():
         parser.error("--out must be a new directory")
     model = build(training, np.linspace(0, 1, z_count), np.linspace(0, 1, eta_count))
-    reports = {item["id"]: heldout_report(model, item["z"], item["values"]) for item in members if item["role"] == "held-out"}
-    spatial = {item["id"]: heldout_report(model, item["spatial_holdout_z"], item["spatial_holdout_values"]) for item in training}
+    projection = project(model, metadata)
+    peaks = np.max(np.array([np.max(abs(item["values"]), axis=0) for item in members]), axis=0)
+    reports = {item["id"]: heldout_report(model, item["z"], item["values"], peaks) for item in members if item["role"] == "held-out"}
+    spatial = {item["id"]: heldout_report(model, item["spatial_holdout_z"], item["spatial_holdout_values"], peaks) for item in training}
     source_hashes = {item["id"]: item["profile_sha256"] for item in training}
     combined = hashlib.sha256(json.dumps(source_hashes, sort_keys=True).encode()).hexdigest()
     coverage = {"Z": model["z"].tolist(), "C_min": model["c_min"].tolist(), "C_max": model["c_max"].tolist(),
@@ -123,16 +126,20 @@ def main():
                 "OF8_admissibility": "C++ strict default has no endpoint tolerance and only exactly zero span is degenerate; diagnostic clamp is separate",
                 "progress": "transport raw Y_CO2+Y_CO; eta is only a local lookup coordinate, not Sharma normalized progress"}
     args.out.mkdir(parents=True)
+    write_json(args.out / "composition-projection.json", projection)
     write_of8(args.out / "physical.tbl", model, species, args.source_commit, combined)
     write_json(args.out / "coverage.json", coverage)
-    write_json(args.out / "heldout.json", {"whole_profile": reports, "within_profile_every_fifth": spatial, "scientific_acceptance": False})
+    write_json(args.out / "heldout.json", {"whole_profile": reports, "within_profile_every_fifth": spatial,
+        "global_physical_peaks": dict(zip(model["columns"], map(float, peaks))),
+        "global_peak_scope": "all actual profile nodes in this fixed training and held-out family; no interpolated peak",
+        "scientific_acceptance": False})
     write_json(args.out / "table.json", {key: value.tolist() if isinstance(value, np.ndarray) else value for key, value in model.items()})
     write_json(args.out / "receipt.json", {"schema": "physical-family-table/v1", "status": "table_built_not_accepted", **plan,
         "source_commit": args.source_commit, "manifest_sha256": sha256(args.manifest), "metadata_sha256": sha256(args.metadata),
         "training_profiles": source_hashes, "combined_training_hash": combined,
         "heldout_profiles": {item["id"]: item["profile_sha256"] for item in members if item["role"] == "held-out"},
         "case": first["case"], "mechanism_sha256": first["mechanism_sha256"], "scientific_acceptance": False,
-        "artifacts": {name: sha256(args.out / name) for name in ("physical.tbl", "coverage.json", "heldout.json", "table.json")}})
+        "artifacts": {name: sha256(args.out / name) for name in ("physical.tbl", "coverage.json", "heldout.json", "table.json", "composition-projection.json")}})
     print(json.dumps({"status": "table_built_not_accepted", **plan}))
     return 0
 

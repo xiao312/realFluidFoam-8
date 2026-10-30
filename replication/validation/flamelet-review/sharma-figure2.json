@@ -1,0 +1,25 @@
+{
+  "schema": "paper-color-calibration/v1",
+  "paper": "Sharma et al., arXiv:2311.15034v1, Figure 2",
+  "url": "https://arxiv.org/abs/2311.15034",
+  "pdf_sha256": "65ae91e8734d8006f4274c70f548f969ab18ca698d8aad8d3b3384882356349c",
+  "caption": "FIG.2. (a) Temperature (K), (b) CO2 Mass fraction variation with progress variable (c)",
+  "paper_conditions": "60 bar; Kong et al. mechanism; paper normalized progress c; mixture fraction f",
+  "paper_progress_formula": "Equation 22, PDF page 39: c=(Y_CO2+Y_CO)/(Y_CO2+Y_CO)_eq at local mixture fraction",
+  "legend_exclusion": {"x_below": 335, "y_below": 165},
+  "curves": [
+    {"z": 0.1, "name": "light_blue", "rgb": [0, 128, 255], "plot_color": "#007dcc"},
+    {"z": 0.2, "name": "dark_blue", "rgb": [64, 32, 255], "plot_color": "#483dcc"},
+    {"z": 0.4, "name": "red", "rgb": [229, 0, 0], "plot_color": "#c9342a"},
+    {"z": 0.6, "name": "pink", "rgb": [255, 64, 153], "plot_color": "#ca3c88"}
+  ],
+  "color_distance_max": 90,
+  "hue_tolerance_degrees": 14,
+  "minimum_component_pixels": 8,
+  "maximum_column_span_pixels": 12,
+  "saturation_min": 0.45,
+  "panels": [
+    {"id": "temperature", "filename": "sharma-fig2a.png", "width": 532, "height": 471, "plot": [88, 12, 524, 413], "x_range": [0, 1], "y_range": [0, 4000], "ylabel": "Temperature (K)"},
+    {"id": "co2", "filename": "sharma-fig2b.png", "width": 515, "height": 471, "plot": [76, 12, 508, 412], "x_range": [0, 1], "y_range": [-0.05, 0.35], "ylabel": "CO2 mass fraction"}
+  ]
+}
