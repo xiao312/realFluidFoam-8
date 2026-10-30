@@ -25,6 +25,7 @@ License
 
 //#include "specie.H"
 #include "rfSpecie.H"
+#include "error.H"
 #include "thermodynamicConstants.H"
 
 // * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
@@ -246,6 +247,18 @@ inline Foam::scalar Foam::chungTakaTransport<Thermo>::kappa
      const scalar T
  ) const
  {
+         if
+         (
+             Tcmd_.size() != Xmd_.size() || Pcmd_.size() != Xmd_.size()
+          || Mmd_.size() != Xmd_.size() || sigmd_.size() != Xmd_.size()
+          || Xmd_.empty()
+         )
+         {
+             FatalErrorInFunction
+                 << "Raw Dimix requested without prepared mass-diffusion data; "
+                 << "the selected SRK/Fourier optimization forbids this access."
+                 << exit(FatalError);
+         }
          scalar sum = 0.0; 
          scalar Dimix = 0.0; 
          forAll(Xmd_, j) 
@@ -453,6 +466,38 @@ inline void Foam::chungTakaTransport<Thermo>::updateTRANS
     Pcmd_      = Pcmd;
     Mmd_       = Mmd;
     sigmd_     = sigmd;
+}
+
+template<class Thermo>
+inline void Foam::chungTakaTransport<Thermo>::updateTRANSWithoutDiffusion
+(
+    const scalar& sigmaM,
+    const scalar& epsilonkM,
+    const scalar& MM,
+    const scalar& VcM,
+    const scalar& TcM,
+    const scalar& omegaM,
+    const scalar& miuiM,
+    const scalar& kappaiM,
+    const List<scalar>& Ymd,
+    const List<scalar>& Xmd
+)
+{
+    // Preserve Chung scalars and corrected fractions exactly. mu/kappa use Xmd.
+    sigmaM_    = sigmaM;
+    epsilonkM_ = epsilonkM;
+    MM_        = MM;
+    VcM_       = VcM;
+    TcM_       = TcM;
+    omegaM_    = omegaM;
+    miuiM_     = miuiM;
+    kappaiM_   = kappaiM;
+    Ymd_       = Ymd;
+    Xmd_       = Xmd;
+    Tcmd_.clear();
+    Pcmd_.clear();
+    Mmd_.clear();
+    sigmd_.clear();
 }
 
 

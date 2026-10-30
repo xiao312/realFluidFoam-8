@@ -4,6 +4,7 @@
 #include "IOdictionary.H"
 #include "cyclicFvPatchFields.H"
 #include "Switch.H"
+#include "fgmDimixPolicy.H"
 #include <cmath>
 #include <exception>
 
@@ -41,9 +42,10 @@ steadyFlamelet<ReactionThermo>::steadyFlamelet
     if (control.lookupOrDefault<word>("fgmEnergyForm", "") != "absoluteEnthalpy"
      || control.lookupOrDefault<word>("fgmSourceIntegration", "explicit") != "explicit"
      || control.lookupOrDefault<Switch>("fgmProgressSourceEnabled", true)
-     || control.lookupOrDefault<Switch>("fgmSkipUnusedDimix", false)
      || control.lookupOrDefault<Switch>("runTimeModifiable", true))
-        refuse("requires absolute Ha, no progress source/split, full diffusivity calculation and immutable controls");
+        refuse("requires absolute Ha, no progress source/split and immutable controls");
+    // Use the same explicit policy as the thermo constructor; no model bypass.
+    validateFgmDimixSuppression(this->mesh());
     const IOdictionary momentum(IOobject("momentumTransport", this->mesh().time().constant(),
         this->mesh(), IOobject::MUST_READ, IOobject::NO_WRITE, false));
     const IOdictionary transport(IOobject("thermophysicalTransport", this->mesh().time().constant(),

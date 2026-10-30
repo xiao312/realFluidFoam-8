@@ -51,17 +51,26 @@ inline bool validateFgmDimixSuppression(const fvMesh& mesh)
         IOobject("combustionProperties", mesh.time().constant(), mesh,
             IOobject::MUST_READ, IOobject::NO_WRITE, false)
     );
+    const IOdictionary thermodynamics
+    (
+        IOobject("thermophysicalProperties", mesh.time().constant(), mesh,
+            IOobject::MUST_READ, IOobject::NO_WRITE, false)
+    );
+    const word combustionType = combustion.lookupOrDefault<word>("combustionModel", "");
     if
     (
         momentum.lookupOrDefault<word>("simulationType", "") != "laminar"
      || !transport.found("laminar")
      || transport.subDict("laminar").lookupOrDefault<word>("model", "") != "Fourier"
-     || combustion.lookupOrDefault<word>("combustionModel", "") != "fgmTable"
+     || (combustionType != "fgmTable" && combustionType != "steadyFlamelet")
+     || !thermodynamics.found("thermoType")
+     || thermodynamics.subDict("thermoType").lookupOrDefault<word>("type", "") != "hePsiThermo"
     )
     {
         FatalErrorInFunction
             << "fgmSkipUnusedDimix requires explicit laminar momentum, "
-            << "Fourier transport and fgmTable combustion" << exit(FatalError);
+            << "Fourier transport, hePsiThermo and fgmTable or steadyFlamelet combustion"
+            << exit(FatalError);
     }
     return true;
 }

@@ -1,5 +1,14 @@
 # Replication boundaries
 
+The optional SRK unused-diffusion setup path depends on the shared basic-thermo
+policy and Chung transport's explicitly diffusion-free update. It preserves
+EOS/Chung calculations and corrected X/Y, and adds no cache or object layout.
+Only immutable hePsiThermo, absolute-Ha, laminar/Fourier fgmTable or
+steadyFlamelet cases may select it. Both thermophysical registration libraries
+and the diagnostic probe must be rebuilt; source-only or solver-only replacement
+does not qualify this template change. Physical property and fresh CFD parity
+remain required before adopting the candidate.
+
 `combustionModels/steadyFlamelet` is a separate fixed-dissipation, delta-PDF
 composition closure for a retained physical burning flamelet. It consumes a
 strict one-dimensional Z table and the full thermo species set; it does not

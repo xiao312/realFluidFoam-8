@@ -17,8 +17,10 @@ Inputs: a strict v1 text table, `steadyFlameletCoeffs` with an absolute table
 path, declared `fixedChi` and `chiDefinition`, Z, and a complete matching thermo
 species set. Controls require absoluteEnthalpy, explicit source mode, disabled
 progress source and immutable case dictionaries. Use laminar momentum and
-Fourier/unity-Lewis transport; the existing unused-Dimix optimization remains
-disabled until this named model receives separate runtime qualification.
+Fourier/unity-Lewis transport. An explicit unused-Dimix switch uses the same
+constructor-validated hePsi/absolute-Ha/laminar/Fourier policy as fgmTable; the
+steady model has no bypass. This named-model extension requires its own actual
+property and fresh CFD parity receipts before adoption. The default remains off.
 
 Outputs: mapped Y, c, steadyTdiag, steadyQdot and lookup diagnostics. Source and
 Q values are not used in transport equations. Z outside [0,1], nonfinite data,

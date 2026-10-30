@@ -25,6 +25,7 @@ License
 
 #include "SRKchungTakaMixture.H"
 #include "thermodynamicConstants.H"
+#include "fgmDimixPolicy.H"
 
 using namespace Foam::constant::thermodynamic;
 
@@ -242,6 +243,9 @@ Foam::SRKchungTakaMixture<ThermoType>::SRKchungTakaMixture
     SIGMD_(species_.size())
     //- end
 {
+    // heThermo queries this mixture in its initializer, before hePsiThermo.
+    // Validate the explicit immutable policy before that first property query.
+    validateFgmDimixSuppression(mesh);
     correctMassFractions();
 
 
@@ -427,6 +431,17 @@ const ThermoType& Foam::SRKchungTakaMixture<ThermoType>::cellMixture
         Y[i] = X[i]*ListW_[i]/WmixCorrect;
     }
 
+    if (fgmDimixSuppressed(Y_[0].mesh()))
+    {
+        // All EOS/Chung reductions and corrected X/Y above retain their order.
+        // Only unused mass-diffusion matrix preparation is omitted.
+        mixture_.updateTRANSWithoutDiffusion
+        (
+            sigmaM, epsilonkM, MM, VcM, TcM, omegaM, miuiM, kappaiM, Y, X
+        );
+        return mixture_;
+    }
+
     List<List<scalar>> TCMD(Y_.size());
     List<List<scalar>> PCMD(Y_.size());
     List<scalar> nTCMD(Y_.size());
@@ -523,6 +538,17 @@ const ThermoType& Foam::SRKchungTakaMixture<ThermoType>::patchFaceMixture
         Y[i] = X[i]*ListW_[i]/WmixCorrect;
     }
 
+    if (fgmDimixSuppressed(Y_[0].mesh()))
+    {
+        // All EOS/Chung reductions and corrected X/Y above retain their order.
+        // Only unused mass-diffusion matrix preparation is omitted.
+        mixture_.updateTRANSWithoutDiffusion
+        (
+            sigmaM, epsilonkM, MM, VcM, TcM, omegaM, miuiM, kappaiM, Y, X
+        );
+        return mixture_;
+    }
+
     List<List<scalar>> TCMD(Y_.size());
     List<List<scalar>> PCMD(Y_.size());
     List<scalar> nTCMD(Y_.size());
@@ -617,6 +643,12 @@ void Foam::SRKchungTakaMixture<ThermoType>::read
     const dictionary& thermoDict
 )
 {
+    if (validateFgmDimixSuppression(Y_[0].mesh()))
+    {
+        FatalErrorInFunction
+            << "SRK mixture reread is unsupported with fgmSkipUnusedDimix; "
+            << "freeze new inputs and restart at time zero." << exit(FatalError);
+    }
     forAll(species_, i)
     {
         specieThermos_[i] = ThermoType(thermoDict.subDict(species_[i]));
