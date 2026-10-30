@@ -41,6 +41,7 @@ if (!Number.isFinite(maxCo) || !(maxCo > 0 && maxCo <= 1) || !Number.isInteger(o
 }
 if (![initialDt,maxDt].every(Number.isFinite) || !(initialDt>0 && initialDt<=maxDt && maxDt<=endTime)) throw new Error('Require positive initial-dt <= max-dt <= end-time');
 const controls = await loadRunControls(options.observations, options.decomposition, endTime, ranks);
+if (steady) controls.observations.instantaneousFields = controls.observations.instantaneousFields.map(name => name === 'fgmTdiag' ? 'steadyTdiag' : name);
 const input = await (steady ? loadSteadyTable : loadPhysicalTable)(resolve(options['table-dir']), resolve(options.metadata));
 const thermoMode = options['thermo-mode'] ?? 'warm-ideal';
 const chemistry = options.chemistry ?? 'table';
