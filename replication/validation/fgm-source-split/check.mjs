@@ -20,6 +20,9 @@ const bounds = rows('fgmBounds'), audit = rows('energyResidualAudit');
 const closure = rows('thermoClosure');
 const profiles = [], times = (await readdir(root)).filter(name => Number.isFinite(Number(name)) && Number(name) > 0)
   .sort((a, b) => Number(a) - Number(b));
+let progressRepresentationError = 0;
+if (input.progressSpecies && (!Array.isArray(input.progressSpecies) || !input.progressSpecies.length ||
+    new Set(input.progressSpecies).size !== input.progressSpecies.length)) throw Error('Invalid declared progress species');
 async function field(time, name) {
   const text = (await readFile(`${root}/${time}/${name}`, 'utf8'))
     .replace(/\/\*[\s\S]*?\*\//g, '').replace(/\/\/[^\n]*/g, '');
@@ -34,6 +37,12 @@ try {
   for (const time of times) {
     const values = {};
     for (const name of ['c', 'Z', 'T', 'p', 'Ha', 'rho']) values[name] = await field(time, name);
+    if (input.progressSpecies) {
+      const species = await Promise.all(input.progressSpecies.map(name => field(time, name)));
+      values.progressFromSpecies = values.c.map((c, i) => species.reduce((sum, y) => sum+y[i], 0));
+      progressRepresentationError = Math.max(progressRepresentationError,
+        ...values.c.map((c, i) => Math.abs(c-values.progressFromSpecies[i])));
+    }
     for (let cell = 0; cell < input.cells; cell++) profiles.push({ t: Number(time), cell,
       x: input.length*(cell+.5)/input.cells, ...Object.fromEntries(Object.entries(values).map(([k, v]) => [k, v[cell]])) });
   }
@@ -42,6 +51,7 @@ const steps = Math.round(input.endTime/input.dt), first = energy[0], last = ener
 add('missing_energy_records', Math.abs(energy.length-(steps+1)), 0);
 add('complete_written_steps', Math.abs(times.length-steps), 0);
 add('field_read_failures', failures.length, 0);
+if (input.progressSpecies) add('declared_progress_species_sum', progressRepresentationError, input.thresholds.progressRepresentationAbsolute);
 add('finite_energy_records', energy.some(r => Object.values(r).some(v => typeof v !== 'number')) ? 1 : 0, 0);
 add('solver_completed', /\nEnd\s*\n/.test(log) ? 0 : 1, 0);
 add('janaf_range_warnings', (log.match(/out of temperature range/g) ?? []).length, 0);
@@ -85,7 +95,9 @@ const result = { schema: 'fgm-source-split-result-v1', input, status: checks.eve
   checks, failures, initial: first ?? null, final: last ?? null, energy, caloricClosure: closure,
   runtime: execution ? { cpuSeconds: Number(execution[1]), wallSeconds: Number(execution[2]) } : null,
   finalProfile: profiles.filter(p => Math.abs(p.t-input.endTime) <= input.dt*1e-5),
-  qualification: 'bounded ideal-thermo CFD using cold-inlet physical table; not SRK/PR or paper agreement',
+  qualification: input.thermodynamics?.mode === 'cold-real-fluid'
+    ? 'Bounded full-SRK CFD using an ideal-gas-derived physical table; no manifold fidelity, rich-bound or paper acceptance'
+    : 'bounded ideal-thermo CFD using cold-inlet physical table; not SRK/PR or paper agreement',
   scientificAcceptance: false };
 await writeFile(`${root}/source-split-result.json`, JSON.stringify(result, null, 2)+'\n');
 const columns = ['t', 'cell', 'x', 'c', 'Z', 'T', 'p', 'Ha', 'rho'];

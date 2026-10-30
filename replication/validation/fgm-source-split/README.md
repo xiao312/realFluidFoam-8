@@ -7,8 +7,29 @@ metadata, the new combustion library/solver, and clean time-zero cases.
 Outputs are source-stage events, field histories and comparison receipts outside
 Git. No secrets or external services enter the scientific code.
 
+The optional `--initial-z Z` and5/10ns timestep choices support a bounded interior
+water-progress diagnostic without changing the original25/50ns controls.
+`--thermo-dir EXPORT` selects a hash-bound full-SRK dictionary through the existing
+G2 real-fluid input validator; it requires exact table phase/NASA identity and
+runtime time-zero Ha initialization. It cannot be combined with ideal-gas NASA
+range options. The retained solver/probe and all15 full libraries must be bound
+by the execution packet; preparation alone does not qualify that runtime.
+`--skip-unused-diffusion yes|no` defaults no and can be enabled only for this
+full-SRK FGM path. The source table's declared progress species are recorded and
+the checker verifies their sum against transported raw c at every written state.
+CO2+CO+H2O is supported as a distinct coordinate; CO2+CO is not assumed.
+Table source units remain kg/m3/s. Q is diagnostic only under full Ha.
+
+For the current water table, use only the separately declared two interior Z
+states at eta=.6,1us duration and5/10ns. The four cases are not the older twelve-case
+outer-count campaign. Failed rich-end source bounds and manifold fidelity remain
+separate. Fixed-density DOP853 comparison uses actual initial mass/volume and
+reports any density/nonuniformity violations rather than assuming them away.
+
 Dependencies are OF8, the fork's FGM reader and the source kernel copied from
 direct-flamelet commit `c67dfe2910dc2275270d3dccc2a5f3fedb75862a`.
+Full-SRK preparation additionally consumes `mascotte-g2/direct-fgm/cold-input.mjs`
+and the exact export from `realfluid-g2-thermo`; neither performs a simulation.
 Consumers are the 0D/1D source/energy checks and later bounded G2 diagnostics.
 Use the existing direct-verification case generator and actual table inputs.
 

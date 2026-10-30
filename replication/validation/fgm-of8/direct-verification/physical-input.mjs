@@ -27,6 +27,9 @@ export async function loadPhysicalTable(directory, metadataPath) {
       headers['progress-coordinate']?.[0] !== 'mass-fraction-mapped') throw new Error('A physical v2 table is required');
   const names = metadata.species.map(s => s.name);
   if (JSON.stringify(headers.species) !== JSON.stringify(names)) throw new Error('Table and thermo species order differ');
+  const progressSpecies = headers['progress-species'];
+  if (!progressSpecies?.length || new Set(progressSpecies).size !== progressSpecies.length ||
+      progressSpecies.some(name => !names.includes(name))) throw new Error('Invalid declared progress species');
   const z = headers.z.map(Number), eta = headers.c.map(Number);
   const cMin = headers['c-min'].map(Number), cMax = headers['c-max'].map(Number);
   if (z.length !== Number(headers.nZ[0]) || eta.length !== Number(headers.nC[0]) ||
@@ -51,14 +54,14 @@ export async function loadPhysicalTable(directory, metadataPath) {
     const lower = interpolate(cMin, i, wz), upper = interpolate(cMax, i, wz);
     const y = names.map(name => value(`Y ${name}`));
     const c = lower + progressFraction * (upper - lower);
-    const fromSpecies = headers['progress-species'].reduce((sum, name) => sum + y[names.indexOf(name)], 0);
+    const fromSpecies = progressSpecies.reduce((sum, name) => sum + y[names.indexOf(name)], 0);
     if (Math.abs(y.reduce((a, b) => a + b, 0) - 1) > 1e-8 || Math.abs(c - fromSpecies) > 1e-8) {
       throw new Error('Physical table composition/progress inconsistency');
     }
     return { z: mixture, eta: progressFraction, c, lower, upper, y,
       source: value('Sc'), qFormation: value('Q'), temperature: value('Tdiag') };
   };
-  return { raw, receipt, metadata, lookup, inputHashes: {
+  return { raw, receipt, metadata, lookup, progressSpecies, inputHashes: {
     table: digest(raw), receipt: digest(receiptRaw), metadata: digest(metadataRaw),
     mechanism: metadata.mechanismSha256,
   } };

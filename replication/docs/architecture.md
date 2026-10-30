@@ -460,3 +460,10 @@ only after explicit FGM/Fourier/absolute-enthalpy checks; public Dimix reads fai
 while suppressed. The class layout and default full calculation remain intact.
 This module records numerical parity and timings, not scientific acceptance;
 subsequent identical fresh CFD comparisons qualify actual solver use.
+
+`validation/fgm-source-split` can explicitly consume the full-SRK dictionary via
+`mascotte-g2/direct-fgm/cold-input.mjs` and a physical table with generic declared
+progress species. The actual-time-zero thermo probe owns Ha initialization;
+the checker verifies raw progress against that declared species sum. The existing
+ideal-thermo path and its criteria remain unchanged. No table acceptance,
+scheduler operation or source-coordinate substitution occurs in preparation.
