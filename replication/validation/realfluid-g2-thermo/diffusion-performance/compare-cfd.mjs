@@ -8,8 +8,9 @@ const m = JSON.parse(await readFile(`${root}/manifest.json`));
 if (m.schema !== 'fgm-unused-diffusion-cfd-pair-v1') throw new Error('Wrong CFD pair manifest');
 const relativeError = (a, b) => Math.abs(a - b) / Math.max(1, Math.abs(a));
 const records = (log, label) => log.split(/\r?\n/).filter(s => s.startsWith(label + ' ')).map(line => {
-  const row = Object.fromEntries([...line.matchAll(/(\w+)=([^\s]+)/g)].map(([, key, value]) => [key, Number(value)]));
-  if (!Object.values(row).every(Number.isFinite)) throw new Error(`Nonfinite ${label}`);
+  const row = Object.fromEntries([...line.matchAll(/(\w+)=([^\s]+)/g)].map(([, key, value]) =>
+    [key, ['integration', 'stage'].includes(key) ? value : Number(value)]));
+  if (!Object.entries(row).every(([key,value]) => ['integration', 'stage'].includes(key) ? typeof value === 'string' : Number.isFinite(value))) throw new Error(`Nonfinite ${label}`);
   return row;
 });
 function vector(raw) {
@@ -31,11 +32,18 @@ for (const mode of m.cases) {
   const states = records(log, 'energyState'), bounds = records(log, 'fgmBounds'), source = records(log, 'fgmAppliedSource');
   if (states.length < 2 || states[0].t !== 0 || Math.abs(states.at(-1).t - m.endTime) > 1e-16) failures.push(`${mode}: time-zero/end-time mismatch`);
   if (!bounds.length || bounds.some(r => r.cumulativeCorrections !== 0)) failures.push(`${mode}: missing bounds or clipped lookup`);
-  if (!source.length || source.some(r => r.enabled !== 0 || r.appliedKg_s !== 0)) failures.push(`${mode}: progress source not disabled`);
+  const sourceEnabled = m.chemistry === 'table';
+  if (!source.length || source.some(r => r.enabled !== Number(sourceEnabled) ||
+      (!sourceEnabled && r.appliedKg_s !== 0) || (r.integration !== undefined && r.integration !== m.sourceIntegration))) failures.push(`${mode}: wrong progress source mode`);
+  const caloric = records(log, 'thermoClosure'), stages = records(log, 'fgmSourceStage'), history = records(log, 'fgmSourceOldTime');
+  if (m.caloricClosureRequired && (!caloric.length || caloric.some(r => r.invalid !== 0 || r.maxRelative > 1e-8 || r.boundaryMaxRelative > 1e-8) || /out of temperature range/.test(log))) failures.push(`${mode}: caloric closure failed`);
+  if (sourceEnabled && Math.abs(states.at(-1).cmean-states[0].cmean) <= 1e-12) failures.push(`${mode}: physical source produced no progress`);
+  if (m.sourceIntegration === 'strangFixedState' && (stages.filter(r => r.stage === 'firstHalf').length !== 20 ||
+      !history.length || history.some(r => r.deltaC !== 0 || r.deltaZ !== 0 || r.deltaRho !== 0))) failures.push(`${mode}: source history/stages missing or changed`);
   const times = (await readdir(path)).filter(n => Number.isFinite(Number(n)) && Number(n) > 0).sort((a, b) => Number(a) - Number(b));
   if (times.length !== 4 || Math.abs(Number(times.at(-1)) - m.endTime) > 1e-16) failures.push(`${mode}: expected four written times absent`);
   const clocks = [...log.matchAll(/ClockTime = ([0-9.eE+-]+) s/g)].map(match => Number(match[1]));
-  runs[mode] = { states, bounds, source, times, solverReportedWall_s: clocks.at(-1) ?? null,
+  runs[mode] = { states, bounds, source, caloric, stages, history, times, solverReportedWall_s: clocks.at(-1) ?? null,
     advancingStepWall_s: clocks.length > 1 ? clocks.at(-1) - clocks[0] : null,
     massRelativeDrift: Math.max(...states.map(r => Math.abs(r.mass / states[0].mass - 1))),
     energyRelativeDrift: Math.max(...states.map(r => relativeError(states[0].E, r.E))),
@@ -56,13 +64,17 @@ for (const time of runs.baseline.times) for (const field of [...m.fields, 'U']) 
   if (['T', 'p', 'rho'].includes(field) && [left, right].some(v => Math.min(...v) <= 0)) failures.push(`${time}/${field}: nonpositive thermo`);
   measurements.push({ time: Number(time), field, maximumRelative, leftSha256: digest(leftRaw), rightSha256: digest(rightRaw) });
 }
-for (const key of ['states', 'bounds', 'source']) {
+for (const key of ['states', 'bounds', 'source', 'caloric', 'stages', 'history']) {
   const a = runs.baseline[key], b = runs.optimized[key];
   if (a.length !== b.length) throw new Error(`Record count differs: ${key}`);
   let maximumRelative = 0;
   for (let i = 0; i < a.length; ++i) {
     if (JSON.stringify(Object.keys(a[i])) !== JSON.stringify(Object.keys(b[i]))) throw new Error('Record keys differ');
-    for (const field of Object.keys(a[i])) maximumRelative = Math.max(maximumRelative, relativeError(a[i][field], b[i][field]));
+    for (const field of Object.keys(a[i])) {
+      if (typeof a[i][field] === 'string') {
+        if (a[i][field] !== b[i][field]) failures.push(`${key}/${field}: record mode differs`);
+      } else maximumRelative = Math.max(maximumRelative, relativeError(a[i][field], b[i][field]));
+    }
   }
   if (maximumRelative > m.relativeTolerance) failures.push(`Integrated ${key} parity`);
   measurements.push({ records: key, maximumRelative });
@@ -71,7 +83,8 @@ const summary = mode => ({ ...runs[mode], states: { initial: runs[mode].states[0
   bounds: runs[mode].bounds.at(-1), source: runs[mode].source.at(-1) });
 const receipt = { schema: 'fgm-unused-diffusion-cfd-parity-v1', passed: !failures.length, failures, measurements,
   baseline: summary('baseline'), optimized: summary('optimized'), relativeTolerance: m.relativeTolerance,
-  scientificAcceptance: false, qualification: 'Equivalence of fresh source-disabled physical-table transport diagnostics only' };
+  scientificAcceptance: false, chemistry: m.chemistry, sourceIntegration: m.sourceIntegration,
+  qualification: 'Equivalence of fresh full-SRK physical-table diagnostics in the explicitly recorded chemistry/source mode; no flame-model acceptance' };
 await writeFile(`${root}/cfd-parity-result.json`, JSON.stringify(receipt, null, 2) + '\n');
 console.log(JSON.stringify(receipt, null, 2));
 if (!receipt.passed) process.exitCode = 1;

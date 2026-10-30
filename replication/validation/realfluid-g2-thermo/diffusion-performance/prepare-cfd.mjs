@@ -12,14 +12,21 @@ const dictionary = await readFile(`${m.thermo}/thermophysicalProperties`);
 if (thermo.equationOfState !== 'soaveRedlichKwong' || thermo.mechanism_sha256 !== table.metadata.mechanismSha256) throw new Error('Matched SRK/physical table required');
 const names = table.metadata.species.map(row => row.name);
 if (JSON.stringify(names) !== JSON.stringify(thermo.species.map(row => row.name))) throw new Error('Thermo species differ');
-const cells = 48, deltaT = 1e-9, endTime = 20 * deltaT;
-const states = Array.from({ length: cells }, (_, i) => table.lookup(0.2 + 0.005 * Math.sin(2 * Math.PI * (i + 0.5) / cells), 0.8));
+const controls = m.cfdParity ?? {};
+for (const key of Object.keys(controls)) if (!['chemistry', 'sourceIntegration', 'deltaT_s', 'initialEta'].includes(key)) throw new Error(`Unknown cfdParity.${key}`);
+const chemistry = controls.chemistry ?? 'disabled', sourceIntegration = controls.sourceIntegration ?? 'explicit';
+const cells = 48, deltaT = controls.deltaT_s ?? 1e-9, endTime = 20 * deltaT, eta = controls.initialEta ?? 0.8;
+if (!['disabled', 'table'].includes(chemistry) || !['explicit', 'strangFixedState'].includes(sourceIntegration) ||
+    !Number.isFinite(deltaT) || deltaT <= 0 || deltaT > 5e-8 || !Number.isFinite(eta) || eta <= .03 || eta >= .97 ||
+    (sourceIntegration === 'strangFixedState' && chemistry !== 'table')) throw new Error('Invalid bounded cfdParity controls');
+const states = Array.from({ length: cells }, (_, i) => table.lookup(0.2 + 0.005 * Math.sin(2 * Math.PI * (i + 0.5) / cells), eta));
 const low = Math.max(...thermo.species.map(s => s.effectiveMinimumTemperature_K)), high = Math.min(...thermo.species.map(s => s.effectiveMaximumTemperature_K));
 if (states.some(s => s.temperature <= low || s.temperature >= high || s.y.some(y => y < 0))) throw new Error('Initial physical states outside thermo coverage');
 const plan = { schema: 'fgm-unused-diffusion-cfd-pair-v1', cells, deltaT, endTime, startTime: 0,
-  pressure_Pa: table.receipt.case.pressure_pa, velocity_m_s: 1, eta: 0.8,
+  pressure_Pa: table.receipt.case.pressure_pa, velocity_m_s: 1, eta,
   initialMixtureFraction: '0.2 + 0.005*sin(2*pi*(i+0.5)/48)', inputHashes: table.inputHashes,
-  thermoDictionarySha256: digest(dictionary), chemistry: 'disabled',
+  thermoDictionarySha256: digest(dictionary), chemistry, sourceIntegration,
+  caloricClosureRequired: chemistry === 'table',
   relativeTolerance: 1e-12, scientificAcceptance: false, cases: ['baseline', 'optimized'] };
 if (!apply) { console.log(JSON.stringify({ dryRun: true, ...plan }, null, 2)); process.exit(0); }
 if (!process.env.SLURM_JOB_ID) throw new Error('CFD case preparation requires allocated qualification');
@@ -48,7 +55,9 @@ for (const mode of plan.cases) {
   let control = await readFile(`${out}/system/controlDict`, 'utf8');
   control = control.replace(/endTime [^;]+;/, `endTime ${endTime};`).replace(/writeInterval [^;]+;/, 'writeInterval 5;')
     .replace('fgmEnergyForm sensibleEnthalpy;', 'fgmEnergyForm absoluteEnthalpy;');
-  control += `fgmSkipUnusedDimix ${mode === 'optimized' ? 'yes' : 'no'}; fgmProgressSourceEnabled no; fgmRequireHaInitialization yes;\n`;
+  control += `fgmSkipUnusedDimix ${mode === 'optimized' ? 'yes' : 'no'}; fgmProgressSourceEnabled ${chemistry === 'table' ? 'yes' : 'no'}; fgmRequireHaInitialization yes;\n`;
+  control += `fgmSourceIntegration ${sourceIntegration};\n`;
+  if (chemistry === 'table') control += 'writeFgmThermoClosure yes; fgmThermoClosureRelativeLimit 1e-8;\n';
   await writeFile(`${out}/system/controlDict`, control);
   const solution = await readFile(`${out}/system/fvSolution`, 'utf8');
   await writeFile(`${out}/system/fvSolution`, solution.replace('pRef 101325;', `pRef ${plan.pressure_Pa};`));

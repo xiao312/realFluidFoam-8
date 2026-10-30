@@ -85,3 +85,13 @@ checks all written scalar/U fields and all integrated energy-state records at
 1e-12 relative, finite positive thermo, zero clipping, source-disabled status
 and normal completion. Actual conservation drift is reported separately: this
 is equivalence qualification, not acceptance of a new flame/table model.
+
+An optional manifest `cfdParity` object selects `chemistry` (`disabled` default,
+or `table`), `sourceIntegration` (`explicit` default or `strangFixedState`),
+`deltaT_s` (default 1e-9, positive through 5e-8), and `initialEta` (default .8,
+inside .03 to .97). The source-on qualification uses `.5`, 25e-9 and
+`strangFixedState` for twenty steps. Source-on requires the literal executing
+caloric audit at 1e-8; the comparator also verifies nonzero progress, source
+stage/history records and the unchanged 1e-12 field/history parity limit.
+Both modes retain fresh zero-time initialization and the exact table. No
+synthetic chemistry reference or scientific acceptance is substituted.
