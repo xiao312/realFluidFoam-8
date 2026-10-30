@@ -20,6 +20,9 @@ zoneCombustion/zoneCombustions.C
 
 noCombustion/noCombustions.C
 
+fgmTable/fgmTableReader.C
+fgmTable/fgmTables.C
+
 functionObjects/Qdot/Qdot.C
 
 radiationModels/absorptionEmissionModels/greyMeanCombustion/greyMeanCombustion.C

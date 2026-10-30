@@ -1,0 +1,4 @@
+fgmTableReader.C
+fgmTables.C
+
+LIB = $(FOAM_USER_LIBBIN)/libfgmTableModel

@@ -1,0 +1,15 @@
+{
+  "case": "ch4-o2-300K-transient-diagnostic",
+  "description": "Both streams 300 K to qualify Spitfire chemistry and transient diffusion before cold thermo extension. Pressure is Muller pressure, not Sharma 60 bar.",
+  "pressure_pa": 5610000.0,
+  "fuel": {"temperature_k": 300.0, "mole_fractions": {"CH4": 1.0}},
+  "oxidizer": {"temperature_k": 300.0, "mole_fractions": {"O2": 1.0}},
+  "width_m": 0.02,
+  "fuel_mdot_kg_m2_s": 0.12,
+  "oxidizer_mdot_kg_m2_s": 0.12,
+  "max_grid_points": 1500,
+  "max_time_steps": 1000,
+  "refine": {"ratio": 3.0, "slope": 0.1, "curve": 0.2, "prune": 0.0},
+  "equilibrium_points": 401,
+  "allow_thermo_extrapolation": false
+}

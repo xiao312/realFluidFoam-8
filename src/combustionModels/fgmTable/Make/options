@@ -1,0 +1,24 @@
+EXE_INC = \
+    -I$(LIB_rfFoam8_SRC)/combustionModels/fgmTable \
+    -I$(LIB_rfFoam8_SRC)/combustionModels/CombustionModel/CombustionModel \
+    -I$(LIB_rfFoam8_SRC)/combustionModels/CombustionModel/ThermoCombustion \
+    -I$(LIB_rfFoam8_SRC)/combustionModels/combustionModel \
+    -I$(LIB_SRC)/MomentumTransportModels/momentumTransportModels/lnInclude \
+    -I$(LIB_SRC)/MomentumTransportModels/compressible/lnInclude \
+    -I$(LIB_SRC)/thermophysicalModels/basic/lnInclude \
+    -I$(LIB_SRC)/thermophysicalModels/specie/lnInclude \
+    -I$(LIB_SRC)/thermophysicalModels/reactionThermo/lnInclude \
+    -I$(LIB_SRC)/thermophysicalModels/chemistryModel/lnInclude \
+    -I$(LIB_SRC)/radiationModels/lnInclude \
+    -I$(LIB_SRC)/finiteVolume/lnInclude \
+    -I$(LIB_SRC)/meshTools/lnInclude
+
+LIB_LIBS = \
+    -L$(FOAM_USER_LIBBIN) \
+    -lcombustionModels \
+    -lmomentumTransportModels \
+    -lfluidThermoMomentumTransportModels \
+    -lchemistryModel \
+    -lradiationModels \
+    -lfiniteVolume \
+    -lmeshTools

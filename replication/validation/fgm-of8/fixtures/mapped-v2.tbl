@@ -1,0 +1,48 @@
+# Analytic mapping verification, NOT a chemical flamelet.
+schema forge-fgm-table-v2
+source analytic-raw-progress-mapping
+profile-sha256 none
+units-progress-source kg/m3/s
+units-heat-release W/m3
+density-owner thermophysicalModel
+temperature-owner thermophysicalModel
+enthalpy-owner thermophysicalModel
+progress-coordinate mass-fraction-mapped
+progress-species CO2 CO
+species CO2 CO N2
+nZ 3
+nC 3
+z 0 0.5 1
+c 0 0.5 1
+c-min 0 0 0
+c-max 0 0.5 0
+block Y CO2
+0 0 0
+0 0.25 0.5
+0 0 0
+end
+block Y CO
+0 0 0
+0 0 0
+0 0 0
+end
+block Y N2
+1 1 1
+1 0.75 0.5
+1 1 1
+end
+block Sc
+0 0 0
+0.1 0.1 0.1
+0 0 0
+end
+block Q
+0 0 0
+0.2 0.2 0.2
+0 0 0
+end
+block Tdiag
+300 300 300
+300 300 300
+300 300 300
+end

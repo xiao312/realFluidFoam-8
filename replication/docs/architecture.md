@@ -1,5 +1,45 @@
 # Replication boundaries
 
+The [direct FGM development checkpoint](../development/direct-fgm/README.md)
+combines selected source snapshots on the existing reacting integration baseline.
+It is a candidate development branch, not a scientific acceptance or a change to
+the source identity of a running job.
+
+`fgm/direct-flamelet` generates independent Cantera counterflow solutions,
+equilibrium limits and physical-time Sandia Spitfire flamelets. It exports phase
+metadata and builds a physical raw-progress table with held-out diagnostics.
+Its dependencies are explicit Python scientific packages and a pinned Spitfire
+extension; it does not depend on OpenFOAM or perform scheduler operations.
+`src/combustionModels/fgmTable` consumes the declared table and supplies species
+and volumetric sources. `applications/solvers/reactingFoamSolveZ` transports Z
+and raw progress, and offers an opt-in absolute-enthalpy equation. Thermodynamic
+and transport models remain explicit solver dependencies; the table does not
+silently replace their density or temperature calculation.
+
+`validation/fgm-of8/direct-verification` generates fresh finite-volume heating,
+scalar-advection and chemical-energy conversion problems and measures their
+analytical errors. It also converts complete NASA7 phase metadata for a later
+physical table case. `validation/muller-figure2` and `validation/mascotte-figures`
+extract and compare selected paper curves from separately supplied PDFs. These
+offline evaluators do not submit jobs or supply fitted model coefficients.
+The small `.tbl` fixtures qualify reader arithmetic only; they are not flamelets.
+
+```mermaid
+flowchart LR
+  Mechanism[Pinned mechanism and inlet contract] --> Flamelet[Cantera or Spitfire flamelet]
+  Flamelet --> Table[Physical table and held-out diagnostics]
+  Mechanism --> Metadata[Phase metadata]
+  Table --> Reader[FGM reader and source model]
+  Metadata --> Thermo[Explicit OF8 thermodynamics]
+  Reader --> Solver[Transported Z, raw C and energy]
+  Thermo --> Solver
+  Solver --> Checks[Clean-start analytical verification]
+  Solver --> G2[Bounded MASCOTTE diagnostics]
+  Paper[Human-supplied paper PDF] --> Compare[Independent figure comparison]
+  Flamelet --> Compare
+  G2 --> Compare
+```
+
 `development/liang-kinetics` consumes explicitly identified author mechanisms
 and the pinned Cantera 3.2 SDK for Figure 8(b)'s ideal methane controls. It has
 no SRK or OpenFOAM dependency in this initial stage. Input hashes and the

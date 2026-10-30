@@ -71,6 +71,37 @@ Foam::CombustionModel<ReactionThermo>::~CombustionModel()
 // * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * * //
 
 template<class ReactionThermo>
+Foam::tmp<Foam::volScalarField>
+Foam::CombustionModel<ReactionThermo>::progressSource() const
+{
+    // A zero source with the right dimensions, so that a model which transports
+    // no progress variable cannot inject an uninitialised field if a solver
+    // asks for one by mistake.
+    return tmp<volScalarField>
+    (
+        new volScalarField
+        (
+            IOobject
+            (
+                "progressSource",
+                this->mesh().time().timeName(),
+                this->mesh(),
+                IOobject::NO_READ,
+                IOobject::NO_WRITE
+            ),
+            this->mesh(),
+            dimensionedScalar
+            (
+                "progressSource",
+                dimMass/dimVolume/dimTime,
+                scalar(0)
+            )
+        )
+    );
+}
+
+
+template<class ReactionThermo>
 bool Foam::CombustionModel<ReactionThermo>::read()
 {
     if (combustionModel::read())

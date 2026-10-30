@@ -116,6 +116,50 @@ public:
 
         //- Update properties from given dictionary
         virtual bool read();
+
+
+    // Tabulated-composition interface
+    //
+    // These four are appended AFTER every virtual the unmodified OpenFOAM 8
+    // header declares, and the order matters: the virtual table of
+    // CombustionModel<ReactionThermo> is what a caller compiled against the
+    // unmodified header indexes into, and the image's own reaction thermo
+    // library was compiled that way.  Inserting a virtual ahead of read() would
+    // silently redirect such a caller to the new slot - return false where it
+    // asked for read() - instead of failing loudly.  Appending keeps slots 0..2
+    // (~CombustionModel, thermo, read) exactly where they were, so a rebuilt
+    // libcombustionModels can be loaded by a binary that was not rebuilt, and
+    // the ABI question becomes one of the four checks the work order names
+    // rather than a bet.
+
+        //- True when the model prescribes the composition from a table, so a
+        //  solver must skip the species equations instead of solving them with
+        //  a zero source.  False for every reacting model.
+        virtual bool compositionTabulated() const
+        {
+            return false;
+        }
+
+        //- True when the model transports a progress variable itself, so a
+        //  solver must transport that variable and apply this model's source.
+        //  False for every model that reacts the species directly.
+        virtual bool transportsProgress() const
+        {
+            return false;
+        }
+
+        //- The transported progress variable, or nullptr when the model has
+        //  none.  The solver solves this field, so it is the model's own field,
+        //  not a copy and not a name looked up in the registry.
+        virtual volScalarField* progressVariable()
+        {
+            return nullptr;
+        }
+
+        //- Volumetric source of the progress variable [kg/(m3 s)].  Undefined
+        //  for models that transport no progress variable; a solver only asks
+        //  when transportsProgress() is true.
+        virtual tmp<volScalarField> progressSource() const;
 };
 
 

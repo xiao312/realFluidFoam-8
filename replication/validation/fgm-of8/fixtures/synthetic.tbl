@@ -1,0 +1,46 @@
+# forge FGM table fixture -- NOT physical data, NOT a flamelet
+# smooth non-bilinear blocks on a non-uniform grid; species sum to one by construction; c is the composition progress variable Yc itself, so the Sc block is used as it stands
+schema forge-fgm-table-v1
+source synthetic-fixture
+profile-sha256 none
+units-progress-source kg/m3/s
+units-heat-release W/m3
+density-owner thermophysicalModel
+temperature-owner thermophysicalModel
+enthalpy-owner thermophysicalModel
+progress-coordinate mass-fraction
+species CH4 O2 N2
+nZ 3
+nC 4
+z 0 0.15 0.3
+c 0 0.25 0.5 1
+block Y CH4
+0.35 0.2625 0.175 0
+0.252875 0.19040625 0.1279375 0.003
+0.1715 0.130125 0.08875 0.006
+end
+block Y O2
+0.15 0.1275 0.105 0.06
+0.1275 0.10875 0.09 0.0525
+0.105 0.09 0.075 0.045
+end
+block Y N2
+0.5 0.61 0.72 0.94
+0.619625 0.70084375 0.7820625 0.9445
+0.7235 0.779875 0.83625 0.949
+end
+block Sc
+100 100 100 100
+100 325 400 100
+100 550 700 100
+end
+block Q
+-100000 -100000 -100000 -100000
+-100000 -175000 -250000 -400000
+-100000 -250000 -400000 -700000
+end
+block Tdiag
+300 518.75 650 650
+435 653.75 785 785
+570 788.75 920 920
+end

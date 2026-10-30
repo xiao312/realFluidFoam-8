@@ -1,0 +1,59 @@
+# forge FGM table fixture -- NOT physical data, NOT a flamelet
+# every block is exactly bilinear in (Z, c): a correct interpolation is exact; c is the normalised coordinate c=(Yc-Ycmin)/dYc with dYc=0.4, so the reference divides the Sc block by dYc
+schema forge-fgm-table-v1
+source analytic-bilinear-fixture
+profile-sha256 none
+units-progress-source kg/m3/s
+units-heat-release W/m3
+density-owner thermophysicalModel
+temperature-owner thermophysicalModel
+enthalpy-owner thermophysicalModel
+progress-coordinate normalised
+progress-dYc 0.4
+species CH4 O2 N2
+nZ 5
+nC 3
+z 0 0.25 0.5 0.75 1
+c 0 0.5 1
+block Y CH4
+0.5 0.55 0.6
+0.425 0.475 0.525
+0.35 0.4 0.45
+0.275 0.325 0.375
+0.2 0.25 0.3
+end
+block Y O2
+0.3 0.275 0.25
+0.325 0.3 0.275
+0.35 0.325 0.3
+0.375 0.35 0.325
+0.4 0.375 0.35
+end
+block Y N2
+0.2 0.175 0.15
+0.25 0.225 0.2
+0.3 0.275 0.25
+0.35 0.325 0.3
+0.4 0.375 0.35
+end
+block Sc
+200 700 1200
+300 1050 1800
+400 1400 2400
+500 1750 3000
+600 2100 3600
+end
+block Q
+-0 -0 -0
+-750000 -375000 -0
+-1500000 -750000 -0
+-2250000 -1125000 -0
+-3000000 -1500000 -0
+end
+block Tdiag
+300 550 800
+600 850 1100
+900 1150 1400
+1200 1450 1700
+1500 1750 2000
+end
