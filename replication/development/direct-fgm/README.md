@@ -13,8 +13,8 @@ checkpoint; reacting MASCOTTE agreement and scientific acceptance remain pending
 | Physical CH4/O2 flamelets | Müller Fig. 2 temperature RMS difference 23.28 K; at strain 575000/s, peak T is 3126.0 K versus about 3126.7 K in Fig. 3. | Strict steady-residual criteria failed; high-strain extinction still occurs earlier. Approximate matches support further diagnostics, not acceptance. |
 | Physical table | Cold 129-node transient through 1 ms; 66 training/16 held-out profiles; maximum held-out T error 20.1 K and progress-source error 1.87% of global peak. | Ideal-gas chemistry, one trajectory family and two coordinates; no enthalpy-coordinate/PDF closure. |
 | Source/energy coupling | Job 126421653 passed 12 fresh 0D/1D cases and 14 timestep/outer-iteration comparisons. Maximum energy error/chemical change 0.1632%; mass drift 1.15e-13. Linux independent DOP853 repetition passed in job 126424490. | Longer-flow conservation remains separate. The explicit-source control failed its energy criterion. |
-| Cost reduction | Job 126430921 passed six property/setup comparisons, exact FGM/steady CFD parity and 321 matched G2 measurements. Its fresh 100 us case averaged about 0.69 s per step. | Costs depend on the flow state; the hot startup is not a long-run forecast. |
-| Reacting G2 | The separate fixed-chi steady closure reached 100 us. Fresh cold-fill job 126432193 failed its first Z endpoint lookup; bounded endpoint qualification is pending. Earlier transported-progress coverage failures remain retained. | Developed profiles and morphology are not demonstrated. Local water-progress source checks do not resolve global mixing coverage. |
+| Cost reduction | Job 126430921 preserved six property/setup pairs, 250 FGM comparisons, 250 steady comparisons and 321 matched G2 measurements. Property corrections were 8.07–9.18 times faster; the 100 us flow advanced at about 0.69 s/step. | Cost depends on the evolving flow and time controls. |
+| Reacting G2 | The separate steady-flamelet model reached 100 us with all 15 mechanical checks passing. Fresh cold-start qualification then exposed a second-outer-iteration Z excursion of 4.65e-9. | The hot-fill result is still startup. Cold-flow transport needs residual diagnosis; finite-rate FGM mixing coverage also remains unresolved. Developed profiles and morphology are not demonstrated. |
 
 The [31 October progress-coordinate diagnosis](progress-coordinate-20261031.md)
 records independent full-chemistry reactors, fresh ignition flamelets and the
@@ -25,9 +25,9 @@ The [steady G2 checkpoint](steady-g2-20261031.md) records the completed 5 us
 startup, measured runtime, new thermophysical qualification and hybrid table
 derivation. Those later results do not erase the failed FGM coverage events.
 
-The [07:03 checkpoint](continued-g2-20261031.md) records completed 100 us flow,
+The [07:08 checkpoint](continued-g2-20261031.md) records completed 100 us flow,
 physical mixing failures, four interior water-progress CFD cases, independent
-reference recovery and the pending cold-start endpoint qualification.
+reference recovery and the retained cold-start endpoint failure.
 
 Independent DOP853 analysis agrees with all six uniform CFD histories within
 7.13e-10 of the progress-variable span. Its Windows environment is NumPy

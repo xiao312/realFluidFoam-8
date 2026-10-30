@@ -1,0 +1,20 @@
+{
+  "schema": "experimental-source-references/v1",
+  "date": "2026-10-31",
+  "repository": "https://github.com/xiao312/realFluidFoam-8",
+  "scientificAcceptance": false,
+  "purpose": "Preserve exact experimental revisions independently of cherry-picked integration commits.",
+  "verification": "Remote references were compared with the full object IDs after an atomic push. Newly reachable Git objects were audited for source scope, binary artifacts and credentials.",
+  "references": [
+    {"revision": "029c62bbfdbbcc2bc18fa3e98f268195eaafba02", "tag": "evidence/direct-20261031/029c62bbfdbb", "scope": "Steady-flamelet solver, endpoint qualification and ancestor SRK setup optimization; includes failed qualification."},
+    {"revision": "71d1638bac42058241d8ed3e4459e571a5779e5e", "tag": "evidence/direct-20261031/71d1638bac42", "scope": "Physical hybrid-water and mixing witnesses, with their separate plotting code."},
+    {"revision": "e8801906c4d6c38e28abff3a7d29aeb4829dc694", "tag": "evidence/direct-20261031/e8801906c4d6", "scope": "Water-progress CFD inputs and independent-reference recovery."},
+    {"revision": "6e80322e69a1d2185937365cd9af35b6757af6cd", "tag": "evidence/direct-20261031/6e80322e69a1", "scope": "Exact timing qualification revision."},
+    {"revision": "d69bad630d84ab66087f91dd94b2a3677bc94b7c", "tag": "evidence/direct-20261031/d69bad630d84", "scope": "Independent full-chemistry progress-reactor diagnosis."}
+  ],
+  "limits": [
+    "These tags do not imply that every file in a revision was compiled or executed. Per-job manifests identify the selected files and inherited products.",
+    "The combined integration branch has separate verification and is not the identity of a running binary.",
+    "Legacy revision ed5bacd073c16d4b00876652b252b477e83053d9 contains compiled products and was excluded. Its retained exact source archive remains authoritative."
+  ]
+}
