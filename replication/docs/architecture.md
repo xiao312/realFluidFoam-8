@@ -18,6 +18,13 @@ The real-fluid thermo library retains density and temperature ownership.
 Its case preparation reuses only mesh, observation and thermodynamic input
 utilities; physical exports and run qualification remain explicit inputs.
 
+`fgm/isenthalpic-witness` consumes the two exact physical mixing initial states
+and their primary source receipts, gives both the same specific enthalpy and
+pressure without changing their species compositions, and runs fresh full
+chemistry. It depends only on the pinned Cantera runtime and existing
+hybrid-water state/reactor utilities. It neither modifies table coverage nor
+changes CFD or scheduler behavior.
+
 The [direct FGM development checkpoint](../development/direct-fgm/README.md)
 combines selected source snapshots on the existing reacting integration baseline.
 It is a candidate development branch, not a scientific acceptance or a change to
