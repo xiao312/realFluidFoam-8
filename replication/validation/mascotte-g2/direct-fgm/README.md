@@ -242,3 +242,12 @@ lookup representation contract. Strict is the default. The opt-in is recorded
 in the manifest and combustion dictionary; it does not bound transported Z.
 The fixed64-epsilon limit and required physical qualification are documented in
 `src/combustionModels/steadyFlamelet/README.md`. It is invalid for FGM closure.
+# Optional RANS diagnostic
+
+The separate [RANS configurator](../rans-diagnostic/README.md) can prepare a new
+cold steady-flamelet case with an explicitly declared kEpsilon/eddyDiffusivity
+closure. The result checker then requires the exact model-selection messages,
+the corresponding guarded diffusion policy, and finite nonnegative k, epsilon,
+nut and alphat in addition to the unchanged thermodynamic and flow checks.
+Laminar cases keep their original checks. This extension does not qualify a
+turbulent paper comparison or change the table, initializer or scalar bounds.

@@ -1,0 +1,12 @@
+{
+  "schema": "g2-rans-diagnostic/v1",
+  "model": "kEpsilon",
+  "transport": "eddyDiffusivity",
+  "Prt": 0.7,
+  "inlets": {
+    "loxinlet": { "intensity": 0.05, "length_m": 0.004 },
+    "ch4inlet": { "intensity": 0.05, "length_m": 0.004 }
+  },
+  "initial": { "k_m2_s2": 0.000001, "length_m": 0.004 },
+  "provenance": "Inlet intensity/length adopted from Cutrone2010 Table5; kEpsilon, initial seed and unity turbulent Lewis approximation are declared diagnostic choices, not Sharma2023 settings."
+}

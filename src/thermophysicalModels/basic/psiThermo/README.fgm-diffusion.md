@@ -41,3 +41,14 @@ and mixed physical table states, including rho, Cp, h, T, mu, alpha and enthalpy
 inversion, followed by identical fresh CFD cases and measured wall time. Invalid
 transport and an attempted Dimix read must fail. See the dedicated validation
 module for commands. A local syntax/source check is not runtime qualification.
+# Explicit RANS diagnostic extension
+
+`fgmRansUnityLeDiagnostic` adds only steadyFlamelet with RAS kEpsilon,
+turbulence on, and eddyDiffusivity Prt0.7 to the unused-Dimix policy. The exact
+eddyDiffusivity implementation uses thermo.alphaEff for Ha and species/Z;
+alphaEff combines molecular thermal diffusivity with rho*nut/Prt and calls no
+Dimix accessor. The default laminar policy and all raw/public Dimix refusal
+guards remain unchanged. No class member or EOS/Chung calculation changes.
+An explicitly requested but inconsistent RAS diagnostic fails before the first
+property query. Exact-runtime property parity and fresh RAS CFD are still
+required; this source inspection is not runtime qualification.

@@ -496,3 +496,10 @@ The steady-only endpoint representation helper is a fixed, explicit numerical
 policy between transported Z and strict table lookup. It leaves the transported
 field unchanged and reports elemental coordinate perturbations. The G2 generator
 selects the policy; neither the table nor the CFD evaluator grants acceptance.
+
+`validation/mascotte-g2/rans-diagnostic` is an explicit fresh-case modifier for
+the existing direct-G2/steady-table route. It selects stock kEpsilon and
+unity-Lewis eddyDiffusivity with declared turbulence inputs. The shared Dimix
+policy and steadyFlamelet constructor allow only that named opt-in combination;
+they retain all other guards and need exact-runtime qualification. No RANS/LES
+equivalence or presumed-PDF closure is inferred from this diagnostic.

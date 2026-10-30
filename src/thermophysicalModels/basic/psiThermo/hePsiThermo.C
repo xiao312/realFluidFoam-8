@@ -185,7 +185,10 @@ Foam::hePsiThermo<BasicPsiThermo, MixtureType>::hePsiThermo
     if (fgmDimixSuppressed(mesh))
     {
         Info<< "FGM_DIMIX_POLICY calculation=suppressed access=forbidden "
-            << "transport=Fourier energy=absoluteEnthalpy" << endl;
+            << "transport="
+            << (mesh.time().controlDict().lookupOrDefault<Switch>
+                ("fgmRansUnityLeDiagnostic", false) ? "RAS-eddyDiffusivity" : "Fourier")
+            << " energy=absoluteEnthalpy" << endl;
     }
 
     Info << " *** Nam: checking in hePsiThermo class " << endl;
