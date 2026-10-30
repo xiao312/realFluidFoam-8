@@ -141,3 +141,11 @@ agree within 1e-7 of the local C span before numerical-reference confidence.
 No CFD or scientific pass is granted by this extra diagnostic. Boundary events
 terminate integration; linear endpoint continuation only locates events in
 rejected RK stages. Accepted states must remain covered, with no clipping.
+
+Reference-only refinement can reuse the retained CFD result without rerunning it.
+`--rtols 1e-11,1e-12,1e-13 --max-step-divisions 2000` declares a new
+DOP853 study with a maximum step equal to duration/2000. The defaults remain
+1e-9/1e-11/1e-13 and duration/200. Exactly three strictly decreasing positive
+tolerances are required. The final two references use the unchanged 1e-7 C-span
+confidence limit. Each report records all controls and the worst refinement
+point with its source segment. New reports cannot overwrite a retained failure.

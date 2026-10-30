@@ -34,7 +34,7 @@ def source_slice(path, z):
     return axis, rates
 
 
-def integrate(axis, rates, rho, initial, duration, rtol):
+def integrate(axis, rates, rho, initial, duration, rtol, max_step_divisions=200):
     span = axis[-1]-axis[0]
     outside_trials = 0
 
@@ -53,12 +53,12 @@ def integrate(axis, rates, rho, initial, duration, rtol):
     lower.terminal = upper.terminal = True
     lower.direction = upper.direction = -1
     solution = solve_ivp(rhs, (0, duration), [initial], method='DOP853',
-                         rtol=rtol, atol=rtol*span*1e-2, max_step=duration/200,
+                         rtol=rtol, atol=rtol*span*1e-2, max_step=duration/max_step_divisions,
                          dense_output=True, events=(lower, upper))
     accepted = solution.y[0]
     complete = bool(solution.success and solution.status == 0 and solution.t[-1] == duration)
     covered = bool(np.all(accepted >= axis[0]) and np.all(accepted <= axis[-1]))
-    record = {'rtol': rtol, 'atol': rtol*span*1e-2, 'success': bool(solution.success),
+    record = {'rtol': rtol, 'maxStep_s': duration/max_step_divisions, 'maxStepDivisions': max_step_divisions, 'atol': rtol*span*1e-2, 'success': bool(solution.success),
               'complete': complete, 'acceptedStatesCovered': covered,
               'finalTime_s': float(solution.t[-1]), 'acceptedSteps': len(solution.t)-1,
               'rhsEvaluations': solution.nfev, 'outsideTrialEvaluations': outside_trials,
@@ -66,7 +66,7 @@ def integrate(axis, rates, rho, initial, duration, rtol):
     return solution, record
 
 
-def evaluate(table, result_path):
+def evaluate(table, result_path, rtols=(1e-9, 1e-11, 1e-13), max_step_divisions=200):
     raw_result = result_path.read_bytes()
     result = json.loads(raw_result)
     case = result['input']
@@ -83,7 +83,7 @@ def evaluate(table, result_path):
     times = np.array([row['t'] for row in result['energy']])
     observed = np.array([row['cmean'] for row in result['energy']])
     assert len(times) > 1 and np.all(np.diff(times) > 0) and times[-1] <= case['endTime']*(1+1e-8)
-    solutions = [integrate(axis, rates, rho, initial['cmean'], case['endTime'], tol) for tol in [1e-9, 1e-11, 1e-13]]
+    solutions = [integrate(axis, rates, rho, initial['cmean'], case['endTime'], tol, max_step_divisions) for tol in rtols]
     span = axis[-1]-axis[0]
     usable = all(record['complete'] and record['acceptedStatesCovered'] for _, record in solutions)
     rows, comparison = [], None
@@ -94,10 +94,16 @@ def evaluate(table, result_path):
         coarse, loose, tight = [sol.sol(times)[0] for sol, _ in solutions]
         self_error = float(np.max(np.abs(tight-loose))/span)
         delta = observed-tight
+        worst = int(np.argmax(np.abs(tight-loose)))
+        segment = min(len(axis)-2, max(0, int(np.searchsorted(axis, tight[worst], side='right'))-1))
         comparison = {'referenceRefinementMax_Cspan': self_error, 'referenceRefinementLimit_Cspan': 1e-7,
                       'referenceConverged': self_error <= 1e-7,
+                      'worstRefinementPoint': {'time_s': float(times[worst]), 'looseC': float(loose[worst]),
+                          'tightC': float(tight[worst]), 'observedC': float(observed[worst]),
+                          'sourceSegmentIndex': segment, 'sourceSegmentC': axis[segment:segment+2].tolist(),
+                          'sourceSegmentRates_kg_m3_s': rates[segment:segment+2].tolist()},
                       'coarseReferenceRefinementMax_Cspan': float(np.max(np.abs(loose-coarse))/span),
-                      'selectedReferenceTolerances': [1e-11, 1e-13],
+                      'selectedReferenceTolerances': list(rtols[-2:]),
                       'CFDMaxError_Cspan': float(np.max(np.abs(delta))/span),
                       'CFDRmsError_Cspan': float(np.sqrt(np.mean(delta**2))/span),
                       'CFDFinalError_Cspan': float(delta[-1]/span)}
@@ -119,13 +125,20 @@ def main():
     parser.add_argument('--table', type=Path, required=True)
     parser.add_argument('--case-result', type=Path, required=True)
     parser.add_argument('--out', type=Path)
+    parser.add_argument('--rtols', default='1e-9,1e-11,1e-13')
+    parser.add_argument('--max-step-divisions', type=int, default=200)
     args = parser.parse_args()
+    rtols = tuple(float(v) for v in args.rtols.split(','))
+    if len(rtols) != 3 or not all(np.isfinite(v) and 1e-14 <= v <= 1e-3 for v in rtols) or not all(a > b for a, b in zip(rtols, rtols[1:])):
+        parser.error('--rtols requires three decreasing finite values in [1e-14,1e-3]')
+    if not 1 <= args.max_step_divisions <= 1000000:
+        parser.error('--max-step-divisions requires an integer in [1,1000000]')
     if args.out is None:
         print(json.dumps({'dryRun': True, 'table': str(args.table), 'CFDResult': str(args.case_result),
-                          'method': 'DOP853', 'rtol': [1e-9, 1e-11, 1e-13], 'referenceRefinementLimit_Cspan': 1e-7}))
+                          'method': 'DOP853', 'rtol': rtols, 'maxStepDivisions': args.max_step_divisions, 'referenceRefinementLimit_Cspan': 1e-7}))
         return
     assert not args.out.exists(), 'Refuse to replace a retained comparison'
-    report = evaluate(args.table, args.case_result)
+    report = evaluate(args.table, args.case_result, rtols, args.max_step_divisions)
     args.out.write_text(json.dumps(report, indent=2)+'\n', encoding='utf-8')
     print(json.dumps({k: v for k, v in report.items() if k != 'trajectory'}, indent=2))
 
