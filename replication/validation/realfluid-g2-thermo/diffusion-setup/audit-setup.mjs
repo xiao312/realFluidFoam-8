@@ -10,9 +10,10 @@ const a=m.samples.find(s=>s.name==='oxygen'),b=m.samples.find(s=>s.name==='mixed
 const names=JSON.parse(await readFile(`${root}/oxygen-baseline/probe-input.json`)).state.y;
 if(!a||!b||a.y.length!==53||b.y.length!==53||names.length!==53)throw Error('Expected physical53species states');
 const thermo=await readFile(`${root}/oxygen-baseline/constant/thermophysicalProperties`,'utf8');
-const species=/\bspecies\s*\(([^)]+)\)/.exec(thermo)?.[1].trim().split(/\s+/);
+const speciesText=/\bspecies\s*\(([\s\S]*?)\)\s*;/.exec(thermo)?.[1];
+const species=speciesText?[...speciesText.matchAll(/"([^"]+)"/g)].map(m=>m[1]):null;
 if(species?.length!==53)throw Error('Cannot read ordered physical species');
-const states=[a,b,a], dictionary=`FoamFile {version 2.0; format ascii; class dictionary; object mixtureSetupAudit;}\nspecies (${species.join(' ')});\npressures (${states.map(s=>s.pressure_Pa).join(' ')});\ntemperatures (${states.map(s=>s.temperature).join(' ')});\nmassFractions (${states.map(s=>'('+s.y.join(' ')+')').join('\n')});\n`;
+const states=[a,b,a], dictionary=`FoamFile {version 2.0; format ascii; class dictionary; object mixtureSetupAudit;}\nspecies (${species.map(n=>JSON.stringify(n)).join(' ')});\npressures (${states.map(s=>s.pressure_Pa).join(' ')});\ntemperatures (${states.map(s=>s.temperature).join(' ')});\nmassFractions (${states.map(s=>'('+s.y.join(' ')+')').join('\n')});\n`;
 if(mode==='--plan'){console.log(JSON.stringify({dryRun:true,states:states.map(s=>({name:s.name,p:s.pressure_Pa,T:s.temperature})),species}));process.exit(0);}
 if(!process.env.SLURM_JOB_ID)throw Error('Compiled physical audit requires Slurm');
 const runs={},failures=[];
