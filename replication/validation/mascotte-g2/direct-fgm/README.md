@@ -174,8 +174,23 @@ unchanged; per-species original/effective ranges remain in the export receipt.
 Cold cases retain their independently bound real-fluid dictionary ranges.
 
 Fresh warm/cold cases request the executing solver's literal h(p,T,Y)-versus-h
-audit at initialization and written corrections. Warm stock OF8 selects 1e-4
+audit at initialization and every energy correction, with successful summaries
+at written times and immediate failure records. Warm stock OF8 selects 1e-4
 (stock temperature-iterate tolerance); full real-fluid selects 1e-8. The checker
 requires finite, passing initial and final audit records and rejects JANAF range
 warnings. Old receipts are not rewritten. Completion and caloric consistency
 remain distinct from physical validation and independent scientific review.
+# Explicit integrated runtime controls
+
+The integrated candidate exposes `--source-integration explicit|strangFixedState`
+(default explicit) and `--skip-unused-diffusion yes|no` (default no). The source
+stage option requires table chemistry and strict error bounds. Diffusion
+suppression requires cold-real-fluid mode with its separately qualified runtime.
+The generator declares laminar Fourier transport explicitly, emits the switches
+and records both choices in the case manifest. The checker verifies actual
+source-integration and diffusion-policy logs, rather than trusting an input flag.
+
+These selectors do not qualify the composed runtime. Source stages, the optional
+diffusion optimization and their combined solver still require their respective
+allocated evidence. Euler transport remains first order; no scheme-order claim
+follows from the splitting name. All cases must start from fresh time zero.

@@ -12,7 +12,7 @@ import { nasaInversionPolicy } from '../../fgm-of8/direct-verification/thermo-po
 
 const options = {}, args = process.argv.slice(2);
 for (let i = 0; i < args.length; i += 2) {
-  if (!['--table-dir', '--metadata', '--mesh-dir', '--mesh-mode', '--transport-tolerance', '--out', '--bounds', '--end-time', '--ranks', '--observations', '--decomposition', '--thermo-mode', '--thermo-dir', '--initialization', '--chemistry', '--initial-dt', '--max-dt', '--nasa-extrapolation'].includes(args[i]) || !args[i + 1]) {
+  if (!['--table-dir', '--metadata', '--mesh-dir', '--mesh-mode', '--transport-tolerance', '--out', '--bounds', '--end-time', '--ranks', '--observations', '--decomposition', '--thermo-mode', '--thermo-dir', '--initialization', '--chemistry', '--initial-dt', '--max-dt', '--nasa-extrapolation', '--source-integration', '--skip-unused-diffusion'].includes(args[i]) || !args[i + 1]) {
     throw new Error('Use --table-dir DIR --metadata FILE --mesh-dir DIR [--mesh-mode registered-200622|coarse-wedge-10000-v1] [--transport-tolerance VALUE] [--out NEW_CASE] [--bounds error|clamp] [--end-time S] [--ranks N] [--observations FILE] [--decomposition FILE] [--thermo-mode warm-ideal|cold-real-fluid --thermo-dir DIR] [--initialization FILE]');
   }
   options[args[i].slice(2)] = args[i + 1];
@@ -36,6 +36,15 @@ const input = await loadPhysicalTable(resolve(options['table-dir']), resolve(opt
 const thermoMode = options['thermo-mode'] ?? 'warm-ideal';
 const chemistry = options.chemistry ?? 'table';
 if (!['table', 'disabled'].includes(chemistry)) throw new Error('Use --chemistry table|disabled');
+const sourceIntegration = options['source-integration'] ?? 'explicit';
+if (!['explicit', 'strangFixedState'].includes(sourceIntegration) ||
+    (sourceIntegration === 'strangFixedState' && (chemistry !== 'table' || bounds !== 'error'))) {
+  throw new Error('strangFixedState requires table chemistry and strict error bounds');
+}
+const skipUnusedDiffusion = options['skip-unused-diffusion'] ?? 'no';
+if (!['yes', 'no'].includes(skipUnusedDiffusion) || (skipUnusedDiffusion === 'yes' && thermoMode !== 'cold-real-fluid')) {
+  throw new Error('Unused diffusion suppression requires the qualified full real-fluid runtime');
+}
 if (!['warm-ideal', 'cold-real-fluid'].includes(thermoMode) || (thermoMode === 'warm-ideal' && options['thermo-dir'])) throw new Error('Explicit valid thermo mode required; a warm case cannot consume a real-fluid directory');
 const realFluid = thermoMode === 'cold-real-fluid' ? await realFluidInput(options['thermo-dir'], input) : null;
 if (realFluid && options['nasa-extrapolation']) throw new Error('Cold input already binds its declared thermodynamic ranges');
@@ -71,7 +80,8 @@ const plan = { schema: 'forge-direct-warm-g2-fgm-v1', startTime: 0, endTime, pre
   linearSolverControls: { transportTolerance, transportFields: ['U', 'h', 'Ha', 'Z', 'c', 'Yi'],
     pressureTolerance: 1e-9, densityTolerance: 1e-10, relativeTolerance: 0,
     interpretation: 'Linear normalized residual control only; conservation and physical acceptance criteria are unchanged.' },
-  energyForm: 'absoluteEnthalpy', chemistry, boundsPolicy: bounds, initial, streams, mesh,
+  energyForm: 'absoluteEnthalpy', chemistry, sourceIntegration,
+  skipUnusedDiffusion: skipUnusedDiffusion === 'yes', boundsPolicy: bounds, initial, streams, mesh,
   thermodynamics: realFluid?.record ?? { mode: 'warm-ideal', requiresRuntimeHaInitialization: false, nasaPolicy }, initialization,
   caloricClosure: { required: true, relativeLimit: realFluid ? 1e-8 : 1e-4,
     definition: 'executing sensible h(p,T,Y) versus stored h, scaled by max(1,abs(h),abs(h(p,T,Y)),abs(Cp*T))' },
@@ -143,6 +153,7 @@ boundaryField { geom { type noSlip; } slipwalls { type slip; } noslipwalls { typ
  planeMinus { type wedge; } planePlus { type wedge; }
 }\n`);
 await put('constant/momentumTransport', header('momentumTransport') + 'simulationType laminar;\n');
+await put('constant/thermophysicalTransport', header('thermophysicalTransport') + 'laminar { model Fourier; }\n');
 await put('constant/combustionProperties', header('combustionProperties') + `combustionModel fgmTable;
 fgmTableCoeffs { table "physical.tbl"; boundsPolicy ${bounds}; mixtureFractionField Z;
  progressField c; speciesSumLimit 1e-8; }\n`);
@@ -168,6 +179,7 @@ fgmEnergyForm absoluteEnthalpy; writeEnergyBudget yes;
 writeFgmThermoClosure yes; fgmThermoClosureRelativeLimit ${plan.caloricClosure.relativeLimit};
 fgmRequireHaInitialization ${realFluid ? 'yes' : 'no'};
 fgmProgressSourceEnabled ${chemistry === 'table' ? 'yes' : 'no'};
+fgmSourceIntegration ${sourceIntegration}; fgmSkipUnusedDimix ${skipUnusedDiffusion};
 functions {
  ${functionObjects(controls.observations)}
 }\n`);

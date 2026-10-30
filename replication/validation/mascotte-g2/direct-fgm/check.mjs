@@ -12,7 +12,7 @@ function records(prefix) {
     const values = {};
     for (const pair of line.slice(prefix.length).trim().split(/\s+/)) {
       const [key, value] = pair.split('=');
-      if (key && value !== undefined) values[key] = Number(value);
+      if (key && value !== undefined) values[key] = Number.isFinite(Number(value)) ? Number(value) : value;
     }
     return values;
   });
@@ -56,6 +56,10 @@ if (manifest.chemistry) mechanicalChecks.declaredSourceMode = source.length > 0 
   Number.isFinite(row.tabulatedKg_s) && Number.isFinite(row.appliedKg_s) &&
   row.enabled === (manifest.chemistry === 'table' ? 1 : 0) &&
   (manifest.chemistry !== 'disabled' || row.appliedKg_s === 0));
+if (manifest.sourceIntegration) mechanicalChecks.executedSourceIntegration = source.length > 0 &&
+  source.every(row => row.integration === manifest.sourceIntegration);
+if (manifest.skipUnusedDiffusion !== undefined) mechanicalChecks.executedDiffusionPolicy =
+  /FGM_DIMIX_POLICY calculation=suppressed access=forbidden transport=Fourier energy=absoluteEnthalpy/.test(log) === manifest.skipUnusedDiffusion;
 const corrections = bounds.at(-1)?.cumulativeCorrections ?? null;
 const temperatureDeparture = latest && fields.T.finite && fields.fgmTdiag.finite
   ? { units: 'K', definition: 'executing thermo T minus table diagnostic T',
@@ -73,6 +77,8 @@ const report = { schema: 'forge-direct-warm-g2-diagnostic-v1', inputHashes: mani
   pressureDepartureFromTable: fields.p ? Math.max(Math.abs(fields.p.min / manifest.pressure - 1), Math.abs(fields.p.max / manifest.pressure - 1)) : null,
   clippedLookup: corrections === null ? null : corrections > 0,
   chemistry: manifest.chemistry ?? 'table', lastAppliedSource: source.at(-1) ?? null,
+  sourceIntegration: manifest.sourceIntegration ?? 'unrecorded-legacy',
+  skipUnusedDiffusion: manifest.skipUnusedDiffusion ?? null,
   thermodynamics: manifest.thermodynamics ?? {mode:'warm-ideal'},
   caloricClosure: { required: Boolean(manifest.caloricClosure?.required), records: closure, rangeWarningCount },
   coldInitialization: manifest.thermodynamics?.mode === 'cold-real-fluid'
