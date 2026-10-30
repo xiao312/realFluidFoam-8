@@ -32,6 +32,15 @@ cannot be labelled a coarsening of the original mesh or a matched paper mesh.
 Its axis is a zero-face `empty` patch; canonical axis fields retain `symmetry`.
 The selected mesh identity, measured areas and geometry limitation enter the
 case manifest and all source controls remain unchanged.
+`--transport-tolerance VALUE` optionally sets the normalized linear solver
+tolerance for U/h/Ha/Z/c/Yi, within 1e-12..1e-6. Default 1e-10 is unchanged.
+Pressure remains 1e-9 and rho remains 1e-10; all relative tolerances remain zero.
+The input manifest records this selection. A proposed coarse diagnostic can use
+1e-8 to investigate repeated 1000-iteration exits above the requested 1e-10.
+This does not establish a fixed roundoff floor. Global conservation,
+local source/energy checks, timestep refinement
+and transport-tolerance comparison must still be measured. This option does not
+change a physical acceptance threshold or automatically qualify a run.
 `--ranks N` sets the matching decomposition (default 2); scheduler resources must
 be admitted for that same count.
 `--initial-dt SECONDS` and `--max-dt SECONDS` optionally set the initial and

@@ -12,14 +12,18 @@ import { nasaInversionPolicy } from '../../fgm-of8/direct-verification/thermo-po
 
 const options = {}, args = process.argv.slice(2);
 for (let i = 0; i < args.length; i += 2) {
-  if (!['--table-dir', '--metadata', '--mesh-dir', '--mesh-mode', '--out', '--bounds', '--end-time', '--ranks', '--observations', '--decomposition', '--thermo-mode', '--thermo-dir', '--initialization', '--chemistry', '--initial-dt', '--max-dt', '--nasa-extrapolation'].includes(args[i]) || !args[i + 1]) {
-    throw new Error('Use --table-dir DIR --metadata FILE --mesh-dir DIR [--mesh-mode registered-200622|coarse-wedge-10000-v1] [--out NEW_CASE] [--bounds error|clamp] [--end-time S] [--ranks N] [--observations FILE] [--decomposition FILE] [--thermo-mode warm-ideal|cold-real-fluid --thermo-dir DIR] [--initialization FILE]');
+  if (!['--table-dir', '--metadata', '--mesh-dir', '--mesh-mode', '--transport-tolerance', '--out', '--bounds', '--end-time', '--ranks', '--observations', '--decomposition', '--thermo-mode', '--thermo-dir', '--initialization', '--chemistry', '--initial-dt', '--max-dt', '--nasa-extrapolation'].includes(args[i]) || !args[i + 1]) {
+    throw new Error('Use --table-dir DIR --metadata FILE --mesh-dir DIR [--mesh-mode registered-200622|coarse-wedge-10000-v1] [--transport-tolerance VALUE] [--out NEW_CASE] [--bounds error|clamp] [--end-time S] [--ranks N] [--observations FILE] [--decomposition FILE] [--thermo-mode warm-ideal|cold-real-fluid --thermo-dir DIR] [--initialization FILE]');
   }
   options[args[i].slice(2)] = args[i + 1];
 }
 for (const key of ['table-dir', 'metadata', 'mesh-dir']) if (!options[key]) throw new Error(`Missing --${key}`);
 const meshMode = options['mesh-mode'] ?? 'registered-200622';
 if (!['registered-200622', 'coarse-wedge-10000-v1'].includes(meshMode)) throw new Error('Use --mesh-mode registered-200622|coarse-wedge-10000-v1');
+const transportTolerance = Number(options['transport-tolerance'] ?? 1e-10);
+if (!Number.isFinite(transportTolerance) || transportTolerance < 1e-12 || transportTolerance > 1e-6) {
+  throw new Error('--transport-tolerance must be finite and within [1e-12, 1e-6]');
+}
 const bounds = options.bounds ?? 'error', endTime = Number(options['end-time'] ?? 2e-5);
 const ranks = Number(options.ranks ?? 2);
 if (!['error', 'clamp'].includes(bounds) || !(endTime > 0 && endTime <= 0.1) ||
@@ -64,6 +68,9 @@ for (const [patch, state] of Object.entries(streams)) {
 const slowerInlet = Math.min(...Object.values(streams).map(s => s.meanVelocity_m_s));
 const plan = { schema: 'forge-direct-warm-g2-fgm-v1', startTime: 0, endTime, pressure, ranks, meshMode,
   timeControls: { initialDt_s: initialDt, maxDt_s: maxDt, maxCo: 0.4 },
+  linearSolverControls: { transportTolerance, transportFields: ['U', 'h', 'Ha', 'Z', 'c', 'Yi'],
+    pressureTolerance: 1e-9, densityTolerance: 1e-10, relativeTolerance: 0,
+    interpretation: 'Linear normalized residual control only; conservation and physical acceptance criteria are unchanged.' },
   energyForm: 'absoluteEnthalpy', chemistry, boundsPolicy: bounds, initial, streams, mesh,
   thermodynamics: realFluid?.record ?? { mode: 'warm-ideal', requiresRuntimeHaInitialization: false, nasaPolicy }, initialization,
   caloricClosure: { required: true, relativeLimit: realFluid ? 1e-8 : 1e-4,
@@ -142,7 +149,8 @@ fgmTableCoeffs { table "physical.tbl"; boundsPolicy ${bounds}; mixtureFractionFi
 await put('system/fvSchemes', header('fvSchemes') + solverSchemes());
 await put('system/fvSolution', header('fvSolution') + `solvers {
  "p.*" { solver GAMG; smoother GaussSeidel; tolerance 1e-9; relTol 0; }
- "(rho|U|h|Ha|Z|c|Yi).*" { solver smoothSolver; smoother symGaussSeidel; tolerance 1e-10; relTol 0; }
+ "rho.*" { solver smoothSolver; smoother symGaussSeidel; tolerance 1e-10; relTol 0; }
+ "(U|h|Ha|Z|c|Yi).*" { solver smoothSolver; smoother symGaussSeidel; tolerance ${transportTolerance}; relTol 0; }
 }
 PIMPLE { pMin 1000; pMax 1e8; pRef ${pressure}; momentumPredictor yes;
  transonic no; consistent no;

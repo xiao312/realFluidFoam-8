@@ -38,6 +38,11 @@ actual SHA256/byte sizes. A future recipe needs a new version rather than editin
 a manifest to bypass checks. The opt-in loader repeats hash and geometry checks.
 This is a trusted project provenance boundary, not a hostile-input sandbox.
 
+The optional [fresh startup controls](startup.md) compare a rich covered fill
+with a hotter source-control fill using the existing physical table. They also
+document the proposed explicit transport tolerance and its required conservation
+and refinement checks. These do not change the mesh recipe or qualify a flame.
+
 All original patch names are retained. The collapsed axis has zero faces and
 type `empty`, following the [OF8 collapsed-block guidance](https://doc.cfd.direct/openfoam/user-guide-v8/blockmesh#x25-2030005.3.5).
 The case generator selects `empty` on that axis only in this explicit mode;
