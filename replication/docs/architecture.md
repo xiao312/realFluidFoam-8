@@ -534,3 +534,6 @@ source bounds and independent-Z errors, and cannot replace a table or grant
 scientific acceptance automatically. Its separate `derive.py` reuses exact
 retained branches without integration, preserving the physical source/job while
 recording any explicitly selected, already bounded endpoint representation.
+Its `extend.py` selectively performs fresh longer chemical trajectories for
+observed positive source caps, preserving unaffected physical branch identities
+and recording a tighter-step physical spot comparison before table reuse.
