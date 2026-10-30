@@ -407,6 +407,13 @@ retains original captions, and records numerical versus optical comparison
 contracts. CFD refresh requires source, mesh, origin and sampling identities;
 instantaneous results cannot populate invented RMS or statistical acceptance.
 
+`validation/mascotte-g2/paper-exit-wedge` owns a distinct 10k-cell recipe with
+paper-sized O2/methane exit areas and x=0 at the co-planar exit. It reuses only
+the narrow ASCII parser from `coarse-wedge`, preserving that module's immutable
+recipe/asset meaning. `direct-fgm` selects its separately qualified loader
+explicitly. Upstream taper, chamber corners and turbulence remain outside this
+partial geometry diagnostic; source and physical acceptance are unchanged.
+
 `combustionModels/fgmTable` optionally uses the standard-C++ fixed-state source
 kernel copied from direct-flamelet commit `c67dfe2910dc2275270d3dccc2a5f3fedb75862a`.
 The reader owns conversion from its v2 table to fixed-Z source curves. The model

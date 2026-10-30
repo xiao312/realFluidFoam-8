@@ -5,6 +5,7 @@ import { spawnSync } from 'node:child_process';
 import { loadPhysicalTable, thermoState } from '../../fgm-of8/direct-verification/physical-input.mjs';
 import { inspectMesh, copyMesh } from './mesh-input.mjs';
 import { inspectCoarseMesh, copyCoarseMesh } from '../coarse-wedge/mesh.mjs';
+import { inspectPaperExitMesh, copyPaperExitMesh } from '../paper-exit-wedge/mesh.mjs';
 import { loadRunControls, decompositionDictionary, functionObjects } from './observations.mjs';
 import { realFluidInput, initializationInput, ignitionDictionary } from './cold-input.mjs';
 import { solverSchemes } from '../../fgm-of8/direct-verification/schemes.mjs';
@@ -19,7 +20,7 @@ for (let i = 0; i < args.length; i += 2) {
 }
 for (const key of ['table-dir', 'metadata', 'mesh-dir']) if (!options[key]) throw new Error(`Missing --${key}`);
 const meshMode = options['mesh-mode'] ?? 'registered-200622';
-if (!['registered-200622', 'coarse-wedge-10000-v1'].includes(meshMode)) throw new Error('Use --mesh-mode registered-200622|coarse-wedge-10000-v1');
+if (!['registered-200622', 'coarse-wedge-10000-v1', 'paper-exit-wedge-10000-v1'].includes(meshMode)) throw new Error('Use --mesh-mode registered-200622|coarse-wedge-10000-v1|paper-exit-wedge-10000-v1');
 const transportTolerance = Number(options['transport-tolerance'] ?? 1e-10);
 if (!Number.isFinite(transportTolerance) || transportTolerance < 1e-12 || transportTolerance > 1e-6) {
   throw new Error('--transport-tolerance must be finite and within [1e-12, 1e-6]');
@@ -56,9 +57,13 @@ const nasaPolicy = realFluid ? null : nasaInversionPolicy(input.metadata, option
 const initialization = await initializationInput(options.initialization, input);
 if (!realFluid && initialization.config.mode === 'localized-covered') throw new Error('Localized preparation currently requires the full-runtime Ha initialization path');
 const coarseMesh = meshMode === 'coarse-wedge-10000-v1';
-const mesh = await (coarseMesh ? inspectCoarseMesh : inspectMesh)(resolve(options['mesh-dir']));
-const axisBoundaryType = coarseMesh ? 'empty' : 'symmetry';
+const paperExitMesh = meshMode === 'paper-exit-wedge-10000-v1';
+const inspectSelectedMesh = paperExitMesh ? inspectPaperExitMesh : coarseMesh ? inspectCoarseMesh : inspectMesh;
+const copySelectedMesh = paperExitMesh ? copyPaperExitMesh : coarseMesh ? copyCoarseMesh : copyMesh;
+const mesh = await inspectSelectedMesh(resolve(options['mesh-dir']));
+const axisBoundaryType = coarseMesh || paperExitMesh ? 'empty' : 'symmetry';
 if (coarseMesh) controls.observations.axialCoordinate = 'x from explicit coarse co-planar inlet at 0 m; separate diagnostic, not registered/paper injector geometry';
+if (paperExitMesh) controls.observations.axialCoordinate = 'x from co-planar paper-sized injection exit at 0 m; upstream taper/ducts and square chamber omitted';
 const pressure = input.receipt.case.pressure_pa;
 if (!(pressure > 0 && Number.isFinite(pressure))) throw new Error('Missing physical table pressure');
 const names = input.metadata.species.map(s => s.name);
@@ -93,7 +98,7 @@ const plan = { schema: 'forge-direct-warm-g2-fgm-v1', startTime: 0, endTime, pre
   inputHashes: input.inputHashes, sourceTableCase: input.receipt.case,
   approximations: [...(realFluid ? ['PR/SRK with explicitly declared NASA extrapolation', 'fixed-pressure source table without enthalpy coordinate']
     : ['warm ideal-gas thermo', 'constant viscosity and Prandtl number']), 'unity Lewis diffusion',
-    'laminar resolved diagnostic', coarseMesh ? 'separate coarse co-planar wedge; upstream ducts and paper lip omitted' : 'retained wedge geometry differs from paper',
+    'laminar resolved diagnostic', paperExitMesh ? 'paper-sized exit areas on separate coarse wedge; upstream taper/ducts, rim and square chamber omitted' : coarseMesh ? 'separate coarse co-planar wedge; upstream ducts and paper lip omitted' : 'retained wedge geometry differs from paper',
     initialization.interpretation, 'early transient, not steady morphology'],
   convectiveTimes_s: { axial50mm: 0.05 / slowerInlet, chamber200mm: 0.2 / slowerInlet,
     interpretation: realFluid ? 'Ideal-density placeholder estimate only. Use measured ha-initialization-boundaries.csv densities before estimating physical residence times.'
@@ -117,7 +122,7 @@ if (realFluid) {
   if (result.status !== 0) throw new Error(result.stderr || result.stdout || 'Thermo export failed');
   await copyFile(`${out}/thermo-input/thermophysicalProperties`, `${out}/constant/thermophysicalProperties`);
 }
-await (coarseMesh ? copyCoarseMesh : copyMesh)(resolve(options['mesh-dir']), out);
+await copySelectedMesh(resolve(options['mesh-dir']), out);
 await put('constant/physical.tbl', input.raw);
 const scalarBoundary = (fuel, oxygen, initialValue) => `boundaryField {
  geom { type zeroGradient; } slipwalls { type zeroGradient; } noslipwalls { type zeroGradient; }

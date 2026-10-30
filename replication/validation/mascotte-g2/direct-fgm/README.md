@@ -32,6 +32,11 @@ cannot be labelled a coarsening of the original mesh or a matched paper mesh.
 Its axis is a zero-face `empty` patch; canonical axis fields retain `symmetry`.
 The selected mesh identity, measured areas and geometry limitation enter the
 case manifest and all source controls remain unchanged.
+Explicit `--mesh-mode paper-exit-wedge-10000-v1` instead selects the separately
+qualified exit-area recipe in `../paper-exit-wedge`. It uses O2 exit radius 2.5 mm,
+the 0.3 mm radial separator and methane radii 2.8/5 mm with x=0 at the exit.
+Its upstream ducts/taper and square chamber remain omitted. Neither old asset
+can be loaded under the new identity; all three mesh selections stay distinct.
 `--transport-tolerance VALUE` optionally sets the normalized linear solver
 tolerance for U/h/Ha/Z/c/Yi, within 1e-12..1e-6. Default 1e-10 is unchanged.
 Pressure remains 1e-9 and rho remains 1e-10; all relative tolerances remain zero.

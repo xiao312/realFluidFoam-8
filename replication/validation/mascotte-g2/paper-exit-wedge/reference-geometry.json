@@ -1,0 +1,86 @@
+{
+  "schema": "g2-exit-geometry-reference/v1",
+  "canonical": {
+    "manifest_sha256": "a9407929f9559bf2bf6b2082acc4c0e05d9aeaa721abd645ceedc3ed1999ca70",
+    "mesh_sha256": "1802701301b481669595ffd4550f64cffbd40461bd4aedd8f15023e99a484de9",
+    "files": {
+      "boundary": "265ebb26f13bdd3afbc65eeabe90a9c39d0ef6e6ac078caa4563bb1d8962fc9b",
+      "points": "0510b510749323d62326b89c2c5673877463e82e9a7153821c384c24eae92cbd",
+      "faces": "bbfc46e64b6c2bff7cd31d8584681a71b520541846bed10f24a817a2506e6339"
+    },
+    "audit_source_sha256": "8d1296a3b022fb7e388cb1259f35ae3c24357413d791d67ba311f34c26bdf745",
+    "audit_receipt_sha256": "7284cbeff8dc01be99f1365fce5554f87e8ed75f6a34b5a874ff657d1102fedb",
+    "raw_inlet_x_m": 0,
+    "raw_exit_x_m": 0.01,
+    "paper_coordinate_transform": "x_plot_m = x_raw_m - 0.01",
+    "upstream_oxygen_radius_m": 0.0016,
+    "exit_oxygen_radius_m": 0.0025,
+    "exit_separator_radii_m": [
+      0.0025,
+      0.0028
+    ],
+    "methane_radii_m": [
+      0.0028,
+      0.005
+    ],
+    "outer_injector_rim_radii_m": [
+      0.005,
+      0.0065
+    ],
+    "oxygen_straight_until_x_m": 0.005,
+    "taper_angle_deg": 10.203973721731684,
+    "interpretation": "Measured boundary interpretation; complete paper geometry remains unqualified"
+  },
+  "papers": [
+    {
+      "id": "muller2015",
+      "pdf_sha256": "889bba9dc807b9197efcabbebba5a06f1dbf9d55c26582d19c88fbd10f15a8b9",
+      "pages": [
+        7,
+        8
+      ],
+      "oxygen_upstream_diameter_m": 0.0036,
+      "oxygen_exit_diameter_m": 0.005,
+      "methane_diameters_m": [
+        0.0056,
+        0.01
+      ]
+    },
+    {
+      "id": "cavalieri2025",
+      "pdf_sha256": "bcd4f0fdac3c4063c744e331c0b2e6af7e311837f99230502cde2c97257d0843",
+      "pages": [
+        8,
+        9
+      ],
+      "case": "TF",
+      "oxygen_upstream_diameter_m": 0.0036,
+      "oxygen_exit_diameter_m": 0.005,
+      "methane_diameters_m": [
+        0.0056,
+        0.01
+      ]
+    },
+    {
+      "id": "sharma2023",
+      "pdf_sha256": "65ae91e8734d8006f4274c70f548f969ab18ca698d8aad8d3b3384882356349c",
+      "pages": [
+        8,
+        9
+      ],
+      "note": "d1/d2/d3/d4=3.6/5/5.6/10 mm; mass-flow prose conflicts with mixture ratio"
+    },
+    {
+      "id": "schmitt2020",
+      "pdf_sha256": "f138b430e2cac438acf139d9a7f56d38e53adb11513346c69922734c1c419879",
+      "pages": [
+        12,
+        13
+      ],
+      "oxygen_temperature_K": 83,
+      "methane_temperature_K": 300,
+      "pressure_Pa": 5600000
+    }
+  ],
+  "scientificAcceptance": false
+}
