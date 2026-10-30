@@ -278,3 +278,27 @@ on the reported final-state energy/mass balance remains an explicit coupling
 diagnostic, rather than being silently included in this pressure-loop repair.
 The upstream return-value contract is visible in
 [OF8 pressureControl.C](https://github.com/OpenFOAM/OpenFOAM-8/blob/master/src/finiteVolume/cfdTools/general/pressureControl/pressureControl.C).
+
+`projectTabulatedZRoundoff yes;` is a separate, default-off numerical policy.
+It requires tabulated composition and `conserveTabulatedDensity yes;`. After
+each Z solve, the original algebraic audit runs first. A global scan then
+refuses nonfinite Z, invalid positive density/volume weights, or any internal
+or boundary excursion larger than exactly64 double-precision epsilon. Nothing
+has been projected on any rank at that refusal. Within that unchanged bound,
+only internal Z values outside0..1 are set to the corresponding endpoint;
+oldTime and prescribed boundary values are never changed. Boundary conditions
+are reevaluated and checked. This differs from the existing lookup-only policy,
+which leaves the transported field unchanged and allows ulps to accumulate.
+
+Every call reports actual pre/post global extrema, corrected cell count and
+maximum delta, signed/absolute sums of rho*V*deltaZ, and cumulative signed/
+absolute mass corrections over all outer solves. `fieldsModified` explicitly
+identifies correction. These are recorded changes to transported mixture
+fraction, not exact scalar conservation. The pressure, energy, lookup and
+material-overshoot criteria are unchanged. Fresh100us qualification must retain
+this ledger and the independent conservation audit; bounded interior cases
+must remain unchanged. The header probe exercises the same decision routine
+at0/1,64/65epsilon and the retained4e-9 material error before actual CFD tests.
+Compile/run it in the admitted allocation with `g++ -std=c++11
+zRoundoffProbe.C -o zRoundoffProbe && ./zRoundoffProbe`. No new runtime library,
+network access, input file, credential or model ABI is introduced.

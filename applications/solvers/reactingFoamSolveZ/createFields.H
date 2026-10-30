@@ -92,6 +92,20 @@ if (conserveTabulatedDensity && !reaction->compositionTabulated())
         << exit(FatalError);
 }
 
+const Switch projectTabulatedZRoundoff
+(
+    runTime.controlDict().lookupOrDefault<Switch>("projectTabulatedZRoundoff", false)
+);
+if (projectTabulatedZRoundoff
+ && (!conserveTabulatedDensity || !reaction->compositionTabulated()))
+{
+    FatalErrorInFunction
+        << "projectTabulatedZRoundoff requires conservative density and tabulated composition"
+        << exit(FatalError);
+}
+scalar cumulativeZRoundoffMass=0, cumulativeZRoundoffAbsoluteMass=0;
+unsigned long long cumulativeZRoundoffCells=0;
+
 Info<< "Creating field dpdt\n" << endl;
 volScalarField dpdt
 (
