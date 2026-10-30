@@ -206,3 +206,9 @@ The solver's separate `thermoPostPressureClosure` records are exported under
 the final pressure correction. The checker does not apply the stricter
 after-inversion limit to this report-only witness; coupled refinement is
 required to interpret it. These diagnostics never overwrite h, T, or pressure.
+
+`--max-co VALUE` (default 0.4, positive and at most 1) and `--outer N`
+(default 2, integer 1 through 10) expose timestep and pressure-coupling
+refinement. Their values are bound in the case manifest and emitted to the
+solver dictionaries. The generator does not certify a larger timestep merely
+because the source integrator can integrate it.
