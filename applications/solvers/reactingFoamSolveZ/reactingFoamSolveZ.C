@@ -53,6 +53,7 @@ Description
 #include "fgmMatrixResidual.H"
 #include "fgmThermoClosure.H"
 #include "fgmTable.H"
+#include "fgmTiming.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -66,12 +67,18 @@ int main(int argc, char *argv[])
     #include "createControl.H"
     #include "createTimeControls.H"
     #include "initContinuityErrs.H"
+    fgmWallTiming fgmTiming
+    (
+        runTime.controlDict().lookupOrDefault<Switch>("writeFgmTiming", false)
+    );
+    const auto fgmStartupStart = fgmTiming.start();
     #include "createFields.H"
     #include "createFieldRefs.H"
 
     turbulence->validate();
 
     #include "energyState.H"
+    fgmTiming.stop(fgmWallTiming::startup, fgmStartupStart);
 
     if (!LTS)
     {
@@ -85,6 +92,7 @@ int main(int argc, char *argv[])
 
     while (pimple.run(runTime))
     {
+        const auto fgmStepStart = fgmTiming.start();
         #include "readTimeControls.H"
 
         if (LTS)
@@ -103,41 +111,59 @@ int main(int argc, char *argv[])
 
         Info<< "Time = " << runTime.timeName() << nl << endl;
 
+        const auto fgmContinuityStart = fgmTiming.start();
         #include "rhoEqn.H"
+        fgmTiming.stop(fgmWallTiming::continuity, fgmContinuityStart);
 
         while (pimple.loop())
         {
             // c and energy use sources sampled at the same lookup state.
             tmp<volScalarField> tabulatedHeatRelease;
+            const auto fgmMomentumStart = fgmTiming.start();
             #include "UEqn.H"
+            fgmTiming.stop(fgmWallTiming::momentum, fgmMomentumStart);
+            const auto fgmSpeciesStart = fgmTiming.start();
             #include "YEqn.H"
+            fgmTiming.stop(fgmWallTiming::species, fgmSpeciesStart);
+            const auto fgmMixtureStart = fgmTiming.start();
             #include "ZEqn.H"
+            fgmTiming.stop(fgmWallTiming::mixtureFraction, fgmMixtureStart);
             if (reaction->transportsProgress())
             {
+                const auto fgmProgressStart = fgmTiming.start();
                 #include "cEqn.H"
+                fgmTiming.stop(fgmWallTiming::progress, fgmProgressStart);
             }
             else if (reaction->compositionTabulated())
             {
                 // A steady flamelet owns Y(Z), not a transported progress field.
                 // Refresh the just-transported composition before Ha inversion.
+                const auto fgmReactionStart = fgmTiming.start();
                 reaction->correct();
+                fgmTiming.stop(fgmWallTiming::reactionCorrection, fgmReactionStart);
             }
+            const auto fgmEnergyStart = fgmTiming.start();
             #include "EEqn.H"
+            fgmTiming.stop(fgmWallTiming::energy, fgmEnergyStart);
 
             // --- Pressure corrector loop
             while (pimple.correct())
             {
+                const auto fgmPressureStart = fgmTiming.start();
                 #include "pEqn.H"
                 if (absoluteEnthalpyFGM)
                 {
                     updateFgmFixedTemperatureEnthalpy(thermo, composition, fgmAbsoluteEnthalpy());
                 }
+                fgmTiming.stop(fgmWallTiming::pressure, fgmPressureStart);
             }
 
             if (pimple.turbCorr())
             {
+                const auto fgmTransportStart = fgmTiming.start();
                 turbulence->correct();
                 thermophysicalTransport->correct();
+                fgmTiming.stop(fgmWallTiming::transportCorrection, fgmTransportStart);
             }
         }
 
@@ -146,16 +172,25 @@ int main(int argc, char *argv[])
         // A changed nonideal pressure can move h(p,T,Y) after the last inversion.
         // Measure that coupling drift separately; do not mutate or reject it as
         // an inversion error while it awaits another PIMPLE correction.
+        const auto fgmPostPressureStart = fgmTiming.start();
         auditFgmThermoClosure(thermo, false);
+        fgmTiming.stop(fgmWallTiming::postPressureAudit, fgmPostPressureStart);
+        const auto fgmBudgetStart = fgmTiming.start();
         #include "energyState.H"
+        fgmTiming.stop(fgmWallTiming::energyBudget, fgmBudgetStart);
 
+        const auto fgmWriteStart = fgmTiming.start();
         runTime.write();
+        fgmTiming.stop(fgmWallTiming::fieldWrite, fgmWriteStart);
+        fgmTiming.stop(fgmWallTiming::step, fgmStepStart);
+        if (runTime.writeTime()) fgmTiming.report(runTime.value(), "write");
 
         Info<< "ExecutionTime = " << runTime.elapsedCpuTime() << " s"
             << "  ClockTime = " << runTime.elapsedClockTime() << " s"
             << nl << endl;
     }
 
+    fgmTiming.report(runTime.value(), "end");
     Info<< "End\n" << endl;
 
     return 0;

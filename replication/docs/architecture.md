@@ -469,3 +469,9 @@ only after explicit FGM/Fourier/absolute-enthalpy checks; public Dimix reads fai
 while suppressed. The class layout and default full calculation remain intact.
 This module records numerical parity and timings, not scientific acceptance;
 subsequent identical fresh CFD comparisons qualify actual solver use.
+
+The solver's optional `fgmTiming.H` depends only on OF8 communication containers
+and the C++ steady clock. It measures local inclusive regions and gathers rank
+counters only at existing writes/end; it does not alter the scientific models
+or require a scheduler/runtime service. Operator performance analysis consumes
+its logs separately from conservation and physical acceptance.

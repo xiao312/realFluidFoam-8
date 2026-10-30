@@ -190,3 +190,45 @@ Nonideal pressure dependence can produce a departure after a successful
 inversion; compare this drift under timestep and PIMPLE-outer refinement.
 The `limit` field is retained only as the inversion diagnostic's reference
 scale, not as post-pressure acceptance. Invalid counts remain visible.
+
+# Optional wall-time attribution
+
+`writeFgmTiming yes;` in `system/controlDict` enables a local steady-clock
+diagnostic; the default is off and the setting is read once at solver startup.
+It does not change equations, solver tolerances, guards or model selection.
+It times startup after mesh creation, complete steps, the main equations,
+source half-stages, reaction/table updates, thermo correction, caloric checks,
+energy bookkeeping and field writes. Equation/step categories are inclusive:
+for example energy includes thermo correction and its caloric audit, while
+progress includes the second source stage and subsequent table update.
+Source stages include their field copies/history checks and boundary updates,
+not only the scalar ODE kernel. `continuity` is the standalone step-start density
+solve; density solves inside pressure correction are included in `pressure`.
+`reactionCorrection` includes actual model/table updates in species/progress
+equations. Constructor work remains part of `startup`.
+
+Each region uses local clock reads only. At existing field-write points and
+normal termination, one Pstream gather collects the cumulative seconds, call
+counts and longest individual call from each rank. The master writes explicit
+`fgmTimingRank` records and `fgmTimingCategory` records with rank-0 and maximum
+values, plus the rank responsible for each maximum. Different maxima may come
+from different ranks; their sum is not a critical path or job wall time.
+Times include waits already present in the measured code. Reporting itself is
+outside the step/region counters but inside elapsed time since timer creation.
+No new synchronization occurs at region boundaries. A fatal path retains only
+previous complete summaries; no destructor attempts an unsafe MPI gather.
+
+Dependencies are C++ steady_clock and existing OF8 Pstream/List interfaces;
+there are no files, network operations, secrets or library ABI changes. The
+initial thermo constructor is included in startup rather than attributed to
+thermo.correct. Allocation setup, meshing and compilation are outside this
+instrument. No timing is a scientific acceptance result.
+
+Minimal use: add `writeFgmTiming yes;` to a new time-zero qualification case,
+run the exact rebuilt solver and retain its log. Read-only checks before an
+allocated build are `git diff --check` and review of the timing-only diff.
+The intended allocated check is a small existing physical case with timing off
+and on: the fields and scientific verdicts must agree, enabled logs must contain
+finite nonnegative counters, and rank identities/call counts must match the
+executed serial/MPI configuration. Compilation and that parity check remain
+pending until an admitted run supplies evidence.

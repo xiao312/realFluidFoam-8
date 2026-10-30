@@ -113,8 +113,12 @@
     {
         thermo.he() == fgmAbsoluteEnthalpy() - fgmChemicalEnthalpy(mesh, composition);
     }
+    const auto fgmThermoStart = fgmTiming.start();
     thermo.correct();
+    fgmTiming.stop(fgmWallTiming::thermoCorrection, fgmThermoStart);
+    const auto fgmCaloricStart = fgmTiming.start();
     auditFgmThermoClosure(thermo);
+    fgmTiming.stop(fgmWallTiming::caloricAudit, fgmCaloricStart);
 
     Info<< "min/max(T) = "
         << min(T).value() << ", " << max(T).value() << endl;

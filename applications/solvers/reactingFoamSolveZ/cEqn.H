@@ -49,7 +49,12 @@
     // lookup inside the loop, not only at construction.
     // Split transport does not need a source lookup at new Z with untransported C.
     // Its source curve is sampled only after the joint transport state is available.
-    if (!splitFgmSource) reaction->correct();
+    if (!splitFgmSource)
+    {
+        const auto fgmReactionStart = fgmTiming.start();
+        reaction->correct();
+        fgmTiming.stop(fgmWallTiming::reactionCorrection, fgmReactionStart);
+    }
     tabulatedHeatRelease = reaction->Qdot();
 
     // Held in a named tmp: the progress source is owned by that tmp until the
@@ -99,6 +104,7 @@
     if (splitFgmSource)
     {
         // Recomputed from this transport solution; never advance the last outer's result.
+        const auto fgmSecondSourceStart = fgmTiming.start();
         const scalarField transportedC(c.primitiveField());
         c.primitiveFieldRef() = fgmSourceModel->advanceProgressSource
         (
@@ -106,13 +112,16 @@
             0.5*runTime.deltaTValue(), "secondHalf"
         );
         c.correctBoundaryConditions();
+        fgmTiming.stop(fgmWallTiming::sourceSecondHalf, fgmSecondSourceStart);
     }
 
     // Refresh composition before thermo inverts the newly solved energy.
     // Explicit mode retains its pre-solve Q time level. Split mode requires
     // absolute Ha: Q is diagnostic only; composition changes carry formation
     // energy through the unchanged absolute-energy equation.
+    const auto fgmReactionStart = fgmTiming.start();
     reaction->correct();
+    fgmTiming.stop(fgmWallTiming::reactionCorrection, fgmReactionStart);
 
     Info<< "fgm: progress variable " << c.name()
         << " min/max " << min(c).value() << " " << max(c).value() << endl;
