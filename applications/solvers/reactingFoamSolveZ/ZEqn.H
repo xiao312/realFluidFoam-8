@@ -81,7 +81,8 @@
     Info<< "fgmZEndpoint t=" << runTime.value()
         << " belowZero=" << max(scalar(0), -min(Z).value())
         << " aboveOne=" << max(scalar(0), max(Z).value()-scalar(1))
-        << " transportedZModified=0" << endl;
+        << " reportOnly=1 roundoffProjectionEnabled="
+        << label(projectTabulatedZRoundoff) << endl;
     Info<< "fgmZ: transported mixture fraction " << Z.name()
         << " min/max " << min(Z).value() << " " << max(Z).value()
         << " (the table reports its own Z bounds on the next correct())" << endl;

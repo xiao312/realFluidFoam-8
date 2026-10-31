@@ -302,3 +302,8 @@ at0/1,64/65epsilon and the retained4e-9 material error before actual CFD tests.
 Compile/run it in the admitted allocation with `g++ -std=c++11
 zRoundoffProbe.C -o zRoundoffProbe && ./zRoundoffProbe`. No new runtime library,
 network access, input file, credential or model ABI is introduced.
+
+The subsequent `fgmZEndpoint` line is report-only and records whether the
+roundoff policy is enabled. Actual field changes and their mass correction are
+reported by `fgmZRoundoffProjection`; the endpoint line does not claim that an
+earlier projection left Z unchanged.
