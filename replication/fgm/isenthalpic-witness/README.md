@@ -69,3 +69,13 @@ Verification uses the exact retained pair for a bounded initialization audit,
 then the two allocated physical trajectories. Source archive and all input
 hashes are checked before execution. No synthetic pass counts substitute for
 physical equality, conservation or trajectory evidence.
+
+`render.py --input RETAINED_R2 --prior RETAINED_MIXING_R1 --out NEW_REVIEW`
+compares both new physical histories with the corresponding original histories.
+Omit `--out` for a read-only identity check. It validates both receipt chains,
+initial-state, physical-receipt and trajectory hashes, and requires matching
+mechanism-runtime identities. Matplotlib is a rendering-only dependency. The
+figures connect actual accepted CVODE states without smoothing or regression;
+first-crossing times are reported as accepted-step brackets, not exact events.
+The original enthalpy difference and the achieved equal-h residual remain visible.
+This postprocessor performs no chemistry, table modification or publication.
