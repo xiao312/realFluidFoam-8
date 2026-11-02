@@ -1,5 +1,12 @@
 # Replication boundaries
 
+`validation/mascotte-g2/log-stream` provides bounded streaming access to complete
+retained solver logs and incremental JSON output. `direct-fgm/check.mjs` and
+separately versioned operator endpoint/density/projection/conservation adapters
+consume it while retaining their scientific parsers and criteria. It preserves
+full raw-file identities and original line mappings and does not depend on or
+modify the solver, case generator, scheduler or remote environment.
+
 The optional SRK unused-diffusion setup path depends on the shared basic-thermo
 policy and Chung transport's explicitly diffusion-free update. It preserves
 EOS/Chung calculations and corrected X/Y, and adds no cache or object layout.

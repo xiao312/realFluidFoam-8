@@ -1,0 +1,32 @@
+{
+  "check.mjs": {
+    "originalSha256": "04d3dd7a28922b7ceaed291f41db980962cc60d829076aa8d0ba62a71d44c09e",
+    "origin": "g2-composite-20261102-r2 frozen operator input",
+    "adaptedSha256": "91d21a9e1c254ddcc6f425dfc9659e5204cd0c3f71c33d477d296b87f8057545"
+  },
+  "check-endpoint.mjs": {
+    "originalSha256": "8180676a567de950f42f1714a6e264ea4da979c9dc5a79ea804d66525469b037",
+    "origin": "g2-composite-20261102-r2 frozen operator input",
+    "adaptedSha256": "e40efbac00a686a3820f852f638558b940cead9c97ec66e351341f5a0a145ff2"
+  },
+  "check-projection.mjs": {
+    "originalSha256": "c793ab4da18c27ac2a67c831286aa6072961e1d8191f58ddbd056b34d0f56cdd",
+    "origin": "g2-composite-20261102-r2 frozen operator input",
+    "adaptedSha256": "8af4874953ca6d2a405bb092ea1621944859a931d556a87fdc43bd83cfd87d19"
+  },
+  "audit-run.mjs": {
+    "originalSha256": "5ffb041d68a2f01dca860694fd55f3b4dd002d74403195bbe6bee73020ee95bf",
+    "origin": "g2-composite-20261102-r2 frozen operator input",
+    "adaptedSha256": "374534898f20ac17f1475d9301bd0bf62e9c5fc6980e82850d81b0225e2879d3"
+  },
+  "conservation/audit.mjs": {
+    "originalSha256": "c67e337fa4996d19a2f5a28bdce481e256db55c8a4d3ac59ab62915540c42ef0",
+    "origin": "g2-composite-20261102-r2 frozen operator input",
+    "adaptedSha256": "6996a12dce76a777208729dad72a426297679a99328f8a027e836f6490aac09c"
+  },
+  "conservation/core.mjs": {
+    "originalSha256": "94a6b34d0ccd576e7c77c8647a77220745ba7b54cffcda119145ab37af5821f0",
+    "origin": "g2-composite-20261102-r2 frozen operator input",
+    "adaptedSha256": "94a6b34d0ccd576e7c77c8647a77220745ba7b54cffcda119145ab37af5821f0"
+  }
+}
