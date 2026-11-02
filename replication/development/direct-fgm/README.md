@@ -29,6 +29,12 @@ The [07:08 checkpoint](continued-g2-20261031.md) records completed 100 us flow,
 physical mixing failures, four interior water-progress CFD cases, independent
 reference recovery and the retained cold-start endpoint failure.
 
+The [2 November continuation](cold-g2-20261102.md) supersedes that cold-flow
+status: job 126435330 completed a fresh 100 us case after the density and
+bounded-roundoff corrections. The later equal-enthalpy witnesses retain the
+FGM composition-history limitation. Longer cold-flow and RANS comparisons are
+the next development work; no developed paper-mean match is claimed.
+
 Independent DOP853 analysis agrees with all six uniform CFD histories within
 7.13e-10 of the progress-variable span. Its Windows environment is NumPy
 2.2.6/SciPy 1.15.3; the allocated Linux repetition also passed. Both the loose
