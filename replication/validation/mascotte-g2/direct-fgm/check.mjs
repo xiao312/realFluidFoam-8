@@ -1,16 +1,20 @@
 import { readFile, writeFile, readdir } from 'node:fs/promises';
 import { resolve } from 'node:path';
+import { scanSolverLog } from '../log-stream/reader.mjs';
+import { writeJson } from '../log-stream/json.mjs';
 import { scalarValues, differenceSummary, inletAndMassAudit, averagingAudit } from './diagnostics.mjs';
 
-const [directory] = process.argv.slice(2);
+const [directory, logMode, ...extra] = process.argv.slice(2);
+if (extra.length || (logMode !== undefined && logMode !== '--stream-log')) throw Error('Use CASE [--stream-log]');
 if (!directory) throw new Error('Usage: check.mjs RECONSTRUCTED_CASE');
 const root = resolve(directory);
 const manifest = JSON.parse(await readFile(`${root}/direct-g2-input.json`, 'utf8'));
 const steady = manifest.closure === 'steady-flamelet';
 const diagnosticTemperature = steady ? 'steadyTdiag' : 'fgmTdiag';
-const log = await readFile(`${root}/log.solver`, 'utf8');
+const scanned = logMode === '--stream-log' ? await scanSolverLog(`${root}/log.solver`) : null;
+const log = scanned ? scanned.markerText : await readFile(`${root}/log.solver`, 'utf8');
 function records(prefix) {
-  return log.split(/\r?\n/).filter(line => line.startsWith(prefix)).map(line => {
+  return (scanned ? scanned.lines(prefix) : log.split(/\r?\n/).filter(line => line.startsWith(prefix))).map(line => {
     const values = {};
     for (const pair of line.slice(prefix.length).trim().split(/\s+/)) {
       const [key, value] = pair.split('=');
@@ -108,6 +112,12 @@ const report = { schema: steady ? 'forge-direct-steady-flamelet-diagnostic-v1' :
   status: Object.values(mechanicalChecks).every(Boolean) ? 'diagnostic-run-completed' : 'diagnostic-run-incomplete-or-failed',
   physicalValidationPassed: false, independentScienceApproval: false,
   interpretation: 'Completion and finite fields are execution evidence only. Inspect source signs, clipping, energy fluxes and profiles before accepting any physical claim.' };
-await writeFile(`${root}/direct-g2-result.json`, JSON.stringify(report, null, 2) + '\n');
-console.log(JSON.stringify(report, null, 2));
+if (scanned) {
+  report.logInputIdentity = scanned.identity;
+  await writeJson(`${root}/direct-g2-result.json`, report);
+  console.log(JSON.stringify({ status: report.status, mechanicalChecks, time: report.time, scientificAcceptance: false }));
+} else {
+  await writeFile(`${root}/direct-g2-result.json`, JSON.stringify(report, null, 2) + '\n');
+  console.log(JSON.stringify(report, null, 2));
+}
 if (!Object.values(mechanicalChecks).every(Boolean)) process.exitCode = 2;

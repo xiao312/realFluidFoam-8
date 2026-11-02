@@ -253,3 +253,9 @@ lookup representation contract. Strict is the default. The opt-in is recorded
 in the manifest and combustion dictionary; it does not bound transported Z.
 The fixed64-epsilon limit and required physical qualification are documented in
 `src/combustionModels/steadyFlamelet/README.md`. It is invalid for FGM closure.
+
+For long retained logs, `node check.mjs CASE --stream-log` selects the separately
+identified `../log-stream` reader and incremental report writer. The default
+short-run path remains unchanged. Every scientific record parser, field check
+and acceptance threshold is identical; the streamed report adds full raw-log
+identity and original line mappings. A changed or over-budget log fails openly.
