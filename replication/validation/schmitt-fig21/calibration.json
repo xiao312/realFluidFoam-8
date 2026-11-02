@@ -1,0 +1,30 @@
+{
+  "schema": "schmitt-fig21-calibration/v1",
+  "pdf_sha256": "f138b430e2cac438acf139d9a7f56d38e53adb11513346c69922734c1c419879",
+  "pdf_page_index": 21,
+  "image_xref": 116,
+  "image_sha256": "5039c7142f0f08522a366372f1c58d8eee474feefec364695d55d3655a3df811",
+  "native_size": [1441, 423],
+  "pixel_uncertainty": 2,
+  "blue_classifier": {"minimum_B": 100, "minimum_B_minus_R": 60, "minimum_B_minus_G": 40},
+  "velocity": {
+    "x_anchors": [[59, 0], [671, 80]],
+    "y_anchors": [[138, 0], [319, -4]],
+    "columns": [61, 654],
+    "rows": [3, 358]
+  },
+  "oxygen": {
+    "x_anchors": [[820, 0], [1431, 80]],
+    "y_anchors": [[3, 1], [365, 0]],
+    "plateau_columns": [824, 893],
+    "plateau_rows": [0, 13],
+    "descending_columns": [888, 919],
+    "descending_rows": [14, 355]
+  },
+  "excluded": [
+    "A60 and C60 curves are outside this G2-only comparison",
+    "Blue oxygen RMS overlaps the steep mean and is not separately digitized",
+    "Oxygen baseline below the retained descending trace is not assigned to mean or RMS",
+    "No numerical paper u0 or d is supplied or inferred"
+  ]
+}

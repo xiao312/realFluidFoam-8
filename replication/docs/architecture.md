@@ -582,3 +582,11 @@ audits and partial coverage; it does not manufacture solver averaging counters.
 Its optional Python paper consumer depends on NumPy/Matplotlib/PyMuPDF and the
 existing G2 reference readers. Solver, scheduler and instantaneous renderers do
 not depend on this module; no publication or acceptance side effects are owned.
+
+`validation/schmitt-fig21` separately extracts identifiable G2 mean curves from
+the pinned paper raster, retaining calibration and pixel-reading uncertainty.
+It consumes `g2-window-average` manifests through an offline Python comparison
+CLI and reuses its optional executed-inlet audit. Primary panels keep dimensional
+CFD separate from paper-normalized axes; optional normalization states its
+inference. Dependencies are NumPy, Matplotlib, Pillow, PyMuPDF and the existing
+G2 input reader. It owns no CFD, scheduler, publication or scientific acceptance.
