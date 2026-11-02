@@ -38,6 +38,15 @@ fail under the optimized library. A baseline-binary opt-in run is not proof
 that a new switch was implemented: require the candidate suppression log and
 the accessor refusal.
 
+The transport and combustion negative controls require the exact supported-
+policy guard message emitted by the current library: explicit laminar/Fourier
+or declared RAS kEpsilon/unity-Le, hePsiThermo and a supported tabulated model.
+They still require a nonzero process status or SIGABRT, no spawn/timeout error,
+and that specific reason. The runtime-edit and two forbidden-Dimix checks keep
+their separate reasons. This checker wording follows the RAS guard contract;
+it does not permit a generic failure, change any solver policy, or reinterpret
+older failed checker receipts as passes.
+
 Run blockMesh and `realFluidG2ThermoProbe -case CASE` on each case, preserving
 logs and executable/library hashes. The probe reports rho, Cp, Cv, Hs, Ha, mu,
 kappa, alpha, recovered T, inversion results and repeated-correction wall time.

@@ -5,9 +5,10 @@ import { spawnSync } from 'node:child_process';
 const [directoryArg, probe, apply] = process.argv.slice(2);
 if (!directoryArg || !probe || (apply && apply !== '--apply')) throw new Error('Use negative-controls.mjs PAIRS_DIR PROBE [--apply]');
 const directory = resolve(directoryArg);
+const unsupportedPolicy = 'fgmSkipUnusedDimix requires the explicit laminar/Fourier path or the declared RAS kEpsilon/unity-Le diagnostic, hePsiThermo and a supported tabulated combustion model';
 const tests = [
-  { name: 'transport', file: 'constant/thermophysicalTransport', before: 'model Fourier', after: 'model Fickian', expected: 'requires explicit laminar momentum' },
-  { name: 'combustion', file: 'constant/combustionProperties', before: 'combustionModel fgmTable', after: 'combustionModel laminar', expected: 'requires explicit laminar momentum' },
+  { name: 'transport', file: 'constant/thermophysicalTransport', before: 'model Fourier', after: 'model Fickian', expected: unsupportedPolicy },
+  { name: 'combustion', file: 'constant/combustionProperties', before: 'combustionModel fgmTable', after: 'combustionModel laminar', expected: unsupportedPolicy },
   { name: 'runtime-edit', file: 'system/controlDict', before: 'runTimeModifiable no', after: 'runTimeModifiable yes', expected: 'requires absoluteEnthalpy' },
   { name: 'internal-access', option: '-read-Dimix', expected: 'Dimix was requested while fgmSkipUnusedDimix is enabled' },
   { name: 'boundary-access', option: '-read-boundary-Dimix', expected: 'Dimix was requested while fgmSkipUnusedDimix is enabled' },
