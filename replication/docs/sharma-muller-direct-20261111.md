@@ -109,3 +109,11 @@ Next scientific step: generate a deliberately selected flamelet family and
 construct a reproducible branch-selection rule; verify energy/enthalpy consistency
 and identify the paper's burnt-reference convention. Preserve the present failed
 or approximate comparisons while those diagnostics proceed.
+
+An additional independent Cantera final-profile audit found maximum carbon and
+oxygen coordinate errors below 1.61e−10 mass fraction. Maximum enthalpy defects
+against linear stream mixing were 3345.99/1584.93/697.51 J/kg across the three
+branches. These are diagnostics, not a conservation pass: Cantera extrapolates
+NASA polynomials while Spitfire has a distinct cold-Cp extension, and Cantera's
+TPY setter normalizes/clips the signed trace inputs. The versioned audit verifies
+trajectory hashes, retains its output separately and does not modify the fields.

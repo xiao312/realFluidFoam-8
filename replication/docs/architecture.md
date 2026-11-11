@@ -611,6 +611,8 @@ calculation and 2D coordinate remapping. It depends on the qualified Spitfire,
 Cantera, NumPy and SciPy runtime, and supplies plotting inputs only.
 Its separate offline comparison CLI uses NumPy, Matplotlib and Pillow to sample
 paper raster curves and render computed results without filling missing cells.
+Its independent final-profile audit uses Cantera and NumPy for elemental and
+enthalpy diagnostics; it never rewrites trajectories or accepts a table.
 [Müller PR-VTA](../validation/muller-prvta/README.md) reconstructs density from
 retained flamelet profiles. It depends on Cantera critical data and NumPy, not
 OpenFOAM or the manifold generator. Neither module submits Slurm jobs or changes

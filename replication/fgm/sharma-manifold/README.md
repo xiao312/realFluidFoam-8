@@ -42,3 +42,9 @@ It verifies result hashes before rendering and also saves separate chronological
 path and final-profile views. Those views expose differences hidden by combining
 transients into a sorted progress table. Colour extraction distinguishes pink
 from antialiased red; the raw reference samples remain in comparison.json.
+
+`audit.py --run RESULTS --mechanism INPUT.yaml --out NEW.json [--plan]` checks
+final carbon/oxygen coordinates and enthalpy against linear stream mixing using
+Cantera and verified trajectory hashes. Cantera's NASA evaluation differs from
+Spitfire's cold-Cp extension and normalizes trace-negative input mass fractions.
+These diagnostics do not establish strict discrete conservation or acceptance.
