@@ -603,3 +603,13 @@ unity-Lewis eddyDiffusivity with declared turbulence inputs. The shared Dimix
 policy and steadyFlamelet constructor allow only that named opt-in combination;
 they retain all other guards and need exact-runtime qualification. No RANS/LES
 equivalence or presumed-PDF closure is inferred from this diagnostic.
+
+## Direct paper-manifold and density diagnostics
+
+[Sharma manifold](../fgm/sharma-manifold/README.md) owns unsteady flamelet
+calculation and 2D coordinate remapping. It depends on the qualified Spitfire,
+Cantera, NumPy and SciPy runtime, and supplies plotting inputs only.
+[Müller PR-VTA](../validation/muller-prvta/README.md) reconstructs density from
+retained flamelet profiles. It depends on Cantera critical data and NumPy, not
+OpenFOAM or the manifold generator. Neither module submits Slurm jobs or changes
+scientific review state. Operator tooling owns execution and Forge owns display.
