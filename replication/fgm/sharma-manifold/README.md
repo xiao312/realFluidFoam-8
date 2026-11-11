@@ -48,3 +48,7 @@ final carbon/oxygen coordinates and enthalpy against linear stream mixing using
 Cantera and verified trajectory hashes. Cantera's NASA evaluation differs from
 Spitfire's cold-Cp extension and normalizes trace-negative input mass fractions.
 These diagnostics do not establish strict discrete conservation or acceptance.
+
+[The Famou challenge](challenge/README.md) provides numeric reference curves,
+fixed metrics and a separate physical candidate interface. It is independent
+of the older homogeneous-reactor closure task and owns no HPC execution.

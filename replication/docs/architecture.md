@@ -613,6 +613,10 @@ Its separate offline comparison CLI uses NumPy, Matplotlib and Pillow to sample
 paper raster curves and render computed results without filling missing cells.
 Its independent final-profile audit uses Cantera and NumPy for elemental and
 enthalpy diagnostics; it never rewrites trajectories or accepts a table.
+The nested `challenge` package owns frozen numerical paper references, standard-
+library scoring, a separate process runner and Spitfire execution qualification.
+Its operator-only reference extractor needs PyMuPDF, Pillow and NumPy. Physical
+execution reuses the same generator; neither scoring nor upload accepts science.
 [Müller PR-VTA](../validation/muller-prvta/README.md) reconstructs density from
 retained flamelet profiles. It depends on Cantera critical data and NumPy, not
 OpenFOAM or the manifold generator. Neither module submits Slurm jobs or changes

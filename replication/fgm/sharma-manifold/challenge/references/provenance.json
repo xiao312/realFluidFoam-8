@@ -1,0 +1,536 @@
+{
+  "curves": [
+    {
+      "id": "fig1-T-burnt",
+      "xref": 41,
+      "image_sha256": "a71bd6706a99dcbcb68dfbdaea15df2d62adaee44185c7d1958f3e98ba61e3e7",
+      "axis_box_pixels": [
+        127,
+        6,
+        757,
+        582
+      ],
+      "y_limits": [
+        0,
+        3800
+      ],
+      "samples": 611,
+      "guide": null,
+      "corridor_half_width": null,
+      "method": "Colour threshold and median row per column. A manually read corridor separates overlapping same-colour species. No simulation used."
+    },
+    {
+      "id": "fig1-CH4-burnt",
+      "xref": 43,
+      "image_sha256": "4b5acd9a0e3ca4aeac0223e4034d03bf307a77c204bc017848cd8429312ef76e",
+      "axis_box_pixels": [
+        66,
+        11,
+        519,
+        424
+      ],
+      "y_limits": [
+        0,
+        1
+      ],
+      "samples": 282,
+      "guide": [
+        [
+          0,
+          0
+        ],
+        [
+          0.35,
+          0
+        ],
+        [
+          0.4,
+          0.015
+        ],
+        [
+          0.5,
+          0.16
+        ],
+        [
+          0.6,
+          0.33
+        ],
+        [
+          0.8,
+          0.66
+        ],
+        [
+          1,
+          1
+        ]
+      ],
+      "corridor_half_width": 0.045,
+      "method": "Colour threshold and median row per column. A manually read corridor separates overlapping same-colour species. No simulation used."
+    },
+    {
+      "id": "fig1-O2-burnt",
+      "xref": 43,
+      "image_sha256": "4b5acd9a0e3ca4aeac0223e4034d03bf307a77c204bc017848cd8429312ef76e",
+      "axis_box_pixels": [
+        66,
+        11,
+        519,
+        424
+      ],
+      "y_limits": [
+        0,
+        1
+      ],
+      "samples": 138,
+      "guide": [
+        [
+          0,
+          1
+        ],
+        [
+          0.05,
+          0.71
+        ],
+        [
+          0.1,
+          0.42
+        ],
+        [
+          0.15,
+          0.2
+        ],
+        [
+          0.2,
+          0.06
+        ],
+        [
+          0.25,
+          0.005
+        ],
+        [
+          0.3,
+          0
+        ],
+        [
+          1,
+          0
+        ]
+      ],
+      "corridor_half_width": 0.045,
+      "method": "Colour threshold and median row per column. A manually read corridor separates overlapping same-colour species. No simulation used."
+    },
+    {
+      "id": "fig1-CO2-burnt",
+      "xref": 43,
+      "image_sha256": "4b5acd9a0e3ca4aeac0223e4034d03bf307a77c204bc017848cd8429312ef76e",
+      "axis_box_pixels": [
+        66,
+        11,
+        519,
+        424
+      ],
+      "y_limits": [
+        0,
+        1
+      ],
+      "samples": 441,
+      "guide": [
+        [
+          0,
+          0
+        ],
+        [
+          0.05,
+          0.1
+        ],
+        [
+          0.1,
+          0.22
+        ],
+        [
+          0.15,
+          0.29
+        ],
+        [
+          0.2,
+          0.28
+        ],
+        [
+          0.25,
+          0.22
+        ],
+        [
+          0.3,
+          0.14
+        ],
+        [
+          0.4,
+          0.08
+        ],
+        [
+          0.5,
+          0.085
+        ],
+        [
+          0.6,
+          0.075
+        ],
+        [
+          0.8,
+          0.04
+        ],
+        [
+          1,
+          0
+        ]
+      ],
+      "corridor_half_width": 0.045,
+      "method": "Colour threshold and median row per column. A manually read corridor separates overlapping same-colour species. No simulation used."
+    },
+    {
+      "id": "fig1-CO-burnt",
+      "xref": 43,
+      "image_sha256": "4b5acd9a0e3ca4aeac0223e4034d03bf307a77c204bc017848cd8429312ef76e",
+      "axis_box_pixels": [
+        66,
+        11,
+        519,
+        424
+      ],
+      "y_limits": [
+        0,
+        1
+      ],
+      "samples": 367,
+      "guide": [
+        [
+          0,
+          0
+        ],
+        [
+          0.1,
+          0
+        ],
+        [
+          0.15,
+          0.06
+        ],
+        [
+          0.2,
+          0.16
+        ],
+        [
+          0.25,
+          0.32
+        ],
+        [
+          0.3,
+          0.47
+        ],
+        [
+          0.35,
+          0.59
+        ],
+        [
+          0.4,
+          0.61
+        ],
+        [
+          0.5,
+          0.51
+        ],
+        [
+          0.6,
+          0.41
+        ],
+        [
+          0.8,
+          0.2
+        ],
+        [
+          1,
+          0
+        ]
+      ],
+      "corridor_half_width": 0.045,
+      "method": "Colour threshold and median row per column. A manually read corridor separates overlapping same-colour species. No simulation used."
+    },
+    {
+      "id": "fig1-H2O-burnt",
+      "xref": 43,
+      "image_sha256": "4b5acd9a0e3ca4aeac0223e4034d03bf307a77c204bc017848cd8429312ef76e",
+      "axis_box_pixels": [
+        66,
+        11,
+        519,
+        424
+      ],
+      "y_limits": [
+        0,
+        1
+      ],
+      "samples": 443,
+      "guide": [
+        [
+          0,
+          0
+        ],
+        [
+          0.05,
+          0.1
+        ],
+        [
+          0.1,
+          0.2
+        ],
+        [
+          0.15,
+          0.3
+        ],
+        [
+          0.2,
+          0.38
+        ],
+        [
+          0.25,
+          0.41
+        ],
+        [
+          0.3,
+          0.37
+        ],
+        [
+          0.35,
+          0.25
+        ],
+        [
+          0.4,
+          0.19
+        ],
+        [
+          0.5,
+          0.155
+        ],
+        [
+          0.6,
+          0.12
+        ],
+        [
+          0.8,
+          0.06
+        ],
+        [
+          1,
+          0
+        ]
+      ],
+      "corridor_half_width": 0.045,
+      "method": "Colour threshold and median row per column. A manually read corridor separates overlapping same-colour species. No simulation used."
+    },
+    {
+      "id": "fig1-OH-burnt",
+      "xref": 43,
+      "image_sha256": "4b5acd9a0e3ca4aeac0223e4034d03bf307a77c204bc017848cd8429312ef76e",
+      "axis_box_pixels": [
+        66,
+        11,
+        519,
+        424
+      ],
+      "y_limits": [
+        0,
+        1
+      ],
+      "samples": 397,
+      "guide": [
+        [
+          0,
+          0
+        ],
+        [
+          0.1,
+          0.02
+        ],
+        [
+          0.15,
+          0.06
+        ],
+        [
+          0.2,
+          0.073
+        ],
+        [
+          0.25,
+          0.05
+        ],
+        [
+          0.3,
+          0.005
+        ],
+        [
+          0.35,
+          0
+        ],
+        [
+          1,
+          0
+        ]
+      ],
+      "corridor_half_width": 0.045,
+      "method": "Colour threshold and median row per column. A manually read corridor separates overlapping same-colour species. No simulation used."
+    },
+    {
+      "id": "fig2-T-f0.1",
+      "xref": 55,
+      "image_sha256": "8ba2f33fc310b757ab366171b805e214f818487d8fbcd2674a8bd0ae8354c46a",
+      "axis_box_pixels": [
+        87,
+        11,
+        525,
+        413
+      ],
+      "y_limits": [
+        0,
+        4000
+      ],
+      "samples": 419,
+      "guide": null,
+      "corridor_half_width": null,
+      "method": "Colour threshold and median row per column. A manually read corridor separates overlapping same-colour species. No simulation used."
+    },
+    {
+      "id": "fig2-T-f0.2",
+      "xref": 55,
+      "image_sha256": "8ba2f33fc310b757ab366171b805e214f818487d8fbcd2674a8bd0ae8354c46a",
+      "axis_box_pixels": [
+        87,
+        11,
+        525,
+        413
+      ],
+      "y_limits": [
+        0,
+        4000
+      ],
+      "samples": 372,
+      "guide": null,
+      "corridor_half_width": null,
+      "method": "Colour threshold and median row per column. A manually read corridor separates overlapping same-colour species. No simulation used."
+    },
+    {
+      "id": "fig2-T-f0.4",
+      "xref": 55,
+      "image_sha256": "8ba2f33fc310b757ab366171b805e214f818487d8fbcd2674a8bd0ae8354c46a",
+      "axis_box_pixels": [
+        87,
+        11,
+        525,
+        413
+      ],
+      "y_limits": [
+        0,
+        4000
+      ],
+      "samples": 433,
+      "guide": null,
+      "corridor_half_width": null,
+      "method": "Colour threshold and median row per column. A manually read corridor separates overlapping same-colour species. No simulation used."
+    },
+    {
+      "id": "fig2-T-f0.6",
+      "xref": 55,
+      "image_sha256": "8ba2f33fc310b757ab366171b805e214f818487d8fbcd2674a8bd0ae8354c46a",
+      "axis_box_pixels": [
+        87,
+        11,
+        525,
+        413
+      ],
+      "y_limits": [
+        0,
+        4000
+      ],
+      "samples": 265,
+      "guide": null,
+      "corridor_half_width": null,
+      "method": "Colour threshold and median row per column. A manually read corridor separates overlapping same-colour species. No simulation used."
+    },
+    {
+      "id": "fig2-CO2-f0.1",
+      "xref": 57,
+      "image_sha256": "84a34c4f66a3a2a1b8c8dfd704cb6caf9fdc2333f029c26e10220e88041a6f41",
+      "axis_box_pixels": [
+        76,
+        12,
+        508,
+        413
+      ],
+      "y_limits": [
+        -0.05,
+        0.35
+      ],
+      "samples": 412,
+      "guide": null,
+      "corridor_half_width": null,
+      "method": "Colour threshold and median row per column. A manually read corridor separates overlapping same-colour species. No simulation used."
+    },
+    {
+      "id": "fig2-CO2-f0.2",
+      "xref": 57,
+      "image_sha256": "84a34c4f66a3a2a1b8c8dfd704cb6caf9fdc2333f029c26e10220e88041a6f41",
+      "axis_box_pixels": [
+        76,
+        12,
+        508,
+        413
+      ],
+      "y_limits": [
+        -0.05,
+        0.35
+      ],
+      "samples": 409,
+      "guide": null,
+      "corridor_half_width": null,
+      "method": "Colour threshold and median row per column. A manually read corridor separates overlapping same-colour species. No simulation used."
+    },
+    {
+      "id": "fig2-CO2-f0.4",
+      "xref": 57,
+      "image_sha256": "84a34c4f66a3a2a1b8c8dfd704cb6caf9fdc2333f029c26e10220e88041a6f41",
+      "axis_box_pixels": [
+        76,
+        12,
+        508,
+        413
+      ],
+      "y_limits": [
+        -0.05,
+        0.35
+      ],
+      "samples": 429,
+      "guide": null,
+      "corridor_half_width": null,
+      "method": "Colour threshold and median row per column. A manually read corridor separates overlapping same-colour species. No simulation used."
+    },
+    {
+      "id": "fig2-CO2-f0.6",
+      "xref": 57,
+      "image_sha256": "84a34c4f66a3a2a1b8c8dfd704cb6caf9fdc2333f029c26e10220e88041a6f41",
+      "axis_box_pixels": [
+        76,
+        12,
+        508,
+        413
+      ],
+      "y_limits": [
+        -0.05,
+        0.35
+      ],
+      "samples": 311,
+      "guide": null,
+      "corridor_half_width": null,
+      "method": "Colour threshold and median row per column. A manually read corridor separates overlapping same-colour species. No simulation used."
+    }
+  ],
+  "images_uploaded": false
+}
