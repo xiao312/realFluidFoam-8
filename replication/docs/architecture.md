@@ -609,6 +609,8 @@ equivalence or presumed-PDF closure is inferred from this diagnostic.
 [Sharma manifold](../fgm/sharma-manifold/README.md) owns unsteady flamelet
 calculation and 2D coordinate remapping. It depends on the qualified Spitfire,
 Cantera, NumPy and SciPy runtime, and supplies plotting inputs only.
+Its separate offline comparison CLI uses NumPy, Matplotlib and Pillow to sample
+paper raster curves and render computed results without filling missing cells.
 [Müller PR-VTA](../validation/muller-prvta/README.md) reconstructs density from
 retained flamelet profiles. It depends on Cantera critical data and NumPy, not
 OpenFOAM or the manifold generator. Neither module submits Slurm jobs or changes

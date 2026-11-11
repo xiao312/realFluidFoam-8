@@ -23,6 +23,14 @@ prepared Linux environment. Heavy work runs through FlamePilot Slurm adapters.
 This module neither submits jobs nor accesses credentials or networks.
 
 Example: `python run.py --mechanism zk-author.yaml --out NEW_DIR --plan`.
-Verification: mechanism import, production-rate parity at warm states, finite
+Verification: mechanism import, finite
 actual trajectories, coordinate normalization and table coverage. Compare against
 paper curves after execution. Failed branches are scientific evidence, not passes.
+
+`compare.py --run RESULTS --paper-assets PAPER_CROPS --out NEW_DIR` renders both
+figures and samples coloured reference curves from the original raster crops.
+Hollow markers identify paper samples; lines identify calculations. Metrics use
+only adjacent populated progress cells and never bridge missing coverage. The
+burnt reference is equilibrium initialization, not a converged steady solution.
+Unlabelled intermediate progress levels in the paper are not assigned values.
+This postprocessor needs NumPy, Matplotlib and Pillow and performs no chemistry.
