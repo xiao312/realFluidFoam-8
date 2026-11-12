@@ -4,6 +4,7 @@ import hashlib
 import json
 from pathlib import Path
 import sys
+import platform
 import numpy as np
 import cantera as ct
 from lookup_baseline import query
@@ -107,7 +108,7 @@ def main():
     (a.out/'initialization.json').write_text(json.dumps(init,indent=2)+'\n')
     receipt={'schema':'maders-weighted-physical-table/v1','source_commit':a.source_commit,
         'mechanism_sha256':digest(a.mechanism),'environment_sha256':a.environment_sha256,
-        'profile_origin':origin,'profile_hashes':{str(f):digest(f) for f in files},'table_sha256':digest(a.out/'physical.tbl'),
+        'processing_environment':{'platform':platform.platform(),'python':platform.python_version(),'cantera':ct.__version__,'numpy':np.__version__},'profile_origin':origin,'profile_hashes':{str(f):digest(f) for f in files},'table_sha256':digest(a.out/'physical.tbl'),
         'metadata_sha256':digest(a.out/'phase-metadata.json'),'nZ':len(z),'nC':len(eta),
         'minimum_Y':float(y.min()),'max_mass_sum_error':float(abs(y.sum(axis=2)-1).max()),
         'max_weighted_C_error':float(abs(y@weights-c).max()),'cold_equilibrium_limits_added':True,

@@ -29,6 +29,9 @@ def solve(config, mechanism_path, out, chi, recover_profile=None):
     pressure = config['pressure_Pa']
     fuel = mechanism.stream('TPX', (config['fuel_temperature_K'], pressure, config['fuel_X']))
     air = mechanism.stream('TPX', (config['oxidizer_temperature_K'], pressure, config['oxidizer_X']))
+    # Cantera Quantity property access restores its shared phase state. Cache
+    # inlet enthalpies before the diagnostic loop, never during a gas query.
+    fuel_h, air_h = fuel.enthalpy_mass, air.enthalpy_mass
     weights = np.zeros(gas.n_species)
     reference_mw = gas.molecular_weights[gas.species_index(config['progress_reference_species'])]
     for species in config['progress_species']:
@@ -76,7 +79,7 @@ def solve(config, mechanism_path, out, chi, recover_profile=None):
         rate_errors.append(float(np.max(abs(griffon - omega)) / max(1., np.max(abs(omega)))))
         source.append(omega)
         density.append(gas.density)
-        enthalpy_error.append(gas.enthalpy_mass - (mixture * fuel.enthalpy_mass + (1 - mixture) * air.enthalpy_mass))
+        enthalpy_error.append(gas.enthalpy_mass - (mixture * fuel_h + (1 - mixture) * air_h))
         bilger_error.append(gas.mixture_fraction(config['fuel_X'], config['oxidizer_X'], basis='mole') - mixture)
     source = np.asarray(source)
     progress = fractions @ weights

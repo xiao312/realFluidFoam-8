@@ -94,3 +94,8 @@ Verification: compile the reader and query real DRM19-derived weighted states;
 compare C and signed sources independently. Exercise wrong weights and missing
 weights as refusal controls. Run legacyv2 probe unchanged. Build and physical CFD
 remain separate; no weighted coflow qualification is established by this change.
+
+Mapped-source curve endpoints use the exact declared interpolated lower/upper C,
+rather than re-forming the upper endpoint with lower+(upper-lower). This removes
+an arithmetic endpoint inconsistency without widening the strict bounds check or
+changing source values. Legacy arithmetic and physical node parity must be rerun.

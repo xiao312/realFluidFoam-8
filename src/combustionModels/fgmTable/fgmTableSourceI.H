@@ -19,7 +19,7 @@ void Foam::fgm::fgmTableReader::sourceCurve
     sources.resize(nC_);
     for (label j = 0; j < nC_; ++j)
     {
-        coordinates[j] = lower + c_[j]*(upper-lower);
+        coordinates[j] = j == 0 ? lower : (j == nC_-1 ? upper : lower + c_[j]*(upper-lower));
         sources[j] = (1-weight)*Sc_[i*nC_+j] + weight*Sc_[(i+1)*nC_+j];
     }
 }
