@@ -31,7 +31,7 @@ const plan={target:'maders2017-fig-4',table_sha256:receipt.table_sha256,source_c
     buoyancy:'stock fvOptions buoyancyForce(U) and buoyancyEnergy(Ha), g=(-9.81,0,0)'},
   limits:['Structured40000-cell reconstructed mesh; author mesh unavailable','First diagnostic uses upwind convection; paper reports second order',
     'Fresh hot ring at timezero; differs from paper cold-steady-first numerical initialization',
-    '0.05s is a startup diagnostic, not assumed steady or paper accepted']};
+    'Finite transient run; steady state and paper agreement require measured profile histories']};
 if (options.plan||!options.out) {console.log(JSON.stringify(plan,null,2));process.exit(0);}
 const out=path.resolve(options.out);
 if(fs.existsSync(out))throw Error('Refusing existing case; all CFD starts clean');
@@ -89,8 +89,8 @@ PIMPLE { pMin 90000; pMax 120000; pRef 101325; momentumPredictor yes; transonic 
  nOuterCorrectors 2; nCorrectors 2; nNonOrthogonalCorrectors 0; }
 relaxationFactors { equations { ".*" 1; } }\n`);
 put('system/decomposeParDict',header('decomposeParDict')+`numberOfSubdomains ${ranks}; method simple; simpleCoeffs { n (${ranks} 1 1); delta 0.001; }\n`);
-const writeInterval=endTime/10;
-const sample=`radialProfiles { type sets; libs ("libsampling.so"); writeControl runTime; writeInterval ${writeInterval};
+const writeInterval=endTime/10, sampleInterval=Math.min(.005,writeInterval);
+const sample=`radialProfiles { type sets; libs ("libsampling.so"); writeControl runTime; writeInterval ${sampleInterval};
  interpolationScheme cellPoint; setFormat csv; fields (T CO CO2 Z c U rho);
  sets ( h10 { type lineUniform; axis y; start (0.01 0.000001 0); end (0.01 0.02749 0); nPoints 250; }
  h40 { type lineUniform; axis y; start (0.04 0.000001 0); end (0.04 0.02749 0); nPoints 250; } ); }`;
