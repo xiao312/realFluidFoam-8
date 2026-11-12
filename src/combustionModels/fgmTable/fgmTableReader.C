@@ -263,12 +263,13 @@ Foam::fgm::fgmTableReader::fgmTableReader
         if (key == "schema")
         {
             if (tok.size() != 2 ||
-                (tok[1] != "forge-fgm-table-v1" && tok[1] != "forge-fgm-table-v2"))
+                (tok[1] != "forge-fgm-table-v1" && tok[1] != "forge-fgm-table-v2"
+                 && tok[1] != "forge-fgm-table-v3"))
             {
                 refuse
                 (
                     "schema '" + (tok.size() > 1 ? tok[1] : std::string(""))
-                  + "' is not forge-fgm-table-v1 or forge-fgm-table-v2"
+                  + "' is not forge-fgm-table-v1, forge-fgm-table-v2 or forge-fgm-table-v3"
                 );
             }
             haveSchema = true;
@@ -306,7 +307,7 @@ Foam::fgm::fgmTableReader::fgmTableReader
             continue;
         }
 
-        if (key == "z" || key == "c" || key == "c-min" || key == "c-max")
+        if (key == "z" || key == "c" || key == "c-min" || key == "c-max" || key == "progress-weights")
         {
             Foam::scalarField grid(Foam::label(tok.size()) - 1);
             for (Foam::label t = 1; t < Foam::label(tok.size()); ++t)
@@ -327,7 +328,8 @@ Foam::fgm::fgmTableReader::fgmTableReader
                 haveC = true;
             }
             else if (key == "c-min") progressMin_ = grid;
-            else progressMax_ = grid;
+            else if (key == "c-max") progressMax_ = grid;
+            else progressWeights_ = grid;
             continue;
         }
 
@@ -354,12 +356,13 @@ Foam::fgm::fgmTableReader::fgmTableReader
         if (key == "progress-coordinate")
         {
             const std::string value = (tok.size() > 1 ? tok[1] : "");
-            if (value != "mass-fraction" && value != "normalised" && value != "mass-fraction-mapped")
+            if (value != "mass-fraction" && value != "normalised" && value != "mass-fraction-mapped"
+                && value != "weighted-mass-fraction-mapped")
             {
                 refuse
                 (
                     "progress-coordinate is '" + value + "'; this format "
-                    "admits 'mass-fraction', 'normalised' or v2 'mass-fraction-mapped', because the "
+                    "admits mass-fraction, normalised, v2 mass-fraction-mapped or v3 weighted-mass-fraction-mapped; "
                     "source block Sc is the source of Yc and only an explicit "
                     "declaration says whether the transported coordinate is "
                     "Yc or a normalized function of it"

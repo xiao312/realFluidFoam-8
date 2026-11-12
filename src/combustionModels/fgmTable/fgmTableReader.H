@@ -135,6 +135,7 @@ private:
 
         //- v2: transported C is a sum of these species mass fractions.
         wordList progressSpecies_;
+        scalarField progressWeights_;
         scalarField progressMin_;
         scalarField progressMax_;
 
@@ -276,7 +277,8 @@ public:
 
         bool mappedMassFraction() const
         {
-            return progressCoordinate_ == "mass-fraction-mapped";
+            return progressCoordinate_ == "mass-fraction-mapped"
+                || progressCoordinate_ == "weighted-mass-fraction-mapped";
         }
 
         scalar lookupCount() const { return lookupCount_; }

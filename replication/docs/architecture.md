@@ -627,3 +627,8 @@ weighted-progress diagnostics for Maders2017 Figures4–6. It depends on the exi
 Spitfire/Cantera scientific environment, with no scheduler or OpenFOAM dependency.
 Its output is a building block for reacting coflow CFD, not a radial-profile result.
 The existing unweighted FGM reader does not yet implement the Maders coordinate.
+
+FGM reader schema v3 adds explicit positive dimensionless species weights for
+Maders' molecular-weight-based progress. The solver still transports dimensionless
+C andkg/m3/s sources. V1/v2 unweighted semantics remain unchanged. This depends
+on the same OpenFOAM types and source integrator; no new external dependency.

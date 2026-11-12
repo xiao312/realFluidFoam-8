@@ -44,3 +44,12 @@ Smooke transport must not be replaced by Chung/SRK for the atmospheric replicati
 
 Famou task preparation is separate. Account credit exhaustion prevents new
 execution on12November; no new assignment is claimed.
+
+`mesh.mjs --out NEW_DIR --plan` describes the reconstructed axisymmetric40000-cell
+wedge. Remove `--plan` to write a fresh mesh case. Node built-ins only; no solver
+execution or credentials. Actual `blockMesh`/`checkMesh` run in FlamePilot Slurm.
+The inlet lip is zero-thickness and the structured mesh differs from the author's
+unavailable unstructured100000-cell mesh. These are explicit diagnostic choices.
+`reader_states.py` exports nine actual DRM19 cold/half-composition/equilibrium nodes;
+`reader_probe.C` checks the real OF8 reader against them. They are parity controls,
+not a physical flamelet table and never the table for a production coflow run.

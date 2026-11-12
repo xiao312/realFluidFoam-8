@@ -5,13 +5,33 @@ void Foam::fgm::fgmTableReader::validateProgressMapping() const
     if (!mappedMassFraction())
     {
         if (schema_ != "forge-fgm-table-v1" || progressMin_.size()
-            || progressMax_.size() || progressSpecies_.size())
+            || progressMax_.size() || progressSpecies_.size() || progressWeights_.size())
         {
             refuse("v2 requires mass-fraction-mapped; mapping headers are not valid in v1");
         }
         return;
     }
-    if (schema_ != "forge-fgm-table-v2") refuse("mass-fraction-mapped requires v2 schema");
+    const bool weighted = progressCoordinate_ == "weighted-mass-fraction-mapped";
+    if (weighted)
+    {
+        if (schema_ != "forge-fgm-table-v3") refuse("weighted progress requires v3 schema");
+        if (progressWeights_.size() != progressSpecies_.size() || progressWeights_.empty())
+            refuse("v3 needs one progress weight per progress species");
+        forAll(progressWeights_, k)
+            if (!std::isfinite(progressWeights_[k]) || progressWeights_[k] <= 0)
+                refuse("progress weights must be finite and positive");
+    }
+    else
+    {
+        if (schema_ != "forge-fgm-table-v2") refuse("mass-fraction-mapped requires v2 schema");
+        if (progressWeights_.size()) refuse("progress weights require v3 weighted schema");
+    }
+    scalar maximumProgress = 1;
+    if (weighted)
+    {
+        maximumProgress = 0;
+        forAll(progressWeights_, k) maximumProgress = max(maximumProgress, progressWeights_[k]);
+    }
     if (progressMin_.size() != nZ_ || progressMax_.size() != nZ_)
         refuse("v2 needs c-min and c-max with one finite value per Z row");
     if (progressSpecies_.empty()) refuse("v2 needs progress-species defining the raw mass-fraction sum");
@@ -32,15 +52,15 @@ void Foam::fgm::fgmTableReader::validateProgressMapping() const
     {
         const scalar lo = progressMin_[i];
         const scalar hi = progressMax_[i];
-        if (!std::isfinite(lo) || !std::isfinite(hi) || lo > hi || lo < -1e-12 || hi > 1 + 1e-12)
+        if (!std::isfinite(lo) || !std::isfinite(hi) || lo > hi || lo < -1e-12 || hi > maximumProgress + 1e-12)
             refuse("invalid raw progress interval at Z row " + std::to_string(i));
         for (label j = 0; j < nC_; ++j)
         {
             scalar sum = 0;
-            forAll(indices, k) sum += Y_[indices[k]][i*nC_ + j];
+            forAll(indices, k) sum += (weighted ? progressWeights_[k] : scalar(1))*Y_[indices[k]][i*nC_ + j];
             const scalar expected = lo + c_[j]*(hi - lo);
             if (mag(sum - expected) > 1e-8)
-                refuse("raw progress differs from species sum at node "
+                refuse("raw progress differs from declared species combination at node "
                     + std::to_string(i) + "," + std::to_string(j));
             if (hi == lo)
             {

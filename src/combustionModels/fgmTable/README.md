@@ -76,3 +76,21 @@ The optional solver coupling is documented in the solver README and
 path is unchanged. The source table still describes its generating ideal-gas
 flamelets; coupling it to SRK/PR does not establish matching chemistry or thermal
 states. Source integration cannot repair this model discrepancy.
+
+## Version3 weighted progress
+
+The optional `forge-fgm-table-v3` schema declares
+`progress-coordinate weighted-mass-fraction-mapped` and `progress-weights`, one
+finite positive dimensionless weight per progress species. It transports
+C=sum(weight_i*Yi), with raw volumetric source sum(weight_i*omega_i) inkg/m3/s.
+Maders uses weight_i=MW_H2O/MWi forCO2,H2O,H2, so C=MW_H2O*gamma. This constant
+scaling preserves the published transport equation and source, without changing
+its physical units in the solver. V1/v2 semantics remain unchanged; weights in
+older schemas are refused. Weighted C may exceed1; its physical upper bound is
+the largest declared weight, not1. Each node must still reconstruct the declared
+weighted coordinate from its species. No source clipping or species renormalization.
+
+Verification: compile the reader and query real DRM19-derived weighted states;
+compare C and signed sources independently. Exercise wrong weights and missing
+weights as refusal controls. Run legacyv2 probe unchanged. Build and physical CFD
+remain separate; no weighted coflow qualification is established by this change.
