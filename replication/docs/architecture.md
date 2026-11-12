@@ -635,5 +635,5 @@ on the same OpenFOAM types and source integrator; no new external dependency.
 
 `development/maders-transport` registers an optional ideal-gas Smooke Cp-dependent
 transport package against stockOF8. It extends Foundation constTransport and is
-loaded only by Maders coflow cases. UnityLewisFourier remains a separate stock
+loaded only by Maders coflow cases. OF8 Fourier (unity-Le) remains a separate stock
 transport-equation model. Existing SRK/PR/Chung library registrations are unchanged.

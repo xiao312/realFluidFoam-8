@@ -60,3 +60,17 @@ refusal. `evaluate_lookup.py` reads separate fixed held-out physical references 
 predictions. It reports T/species/signed-source errors, coverage, weighted-C and mass
 consistency without declaring scientific acceptance. These tools are the portable
 Famou task contract; no external task is launched by running them. NumPy only.
+
+`export_table.py` builds a v3 table from five declared physical profiles, explicit
+cold mixtures and HP-equilibrium limits. Chi5/10 remain held out. Sparse progress
+gaps are linear reconstructions, not additional solved flamelets. It verifies
+finite composition and weighted C, writes NASA7 metadata and fresh seed inputs.
+It depends on the existing direct-flamelet metadata exporter and NumPy/Cantera.
+`prepare_case.mjs` consumes exact table/metadata hashes and creates a new coflow
+case only. It reuses the existing NASA exporter and solver schemes. No submission,
+credentials or evolved CFD import occurs. Its dry-run is `--table DIR --plan`.
+The first case uses an analytical cold fuel column plus a hot ring at timezero,
+40000cells, upwind convection, Smooke transport and stock buoyancy force/energy.
+It is a startup diagnostic; comparison with steady paper data needs a stable time
+history and mesh/scheme checks. NASA coefficients are unchanged; bounds extend to
+290K for slight flow-induced cooling near298K. This extrapolation is declared.

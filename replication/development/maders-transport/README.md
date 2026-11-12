@@ -16,4 +16,4 @@ libmadersThermo.so in controlDict and select thermoType transport smooke.
 Verification: compile and evaluate an actual mixture at several temperatures;
 compare mu/Cp=1.67e-8*(T/298)^.51 andkappa/Cp=2.58e-5*(T/298)^.69. Mixture arithmetic
 and actual clean-start coflow execution remain required. Help/build alone is not
-physical validation. UnityLewisFourier supplies Le=1 separately in the case.
+physical validation. OF8 Fourier (unity-Le) supplies Le=1 separately in the case.
