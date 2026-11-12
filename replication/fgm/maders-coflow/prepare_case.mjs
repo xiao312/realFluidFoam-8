@@ -24,7 +24,8 @@ if (hash(tableBytes)!==receipt.table_sha256) throw Error('Physical table digest 
 if (hash(fs.readFileSync(path.join(table,'phase-metadata.json')))!==receipt.metadata_sha256) throw Error('Thermo metadata digest differs');
 const endTime=Number(options['end-time']??.05),ranks=Number(options.ranks??8);
 if (!Number.isFinite(endTime)||endTime<=0||endTime>2||!Number.isInteger(ranks)||ranks<1||ranks>32) throw Error('Invalid duration/ranks');
-const plan={target:'maders2017-fig-4',table_sha256:receipt.table_sha256,source_commit:receipt.source_commit,
+const plan={target:'maders2017-fig-4',table_sha256:receipt.table_sha256,table_export_source_commit:receipt.source_commit,
+  case_generator_sha256:hash(fs.readFileSync(fileURLToPath(import.meta.url))),
   clean_start_time_s:0,end_time_s:endTime,ranks,
   models:{thermo:'NASA7/perfectGas',transport:'Smooke Cp-dependent mu/kappa; stock OF8 Fourier unity-Le diffusion',
     combustion:'FGM weighted raw progress; absolute-Ha energy; signed source integration',
@@ -83,7 +84,8 @@ put('system/fvSchemes',header('fvSchemes')+solverSchemes());
 put('system/fvSolution',header('fvSolution')+`solvers {
  "p.*" { solver GAMG; smoother GaussSeidel; tolerance 1e-9; relTol 0; }
  "rho.*" { solver smoothSolver; smoother symGaussSeidel; tolerance 1e-11; relTol 0; }
- "(U|h|Ha|Z|c|Yi).*" { solver smoothSolver; smoother symGaussSeidel; tolerance 1e-11; relTol 0; }
+ "(U|h|Ha|Yi).*" { solver smoothSolver; smoother symGaussSeidel; tolerance 1e-11; relTol 0; }
+ "(Z|c).*" { solver smoothSolver; smoother symGaussSeidel; tolerance 1e-14; relTol 0; }
 }
 PIMPLE { pMin 90000; pMax 120000; pRef 101325; momentumPredictor yes; transonic no; consistent no;
  nOuterCorrectors 2; nCorrectors 2; nNonOrthogonalCorrectors 0; }

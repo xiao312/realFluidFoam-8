@@ -105,3 +105,10 @@ The selected Strang-source diagnostic opts into sourceRoundoffProjection for
 64-epsilon-only raw-C input excursions. It retains exact strict table lookup,
 material-domain refusal and explicit per-stage mass accounting. The actual-reader
 probe must pass before a fresh CFD run; previous failed time step remains retained.
+
+Z and C now use 1e-14 absolute linear tolerance with zero relative tolerance;
+other equation tolerances are unchanged. The former 1e-11 stop produced a joint
+coordinate coverage failure near the pure-fuel endpoint. Tighter solves passed
+that failure without extending the table. The 9d5fcf6 run uses an immutable
+before/after-hashed fvSolution patch with the same settings. Future generation
+writes those settings directly. See [12 November progress](PROGRESS-20261112.md).

@@ -626,7 +626,8 @@ scientific review state. Operator tooling owns execution and Forge owns display.
 weighted-progress diagnostics for Maders2017 Figures4–6. It depends on the existing
 Spitfire/Cantera scientific environment, with no scheduler or OpenFOAM dependency.
 Its output is a building block for reacting coflow CFD, not a radial-profile result.
-The existing unweighted FGM reader does not yet implement the Maders coordinate.
+The optional v3 reader implements its weighted progress coordinate; actual coflow
+qualification remains separate from reader parity.
 
 FGM reader schema v3 adds explicit positive dimensionless species weights for
 Maders' molecular-weight-based progress. The solver still transports dimensionless
