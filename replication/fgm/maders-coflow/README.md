@@ -14,6 +14,15 @@ Dependencies: pinned Spitfire/Griffon, Cantera 3.2, NumPy, SciPy in an allocated
 Linux environment. The future developed OF8 solver consumes the exported data.
 No network, credentials, scheduler or arbitrary code execution is exposed here.
 
+`hybrid_lookup.py` compares a declared linear or PCHIP source interpolation
+against retained physical held-out states. Temperature and species use the
+unchanged baseline. It accepts data only, never candidate Python code.
+Run it with `--assets TASK_DIRECTORY --scheme linear --out NEW_DIRECTORY`.
+The input directory contains `training/manifest.json` and `evaluation/*.npz`.
+Its metrics establish a hybrid-connection diagnostic, not new flamelet convergence
+or coflow agreement. The retained training family includes a reported failed
+high-dissipation solve; this limitation remains in every result.
+
 Example: `python flamelets.py --config case.json --out NEW_DIR --plan`.
 Remove `--plan` within FlamePilot-admitted Slurm compute. Every flamelet uses a
 fresh equilibrium numerical guess. No evolved CFD state is imported.
