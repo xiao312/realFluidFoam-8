@@ -103,6 +103,7 @@ writePrecision 14; timeFormat general; timePrecision 12; runTimeModifiable no;
 fgmEnergyForm absoluteEnthalpy; fgmRequireHaInitialization yes; writeEnergyBudget yes;
 writeFgmThermoClosure yes; fgmThermoClosureRelativeLimit 1e-8; fgmProgressSourceEnabled yes;
 fgmSourceIntegration strangFixedState; fgmSkipUnusedDimix no;
+conserveTabulatedDensity yes; projectTabulatedZRoundoff yes; writeMixtureFractionBudget yes;
 functions { ${sample}\n${flux} }\n`);
 const hotValues=[`volScalarFieldValue Z ${init.Z}`,`volScalarFieldValue c ${init.C}`,
   `volScalarFieldValue T ${init.T_K}`,`volScalarFieldValue Ha ${init.Ha_J_kg}`,

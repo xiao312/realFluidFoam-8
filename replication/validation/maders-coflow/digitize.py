@@ -66,6 +66,16 @@ def main():
             data.append({'r_m': float((px-x0)/(x1-x0)*.03),
                          'value': float(low+(y1-py)/(y1-y0)*(high-low)),
                          'pixel_x': float(px), 'pixel_y': float(py)})
+        if panel == 'a':
+            # Four touching filled squares at the temperature peak form one
+            # component. Centres audited against original integer pixel runs;
+            # preserve the automatic-only v1 extraction separately.
+            for px, py in [(495.,104.5),(501.,96.5),(509.5,100.5),(515.,111.5)]:
+                if any(abs(row['pixel_x']-px)<2 and abs(row['pixel_y']-py)<2 for row in data):
+                    continue
+                data.append({'r_m':float((px-x0)/(x1-x0)*.03),
+                    'value':float(low+(y1-py)/(y1-y0)*(high-low)),
+                    'pixel_x':px,'pixel_y':py})
         data.sort(key=lambda row: row['r_m'])
         if len(data) < 15 or any(data[i]['r_m'] >= data[i+1]['r_m'] for i in range(len(data)-1)):
             raise ValueError('Insufficient or ambiguous square extraction '+panel)
@@ -84,7 +94,7 @@ def main():
             'estimated_extraction_uncertainty':{'pixels':2,'r_m':.06/(x1-x0),'value':2*(high-low)/(y1-y0)},
             'points':data})
     report={'schema':'maders-reference-digitization/v1','curves':curves,
-        'method':'Black filled square opening, component shape filtering, calibrated marker centres; no reference curve fitting.',
+        'method':'Black filled square opening and component filtering; four visually audited touching peak squares in panel a. Calibrated original pixel centres, no curve fitting.',
         'limitations':'Overlapping/cropped markers may be omitted. No digitization of hollow-circle or continuous FGM series is claimed. No extrapolation.',
         'scientific_acceptance':False}
     (a.out/'curves.json').write_text(json.dumps(report,indent=2,allow_nan=False)+'\n')

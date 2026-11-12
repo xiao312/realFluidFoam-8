@@ -11,3 +11,11 @@ Example: `python digitize.py --images PRIVATE_PANEL_DIR --out NEW_DIR --plan`.
 Remove `--plan` to extract. Verify each QA overlay against original marker identity.
 Some overlapping/cropped markers are omitted, never invented. No extrapolation.
 The2pixel coordinate uncertainty is an extraction estimate, not experimental error.
+
+`plot.py` renders Figure4 from digitized paper markers and actual sampled radial
+profiles. It uses paper lines and our markers, original limits and four-panel
+layout, with matched run time/source in its receipt. Metrics compare CFD values
+at the original digitized coordinates; dense display interpolation never adds
+metric weight. `--plan` inspects paths without writing. No CFD or scheduler work.
+PCHIP is used only for the displayed paper line. Original numeric references and
+failed/partial CFD values remain available. Matplotlib/NumPy are local dependencies.

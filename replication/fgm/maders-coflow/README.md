@@ -94,3 +94,9 @@ optimization is disabled. Add that exact source directory to CPATH; do not edit
 or copy files into the stock read-only OpenFOAM installation. Runtime Ha
 initialization is performed after setFields and before decomposition. Its marker
 binds actual selected thermoType at timezero, leaving the solver guard enabled.
+
+Maders case controls now select the retained conservative-density repair and
+64epsilon-only transported-Z roundoff policy, with explicit mixture-fraction and
+mass-correction accounting. Neither the material-error bound nor the energy or
+lookup checks change. The first uncoupled default-off template is retained in
+older commits; it is not the selected physical coflow setup.
