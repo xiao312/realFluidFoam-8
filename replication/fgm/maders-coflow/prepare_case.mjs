@@ -67,9 +67,7 @@ boundaryField { fuel { type zeroGradient; } air { type zeroGradient; }
  axis { type empty; } planeMinus { type wedge; } planePlus { type wedge; } }\n`);
 put('0/U',header('U','volVectorField')+`dimensions [0 1 -1 0 0 0 0]; internalField uniform (0.23 0 0);
 boundaryField {
- fuel { type codedFixedValue; value uniform (0.115 0 0); name madersParabolicInlet;
- code #{ const vectorField& cc=this->patch().Cf(); vectorField v(cc.size(),vector::zero);
- forAll(cc,i) { scalar r2=sqr(cc[i].y())+sqr(cc[i].z()); v[i]=vector(0.23*max(scalar(0),1-r2/sqr(0.006)),0,0); } operator==(v); #}; }
+ fuel { type fixedValue; value uniform (0.115 0 0); }
  air { type fixedValue; value uniform (0.23 0 0); }
  outlet { type pressureInletOutletVelocity; value uniform (0 0 0); }
  outerWall { type noSlip; } axis { type empty; } planeMinus { type wedge; } planePlus { type wedge; }

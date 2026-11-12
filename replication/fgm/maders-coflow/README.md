@@ -74,3 +74,9 @@ The first case uses an analytical cold fuel column plus a hot ring at timezero,
 It is a startup diagnostic; comparison with steady paper data needs a stable time
 history and mesh/scheme checks. NASA coefficients are unchanged; bounds extend to
 290K for slight flow-induced cooling near298K. This extrapolation is declared.
+
+After actual blockMesh, `apply_inlet.mjs CASE --plan` computes each actual fuel
+face centroid and parabolic velocity. `--apply` replaces only the fresh inlet
+placeholder with fixed values, retaining mesh hashes and measured flow quadrature.
+It refuses evolved cases or an unexpected patch. It reuses the existing G2 ASCII
+mesh parser; no dynamic boundary compilation or model fitting occurs.
