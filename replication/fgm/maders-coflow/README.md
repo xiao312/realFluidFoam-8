@@ -80,3 +80,17 @@ face centroid and parabolic velocity. `--apply` replaces only the fresh inlet
 placeholder with fixed values, retaining mesh hashes and measured flow quadrature.
 It refuses evolved cases or an unexpected patch. It reuses the existing G2 ASCII
 mesh parser; no dynamic boundary compilation or model fitting occurs.
+
+`initialize_Ha.C` reuses the existing guarded runtime-initialization pattern with
+stock-compatible types. On the actual fresh mesh, it constructs the selected
+Smooke thermo, computes Ha from its own h/Hf and prescribedT/Y, verifies actual
+mu/kappa dispatch, and writes the required time-zero/thermo-type marker. It does
+not read evolved fields or change p/T/Y. The remaining inversion audit remains
+unchanged. Use before decomposition and after setFields, within the admitted job.
+
+Warm OF8 build packets must include the standalone fgmDimixPolicy.H dependency
+used by the retained steadyFlamelet module, even when its optional real-fluid
+optimization is disabled. Add that exact source directory to CPATH; do not edit
+or copy files into the stock read-only OpenFOAM installation. Runtime Ha
+initialization is performed after setFields and before decomposition. Its marker
+binds actual selected thermoType at timezero, leaving the solver guard enabled.
