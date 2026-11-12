@@ -17,7 +17,7 @@ def write(path, data):
     path.write_text(json.dumps(data, indent=2, allow_nan=False) + '\n', encoding='utf-8')
 
 
-def solve(config, mechanism_path, out, chi):
+def solve(config, mechanism_path, out, chi, recover_profile=None):
     import numpy as np
     import cantera as ct
     from spitfire import ChemicalMechanismSpec, Flamelet, FlameletSpec
@@ -41,14 +41,20 @@ def solve(config, mechanism_path, out, chi):
     z = flame.mixfrac_grid
     np.savez_compressed(out / 'initial.npz', Z=z, state=flame.current_interior_state)
     solve_error = None
+    if recover_profile is not None:
+        raw = np.load(recover_profile)
+        if not np.array_equal(raw['Z'], z) or not np.array_equal(raw['species'], gas.species_names):
+            raise ValueError('Recovery grid/species differ')
+        interior = np.column_stack([raw['T'][1:-1], raw['Y'][1:-1, :-1]]).reshape(-1)
     try:
-        flame.compute_steady_state(tolerance=config['steady_tolerance'], verbose=True,
+        if recover_profile is None:
+            flame.compute_steady_state(tolerance=config['steady_tolerance'], verbose=True,
             newton_args={'max_iterations': 40}, psitc_args={'max_iterations': 100},
             transient_args={'extra_integrator_args': {'maximum_time_step_count': 1200}})
     except Exception as error:
         solve_error = f'{type(error).__name__}: {error}'
         traceback.print_exc()
-    state = flame.current_interior_state.copy()
+    state = flame.current_interior_state.copy() if recover_profile is None else interior.copy()
     lib = flame.make_library_from_interior_state(state)
     temperature = np.asarray(lib['temperature'])
     fractions = np.stack([lib['mass fraction ' + s] for s in gas.species_names], axis=-1)
@@ -92,8 +98,8 @@ def solve(config, mechanism_path, out, chi):
         'elapsed_s': time.monotonic()-started, 'solver_error': solve_error,
         'grid_points': len(z), 'Tmax_K': float(temperature.max()),
         'minimum_raw_Y': float(fractions.min()), 'max_mass_sum_error': float(abs(fractions.sum(axis=1)-1).max()),
-        'max_abs_enthalpy_error_J_kg': float(np.max(abs(enthalpy_error))),
-        'max_abs_bilger_error': float(np.max(abs(bilger_error))),
+        'max_abs_enthalpy_error_J_kg': float(np.max(np.abs(enthalpy_error))),
+        'max_abs_bilger_error': float(np.max(np.abs(bilger_error))),
         'max_peak_scaled_Griffon_Cantera_rate_error': max(rate_errors),
         'scaled_rhs_max': residual_max, 'rhs_scaling': 'T/1000 K; species mass fractions/1',
         'steady_tolerance': config['steady_tolerance'],
@@ -107,7 +113,9 @@ def solve(config, mechanism_path, out, chi):
         'upstream_negative_state_clipping': 'Spitfire integration policy retained; this run does not establish strict positivity',
         'scientific_acceptance': False, 'is_2d_coflow': False,
         'mechanism_sha256': sha(mechanism_path), 'profile_sha256': sha(out/'profile.npz'),
-        'driver_sha256': sha(__file__)
+        'driver_sha256': sha(__file__),
+        'recovery_profile_sha256': sha(recover_profile) if recover_profile else None,
+        'recovery_scope': 'Postprocess retained physical states; no new integration' if recover_profile else None
     }
     write(out/'receipt.json', result)
     print('FLAMELET_RESULT '+json.dumps(result), flush=True)
@@ -120,6 +128,7 @@ def main():
     parser.add_argument('--out', type=Path, required=True)
     parser.add_argument('--chi', type=float)
     parser.add_argument('--plan', action='store_true')
+    parser.add_argument('--recover-profile', type=Path)
     args = parser.parse_args()
     config = json.loads(args.config.read_text(encoding='utf-8-sig'))
     if config.get('schema') != 'maders-coflow/v1':
@@ -136,7 +145,7 @@ def main():
     if args.chi is not None:
         if not 0 < args.chi < float('inf'):
             raise ValueError('Invalid scalar dissipation')
-        solve(config, args.mechanism, args.out, args.chi)
+        solve(config, args.mechanism, args.out, args.chi, args.recover_profile)
         return
     rows=[]
     receipt={'config':config, 'mechanism_sha256':sha(args.mechanism), 'driver_sha256':sha(__file__), 'branches':rows,
@@ -157,6 +166,10 @@ def main():
         rows.append(row)
         write(args.out/'receipt.json',receipt)
         print('BRANCH_RESULT '+json.dumps(row),flush=True)
+    receipt['payload_failures'] = sum(r['exit_code'] != 0 for r in rows)
+    write(args.out/'receipt.json', receipt)
+    if receipt['payload_failures']:
+        raise SystemExit(4)
 
 
 if __name__=='__main__':
