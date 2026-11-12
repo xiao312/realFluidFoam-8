@@ -70,7 +70,7 @@ def main():
         file,data=samples[height];sx=data['r_m'];sy=data[quantity]
         if not np.isfinite(sy).all():raise ValueError('Nonfinite sampled CFD field')
         # All samples remain in metrics/data; thin markers only for readability.
-        ax.plot(sx[::4],sy[::4],linestyle='none',marker='o',ms=2.5,mew=0,color='#7451b8',label=f'Our OF8 · {a.time:g} s')
+        ax.plot(sx[::4],sy[::4],linestyle='none',marker='o',ms=2.5,mew=0,color='#7451b8',label=f'Our OF8 · {1000*a.time:.3g} ms')
         ax.set_xlim(0,.03);ax.set_ylim(*curve['yrange'])
         ax.set_xlabel(f'Radial distance for H = {height:g} [m]')
         ax.set_ylabel('Temperature [K]' if quantity=='T_K' else 'CO mass fraction')
