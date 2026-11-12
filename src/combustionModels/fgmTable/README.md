@@ -113,3 +113,16 @@ Each stage separately logs projected cells, maximum C change and signed integrat
 rho*deltaC*V. Source-integrated change excludes that correction in its chemistry
 summary. Verify actual-reader strict rejection, positive/negative roundoff and
 material-error refusal with maders-coflow/source_roundoff_probe.C before CFD.
+
+## Source arithmetic dynamic range
+
+The source ODE retains double state/storage but uses long-double intermediates
+for velocity ratios, logarithms, crossing time and exponential increments. This
+avoids overflow of a ratio for a subnormal source velocity even when the actual
+finite-time update fits in double. Sign tests compare signs directly rather than
+multiply tiny velocities. Domain events and strict coverage checks are unchanged.
+This corrects the copied scalar kernel's arithmetic; the independent historical
+reference remains retained. source_ode_range_probe.C enables invalid/divzero/
+overflow traps and checks tiny forward/reverse rates, stiff boundary events and
+zero source. Compile with g++ -std=c++11 -O2 and this directory on the include path;
+expected PASS. Actual CFD must separately progress beyond the previous FPE.

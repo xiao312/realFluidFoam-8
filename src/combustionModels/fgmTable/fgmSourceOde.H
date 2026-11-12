@@ -81,16 +81,25 @@ public:
             const double edge = positive ? coordinates_[index+1] : coordinates_[index];
             const double edgeVelocity = (positive ? sources_[index+1] : sources_[index]) / density;
             const double distance = edge - result.progress;
-            const double ratio = slope * distance / velocity;
-            const double crossing = slope == 0 ? distance / velocity :
-                (edgeVelocity * velocity <= 0 ? std::numeric_limits<double>::infinity() :
-                 (std::abs(ratio) < .5 ? std::log1p(ratio) : std::log(edgeVelocity / velocity)) / slope);
+            // Intermediate ratios can exceed double range for a subnormal
+            // velocity even when the physical update is finite. Keep traps on.
+            const long double ratio = (long double)slope * distance / velocity;
+            const bool rootBeforeEdge=edgeVelocity==0 ||
+                std::signbit(edgeVelocity)!=std::signbit(velocity);
+            const long double crossing = slope == 0 ? (long double)distance / velocity :
+                (rootBeforeEdge ? std::numeric_limits<long double>::infinity() :
+                 (std::abs(ratio) < .5L ? std::log1p(ratio) :
+                  std::log(std::abs((long double)edgeVelocity))-
+                  std::log(std::abs((long double)velocity))) / slope);
             const double remaining = duration - result.elapsed;
             if (crossing > remaining)
             {
-                const double delta = slope == 0 ? velocity * remaining :
-                    velocity * std::expm1(slope * remaining) / slope;
-                result.progress += delta;
+                const long double delta = slope == 0 ? (long double)velocity * remaining :
+                    (long double)velocity * std::expm1((long double)slope * remaining) / slope;
+                const long double next=(long double)result.progress+delta;
+                if (!std::isfinite(next) || next<coordinates_.front() || next>coordinates_.back())
+                    throw std::runtime_error("Analytic source update left coverage");
+                result.progress = (double)next;
                 if (result.progress < coordinates_.front() || result.progress > coordinates_.back())
                     throw std::runtime_error("Analytic source advance left coverage before its computed event");
                 result.elapsed = duration;
@@ -99,7 +108,7 @@ public:
             if (crossing < 0 || !std::isfinite(crossing))
                 throw std::runtime_error("Invalid analytic source segment crossing");
             result.progress = edge; // Exact knot event, not overshoot clipping.
-            result.elapsed += crossing;
+            result.elapsed += (double)crossing;
             if (++result.crossedSegments > 2 * coordinates_.size())
                 throw std::runtime_error("Unexpected source direction cycle");
         }
