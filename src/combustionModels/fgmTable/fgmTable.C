@@ -24,6 +24,7 @@ License
 \*---------------------------------------------------------------------------*/
 
 #include "fgmTable.H"
+#include "Switch.H"
 #include "fvmSup.H"
 #include "error.H"
 #include "OSspecific.H"
@@ -516,12 +517,22 @@ Foam::combustionModels::fgmTable<ReactionThermo>::advanceProgressSource
         refuse("Source stage field sizes differ from the mesh");
     scalarField advanced(initial);
     scalar crossings = 0, changeKg = 0;
+    scalar projectedCells=0, projectedKg=0, maximumProjection=0;
+    const bool projectRoundoff=this->coeffs().template lookupOrDefault<Switch>
+        ("sourceRoundoffProjection",false);
     forAll(initial, celli)
     {
         try
         {
+            const scalar canonical=projectRoundoff
+                ? table_().projectSourceRoundoff(mixture[celli],initial[celli])
+                : initial[celli];
+            const scalar projection=canonical-initial[celli];
+            projectedCells += projection!=0;
+            projectedKg += density[celli]*projection*this->mesh().V()[celli];
+            maximumProjection=max(maximumProjection,mag(projection));
             const forgeFgm::SourceAdvance result = table_().advanceSource
-                (mixture[celli], density[celli], initial[celli], duration);
+                (mixture[celli], density[celli], canonical, duration);
             if (result.outwardBoundary || result.elapsed != duration)
             {
                 FatalErrorInFunction << "FGM source domain event stage=" << stage
@@ -533,7 +544,7 @@ Foam::combustionModels::fgmTable<ReactionThermo>::advanceProgressSource
             }
             advanced[celli] = result.progress;
             crossings += result.crossedSegments;
-            changeKg += density[celli]*(result.progress-initial[celli])*this->mesh().V()[celli];
+            changeKg += density[celli]*(result.progress-canonical)*this->mesh().V()[celli];
         }
         catch (const std::exception& error)
         {
@@ -543,6 +554,12 @@ Foam::combustionModels::fgmTable<ReactionThermo>::advanceProgressSource
                 << ": " << error.what() << exit(FatalError);
         }
     }
+    reduce(projectedCells,sumOp<scalar>());
+    reduce(projectedKg,sumOp<scalar>());
+    reduce(maximumProjection,maxOp<scalar>());
+    Info<< "fgmSourceRoundoff stage=" << stage << " t=" << this->mesh().time().value()
+        << " enabled=" << projectRoundoff << " cells=" << projectedCells
+        << " maxDeltaC=" << maximumProjection << " deltaKg=" << projectedKg << endl;
     reduce(crossings, sumOp<scalar>());
     reduce(changeKg, sumOp<scalar>());
     Info<< "fgmSourceStage stage=" << stage << " t=" << this->mesh().time().value()

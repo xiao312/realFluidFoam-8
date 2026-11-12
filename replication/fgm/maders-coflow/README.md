@@ -100,3 +100,8 @@ Maders case controls now select the retained conservative-density repair and
 mass-correction accounting. Neither the material-error bound nor the energy or
 lookup checks change. The first uncoupled default-off template is retained in
 older commits; it is not the selected physical coflow setup.
+
+The selected Strang-source diagnostic opts into sourceRoundoffProjection for
+64-epsilon-only raw-C input excursions. It retains exact strict table lookup,
+material-domain refusal and explicit per-stage mass accounting. The actual-reader
+probe must pass before a fresh CFD run; previous failed time step remains retained.

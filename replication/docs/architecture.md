@@ -637,3 +637,8 @@ on the same OpenFOAM types and source integrator; no new external dependency.
 transport package against stockOF8. It extends Foundation constTransport and is
 loaded only by Maders coflow cases. OF8 Fourier (unity-Le) remains a separate stock
 transport-equation model. Existing SRK/PR/Chung library registrations are unchanged.
+
+Maders source stages can explicitly opt into 64-double-epsilon-only input projection
+through the table reader helper; strict lookup/source APIs remain unchanged.
+The combustion model records corrections separately from integrated chemistry.
+This adds no dependency beyond the existing standard-library numerical kernel.

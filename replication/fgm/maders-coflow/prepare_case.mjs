@@ -78,7 +78,7 @@ gravityEnergy { type buoyancyEnergy; active yes; buoyancyEnergyCoeffs { fields (
 put('constant/momentumTransport',header('momentumTransport')+'simulationType laminar;\n');
 put('constant/thermophysicalTransport',header('thermophysicalTransport')+'laminar { model Fourier; }\n');
 put('constant/combustionProperties',header('combustionProperties')+`combustionModel fgmTable;
-fgmTableCoeffs { table "${path.join(out,'constant/physical.tbl').replaceAll('\\','/')}"; boundsPolicy error; mixtureFractionField Z; progressField c; speciesSumLimit 1e-8; }\n`);
+fgmTableCoeffs { table "${path.join(out,'constant/physical.tbl').replaceAll('\\','/')}"; boundsPolicy error; sourceRoundoffProjection yes; mixtureFractionField Z; progressField c; speciesSumLimit 1e-8; }\n`);
 put('system/fvSchemes',header('fvSchemes')+solverSchemes());
 put('system/fvSolution',header('fvSolution')+`solvers {
  "p.*" { solver GAMG; smoother GaussSeidel; tolerance 1e-9; relTol 0; }

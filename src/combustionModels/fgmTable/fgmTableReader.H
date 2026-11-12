@@ -303,6 +303,9 @@ public:
             std::vector<double>& sources
         ) const;
 
+        // Explicit opt-in call; strict lookup/integration remain unchanged.
+        scalar projectSourceRoundoff(const scalar Z, const scalar C) const;
+
         forgeFgm::SourceAdvance advanceSource
         (
             const scalar Z, const scalar density,

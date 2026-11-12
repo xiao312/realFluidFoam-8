@@ -99,3 +99,17 @@ Mapped-source curve endpoints use the exact declared interpolated lower/upper C,
 rather than re-forming the upper endpoint with lower+(upper-lower). This removes
 an arithmetic endpoint inconsistency without widening the strict bounds check or
 changing source values. Legacy arithmetic and physical node parity must be rerun.
+
+## Optional source-input roundoff projection
+
+`sourceRoundoffProjection yes` in fgmTableCoeffs permits only source-stage input
+excursions within 64 double epsilons times max(1,abs(lower),abs(upper)) to be
+projected onto the exact declared local C interval. Default is no. It addresses
+trace transport residue at a collapsed pure-stream row, observed as C=1.34e-172
+at Z=1 in job127748863. Strict lookup and advanceSource interfaces are unchanged;
+material excursions, nonfinite inputs, nonzero collapsed-row sources and outward
+source events remain failures. This is not a general clipping/coverage policy.
+Each stage separately logs projected cells, maximum C change and signed integrated
+rho*deltaC*V. Source-integrated change excludes that correction in its chemistry
+summary. Verify actual-reader strict rejection, positive/negative roundoff and
+material-error refusal with maders-coflow/source_roundoff_probe.C before CFD.

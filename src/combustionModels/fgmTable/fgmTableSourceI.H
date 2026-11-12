@@ -24,6 +24,22 @@ void Foam::fgm::fgmTableReader::sourceCurve
     }
 }
 
+Foam::scalar Foam::fgm::fgmTableReader::projectSourceRoundoff
+(const scalar Z, const scalar C) const
+{
+    if (!std::isfinite(C)) throw std::invalid_argument("Nonfinite source progress");
+    std::vector<double> coordinates, sources;
+    sourceCurve(Z, coordinates, sources);
+    const double lo=coordinates.front(), hi=coordinates.back();
+    if (C>=lo && C<=hi) return C;
+    const double edge=C<lo ? lo : hi;
+    const double scale=std::max(1.,std::max(std::abs(lo),std::abs(hi)));
+    const double tolerance=64*std::numeric_limits<double>::epsilon()*scale;
+    if (std::abs(C-edge)>tolerance)
+        throw std::out_of_range("Material source progress excursion exceeds 64-epsilon policy");
+    return edge;
+}
+
 forgeFgm::SourceAdvance Foam::fgm::fgmTableReader::advanceSource
 (
     const scalar Z, const scalar density,
