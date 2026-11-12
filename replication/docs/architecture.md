@@ -621,3 +621,9 @@ execution reuses the same generator; neither scoring nor upload accepts science.
 retained flamelet profiles. It depends on Cantera critical data and NumPy, not
 OpenFOAM or the manifold generator. Neither module submits Slurm jobs or changes
 scientific review state. Operator tooling owns execution and Forge owns display.
+
+`fgm/maders-coflow` generates atmospheric DRM19 diffusion flamelets and explicit
+weighted-progress diagnostics for Maders2017 Figures4–6. It depends on the existing
+Spitfire/Cantera scientific environment, with no scheduler or OpenFOAM dependency.
+Its output is a building block for reacting coflow CFD, not a radial-profile result.
+The existing unweighted FGM reader does not yet implement the Maders coordinate.
