@@ -307,3 +307,14 @@ The subsequent `fgmZEndpoint` line is report-only and records whether the
 roundoff policy is enabled. Actual field changes and their mass correction are
 reported by `fgmZRoundoffProjection`; the endpoint line does not claim that an
 earlier projection left Z unchanged.
+
+Optional `fgmThermoCorrectionPasses` (integer1..3, default1) repeats the selected
+thermo's energy-to-temperature inversion at unchanged internal sensible enthalpy.
+It is intended to refine OF8's temperature-step stopping near a NASA polynomial
+switch; coefficients, energy and caloric acceptance limit are unchanged. Each
+extra pass verifies and reports zero internal h mutation. Maders selects2 only
+after an actual-runtime switch probe. No new dependency or network/secrets.
+Verify thermo_switch_probe.C in the selected fresh case, then the actual clean-
+start flow; compile success alone does not qualify closure or paper agreement.
+The Foundation OF8 thermoI.H T() stops on temperature increment, so a small step
+crossing a discontinuous polynomial switch can require a second correct().

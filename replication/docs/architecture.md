@@ -643,3 +643,12 @@ Maders source stages can explicitly opt into 64-double-epsilon-only input projec
 through the table reader helper; strict lookup/source APIs remain unchanged.
 The combustion model records corrections separately from integrated chemistry.
 This adds no dependency beyond the existing standard-library numerical kernel.
+
+`validation/maders-coflow/import-preview.mjs` consumes verified plot receipts and
+raw sampled CSVs to update an existing local Forge target. Node built-ins only;
+it preserves other targets/captions, refreshes content hashes and never approves,
+submits or publishes. The operator supplies preview/catalog paths explicitly.
+
+An optional bounded number of selected-thermo inversion passes refines T at
+unchanged stored internal h. This uses the existing thermo interface, changes no
+NASA coefficients and keeps caloric closure enforcement. Default remains one.

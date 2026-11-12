@@ -103,7 +103,7 @@ stopAt endTime; endTime ${endTime}; deltaT 1e-7; adjustTimeStep yes; maxCo 0.5; 
 writeControl adjustableRunTime; writeInterval ${writeInterval}; purgeWrite 0; writeFormat ascii;
 writePrecision 14; timeFormat general; timePrecision 12; runTimeModifiable no;
 fgmEnergyForm absoluteEnthalpy; fgmRequireHaInitialization yes; writeEnergyBudget yes;
-writeFgmThermoClosure yes; fgmThermoClosureRelativeLimit 1e-8; fgmProgressSourceEnabled yes;
+writeFgmThermoClosure yes; fgmThermoClosureRelativeLimit 1e-8; fgmThermoCorrectionPasses 2; fgmProgressSourceEnabled yes;
 fgmSourceIntegration strangFixedState; fgmSkipUnusedDimix no;
 conserveTabulatedDensity yes; projectTabulatedZRoundoff yes; writeMixtureFractionBudget yes;
 functions { ${sample}\n${flux} }\n`);

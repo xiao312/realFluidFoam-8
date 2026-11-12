@@ -114,7 +114,21 @@
         thermo.he() == fgmAbsoluteEnthalpy() - fgmChemicalEnthalpy(mesh, composition);
     }
     const auto fgmThermoStart = fgmTiming.start();
-    thermo.correct();
+    const label correctionPasses=runTime.controlDict().lookupOrDefault<label>
+        ("fgmThermoCorrectionPasses",1);
+    if(correctionPasses<1 || correctionPasses>3)
+        FatalErrorInFunction << "fgmThermoCorrectionPasses must be1..3" << exit(FatalError);
+    if(correctionPasses==1)thermo.correct();
+    else
+    {
+        const scalarField heldSensibleEnthalpy(thermo.he().primitiveField());
+        for(label pass=0;pass<correctionPasses;++pass)thermo.correct();
+        const scalar hMutation=gMax(mag(thermo.he().primitiveField()-heldSensibleEnthalpy));
+        if(hMutation!=0)
+            FatalErrorInFunction << "Thermo inversion mutated internal sensible enthalpy" << exit(FatalError);
+        Info<< "fgmThermoRefinement t=" << runTime.value() << " passes=" << correctionPasses
+            << " maxInternalHeChange_J_kg=" << hMutation << endl;
+    }
     fgmTiming.stop(fgmWallTiming::thermoCorrection, fgmThermoStart);
     const auto fgmCaloricStart = fgmTiming.start();
     auditFgmThermoClosure(thermo);

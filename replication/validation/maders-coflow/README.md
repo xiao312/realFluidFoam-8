@@ -19,3 +19,13 @@ at the original digitized coordinates; dense display interpolation never adds
 metric weight. `--plan` inspects paths without writing. No CFD or scheduler work.
 PCHIP is used only for the displayed paper line. Original numeric references and
 failed/partial CFD values remain available. Matplotlib/NumPy are local dependencies.
+
+`import-preview.mjs --site LOCAL_PREVIEW --catalog CENTRAL_JSON --comparison PLOT_DIR`
+plans importing the actual comparison into the existing Maders4 target; `--apply`
+updates local files only. Node built-ins; no network, credentials, scheduler or
+publication. It verifies image hashes, preserves all other targets and original
+captions, archives the previous payload, and regenerates content-addressed data/
+bundle and manifests. Numerical/reviewer/human acceptance remain pending. Example:
+`node import-preview.mjs --site preview --catalog catalog.json --comparison out`.
+Verify plan first, then browser-load the exact target and inspect the retained
+receipt and plotted sample time. This importer cannot approve or publish results.

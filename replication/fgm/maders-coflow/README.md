@@ -112,3 +112,9 @@ coordinate coverage failure near the pure-fuel endpoint. Tighter solves passed
 that failure without extending the table. The 9d5fcf6 run uses an immutable
 before/after-hashed fvSolution patch with the same settings. Future generation
 writes those settings directly. See [12 November progress](PROGRESS-20261112.md).
+
+The selected case requests two thermo correction passes at unchanged internal h.
+thermo_switch_probe.C exercises actual selected OF8 N2 thermodynamics across
+1000 K, reproduces the stock single-pass residual and checks refinement without
+writing any fields. The caloric closure limit stays1e-8. Physical coflow agreement
+and the exact previous failure remain separate from this probe.

@@ -56,11 +56,11 @@ def main():
         print(json.dumps({'paper_reference':str(a.reference),'samples':str(a.samples),'time_s':a.time,'CFD_job':a.job_id,'out':str(a.out)}));return
     if not a.job_id.isdigit() or len(a.source_commit)!=40:raise ValueError('Exact run/source identity required')
     a.out.mkdir(parents=True,exist_ok=False)
-    reference=json.loads(a.reference.read_text())
+    reference=json.loads(a.reference.read_text(encoding="utf-8"))
     samples={height:read_samples(a.samples,height) for height in [.01,.04]}
     plt.rcParams.update({'font.family':'Arial','font.size':9,'axes.labelsize':9,'xtick.labelsize':8.5,'ytick.labelsize':8.5,'legend.fontsize':7.5,'svg.fonttype':'none','axes.linewidth':.4})
     fig=plt.figure(figsize=(6.7,5.05))
-    positions=[[.105,.625,.355,.35],[.605,.625,.355,.35],[.12,.115,.345,.35],[.615,.115,.345,.35]]
+    positions=[[.105,.625,.355,.35],[.605,.625,.355,.35],[.12,.14,.345,.35],[.615,.14,.345,.35]]
     metrics=[];artifacts={}
     for index,curve in enumerate(reference['curves']):
         ax=fig.add_axes(positions[index]);height=curve['height_m'];quantity=curve['quantity']
@@ -78,7 +78,7 @@ def main():
         for spine in ax.spines.values():spine.set_color('#808080')
         ax.grid(True,color='#999999',linestyle=(0,(1,4)),linewidth=.35)
         ax.set_axisbelow(True);ax.legend(loc='upper right',framealpha=1,edgecolor='black',fancybox=False,borderpad=.3,handlelength=2)
-        ax.text(.5,-.37,f'({"abcd"[index]})',transform=ax.transAxes,ha='center',va='top',fontsize=8)
+        ax.text(.5,-.32,f'({"abcd"[index]})',transform=ax.transAxes,ha='center',va='top',fontsize=8)
         covered=(x>=sx[0])&(x<=sx[-1]);delta=np.interp(x[covered],sx,sy)-y[covered]
         metrics.append({'panel':'abcd'[index],'height_m':height,'quantity':quantity,'reference_points':len(x),
             'covered_reference_points':int(covered.sum()),'RMSE':float(np.sqrt(np.mean(delta**2))),
@@ -89,7 +89,7 @@ def main():
         file=a.out/('figure4.'+suffix);fig.savefig(file,dpi=220,facecolor='white');artifacts[file.name]=hashlib.sha256(file.read_bytes()).hexdigest()
     plt.close(fig)
     report={'schema':'maders-figure4-comparison/v1','job_id':a.job_id,'source_commit':a.source_commit,
-        'sample_time_s':a.time,'metrics':metrics,'artifacts':artifacts,
+        'sample_time_s':a.time,'plotter_sha256':hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),'matplotlib_version':matplotlib.__version__,'metrics':metrics,'artifacts':artifacts,
         'reference_sha256':hashlib.sha256(a.reference.read_bytes()).hexdigest(),
         'style':{'size_inches':[6.7,5.05],'paper':'PCHIP display lines; raw marker coordinates for metrics','ours':'Markers; no smoothing; every fourth sample displayed','xlim_m':[0,.03]},
         'scientific_acceptance':False,'status':'Startup comparison; steady state is not inferred from job completion'}
