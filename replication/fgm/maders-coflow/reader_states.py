@@ -36,7 +36,7 @@ def main():
             mix=(1-eta)*y+eta*burnt
             gas.HPY=h,pressure,mix
             omega=gas.net_production_rates*gas.molecular_weights
-            rows.append({'Z':z,'C':float(gas.Y[indices]@weights),'Y':gas.Y.copy(),
+            rows.append({'Z':z,'C':eta*high,'Y':gas.Y.copy(),
                 'Sc':float(omega[indices]@weights),'Q':float(-omega@h0),'Tdiag':gas.T})
     num=lambda x:' '.join(format(float(v),'.17g') for v in x)
     lines=['schema forge-fgm-table-v3','source physical-DRM19-reader-parity',

@@ -1,0 +1,2 @@
+makeSmookeThermos.C
+LIB = $(FOAM_USER_LIBBIN)/libmadersThermo

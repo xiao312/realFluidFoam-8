@@ -632,3 +632,8 @@ FGM reader schema v3 adds explicit positive dimensionless species weights for
 Maders' molecular-weight-based progress. The solver still transports dimensionless
 C andkg/m3/s sources. V1/v2 unweighted semantics remain unchanged. This depends
 on the same OpenFOAM types and source integrator; no new external dependency.
+
+`development/maders-transport` registers an optional ideal-gas Smooke Cp-dependent
+transport package against stockOF8. It extends Foundation constTransport and is
+loaded only by Maders coflow cases. UnityLewisFourier remains a separate stock
+transport-equation model. Existing SRK/PR/Chung library registrations are unchanged.

@@ -53,3 +53,10 @@ unavailable unstructured100000-cell mesh. These are explicit diagnostic choices.
 `reader_states.py` exports nine actual DRM19 cold/half-composition/equilibrium nodes;
 `reader_probe.C` checks the real OF8 reader against them. They are parity controls,
 not a physical flamelet table and never the table for a production coflow run.
+
+`lookup_baseline.py` consumes only declared training profiles and query coordinates.
+It performs mapped weighted-C piecewise-linear interpolation with explicit coverage
+refusal. `evaluate_lookup.py` reads separate fixed held-out physical references and
+predictions. It reports T/species/signed-source errors, coverage, weighted-C and mass
+consistency without declaring scientific acceptance. These tools are the portable
+Famou task contract; no external task is launched by running them. NumPy only.
