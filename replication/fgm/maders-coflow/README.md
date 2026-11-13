@@ -104,26 +104,33 @@ or copy files into the stock read-only OpenFOAM installation. Runtime Ha
 initialization is performed after setFields and before decomposition. Its marker
 binds actual selected thermoType at timezero, leaving the solver guard enabled.
 
-Maders case controls now select the retained conservative-density repair and
-64epsilon-only transported-Z roundoff policy, with explicit mixture-fraction and
-mass-correction accounting. Neither the material-error bound nor the energy or
-lookup checks change. The first uncoupled default-off template is retained in
-older commits; it is not the selected physical coflow setup.
-
-The selected Strang-source diagnostic opts into sourceRoundoffProjection for
-64-epsilon-only raw-C input excursions. It retains exact strict table lookup,
-material-domain refusal and explicit per-stage mass accounting. The actual-reader
-probe must pass before a fresh CFD run; previous failed time step remains retained.
-
-Z and C now use 1e-14 absolute linear tolerance with zero relative tolerance;
-other equation tolerances are unchanged. The former 1e-11 stop produced a joint
-coordinate coverage failure near the pure-fuel endpoint. Tighter solves passed
-that failure without extending the table. The 9d5fcf6 run uses an immutable
-before/after-hashed fvSolution patch with the same settings. Future generation
-writes those settings directly. See [12 November progress](PROGRESS-20261112.md).
+The case retains conservative density and explicit mixture-fraction/energy audits.
+Historical strict lookup, 64epsilon-only projections and1e-14 scalar solves are
+recorded in [12 November progress](PROGRESS-20261112.md); they are not the current
+operational protocol. Per-stage correction accounting refers to weighted progress
+mass, not loss of total mixture mass. Outer iterations are separate evaluations;
+do not sum them as independent physical time steps.
 
 The selected case requests two thermo correction passes at unchanged internal h.
 thermo_switch_probe.C exercises actual selected OF8 N2 thermodynamics across
 1000 K, reproduces the stock single-pass residual and checks refinement without
 writing any fields. The caloric closure limit stays1e-8. Physical coflow agreement
 and the exact previous failure remain separate from this probe.
+
+13November operational rerun: boundsPolicy clamp replaces the roundoff-only
+source guard. Source input projection and held endpoint events are measured,
+not silently accepted as physical accuracy. Strict diagnostic APIs remain usable.
+The case uses practical equation tolerances: pressure1e-7/relative0.01 with
+final relative0 and200iterations; Z/C1e-10; velocity/energy1e-9. Histories expose
+remaining conservation, temporal and profile defects. This is a new numerical
+protocol, not a retrospective pass for the old run.
+
+The generated case writes radial profiles and inlet/outlet mass flux every5ms.
+Full fields are less frequent. `convergence.mjs` reads these actual saved profiles
+and writes a provisional steady-screen receipt. Its plan mode makes no writes.
+The declared screen starts after two nominal domain traversals (0.87s), compares
+both planes over50/100ms lags, and requires three consecutive50ms-spaced checks
+with max temperature change10K and max CO change5e-4. This is a practical
+time-settling screen, not a paper-agreement gate or a formal validation claim.
+All earlier and failed profiles remain available. If it does not settle, report
+the transient/oscillatory history rather than selecting a favourable frame.

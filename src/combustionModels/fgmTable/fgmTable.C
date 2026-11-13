@@ -517,23 +517,27 @@ Foam::combustionModels::fgmTable<ReactionThermo>::advanceProgressSource
         refuse("Source stage field sizes differ from the mesh");
     scalarField advanced(initial);
     scalar crossings = 0, changeKg = 0;
-    scalar projectedCells=0, projectedKg=0, maximumProjection=0;
+    scalar projectedCells=0, projectedKg=0, absoluteProjectedKg=0, maximumProjection=0;
+    scalar boundaryEvents=0, maximumHeldTime=0;
+    const bool bounded=table_().clampsBounds();
     const bool projectRoundoff=this->coeffs().template lookupOrDefault<Switch>
         ("sourceRoundoffProjection",false);
     forAll(initial, celli)
     {
         try
         {
-            const scalar canonical=projectRoundoff
-                ? table_().projectSourceRoundoff(mixture[celli],initial[celli])
-                : initial[celli];
+            const scalar canonical=bounded
+                ? table_().boundSourceProgress(mixture[celli],initial[celli])
+                : (projectRoundoff ? table_().projectSourceRoundoff(mixture[celli],initial[celli])
+                                   : initial[celli]);
             const scalar projection=canonical-initial[celli];
             projectedCells += projection!=0;
             projectedKg += density[celli]*projection*this->mesh().V()[celli];
+            absoluteProjectedKg += density[celli]*mag(projection)*this->mesh().V()[celli];
             maximumProjection=max(maximumProjection,mag(projection));
             const forgeFgm::SourceAdvance result = table_().advanceSource
                 (mixture[celli], density[celli], canonical, duration);
-            if (result.outwardBoundary || result.elapsed != duration)
+            if (!bounded && (result.outwardBoundary || result.elapsed != duration))
             {
                 FatalErrorInFunction << "FGM source domain event stage=" << stage
                     << " cell=" << celli << " t=" << this->mesh().time().value()
@@ -541,6 +545,11 @@ Foam::combustionModels::fgmTable<ReactionThermo>::advanceProgressSource
                     << " initialC=" << initial[celli] << " eventC=" << result.progress
                     << " elapsed=" << result.elapsed << " requested=" << duration
                     << exit(FatalError);
+            }
+            if (result.outwardBoundary)
+            {
+                boundaryEvents += 1;
+                maximumHeldTime=max(maximumHeldTime,duration-result.elapsed);
             }
             advanced[celli] = result.progress;
             crossings += result.crossedSegments;
@@ -556,10 +565,16 @@ Foam::combustionModels::fgmTable<ReactionThermo>::advanceProgressSource
     }
     reduce(projectedCells,sumOp<scalar>());
     reduce(projectedKg,sumOp<scalar>());
+    reduce(absoluteProjectedKg,sumOp<scalar>());
+    reduce(boundaryEvents,sumOp<scalar>());
+    reduce(maximumHeldTime,maxOp<scalar>());
     reduce(maximumProjection,maxOp<scalar>());
-    Info<< "fgmSourceRoundoff stage=" << stage << " t=" << this->mesh().time().value()
-        << " enabled=" << projectRoundoff << " cells=" << projectedCells
-        << " maxDeltaC=" << maximumProjection << " deltaKg=" << projectedKg << endl;
+    Info<< "fgmSourceBounds stage=" << stage << " t=" << this->mesh().time().value()
+        << " bounded=" << bounded << " roundoffOnly=" << projectRoundoff
+        << " cells=" << projectedCells << " maxDeltaC=" << maximumProjection
+        << " deltaKg=" << projectedKg << " absoluteDeltaKg=" << absoluteProjectedKg
+        << " boundaryEvents=" << boundaryEvents << " maxHeldTime=" << maximumHeldTime
+        << " accounting=perStageEvaluation" << endl;
     reduce(crossings, sumOp<scalar>());
     reduce(changeKg, sumOp<scalar>());
     Info<< "fgmSourceStage stage=" << stage << " t=" << this->mesh().time().value()

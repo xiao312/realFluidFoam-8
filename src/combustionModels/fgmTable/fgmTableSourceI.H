@@ -1,4 +1,4 @@
-// Included once by fgmTableReader.C; source integration is stricter than lookup.
+// Included once by fgmTableReader.C; strict and bounded operational entry paths.
 void Foam::fgm::fgmTableReader::sourceCurve
 (
     const scalar Z,
@@ -8,11 +8,11 @@ void Foam::fgm::fgmTableReader::sourceCurve
 {
     if (!mappedMassFraction())
         throw std::invalid_argument("Source integration requires a v2 raw-C table");
-    if (!std::isfinite(Z) || Z < z_[0] || Z > z_[nZ_-1])
+    if (!std::isfinite(Z) || (!clampsBounds() && (Z < z_[0] || Z > z_[nZ_-1])))
         throw std::out_of_range("Source stage Z is outside table coverage");
     label i = 0;
     scalar weight = 0;
-    cell(z_, Z, "source Z", i, weight);
+    cell(z_, Z, "Z", i, weight);
     const scalar lower = (1-weight)*progressMin_[i] + weight*progressMin_[i+1];
     const scalar upper = (1-weight)*progressMax_[i] + weight*progressMax_[i+1];
     coordinates.resize(nC_);
@@ -22,6 +22,17 @@ void Foam::fgm::fgmTableReader::sourceCurve
         coordinates[j] = j == 0 ? lower : (j == nC_-1 ? upper : lower + c_[j]*(upper-lower));
         sources[j] = (1-weight)*Sc_[i*nC_+j] + weight*Sc_[(i+1)*nC_+j];
     }
+}
+
+Foam::scalar Foam::fgm::fgmTableReader::boundSourceProgress
+(const scalar Z, const scalar C) const
+{
+    if (!std::isfinite(C)) throw std::invalid_argument("Nonfinite source progress");
+    std::vector<double> coordinates, sources;
+    sourceCurve(Z, coordinates, sources);
+    if (!clampsBounds() && (C<coordinates.front() || C>coordinates.back()))
+        throw std::out_of_range("Source progress outside table coverage in strict mode");
+    return std::max(coordinates.front(),std::min(C,coordinates.back()));
 }
 
 Foam::scalar Foam::fgm::fgmTableReader::projectSourceRoundoff

@@ -27,6 +27,9 @@ if (!Number.isFinite(endTime)||endTime<=0||endTime>2||!Number.isInteger(ranks)||
 const plan={target:'maders2017-fig-4',table_sha256:receipt.table_sha256,table_export_source_commit:receipt.source_commit,
   case_generator_sha256:hash(fs.readFileSync(fileURLToPath(import.meta.url))),
   clean_start_time_s:0,end_time_s:endTime,ranks,
+  numerical_protocol:{bounds:'clamp with source-stage accounting',pressure_tolerance:1e-7,
+    pressure_relTol:.01,pressure_maxIter:200,scalar_tolerance:1e-10,velocity_energy_tolerance:1e-9,
+    sample_interval_s:.005,steady_screen:'two nominal traversals; 50/100ms profile windows; three checks'},
   models:{thermo:'NASA7/perfectGas',transport:'Smooke Cp-dependent mu/kappa; stock OF8 Fourier unity-Le diffusion',
     combustion:'FGM weighted raw progress; absolute-Ha energy; signed source integration',
     buoyancy:'stock fvOptions buoyancyForce(U) and buoyancyEnergy(Ha), g=(-9.81,0,0)'},
@@ -79,33 +82,34 @@ gravityEnergy { type buoyancyEnergy; active yes; buoyancyEnergyCoeffs { fields (
 put('constant/momentumTransport',header('momentumTransport')+'simulationType laminar;\n');
 put('constant/thermophysicalTransport',header('thermophysicalTransport')+'laminar { model Fourier; }\n');
 put('constant/combustionProperties',header('combustionProperties')+`combustionModel fgmTable;
-fgmTableCoeffs { table "${path.join(out,'constant/physical.tbl').replaceAll('\\','/')}"; boundsPolicy error; sourceRoundoffProjection yes; mixtureFractionField Z; progressField c; speciesSumLimit 1e-8; }\n`);
+fgmTableCoeffs { table "${path.join(out,'constant/physical.tbl').replaceAll('\\','/')}"; boundsPolicy clamp; mixtureFractionField Z; progressField c; speciesSumLimit 1e-8; }\n`);
 put('system/fvSchemes',header('fvSchemes')+solverSchemes());
 put('system/fvSolution',header('fvSolution')+`solvers {
- "p.*" { solver GAMG; smoother GaussSeidel; tolerance 1e-9; relTol 0; }
+ p { solver GAMG; smoother GaussSeidel; tolerance 1e-7; relTol 0.01; maxIter 200; }
+ pFinal { $p; relTol 0; }
  "rho.*" { solver smoothSolver; smoother symGaussSeidel; tolerance 1e-11; relTol 0; }
- "(U|h|Ha|Yi).*" { solver smoothSolver; smoother symGaussSeidel; tolerance 1e-11; relTol 0; }
- "(Z|c).*" { solver smoothSolver; smoother symGaussSeidel; tolerance 1e-14; relTol 0; }
+ "(U|h|Ha|Yi).*" { solver smoothSolver; smoother symGaussSeidel; tolerance 1e-9; relTol 0; }
+ "(Z|c).*" { solver smoothSolver; smoother symGaussSeidel; tolerance 1e-10; relTol 0; }
 }
 PIMPLE { pMin 90000; pMax 120000; pRef 101325; momentumPredictor yes; transonic no; consistent no;
  nOuterCorrectors 2; nCorrectors 2; nNonOrthogonalCorrectors 0; }
 relaxationFactors { equations { ".*" 1; } }\n`);
 put('system/decomposeParDict',header('decomposeParDict')+`numberOfSubdomains ${ranks}; method simple; simpleCoeffs { n (${ranks} 1 1); delta 0.001; }\n`);
-const writeInterval=endTime/10, sampleInterval=Math.min(.005,writeInterval);
+const writeInterval=Math.min(.05,endTime/10), sampleInterval=Math.min(.005,writeInterval);
 const sample=`radialProfiles { type sets; libs ("libsampling.so"); writeControl runTime; writeInterval ${sampleInterval};
  interpolationScheme cellPoint; setFormat csv; fields (T CO CO2 Z c U rho);
  sets ( h10 { type lineUniform; axis y; start (0.01 0.000001 0); end (0.01 0.02749 0); nPoints 250; }
  h40 { type lineUniform; axis y; start (0.04 0.000001 0); end (0.04 0.02749 0); nPoints 250; } ); }`;
-const flux=['fuel','air','outlet'].map(p=>`massFlux_${p} { type surfaceFieldValue; libs ("libfieldFunctionObjects.so"); writeControl runTime; writeInterval ${writeInterval}; regionType patch; name ${p}; operation sum; fields (phi); writeFields no; log no; }`).join('\n');
+const flux=['fuel','air','outlet'].map(p=>`massFlux_${p} { type surfaceFieldValue; libs ("libfieldFunctionObjects.so"); writeControl runTime; writeInterval ${sampleInterval}; regionType patch; name ${p}; operation sum; fields (phi); writeFields no; log no; }`).join('\n');
 put('system/controlDict',header('controlDict')+`application reactingFoamSolveZ;
 libs ("libcombustionModels.so" "libmadersThermo.so"); startFrom startTime; startTime 0;
 stopAt endTime; endTime ${endTime}; deltaT 1e-7; adjustTimeStep yes; maxCo 0.5; maxDeltaT 0.0001;
 writeControl adjustableRunTime; writeInterval ${writeInterval}; purgeWrite 0; writeFormat ascii;
-writePrecision 14; timeFormat general; timePrecision 12; runTimeModifiable no;
+writePrecision 14; timeFormat general; timePrecision 12; runTimeModifiable yes;
 fgmEnergyForm absoluteEnthalpy; fgmRequireHaInitialization yes; writeEnergyBudget yes;
 writeFgmThermoClosure yes; fgmThermoClosureRelativeLimit 1e-8; fgmThermoCorrectionPasses 2; fgmProgressSourceEnabled yes;
 fgmSourceIntegration strangFixedState; fgmSkipUnusedDimix no;
-conserveTabulatedDensity yes; projectTabulatedZRoundoff yes; writeMixtureFractionBudget yes;
+conserveTabulatedDensity yes; projectTabulatedZRoundoff no; writeMixtureFractionBudget yes;
 functions { ${sample}\n${flux} }\n`);
 const hotValues=[`volScalarFieldValue Z ${init.Z}`,`volScalarFieldValue c ${init.C}`,
   `volScalarFieldValue T ${init.T_K}`,`volScalarFieldValue Ha ${init.Ha_J_kg}`,

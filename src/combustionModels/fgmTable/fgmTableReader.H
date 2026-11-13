@@ -282,6 +282,7 @@ public:
         }
 
         scalar lookupCount() const { return lookupCount_; }
+        bool clampsBounds() const { return policy_ == CLAMP_TO_BOUNDS; }
         scalar clipCount() const { return clipCount_; }
         scalar maxProgressExcursion() const { return maxProgressExcursion_; }
         scalar maxZExcursion() const { return maxZExcursion_; }
@@ -305,6 +306,9 @@ public:
 
         // Explicit opt-in call; strict lookup/integration remain unchanged.
         scalar projectSourceRoundoff(const scalar Z, const scalar C) const;
+
+        // Operational source entry; projection is accounted by the field caller.
+        scalar boundSourceProgress(const scalar Z, const scalar C) const;
 
         forgeFgm::SourceAdvance advanceSource
         (

@@ -29,10 +29,13 @@ sensible-enthalpy equation that is formation-enthalpy heat release at the
 thermo reference state, not Cantera's separate current-temperature total heat
 release. Full species thermodynamics must match the physical table mechanism.
 
-`boundsPolicy error` is the default. Explicit `clamp` is a diagnostic choice:
-it limits lookup coordinates only, never modifies transported C or Z, and logs
-cumulative counts and maximum raw-C/Z excursions. Clipping is evidence to
-review, not a scientific pass. Species sums or malformed tables remain fatal
+`boundsPolicy error` is the strict diagnostic default. `clamp` is the operational
+bounded policy: property queries saturate at table endpoints; split source stages
+project their input C into the local interval and hold at an outward endpoint.
+Lookup does not modify transported fields. The source stage returns the bounded
+updated C, with separate signed/absolute progress-mass correction statistics.
+There is no arbitrary small-excursion fatal threshold in this mode. Corrections
+remain visible for scientific review. Species sums or malformed tables remain fatal
 under either policy. Written source fields and species boundary conditions are
 refreshed by the model; fixed species inlet data remain owned by the case.
 
@@ -67,9 +70,11 @@ It introduces only C++ standard-library dependencies.
 and returns a new internal scalar field. It does not modify the input fields,
 oldTime storage, species, temperature or energy. It reports stage duration,
 segment crossings and integrated progress change. An outward domain event is
-fatal, including its cell, state and elapsed time; no source is zeroed or clipped.
-This refusal applies even when ordinary lookup uses `boundsPolicy clamp`.
-Zero-span pure-stream rows can remain fixed only with exactly zero source.
+fatal in strict mode, including its cell, state and elapsed time. Operational
+clamp mode holds the endpoint for the remainder of that source stage and reports
+the event count and maximum held duration. It never extrapolates table chemistry.
+Collapsed rows remain fixed in clamp mode and report outward-source events.
+Nonfinite inputs and invalid density remain errors in either mode.
 
 The optional solver coupling is documented in the solver README and
 `replication/validation/fgm-source-split/README.md`. The default explicit source
@@ -109,6 +114,8 @@ trace transport residue at a collapsed pure-stream row, observed as C=1.34e-172
 at Z=1 in job127748863. Strict lookup and advanceSource interfaces are unchanged;
 material excursions, nonfinite inputs, nonzero collapsed-row sources and outward
 source events remain failures. This is not a general clipping/coverage policy.
+This legacy opt-in remains available for strict diagnostic replay. Operational
+cases use the single boundsPolicy clamp setting instead.
 Each stage separately logs projected cells, maximum C change and signed integrated
 rho*deltaC*V. Source-integrated change excludes that correction in its chemistry
 summary. Verify actual-reader strict rejection, positive/negative roundoff and
