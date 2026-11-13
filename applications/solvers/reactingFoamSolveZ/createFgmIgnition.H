@@ -4,6 +4,9 @@ bool fgmColdFlowActive = fgmIgnitionTime >= 0;
 const scalar fgmIgnitionLength = runTime.controlDict().lookupOrDefault<scalar>("fgmIgnitionAxialLength", .004);
 const scalar fgmIgnitionZMin = runTime.controlDict().lookupOrDefault<scalar>("fgmIgnitionZMin", .08);
 const scalar fgmIgnitionZMax = runTime.controlDict().lookupOrDefault<scalar>("fgmIgnitionZMax", .18);
+const word fgmIgnitionMode(runTime.controlDict().lookupOrDefault<word>("fgmIgnitionMode", "sourcePeak"));
+if (fgmIgnitionMode != "sourcePeak" && fgmIgnitionMode != "upperProgress")
+    FatalErrorInFunction << "Unknown fgmIgnitionMode " << fgmIgnitionMode << exit(FatalError);
 autoPtr<fgm::fgmTableReader> fgmIgnitionTable;
 scalar fgmColdLastTime = runTime.value();
 scalarField fgmColdPreviousZ;

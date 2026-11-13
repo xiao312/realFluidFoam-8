@@ -9,7 +9,7 @@ const options = {};
 for (let i=2; i<process.argv.length; i++) {
   const key=process.argv[i];
   if (key === '--plan') options.plan=true;
-  else if (['--table','--out','--end-time','--ranks','--protocol','--ignition-time'].includes(key) && process.argv[i+1]) options[key.slice(2)]=process.argv[++i];
+  else if (['--table','--out','--end-time','--ranks','--protocol','--ignition-time','--ignition-mode','--ignition-z-min','--ignition-z-max','--max-co','--max-delta-t','--mesh-protocol'].includes(key) && process.argv[i+1]) options[key.slice(2)]=process.argv[++i];
   else throw Error(`Unknown or missing option ${key}`);
 }
 if (!options.table) throw Error('Use --table TABLE_DIRECTORY [--out NEW_CASE] [--plan]');
@@ -25,6 +25,13 @@ if (hash(fs.readFileSync(path.join(table,'phase-metadata.json')))!==receipt.meta
 const protocol=options.protocol??'baseline';
 if(!['baseline','paper','paper-fine'].includes(protocol))throw Error('Unknown case protocol');
 const paper=protocol!=='baseline';
+const ignitionMode=options['ignition-mode']??'sourcePeak';
+const ignitionZMin=Number(options['ignition-z-min']??.08),ignitionZMax=Number(options['ignition-z-max']??.18);
+const maxCo=Number(options['max-co']??.5),maxDeltaT=Number(options['max-delta-t']??.0001);
+const meshProtocol=options['mesh-protocol']??protocol;
+if(!['sourcePeak','upperProgress'].includes(ignitionMode)||!['baseline','paper','paper-fine'].includes(meshProtocol)
+   ||!Number.isFinite(ignitionZMin)||!Number.isFinite(ignitionZMax)||ignitionZMin<0||ignitionZMax>1||ignitionZMin>=ignitionZMax
+   ||!Number.isFinite(maxCo)||maxCo<=0||!Number.isFinite(maxDeltaT)||maxDeltaT<=0)throw Error('Invalid ignition/mesh/timestep controls');
 const ignitionTime=paper?Number(options['ignition-time']??.9):-1;
 if(paper&&(!Number.isFinite(ignitionTime)||ignitionTime<0))throw Error('Invalid ignition time');
 const endTime=Number(options['end-time']??.05),ranks=Number(options.ranks??8);
@@ -32,7 +39,7 @@ if (!Number.isFinite(endTime)||endTime<=0||endTime>2||!Number.isInteger(ranks)||
 if(paper&&endTime<=ignitionTime)throw Error('End time must exceed ignition time');
 const plan={target:'maders2017-fig-4',table_sha256:receipt.table_sha256,table_export_source_commit:receipt.source_commit,
   case_generator_sha256:hash(fs.readFileSync(fileURLToPath(import.meta.url))),
-  clean_start_time_s:0,end_time_s:endTime,ranks,protocol,ignition_time_s:ignitionTime,
+  clean_start_time_s:0,end_time_s:endTime,ranks,protocol,mesh_protocol:meshProtocol,ignition_time_s:ignitionTime,ignition_mode:ignitionMode,ignition_Z_range:[ignitionZMin,ignitionZMax],maxCo,maxDeltaT,
   numerical_protocol:{bounds:'clamp with source-stage accounting',pressure_tolerance:1e-7,
     pressure_relTol:.01,pressure_maxIter:200,scalar_tolerance:1e-10,velocity_energy_tolerance:1e-9,
     sample_interval_s:.005,steady_screen:'two nominal traversals; 50/100ms profile windows; three checks'},
@@ -45,7 +52,7 @@ const plan={target:'maders2017-fig-4',table_sha256:receipt.table_sha256,table_ex
 if (options.plan||!options.out) {console.log(JSON.stringify(plan,null,2));process.exit(0);}
 const out=path.resolve(options.out);
 if(fs.existsSync(out))throw Error('Refusing existing case; all CFD starts clean');
-const mesh=spawnSync(process.execPath,[path.join(here,'mesh.mjs'),'--out',out,'--protocol',protocol],{encoding:'utf8'});
+const mesh=spawnSync(process.execPath,[path.join(here,'mesh.mjs'),'--out',out,'--protocol',meshProtocol],{encoding:'utf8'});
 if(mesh.status!==0)throw Error(mesh.stderr||mesh.stdout||'Mesh case generation failed');
 const header=(name,cls='dictionary')=>`FoamFile { version 2.0; format ascii; class ${cls}; object "${name}"; }\n`;
 const put=(file,text)=>fs.writeFileSync(path.join(out,file),text);
@@ -110,13 +117,13 @@ const sample=`radialProfiles { type sets; libs ("libsampling.so"); writeControl 
 const flux=['fuel','air','outlet'].map(p=>`massFlux_${p} { type surfaceFieldValue; libs ("libfieldFunctionObjects.so"); writeControl runTime; writeInterval ${sampleInterval}; regionType patch; name ${p}; operation sum; fields (phi); writeFields no; log no; }`).join('\n');
 put('system/controlDict',header('controlDict')+`application reactingFoamSolveZ;
 libs ("libcombustionModels.so" "libmadersThermo.so"); startFrom startTime; startTime 0;
-stopAt endTime; endTime ${endTime}; deltaT 1e-7; adjustTimeStep yes; maxCo 0.5; maxDeltaT 0.0001;
+stopAt endTime; endTime ${endTime}; deltaT 1e-7; adjustTimeStep yes; maxCo ${maxCo}; maxDeltaT ${maxDeltaT};
 writeControl adjustableRunTime; writeInterval ${writeInterval}; purgeWrite 0; writeFormat ascii;
 writePrecision 14; timeFormat general; timePrecision 12; runTimeModifiable yes;
 fgmEnergyForm absoluteEnthalpy; fgmRequireHaInitialization yes; writeEnergyBudget yes;
 writeFgmThermoClosure yes; fgmThermoClosureRelativeLimit 1e-8; fgmThermoCorrectionPasses 2; fgmProgressSourceEnabled yes;
 fgmSourceIntegration strangFixedState;
-${paper?`fgmIgnitionTime ${ignitionTime}; fgmIgnitionTable "${path.join(out,'constant/physical.tbl').replaceAll('\\','/')}"; fgmIgnitionAxialLength 0.004; fgmIgnitionZMin 0.08; fgmIgnitionZMax 0.18;`:''} fgmSkipUnusedDimix no;
+${paper?`fgmIgnitionTime ${ignitionTime}; fgmIgnitionTable "${path.join(out,'constant/physical.tbl').replaceAll('\\','/')}"; fgmIgnitionAxialLength 0.004; fgmIgnitionZMin ${ignitionZMin}; fgmIgnitionZMax ${ignitionZMax}; fgmIgnitionMode ${ignitionMode};`:''} fgmSkipUnusedDimix no;
 conserveTabulatedDensity yes; projectTabulatedZRoundoff no; writeMixtureFractionBudget yes;
 functions { ${sample}\n${flux} }\n`);
 const hotValues=[`volScalarFieldValue Z ${init.Z}`,`volScalarFieldValue c ${init.C}`,

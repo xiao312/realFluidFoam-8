@@ -32,7 +32,7 @@ if (fgmColdFlowActive)
                     if (sources[j] > sources[peak]) peak=j;
                 if (sources[peak] > 0)
                 {
-                    const scalar value=coordinates[peak];
+                    const scalar value=fgmIgnitionMode == "upperProgress" ? coordinates.back() : coordinates[peak];
                     maxDeltaC=max(maxDeltaC,mag(value-ignitionC[celli]));
                     ignitionC[celli]=value;
                     ++selected;
@@ -49,7 +49,7 @@ if (fgmColdFlowActive)
         thermo.correct();
         rho = thermo.rho();
         Info<< "fgmIgnition t=" << now << " cells=" << selected
-            << " maxDeltaC=" << maxDeltaC
+            << " mode=" << fgmIgnitionMode << " maxDeltaC=" << maxDeltaC
             << " maxDeltaHa=" << gMax(mag(fgmAbsoluteEnthalpy().primitiveField()-savedHa))
             << " massBefore=" << massBefore << " massAfter=" << fvc::domainIntegrate(rho).value()
             << " Tmin=" << min(thermo.T()).value() << " Tmax=" << max(thermo.T()).value()

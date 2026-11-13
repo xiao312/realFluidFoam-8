@@ -336,3 +336,11 @@ Dependencies are the existing FGM reader and thermo modules; no network/secrets.
 Example: `fgmIgnitionTime 0.9; fgmIgnitionTable "constant/physical.tbl";`.
 Verify with a compiled staged cold-flow run: zero cold source, exactly one ignition,
 unchanged Ha at ignition, runtime EOS correction and continued reacting evolution.
+
+For controlled ignition sensitivity, `fgmIgnitionMode` is `sourcePeak` (unchanged
+default) or `upperProgress` (the local upper table progress state). Both preserve
+specific absolute enthalpy, use one event and log the selected mode. The latter is
+an ignition diagnostic, not an equilibrium-chemistry replacement or a claim that
+the author used that state. Compare sustained reaction after the event, not the
+prescribed ignition temperature. Reproduce the original extinction before using
+this control as evidence. The Z region remains separately configurable.

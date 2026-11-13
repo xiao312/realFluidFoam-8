@@ -203,3 +203,12 @@ reader. No network/secrets. Plan: `python closure_probe.py --baseline OLD_TABLE
 Execute chemistry/compilation only inside admitted Slurm compute; verify finite
 states, unchanged enthalpy and exact actual-reader replay receipts. Failed physical
 behavior must remain visible, not converted into a passed paper comparison.
+
+Case preparation exposes `--ignition-mode sourcePeak|upperProgress`,
+`--ignition-z-min/--ignition-z-max`, `--max-co`, `--max-delta-t` and
+`--mesh-protocol baseline|paper|paper-fine` for separately declared sensitivities.
+Defaults reproduce the previous protocol. Record every setting in the case plan;
+short10ms-cold-flow cases are fast extinction controls, not paper comparisons.
+Hold the table, mechanism, enthalpy coupling and other settings fixed while varying
+one ignition or timestep setting. Use the actual solver logs/profile histories to
+judge post-ignition survival, and then requalify successful changes in the full case.
