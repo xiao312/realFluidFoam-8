@@ -225,3 +225,15 @@ and diagnostic heat release alongside the comparison fields. Separate axial
 profiles at r1/4/6/8/10mm help distinguish an anchored flame from an advecting hot
 ignition kernel. This changes diagnostic output only. Raw fields stay on SCNet;
 retrieve only the selected profiles/metrics for local comparisons.
+
+`--axial-cells INTEGER` permits a separately declared axial-resolution diagnostic
+without changing the radial mesh, geometry, physics or initialization. The default
+still follows the selected mesh protocol. For paper geometry,1000 axial cells give
+100micrometre spacing and240000 total cells. This remains coarser than the cited
+30–60micrometre guidance and is not an exact author mesh. Record the actual mesh
+receipt/checkMesh result; a plan alone is not executed-grid qualification.
+Example: `node prepare_case.mjs --table TABLE --protocol paper --axial-cells 1000
+--ignition-time .9 --end-time 2 --ranks 32 --plan`. Verify default and override plans,
+reject nonintegral counts,then run actual blockMesh/checkMesh through Slurm. Compare
+matched physical times with the coarse case before attributing profile differences
+to resolution. Every refined CFD starts at its original timezero.

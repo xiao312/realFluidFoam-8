@@ -14,10 +14,12 @@ const config = JSON.parse(fs.readFileSync(path.join(here, 'case.json'), 'utf8').
 const protocol=options.protocol??'baseline';
 if(!['baseline','paper','paper-fine'].includes(protocol))throw Error('Unknown mesh protocol');
 const paper=protocol!=='baseline';
+const axialCells=Number(options['axial-cells']??(paper?(protocol==='paper-fine'?1667:500):250));
+if(!Number.isInteger(axialCells)||axialCells<1)throw Error('Axial cells must be a positive integer');
 const recipe = { axialLength_m: config.height_m, radialBounds_m: paper?[0,.003,config.fuel_radius_m,.012,config.outer_radius_m]:[0,config.fuel_radius_m,config.outer_radius_m],
-  axialCells: paper?(protocol==='paper-fine'?1667:500):250, radialCells: paper?[30,50,100,60]:[60,100], halfAngle_deg: 2.5, azimuthalCells: 1,
+  axialCells, radialCells: paper?[30,50,100,60]:[60,100], halfAngle_deg: 2.5, azimuthalCells: 1,
   source: 'Verhoeven2011 PDF p44; Maders2017 geometry radius labels corrected',
-  protocol, limitation: 'Structured reconstruction; author unstructured mesh unavailable; zero-thickness inlet lip. Paper120k uses60um radial front/200um axial; paper-fine uses60um axial.' };
+  protocol, axialSpacing_m: config.height_m/axialCells, limitation: 'Structured reconstruction; author unstructured mesh unavailable; zero-thickness inlet lip. Paper120k uses60um radial front/200um axial; paper-fine uses60um axial.' };
 if (!options.out || options.plan) {
   console.log(JSON.stringify({ mode: 'plan', recipe, output: options.out ?? null }, null, 2));
 } else {
