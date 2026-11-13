@@ -51,8 +51,8 @@ is kg/m3/s. A weighted-reader extension is required; the existing unweighted sum
 must not silently be used. Signed sources remain signed. The table chemistry and
 Smooke transport must not be replaced by Chung/SRK for the atmospheric replication.
 
-Famou task preparation is separate. Account credit exhaustion prevents new
-execution on12November; no new assignment is claimed.
+Famou task preparation is separate. The owner deferred actual Famou execution;
+no cloud assignment is launched by this module.
 
 `mesh.mjs --out NEW_DIR --plan` describes the reconstructed axisymmetric40000-cell
 wedge. Remove `--plan` to write a fresh mesh case. Node built-ins only; no solver
@@ -134,3 +134,5 @@ with max temperature change10K and max CO change5e-4. This is a practical
 time-settling screen, not a paper-agreement gate or a formal validation claim.
 All earlier and failed profiles remain available. If it does not settle, report
 the transient/oscillatory history rather than selecting a favourable frame.
+The [operational rerun record](../../docs/maders-operational-rerun-20261113.md)
+binds the actual compiled source, checks, resources and interpretation limits.

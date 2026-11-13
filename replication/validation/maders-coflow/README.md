@@ -29,6 +29,8 @@ bundle and manifests. Numerical/reviewer/human acceptance remain pending. Exampl
 `node import-preview.mjs --site preview --catalog catalog.json --comparison out`.
 Verify plan first, then browser-load the exact target and inspect the retained
 receipt and plotted sample time. This importer cannot approve or publish results.
+When the JobID changes, the previous comparison remains available as a separate
+view. Subsequent updates retain that prior-run view without adding duplicates.
 
 `history.py --samples RADIAL_DIRECTORY --reference curves.json --out NEW_DIRECTORY`
 computes per-time paper errors, peak positions and changes between saved profiles.

@@ -51,6 +51,10 @@ const samples=[...new Set(report.metrics.map(m=>m.sample_file))].map(asset);
 const history=report.time_history ? {
   image:asset(report.time_history.image_path),data:asset(report.time_history.data_path)
 } : null;
+const sameRun=target.evidence_binding?.run?.job_id===report.job_id;
+const priorView=target.views?.find(v=>v.id===(sameRun?'coflow-previous':'coflow-current'));
+const previousRunView=priorView ? {...priorView,id:'coflow-previous',
+  label:sameRun?priorView.label:`Previous run · ${target.evidence_binding?.run?.job_id??'retained'}`} : null;
 const timeLabel=`${(1000*report.sample_time_s).toFixed(2)} ms`;
 const temperatures=report.metrics.filter(m=>m.quantity==='T_K').map(m=>`H=${1000*m.height_m} mm: ${m.computed_max.toFixed(2)} K`).join('; ');
 const failure=report.run_status?.state==='FAILED'
@@ -59,10 +63,11 @@ const note=`Transient CFD at ${report.sample_time_s} s, Slurm ${report.job_id}, 
 Object.assign(target,{
   status:'review',result_image:image.file,result_image_sha256:image.hash,data:data.file,data_sha256:data.hash,note,
   views:[{id:'coflow-current',label:`OF8 FGM · transient ${timeLabel}`,image:image.file,image_sha256:image.hash,data:data.file,data_sha256:data.hash,note},
-    ...(history?[{id:'coflow-time-history',label:'Profile history',image:history.image.file,image_sha256:history.image.hash,data:history.data.file,data_sha256:history.data.hash,note:'All saved profiles from this clean-start run; digitized-paper errors and evolution. No steady-state acceptance inferred.'}]:[])],
+    ...(history?[{id:'coflow-time-history',label:'Profile history',image:history.image.file,image_sha256:history.image.hash,data:history.data.file,data_sha256:history.data.hash,note:'All saved profiles from this clean-start run; digitized-paper errors and evolution. No steady-state acceptance inferred.'}]:[]),
+    ...(previousRunView?[previousRunView]:[])],
   development_state:{numerical:'pending',agent_review:'not_assessed',human_acceptance:'not_assessed'},
   review_generation:'sha256:'+generation,
-  evidence_binding:{source:{executed_commit:report.source_commit},run:{job_id:report.job_id,sample_time_s:report.sample_time_s,clean_start_time_s:0,...(report.run_status?{terminal_status:report.run_status}:{})},artifacts:{comparison:data,raw_samples:samples},independent_review:null,human_acceptance:false}
+  evidence_binding:{source:{executed_commit:report.source_commit},run:{job_id:report.job_id,sample_time_s:report.sample_time_s,clean_start_time_s:0,...(report.run_status?{status:report.run_status}:{})},artifacts:{comparison:data,raw_samples:samples},independent_review:null,human_acceptance:false}
 });
 assert.deepEqual(payload.figures.filter(f=>f!==target).map(f=>JSON.stringify(f)),others);
 central.targets=central.targets.map(f=>f.id===target.id?structuredClone(target):f);
