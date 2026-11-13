@@ -184,3 +184,22 @@ coordinates or predictions to improve the metric. NumPy only; no credentials or
 scheduler. Example: `python evaluate_export.py --table TABLE/table.npz --reference
 REFERENCE.npz --out NEW_DIR`. Verification: same reference hash, coverage, finite
 species/source and weighted-C consistency; C++ lookup/runtime checks stay separate.
+
+## Source/ignition debugging controls
+
+`closure_probe.py` compares the actual two exported tables at fixed Z/C with
+Cantera DRM19 chemical sources evaluated at both tabulated T and the existing
+inlet-mixed absolute enthalpy. It invokes `source_replay_probe.C`, linked to the
+actual OF8 reader/source integrator, and compares fixed-density table-source
+replays with independent adiabatic constant-pressure Cantera reactor histories.
+The density treatments differ and are explicitly labeled; this is a source/ignition
+diagnostic, not coflow or paper validation. Tables, mechanism and executable hashes
+are retained. No fitting, coefficient changes or reference changes occur.
+Inputs: two physical table directories, mechanism, compiled probe, new output dir.
+Outputs: source rows, chemical reactor/replay histories and provenance JSON.
+Dependencies: retained Cantera3.2/NumPy environment and the existing compiled OF8
+reader. No network/secrets. Plan: `python closure_probe.py --baseline OLD_TABLE
+--candidate NEW_TABLE --mechanism drm19.yaml --probe BIN --out NEW_DIR --plan`.
+Execute chemistry/compilation only inside admitted Slurm compute; verify finite
+states, unchanged enthalpy and exact actual-reader replay receipts. Failed physical
+behavior must remain visible, not converted into a passed paper comparison.
