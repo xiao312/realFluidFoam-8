@@ -61,7 +61,7 @@
     // matrix has consumed it.
     tmp<volScalarField> tProgressSource(reaction->progressSource());
     const scalar tabulatedIntegral = fvc::domainIntegrate(tProgressSource()).value();
-    if (!fgmProgressSourceEnabled) tProgressSource.ref() *= scalar(0);
+    if (!fgmProgressSourceEnabled || fgmColdFlowActive) tProgressSource.ref() *= scalar(0);
     if (splitFgmSource)
     {
         if (fgmSourceTimeIndex != runTime.timeIndex())
@@ -106,7 +106,7 @@
         // Recomputed from this transport solution; never advance the last outer's result.
         const auto fgmSecondSourceStart = fgmTiming.start();
         const scalarField transportedC(c.primitiveField());
-        c.primitiveFieldRef() = fgmSourceModel->advanceProgressSource
+        c.primitiveFieldRef() = fgmColdFlowActive ? transportedC : fgmSourceModel->advanceProgressSource
         (
             fgmSourceModel->Z().primitiveField(), rho.primitiveField(), transportedC,
             0.5*runTime.deltaTValue(), "secondHalf"

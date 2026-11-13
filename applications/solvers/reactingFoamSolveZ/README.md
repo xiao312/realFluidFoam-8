@@ -318,3 +318,21 @@ Verify thermo_switch_probe.C in the selected fresh case, then the actual clean-
 start flow; compile success alone does not qualify closure or paper agreement.
 The Foundation OF8 thermoI.H T() stops on temperature increment, so a small step
 crossing a discontinuous polynomial switch can require a second correct().
+
+## Scheduled cold-flow ignition
+
+Optional `fgmIgnitionTime` (seconds, default negative/disabled) enables a cold-flow
+stage and one ignition event in the same timezero process. This requires the
+existing raw weighted-C FGM, global time and absolute-enthalpy mode. Until ignition,
+both source half-steps have zero duration; transport and thermo still evolve.
+The case supplies `fgmIgnitionTable`, `fgmIgnitionAxialLength`, and Z min/max.
+The ignition reader uses the same validated table format. For each selected cell,
+its current Z identifies a source curve and the positive source maximum sets C.
+No Z, inlet boundary, absolute enthalpy or historical CFD state is fabricated.
+A50ms cold-flow Z/U-change diagnostic and the ignition mass/enthalpy jump are logged.
+The hook runs before advancing the clock so oldTime for the next transport step
+includes the ignited state. This is numerical ignition, not a new chemical model.
+Dependencies are the existing FGM reader and thermo modules; no network/secrets.
+Example: `fgmIgnitionTime 0.9; fgmIgnitionTable "constant/physical.tbl";`.
+Verify with a compiled staged cold-flow run: zero cold source, exactly one ignition,
+unchanged Ha at ignition, runtime EOS correction and continued reacting evolution.

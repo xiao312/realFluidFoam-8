@@ -9,7 +9,7 @@ const root=path.resolve(directory),mesh=path.join(root,'constant/polyMesh');
 for(const file of fs.readdirSync(root))if(/^\d/.test(file)&&file!=='0')throw Error('Refusing evolved CFD case');
 const bytes=Object.fromEntries(['points','faces','boundary'].map(n=>[n,fs.readFileSync(path.join(mesh,n))]));
 const points=parsePoints(bytes.points),faces=parseFaces(bytes.faces,points.length),patch=parseBoundary(bytes.boundary).fuel;
-if(!patch||patch.type!=='patch'||patch.faces!==60)throw Error('Unexpected fuel patch topology');
+if(!patch||patch.type!=='patch'||![60,80].includes(patch.faces))throw Error('Unexpected fuel patch topology');
 const values=[],areas=[];
 for(const face of faces.slice(patch.startFace,patch.startFace+patch.faces)){
   const v=face.map(i=>points[i]);let area=0;const centre=[0,0,0];

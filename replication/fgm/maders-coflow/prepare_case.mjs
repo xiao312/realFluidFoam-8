@@ -9,7 +9,7 @@ const options = {};
 for (let i=2; i<process.argv.length; i++) {
   const key=process.argv[i];
   if (key === '--plan') options.plan=true;
-  else if (['--table','--out','--end-time','--ranks'].includes(key) && process.argv[i+1]) options[key.slice(2)]=process.argv[++i];
+  else if (['--table','--out','--end-time','--ranks','--protocol','--ignition-time'].includes(key) && process.argv[i+1]) options[key.slice(2)]=process.argv[++i];
   else throw Error(`Unknown or missing option ${key}`);
 }
 if (!options.table) throw Error('Use --table TABLE_DIRECTORY [--out NEW_CASE] [--plan]');
@@ -22,24 +22,30 @@ const hash=bytes=>createHash('sha256').update(bytes).digest('hex');
 const tableBytes=fs.readFileSync(path.join(table,'physical.tbl'));
 if (hash(tableBytes)!==receipt.table_sha256) throw Error('Physical table digest differs');
 if (hash(fs.readFileSync(path.join(table,'phase-metadata.json')))!==receipt.metadata_sha256) throw Error('Thermo metadata digest differs');
+const protocol=options.protocol??'baseline';
+if(!['baseline','paper','paper-fine'].includes(protocol))throw Error('Unknown case protocol');
+const paper=protocol!=='baseline';
+const ignitionTime=paper?Number(options['ignition-time']??.9):-1;
+if(paper&&(!Number.isFinite(ignitionTime)||ignitionTime<0))throw Error('Invalid ignition time');
 const endTime=Number(options['end-time']??.05),ranks=Number(options.ranks??8);
 if (!Number.isFinite(endTime)||endTime<=0||endTime>2||!Number.isInteger(ranks)||ranks<1||ranks>32) throw Error('Invalid duration/ranks');
+if(paper&&endTime<=ignitionTime)throw Error('End time must exceed ignition time');
 const plan={target:'maders2017-fig-4',table_sha256:receipt.table_sha256,table_export_source_commit:receipt.source_commit,
   case_generator_sha256:hash(fs.readFileSync(fileURLToPath(import.meta.url))),
-  clean_start_time_s:0,end_time_s:endTime,ranks,
+  clean_start_time_s:0,end_time_s:endTime,ranks,protocol,ignition_time_s:ignitionTime,
   numerical_protocol:{bounds:'clamp with source-stage accounting',pressure_tolerance:1e-7,
     pressure_relTol:.01,pressure_maxIter:200,scalar_tolerance:1e-10,velocity_energy_tolerance:1e-9,
     sample_interval_s:.005,steady_screen:'two nominal traversals; 50/100ms profile windows; three checks'},
   models:{thermo:'NASA7/perfectGas',transport:'Smooke Cp-dependent mu/kappa; stock OF8 Fourier unity-Le diffusion',
     combustion:'FGM weighted raw progress; absolute-Ha energy; signed source integration',
     buoyancy:'stock fvOptions buoyancyForce(U) and buoyancyEnergy(Ha), g=(-9.81,0,0)'},
-  limits:['Structured40000-cell reconstructed mesh; author mesh unavailable','First diagnostic uses upwind convection; paper reports second order',
+  limits:paper?['Structured reconstructed mesh; author mesh unavailable; paper120k axial200um remains coarser than thesis near-front guidance','Limited second-order spatial convection; Euler temporal integration retained','Cold flow then scheduled ignition within one timezero process; cold settling measured separately','Reconstructed sparse baseline table; physical quenching extension not yet substituted']:[ 'Structured40000-cell reconstructed mesh; author mesh unavailable','First diagnostic uses upwind convection; paper reports second order',
     'Fresh hot ring at timezero; differs from paper cold-steady-first numerical initialization',
     'Finite transient run; steady state and paper agreement require measured profile histories']};
 if (options.plan||!options.out) {console.log(JSON.stringify(plan,null,2));process.exit(0);}
 const out=path.resolve(options.out);
 if(fs.existsSync(out))throw Error('Refusing existing case; all CFD starts clean');
-const mesh=spawnSync(process.execPath,[path.join(here,'mesh.mjs'),'--out',out],{encoding:'utf8'});
+const mesh=spawnSync(process.execPath,[path.join(here,'mesh.mjs'),'--out',out,'--protocol',protocol],{encoding:'utf8'});
 if(mesh.status!==0)throw Error(mesh.stderr||mesh.stdout||'Mesh case generation failed');
 const header=(name,cls='dictionary')=>`FoamFile { version 2.0; format ascii; class ${cls}; object "${name}"; }\n`;
 const put=(file,text)=>fs.writeFileSync(path.join(out,file),text);
@@ -73,8 +79,8 @@ put('0/U',header('U','volVectorField')+`dimensions [0 1 -1 0 0 0 0]; internalFie
 boundaryField {
  fuel { type fixedValue; value uniform (0.115 0 0); }
  air { type fixedValue; value uniform (0.23 0 0); }
- outlet { type pressureInletOutletVelocity; value uniform (0 0 0); }
- outerWall { type noSlip; } axis { type empty; } planeMinus { type wedge; } planePlus { type wedge; }
+ outlet { ${paper?'type zeroGradient;':'type pressureInletOutletVelocity; value uniform (0 0 0);'} }
+ outerWall { type ${paper?'slip':'noSlip'}; } axis { type empty; } planeMinus { type wedge; } planePlus { type wedge; }
 }\n`);
 put('constant/g',header('g','uniformDimensionedVectorField')+'dimensions [0 1 -2 0 0 0 0]; value (-9.81 0 0);\n');
 put('constant/fvOptions',header('fvOptions')+`gravityForce { type buoyancyForce; active yes; buoyancyForceCoeffs { fields (U); } }
@@ -83,7 +89,8 @@ put('constant/momentumTransport',header('momentumTransport')+'simulationType lam
 put('constant/thermophysicalTransport',header('thermophysicalTransport')+'laminar { model Fourier; }\n');
 put('constant/combustionProperties',header('combustionProperties')+`combustionModel fgmTable;
 fgmTableCoeffs { table "${path.join(out,'constant/physical.tbl').replaceAll('\\','/')}"; boundsPolicy clamp; mixtureFractionField Z; progressField c; speciesSumLimit 1e-8; }\n`);
-put('system/fvSchemes',header('fvSchemes')+solverSchemes());
+const schemes=paper?solverSchemes().replace('div(phi,U) Gauss upwind','div(phi,U) Gauss limitedLinearV 1').replaceAll('Gauss upwind','Gauss limitedLinear 1'):solverSchemes();
+put('system/fvSchemes',header('fvSchemes')+schemes);
 put('system/fvSolution',header('fvSolution')+`solvers {
  p { solver GAMG; smoother GaussSeidel; tolerance 1e-7; relTol 0.01; maxIter 200; }
  pFinal { $p; relTol 0; }
@@ -108,13 +115,14 @@ writeControl adjustableRunTime; writeInterval ${writeInterval}; purgeWrite 0; wr
 writePrecision 14; timeFormat general; timePrecision 12; runTimeModifiable yes;
 fgmEnergyForm absoluteEnthalpy; fgmRequireHaInitialization yes; writeEnergyBudget yes;
 writeFgmThermoClosure yes; fgmThermoClosureRelativeLimit 1e-8; fgmThermoCorrectionPasses 2; fgmProgressSourceEnabled yes;
-fgmSourceIntegration strangFixedState; fgmSkipUnusedDimix no;
+fgmSourceIntegration strangFixedState;
+${paper?`fgmIgnitionTime ${ignitionTime}; fgmIgnitionTable "${path.join(out,'constant/physical.tbl').replaceAll('\\','/')}"; fgmIgnitionAxialLength 0.004; fgmIgnitionZMin 0.08; fgmIgnitionZMax 0.18;`:''} fgmSkipUnusedDimix no;
 conserveTabulatedDensity yes; projectTabulatedZRoundoff no; writeMixtureFractionBudget yes;
 functions { ${sample}\n${flux} }\n`);
 const hotValues=[`volScalarFieldValue Z ${init.Z}`,`volScalarFieldValue c ${init.C}`,
   `volScalarFieldValue T ${init.T_K}`,`volScalarFieldValue Ha ${init.Ha_J_kg}`,
   ...names.map((n,i)=>`volScalarFieldValue "${n}" ${init.Y[i]}`)].join('\n');
-put('system/setFieldsDict',header('setFieldsDict')+`defaultFieldValues ();
+put('system/setFieldsDict',header('setFieldsDict')+(paper?'defaultFieldValues (); regions ();\n':`defaultFieldValues ();
 regions ( cylinderToCell { p1 (0 0 0); p2 (0.1 0 0); radius 0.006;
  fieldValues (volScalarFieldValue Z 1 volScalarFieldValue c 0 volScalarFieldValue T 298
  volScalarFieldValue Ha ${init.cold_fuel_Ha_J_kg}
@@ -124,6 +132,6 @@ regions ( cylinderToCell { p1 (0 0 0); p2 (0.1 0 0); radius 0.006;
  cylinderToCell { p1 (0 0 0); p2 (0.004 0 0); radius 0.005;
  fieldValues (volScalarFieldValue Z 1 volScalarFieldValue c 0 volScalarFieldValue T 298
  volScalarFieldValue Ha ${init.cold_fuel_Ha_J_kg}
- ${names.map((n,i)=>`volScalarFieldValue "${n}" ${init.cold_fuel_Y[i]}`).join('\n')}); } );\n`);
-put('maders-case-input.json',JSON.stringify({...plan,initialization:init,physical_table_receipt:receipt},null,2)+'\n');
+ ${names.map((n,i)=>`volScalarFieldValue "${n}" ${init.cold_fuel_Y[i]}`).join('\n')}); } );\n`));
+put('maders-case-input.json',JSON.stringify({...plan,initialization:paper?{type:'cold-air',T_K:298,Z:0,C:0,Ha_J_kg:init.cold_air_Ha_J_kg,ignition_time_s:ignitionTime,note:'Cold flow then local source-peak ignition within this same timezero process; no hot seed at timezero'}:init,physical_table_receipt:receipt},null,2)+'\n');
 console.log(JSON.stringify({created:out,...plan},null,2));

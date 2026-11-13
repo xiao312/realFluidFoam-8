@@ -11,10 +11,13 @@ const options = Object.fromEntries(process.argv.slice(2).reduce((pairs, key, i, 
 }, []));
 const here = path.dirname(fileURLToPath(import.meta.url));
 const config = JSON.parse(fs.readFileSync(path.join(here, 'case.json'), 'utf8').replace(/^\uFEFF/, ''));
-const recipe = { axialLength_m: config.height_m, radialBounds_m: [0, config.fuel_radius_m, config.outer_radius_m],
-  axialCells: 250, radialCells: [60, 100], halfAngle_deg: 2.5, azimuthalCells: 1,
+const protocol=options.protocol??'baseline';
+if(!['baseline','paper','paper-fine'].includes(protocol))throw Error('Unknown mesh protocol');
+const paper=protocol!=='baseline';
+const recipe = { axialLength_m: config.height_m, radialBounds_m: paper?[0,.003,config.fuel_radius_m,.012,config.outer_radius_m]:[0,config.fuel_radius_m,config.outer_radius_m],
+  axialCells: paper?(protocol==='paper-fine'?1667:500):250, radialCells: paper?[30,50,100,60]:[60,100], halfAngle_deg: 2.5, azimuthalCells: 1,
   source: 'Verhoeven2011 PDF p44; Maders2017 geometry radius labels corrected',
-  limitation: 'Structured 40000-cell diagnostic; author approximately100000-cell unstructured mesh unavailable; zero-thickness inlet lip reconstruction.' };
+  protocol, limitation: 'Structured reconstruction; author unstructured mesh unavailable; zero-thickness inlet lip. Paper120k uses60um radial front/200um axial; paper-fine uses60um axial.' };
 if (!options.out || options.plan) {
   console.log(JSON.stringify({ mode: 'plan', recipe, output: options.out ?? null }, null, 2));
 } else {
@@ -31,17 +34,17 @@ if (!options.out || options.plan) {
     }
     return indices.get(key);
   }
-  for (let band = 0; band < 2; band++) blocks.push({ vertices: [vertex(0, band, -1), vertex(1, band, -1),
+  for (let band = 0; band < recipe.radialCells.length; band++) blocks.push({ vertices: [vertex(0, band, -1), vertex(1, band, -1),
     vertex(1, band + 1, -1), vertex(0, band + 1, -1), vertex(0, band, 1), vertex(1, band, 1),
     vertex(1, band + 1, 1), vertex(0, band + 1, 1)], cells: [recipe.axialCells, recipe.radialCells[band], 1] });
   const patches = { fuel: [], air: [], outlet: [], outerWall: [], axis: [], planeMinus: [], planePlus: [] };
   blocks.forEach(({ vertices: v }, band) => {
-    patches[band ? 'air' : 'fuel'].push([v[0], v[4], v[7], v[3]]);
+    patches[recipe.radialBounds_m[band+1]<=config.fuel_radius_m ? 'fuel' : 'air'].push([v[0], v[4], v[7], v[3]]);
     patches.outlet.push([v[1], v[2], v[6], v[5]]);
     patches.planeMinus.push([v[0], v[3], v[2], v[1]]);
     patches.planePlus.push([v[4], v[5], v[6], v[7]]);
     if (band === 0) patches.axis.push([v[0], v[1], v[5], v[4]]);
-    else patches.outerWall.push([v[3], v[7], v[6], v[2]]);
+    else if(band===recipe.radialCells.length-1) patches.outerWall.push([v[3], v[7], v[6], v[2]]);
   });
   const tuple = x => `(${x.join(' ')})`;
   const header = name => `FoamFile { version 2.0; format ascii; class dictionary; object ${name}; }\n`;
@@ -61,5 +64,5 @@ if (!options.out || options.plan) {
     blockMeshDict_sha256: createHash('sha256').update(dictionary).digest('hex'),
     expected_cells: recipe.axialCells * recipe.radialCells.reduce((a,b) => a+b, 0),
     meshed: false, CFD_executed: false }, null, 2) + '\n');
-  console.log(JSON.stringify({ output, recipe, expected_cells: 40000 }));
+  console.log(JSON.stringify({ output, recipe, expected_cells: recipe.axialCells*recipe.radialCells.reduce((a,b)=>a+b,0) }));
 }

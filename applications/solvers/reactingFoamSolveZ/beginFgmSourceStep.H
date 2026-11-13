@@ -14,7 +14,7 @@ if (splitFgmSource)
     fgmSourceOldC = sourceC.oldTime().primitiveField();
     fgmSourceOldZ = sourceZ.oldTime().primitiveField();
     fgmSourceOldRho = rho.oldTime().primitiveField();
-    const scalarField firstHalf = fgmSourceModel->advanceProgressSource
+    const scalarField firstHalf = fgmColdFlowActive ? fgmSourceOldC : fgmSourceModel->advanceProgressSource
     (
         fgmSourceOldZ, fgmSourceOldRho, fgmSourceOldC,
         0.5*runTime.deltaTValue(), "firstHalf"

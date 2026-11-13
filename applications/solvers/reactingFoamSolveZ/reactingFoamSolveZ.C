@@ -74,6 +74,8 @@ int main(int argc, char *argv[])
     #include "createFields.H"
     #include "createFieldRefs.H"
 
+    #include "createFgmIgnition.H"
+
     turbulence->validate();
 
     #include "energyState.H"
@@ -103,6 +105,8 @@ int main(int argc, char *argv[])
             #include "compressibleCourantNo.H"
             #include "setDeltaT.H"
         }
+
+        #include "scheduledFgmIgnition.H"
 
         runTime++;
 

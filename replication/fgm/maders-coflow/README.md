@@ -142,3 +142,33 @@ outer boundary, whereas the thesis specifies no-slip. The executed case uses
 no-slip and is therefore not an exact Maders boundary match. See
 [case audit](../../docs/maders-case-audit-20261113.md) for the measured inlet,
 mesh/scheme, startup and manifold differences and proposed discriminating checks.
+
+## Paper-aligned protocol (13 November development)
+
+The optional `--protocol paper` case preparation selects the Maders free-slip
+outer wall, zero-gradient velocity outlet, limited second-order spatial convection
+and a120000-cell structured wedge with60micrometre radial spacing over r6–12mm.
+Axial spacing remains200micrometres: this is improved resolution, not an exact
+copy of the unavailable unstructured mesh or a grid-convergence claim. The baseline
+protocol stays reproducible. `--protocol paper-fine` prepares a400080-cell mesh
+with approximately60micrometre axial spacing for a later sensitivity.
+
+Paper protocol begins with cold air everywhere and cold inlet composition/enthalpy.
+A default-off solver ignition schedule evolves cold flow with chemistry suppressed
+until0.9s, then sets progress to the local table-source peak near stoichiometric Z
+within4mm of the exit. This occurs before time advancement in the same process;
+no saved/evolved CFD field is imported. Fifty-millisecond Z/U changes are reported
+throughout cold flow; the scheduled time is not a claim of cold-flow convergence.
+Absolute enthalpy is retained, composition/thermo are refreshed and the density/
+energy jump is logged. Pressure/enthalpy ownership is unchanged. The reacting
+settling monitor starts its clock at ignition. Verify actual compiled execution,
+cold source suppression, one ignition event and time-zero provenance in Slurm.
+
+Planned `quenching.py` will compute a separate denser physical Spitfire flamelet family and
+transient extinction snapshots, using the retained mechanism/software environment.
+It writes source/species/enthalpy/residual diagnostics and a manifest; it never
+approves, exports to CFD automatically, or replaces an existing table. Inputs are
+case.json and the mechanism, outputs a new directory. No network/secrets. Plan:
+`python quenching.py --config case.json --out NEW_DIR --plan`. Run actual integration
+only inside a FlamePilot-admitted Slurm allocation. Compare coverage and held-out
+source errors before table integration; Peters-chi remains a declared approximation.

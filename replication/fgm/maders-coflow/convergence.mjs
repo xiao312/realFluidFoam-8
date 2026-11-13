@@ -72,12 +72,16 @@ function main(){
   const args={};
   for(let i=2;i<process.argv.length;i++){
     if(['--plan','--watch','--stop-on-screen'].includes(process.argv[i]))args[process.argv[i].slice(2)]=true;
+    else if(process.argv[i]==='--time-origin')args['time-origin']=Number(process.argv[++i]);
     else if(['--samples','--out','--control-dict','--reference','--solver-log'].includes(process.argv[i]))args[process.argv[i].slice(2)]=path.resolve(process.argv[++i]);
     else throw Error('Unknown monitor option');
   }
   if(!args.samples||!args.out)throw Error('Use --samples RADIAL_DIRECTORY --out RECEIPT [--plan|--watch]');
   if(args['stop-on-screen']&&(!args.watch||!args['control-dict']))throw Error('Stopping needs --watch and an explicit --control-dict');
   if(args.plan){console.log(JSON.stringify({plan:true,...args,criteria}));return;}
+  const origin=args['time-origin']??0;
+  if(!Number.isFinite(origin)||origin<0)throw Error('Invalid ignition time origin');
+  const limits={...criteria,minimum_time_s:origin+criteria.minimum_time_s};
   const cache=new Map();
   const update=()=>{
     const warnings=[];
@@ -91,7 +95,7 @@ function main(){
     }
     const profiles=[...cache.values()].sort((a,b)=>a.time_s-b.time_s);
     const reference=args.reference?JSON.parse(fs.readFileSync(args.reference,'utf8')):null;
-    const report={...screen(profiles),warnings,literature_metrics:reference?literatureMetrics(profiles.at(-1),reference):[],
+    const report={...screen(profiles,limits),time_origin_s:origin,warnings,literature_metrics:reference?literatureMetrics(profiles.at(-1),reference):[],
       reference_sha256:reference?crypto.createHash('sha256').update(fs.readFileSync(args.reference)).digest('hex'):null,
       observed_at:new Date().toISOString(),monitor_sha256:crypto.createHash('sha256').update(fs.readFileSync(fileURLToPath(import.meta.url))).digest('hex')};
     if(args['solver-log']&&fs.existsSync(args['solver-log'])){
@@ -103,7 +107,7 @@ function main(){
         bounds[fields.stage]=fields;
       }
       report.latest_source_bounds=Object.values(bounds);
-      report.latest_energy_state=lines.filter(l=>l.startsWith('fgmEnergyState ')).at(-1)??null;
+      report.latest_energy_state=lines.filter(l=>l.startsWith('energyState ')).at(-1)??null;
       report.pressure_iteration_ceiling_hits_in_tail=lines.filter(l=>l.includes('Solving for p,')&&l.endsWith('No Iterations 200')).length;
     }
     fs.mkdirSync(path.dirname(args.out),{recursive:true});
