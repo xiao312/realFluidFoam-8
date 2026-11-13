@@ -164,7 +164,7 @@ energy jump is logged. Pressure/enthalpy ownership is unchanged. The reacting
 settling monitor starts its clock at ignition. Verify actual compiled execution,
 cold source suppression, one ignition event and time-zero provenance in Slurm.
 
-Planned `quenching.py` will compute a separate denser physical Spitfire flamelet family and
+`quenching.py` computes a separate denser physical Spitfire flamelet family and
 transient extinction snapshots, using the retained mechanism/software environment.
 It writes source/species/enthalpy/residual diagnostics and a manifest; it never
 approves, exports to CFD automatically, or replaces an existing table. Inputs are
