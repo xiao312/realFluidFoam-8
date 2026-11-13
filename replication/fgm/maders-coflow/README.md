@@ -172,3 +172,15 @@ case.json and the mechanism, outputs a new directory. No network/secrets. Plan:
 `python quenching.py --config case.json --out NEW_DIR --plan`. Run actual integration
 only inside a FlamePilot-admitted Slurm allocation. Compare coverage and held-out
 source errors before table integration; Peters-chi remains a declared approximation.
+
+`export_table.py --family-manifest MANIFEST` accepts only hash-bound finite
+transient quenching snapshots and residual-qualified steady members, withholding
+chi5/10 from training. It preserves all failures in provenance, writes a201x201
+mapped table when the physical Z grid has201points, and retains the old explicit
+cold/equilibrium boundary construction. Without this option the baseline export
+is unchanged. `evaluate_export.py` queries the exported numeric table against the
+same frozen held-out reference used for the baseline; it never changes reference
+coordinates or predictions to improve the metric. NumPy only; no credentials or
+scheduler. Example: `python evaluate_export.py --table TABLE/table.npz --reference
+REFERENCE.npz --out NEW_DIR`. Verification: same reference hash, coverage, finite
+species/source and weighted-C consistency; C++ lookup/runtime checks stay separate.

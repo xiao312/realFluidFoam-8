@@ -18,22 +18,37 @@ def main():
     p.add_argument('--profiles',type=Path,required=True)
     p.add_argument('--mechanism',type=Path,required=True)
     p.add_argument('--source-commit',required=True)
-    p.add_argument('--profile-origin',type=Path,required=True)
+    p.add_argument('--profile-origin',type=Path)
+    p.add_argument('--family-manifest',type=Path)
     p.add_argument('--environment-sha256',required=True)
     p.add_argument('--out',type=Path,required=True)
     p.add_argument('--plan',action='store_true')
     a=p.parse_args()
     selected=[0,1,4,5,6]  # chi5/10 remain independent held-out profiles.
     files=[a.profiles/f'chi-{i:02d}/profile.npz' for i in selected]
+    if a.family_manifest:
+        family=json.loads(a.family_manifest.read_text())
+        if family.get('schema')!='maders-quenching-family/v1':raise ValueError('Unknown family manifest')
+        if not family.get('quenching_reached_cold'):raise ValueError('Quenching path incomplete; retain evidence before export')
+        rows=[r for r in family['profiles'] if r['finite'] and r.get('solver_error') is None
+              and (r['kind']=='transient-quenching' or
+                   (r['steady_residual_pass'] and r['chi_st_s_inverse'] not in [5.,10.]))]
+        files=[a.family_manifest.parent/r['profile'] for r in rows]
+        origin={'family_manifest_sha256':digest(a.family_manifest),
+                'physical_family':family,'profile_hashes':{r['profile']:r['sha256'] for r in rows},
+                'withheld_steady_chi':[5.,10.]}
+        if not files:raise ValueError('No eligible physical training members')
+    elif a.profile_origin:
+        origin=json.loads(a.profile_origin.read_text())
+    else:raise ValueError('Require --profile-origin or --family-manifest')
     if a.plan:
         print(json.dumps({'profiles':[str(f) for f in files], 'weighted_progress':True,
             'limits':'Explicit cold mixed reactants and HP equilibrium; no curve fitting',
             'format':'forge-fgm-table-v3','out':str(a.out)}));return
     if len(a.source_commit)!=40 or len(a.environment_sha256)!=64:
         raise ValueError('Exact source and environment identities required')
-    origin=json.loads(a.profile_origin.read_text())
     for file in files:
-        key=str(file.relative_to(a.profiles)).replace('\\','/')
+        key=str(file.relative_to(a.family_manifest.parent if a.family_manifest else a.profiles)).replace('\\','/')
         if origin['profile_hashes'].get(key)!=digest(file):raise ValueError('Profile identity differs: '+key)
     a.out.mkdir(parents=True,exist_ok=False)
     gas=ct.Solution(str(a.mechanism))
@@ -66,7 +81,7 @@ def main():
                 duplicate_spread.append(float(spread))
                 if spread>1e-6:raise ValueError(f'Ambiguous duplicate C at Z={z[j]}')
         row_models.append((c,values[first,1:]))
-    model=(z,row_models);eta=np.linspace(0,1,129)
+    model=(z,row_models);eta=np.linspace(0,1,len(z) if a.family_manifest else 129)
     lower=np.array([row[0][0] for row in row_models]);upper=np.array([row[0][-1] for row in row_models])
     values=[]
     for j,mixture in enumerate(z):
@@ -113,7 +128,7 @@ def main():
         'minimum_Y':float(y.min()),'max_mass_sum_error':float(abs(y.sum(axis=2)-1).max()),
         'max_weighted_C_error':float(abs(y@weights-c).max()),'cold_equilibrium_limits_added':True,
         'duplicate_state_max_spread':max(duplicate_spread,default=0),
-        'limits':'Reconstructed finite family plus explicit cold/HP-equilibrium limits; unsampled progress gaps are linearly interpolated, not additional solved steady flamelets.',
+        'limits':('Denser steady/transient quenching family plus cold/HP-equilibrium limits; finite sampling still uses linear interpolation; prescribed Peters chi is not resolved strain.' if a.family_manifest else 'Reconstructed finite family plus explicit cold/HP-equilibrium limits; unsampled progress gaps are linearly interpolated, not additional solved steady flamelets.'),
         'scientific_acceptance':False}
     (a.out/'receipt.json').write_text(json.dumps(receipt,indent=2)+'\n')
     print(json.dumps(receipt,indent=2))
