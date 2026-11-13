@@ -38,3 +38,7 @@ It writes raw JSON/CSV and time-history plots. Differences use actual saved-time
 intervals; completion does not imply a steady solution. This local analysis needs
 NumPy and Matplotlib. Inspect the latest paper-style plot and the temporal changes
 together before judging agreement. No threshold or acceptance is inferred.
+
+An optional measured `temporal_screen.provisionally_steady` flag labels profiles
+as time-settled at measurement planes and retains the screen in the evidence
+binding. It never grants numerical, reviewer or human scientific acceptance.

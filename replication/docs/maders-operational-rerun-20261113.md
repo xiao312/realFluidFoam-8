@@ -107,3 +107,55 @@ The local ladder now includes the200ms snapshot and41saved-time histories, with
 the previous strict run retained as a separate view. Its temperature RMS errors
 are345.59/700.29K at H10/H40mm. It remains a transient diagnostic, not agreement.
 The source view and plot hashes retain their distinct executed/postprocessing identities.
+
+## Terminal follow-up — 13 November 2026, 14:50 Asia/Shanghai
+
+Job 127882841 completed normally at 13:42:03 Shanghai, exit 0:0, after
+9147 seconds on eight ranks (20.33 allocated core-hours). Executed source remains
+a4058db5d4de4d799e79eea7fb6d7f82433c5c73. The monitor requested stopAt writeNow
+at 0.97002670227 s, and the solver ended at 0.97323097463284 s with exit 0.
+This qualifies the real graceful-stop path; earlier synthetic controls alone did not.
+
+All 195 saved profile times were collected. Three consecutive checks at approximately
+0.870, 0.920 and 0.970 s passed the predeclared temporal screen. Maximum changes
+across the final 100 ms were 0.0122/0.0301 K at H10/H40 and
+9.85e-7/3.07e-6 CO mass fraction. These are time-settled measurement-plane profiles,
+not proof of global exact stationarity or mesh convergence.
+
+| Quantity | H10 mm | H40 mm |
+| --- | ---: | ---: |
+| Temperature RMS against digitized detailed reference, K | 346.97 | 696.84 |
+| CO mass-fraction RMS | 0.010592 | 0.020744 |
+| Computed peak temperature, K | 2014.26 | 2039.77 |
+| Computed temperature-peak radius, mm | 6.625 | 5.962 |
+| Reference temperature-peak radius, mm | 7.624 | 9.695 |
+
+The remaining mismatch concerns profile position and width, especially H40; peak
+temperature alone is misleading. More run time is no longer the main explanation.
+The next investigation should audit inlet velocity interpretation, transport/table
+assumptions and spatial discretization against the paper. No particular cause is
+established and no new run was submitted during this status inspection.
+
+Bounds corrections remain measured, not hidden. The final second-half source
+stage bounded 463 cells, maximum deltaC 1.4007e-5, absolute weighted-progress
+correction 6.749e-17 kg and 31 endpoint holds. These are stage-evaluation values;
+they must not be summed across repeated PIMPLE evaluations as independent physical
+steps. Final caloric closure maximum relative residual was 5.12e-16 and no invalid
+state was reported. The monitor's optional energy-state field is null because its
+log prefix differs from the actual `energyState` prefix; raw energy records remain
+available. This reporting defect does not affect the profile-screen decision.
+
+Terminal profile archive SHA256:
+92df5e4bf4be504f4b2bdbf07d5063632a5b23f85792bd5d670f0d85ec6160c6.
+Retained evidence: state/maders-coflow-20261112/r12-terminal-convergence.json,
+r12-terminal-solver-tail.log, r12-convergence.json.stop-receipt.json,
+comparison-r12-0970 and history-r12-terminal. Remote evidence remains in
+results/maders-cfd-r12 under the registered SCNet trial. Final raw fields remain
+on SCNet. Only profiles and small records were retrieved.
+
+The local Forge target now shows the final paper-lines/CFD-markers comparison,
+195-time history and previous failed strict run. All 71 targets, 12 papers and
+captions are retained. Comparison/history metrics agree exactly; all three view
+images passed HTTP and content-hash checks and the final figure was visually
+inspected. The temporal-screen flag does not grant independent science review,
+human acceptance or public publication. Famou remains deferred.

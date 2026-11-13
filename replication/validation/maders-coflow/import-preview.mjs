@@ -59,15 +59,18 @@ const timeLabel=`${(1000*report.sample_time_s).toFixed(2)} ms`;
 const temperatures=report.metrics.filter(m=>m.quantity==='T_K').map(m=>`H=${1000*m.height_m} mm: ${m.computed_max.toFixed(2)} K`).join('; ');
 const failure=report.run_status?.state==='FAILED'
   ? ` Run failed at ${report.run_status.failure_time_s} s: ${report.run_status.reason}.` : '';
-const note=`Transient CFD at ${report.sample_time_s} s, Slurm ${report.job_id}, source ${report.source_commit.slice(0,7)}. Paper: digitized Detailed–Verhoeven lines; ours: computed markers. ${temperatures}.${failure} Transient, mesh and model differences remain; no steady-state, independent review or scientific acceptance claimed.`;
+const settled=report.temporal_screen?.provisionally_steady===true;
+const phase=settled?'Time-settled at measurement planes':'Transient CFD';
+const limitation=settled?'Temporal profile screen passed; mesh and model differences remain. No independent review or scientific acceptance claimed.':'Transient, mesh and model differences remain; no steady-state, independent review or scientific acceptance claimed.';
+const note=`${phase} at ${report.sample_time_s} s, Slurm ${report.job_id}, source ${report.source_commit.slice(0,7)}. Paper: digitized Detailed–Verhoeven lines; ours: computed markers. ${temperatures}.${failure} ${limitation}`;
 Object.assign(target,{
   status:'review',result_image:image.file,result_image_sha256:image.hash,data:data.file,data_sha256:data.hash,note,
-  views:[{id:'coflow-current',label:`OF8 FGM · transient ${timeLabel}`,image:image.file,image_sha256:image.hash,data:data.file,data_sha256:data.hash,note},
+  views:[{id:'coflow-current',label:`OF8 FGM · ${settled?'time-settled':'transient'} ${timeLabel}`,image:image.file,image_sha256:image.hash,data:data.file,data_sha256:data.hash,note},
     ...(history?[{id:'coflow-time-history',label:'Profile history',image:history.image.file,image_sha256:history.image.hash,data:history.data.file,data_sha256:history.data.hash,note:'All saved profiles from this clean-start run; digitized-paper errors and evolution. No steady-state acceptance inferred.'}]:[]),
     ...(previousRunView?[previousRunView]:[])],
   development_state:{numerical:'pending',agent_review:'not_assessed',human_acceptance:'not_assessed'},
   review_generation:'sha256:'+generation,
-  evidence_binding:{source:{executed_commit:report.source_commit},run:{job_id:report.job_id,sample_time_s:report.sample_time_s,clean_start_time_s:0,...(report.run_status?{status:report.run_status}:{})},artifacts:{comparison:data,raw_samples:samples},independent_review:null,human_acceptance:false}
+  evidence_binding:{source:{executed_commit:report.source_commit},run:{job_id:report.job_id,sample_time_s:report.sample_time_s,clean_start_time_s:0,...(report.run_status?{status:report.run_status}:{})},...(report.temporal_screen?{temporal_screen:report.temporal_screen}:{}),artifacts:{comparison:data,raw_samples:samples},independent_review:null,human_acceptance:false}
 });
 assert.deepEqual(payload.figures.filter(f=>f!==target).map(f=>JSON.stringify(f)),others);
 central.targets=central.targets.map(f=>f.id===target.id?structuredClone(target):f);
