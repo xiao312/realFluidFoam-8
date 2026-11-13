@@ -51,26 +51,33 @@ const samples=[...new Set(report.metrics.map(m=>m.sample_file))].map(asset);
 const history=report.time_history ? {
   image:asset(report.time_history.image_path),data:asset(report.time_history.data_path)
 } : null;
-const sameRun=target.evidence_binding?.run?.job_id===report.job_id;
-const priorView=target.views?.find(v=>v.id===(sameRun?'coflow-previous':'coflow-current'));
-const previousRunView=priorView ? {...priorView,id:'coflow-previous',
-  label:sameRun?priorView.label:`Previous run · ${target.evidence_binding?.run?.job_id??'retained'}`} : null;
+const oldJob=target.evidence_binding?.run?.job_id;
+const sameRun=oldJob===report.job_id;
+const retainedViews=(target.views??[]).filter(v=>!['coflow-current','coflow-time-history',`coflow-run-${report.job_id}`,`coflow-history-${report.job_id}`].includes(v.id));
+if(!sameRun&&oldJob){
+  const current=target.views?.find(v=>v.id==='coflow-current');
+  const oldHistory=target.views?.find(v=>v.id==='coflow-time-history');
+  if(current)retainedViews.unshift({...current,id:`coflow-run-${oldJob}`,label:`Run ${oldJob} · ${current.label}`});
+  if(oldHistory)retainedViews.push({...oldHistory,id:`coflow-history-${oldJob}`,label:`History · ${oldJob}`});
+}
 const timeLabel=`${(1000*report.sample_time_s).toFixed(2)} ms`;
 const temperatures=report.metrics.filter(m=>m.quantity==='T_K').map(m=>`H=${1000*m.height_m} mm: ${m.computed_max.toFixed(2)} K`).join('; ');
 const failure=report.run_status?.state==='FAILED'
   ? ` Run failed at ${report.run_status.failure_time_s} s: ${report.run_status.reason}.` : '';
 const settled=report.temporal_screen?.provisionally_steady===true;
-const phase=settled?'Time-settled at measurement planes':'Transient CFD';
+const extinct=report.physical_outcome?.state==='extinguished';
+const phase=extinct?'Extinguished CFD':settled?'Time-settled at measurement planes':'Transient CFD';
+const ignition=report.ignition_time_s===undefined?'':` Ignition at ${report.ignition_time_s} s; ${(1000*(report.sample_time_s-report.ignition_time_s)).toFixed(2)} ms since ignition.`;
 const limitation=settled?'Temporal profile screen passed; mesh and model differences remain. No independent review or scientific acceptance claimed.':'Transient, mesh and model differences remain; no steady-state, independent review or scientific acceptance claimed.';
-const note=`${phase} at ${report.sample_time_s} s, Slurm ${report.job_id}, source ${report.source_commit.slice(0,7)}. Paper: digitized Detailed–Verhoeven lines; ours: computed markers. ${temperatures}.${failure} ${limitation}`;
+const note=`${phase} at ${report.sample_time_s} s, Slurm ${report.job_id}, source ${report.source_commit.slice(0,7)}. Paper: digitized Detailed–Verhoeven lines; ours: computed markers. ${temperatures}.${failure}${ignition} ${limitation}`;
 Object.assign(target,{
   status:'review',result_image:image.file,result_image_sha256:image.hash,data:data.file,data_sha256:data.hash,note,
-  views:[{id:'coflow-current',label:`OF8 FGM · ${settled?'time-settled':'transient'} ${timeLabel}`,image:image.file,image_sha256:image.hash,data:data.file,data_sha256:data.hash,note},
+  views:[{id:'coflow-current',label:`OF8 FGM · ${extinct?'extinguished':settled?'time-settled':'transient'} ${timeLabel}`,image:image.file,image_sha256:image.hash,data:data.file,data_sha256:data.hash,note},
     ...(history?[{id:'coflow-time-history',label:'Profile history',image:history.image.file,image_sha256:history.image.hash,data:history.data.file,data_sha256:history.data.hash,note:'All saved profiles from this clean-start run; digitized-paper errors and evolution. No steady-state acceptance inferred.'}]:[]),
-    ...(previousRunView?[previousRunView]:[])],
+    ...retainedViews],
   development_state:{numerical:'pending',agent_review:'not_assessed',human_acceptance:'not_assessed'},
   review_generation:'sha256:'+generation,
-  evidence_binding:{source:{executed_commit:report.source_commit},run:{job_id:report.job_id,sample_time_s:report.sample_time_s,clean_start_time_s:0,...(report.run_status?{status:report.run_status}:{})},...(report.temporal_screen?{temporal_screen:report.temporal_screen}:{}),artifacts:{comparison:data,raw_samples:samples},independent_review:null,human_acceptance:false}
+  evidence_binding:{source:{executed_commit:report.source_commit},run:{job_id:report.job_id,sample_time_s:report.sample_time_s,clean_start_time_s:0,...(report.run_status?{status:report.run_status}:{})},...(report.temporal_screen?{temporal_screen:report.temporal_screen}:{}),...(report.physical_outcome?{physical_outcome:report.physical_outcome}:{}),artifacts:{comparison:data,raw_samples:samples},independent_review:null,human_acceptance:false}
 });
 assert.deepEqual(payload.figures.filter(f=>f!==target).map(f=>JSON.stringify(f)),others);
 central.targets=central.targets.map(f=>f.id===target.id?structuredClone(target):f);

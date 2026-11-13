@@ -42,3 +42,8 @@ together before judging agreement. No threshold or acceptance is inferred.
 An optional measured `temporal_screen.provisionally_steady` flag labels profiles
 as time-settled at measurement planes and retains the screen in the evidence
 binding. It never grants numerical, reviewer or human scientific acceptance.
+
+When several cases run concurrently, each JobID retains one latest comparison
+and history view. Refreshing one case does not hide another case or the previous
+completed baseline. An explicit `physical_outcome` (for example extinguished)
+stays visible separately from scheduler state and temporal settling.

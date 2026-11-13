@@ -111,3 +111,44 @@ cases begin at0, hold chemistry off until scheduled0.9s, target2s with temporal
 screening after ignition, and retain the same enthalpy coupling.
 All original usage/deadlines remain. Jobs have7h limits from admission, ending
 before the existing23:06:41Shanghai operator deadline. New CFD agreement is pending.
+
+## Status checkpoint —13November2026,17:20Shanghai
+
+The two paper-aligned cases have different physical outcomes. Job127906458
+(previous sparse table) is burning but still transient: at0.973355s,73.355ms after
+ignition, global Tmax2105.91K and diagnostic heat release about10.57W. The retained
+0.969988s profiles give temperature RMS300.97/654.33K and CO RMS0.01241/0.02290 at
+H10/H40. Those values are not settled comparisons with the earlier baseline.
+Its transient heat release also cannot be equated to steady inlet-supported burning.
+
+Job127908321 (physical quenching table) ignited at0.9s with peak1817.79K, then
+extinguished. At1.149s, global Tmax302.85K, meanT298.08K, diagnostic heat release
+approximately1.24e-6W. Retained1.145s plane maxima are298.0004/298.0295K.
+This is a failed flame-replication result, despite improved held-out interpolation.
+No infrastructure crash or source-bound abort was observed.
+
+After preserving snapshots, the operator requested stopAt writeNow only for this
+extinguished case. The original/modified control dictionary hashes and reason are
+in extinction-stop-receipt-1715.json. It ended normally at1.2368s, solverexit0,
+SlurmCOMPLETED/0:0,elapsed6541s. Reconstructed last fields and all raw histories are
+retained. No restart, new job, table alteration or enthalpy-coupling change occurred.
+The burning127906458 continues under its original limits.
+
+The better table lookup metrics do not establish flame stability. Candidate leads
+are the low-progress source surface/branch construction and ignition-kernel behavior.
+These remain hypotheses: this checkpoint did not establish one root cause or modify
+physics to force burning. Before another run, inspect transient C/source/thermal
+profiles and compare the two source curves in the states the CFD actually visited.
+
+Profile archiveSHA256 values:
+- r13:905c6444245eb654a845ffd82fe1a785c21d564eebab6eb35d83b864fcca4084
+- r14:39a6bcbc4279231b296ec01b834ed0507ec8d25ca3bf7946628e9a6b6559ae85
+
+The local ladder now retains7views: both new comparisons/histories, the completed
+baseline/historical trajectory and the previous failed strict case. All71targets,
+12papers and original captions remain. Both actual PNGs were visually inspected.
+All7view images passed HTTP/content-hash verification; history and comparison RMS
+values agree. The r13 H40 CO maximum0.04648 exceeds the original paper axis ceiling;
+the fixed paper limits remain, and raw maxima/errors are retained without clipping
+in the metrics. The figure is a transient snapshot, not an accepted match.
+Source provenance and science verdicts are unchanged by this display update.
