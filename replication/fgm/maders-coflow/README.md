@@ -212,3 +212,10 @@ short10ms-cold-flow cases are fast extinction controls, not paper comparisons.
 Hold the table, mechanism, enthalpy coupling and other settings fixed while varying
 one ignition or timestep setting. Use the actual solver logs/profile histories to
 judge post-ignition survival, and then requalify successful changes in the full case.
+
+`--ignition-step-reset yes|no` and `--ignition-delta-t SECONDS` bind the numerical
+ignition reset explicitly in generated dictionaries and case receipts. Defaults
+yes/1e-6s reproduce the corrected event. Long cases must qualify a short fresh
+startup first. The numerical reset does not make a too-small kernel physically
+viable; matched controls must keep that distinction visible. Case purpose and
+short/long cold-flow durations remain explicit in operator records.

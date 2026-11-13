@@ -9,7 +9,7 @@ const options = {};
 for (let i=2; i<process.argv.length; i++) {
   const key=process.argv[i];
   if (key === '--plan') options.plan=true;
-  else if (['--table','--out','--end-time','--ranks','--protocol','--ignition-time','--ignition-mode','--ignition-z-min','--ignition-z-max','--max-co','--max-delta-t','--mesh-protocol'].includes(key) && process.argv[i+1]) options[key.slice(2)]=process.argv[++i];
+  else if (['--table','--out','--end-time','--ranks','--protocol','--ignition-time','--ignition-mode','--ignition-z-min','--ignition-z-max','--max-co','--max-delta-t','--mesh-protocol','--ignition-step-reset','--ignition-delta-t'].includes(key) && process.argv[i+1]) options[key.slice(2)]=process.argv[++i];
   else throw Error(`Unknown or missing option ${key}`);
 }
 if (!options.table) throw Error('Use --table TABLE_DIRECTORY [--out NEW_CASE] [--plan]');
@@ -26,6 +26,8 @@ const protocol=options.protocol??'baseline';
 if(!['baseline','paper','paper-fine'].includes(protocol))throw Error('Unknown case protocol');
 const paper=protocol!=='baseline';
 const ignitionMode=options['ignition-mode']??'sourcePeak';
+const ignitionStepReset=options['ignition-step-reset']??'yes',ignitionDeltaT=Number(options['ignition-delta-t']??1e-6);
+if(!['yes','no'].includes(ignitionStepReset)||!Number.isFinite(ignitionDeltaT)||ignitionDeltaT<=0)throw Error('Invalid ignition step reset');
 const ignitionZMin=Number(options['ignition-z-min']??.08),ignitionZMax=Number(options['ignition-z-max']??.18);
 const maxCo=Number(options['max-co']??.5),maxDeltaT=Number(options['max-delta-t']??.0001);
 const meshProtocol=options['mesh-protocol']??protocol;
@@ -39,7 +41,7 @@ if (!Number.isFinite(endTime)||endTime<=0||endTime>2||!Number.isInteger(ranks)||
 if(paper&&endTime<=ignitionTime)throw Error('End time must exceed ignition time');
 const plan={target:'maders2017-fig-4',table_sha256:receipt.table_sha256,table_export_source_commit:receipt.source_commit,
   case_generator_sha256:hash(fs.readFileSync(fileURLToPath(import.meta.url))),
-  clean_start_time_s:0,end_time_s:endTime,ranks,protocol,mesh_protocol:meshProtocol,ignition_time_s:ignitionTime,ignition_mode:ignitionMode,ignition_Z_range:[ignitionZMin,ignitionZMax],maxCo,maxDeltaT,
+  clean_start_time_s:0,end_time_s:endTime,ranks,protocol,mesh_protocol:meshProtocol,ignition_time_s:ignitionTime,ignition_mode:ignitionMode,ignition_step_reset:ignitionStepReset,ignition_deltaT_s:ignitionDeltaT,ignition_Z_range:[ignitionZMin,ignitionZMax],maxCo,maxDeltaT,
   numerical_protocol:{bounds:'clamp with source-stage accounting',pressure_tolerance:1e-7,
     pressure_relTol:.01,pressure_maxIter:200,scalar_tolerance:1e-10,velocity_energy_tolerance:1e-9,
     sample_interval_s:.005,steady_screen:'two nominal traversals; 50/100ms profile windows; three checks'},
@@ -123,7 +125,7 @@ writePrecision 14; timeFormat general; timePrecision 12; runTimeModifiable yes;
 fgmEnergyForm absoluteEnthalpy; fgmRequireHaInitialization yes; writeEnergyBudget yes;
 writeFgmThermoClosure yes; fgmThermoClosureRelativeLimit 1e-8; fgmThermoCorrectionPasses 2; fgmProgressSourceEnabled yes;
 fgmSourceIntegration strangFixedState;
-${paper?`fgmIgnitionTime ${ignitionTime}; fgmIgnitionTable "${path.join(out,'constant/physical.tbl').replaceAll('\\','/')}"; fgmIgnitionAxialLength 0.004; fgmIgnitionZMin ${ignitionZMin}; fgmIgnitionZMax ${ignitionZMax}; fgmIgnitionMode ${ignitionMode};`:''} fgmSkipUnusedDimix no;
+${paper?`fgmIgnitionTime ${ignitionTime}; fgmIgnitionTable "${path.join(out,'constant/physical.tbl').replaceAll('\\','/')}"; fgmIgnitionAxialLength 0.004; fgmIgnitionZMin ${ignitionZMin}; fgmIgnitionZMax ${ignitionZMax}; fgmIgnitionMode ${ignitionMode}; fgmIgnitionNumericalReset ${ignitionStepReset}; fgmIgnitionDeltaT ${ignitionDeltaT};`:''} fgmSkipUnusedDimix no;
 conserveTabulatedDensity yes; projectTabulatedZRoundoff no; writeMixtureFractionBudget yes;
 functions { ${sample}\n${flux} }\n`);
 const hotValues=[`volScalarFieldValue Z ${init.Z}`,`volScalarFieldValue c ${init.C}`,
