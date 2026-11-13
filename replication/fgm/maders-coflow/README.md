@@ -219,3 +219,9 @@ yes/1e-6s reproduce the corrected event. Long cases must qualify a short fresh
 startup first. The numerical reset does not make a too-small kernel physically
 viable; matched controls must keep that distinction visible. Case purpose and
 short/long cold-flow durations remain explicit in operator records.
+
+Full-case sampling includes Ha, tabulated diagnostic temperature, progress source
+and diagnostic heat release alongside the comparison fields. Separate axial
+profiles at r1/4/6/8/10mm help distinguish an anchored flame from an advecting hot
+ignition kernel. This changes diagnostic output only. Raw fields stay on SCNet;
+retrieve only the selected profiles/metrics for local comparisons.

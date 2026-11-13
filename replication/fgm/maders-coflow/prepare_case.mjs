@@ -113,9 +113,12 @@ relaxationFactors { equations { ".*" 1; } }\n`);
 put('system/decomposeParDict',header('decomposeParDict')+`numberOfSubdomains ${ranks}; method simple; simpleCoeffs { n (${ranks} 1 1); delta 0.001; }\n`);
 const writeInterval=Math.min(.05,endTime/10), sampleInterval=Math.min(.005,writeInterval);
 const sample=`radialProfiles { type sets; libs ("libsampling.so"); writeControl runTime; writeInterval ${sampleInterval};
- interpolationScheme cellPoint; setFormat csv; fields (T CO CO2 Z c U rho);
+ interpolationScheme cellPoint; setFormat csv; fields (T CO CO2 Z c U rho Ha fgmTdiag fgmScSource fgmQdot);
  sets ( h10 { type lineUniform; axis y; start (0.01 0.000001 0); end (0.01 0.02749 0); nPoints 250; }
  h40 { type lineUniform; axis y; start (0.04 0.000001 0); end (0.04 0.02749 0); nPoints 250; } ); }`;
+const axial=`axialProfiles { type sets; libs ("libsampling.so"); writeControl runTime; writeInterval ${sampleInterval};
+ interpolationScheme cellPoint; setFormat csv; fields (T CO Z c U rho Ha fgmScSource fgmQdot);
+ sets ( ${[.001,.004,.006,.008,.010].map((r,i)=>`r${i} { type lineUniform; axis x; start (0.00001 ${r} 0); end (0.09999 ${r} 0); nPoints 300; }`).join(' ')} ); }`;
 const flux=['fuel','air','outlet'].map(p=>`massFlux_${p} { type surfaceFieldValue; libs ("libfieldFunctionObjects.so"); writeControl runTime; writeInterval ${sampleInterval}; regionType patch; name ${p}; operation sum; fields (phi); writeFields no; log no; }`).join('\n');
 put('system/controlDict',header('controlDict')+`application reactingFoamSolveZ;
 libs ("libcombustionModels.so" "libmadersThermo.so"); startFrom startTime; startTime 0;
@@ -127,7 +130,7 @@ writeFgmThermoClosure yes; fgmThermoClosureRelativeLimit 1e-8; fgmThermoCorrecti
 fgmSourceIntegration strangFixedState;
 ${paper?`fgmIgnitionTime ${ignitionTime}; fgmIgnitionTable "${path.join(out,'constant/physical.tbl').replaceAll('\\','/')}"; fgmIgnitionAxialLength 0.004; fgmIgnitionZMin ${ignitionZMin}; fgmIgnitionZMax ${ignitionZMax}; fgmIgnitionMode ${ignitionMode}; fgmIgnitionNumericalReset ${ignitionStepReset}; fgmIgnitionDeltaT ${ignitionDeltaT};`:''} fgmSkipUnusedDimix no;
 conserveTabulatedDensity yes; projectTabulatedZRoundoff no; writeMixtureFractionBudget yes;
-functions { ${sample}\n${flux} }\n`);
+functions { ${sample}\n${axial}\n${flux} }\n`);
 const hotValues=[`volScalarFieldValue Z ${init.Z}`,`volScalarFieldValue c ${init.C}`,
   `volScalarFieldValue T ${init.T_K}`,`volScalarFieldValue Ha ${init.Ha_J_kg}`,
   ...names.map((n,i)=>`volScalarFieldValue "${n}" ${init.Y[i]}`)].join('\n');
