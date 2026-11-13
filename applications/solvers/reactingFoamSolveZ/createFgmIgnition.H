@@ -7,6 +7,10 @@ const scalar fgmIgnitionZMax = runTime.controlDict().lookupOrDefault<scalar>("fg
 const word fgmIgnitionMode(runTime.controlDict().lookupOrDefault<word>("fgmIgnitionMode", "sourcePeak"));
 if (fgmIgnitionMode != "sourcePeak" && fgmIgnitionMode != "upperProgress")
     FatalErrorInFunction << "Unknown fgmIgnitionMode " << fgmIgnitionMode << exit(FatalError);
+const Switch fgmIgnitionNumericalReset(runTime.controlDict().lookupOrDefault<Switch>("fgmIgnitionNumericalReset", true));
+const scalar fgmIgnitionDeltaT=runTime.controlDict().lookupOrDefault<scalar>("fgmIgnitionDeltaT", 1e-6);
+if (!std::isfinite(fgmIgnitionDeltaT) || fgmIgnitionDeltaT <= 0)
+    FatalErrorInFunction << "fgmIgnitionDeltaT must be positive and finite" << exit(FatalError);
 autoPtr<fgm::fgmTableReader> fgmIgnitionTable;
 scalar fgmColdLastTime = runTime.value();
 scalarField fgmColdPreviousZ;

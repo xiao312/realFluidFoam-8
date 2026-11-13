@@ -54,6 +54,25 @@ if (fgmColdFlowActive)
             << " massBefore=" << massBefore << " massAfter=" << fvc::domainIntegrate(rho).value()
             << " Tmin=" << min(thermo.T()).value() << " Tmax=" << max(thermo.T()).value()
             << " sameProcess=1 sourceEnabled=1" << endl;
+        if (fgmIgnitionNumericalReset)
+        {
+            // The pre-event timestep/phi used cold density. Rebuild this numerical
+            // state before advancing time; do not change the absolute-Ha field.
+            const scalar previousDeltaT=runTime.deltaTValue();
+            const scalarField savedPhi(phi.primitiveField());
+            const scalarField oldCellFlux(fvc::surfaceSum(mag(phi))().primitiveField());
+            const scalar eventCo=.5*gMax(oldCellFlux/(rho.primitiveField()*mesh.V()))*previousDeltaT;
+            phi=fvc::flux(rho*U);
+            MRF.makeRelative(fvc::interpolate(rho),phi);
+            runTime.setDeltaT(min(previousDeltaT,fgmIgnitionDeltaT));
+            Info<< "fgmIgnitionStepReset t=" << now << " oldDeltaT=" << previousDeltaT
+                << " oldFluxEventCo=" << eventCo
+                << " maxInternalPhiChange=" << gMax(mag(phi.primitiveField()-savedPhi))
+                << " initialDeltaT=" << runTime.deltaTValue() << endl;
+            #include "compressibleCourantNo.H"
+            #include "setDeltaT.H"
+            Info<< "fgmIgnitionStepReset selectedDeltaT=" << runTime.deltaTValue() << endl;
+        }
         fgmColdFlowActive=false;
     }
 }

@@ -344,3 +344,13 @@ an ignition diagnostic, not an equilibrium-chemistry replacement or a claim that
 the author used that state. Compare sustained reaction after the event, not the
 prescribed ignition temperature. Reproduce the original extinction before using
 this control as evidence. The Z region remains separately configurable.
+
+Scheduled ignition also requires numerical state consistency. Default-on
+`fgmIgnitionNumericalReset` reconstructs phi from the changed density/current U,
+applies the existing MRF relative-flux operation, resets the event timestep to at
+most `fgmIgnitionDeltaT` (default1e-6s), and reruns the existing Courant/adaptive-step
+selection before time advancement. Existing Ha ownership/equation is unchanged.
+The event logs old/new dt, pre-refresh Courant and changed internal mass flux.
+Explicit `fgmIgnitionNumericalReset no` reproduces the original event ordering for
+a matched control. Check actual following-step Co/temperature histories; this
+initialization correction alone is not proof of a stable flame or paper agreement.
