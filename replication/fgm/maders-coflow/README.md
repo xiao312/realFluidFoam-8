@@ -136,3 +136,9 @@ All earlier and failed profiles remain available. If it does not settle, report
 the transient/oscillatory history rather than selecting a favourable frame.
 The [operational rerun record](../../docs/maders-operational-rerun-20261113.md)
 binds the actual compiled source, checks, resources and interpretation limits.
+
+Boundary audit amendment,13November: Maders Fig.1 specifies free-slip at the
+outer boundary, whereas the thesis specifies no-slip. The executed case uses
+no-slip and is therefore not an exact Maders boundary match. See
+[case audit](../../docs/maders-case-audit-20261113.md) for the measured inlet,
+mesh/scheme, startup and manifold differences and proposed discriminating checks.
