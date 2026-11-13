@@ -5,6 +5,10 @@ saved profiles reproduce the temperature scale and upper-plane centre temperatur
 but the radial profiles remain too narrow. This is useful coupled-solver evidence,
 not a satisfactory steady Figure4 replication.
 
+A subsequent [DeepFlame source audit](deepflame-fgm-bounds-audit-20261113.md)
+found a more permissive bounded lookup policy. Our sub-ppm excursion should be
+treated as a practical boundary-handling repair, distinct from the profile errors.
+
 Job127801087 used compiled solver268c35851cdfb65c784f24cce76dcd88503eaac3,
 runtime probe111a6699b5e9897c92b58723a171f344593448c5 and environment
 f46b172cd5e40693c14e09ae43ca85df418ed3da7556e58fd71fad5b2fca1793.
