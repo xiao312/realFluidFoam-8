@@ -107,6 +107,13 @@ def main():
     (a.out/'physical.tbl').write_text('\n'.join(lines)+'\n')
     np.savez_compressed(a.out/'table.npz',Z=z,eta=eta,c_min=lower,c_max=upper,values=values,
         species=species,progress_weights=weights)
+    # Exact physical table nodes for the existing independent C++ reader probe.
+    node_indices=[(i,j) for i in sorted(set([0,1,len(z)//8,len(z)//2,len(z)-2,len(z)-1]))
+                  for j in sorted(set([0,1,len(eta)//4,len(eta)//2,len(eta)-2,len(eta)-1]))]
+    node_lines=[f'{len(species)} {len(node_indices)}']
+    for i,j in node_indices:
+        node_lines.append(number([z[i],c[i,j],values[i,j,1],values[i,j,2],values[i,j,0],*y[i,j]]))
+    (a.out/'reader-nodes.txt').write_text('\n'.join(node_lines)+'\n')
     sys.path.insert(0,str(Path(__file__).resolve().parent.parent/'direct-flamelet'))
     from metadata import phase_metadata
     metadata=phase_metadata(ct,gas,a.mechanism,digest(a.mechanism),a.source_commit,a.environment_sha256)
