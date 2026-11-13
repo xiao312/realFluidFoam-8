@@ -29,3 +29,10 @@ bundle and manifests. Numerical/reviewer/human acceptance remain pending. Exampl
 `node import-preview.mjs --site preview --catalog catalog.json --comparison out`.
 Verify plan first, then browser-load the exact target and inspect the retained
 receipt and plotted sample time. This importer cannot approve or publish results.
+
+`history.py --samples RADIAL_DIRECTORY --reference curves.json --out NEW_DIRECTORY`
+computes per-time paper errors, peak positions and changes between saved profiles.
+It writes raw JSON/CSV and time-history plots. Differences use actual saved-time
+intervals; completion does not imply a steady solution. This local analysis needs
+NumPy and Matplotlib. Inspect the latest paper-style plot and the temporal changes
+together before judging agreement. No threshold or acceptance is inferred.
