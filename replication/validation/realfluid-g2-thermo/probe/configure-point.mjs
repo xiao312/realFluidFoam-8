@@ -10,7 +10,9 @@ for(let i=0;i<args.length;i++){
 if(!options['--case']||!options['--point'])throw Error('Explicit case and point required');
 const root=path.resolve(options['--case']),pointRaw=await readFile(options['--point']),point=JSON.parse(pointRaw);
 if(point.schema!=='captured-failed-thermo-point/v1'||point.authorizedForCFDRestart!==false)throw Error('Captured query point required');
-if((await readdir(root)).some(n=>/^processor/.test(n)||(Number.isFinite(Number(n))&&Number(n)>0)))throw Error('Fresh undecomposed point case required');
+const listing=await readdir(root);
+if(listing.includes('point-input.json'))throw Error('Point already configured; preserve it and select a new case');
+if(listing.some(n=>/^processor/.test(n)||(Number.isFinite(Number(n))&&Number(n)>0)))throw Error('Fresh undecomposed point case required');
 const hash=raw=>createHash('sha256').update(raw).digest('hex');
 if(hash(await readFile(`${root}/constant/thermophysicalProperties`))!==point.thermoDictionarySha256)throw Error('Exact thermo dictionary differs from captured point');
 const zeroNames=(await readdir(`${root}/0`)).filter(n=>!['p','T','Ha'].includes(n));
