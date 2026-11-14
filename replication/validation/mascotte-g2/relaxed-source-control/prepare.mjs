@@ -2,6 +2,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import {spawnSync} from 'node:child_process';
 import {createHash} from 'node:crypto';
+import {withInertSpecies} from './inert-species.mjs';
 
 const [build, thermo, table, root, rawCr, action] = process.argv.slice(2);
 const Cr = Number(rawCr), apply = action === '--apply';
@@ -12,8 +13,8 @@ const sha = bytes => createHash('sha256').update(bytes).digest('hex');
 const dictionary = fs.readFileSync(thermo+'/thermophysicalProperties','utf8');
 const metadata = JSON.parse(fs.readFileSync(thermo+'/manifest.json'));
 const tableBytes = fs.readFileSync(table);
-if (metadata.species.length !== 53 || !/inertSpecie\s+\w+\s*;/.test(dictionary))
-  throw Error('Full53 original thermo with explicit inert required');
+if (metadata.species.length !== 53) throw Error('Full53 original thermo required');
+const activeDictionary = withInertSpecies(dictionary, 'O2');
 const record = {schema:'relaxed-table-source-control/v1',Cr,Z:0.2,T_K:300,p_Pa:5600000,
   CFDsteps:0,physicalTime:0,actualComposition:'CH4=.2,O2=.8,others=0',
   inertBookkeeping:'O2; coefficients unchanged',
@@ -35,7 +36,7 @@ scalar('p','1 -1 -2 0 0 0 0',record.p_Pa);scalar('T','0 0 0 1 0 0 0',record.T_K)
 scalar('Z','0 0 0 0 0 0 0',record.Z);
 for(const species of metadata.species)scalar(species.name,'0 0 0 0 0 0 0',species.name==='CH4'?.2:species.name==='O2'?.8:0);
 put('0/U',header('U','volVectorField')+'dimensions [0 1 -1 0 0 0 0]; internalField uniform (0 0 0); boundaryField {walls {type fixedValue;value uniform (0 0 0);}}\n');
-put('constant/thermophysicalProperties',dictionary.replace(/inertSpecie\s+\w+\s*;/,'inertSpecie O2;'));
+put('constant/thermophysicalProperties',activeDictionary);
 put('constant/steady.tbl',tableBytes);
 put('constant/combustionProperties',header('combustionProperties')+`combustionModel relaxedTable; relaxedTableCoeffs {table "${root}/constant/steady.tbl";relaxationSteps ${Cr};lookupRoundoffPolicy endpoint64epsilon;}\n`);
 put('constant/momentumTransport',header('momentumTransport')+'simulationType laminar;\n');

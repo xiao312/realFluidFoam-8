@@ -1,5 +1,6 @@
 import fs from 'node:fs';
 import {createHash} from 'node:crypto';
+import {withInertSpecies} from './inert-species.mjs';
 const [root,rawCr,action]=process.argv.slice(2),Cr=Number(rawCr),apply=action==='--apply';
 if(!root||![1,100].includes(Cr)||![undefined,'--apply'].includes(action))throw Error('Use NEW_CASE 1|100 [--apply]');
 if(fs.readdirSync(root).some(n=>n.startsWith('processor')||(Number.isFinite(Number(n))&&Number(n)>0))
@@ -11,8 +12,7 @@ if(factory.startTime!==0||factory.closure!=='steady-flamelet'||factory.energyFor
 const changes=[];
 function change(name,after){const before=read(name);changes.push({name,before,after,beforeSha256:sha(before),afterSha256:sha(after)});}
 const thermo=read('constant/thermophysicalProperties');
-if(!/inertSpecie\s+\w+\s*;/.test(thermo))throw Error('Explicit inert required');
-change('constant/thermophysicalProperties',thermo.replace(/inertSpecie\s+\w+\s*;/,'inertSpecie O2;'));
+change('constant/thermophysicalProperties',withInertSpecies(thermo,'O2'));
 change('constant/combustionProperties',`FoamFile {version 2.0;format ascii;class dictionary;object combustionProperties;}
 combustionModel relaxedTable;relaxedTableCoeffs {table "${root}/constant/steady.tbl";relaxationSteps ${Cr};lookupRoundoffPolicy endpoint64epsilon;}
 `);

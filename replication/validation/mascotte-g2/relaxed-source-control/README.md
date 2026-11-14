@@ -41,3 +41,10 @@ Ha initialization density and registered mass-flow/area, then replaces only
 the initial inlet U/rhoInlet values before decomposition. Original mass flows
 and boundary types are preserved; no ideal-gas placeholders are used. A fresh
 relaxed-flow manifest and Slurm allocation are required for apply.
+
+The shared `inert-species.mjs` accepts quoted and unquoted OpenFOAM names and
+changes exactly one bookkeeping entry. Run `node check-inert-species.mjs
+ACTUAL_RETAINED_THERMOPHYSICAL_PROPERTIES` to verify the original quoted N2
+dictionary, an unquoted entry and negative controls. Expected: all six flags
+true, with every other byte unchanged. The R55 input failure preceded all
+source/property calculations; it does not invalidate the compiled C++ model.

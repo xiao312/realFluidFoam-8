@@ -1,0 +1,14 @@
+import fs from 'node:fs';
+import assert from 'node:assert/strict';
+import {withInertSpecies} from './inert-species.mjs';
+const input=process.argv[2];
+if(!input)throw Error('Pass the retained actual thermophysicalProperties file');
+const original=fs.readFileSync(input,'utf8');
+assert.match(original,/inertSpecie\s+"N2"\s*;/);
+const after=withInertSpecies(original,'O2');
+assert.equal(after.replace('inertSpecie O2;','inertSpecie "N2";'),original);
+assert.equal(withInertSpecies('inertSpecie N2;','O2'),'inertSpecie O2;');
+assert.throws(()=>withInertSpecies('species (N2 O2);','O2'));
+assert.throws(()=>withInertSpecies('inertSpecie N2; inertSpecie O2;','O2'));
+assert.throws(()=>withInertSpecies(original,'O2;bad'));
+console.log(JSON.stringify({actualQuotedDictionary:true,unquoted:true,missingRejected:true,duplicateRejected:true,invalidNameRejected:true,allOtherBytesUnchanged:true}));
