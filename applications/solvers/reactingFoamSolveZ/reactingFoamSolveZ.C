@@ -89,6 +89,14 @@ int main(int argc, char *argv[])
 
     // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
+    const bool realFluidInnerThermoCorrectors = runTime.controlDict()
+        .lookupOrDefault<Switch>("realFluidInnerThermoCorrectors", false);
+    if (realFluidInnerThermoCorrectors && reaction->type()!="none"
+        && reaction->type()!="steadyFlamelet")
+        FatalErrorInFunction << "Inner scalar/energy lifecycle currently supports none or steadyFlamelet; "
+            << "finite-rate/progress-source integration requires separate qualification" << exit(FatalError);
+    Info<< "scalarEnergyCorrectors=" << (realFluidInnerThermoCorrectors ? "insidePressure" : "outerPimple") << endl;
+
     Info<< "\nStarting time loop\n" << endl;
 
     while (pimple.run(runTime))
@@ -125,36 +133,18 @@ int main(int argc, char *argv[])
             const auto fgmMomentumStart = fgmTiming.start();
             #include "UEqn.H"
             fgmTiming.stop(fgmWallTiming::momentum, fgmMomentumStart);
-            const auto fgmSpeciesStart = fgmTiming.start();
-            #include "YEqn.H"
-            fgmTiming.stop(fgmWallTiming::species, fgmSpeciesStart);
-            const auto fgmMixtureStart = fgmTiming.start();
-            if (reaction->compositionTabulated())
+            if (!realFluidInnerThermoCorrectors)
             {
-                #include "ZEqn.H"
+                #include "solveScalarsAndEnergy.H"
             }
-            fgmTiming.stop(fgmWallTiming::mixtureFraction, fgmMixtureStart);
-            if (reaction->transportsProgress())
-            {
-                const auto fgmProgressStart = fgmTiming.start();
-                #include "cEqn.H"
-                fgmTiming.stop(fgmWallTiming::progress, fgmProgressStart);
-            }
-            else if (reaction->compositionTabulated())
-            {
-                // A steady flamelet owns Y(Z), not a transported progress field.
-                // Refresh the just-transported composition before Ha inversion.
-                const auto fgmReactionStart = fgmTiming.start();
-                reaction->correct();
-                fgmTiming.stop(fgmWallTiming::reactionCorrection, fgmReactionStart);
-            }
-            const auto fgmEnergyStart = fgmTiming.start();
-            #include "EEqn.H"
-            fgmTiming.stop(fgmWallTiming::energy, fgmEnergyStart);
 
             // --- Pressure corrector loop
             while (pimple.correct())
             {
+                if (realFluidInnerThermoCorrectors)
+                {
+                    #include "solveScalarsAndEnergy.H"
+                }
                 const auto fgmPressureStart = fgmTiming.start();
                 #include "pEqn.H"
                 if (absoluteEnthalpyFGM)

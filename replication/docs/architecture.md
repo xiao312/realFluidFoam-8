@@ -692,3 +692,7 @@ README records the Cardano cancellation regression and unchanged root policy.
 reactingFoamSolveZ has an opt-in author density-time pressure correction, using
 existing OF8 operators only. It does not yet reproduce upstream inner species/
 energy ordering. Its README owns the isolated experiment and verification scope.
+
+The optional inner scalar/energy mode reuses one multi-include statement block
+inside separate scopes. Its initial none/steadyFlamelet scope avoids silently
+repeating finite-rate or progress-source integration; defaults are unchanged.

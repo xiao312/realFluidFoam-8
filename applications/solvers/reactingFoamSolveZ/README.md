@@ -404,3 +404,23 @@ Build with wmake, verify exact parent15-library linkage, then compare separate
 fresh uniform/interface controls with the flag off/on. Follow with independently
 fresh G2 condition sets. All original EOS/caloric checks and failed states remain.
 Compilation and the opt-in setting do not qualify a reacting-G2 prediction.
+
+## Experimental inner scalar/energy correctors
+
+`realFluidInnerThermoCorrectors yes` moves the existing species, transported-Z,
+composition refresh and energy block inside each pressure correction, following
+the upstream realFluidFoam placement of Y/energy. The default remains no. The
+pressure-time correction is an independent switch, permitting isolated tests.
+The equations, time-old fields, absolute-Ha basis and numerical acceptance limits
+are unchanged; this changes nonlinear coupling order and work per timestep.
+
+Initial scope is combustionModel none or steadyFlamelet. Finite-rate ODE and
+transported-progress/source-splitting lifecycles need separate qualification;
+repeated source integration must not silently advance chemistry multiple times.
+Use those modes with the existing default until their inner lifecycle is tested.
+`solveScalarsAndEnergy.H` is deliberately a multi-include statement block, without
+an include guard, used inside mutually exclusive runtime scopes.
+
+Verification is a matched flag-off/on fresh interface experiment with the same
+qualified parent libraries, followed by independently initialized G2 cases. A
+normal exit alone does not establish mass/energy conservation or paper agreement.
