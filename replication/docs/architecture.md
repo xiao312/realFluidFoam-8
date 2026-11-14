@@ -1,5 +1,10 @@
 # Replication boundaries
 
+The developed solver enters Z transport only for a tabulated composition model.
+Direct-species/none models do not construct Z and keep the ordinary species path.
+The Schmitt contact tests consume this path; the tabulated FGM equation order is
+unchanged. Its local solver README owns the runtime and verification contract.
+
 `validation/schmitt-contact` prepares the nonreacting real-fluid contact tests
 from Schmitt2020 Figures5/6. It consumes the thermo export and shared finite-volume
 schemes. Its initializer inverts density through the actual linked thermo model;

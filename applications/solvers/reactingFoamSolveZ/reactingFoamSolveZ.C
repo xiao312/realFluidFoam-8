@@ -129,7 +129,10 @@ int main(int argc, char *argv[])
             #include "YEqn.H"
             fgmTiming.stop(fgmWallTiming::species, fgmSpeciesStart);
             const auto fgmMixtureStart = fgmTiming.start();
-            #include "ZEqn.H"
+            if (reaction->compositionTabulated())
+            {
+                #include "ZEqn.H"
+            }
             fgmTiming.stop(fgmWallTiming::mixtureFraction, fgmMixtureStart);
             if (reaction->transportsProgress())
             {
