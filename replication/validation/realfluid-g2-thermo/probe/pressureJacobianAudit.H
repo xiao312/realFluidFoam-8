@@ -39,7 +39,7 @@ inline int auditPressureJacobian
         const scalar alpha=pressureT*betaT/rho;
         // dh=Cp*dT+(1-T*alpha)/rho*dp. The Cv form avoids subtracting
         // two large near-critical terms in betaT+alpha*(1-T*alpha)/Cp.
-        const scalar betaH=(Cv*betaT+alpha)/Cp;
+        const scalar betaH=srkIsenthalpicDensitySlope(state,p,T);
         const scalar h=state.Hs(p,T), dT=1e-3;
         const scalar cpFD=(state.Hs(p,T+dT)-state.Hs(p,T-dT))/(2*dT);
         const scalar cpError=mag(cpFD-Cp)/max(scalar(1e-30),mag(Cp));

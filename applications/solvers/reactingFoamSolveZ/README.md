@@ -525,3 +525,33 @@ preservation is not a claim that EOS and mass density have converged. The fixed
 Z bound and caloric checks are unchanged. Verify the actual original-case smoke
 from zero before proceeding; do not classify the old MPI-abort aftermath as the
 primary failure or reuse its evolved fields.
+
+## Experimental fixed-enthalpy pressure increment
+
+With `realFluidDifferentialPressure yes`, the optional control
+`realFluidPressureDensityConstraint enthalpy;` selects the fixed-h,Y density
+tangent. The default `temperature` retains the earlier isothermal experiment;
+all normal runs with differential pressure disabled remain unchanged.
+Only nontransonic global-time operation is supported, as before. Invalid
+constraints or nonpositive/nonfinite caloric derivatives fail explicitly.
+
+At fixed composition the new helper evaluates
+beta_h=(Cv*beta_T+alpha)/Cp using the executing SRK mixture, where
+beta_T=(partial rho/partial p)_T and alpha=-(partial rho/partial T)_p/rho.
+The existing offset pressure-time operator keeps its current reference density;
+the EOS psi field is not overwritten with beta_h because psiThermo::rho uses
+p*psi. Post-pressure exact held-h refresh remains a separately selected control.
+No temperature projection, chemistry change, phase rule or caloric bound is added.
+
+Inputs are explicit controlDict values and the actual SRK p/T/Y state. Outputs
+are the selected pressure increment and logged density-constraint/slope ratios.
+The helper is shared with the probe's finite-difference audit; it adds no library
+ABI, network, credential or external dependency. Example controls are the two
+entries above plus the existing `realFluidPressureThermoRefresh yes` for a
+separately identified pressure/enthalpy coupling experiment.
+
+Verification: build and qualify the exact solver/probe against one full runtime,
+replay fixed-h finite differences, then fresh nonreacting contacts and bounded
+G2 controls with unchanged closure/continuity limits. R39's original audit is
+partial:24/24 rows passed at pressure step1e-4, but7/72 rows failed across all
+three step sizes. This supports a labelled development experiment, not approval.

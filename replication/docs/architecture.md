@@ -749,3 +749,8 @@ The realfluid-g2-thermo probe optionally audits fixed-T and fixed-h pressure
 Jacobians through its local pressureJacobianAudit.H. It reads the solver's
 existing fixed-T derivative helper and calls the registered mixture's own
 enthalpy inversion; it does not change the solver operator or library ABI.
+
+The same solver derivative header now exposes an optional fixed-enthalpy tangent
+for the existing differential pressure-increment experiment. Default behavior
+is unchanged. The probe consumes that shared helper so its executing finite
+differences test the selected formula, not an independently duplicated formula.

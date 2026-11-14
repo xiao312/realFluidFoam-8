@@ -134,3 +134,47 @@ falls back to an approximate underlying scheme. This is a research presentation,
 not an already qualified algorithm in our solver. The transferable lesson is
 to measure conditioning and retain a consistent limiting scheme, rather than
 blindly demanding an exact correction at a singular state.
+
+## 15 November00:08: direct implementation references and negative CFD result
+
+R38 root-policy-only CFD failed: Cavalieri148.4425us/526.456J/kg and
+Schmitt92.9854us/31665.344J/kg caloric gaps. Root selection improves one captured
+state but does not qualify the coupled solver. R40 captures the new failed
+states for property-only branch queries; it is not a restart.
+
+R39 job128044951 compiled/linked/executed the pressure-Jacobian probe. Of72rows,
+65passed the original criteria:23/24 at1e-3 pressure step,24/24 at1e-4,18/24 at1e-5.
+Cp finite differences remain close, while fine pressure differences amplify
+millijoule enthalpy-inversion errors. Do not relabel the multi-step audit passed.
+The matched1e-4 evidence supports a separately labelled CFD tangent experiment.
+
+Actual [DeepFlame source](https://github.com/deepmodeling/deepflame-dev/blob/7cb3294b275525cb8829ada3d3fbc067ab9323eb/src/dfCanteraMixture/CanteraMixture.H)
+implements nonideal psi with a backward pressure perturbation at held enthalpy,
+relative step1e-4. Its [pressure equation](https://github.com/deepmodeling/deepflame-dev/blob/7cb3294b275525cb8829ada3d3fbc067ab9323eb/applications/solvers/dfLowMachFoam/pEqn.H)
+uses an incremental correction and updates its separate density cache. That
+cache layout differs from our psiThermo p*psi relation: copying psi globally
+would give incorrect density. We instead test the analytic fixed-h tangent in
+the existing offset operator while retaining exact held-h property refresh.
+No DeepFlame code has been copied; source/license are read-only references.
+
+[Zhang et al.2026 preprint](https://arxiv.org/html/2607.19241v1)
+describes the same fixed-h closure and physics-aligned surrogate inputs. Its
+cell-local prediction results do not establish end-to-end reacting G2 stability.
+Improving surrogate speed before resolving branch and operator consistency
+would accelerate the wrong calculation.
+
+[Xu, Sun and Guo2026 CDHD](https://doi.org/10.1016/j.jcp.2026.114653)
+uses primitive-variable pressure evolution with high-order dissipation and a
+conservative shock branch. The full21page author PDF was retrieved and governing
+equations/method introduction inspected; it is not ported here. Keep its energy
+defect explicit. CUBENS pinb12332f uses conserved density/momentum/total energy
+in RK3 and reconstructs secondary state from rho/internal energy after each
+stage (src/rk3.f90), not a drop-in PIMPLE pressure update.
+
+The [SUNDIALS IDA formulation](https://sundials.readthedocs.io/en/latest/ida/Mathematics_link.html)
+provides a useful cross-field model: differential updates and algebraic
+constraints require a consistent residual/Jacobian and initial state. Applied
+here as a design principle, this means inspecting continuity, energy and EOS
+closure together; a tiny linear residual in one equation does not prove the
+coupled state is consistent. No IDA dependency or fully coupled solver has
+been added.

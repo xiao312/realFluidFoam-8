@@ -13,7 +13,13 @@ if (useDifferentialPressure)
     if (pimple.transonic() || LTS)
         FatalErrorInFunction << "Differential pressure mode requires nontransonic global time"
             << exit(FatalError);
-    updateSrkPressureDensitySlope(thermo, pressureDensitySlope);
+    const word densityConstraint=runTime.controlDict().lookupOrDefault<word>
+        ("realFluidPressureDensityConstraint", "temperature");
+    if (densityConstraint!="temperature" && densityConstraint!="enthalpy")
+        FatalErrorInFunction << "realFluidPressureDensityConstraint must be temperature or enthalpy"
+            << exit(FatalError);
+    updateSrkPressureDensitySlope(thermo, pressureDensitySlope,
+        densityConstraint=="enthalpy");
     // Evaluate once: repeated nonorthogonal solves retain the same reference.
     pressureDensityTimeOffset.reset(new volScalarField
     (
@@ -24,6 +30,7 @@ if (useDifferentialPressure)
     {
         const tmp<volScalarField> slopeRatio=pressureDensitySlope/psi;
         Info<< "pressureTimeForm=srkDifferentialIncrement t=" << runTime.value()
+            << " densityConstraint=" << densityConstraint
             << " slopeRatioMin=" << gMin(slopeRatio().primitiveField())
             << " slopeRatioMax=" << gMax(slopeRatio().primitiveField()) << endl;
     }
