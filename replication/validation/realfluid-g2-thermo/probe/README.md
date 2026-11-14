@@ -89,3 +89,35 @@ probe. `-read-raw-Dimix` bypasses the public thermo accessor and tests the
 transport object's own guard. The optimized call must fail before indexing;
 the baseline call must complete. These controls require rebuilding the probe
 and both owning thermophysical registration libraries from the same headers.
+
+## Captured-enthalpy point diagnosis
+
+`extract-failed-point.mjs --case CASE --time EXACT_TIME --rank N --cell N`
+reads the explicit failed snapshot and prints p,T,h and every species value,
+with source-file hashes. Omit --rank for a serial case. Add --out NEW_JSON
+inside an allocation to save the record outside the retained flow case. It never
+continues CFD, renormalizes species or changes the original snapshot.
+
+`configure-point.mjs --case NEW_POINT_CASE --point POINT_JSON [--pressure PA]`
+prints a change plan. Add --apply inside Slurm to set the one-cell probe's exact
+composition and query configuration. This is a property query at time0 with
+zero CFD steps, not relabelling evolved fields as a fresh CFD start. An explicit
+pressure override supplies a comparison at the original registered pressure.
+
+Optional probeProperties entries enthalpyTargets, targetGuesses and
+ targetCorrectionPasses (1..50, default12) add fixed-stored-enthalpy inversion
+queries. targetRelativeLimit defaults to the unchanged1e-8 caloric threshold.
+The probe logs every actual correction pass in cold-target-inversion.csv, checks
+that stored internal h is unchanged and returns nonzero for unresolved targets.
+Generated-target roundtrips remain separate: they cannot prove a solution exists
+inside an EOS root-branch enthalpy jump. No EOS or derivative is reimplemented.
+
+Dependencies remain Node built-ins and the exact full-fork probe runtime. This
+adds no solver behavior or scientific acceptance. Verify extraction/point plans,
+check exact species order, mass sum and all file hashes; compile/run the probe
+inside Slurm. Retain numerical failures and original pressure/enthalpy targets.
+
+Captured-target convergence additionally requires the same1e-8 relative
+residual scaled by max(1,abs(target h),abs(literal h)). The original Cp*T-scaled
+audit pass is recorded separately. This stricter query check exposes the effect
+of extremely large Cp near a branch boundary; it changes no CFD acceptance.

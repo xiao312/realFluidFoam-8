@@ -671,3 +671,9 @@ consumes qualified mesh bytes and explicit sampling extent; old assets stay fixe
 `fgm/steady-flamelet-export` converts hashed physical profiles with Python standard
 library only. Direct-G2 consumes the unchanged species/grid and explicit source
 convergence flags; the converter accepts the two registered G2 stream recipes.
+
+The realfluid-g2-thermo probe's failed-point helpers read explicit retained p,T,h,Y
+snapshots and configure separate zero-CFD-step thermodynamic queries. They depend
+only on Node built-ins and the existing probe, not scheduler or case continuation.
+Its fixed-enthalpy audit calls the executing thermo library and preserves target
+residuals; it does not implement a replacement EOS or grant scientific acceptance.
