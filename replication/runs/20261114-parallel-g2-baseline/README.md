@@ -205,3 +205,35 @@ Each schedules a new100us laminar control and then an independently generated
 full case from time0. Runtime c6d486e is reused as compiled software only.
 Their laminar/fixed-chi closure and approximate tables remain explicit
 limitations. Read actual runtime receipts before claiming control/full results.
+
+
+## Reacting replay and coupling experiments, 2026-11-14 19:50 Shanghai
+
+R21 jobs128024791/128024867 failed after separate fresh100us controls passed.
+The independently generated full cases stopped at115.252/129.975us, with
+caloric mismatches7.703/7.135kJ/kg. Neither supplies developed paper means.
+The stable Cardano evaluation fixed the six isolated double-flux contacts;
+it did not resolve these coupled pressure/enthalpy failures.
+
+The upstream realFluidFoam pressure equation at674468c uses an explicit density
+time correction, with Y/energy inside pressure correctors. Opt-in draft controls
+now isolate these differences; defaults and caloric acceptance are unchanged.
+Pressure-term-only source1ef8d92 job128026118 compiled but all four contact
+controls failed. Inner-order source6398a14 job128028121 compiled, but its enabled
+cases stopped before CFD on a runtime-type guard. Its wrapper also wrote malformed
+JSON targetTime:.001; preserve those original receipts as invalid, not successful.
+Sourcef457906 fixes dictionary-model selection and wrapper numeric serialization.
+
+Job128029180/sourcef457906 compiled, linked and executed four fresh1ms contacts;
+all failed. Enabled oxygen stopped456.012us (default515.900us), gap1019.329J/kg;
+enabled mixture261.374us, gap171410.245J/kg. No20ms candidate cases were admitted.
+Solver binarySHA25689e28f5917befb35e7f91a62aa77dcfa247022595f79ec8bc2aaed6dd91ece44;
+parent C6 runtime manifestc2d8c7e3f6128da51ca5e3e5fd682ff086ccca46c872197ab97d86beb17b3b25.
+
+Source inspection confirms psiThermo::rho returns cached p*psi, and SRKpsi is
+1/(ZRT), rather than the literal differential compressibility. Restoring density
+through an additional continuity solve is another difference from the author
+loop. The next prepared R25 experiment isolates that setting with both author
+coupling switches enabled and reuses this exact binary/library identity.
+Preparation is not execution; actual admission and terminal receipts are required.
+No chemistry fitting, evolved starts, threshold relaxation or scientific acceptance.
