@@ -311,3 +311,44 @@ away discrepancies, infer RMS, award acceptance or publish. Dimensional startup
 and dimensionless paper means use separate labelled axes. No secrets/network.
 Verify with the read-only plan, actual retained smoke profiles, served hash checks
 and visual inspection; missing or changed reference curves must fail.
+
+
+R36b limited-linear replay uses `plot-r36.py EXPORT NEW_OUTPUT REFERENCES [--plan]`.
+It consumes the retained source70cc5f5/C6 runtime manifests and original six20ms
+fields; it produces eight paper-layout PNGs, raw profile CSVs, metrics and two
+evidence files. Dependencies and scope match plot-r30 (NumPy/Matplotlib and the
+shared named-field reader); no network, secrets, acceptance or publication.
+Verify the plan creates no output, replay actual retained fields, compare image
+hashes and inspect every panel. Oxygen density/temperature improve; mixed-case
+temperature worsens despite sharper density. Keep that discrepancy visible.
+
+
+## 14 November,23:15: limited-linear contact results
+
+R36b job128042346 completed235s (extern237),8cores/16GiB. Source70cc5f5,
+binary5446a971, unchanged C6 full runtime and independently initialized cases.
+All six20ms cases, uniform/short controls and two first-order anchors completed.
+The anchors reproduce all six original saved field arrays exactly. R36 job
+128041762 had compiled the same binary but failed before CFD because its partial
+input archive omitted a case-generator dependency; that failure is preserved.
+
+Against unchanged digitized paper traces, oxygen density RMS falls77.9–83.0%
+and temperature RMS62.7–78.4%. Mixed density RMS falls70.4–76.8%, while mixed
+temperature RMS increases137.6–163.2%. The latter remains a failed comparison,
+not an overall pass. Effective numerical diffusivity falls from0.05 to
+0.00177–0.00566m2/s; centroid displacement remains0.2m. Tiny negative gradient
+weights at roundoff are retained in the moment diagnostic rather than clipped.
+
+Pressure relative departure stays below1.53e-11, velocity below5.10e-11, mass
+residual below3.69e-13. Energy accounting closes only after explicit interface/
+synchronization defects: those defects are0.0321–0.1207% for oxygen and
+0.0925–0.1669% for mixed contacts. This remains a quasi-conservative, isolated
+nonreacting solver, not the pressure-based reacting G2 solver or science acceptance.
+Eight new paper-layout views, raw CSVs, metrics and original captions are served
+in Forge, with older PIMPLE/DF views retained. Sixteen served image/data hashes
+and actual data-module binding passed. Portable renderer reproduces all eight
+PNG hashes exactly.
+
+The separate homogeneous-Gibbs SRK candidate is source7fb0fbb. Its full ABI
+rebuild/property job128042612 is pending at this checkpoint. Do not infer its
+qualification from the contact results or use old binaries against its libraries.
