@@ -137,3 +137,44 @@ Cavalieri6 and Schmitt21, with raw property/target CSVs and source/library hashe
 They are labeled as failed-state diagnostics, not developed-paper profiles.
 All originals/captions and71targets/12papers remain. Independent scientific
 review and human acceptance remain separate and unassigned.
+
+## 18:12 contact results and supported EOS numerical correction
+
+Job128021342 (case sourced96555f, compiled applicationd9d7eb5) passed the
+fresh100us uniform and1ms oxygen-interface controls. Six full20ms contacts
+then ran independently from zero. Only oxygen nx4 and H2/O2 nx4 completed;
+the batch itself FAILED231s/8cores. Four other widths stopped on literal-EOS
+versus transported density mismatch (1.10e-8,1.27e-8,2.23e-8,1.68e-6 relative).
+Their failed states/results remain retained. Do not replace absent20ms data
+with earlier fields or call all six complete.
+
+Completed oxygen/mixed cases preserve pressure to4.9e-12/8.3e-12 relative and
+velocity to3.2e-11/3.8e-11. Their measured quasi-conservative energy defects are
+0.427%/0.527% of initial absolute-energy magnitude. Balance residuals include
+those defects and are about2e-13/4e-13 relative; this is not exact energy
+conservation. Oxygen took41solver-wall-seconds. Both interface profiles are too
+diffuse with first-order reconstruction. Compared with graphical paper traces,
+density RMS errors are78.21/90.30kg/m3 and temperature RMS22.10/8.14K. Mixed
+peakT is130.31K. These are development results, not scientific acceptance.
+
+The paper's continuous nonconservative traces were extracted from PDF vector
+filled-stroke envelopes, with path/frame calibration, source hash and graphical
+half-width retained. Paper lines and our raw cell markers use matching2x2
+layouts/axis limits. All-width and nx4-only views are present in local Forge;
+failed widths are explicit. Fig6 pressure/velocity reference extends beyond our
+x=2m boundary; comparison metrics use overlap only, without extrapolation.
+
+Independent reproduction identifies cancellation in the historical one-real-root
+Cardano formula: at6MPa/163.64244606263K it returns274.913430489kg/m3 versus
+274.913427476 from stable evaluation and independent polynomial roots. The
+transported target is274.913427475. Candidatec6d486e computes the larger radical
+and recovers the other through S*Tl=-Q. It preserves EOS parameters, chemistry,
+three-root branch/root policy and acceptance limits. This does not solve the
+separate captured reacting-G2 enthalpy branch gap.
+
+Adapter job128022863, admitted18:09:41 with16cores32GiB/10800s, freezes c6d486e.
+It rebuilds all15 custom libraries plus four dependent applications from source,
+verifies linkage/product hashes, repeats six zero-CFD-step captured-state queries,
+then runs new uniform/short/six-full contacts. No old thermodynamic binaries or
+CFD states are reused. Compilation/physical qualification is pending at this
+checkpoint. The source remains a draft; no production merge or science approval.
