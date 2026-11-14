@@ -1,5 +1,11 @@
 # Warm FGM coupling on the retained G2-related mesh
 
+`nearAxisRadius_m` in the observation JSON optionally selects a sampling-line
+radius in1e-8..0.01m. Default remains0.1mm. Record its actual radius; it is not the
+exact centerline. Sampling changes do not change geometry or physics. Retained
+instantaneous profiles can support time-weighted Reynolds statistics over an
+explicitly declared window. Early startup remains separate from developed means.
+
 The explicit alternative `--closure steady-flamelet` selects the separate
 fixed-dissipation one-dimensional model described in `../steady-flamelet`.
 Default `--closure fgm` preserves this module's existing FGM behavior. Steady
