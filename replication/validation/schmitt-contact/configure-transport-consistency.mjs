@@ -1,0 +1,10 @@
+import fs from 'node:fs';import crypto from 'node:crypto';
+const[root,scalarMode,fluxMode,action]=process.argv.slice(2);if(!root||!['limited','upwind'].includes(scalarMode)||!['legacy','compatible'].includes(fluxMode)||![undefined,'--apply'].includes(action))throw Error('Use NEW_CASE limited|upwind legacy|compatible [--apply]');
+if(fs.existsSync(root+'/initial-thermo.csv')||fs.existsSync(root+'/0/phi')||fs.readdirSync(root).some(n=>Number.isFinite(Number(n))&&Number(n)>0))throw Error('Fresh uninitialized case required');
+const file=root+'/system/fvSchemes',control=root+'/system/controlDict',before=fs.readFileSync(file,'utf8'),oldControl=fs.readFileSync(control,'utf8');
+if(!before.includes('div(phi,Yi_h) Gauss limitedLinear 1;')||!before.includes('interpolationSchemes { default linear; }')||before.includes('dotInterpolate')||oldControl.includes('writeConsistentContactMassFlux'))throw Error('Unexpected original controls');
+let after=before.replace('interpolationSchemes { default linear; }','interpolationSchemes { default linear; interpolate(rho) upwind phi; '+(fluxMode==='compatible'?'"dotInterpolate.*rho.*U.*" upwind phi; ':'')+'}');
+if(scalarMode==='upwind')after=after.replace('div(phi,Yi_h) Gauss limitedLinear 1;','div(phi,Yi_h) Gauss upwind;');
+const newControl=oldControl+'\nwriteConsistentContactMassFlux '+(fluxMode==='compatible'?'yes':'no')+';\n',sha=x=>crypto.createHash('sha256').update(x).digest('hex');
+const receipt={scalarMode,fluxMode,beforeSHA256:sha(before),afterSHA256:sha(after),controlBeforeSHA256:sha(oldControl),controlAfterSHA256:sha(newControl),readOnly:!action,scientificAcceptance:false};
+if(action){if(!process.env.SLURM_JOB_ID)throw Error('Allocated preparation required');fs.writeFileSync(file,after);fs.writeFileSync(control,newControl);fs.writeFileSync(root+'/transport-consistency-input.json',JSON.stringify(receipt,null,2)+'\n',{flag:'wx'});}console.log(JSON.stringify(receipt,null,2));

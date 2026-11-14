@@ -60,3 +60,25 @@ node configure-density-interpolation.mjs NEW_CASE upwind [--apply]. Verify synta
 and a read-only fixture, then run blockMesh/checkMesh/initializer/solver inside
 Slurm. Test the actual FV scheme parser and pressure/temperature histories;
 upwind numerical diffusion is a declared difference from AVBP TTGC/filtering.
+
+
+A separate flux-consistency control pairs named upwind density interpolation with
+upwind rho*U interpolation in Euler old-time flux correction. The official OF8
+EulerDdtScheme uses dotInterpolate(Sf,rho.oldTime()*U.oldTime()); this is a distinct
+lookup from interpolate(rho). configure-transport-consistency.mjs changes only
+that named reference and the multivariate Yi_h convection entry, independently.
+It prints a read-only plan; --apply requires a new uninitialized Slurm case.
+
+writeConsistentContactMassFlux yes tells initializeSchmittContact to write fresh
+phi from the executing initialized density, prescribed U and OpenFOAM's upwind
+surface interpolation. This pairs the initial mass flux with the selected old-
+time reference; it does not restart a CFD state or change initialization T,p,Y.
+Default no preserves prior behavior. No separate mesh parser or property model is
+introduced. Inputs/outputs stay within the new case, no network/secrets. Compile
+with the exact parent libraries in Slurm, verify original versus compatible
+initial flux and scalar-advection controls from zero, then20ms cases. This is an
+Euler/static-mesh nonreacting contact diagnostic; no production FGM claim.
+
+Primary source references (inspected2026-11-14):
+https://github.com/OpenFOAM/OpenFOAM-8/blob/master/src/finiteVolume/finiteVolume/ddtSchemes/EulerDdtScheme/EulerDdtScheme.C
+https://github.com/OpenFOAM/OpenFOAM-8/blob/master/src/finiteVolume/cfdTools/compressible/compressibleCreatePhi.H

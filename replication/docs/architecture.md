@@ -717,3 +717,8 @@ unsupported reacting scope and fresh-case/conservation qualification boundary.
 Cold-energy projection has a separately selected all-region nonreacting diagnostic
 for pressure-equilibrium isolation. The default cold mask and the prohibition on
 reacting/FGM application remain unchanged; its README records the paper caution.
+
+The contact initializer can write a compatible fresh upwind mass flux using
+OpenFOAM geometry/interpolation. Its case helper pairs this with Euler old-time
+flux-reference selection and independently varied multivariate scalar transport.
+Defaults, thermodynamic library and solver energy policy are unchanged.

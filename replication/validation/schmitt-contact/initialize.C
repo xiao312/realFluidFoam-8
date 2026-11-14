@@ -1,6 +1,7 @@
 #include "fvCFD.H"
 #include "psiReactionThermo.H"
 #include "mixedFvPatchFields.H"
+#include "upwind.H"
 #include <fstream>
 #include <iomanip>
 
@@ -45,6 +46,19 @@ int main(int argc,char *argv[])
     thermo.T().write();thermo.he().write();
     volScalarField density(IOobject("rho","0",mesh,IOobject::NO_READ,IOobject::AUTO_WRITE),thermo.rho());
     density.write();
+    if(runTime.controlDict().lookupOrDefault<Switch>("writeConsistentContactMassFlux",false))
+    {
+        volVectorField U(IOobject("U","0",mesh,IOobject::MUST_READ,IOobject::NO_WRITE),mesh);
+        surfaceScalarField volumeFlux("contactInitialVolumeFlux",fvc::flux(U));
+        surfaceScalarField phi
+        (
+            IOobject("phi","0",mesh,IOobject::NO_READ,IOobject::AUTO_WRITE),
+            upwind<scalar>(mesh,volumeFlux).interpolate(density)*volumeFlux
+        );
+        phi.write();
+        Info<<"CONTACT_MASS_FLUX_INITIALIZATION time=0 scheme=upwind initialFieldsChanged=phi"<<endl;
+    }
+
     std::ofstream out((runTime.path()/"initial-thermo.csv").c_str());
     out<<std::setprecision(17)<<"x,T,p,rho\n";
     forAll(density,i)out<<mesh.C()[i].x()<<','<<thermo.T()[i]<<','<<thermo.p()[i]<<','<<density[i]<<'\n';
