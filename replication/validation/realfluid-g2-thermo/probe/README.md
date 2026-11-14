@@ -121,3 +121,9 @@ Captured-target convergence additionally requires the same1e-8 relative
 residual scaled by max(1,abs(target h),abs(literal h)). The original Cp*T-scaled
 audit pass is recorded separately. This stricter query check exposes the effect
 of extremely large Cp near a branch boundary; it changes no CFD acceptance.
+
+Extract failed fields on a case-sensitive filesystem. GRI H (hydrogen radical)
+and h (sensible enthalpy) collide on ordinary Windows filesystems. The reader
+checks every FoamFile object against its requested name and rejects such a
+collision. Keep the original case-sensitive archive; do not trust an extracted
+Windows copy of all fields. Local archive checks must preserve member case.

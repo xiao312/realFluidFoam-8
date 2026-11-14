@@ -24,6 +24,9 @@ async function scalar(name){
   if(!file.startsWith(directory+path.sep))throw Error('Field escapes snapshot');
   const raw=await readFile(file),text=clean(raw.toString());
   if(!/\bclass\s+volScalarField\s*;/.test(text))throw Error(`Expected scalar field ${name}`);
+  const object=text.match(/\bobject\s+("[^"]+"|[^\s;]+)\s*;/)?.[1];
+  const objectName=object?.startsWith('"')?JSON.parse(object):object;
+  if(objectName!==name)throw Error(`Field object identity mismatch ${name}/${objectName}; possible case-insensitive filesystem collision`);
   const uniform=text.match(/\binternalField\s+uniform\s+([^;]+);/);
   const nonuniform=text.match(/\binternalField\s+nonuniform\s+List<scalar>\s+(\d+)\s*\(([\s\S]*?)\)\s*;/);
   let value;
