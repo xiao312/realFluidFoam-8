@@ -1,5 +1,34 @@
 # Parallel Schmitt / G2 baseline, 14 November 2026
 
+## 15 November00:30: fixed-h increment, partial progress
+
+R41 job128046117 built and linked solver/probe sourcec73e176 against the exact
+R37 runtime. The shared helper reproduces all72 R39 derivative rows byte for
+byte;65pass their original row criteria, including24/24 at pressure step1e-4.
+No failed row is reclassified.
+
+Both fixed-h+property-refresh contact controls reach1ms. Their fixed-T and
+fixed-h/no-refresh anchors fail. The batch job is therefore FAILED245s, while
+both build receipts and the two completion witnesses remain valid. The new
+solver SHA is5d19aa9ad90e97aff05adf93dc7b9c22db5a74ad0e4726879022d8cb7e6cb69f.
+Completion does not establish correct contact transport: pressure departures
+are5.01% oxygen/9.40% mixed, with Umin-4.86/-37.26m/s. R41 deliberately retained
+the legacy nonconservative-density setting from R27. These are poor profiles,
+not pressure-equilibrium or paper passes.
+
+Fresh G2 R42 retains its conservative-density policy, exact held-h refresh and
+default largest EOS root. Only the fixed-h pressure increment changes versus
+R34. Cavalieri128046830 and Schmitt128047005 were admitted00:23:54/00:26:07,
+32cores64GiB each, independent200us controls before separate fresh1ms cases.
+Actual results remain pending. No evolved states or developed-paper means.
+
+R40 zero-step replays independently reproduce the R38 homogeneous-Gibbs gaps:
+53.907/32.921kJ/kg across1e-5K, targets inside the discontinuities. Fixed-
+composition cubic roots and homogeneous Gibbs crossing agree; this is not a
+multicomponent VLE or mixture-critical-point validation. More Newton iterations
+cannot create a missing homogeneous state. Preserve the branch limitation and
+investigate pressure/energy consistency separately.
+
 ## 15 November00:06 correction: mixed thermal peaks and root replay
 
 The R36b raw mixed-contact temperatures reach226.94/231.64/246.74K from a100K
