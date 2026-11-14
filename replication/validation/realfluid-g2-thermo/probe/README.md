@@ -1,5 +1,24 @@
 # Runtime real-fluid thermodynamic probe
 
+The optional `-audit-pressure-jacobian` diagnostic reads
+`constant/pressureJacobianAudit` with a `temperatures` list and a
+`relativePressureSteps` list. On a one-cell case it compares the existing
+fixed-temperature SRK density derivative and a derived fixed-enthalpy
+derivative against the executing mixture's `rho`, `Hs`, `Cp`, `Cv` and `THs`.
+It writes `pressure-jacobian.csv`, including raw inversion errors, Cp finite
+differences and every pressure step; a nonzero result is retained. No CFD or
+thermo coefficient is changed. This explicitly distinguishes an analytic
+identity from its consistency with this library's caloric implementation.
+
+The helper depends on the solver's existing `srkPressureDensitySlope.H` and the
+registered SRK mixture. It adds no library ABI or external dependency. Build
+the probe against the exact qualified runtime, then run
+`realFluidG2ThermoProbe -case NEW_POINT_CASE -audit-pressure-jacobian` inside
+Slurm. Expected success requires finite positive slopes, a calorically
+consistent inversion, and relative finite-difference errors below the recorded
+limits. A branch switch or failed consistency check is diagnostic evidence,
+not permission to activate a different pressure operator in CFD.
+
 This module loads the actual registered `psiReactionThermo` implementation. It
 adapts the established `replication/validation/properties/rfPropertyProbe.C`
 pattern rather than implementing another cubic EOS or caloric model. It records

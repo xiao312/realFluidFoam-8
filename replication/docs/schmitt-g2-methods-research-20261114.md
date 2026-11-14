@@ -101,3 +101,36 @@ branch/pressure investigation; it is not proof of the correct physical phase.
 The owner continuation ends15November2026 at11:59Shanghai. All CFD starts from
 original timezero and all heavy computation uses FlamePilot Slurm. Scientific
 agreement, independent review and human acceptance remain distinct.
+
+## 23:40 implementation checkpoint: root selection and pressure Jacobian
+
+R37 job128042612 completed the full ABI rebuild in1172s. Under the default
+largest-root policy, the executing property and inversion CSVs are byte-identical
+to R35. The opt-in homogeneous-Gibbs policy reduces the captured-cell enthalpy
+error from41268.5025 to0.00554177J/kg; all six initial guesses pass the existing
+CFD caloric check. The separate enthalpy-relative1e-8 probe test still fails,
+including at original inlet pressure. That failure is preserved; this supports
+a separately labelled CFD diagnostic, not unconditional property qualification.
+
+A second diagnostic has been implemented but not yet compiled or executed:
+compare pressure derivatives at fixed T and fixed h through the actual mixture.
+At fixed composition, dh=Cp*dT+(1-T*alpha)/rho*dp and
+alpha=-(d rho/d T)_p/rho. Thus beta_h=beta_T+alpha*(1-T*alpha)/Cp.
+Using Cp-Cv=T*alpha^2/beta_T, the same identity becomes
+beta_h=(Cv*beta_T+alpha)/Cp, avoiding subtraction of large near-critical terms.
+Its ideal-gas limit is rho/p. This is a thermodynamic derivation, not proof
+that the current caloric departure implementation obeys it numerically.
+
+The new probe audit records actual rho and enthalpy inversions at p±delta_p,
+three pressure-step sizes, Cp finite differences, caloric residuals and both
+Jacobian errors. It changes no CFD pressure operator. If this fails, preserve
+the branch/caloric inconsistency before considering any operator change.
+
+The NASA Ames
+[December2025 seminar](https://www.nas.nasa.gov/assets/nas/pdf/ams/2025/AMS_20251218_DeGrendele.pdf)
+provides a further lead: exact pressure-equilibrium flux constraints can become
+ill-conditioned near equal neighboring states; their proposed pseudoinverse
+falls back to an approximate underlying scheme. This is a research presentation,
+not an already qualified algorithm in our solver. The transferable lesson is
+to measure conditioning and retain a consistent limiting scheme, rather than
+blindly demanding an exact correction at a singular state.
