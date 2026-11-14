@@ -81,3 +81,59 @@ shortened endTime below the unchanged observation interval. Correctedr13 keeps
 the original0.1s endpoint/observations with an external1200s runtime cap. The
 actual observation/decomposition loader passed both corrected configurations
 and rejected the old short endpoint. Preserve these setup failures separately.
+
+## Captured-target thermodynamic diagnosis
+
+Both instrumented G2 replays are now terminal physical failures, not startup
+qualification:128013575 failed at115.091648809555us and128013758 at
+130.040656590024us. No developed paper-window mean/RMS exists from these runs.
+The exact rank0 cell0 snapshots were retained, including all53 mass fractions.
+
+Jobs128016838/128018627 compiled the captured-target probe against the frozen
+15-library runtime and completed six property-query deliveries each. These
+queries take zero CFD steps; captured fields must never become CFD restarts.
+The source revisions are83bb516 and10ffd2d. All12 corresponding numeric CSVs
+are bitwise identical, confirming that coefficient export did not alter results.
+A generated-target roundtrip is insufficient: fixed captured enthalpy failed
+from all six starting temperatures after12 correction passes, with residuals
+8375.2575J/kg for Cavalieri and4572.8538J/kg for Schmitt. The forward h(T)
+curve jumps across each transported target within1e-5K. Additional correction
+passes do not repair this gap. At original pressures the G2 residual floors are
+only0.01364/0.00340J/kg and pass the unchanged production Cp*T-scaled audit;
+separate stricter h-relative diagnostic criteria fail. Preserve this distinction.
+
+Independent polynomial root enumeration used exported actual W/RR/b/coefficient
+values. At each gap the SRK cubic changes from one real root to three, and the
+library switches to the largest root. Returned densities satisfy the cubic to
+about1e-17 absolute polynomial residual. This is not evidence that arbitrary
+root replacement, tolerance relaxation or chemistry fitting is appropriate.
+The pressure-equilibrium failure and thermodynamic root policy remain coupled.
+
+Linux case-sensitive extraction and an independent archive-member reader agree
+on all56 raw field hashes. An ordinary Windows extraction collided enthalpy h
+with radical H; that fixture is invalid and retained only as a negative control.
+The extraction helper now checks FoamFile object identity and refuses the
+collision. No CFD or successful property query used that contaminated fixture.
+
+## Isolated contact algorithm experiment
+
+The double-flux application in validation/schmitt-contact/double-flux is an
+experimental1D nonreacting OpenFOAM/SRK application, not a production reacting
+G2 implementation. It measures pressure/velocity equilibrium, actual EOS closure,
+mass balance and explicit quasi-conservative energy defects. Uniform and short
+interface controls precede six independent time-zero20ms cases. No evolved starts.
+It uses common HLLC mass/momentum/species fluxes, receiving-cell frozen energy
+tangents and SSP-RK3. Its first-order inviscid discretization differs from the
+paper's AVBP TTGC/nonconservative artificial viscosity; pressure flatness alone
+cannot establish paper agreement or exact energy conservation.
+
+The first compilation128020156 exposed an output-stream API error before any
+CFD. Correction b61f889 uses Info().precision. Compilation and all physical
+qualification remain pending for this corrected candidate at this checkpoint.
+Failed source/job identities are retained; no main-branch promotion is claimed.
+
+The local Forge now exposes captured-state diagnostics under Sharma4b,
+Cavalieri6 and Schmitt21, with raw property/target CSVs and source/library hashes.
+They are labeled as failed-state diagnostics, not developed-paper profiles.
+All originals/captions and71targets/12papers remain. Independent scientific
+review and human acceptance remain separate and unassigned.
