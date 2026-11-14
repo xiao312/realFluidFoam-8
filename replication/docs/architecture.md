@@ -696,3 +696,9 @@ energy ordering. Its README owns the isolated experiment and verification scope.
 The optional inner scalar/energy mode reuses one multi-include statement block
 inside separate scopes. Its initial none/steadyFlamelet scope avoids silently
 repeating finite-rate or progress-source integration; defaults are unchanged.
+
+The schmitt-contact/author-reference control copies upstream realFluidFoam into
+an isolated audited application. Only witnesses and the existing caloric check
+are added; equations remain upstream. It consumes the exact15-library parent
+runtime and original contact initializer, with no FGM/table/source dependency.
+Its README owns patch identity, read-only preparation and fresh-case qualification.
