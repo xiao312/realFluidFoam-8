@@ -48,3 +48,15 @@ The next density-continuity control selects conserveTransportDensity yes and
 logs continuity before/after pressure density updates. This is a fresh candidate
 against retained failures, not an accepted correction. Keep limited-linear
 advection,5us cap, three thermo passes and the1e-8 caloric limit unchanged.
+
+
+The separate configure-density-interpolation.mjs helper selects linear or
+upwind-phi interpolation of rho in a new, uninitialized contact case. It changes
+only the named interpolate(rho) scheme; species/energy convection, properties,
+mesh and timestep stay unchanged. It prints before/after hashes without writes;
+--apply requires SLURM_JOB_ID and rejects initialized/evolved cases or an existing
+named rho scheme. It uses Node built-ins, no secrets or network. Example:
+node configure-density-interpolation.mjs NEW_CASE upwind [--apply]. Verify syntax
+and a read-only fixture, then run blockMesh/checkMesh/initializer/solver inside
+Slurm. Test the actual FV scheme parser and pressure/temperature histories;
+upwind numerical diffusion is a declared difference from AVBP TTGC/filtering.
