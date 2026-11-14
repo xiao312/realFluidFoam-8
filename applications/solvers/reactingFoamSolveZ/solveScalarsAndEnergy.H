@@ -1,5 +1,26 @@
+tmp<fv::convectionScheme<scalar>> mvConvection
+(
+    fv::convectionScheme<scalar>::New
+    (
+        mesh,
+        fields,
+        phi,
+        mesh.divScheme("div(phi,Yi_h)")
+    )
+);
+
 // Intentional multi-include statement block; caller supplies a local scope.
 // Keep source/transport/enthalpy ordering identical in both coupling modes.
+            // A relaxed target owns actual species, not prescribed Y(Z).
+            // Advance its Z before computing the pure-mixing Y predictor.
+            const bool transportedTargetSpecies = reaction->transportsMixtureFraction()
+                && !reaction->compositionTabulated();
+            if (transportedTargetSpecies)
+            {
+                const auto targetMixtureStart = fgmTiming.start();
+                #include "ZEqn.H"
+                fgmTiming.stop(fgmWallTiming::mixtureFraction, targetMixtureStart);
+            }
             const auto fgmSpeciesStart = fgmTiming.start();
             #include "YEqn.H"
             fgmTiming.stop(fgmWallTiming::species, fgmSpeciesStart);
@@ -23,6 +44,9 @@
                 reaction->correct();
                 fgmTiming.stop(fgmWallTiming::reactionCorrection, fgmReactionStart);
             }
+            const auto postTransportSourceStart = fgmTiming.start();
+            reaction->correctSpeciesAfterTransport();
+            fgmTiming.stop(fgmWallTiming::reactionCorrection, postTransportSourceStart);
             const auto fgmEnergyStart = fgmTiming.start();
             #include "EEqn.H"
             fgmTiming.stop(fgmWallTiming::energy, fgmEnergyStart);

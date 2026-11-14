@@ -34,3 +34,10 @@ strict steady-flamelet input reader for its original header provenance, and
 reuses the existing C++ table reader as a passive affine lookup. It does not
 alter that reader, physical profiles, EOS libraries, source terms or acceptance
 criteria. The active diagnostic manifest remains separate from factory inputs.
+
+`src/combustionModels/relaxedTable` owns a conservative-species predictor's
+post-transport relaxation toward the strict one-dimensional table target.
+The combustion interface explicitly separates Z transport, composition ownership,
+absolute-Ha support and post-transport correction. The solver owns transport and
+energy, while the model owns its target/source update. This changes the custom
+combustion ABI and requires a full consistent library/application rebuild.

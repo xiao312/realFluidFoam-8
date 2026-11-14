@@ -97,7 +97,8 @@ inline bool validateFgmDimixSuppression(const fvMesh& mesh)
     if
     (
         !(laminarFourier || ransUnityLe)
-     || (combustionType != "fgmTable" && combustionType != "steadyFlamelet")
+     || (combustionType != "fgmTable" && combustionType != "steadyFlamelet"
+         && combustionType != "relaxedTable")
      || !thermodynamics.found("thermoType")
      || thermodynamics.subDict("thermoType").lookupOrDefault<word>("type", "") != "hePsiThermo"
     )

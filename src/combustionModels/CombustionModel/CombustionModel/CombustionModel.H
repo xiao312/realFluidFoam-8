@@ -140,6 +140,25 @@ public:
             return false;
         }
 
+        //- Z transport and actual species ownership are distinct capabilities.
+        //  Existing table models preserve their original solver lifecycle.
+        virtual bool transportsMixtureFraction() const
+        {
+            return compositionTabulated();
+        }
+
+        //- A qualified model may transport species while retaining total Ha.
+        //  Ordinary finite-rate/none models remain outside that contract.
+        virtual bool supportsAbsoluteEnthalpy() const
+        {
+            return compositionTabulated();
+        }
+
+        //- Operator-split source after a fresh pure-mixing species predictor.
+        //  Default no-op preserves every existing combustion model.
+        virtual void correctSpeciesAfterTransport()
+        {}
+
         //- True when the model transports a progress variable itself, so a
         //  solver must transport that variable and apply this model's source.
         //  False for every model that reacts the species directly.

@@ -26,6 +26,10 @@ public:
     State lookup(double z) const;
     double elementCoordinateDifference(double raw, double used) const;
     std::size_t size() const { return z_.size(); }
+    const std::vector<std::vector<double>>& elementCoefficients() const
+    {
+        return elements_;
+    }
 };
 }
 #endif

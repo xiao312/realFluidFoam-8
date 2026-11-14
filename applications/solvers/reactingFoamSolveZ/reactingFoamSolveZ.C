@@ -60,11 +60,13 @@ Description
 #include <iomanip>
 #include "fgmContinuityStage.H"
 #include "zRoundoffDecision.H"
+#include "relaxationProbe.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 int main(int argc, char *argv[])
 {
+    argList::addBoolOption("relaxation-probe", "One-cell species relaxation/Ha source diagnostic;zero CFD steps");
     #include "postProcess.H"
 
     #include "setRootCaseLists.H"
@@ -75,6 +77,13 @@ int main(int argc, char *argv[])
     #include "initContinuityErrs.H"
     #include "createFields.H"
     #include "createFieldRefs.H"
+
+    if (args.optionFound("relaxation-probe"))
+    {
+        if (!absoluteEnthalpyFGM)
+            FatalErrorInFunction << "Relaxation probe requires absolute Ha" << exit(FatalError);
+        return auditRelaxedSpeciesSource(thermo,reaction(),mesh,runTime,fgmAbsoluteEnthalpy());
+    }
 
     #include "createFgmIgnition.H"
 
@@ -101,8 +110,8 @@ int main(int argc, char *argv[])
     // Factory aliases (e.g. none) need not equal the C++ runtime type.
     const word selectedCombustionModel = reaction->lookupOrDefault<word>("combustionModel", "");
     if (realFluidInnerThermoCorrectors && selectedCombustionModel!="none"
-        && selectedCombustionModel!="steadyFlamelet")
-        FatalErrorInFunction << "Inner scalar/energy lifecycle supports configured none or steadyFlamelet; got "
+        && selectedCombustionModel!="steadyFlamelet" && selectedCombustionModel!="relaxedTable")
+        FatalErrorInFunction << "Inner scalar/energy lifecycle supports configured none, steadyFlamelet or relaxedTable; got "
             << selectedCombustionModel << " (runtime type " << reaction->type() << "). "
             << "Finite-rate/progress-source integration requires separate qualification" << exit(FatalError);
     Info<< "scalarEnergyCorrectors=" << (realFluidInnerThermoCorrectors ? "insidePressure" : "outerPimple") << endl;

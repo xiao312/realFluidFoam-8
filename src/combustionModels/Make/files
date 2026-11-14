@@ -25,6 +25,7 @@ fgmTable/fgmTables.C
 
 steadyFlamelet/steadyFlameletTable.C
 steadyFlamelet/steadyFlamelets.C
+relaxedTable/relaxedTables.C
 
 functionObjects/Qdot/Qdot.C
 

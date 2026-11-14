@@ -1,5 +1,20 @@
 # Transported-Z reacting solver
 
+## Relaxed table target candidate
+
+The experimental `relaxedTable` model transports actual species and Z, then
+relaxes the pure-mixing species predictor toward a fixed table. It retains
+absolute Ha and uses formation-enthalpy change as diagnostic Qdot only. Cr100
+follows Schmitt Eq.12; the first target remains the existing finite-chi profile,
+so it does not claim the paper's exact equilibrium/PDF/LES closure. See the
+model's local README for configuration and qualification boundaries.
+
+The combustion lifecycle interface now distinguishes transported Z from
+prescribed composition and declares absolute-Ha support explicitly. Existing
+models inherit their old behavior. This interface changes the custom-library
+ABI: qualify a complete frozen rebuild before running any candidate. The
+existing qualified934/R37 baseline must remain intact.
+
 ## Experimental constant-background low-Mach model
 
 Default-off `realFluidLowMachPressureSplit yes` separates uniform EOS pressure

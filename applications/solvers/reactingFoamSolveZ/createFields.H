@@ -108,10 +108,10 @@ const Switch projectTabulatedZRoundoff
     runTime.controlDict().lookupOrDefault<Switch>("projectTabulatedZRoundoff", false)
 );
 if (projectTabulatedZRoundoff
- && (!conserveTabulatedDensity || !reaction->compositionTabulated()))
+ && (!conserveTabulatedDensity || !reaction->transportsMixtureFraction()))
 {
     FatalErrorInFunction
-        << "projectTabulatedZRoundoff requires conservative density and tabulated composition"
+        << "projectTabulatedZRoundoff requires conservative density and transported mixture fraction"
         << exit(FatalError);
 }
 scalar cumulativeZRoundoffMass=0, cumulativeZRoundoffAbsoluteMass=0;

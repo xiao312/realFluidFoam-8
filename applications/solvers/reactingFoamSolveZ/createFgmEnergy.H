@@ -18,9 +18,9 @@ if (!absoluteEnthalpyFGM && fgmEnergyForm != "sensibleEnthalpy")
 autoPtr<volScalarField> fgmAbsoluteEnthalpy;
 if (absoluteEnthalpyFGM)
 {
-    if (!reaction->compositionTabulated() || thermo.he().name() != "h")
+    if (!reaction->supportsAbsoluteEnthalpy() || thermo.he().name() != "h")
     {
-        FatalErrorInFunction << "absoluteEnthalpy needs tabulated composition and sensibleEnthalpy thermo"
+        FatalErrorInFunction << "absoluteEnthalpy needs an explicitly supported composition model and sensibleEnthalpy thermo"
             << exit(FatalError);
     }
     const word transportType = thermophysicalTransport->type();

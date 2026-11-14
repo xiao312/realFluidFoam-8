@@ -1,14 +1,3 @@
-tmp<fv::convectionScheme<scalar>> mvConvection
-(
-    fv::convectionScheme<scalar>::New
-    (
-        mesh,
-        fields,
-        phi,
-        mesh.divScheme("div(phi,Yi_h)")
-    )
-);
-
 // A tabulated model prescribes the composition, so the species must not also be
 // solved: doing both would mix a transported mixture with a tabulated one.  The
 // guard is the model's own property, so a case cannot forget it, and every model
