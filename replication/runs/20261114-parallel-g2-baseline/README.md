@@ -255,3 +255,26 @@ one original thermo.correct call. Two independent fresh1ms cases are requested.
 No CFD result is claimed yet. Exact patch hashes, binary linkage and terminal
 receipts remain required. This compares solver ordering with a shared rebuilt
 runtime; it is not a reconstruction of the entire historical paper environment.
+
+
+R26 completed compilation/link qualification but both fresh controls failed:
+O2 at456.012us, mixture261.374us, essentially reproducing our author-ordering
+variant. The original loop plus shared current libraries/inputs exhibits the
+instability too; this is not a verdict on every historical author case.
+
+R27/source040b3de job128031333 FAILED231s, with compile/link/help passing.
+The new fixed-T,Y pressure slope ran (startup ratios0.018–2.598 relative torho/p).
+Enabled O2 and mixture both failed at0.263962us, much earlier than off controls
+456.012/261.374us. O2 reached the configured100MPa ceiling; mixture68.95MPa.
+No20ms or reacting run was admitted. This is a rejected isolated pressure
+linearization; the EOS derivative audit alone does not qualify a coupled solver.
+
+Next sourcead315ac introduces a separate default-off cold-contact energy
+projection inspired by Schmitt Eq25, verified against original PDF page166.
+It reconstructs T,h from transported rho/current p,Y whereZ<0.9, reports every
+energy adjustment and retains the same root/caloric thresholds. Its filter and
+placement differ from AVBP; it is not an exact port. Reacting/FGM use is disabled
+until an absolute-Ha/source budget is separately qualified. Differential pressure
+is disabled in this experiment. Job128032112 admitted20:21:20,8cores16GiB7200s,
+with four independent fresh1ms controls then separate20ms cases only if both
+candidate controls complete. Compilation and physical results remain pending.
