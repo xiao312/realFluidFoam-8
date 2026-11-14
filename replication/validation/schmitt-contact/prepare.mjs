@@ -17,7 +17,7 @@ const manifest=JSON.parse(await readFile(`${options['--thermo-dir']}/manifest.js
 if(manifest.mixture!=='SRKchungTakaMixture'||JSON.stringify(manifest.species.map(s=>s.name))!==JSON.stringify(['H2','O2']))throw Error('Require exact H2/O2 SRK thermo export');
 const sha=b=>createHash('sha256').update(b).digest('hex');
 const plan={schema:'schmitt-contact/v1',kind,nx,advection,pressure_Pa:6e6,velocity_m_s:10,dx_m:.01,cells:400,
-  domain_m:[-2,2],endTime_s:.02,cleanStart_s:0,maximumTimeStep_s:5e-6,thermoCorrectionPasses:3,maximumTimeStep_s:5e-6,thermoCorrectionPasses:3,thermoSha256:sha(raw),source:'Schmitt2020 equations26/27,Figures5/6',
+  domain_m:[-2,2],endTime_s:.02,cleanStart_s:0,maximumTimeStep_s:5e-6,thermoCorrectionPasses:3,maximumTimeStep_s:5e-6,thermoCorrectionPasses:3,conserveTransportDensity:true,thermoSha256:sha(raw),source:'Schmitt2020 equations26/27,Figures5/6',
   limitations:['Own pressure-based algorithm, no AVBP conservative/nonconservative artificial viscosity','Domain length reconstructed from far-field isolation','Cryogenic NASA extrapolation remains unvalidated']};
 if(!options['--out']){console.log(JSON.stringify(plan,null,2));process.exit(0);}
 const out=resolve(options['--out']);await mkdir(out);
@@ -62,7 +62,7 @@ relaxationFactors {equations {".*" 1;}}\n`);
 await put('system/controlDict',header('controlDict')+`application reactingFoamSolveZ;libs ("libcombustionModels.so");
 startFrom startTime;startTime 0;stopAt endTime;endTime .02;deltaT 1e-7;
 adjustTimeStep yes;maxCo .3;maxDeltaT .000005;writeControl adjustableRunTime;writeInterval .005;purgeWrite 0;
-writeFormat ascii;writePrecision 14;timeFormat general;timePrecision 14;runTimeModifiable no;writeEnergyBudget yes;fgmThermoCorrectionPasses 3;writeFgmThermoClosure yes;fgmThermoClosureRelativeLimit 1e-8;fgmThermoCorrectionPasses 3;writeFgmThermoClosure yes;fgmThermoClosureRelativeLimit 1e-8;
+writeFormat ascii;writePrecision 14;timeFormat general;timePrecision 14;runTimeModifiable no;writeEnergyBudget yes;conserveTransportDensity yes;writeMixtureFractionBudget yes;fgmThermoCorrectionPasses 3;writeFgmThermoClosure yes;fgmThermoClosureRelativeLimit 1e-8;fgmThermoCorrectionPasses 3;writeFgmThermoClosure yes;fgmThermoClosureRelativeLimit 1e-8;
 functions {profiles {type sets;libs ("libsampling.so");writeControl runTime;writeInterval .001;
 setFormat csv;interpolationScheme cell;fields (T rho p U O2 H2);
 sets (axis {type uniform;axis x;start (-1.995 .005 .005);end (1.995 .005 .005);nPoints 400;});}}\n`);

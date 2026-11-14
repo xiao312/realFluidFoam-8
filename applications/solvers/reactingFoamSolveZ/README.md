@@ -375,3 +375,11 @@ cell (p,T,h,evaluated h,Cp and non-negligible species) and writes the failed
 T,p,h,Y state at its actual time. These diagnostic snapshots preserve the
 original failed verdict and must never be relabelled as time-zero CFD inputs.
 No equation, caloric threshold, or success-path field is changed by this output.
+
+Experimental conserveTransportDensity yes applies the existing post-pressure
+continuity re-solve to non-tabulated contacts too. Its default is the legacy
+conserveTabulatedDensity value. Conflicting explicit values are rejected; the
+legacy option still requires a tabulated model, and Z projection still requires
+tabulation. This selects the existing density equation, changes no EOS, energy
+reference or caloric threshold, and is not proof of pressure-equilibrium recovery.
+Compare stage-labelled continuity and actual paper profiles before acceptance.

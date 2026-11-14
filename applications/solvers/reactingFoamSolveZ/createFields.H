@@ -81,11 +81,22 @@ autoPtr<CombustionModel<psiReactionThermo>> reaction
     CombustionModel<psiReactionThermo>::New(thermo, turbulence())
 );
 
-const Switch conserveTabulatedDensity
+const Switch legacyConserveTabulatedDensity
 (
     runTime.controlDict().lookupOrDefault<Switch>("conserveTabulatedDensity", false)
 );
-if (conserveTabulatedDensity && !reaction->compositionTabulated())
+const Switch conserveTransportDensity
+(
+    runTime.controlDict().lookupOrDefault<Switch>
+        ("conserveTransportDensity", legacyConserveTabulatedDensity)
+);
+if (runTime.controlDict().found("conserveTransportDensity")
+ && runTime.controlDict().found("conserveTabulatedDensity")
+ && conserveTransportDensity != legacyConserveTabulatedDensity)
+    FatalErrorInFunction << "Conflicting density-continuity options" << exit(FatalError);
+// Keep the existing density-update branches and tabulated defaults identical.
+const Switch conserveTabulatedDensity(conserveTransportDensity);
+if (legacyConserveTabulatedDensity && !reaction->compositionTabulated())
 {
     FatalErrorInFunction
         << "conserveTabulatedDensity requires a tabulated composition model"

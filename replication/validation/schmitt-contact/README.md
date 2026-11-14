@@ -43,3 +43,8 @@ Optional --advection upwind selects a separately labelled first-order numerical
 control. Default limited-linear retains the intended sharper baseline. Both
 use identical EOS, profiles, timestep cap and caloric acceptance; compare all
 six fresh cases to distinguish transport overshoot from thermo inversion.
+
+The next density-continuity control selects conserveTransportDensity yes and
+logs continuity before/after pressure density updates. This is a fresh candidate
+against retained failures, not an accepted correction. Keep limited-linear
+advection,5us cap, three thermo passes and the1e-8 caloric limit unchanged.
