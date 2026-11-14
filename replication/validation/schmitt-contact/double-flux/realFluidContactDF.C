@@ -60,13 +60,13 @@ int main(int argc,char* argv[])
         Ha[i]=primitive[i].absoluteH;rhoEnergy[i]=state[i].energy;
     }
     const Primitive leftFar=primitive.front(),rightFar=primitive.back();
-    auto integral=[&](const std::vector<Conserved>& values,int quantity)
+    auto integral=[&](const std::vector<Conserved>& values,int quantity)->scalar
     {
         scalar result=0;for(unsigned i=0;i<n;++i)result+=mesh.V()[i]*(quantity==0?values[i].rho:quantity==1?values[i].momentum:values[i].energy);return result;
     };
     // Convert the frozen numerical energy to p, then query the true SRK model
     // at that p/rho/Y. Energy is not synchronized during SSP-RK stages.
-    auto project=[&](const std::vector<Conserved>& values,const std::vector<Primitive>& frozen)
+    auto project=[&](const std::vector<Conserved>& values,const std::vector<Primitive>& frozen)->std::vector<Primitive>
     {
         std::vector<Primitive> result(n);
         scalarField& p=thermo.p().primitiveFieldRef();scalarField& T=thermo.T().primitiveFieldRef();
@@ -90,14 +90,14 @@ int main(int argc,char* argv[])
         }
         return result;
     };
-    auto stage=[&](const std::vector<Conserved>& base,const Evaluation& evaluation,scalar dt)
+    auto stage=[&](const std::vector<Conserved>& base,const Evaluation& evaluation,scalar dt)->std::vector<Conserved>
     {
         std::vector<Conserved> result(n);for(unsigned i=0;i<n;++i)result[i]=combine(base[i],evaluation.cells[i],1,dt);return result;
     };
-    auto updatePhi=[&](const Evaluation& evaluation)
+    auto updatePhi=[&](const Evaluation& evaluation)->void
     {
         const scalar edge=mesh.C()[0].x()-.5*dx;
-        auto value=[&](scalar x,scalar sx){if(mag(sx)<1e-12*area)return scalar(0);const long face=std::lround((x-edge)/dx);if(face<0||face>long(n))FatalErrorInFunction<<"Face outside uniform1D recipe"<<exit(FatalError);return evaluation.faces[face].mass*sx;};
+        auto value=[&](scalar x,scalar sx)->scalar{if(mag(sx)<1e-12*area)return scalar(0);const long face=std::lround((x-edge)/dx);if(face<0||face>long(n))FatalErrorInFunction<<"Face outside uniform1D recipe"<<exit(FatalError);return evaluation.faces[face].mass*sx;};
         forAll(phi,face)phi[face]=value(mesh.Cf()[face].x(),mesh.Sf()[face].x());
         forAll(phi.boundaryField(),patch)
             forAll(phi.boundaryField()[patch],face)phi.boundaryFieldRef()[patch][face]=value(mesh.Cf().boundaryField()[patch][face].x(),mesh.Sf().boundaryField()[patch][face].x());
