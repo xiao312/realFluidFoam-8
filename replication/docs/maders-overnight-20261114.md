@@ -68,3 +68,72 @@ Prior baseline/extinction/strict failures remain. No independent scientific
 approval or publication is inferred. Operator records bind raw archive hashes,
 matched-time analysis,flow/table reconstruction,run receipts and known limitations.
 
+## 11:05 checkpoint: both full controls stopped, mismatch remains
+
+The preceding “pending” statements describe the 02:43 launch, not current status.
+The refined mesh actually passed blockMesh/checkMesh with 240000 cells and its
+separate fresh-start ignition check. The full case then started from cold time0
+at 02:56:21 Shanghai. No evolved fields were reused.
+
+| Run / Slurm JobID | Final solver time | Allocation elapsed | Outcome |
+| --- | ---: | ---: | --- |
+| Broad coarse R17 / 127943044 | 2 s | 38496 s | Completed, exit0:0; unsteady |
+| Moderate coarse R18 / 127943180 | 1.172235342 s | 15913 s | Graceful control stop, exit0:0 |
+| Moderate refined R19 / 127961776 | 1.116164738 s | 30032 s | Graceful operational stop, exit0:0 |
+
+These three allocations each used32 ranks and64GiB, totaling750.587 allocated
+core-hours. This subtotal excludes earlier qualification/debugging jobs; their
+usage remains recorded. The refined stop was requested at11:03:01, before its
+payload timeout, and Slurm completed at11:03:51. It was not a convergence stop.
+Solver exit0 and final reconstruction were verified. Its final internal diagnostic
+heat release was3.91590W; the absolute-enthalpy inversion maximum relative residual
+was5.47e-16. Neither measurement establishes radial-profile accuracy or complete
+global energy conservation.
+
+The latest saved refined profiles at1.11500646592s give temperature RMS errors
+336.50/691.75K and CO mass-fraction RMS0.010178/0.020599 atH10/H40. Peak temperatures
+are2002/2029K, but radial peaks and cold-side gradients lie too far inward. Maximum
+profile changes over the final50ms are7.22/427.13K; over100ms they are55.36/1623.19K.
+The lower plane is becoming quieter, while the upper plane remains transient.
+The case stopped below its declared1.769565s observation minimum. The broad case
+reached2s, yet still had temperature RMS348.54/689.80K and failed temporal settling.
+
+At matched1.115s, moderate coarse/refined temperature RMS errors are287/337K atH10
+and429/692K atH40. Earlier matched snapshots changed the apparent direction of
+improvement. The experiment therefore demonstrates sensitivity to axial resolution
+and transient phase, not grid independence or a consistent accuracy improvement.
+The100micrometre axial mesh still does not reproduce the author's30–60micrometre
+guidance. Do not select favorable transient frames as the paper comparison.
+
+A read-only solved-field diagnostic estimates stoichiometric scalar dissipation
+using chi=2D|gradZ|^2 and the existing Smooke unity-Le relation
+D=2.58e-5*(T/298)^0.69/rho. Radial finite differences plus interpolation between five
+axial lines give3.326/0.918s^-1 atH10/H40 for R17 at2s, and3.300/0.880s^-1 for R19
+at1.094994s. These sampled locations fall within the table's steady0.03–60s^-1
+range. This is an approximate sampled-field calculation, not the exact finite-volume
+operator or evidence for coverage everywhere. It provides no support for a missing
+strain-range explanation at those locations. Unqualified fgmTdiag/fgmQdot point
+samples were excluded.
+
+The physical table SHA256 remains35a6b46b5a56d2831a598acb7810119b6bc27ced27d90d217d2258514295c1cc.
+The compiled solver remains ea2a4046ab239ae4fdb1197cd65fd83ebc933785, executable
+31b6739c6fa57f9da4d05f8d2e4edf64cd04fe4324176ab9b8dc6ee66d850a78. The refined
+case recipe remains6cb1bb9c9254930f33bc1477912bd35f557808d9, OF8 environmentf46 and
+adapter0d2a63b. Documentation/UI revisions do not change those executed identities.
+
+The local gallery retains15views/71targets/12papers and captions, including all
+failed baselines, both latest controls, and the declared125ms matched snapshots.
+Paper lines and CFD markers retain original axes. Four new refined profile states
+have archive SHA2561b67c520969aaaa89c745ba4457ac5d7a025a6e192d9769ceb4dcc7a6352011e;
+all440 previously retained T/CO sample hashes match. Image hashes, HTTP delivery
+and plotted/history metrics passed; the final PNG was inspected. Raw fields and
+reconstruction remain on SCNet, outside Git.
+
+The paper replication remains unresolved. Preserve the failed criteria and current
+absolute-Ha coupling. Follow-up should separate transported-Z/momentum behavior,
+manifold construction and finer-grid sensitivity with measured controls, rather
+than fit chemistry, diffusivity, inlet speed or density to the plotted temperature.
+No independent scientific approval, human acceptance or qualified publication is
+claimed. The owner deadline remains14November11:59Shanghai; no new execution is
+authorized after it.
+
