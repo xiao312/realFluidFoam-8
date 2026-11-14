@@ -47,3 +47,17 @@ When several cases run concurrently, each JobID retains one latest comparison
 and history view. Refreshing one case does not hide another case or the previous
 completed baseline. An explicit `physical_outcome` (for example extinguished)
 stays visible separately from scheduler state and temporal settling.
+
+`--additional-view coflow-extra-NAME` adds or refreshes an explicitly labeled
+snapshot without replacing the current comparison,history or evidence binding.
+Use it for a predeclared matched-time control,not to substitute a favorable
+transient for the latest failed result. The comparison may supply `view_label`;
+otherwise its JobID/time identify it. The same raw-sample/image/hash validation
+applies. Plan first,then `--apply`; verify the current evidence binding is unchanged,
+all existing view IDs remain and the added image/hash is retrievable. This local
+presentation option has no solver,acceptance,scheduler or publication authority.
+
+Comparison `display_warnings` strings,when present,are shown in the view note.
+Use them to disclose raw values outside the original paper axis limits;retain all
+samples in metrics and downloaded data. Matching the paper's axes must not hide
+an overshoot in the accompanying evidence.

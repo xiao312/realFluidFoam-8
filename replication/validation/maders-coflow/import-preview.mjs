@@ -6,10 +6,12 @@ const args={};
 for(let i=2;i<process.argv.length;i++){
   const key=process.argv[i];
   if(key==='--apply')args.apply=true;
+  else if(key==='--additional-view'&&process.argv[i+1])args.additionalView=process.argv[++i];
   else if(['--site','--catalog','--comparison'].includes(key)&&process.argv[i+1])args[key.slice(2)]=path.resolve(process.argv[++i]);
   else throw Error(`Unknown or missing option ${key}`);
 }
 for(const key of ['site','catalog','comparison'])if(!args[key])throw Error(`Required --${key}`);
+if(args.additionalView&&(!/^coflow-extra-[a-z0-9-]+$/.test(args.additionalView)||args.additionalView.length>80))throw Error('Additional view must use coflow-extra-NAME');
 const read=p=>fs.readFileSync(p,'utf8');
 const json=p=>JSON.parse(read(p));
 const digest=bytes=>crypto.createHash('sha256').update(bytes).digest('hex');
@@ -33,7 +35,7 @@ const others=payload.figures.filter(f=>f!==target).map(f=>JSON.stringify(f));
 const central=json(args.catalog);
 assert.ok(central.target_ids.includes(target.id));
 if(!args.apply){
-  console.log(JSON.stringify({plan:'Local preview import only; no approval or publication',target:target.id,job_id:report.job_id,time_s:report.sample_time_s,source_commit:report.source_commit,targets_preserved:payload.figures.length}));
+  console.log(JSON.stringify({plan:'Local preview import only; no approval or publication',additional_view:args.additionalView??null,target:target.id,job_id:report.job_id,time_s:report.sample_time_s,source_commit:report.source_commit,targets_preserved:payload.figures.length}));
   process.exit(0);
 }
 const stamp=new Date().toISOString();
@@ -69,8 +71,11 @@ const extinct=report.physical_outcome?.state==='extinguished';
 const phase=extinct?'Extinguished CFD':settled?'Time-settled at measurement planes':'Transient CFD';
 const ignition=report.ignition_time_s===undefined?'':` Ignition at ${report.ignition_time_s} s; ${(1000*(report.sample_time_s-report.ignition_time_s)).toFixed(2)} ms since ignition.`;
 const limitation=settled?'Temporal profile screen passed; mesh and model differences remain. No independent review or scientific acceptance claimed.':'Transient, mesh and model differences remain; no steady-state, independent review or scientific acceptance claimed.';
-const note=`${phase} at ${report.sample_time_s} s, Slurm ${report.job_id}, source ${report.source_commit.slice(0,7)}. Paper: digitized Detailed–Verhoeven lines; ours: computed markers. ${temperatures}.${failure}${ignition} ${limitation}`;
-Object.assign(target,{
+const displayWarnings=Array.isArray(report.display_warnings)?' '+report.display_warnings.join(' '):'';
+const note=`${phase} at ${report.sample_time_s} s, Slurm ${report.job_id}, source ${report.source_commit.slice(0,7)}. Paper: digitized Detailed–Verhoeven lines; ours: computed markers. ${temperatures}.${failure}${ignition} ${limitation}${displayWarnings}`;
+if(args.additionalView){
+  target.views=[...(target.views??[]).filter(v=>v.id!==args.additionalView),{id:args.additionalView,label:report.view_label??`Snapshot ${report.job_id} · ${timeLabel}`,image:image.file,image_sha256:image.hash,data:data.file,data_sha256:data.hash,note}];
+}else Object.assign(target,{
   status:'review',result_image:image.file,result_image_sha256:image.hash,data:data.file,data_sha256:data.hash,note,
   views:[{id:'coflow-current',label:`OF8 FGM · ${extinct?'extinguished':settled?'time-settled':'transient'} ${timeLabel}`,image:image.file,image_sha256:image.hash,data:data.file,data_sha256:data.hash,note},
     ...(history?[{id:'coflow-time-history',label:'Profile history',image:history.image.file,image_sha256:history.image.hash,data:history.data.file,data_sha256:history.data.hash,note:'All saved profiles from this clean-start run; digitized-paper errors and evolution. No steady-state acceptance inferred.'}]:[]),
@@ -94,5 +99,5 @@ const index=path.join(args.site,'index.html');fs.writeFileSync(index,read(index)
 const manifestFile=path.join(args.site,'site-manifest.json'),manifest=json(manifestFile);
 for(const name of ['data.js',dataName,bundleName,'index.html',image.file,data.file,...samples.map(s=>s.file),...(history?[history.image.file,history.data.file]:[])])manifest.files[name]=digest(fs.readFileSync(path.join(args.site,name)));
 manifest.snapshot_sha256=payload.snapshot_sha256;writeJson(manifestFile,manifest);
-const receipt={importer_sha256:digest(fs.readFileSync(new URL(import.meta.url))),captured_at:stamp,target:target.id,generation,job_id:report.job_id,sample_time_s:report.sample_time_s,targets:payload.figures.length,papers:payload.papers.length,previous_payload_sha256:previous,snapshot_sha256:payload.snapshot_sha256,scientific_acceptance:false,independent_review:null,remote_operations:false};
+const receipt={additional_view:args.additionalView??null,importer_sha256:digest(fs.readFileSync(new URL(import.meta.url))),captured_at:stamp,target:target.id,generation,job_id:report.job_id,sample_time_s:report.sample_time_s,targets:payload.figures.length,papers:payload.papers.length,previous_payload_sha256:previous,snapshot_sha256:payload.snapshot_sha256,scientific_acceptance:false,independent_review:null,remote_operations:false};
 writeJson(path.join(args.site,'maders-comparison-import-receipt.json'),receipt);console.log(JSON.stringify(receipt));
