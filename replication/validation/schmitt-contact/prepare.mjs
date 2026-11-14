@@ -5,10 +5,12 @@ import {solverSchemes} from '../fgm-of8/direct-verification/schemes.mjs';
 
 const args=process.argv.slice(2),options={};
 for(let i=0;i<args.length;i+=2){
-  if(!['--thermo-dir','--kind','--nx','--out','--advection'].includes(args[i])||!args[i+1]||options[args[i]])throw Error('Use --thermo-dir DIR --kind oxygen|mixture --nx VALUE [--out NEW_CASE]');
+  if(!['--thermo-dir','--kind','--nx','--out','--advection','--cells'].includes(args[i])||!args[i+1]||options[args[i]])throw Error('Use --thermo-dir DIR --kind oxygen|mixture --nx VALUE [--cells N] [--out NEW_CASE]');
   options[args[i]]=args[i+1];
 }
 const kind=options['--kind'],nx=Number(options['--nx']);
+const meshCells=Number(options['--cells']??400),spacing=4/meshCells;
+if(!Number.isInteger(meshCells)||meshCells<100||meshCells>6400)throw Error('cells must be an integer100..6400');
 const advection=options['--advection']??'limited-linear';
 if(!['upwind','limited-linear'].includes(advection))throw Error('advection must be upwind or limited-linear');
 if(!['oxygen','mixture'].includes(kind)||!(kind==='oxygen'?[2,4,6]:[1e-5,2,4]).includes(nx))throw Error('Select a published kind/nx combination');
@@ -16,7 +18,8 @@ const raw=await readFile(`${options['--thermo-dir']}/thermophysicalProperties`);
 const manifest=JSON.parse(await readFile(`${options['--thermo-dir']}/manifest.json`));
 if(manifest.mixture!=='SRKchungTakaMixture'||JSON.stringify(manifest.species.map(s=>s.name))!==JSON.stringify(['H2','O2']))throw Error('Require exact H2/O2 SRK thermo export');
 const sha=b=>createHash('sha256').update(b).digest('hex');
-const plan={schema:'schmitt-contact/v1',kind,nx,advection,pressure_Pa:6e6,velocity_m_s:10,dx_m:.01,cells:400,
+const plan={schema:'schmitt-contact/v1',kind,nx,advection,pressure_Pa:6e6,velocity_m_s:10,dx_m:spacing,cells:meshCells,
+  ...(meshCells===400?{}:{interfaceReferenceSpacing_m:.01,refinementDiagnostic:true}),
   domain_m:[-2,2],endTime_s:.02,cleanStart_s:0,maximumTimeStep_s:5e-6,thermoCorrectionPasses:3,maximumTimeStep_s:5e-6,thermoCorrectionPasses:3,conserveTransportDensity:true,thermoSha256:sha(raw),source:'Schmitt2020 equations26/27,Figures5/6',
   limitations:['Own pressure-based algorithm, no AVBP conservative/nonconservative artificial viscosity','Domain length reconstructed from far-field isolation','Cryogenic NASA extrapolation remains unvalidated']};
 if(!options['--out']){console.log(JSON.stringify(plan,null,2));process.exit(0);}
@@ -33,12 +36,12 @@ await put('constant/g',header('g','uniformDimensionedVectorField')+'dimensions [
 await put('constant/contactInput',header('contactInput')+`densityInversion ${kind==='oxygen'?'yes':'no'};\n`);
 await put('system/blockMeshDict',header('blockMeshDict')+`convertToMeters 1;
 vertices ((-2 0 0)(2 0 0)(2 .01 0)(-2 .01 0)(-2 0 .01)(2 0 .01)(2 .01 .01)(-2 .01 .01));
-blocks (hex (0 1 2 3 4 5 6 7) (400 1 1) simpleGrading (1 1 1)); edges ();
+blocks (hex (0 1 2 3 4 5 6 7) (${meshCells} 1 1) simpleGrading (1 1 1)); edges ();
 boundary (left {type patch;faces ((0 4 7 3));} right {type patch;faces ((1 2 6 5));}
 sides {type empty;faces ((0 1 5 4)(3 7 6 2)(0 3 2 1)(4 5 6 7));}); mergePatchPairs ();\n`);
 // Abramowitz-Stegun erf approximation; preserve its formula/error in the receipt.
 const erf=x=>{const sign=x<0?-1:1,t=1/(1+.3275911*Math.abs(x));return sign*(1-(((((1.061405429*t-1.453152027)*t)+1.421413741)*t-.284496736)*t+.254829592)*t*Math.exp(-x*x));};
-const cells=Array.from({length:400},(_,i)=>-2+(i+.5)*.01);
+const cells=Array.from({length:meshCells},(_,i)=>-2+(i+.5)*spacing);
 const oxygen=cells.map(x=>kind==='oxygen'?1:.5*(1-erf(Math.sqrt(6)*x/(nx*.01))));
 const density=cells.map(x=>1000+.5*(100-1000)*(1+erf(Math.sqrt(6)*x/(nx*.01))));
 const scalar=(name,dim,values,left,right)=>header(name,'volScalarField')+`dimensions ${dim};
@@ -65,6 +68,6 @@ adjustTimeStep yes;maxCo .3;maxDeltaT .000005;writeControl adjustableRunTime;wri
 writeFormat ascii;writePrecision 14;timeFormat general;timePrecision 14;runTimeModifiable no;writeEnergyBudget yes;conserveTransportDensity yes;writeMixtureFractionBudget yes;fgmThermoCorrectionPasses 3;writeFgmThermoClosure yes;fgmThermoClosureRelativeLimit 1e-8;fgmThermoCorrectionPasses 3;writeFgmThermoClosure yes;fgmThermoClosureRelativeLimit 1e-8;
 functions {profiles {type sets;libs ("libsampling.so");writeControl runTime;writeInterval .001;
 setFormat csv;interpolationScheme cell;fields (T rho p U O2 H2);
-sets (axis {type lineUniform;axis x;start (-1.995 .005 .005);end (1.995 .005 .005);nPoints 400;});}}\n`);
+sets (axis {type lineUniform;axis x;start (${-2+spacing/2} .005 .005);end (${2-spacing/2} .005 .005);nPoints ${meshCells};});}}\n`);
 await put('contact-input.json',JSON.stringify({...plan,erfApproximationMaximumAbsoluteError:1.5e-7},null,2)+'\n');
 console.log(JSON.stringify({out,...plan}));

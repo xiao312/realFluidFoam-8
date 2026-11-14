@@ -1,5 +1,21 @@
 # Schmitt 2020 contact-advection baseline
 
+For a separate grid-convergence diagnostic, `--cells N` changes only the
+computational x resolution (default400, domain-2..2m). The initial erf width
+still uses the paper's reference spacing0.01m, so nx2 always means the same
+physical initial profile as the mesh is refined. `dx_m` records the actual
+4/N spacing; nondefault receipts also identify the reference spacing and the
+refinement scope. Sampling covers the new cell centers with N points.
+
+Example read-only plan: `node prepare.mjs --thermo-dir DIR --kind mixture
+--nx 2 --cells 800`; add `--out NEW_CASE` for preparation. Inputs, dependencies,
+zero-time restriction and security boundary are unchanged. Check the original
+400-cell output against the previous generator byte for byte, then check the
+new mesh/list/sampler counts. Compilation, EOS initialization and CFD still
+require the exact runtime in Slurm. A mesh study distinguishes convergence
+from a large cell-local thermal defect; it does not replace the original
+paper-grid comparison or authorize fitting a curve.
+
 Prepare fresh one-dimensional OF8 cases for Figures 5 and 6. Run the current
 realFluidFoam solver without adding the paper's AVBP artificial-viscosity model.
 The comparison measures our algorithm, not a claim that it implements AVBP.
