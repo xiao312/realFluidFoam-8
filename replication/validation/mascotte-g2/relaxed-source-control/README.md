@@ -35,3 +35,9 @@ It records every changed dictionary hash in a separate active-input manifest.
 The existing factory manifest is preserved. Cr1 is compared with the old
 instantaneous model; Cr100 is a new physics/numerics diagnostic. Every flow run
 starts from original zero and reports actual Cr*dt. No paper mean is inferred.
+
+`initialize-inlet-velocity.mjs NEW_CASE [--apply]` reads the actual runtime
+Ha initialization density and registered mass-flow/area, then replaces only
+the initial inlet U/rhoInlet values before decomposition. Original mass flows
+and boundary types are preserved; no ideal-gas placeholders are used. A fresh
+relaxed-flow manifest and Slurm allocation are required for apply.
