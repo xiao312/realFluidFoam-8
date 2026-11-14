@@ -127,3 +127,9 @@ and h (sensible enthalpy) collide on ordinary Windows filesystems. The reader
 checks every FoamFile object against its requested name and rejects such a
 collision. Keep the original case-sensitive archive; do not trust an extracted
 Windows copy of all fields. Local archive checks must preserve member case.
+
+Optional writeSrkCoefficients yes records the executing mixture's b, three
+a(T) coefficients, molecular weight and gas constant in srk-coefficients.csv.
+It uses the existing typed SRK mixture audit interface and adds no EOS model.
+An independent cubic-root/stability calculation can then distinguish the
+selected root from other admissible roots using the exact runtime parameters.

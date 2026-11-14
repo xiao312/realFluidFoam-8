@@ -24,7 +24,7 @@ for(const [name,value] of [['p',pressure],['T',temperature]]){const file=`${root
 const temperatures=[...new Set([...Array.from({length:41},(_,i)=>temperature-10+i*.5),...[-.1,-.01,-.001,-.0001,-.00001,0,.00001,.0001,.001,.01,.1].map(d=>temperature+d)].filter(t=>t>=60&&t<=6000))].sort((a,b)=>a-b);
 const guesses=[temperature-5,temperature-.5,temperature,temperature+.5,temperature+5,300].filter(t=>t>=60&&t<=6000);
 const file=`${root}/constant/probeProperties`,before=await readFile(file,'utf8');
-const after=before.replace(/pressure [^;]+;/,`pressure ${pressure};`).replace(/temperatures \([^)]*\);/,`temperatures (${temperatures.join(' ')});`).replace(/increments \([^)]*\);/,'increments (0.001);')+`\nenthalpyTargets (${point.storedHs_J_kg});\ntargetGuesses (${guesses.join(' ')});\ntargetCorrectionPasses 12;\ntargetRelativeLimit 1e-8;\n`;
+const after=before.replace(/pressure [^;]+;/,`pressure ${pressure};`).replace(/temperatures \([^)]*\);/,`temperatures (${temperatures.join(' ')});`).replace(/increments \([^)]*\);/,'increments (0.001);')+`\nenthalpyTargets (${point.storedHs_J_kg});\ntargetGuesses (${guesses.join(' ')});\ntargetCorrectionPasses 12;\ntargetRelativeLimit 1e-8;\nwriteSrkCoefficients yes;\n`;
 changes.push({file,before,after});
 const sha=s=>createHash('sha256').update(s).digest('hex');
 const receipt={schema:'captured-enthalpy-point-queries/v1',pointSha256:sha(pointRaw),sourceCase:point.sourceCase,snapshotTime:point.snapshotTime,cell:point.cell,rank:point.rank,CFD_steps:0,pressure_Pa:pressure,capturedPressure_Pa:point.pressure_Pa,temperature_K:temperature,targetHs_J_kg:point.storedHs_J_kg,compositionNormalized:false,acceptanceChanged:false,changes:changes.map(c=>({file:c.file,beforeSha256:sha(c.before),afterSha256:sha(c.after)}))};

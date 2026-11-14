@@ -145,6 +145,20 @@ int main(int argc, char *argv[])
     const scalarList temperatures(configuration.lookup("temperatures"));
     const scalarList increments(configuration.lookup("increments"));
     const scalar initialGuessOffset = configuration.lookup<scalar>("initialGuessOffset");
+    if (configuration.lookupOrDefault<Switch>("writeSrkCoefficients", false))
+    {
+        const SetupMixture* selected=dynamic_cast<const SetupMixture*>(&composition);
+        if (!selected) FatalErrorInFunction << "SRK coefficient query requires exact SRK Chung mixture" << exit(FatalError);
+        const SetupThermo& state=selected->cellMixture(0);
+        std::ofstream coefficients((runTime.path()/"srk-coefficients.csv").c_str());
+        coefficients<<std::setprecision(17)
+            <<"W_kg_kmol,R_J_kg_K,RR_J_kmol_K,b_m3_kmol,coef1,coef2,coef3\n"
+            <<state.W()<<','<<state.R()<<','<<state.R()*state.W()<<','<<state.bM()
+            <<','<<state.coef1()<<','<<state.coef2()<<','<<state.coef3()<<'\n';
+        coefficients.close();
+        if (!coefficients) FatalErrorInFunction << "Failed to save executing SRK coefficients" << exit(FatalError);
+    }
+
     std::ofstream properties((runTime.path()/"cold-properties.csv").c_str());
     std::ofstream inversion((runTime.path()/"cold-inversion.csv").c_str());
     properties << std::setprecision(16)
