@@ -166,12 +166,21 @@ int main(int argc, char *argv[])
                     if (mutation!=0)
                         FatalErrorInFunction << "Post-pressure inversion mutated internal sensible enthalpy"
                             << exit(FatalError);
-                    rho=thermo.rho();
+                    const tmp<volScalarField> refreshedDensity=thermo.rho();
+                    // The scalar equations require the continuity-consistent rho.
+                    // A property-cache refresh must not undo that selected policy.
+                    if (!conserveTransportDensity) rho=refreshedDensity();
                     auditFgmThermoClosure(thermo);
                     auditFgmContinuityStage("afterPressureThermoRefresh",rho,phi);
                     if (runTime.timeIndex()==1 || runTime.writeTime())
                         Info<< "pressureThermoRefresh t=" << runTime.value()
-                            << " maxInternalHeChange_J_kg=" << mutation << endl;
+                            << " maxInternalHeChange_J_kg=" << mutation
+                            << " conservativeDensityPreserved=" << conserveTransportDensity
+                            << " maxThermoTransportDensityRelative=" << gMax
+                            (
+                                mag(rho.primitiveField()-refreshedDensity().primitiveField())
+                               /max(mag(refreshedDensity().primitiveField()),scalar(SMALL))
+                            ) << endl;
                 }
                 if (absoluteEnthalpyFGM)
                 {
@@ -190,8 +199,17 @@ int main(int argc, char *argv[])
         }
 
         auditFgmContinuityStage("beforeFinalEOSDensity", rho, phi);
-        rho = thermo.rho();
-        auditFgmContinuityStage("afterFinalEOSDensity", rho, phi);
+        const bool preserveRefreshedTransportDensity=conserveTransportDensity
+            && runTime.controlDict().lookupOrDefault<Switch>("realFluidPressureThermoRefresh",false);
+        if (preserveRefreshedTransportDensity)
+        {
+            auditFgmContinuityStage("afterFinalTransportDensityPreservation",rho,phi);
+        }
+        else
+        {
+            rho=thermo.rho();
+            auditFgmContinuityStage("afterFinalEOSDensity",rho,phi);
+        }
 
         // A changed nonideal pressure can move h(p,T,Y) after the last inversion.
         // Measure that coupling drift separately; do not mutate or reject it as

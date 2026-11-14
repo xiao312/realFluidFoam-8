@@ -730,3 +730,7 @@ NumPy and Matplotlib. It has no scheduler or scientific-acceptance authority.
 The solver has a default-off post-pressure thermo refresh diagnostic. It reuses
 the existing held-enthalpy inversion and caloric/continuity witnesses, changes
 only nonlinear coupling order and does not advance chemistry/source integration.
+
+Post-pressure property refresh respects the selected conservative-density policy
+both within and after PIMPLE. It reports thermo/transport density differences;
+cache refresh cannot silently replace the mass field used by scalar transport.

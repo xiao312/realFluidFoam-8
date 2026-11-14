@@ -495,8 +495,8 @@ longer controls failed). The existing nonreacting-only scope remains enforced.
 ## Experimental post-pressure property refresh
 
 realFluidPressureThermoRefresh yes, default no, calls thermo.correct immediately
-after each pressure solve at held internal sensible enthalpy, then assigns rho
-from the newly refreshed EOS cache. The existing boundary-Ha update follows it.
+after each pressure solve at held internal sensible enthalpy. EOS density is
+assigned only when conservative transport density is not selected. The existing boundary-Ha update follows it.
 The initial diagnostics use nonreacting/global-time/nontransonic contacts. The
 operation changes the nonlinear pressure/energy coupling order, not chemistry
 integration, EOS parameters or the transported energy equation. Internal h must
@@ -514,3 +514,14 @@ Inputs are existing controlDict/thermo fields; outputs are updated T/psi/rho and
 closure/continuity witnesses. No network/secrets or new dependencies are involved.
 Build against the exact parent runtime and inspect normal-exit profiles and
 budgets before any scientific or reacting-FGM qualification.
+
+
+The R33 G2 smoke regression exposed a policy interaction: unconditional density
+replacement after property refresh undid the continuity correction and produced
+Z overshoot on the first timestep. Refresh now preserves continuity-consistent
+rho when conserveTransportDensity is selected, including the final step update.
+Thermo cache and transported density differences are reported explicitly; this
+preservation is not a claim that EOS and mass density have converged. The fixed
+Z bound and caloric checks are unchanged. Verify the actual original-case smoke
+from zero before proceeding; do not classify the old MPI-abort aftermath as the
+primary failure or reuse its evolved fields.
