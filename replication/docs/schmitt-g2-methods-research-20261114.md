@@ -178,3 +178,38 @@ here as a design principle, this means inspecting continuity, energy and EOS
 closure together; a tiny linear residual in one equation does not prove the
 coupled state is consistent. No IDA dependency or fully coupled solver has
 been added.
+
+## 15 November00:56: remaining branch failure and a separate model route
+
+Both R42 G2 conditions completed fresh200us controls with the unchanged checks.
+Cavalieri's separate original-zero full case failed234.802822439us at
+p5.254686959MPa,T161.690168030K,storedh-227356.990012J/kg and
+evaluatedh-232920.317933J/kg,Cp252721.829J/(kg K). The5563.328J/kg gap remains
+failed. This is progress beyond the old148us barrier, not a solved coupling.
+At the completed200us control, EOS/transport-density relative mismatch was
+2.975e-6 after the final refresh; continuity residual5.36e-17kg/s and caloric
+relative error1.88e-9 measure different constraints and cannot substitute for it.
+
+The next original-state contacts explicitly test conservative density with
+2/6/12 nonlinear outer iterations. If consistent coupled iterations reduce the
+pressure/energy/EOS defects, test that setting in fresh G2 before introducing a
+different model. Preserve pressure and velocity errors, not just completion.
+
+A separately labelled alternative is a true low-Mach pressure split: fixed
+thermodynamic p0 for EOS/enthalpy and a distinct mechanical pressure in momentum.
+[PeleLMeX state documentation](https://amrex-combustion.github.io/PeleLMeX/manual/html/Implementation.html)
+keeps thermodynamic and perturbational pressures separately. The older
+[PeleLM model documentation](https://amrex-combustion.github.io/PeleLM/manual/html/Model.html)
+describes an ideal-gas implementation, so this is architectural evidence,
+not proof that its low-Mach solver already supplies our real-fluid closure.
+[The2017 supercritical DNS formulation](https://deepblue.lib.umich.edu/bitstream/2027.42/143049/1/6.2017-0141.pdf)
+demonstrates constant-thermodynamic-pressure real-fluid coupling, but explicitly
+studies very low velocities rather than rocket combustion. Applicability to
+our G2 conditions must be measured, not assumed.
+
+Such a candidate would need a pressure Poisson equation with no mechanical-
+pressure EOS tangent, thermal enthalpy transport without inconsistent kinetic/
+dynamic-pressure terms, explicit output of BOTH pressures, conservation and
+Mach/pressure-ratio diagnostics. It is not pressure clipping or permission to
+pass a compressible-pressure target by plotting only constant p0. It is currently
+a proposed model variant, not implemented, executed or qualified.
