@@ -8,8 +8,11 @@ if(m.startTime!==0||m.closure!=='steady-flamelet'||!m.skipUnusedDiffusion||m.ene
 if((await readdir(root)).some(n=>/^processor/.test(n)||(Number.isFinite(Number(n))&&Number(n)>0)))throw Error('No decomposed or evolved case permitted');
 const path=`${root}/system/controlDict`,before=await readFile(path);
 if(/projectTabulatedZRoundoff|fgmThermoCorrectionPasses/.test(before))throw Error('Baseline already configured');
+const densityFlags=[...before.toString().matchAll(/\bconserveTabulatedDensity\s+(yes|no)\s*;/g)];
+if(densityFlags.length>1||(densityFlags.length===1&&densityFlags[0][1]!=='yes'))throw Error('Conflicting conservative-density selection');
 const text=before.toString().replace(/runTimeModifiable\s+no\s*;/,'runTimeModifiable yes;')+
- '\nwriteMixtureFractionBudget yes;\nwriteFgmTiming yes;\nconserveTabulatedDensity yes;\nprojectTabulatedZRoundoff yes;\nfgmThermoCorrectionPasses 3;\n';
+ '\nwriteMixtureFractionBudget yes;\nwriteFgmTiming yes;\n'+(densityFlags.length?'':'conserveTabulatedDensity yes;\n')+
+ 'projectTabulatedZRoundoff yes;\nfgmThermoCorrectionPasses 3;\n';
 const receipt={schema:'parallel-g2-baseline-controls/v1',case:root,startTime_s:0,
  controlBeforeSha256:sha(before),controlAfterSha256:sha(text),manifestBeforeSha256:sha(raw),
  energy:'absoluteHa,unchanged stored h during three inversion passes',lookup:'endpoint64epsilon',
