@@ -677,3 +677,9 @@ snapshots and configure separate zero-CFD-step thermodynamic queries. They depen
 only on Node built-ins and the existing probe, not scheduler or case continuation.
 Its fixed-enthalpy audit calls the executing thermo library and preserves target
 residuals; it does not implement a replacement EOS or grant scientific acceptance.
+
+Implemented experimental source, not yet qualified: schmitt-contact/double-flux
+is a separate serial1D OpenFOAM
+application. It consumes the exact SRK mixture library and existing contact
+inputs; it does not change the PIMPLE/FGM solver or its acceptance. Its own
+README owns flux/freezing/projection assumptions and energy-defect accounting.
