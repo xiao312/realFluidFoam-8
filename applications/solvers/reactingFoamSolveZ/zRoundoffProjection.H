@@ -24,7 +24,8 @@ if (projectTabulatedZRoundoff)
                 std::ostringstream state;
                 state << std::setprecision(17) << "fgmZInvalidTransportState t="
                     << runTime.value() << " rank=" << Pstream::myProcNo()
-                    << " cell=" << celli << " centre=" << mesh.C()[celli]
+                    << " cell=" << celli << " x=" << mesh.C()[celli].x()
+                    << " y=" << mesh.C()[celli].y() << " z=" << mesh.C()[celli].z()
                     << " rho=" << rho[celli] << " oldRho=" << rho.oldTime()[celli]
                     << " volume=" << mesh.V()[celli] << " Z=" << Z[celli]
                     << " p=" << thermo.p()[celli] << " T=" << thermo.T()[celli]
@@ -32,7 +33,7 @@ if (projectTabulatedZRoundoff)
                     << " Ha=" << (absoluteEnthalpyFGM ? fgmAbsoluteEnthalpy()[celli] : 0)
                     << " absoluteHaEnabled=" << absoluteEnthalpyFGM
                     << " massFractions=";
-                forAll(Y, i) state << Y[i].name() << ':' << Y[i][celli] << ',';
+                forAll(Y, i) state << Y[i].name().c_str() << ':' << Y[i][celli] << ',';
                 state << " fieldsModified=0 EOSreevaluated=0";
                 Info<< state.str().c_str() << endl;
             }
