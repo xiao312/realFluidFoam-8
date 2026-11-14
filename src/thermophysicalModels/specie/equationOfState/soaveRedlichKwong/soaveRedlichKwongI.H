@@ -294,28 +294,13 @@ inline Foam::scalar Foam::soaveRedlichKwong<Specie>::Z
     }
     else
     {
-        // One root is real
+        // One root is real. Computing both Cardano radicals independently
+        // loses the small one when sqrt(D) nearly equals |Rl|. Choose the
+        // non-cancelling radical and recover its partner using S*Tl = -Q.
+        // This changes numerical evaluation only, not SRK/root selection.
         const scalar D05 = sqrt(D);
-        scalar S = 0;
-    
-        if (Rl + D05 < 0)
-        {
-            S = -pow(mag(Rl + D05), 1.0/3.0);
-        }
-        else
-        {
-            S = pow(Rl + D05, 1.0/3.0);
-        }
-        scalar Tl = 0;
-        if (D05 > Rl)
-        {
-            Tl = -pow(mag(Rl - D05), 1.0/3.0);
-        }
-        else
-        {
-            Tl = pow(Rl - D05, 1.0/3.0);
-        }
-
+        const scalar S = ::cbrt(Rl + (Rl >= 0 ? D05 : -D05));
+        const scalar Tl = -Q/S;
         root = S + Tl - a2/3.0;
     }
     

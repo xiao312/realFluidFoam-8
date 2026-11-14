@@ -683,3 +683,8 @@ is a separate serial1D OpenFOAM
 application. It consumes the exact SRK mixture library and existing contact
 inputs; it does not change the PIMPLE/FGM solver or its acceptance. Its own
 README owns flux/freezing/projection assumptions and energy-defect accounting.
+
+The inline SRK EOS kernel owns cubic-root numerical evaluation. A kernel change
+requires a fresh complete15-library custom runtime and rebuilt dependent apps;
+new headers must not be qualified against old thermodynamic binaries. Its local
+README records the Cardano cancellation regression and unchanged root policy.
