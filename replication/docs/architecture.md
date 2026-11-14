@@ -739,3 +739,8 @@ The isolated schmitt-contact/double-flux application optionally uses local
 contactReconstruction.H for MC-limited primitive face reconstruction. Its
 existing contactState EOS and contactFlux row-local energy contracts remain
 separate; no new dependency or reacting-FGM qualification is implied.
+
+The SRK EOS optional homogeneousGibbs root policy is owned by the specie/EOS
+module and preserved by thermo arithmetic. realfluid-g2-thermo/export.mjs writes
+consistent species policy inputs; complete dependent libraries must be rebuilt.
+It does not add a VLE/phase-split dependency or change the default root choice.

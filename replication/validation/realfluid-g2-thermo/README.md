@@ -34,3 +34,12 @@ retained author input. Every species must have seven finite dense-fluid
 parameters, positive Tc/Pc/Vc and exactly retained NASA coefficient arrays.
 Inspect the written manifest, then qualify actual library loading/properties in
 Slurm. A successful conversion is not a property comparison or accepted model.
+
+
+Optional `--srk-root-selection largest|homogeneousGibbs` defaults to largest.
+The explicit homogeneousGibbs mode writes one consistent per-species EOS policy
+and records it in the manifest. It is available only for SRK and requires the
+matching rebuilt full runtime. It selects the lowest homogeneous Gibbs root,
+not mixture VLE. No NASA/critical coefficient or transport model changes. Verify
+default output dictionary parity and declared policy before captured-state and
+fresh-CFD qualification; never apply it to evolved fields or claim flash results.

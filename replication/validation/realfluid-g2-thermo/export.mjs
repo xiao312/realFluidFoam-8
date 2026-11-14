@@ -4,7 +4,7 @@ import { createHash } from 'node:crypto';
 const options = {};
 for (let i = 2; i < process.argv.length; i += 2) {
   const key = process.argv[i];
-  if (!['--phase', '--author', '--eos', '--out', '--minimum-temperature', '--maximum-temperature'].includes(key) || !process.argv[i + 1]) {
+  if (!['--phase', '--author', '--eos', '--out', '--minimum-temperature', '--maximum-temperature', '--srk-root-selection'].includes(key) || !process.argv[i + 1]) {
     throw new Error('Usage: export.mjs --phase FILE --author FILE --eos SRK|PR [--minimum-temperature K] [--maximum-temperature K] [--out NEW_DIR]');
   }
   if (key in options) throw new Error(`Duplicate option: ${key}`);
@@ -12,6 +12,9 @@ for (let i = 2; i < process.argv.length; i += 2) {
 }
 for (const required of ['--phase', '--author', '--eos']) if (!options[required]) throw new Error(`Missing ${required}`);
 if (!['SRK', 'PR'].includes(options['--eos'])) throw new Error('EOS must be explicit SRK or PR');
+const rootSelection=options['--srk-root-selection']??'largest';
+if(!['largest','homogeneousGibbs'].includes(rootSelection)
+ ||(rootSelection!=='largest'&&options['--eos']!=='SRK'))throw Error('Explicit SRK root selection requires largest or homogeneousGibbs');
 const minimum = options['--minimum-temperature'] === undefined ? null : Number(options['--minimum-temperature']);
 if (minimum !== null && (!Number.isFinite(minimum) || minimum <= 0)) throw new Error('Invalid minimum temperature');
 const maximum = options['--maximum-temperature'] === undefined ? null : Number(options['--maximum-temperature']);
@@ -59,6 +62,7 @@ const eos = options['--eos'];
 const manifest = { schema: 'direct-realfluid-thermo-v1', phase_sha256: hash(phaseRaw), author_sha256: hash(authorRaw),
   mechanism_sha256: phase.mechanismSha256, source_commit: phase.sourceCommit,
   equationOfState: eos === 'SRK' ? 'soaveRedlichKwong' : 'PengRobinson', mixture: `${eos}chungTakaMixture`,
+  srkRootSelection: options['--eos']==='SRK'?rootSelection:null,
   transport: 'chungTaka', thermo: 'rfJanaf', energy: 'sensibleEnthalpy', speciesCount: species.length,
   parameterUnits: { Tc: 'K', Pc: 'MPa as required by rfSpecie dictionary', Vc: 'cm3/mol in author input' },
   minimumTemperatureOverride_K: minimum, maximumTemperatureOverride_K: maximum, species,
@@ -76,7 +80,7 @@ species (${species.map(s => JSON.stringify(s.name)).join(' ')});
 `;
 for (const entry of species) {
   const t = entry.thermo;
-  dictionary += `${JSON.stringify(entry.name)} {
+  dictionary += `${JSON.stringify(entry.name)} {${rootSelection==='homogeneousGibbs'?'\n srkRootSelection homogeneousGibbs;':''}
  specie { molWeight ${entry.molecularWeight_kg_kmol}; }
  thermodynamics { Tlow ${entry.effectiveMinimumTemperature_K}; Tcommon ${t.temperatureRanges[1]}; Thigh ${entry.effectiveMaximumTemperature_K};
  lowCpCoeffs (${t.lowCoeffs.join(' ')}); highCpCoeffs (${t.highCoeffs.join(' ')}); }
