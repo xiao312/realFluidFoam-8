@@ -178,3 +178,30 @@ verifies linkage/product hashes, repeats six zero-CFD-step captured-state querie
 then runs new uniform/short/six-full contacts. No old thermodynamic binaries or
 CFD states are reused. Compilation/physical qualification is pending at this
 checkpoint. The source remains a draft; no production merge or science approval.
+
+## Completed stable-SRK contact rerun
+
+Job128022863 completed in1345s with16allocated CPUs. All15 libraries/fourapps
+were freshly rebuilt and hash/linkage-qualified; all six fresh20ms contacts
+passed unchanged numerical checks. The recorded EOS-closure stops are resolved.
+`follow-up-r20.json` retains source/product identities, six-case numerical
+metrics, comparison errors and independent field diagnostics. These remain
+unaccepted scientific comparisons, not a reactingG2 qualification.
+
+Mass-field integrals and gradient centroids independently confirm the prescribed
+0.2m translation. Measured numerical diffusivity is0.05m2/s, equal toU*dx/2:
+first-order advection explains the overly broad density/temperature profiles.
+Energy defects remain0.378–0.587% of initial absoluteenergy magnitude, explicitly
+accounted. Solver walltimes were38–56s per contact, concurrently executed;
+the allocation's22m25s includes full compilation/environment preparation.
+Paper lines/our raw markers and individual-width views are now in localForge.
+The plot contract records PDF hash/vector paths/calibration and actual style.
+
+The remaining captured reactingG2 enthalpy gaps were reproduced by the new
+runtime's zero-CFD-step queries; delivery completion does not imply convergence.
+Matched fresh G2 r21 replays were admitted through FlamePilot:128024791
+(Cavalieri/Sharma condition) and128024867(Schmitt condition),32cores each.
+Each schedules a new100us laminar control and then an independently generated
+full case from time0. Runtime c6d486e is reused as compiled software only.
+Their laminar/fixed-chi closure and approximate tables remain explicit
+limitations. Read actual runtime receipts before claiming control/full results.

@@ -1,0 +1,228 @@
+{
+  "sourcePDFSHA256": "f138b430e2cac438acf139d9a7f56d38e53adb11513346c69922734c1c419879",
+  "pageIndex": 9,
+  "software": "PyMuPDF 1.28.2",
+  "method": "Vertical intersections with the vector filled-stroke envelope; centreline estimate and half-width recorded; axis limits verified from original figure",
+  "smoothing": false,
+  "bezierStrokeFlatteningSubdivisions": 32,
+  "limitations": [
+    "Graphical reconstruction, not author raw data",
+    "Paper nonconservative method differs from our double-flux candidate",
+    "No scientific approval or fitting implied"
+  ],
+  "outputs": [
+    {
+      "file": "schmitt-fig5-nonconservative-vector-traces.csv",
+      "sha256": "9d6f97247b59a20393fb3bdf25758dfe2c00ea7a7c4e2d47462f5ee78d525242",
+      "rows": 648,
+      "calibrations": [
+        {
+          "framePath": 390,
+          "curvePaths": [
+            2,
+            3,
+            4
+          ],
+          "quantity": "rho_kg_m3",
+          "axesPDFpt": [
+            71.62664794921875,
+            60.805999755859375,
+            213.89865112304688,
+            145.26699829101562
+          ],
+          "xlimits_m": [
+            0.05,
+            0.6
+          ],
+          "ylimits": [
+            0,
+            1200
+          ]
+        },
+        {
+          "framePath": 778,
+          "curvePaths": [
+            392,
+            393,
+            394
+          ],
+          "quantity": "T_K",
+          "axesPDFpt": [
+            249.28787231445312,
+            60.449012756347656,
+            391.55885314941406,
+            144.91000366210938
+          ],
+          "xlimits_m": [
+            0.05,
+            0.6
+          ],
+          "ylimits": [
+            100,
+            300
+          ]
+        },
+        {
+          "framePath": 1161,
+          "curvePaths": [
+            1110,
+            1111,
+            1112
+          ],
+          "quantity": "p_MPa",
+          "axesPDFpt": [
+            71.422607421875,
+            161.66211700439453,
+            213.69361114501953,
+            246.12310791015625
+          ],
+          "xlimits_m": [
+            0.05,
+            0.6
+          ],
+          "ylimits": [
+            5.96,
+            6.02
+          ]
+        },
+        {
+          "framePath": 1541,
+          "curvePaths": [
+            1493,
+            1494,
+            1495
+          ],
+          "quantity": "U_m_s",
+          "axesPDFpt": [
+            249.08251953125,
+            161.38417053222656,
+            391.3545379638672,
+            245.84617614746094
+          ],
+          "xlimits_m": [
+            0.05,
+            0.6
+          ],
+          "ylimits": [
+            9.2,
+            10.5
+          ]
+        }
+      ]
+    },
+    {
+      "file": "schmitt-fig6-nonconservative-vector-traces.csv",
+      "sha256": "bb649d73e95bbfe8d3c9da0871b9fb25b34ccc1d7c6e5c0b385d33ca4c635cd0",
+      "rows": 2718,
+      "calibrations": [
+        {
+          "framePath": 1821,
+          "curvePaths": [
+            1543,
+            1544,
+            1545
+          ],
+          "quantity": "rho_kg_m3",
+          "axesPDFpt": [
+            71.58025360107422,
+            382.4622039794922,
+            213.5742645263672,
+            466.7582092285156
+          ],
+          "xlimits_m": [
+            0.05,
+            0.6
+          ],
+          "ylimits": [
+            0,
+            1200
+          ]
+        },
+        {
+          "framePath": 2099,
+          "curvePaths": [
+            1823,
+            1824,
+            1825
+          ],
+          "quantity": "T_K",
+          "axesPDFpt": [
+            248.89332580566406,
+            382.48606872558594,
+            390.88731384277344,
+            466.7820739746094
+          ],
+          "xlimits_m": [
+            0.05,
+            0.6
+          ],
+          "ylimits": [
+            60,
+            140
+          ]
+        },
+        {
+          "framePath": 2415,
+          "curvePaths": [
+            2101,
+            2102,
+            2103
+          ],
+          "quantity": "p_MPa",
+          "axesPDFpt": [
+            71.37420654296875,
+            483.0199737548828,
+            213.36920166015625,
+            567.3159790039062
+          ],
+          "xlimits_m": [
+            -1,
+            3
+          ],
+          "ylimits": [
+            5.96,
+            6.02
+          ]
+        },
+        {
+          "framePath": 2728,
+          "curvePaths": [
+            2417,
+            2418,
+            2419
+          ],
+          "quantity": "U_m_s",
+          "axesPDFpt": [
+            248.68838500976562,
+            482.9840850830078,
+            390.6833953857422,
+            567.2800903320312
+          ],
+          "xlimits_m": [
+            -1,
+            3
+          ],
+          "ylimits": [
+            9.2,
+            10.5
+          ]
+        }
+      ]
+    }
+  ],
+  "sourcePaper": "Schmitt2020, DOI10.1007/s10494-019-00096-y",
+  "plotStyle": {
+    "figureSize_in": [
+      8.75,
+      5.18
+    ],
+    "font": "Times New Roman",
+    "axisFont_pt": 10,
+    "tickFont_pt": 7.2,
+    "markerSize_pt": 3.4,
+    "paper": "lines",
+    "computed": "raw cell markers",
+    "smoothing": false,
+    "perWidthViews": true
+  }
+}

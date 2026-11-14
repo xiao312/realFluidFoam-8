@@ -1,0 +1,690 @@
+{
+  "schema": "schmitt-contacts-r20-follow-up/v1",
+  "job": "128022863",
+  "terminalState": "COMPLETED",
+  "elapsed_s": 1345,
+  "allocatedCPUs": 16,
+  "source": "c6d486e9136180fcbc781d4889b83b3785bdbce3",
+  "sourceArchiveSha256": "0fc8be81d16b73a39a9f41457f265d669e7d2a76ea4664a3a74bc6b374803b40",
+  "products": [
+    {
+      "file": "lib/libODE.so",
+      "bytes": 266816,
+      "sha256": "4ea024c2853b1274847e9faf073bb91693034cd02405561f0379219bcf7c568e",
+      "reused": false
+    },
+    {
+      "file": "lib/libspecie.so",
+      "bytes": 293880,
+      "sha256": "90e17d4a08dfce894eed069cea0cef3cbae1c6ae329fe41f70b069fd152b789c",
+      "reused": false
+    },
+    {
+      "file": "lib/libthermophysicalProperties.so",
+      "bytes": 861152,
+      "sha256": "7aa2ae1c110a846c3105c156d3702ff0509c845c1778a22b77e51403e96a8a31",
+      "reused": false
+    },
+    {
+      "file": "lib/libchemistryModel.so",
+      "bytes": 59009832,
+      "sha256": "e1755988abdd208387ff637d2d6142a9efcfea4410108ba6f81602b6ac6a9473",
+      "reused": false
+    },
+    {
+      "file": "lib/libsolidThermo.so",
+      "bytes": 1767672,
+      "sha256": "9e280581242f9717bedf71de6d8e826cfb673b01626356d74603e18371b0749d",
+      "reused": false
+    },
+    {
+      "file": "lib/libmomentumTransportModels.so",
+      "bytes": 2929192,
+      "sha256": "ed101a5e66ca0dd9650efc453a85f2432c488c37b68ac768271bc33d93f96649",
+      "reused": false
+    },
+    {
+      "file": "lib/libfluidThermoMomentumTransportModels.so",
+      "bytes": 2728400,
+      "sha256": "2f921bd452dff32565b4e779c5b09d7e11a9c85160a5384edc960a309868eb7f",
+      "reused": false
+    },
+    {
+      "file": "lib/libthermophysicalTransportModels.so",
+      "bytes": 1311832,
+      "sha256": "af2e5c0caf76be8b049adfd8905277c27cfaa05f87c81db308d4d99f37f04f25",
+      "reused": false
+    },
+    {
+      "file": "lib/libpsiReactionThermophysicalTransportModels.so",
+      "bytes": 677720,
+      "sha256": "532319d51fbdcf3e4174b25bcc6ef2f048bfbd7b13fb6fae4b6caa417b331aa0",
+      "reused": false
+    },
+    {
+      "file": "lib/librhoReactionThermophysicalTransportModels.so",
+      "bytes": 677720,
+      "sha256": "d1483c584393bdd225cb883c8a4575ef581d2c3b2257fe241718ae65fded26bf",
+      "reused": false
+    },
+    {
+      "file": "lib/libradiationModels.so",
+      "bytes": 1687616,
+      "sha256": "67c23ad9b233933ec61771c83323f448f05bd522231032eb7cea7ab981b19880",
+      "reused": false
+    },
+    {
+      "file": "lib/libfvOptions.so",
+      "bytes": 3107040,
+      "sha256": "120399c654969800586806c2b13225923b49b80affa04caceaa5c13f2aba0dc4",
+      "reused": false
+    },
+    {
+      "file": "lib/libfluidThermophysicalModels.so",
+      "bytes": 12014624,
+      "sha256": "ae1bdc017842cdebf90c6c2487a666ada0eeac09d2263c6cefe44dfb1ccbdc94",
+      "reused": false
+    },
+    {
+      "file": "lib/libreactionThermophysicalModels.so",
+      "bytes": 38653992,
+      "sha256": "02634b71d4fedcff60febc9e8ed701d8494348dbaff370c088e431c34a8591ba",
+      "reused": false
+    },
+    {
+      "file": "lib/libcombustionModels.so",
+      "bytes": 6779080,
+      "sha256": "60881b52938bf9f805fa088964a1eeac54f9ff1ebcf7fd01689c10a4810e1552",
+      "reused": false
+    },
+    {
+      "file": "bin/reactingFoamSolveZ",
+      "bytes": 1095808,
+      "sha256": "bf71cabff0ba406b6066131d0045741cbbf9a3edeea42ed58b4ed5532cb4a745",
+      "reused": false
+    },
+    {
+      "file": "bin/realFluidG2ThermoProbe",
+      "bytes": 298672,
+      "sha256": "0506a112af9fc984d7e2eb088d8d18466a1d691e232e4a17762d8eb4566c6d89",
+      "reused": false
+    },
+    {
+      "file": "bin/initializeSchmittContact",
+      "bytes": 167856,
+      "sha256": "0edabe24dadb9f4901866f07c6f28b7b06291d086f3da1e45c3c3ab0b6f0589c",
+      "reused": false
+    },
+    {
+      "file": "bin/realFluidContactDF",
+      "bytes": 447040,
+      "sha256": "670161ed50513de54ca1f8e784ea68bce68dc0e787253adf5712a4a0396ea46c",
+      "reused": false
+    }
+  ],
+  "allCFDstartTime_s": 0,
+  "endpoint_s": 0.02,
+  "numericalQualification": "six contacts completed under unchanged1e-8 caloric/EOS limits; does not establish paper agreement",
+  "scientificAcceptance": false,
+  "humanAcceptance": null,
+  "caseMetrics": [
+    {
+      "kind": "oxygen",
+      "nx": "2",
+      "numericalPassed": true,
+      "pressureRelativeDeparture": 5.788945903380712e-12,
+      "velocityRelativeDeparture": 3.032170070582651e-11,
+      "massRelativeResidual": 2.452898995031239e-13,
+      "energyBudgetRelativeResidual": 2.058614940911376e-13,
+      "energyDefectRelativeToInitial": 0.004857536410586959,
+      "EOSDensityRelativeError": 2.09150768098296e-15,
+      "Tmin": 117.18699493138,
+      "Tmax": 248.81524813251
+    },
+    {
+      "kind": "oxygen",
+      "nx": "4",
+      "numericalPassed": true,
+      "pressureRelativeDeparture": 6.255228072404862e-12,
+      "velocityRelativeDeparture": 3.0624569546944255e-11,
+      "massRelativeResidual": 2.4134734614863163e-13,
+      "energyBudgetRelativeResidual": 2.0463602255788849e-13,
+      "energyDefectRelativeToInitial": 0.004269930982684706,
+      "EOSDensityRelativeError": 4.409701208251769e-15,
+      "Tmin": 117.18699493138,
+      "Tmax": 248.81524813251
+    },
+    {
+      "kind": "oxygen",
+      "nx": "6",
+      "numericalPassed": true,
+      "pressureRelativeDeparture": 5.179550498723983e-12,
+      "velocityRelativeDeparture": 3.297646600231019e-11,
+      "massRelativeResidual": 2.441071334967759e-13,
+      "energyBudgetRelativeResidual": 2.03995824948587e-13,
+      "energyDefectRelativeToInitial": 0.0037766868040700744,
+      "EOSDensityRelativeError": 8.738422844624485e-15,
+      "Tmin": 117.18699493137,
+      "Tmax": 248.81524813251
+    },
+    {
+      "kind": "mixture",
+      "nx": "0.00001",
+      "numericalPassed": true,
+      "pressureRelativeDeparture": 9.239806483189265e-12,
+      "velocityRelativeDeparture": 4.2265035915534097e-11,
+      "massRelativeResidual": 3.651741803877055e-13,
+      "energyBudgetRelativeResidual": 3.767459171090575e-13,
+      "energyDefectRelativeToInitial": 0.005873565182611548,
+      "EOSDensityRelativeError": 2.05614546502919e-15,
+      "Tmin": 98.448319978602,
+      "Tmax": 133.16672238952
+    },
+    {
+      "kind": "mixture",
+      "nx": "2",
+      "numericalPassed": true,
+      "pressureRelativeDeparture": 9.885678688685099e-12,
+      "velocityRelativeDeparture": 3.3520031195166664e-11,
+      "massRelativeResidual": 3.638095583143142e-13,
+      "energyBudgetRelativeResidual": 3.8697533825477113e-13,
+      "energyDefectRelativeToInitial": 0.005672205349266739,
+      "EOSDensityRelativeError": 1.850530918522686e-15,
+      "Tmin": 98.273814023246,
+      "Tmax": 132.35330418184
+    },
+    {
+      "kind": "mixture",
+      "nx": "4",
+      "numericalPassed": true,
+      "pressureRelativeDeparture": 7.823109626770019e-12,
+      "velocityRelativeDeparture": 4.25499635525739e-11,
+      "massRelativeResidual": 3.6678161725636233e-13,
+      "energyBudgetRelativeResidual": 3.7775616419859914e-13,
+      "energyDefectRelativeToInitial": 0.005271257689423978,
+      "EOSDensityRelativeError": 2.056145465029595e-15,
+      "Tmin": 97.812906298762,
+      "Tmax": 130.3135182138
+    }
+  ],
+  "independentTransport": {
+    "schema": "contact-independent-transport/v1",
+    "rows": [
+      {
+        "kind": "oxygen",
+        "nx": 2.0,
+        "time_s": 0.02,
+        "initialMass_kg": 0.21999999999999814,
+        "finalMass_kg": 0.23800000000005198,
+        "boundaryAddedMass_kg": 0.017999999999999784,
+        "independentMassResidual_kg": 5.4050514064485355e-14,
+        "relativeMassResidual": 2.456841548385719e-13,
+        "gradientCentroidInitial_m": 3.305997451106062e-16,
+        "gradientCentroidFinal_m": 0.20000000000054502,
+        "centroidDisplacement_m": 0.2000000000005447,
+        "expectedDisplacement_m": 0.2,
+        "displacementError_m": 5.446754158811018e-13,
+        "gradientSigmaInitial_m": 0.006439528180012381,
+        "gradientSigmaFinal_m": 0.04518260187090184,
+        "measuredNumericalDiffusivity_m2_s": 0.049999999716081225,
+        "firstOrderUpwindPrediction_m2_s": 0.050000000000000044,
+        "interpretation": "Independent field-integral/gradient-moment diagnostic; fixed far-field mass flux is justified only while boundaries remain unchanged; not a paper acceptance verdict"
+      },
+      {
+        "kind": "oxygen",
+        "nx": 4.0,
+        "time_s": 0.02,
+        "initialMass_kg": 0.21999999999999806,
+        "finalMass_kg": 0.23800000000005195,
+        "boundaryAddedMass_kg": 0.017999999999999784,
+        "independentMassResidual_kg": 5.4106025215716613e-14,
+        "relativeMassResidual": 2.459364782532595e-13,
+        "gradientCentroidInitial_m": -1.0184643252210568e-15,
+        "gradientCentroidFinal_m": 0.2000000000005404,
+        "centroidDisplacement_m": 0.20000000000054144,
+        "expectedDisplacement_m": 0.2,
+        "displacementError_m": 5.414280135340732e-13,
+        "gradientSigmaInitial_m": 0.011902386094377649,
+        "gradientSigmaFinal_m": 0.04627814585042557,
+        "measuredNumericalDiffusivity_m2_s": 0.04999999971534067,
+        "firstOrderUpwindPrediction_m2_s": 0.050000000000000044,
+        "interpretation": "Independent field-integral/gradient-moment diagnostic; fixed far-field mass flux is justified only while boundaries remain unchanged; not a paper acceptance verdict"
+      },
+      {
+        "kind": "oxygen",
+        "nx": 6.0,
+        "time_s": 0.02,
+        "initialMass_kg": 0.21999999999999814,
+        "finalMass_kg": 0.2380000000000525,
+        "boundaryAddedMass_kg": 0.017999999999999784,
+        "independentMassResidual_kg": 5.4577870001182305e-14,
+        "relativeMassResidual": 2.4808122727810346e-13,
+        "gradientCentroidInitial_m": -2.644008902637097e-16,
+        "gradientCentroidFinal_m": 0.20000000000057278,
+        "centroidDisplacement_m": 0.20000000000057305,
+        "expectedDisplacement_m": 0.2,
+        "displacementError_m": 5.730416141602745e-13,
+        "gradientSigmaInitial_m": 0.017559429513854863,
+        "gradientSigmaFinal_m": 0.04804511997608807,
+        "measuredNumericalDiffusivity_m2_s": 0.049999999716616485,
+        "firstOrderUpwindPrediction_m2_s": 0.050000000000000044,
+        "interpretation": "Independent field-integral/gradient-moment diagnostic; fixed far-field mass flux is justified only while boundaries remain unchanged; not a paper acceptance verdict"
+      },
+      {
+        "kind": "mixture",
+        "nx": 1e-05,
+        "time_s": 0.02,
+        "initialMass_kg": 0.22407637438920433,
+        "finalMass_kg": 0.24590173102787322,
+        "boundaryAddedMass_kg": 0.021825356638816986,
+        "independentMassResidual_kg": -1.4810028203804393e-13,
+        "relativeMassResidual": 6.609366223536112e-13,
+        "gradientCentroidInitial_m": -3.729655473350135e-17,
+        "gradientCentroidFinal_m": 0.19999999999971996,
+        "centroidDisplacement_m": 0.19999999999971999,
+        "expectedDisplacement_m": 0.2,
+        "displacementError_m": -2.800260023860801e-13,
+        "gradientSigmaInitial_m": 0.0,
+        "gradientSigmaFinal_m": 0.04472135969967392,
+        "measuredNumericalDiffusivity_m2_s": 0.050000000334690466,
+        "firstOrderUpwindPrediction_m2_s": 0.050000000000000044,
+        "interpretation": "Independent field-integral/gradient-moment diagnostic; fixed far-field mass flux is justified only while boundaries remain unchanged; not a paper acceptance verdict"
+      },
+      {
+        "kind": "mixture",
+        "nx": 2.0,
+        "time_s": 0.02,
+        "initialMass_kg": 0.22295236184984124,
+        "finalMass_kg": 0.24477771848851135,
+        "boundaryAddedMass_kg": 0.021825356638816986,
+        "independentMassResidual_kg": -1.4687903671095626e-13,
+        "relativeMassResidual": 6.587911224276669e-13,
+        "gradientCentroidInitial_m": -0.010300061144146645,
+        "gradientCentroidFinal_m": 0.18969993885558306,
+        "centroidDisplacement_m": 0.1999999999997297,
+        "expectedDisplacement_m": 0.2,
+        "displacementError_m": -2.7031155092061e-13,
+        "gradientSigmaInitial_m": 0.0037940272236738825,
+        "gradientSigmaFinal_m": 0.04488200815417112,
+        "measuredNumericalDiffusivity_m2_s": 0.05000000033442761,
+        "firstOrderUpwindPrediction_m2_s": 0.050000000000000044,
+        "interpretation": "Independent field-integral/gradient-moment diagnostic; fixed far-field mass flux is justified only while boundaries remain unchanged; not a paper acceptance verdict"
+      },
+      {
+        "kind": "mixture",
+        "nx": 4.0,
+        "time_s": 0.02,
+        "initialMass_kg": 0.2217700668779682,
+        "finalMass_kg": 0.24359542351663988,
+        "boundaryAddedMass_kg": 0.021825356638816986,
+        "independentMassResidual_kg": -1.4532472447648104e-13,
+        "relativeMassResidual": 6.552945874180928e-13,
+        "gradientCentroidInitial_m": -0.021134202289590873,
+        "gradientCentroidFinal_m": 0.178865797709742,
+        "centroidDisplacement_m": 0.19999999999933288,
+        "expectedDisplacement_m": 0.2,
+        "displacementError_m": -6.671330154972566e-13,
+        "gradientSigmaInitial_m": 0.00738927031612942,
+        "gradientSigmaFinal_m": 0.04532771039764749,
+        "measuredNumericalDiffusivity_m2_s": 0.05000000035220423,
+        "firstOrderUpwindPrediction_m2_s": 0.050000000000000044,
+        "interpretation": "Independent field-integral/gradient-moment diagnostic; fixed far-field mass flux is justified only while boundaries remain unchanged; not a paper acceptance verdict"
+      }
+    ],
+    "scientificAcceptance": false
+  },
+  "loggedWitnessMetrics": {
+    "schema": "contact-logged-witness-maxima/v1",
+    "rawSHA256": "a1df5fd83891a152babe1cc405cd6716e73dba772bd643e72eefcd50927af47c",
+    "rawBytes": 163696,
+    "rows": [
+      {
+        "kind": "oxygen",
+        "nx": "2",
+        "loggedWitnesses": 41,
+        "solverWall_s": 38.0,
+        "steps": 4000.0,
+        "maxLoggedPressureRelative": 1.4030374586582184e-11,
+        "maxLoggedVelocityRelative": 3.105782298007398e-11,
+        "maxLoggedMassRelative": 2.452898995031239e-13,
+        "maxLoggedEnergyAccountingRelative": 2.058614940911376e-13,
+        "finalSignedEnergyDefect_J": 366.6550656078443,
+        "maxLoggedEOSDensityRelative": 1.191225114980198e-14
+      },
+      {
+        "kind": "oxygen",
+        "nx": "4",
+        "loggedWitnesses": 41,
+        "solverWall_s": 38.0,
+        "steps": 4000.0,
+        "maxLoggedPressureRelative": 1.3497968514760336e-11,
+        "maxLoggedVelocityRelative": 3.306208640196928e-11,
+        "maxLoggedMassRelative": 2.4134734614863163e-13,
+        "maxLoggedEnergyAccountingRelative": 2.0463602255788849e-13,
+        "finalSignedEnergyDefect_J": 322.0659239113612,
+        "maxLoggedEOSDensityRelative": 1.227847335605096e-14
+      },
+      {
+        "kind": "oxygen",
+        "nx": "6",
+        "loggedWitnesses": 41,
+        "solverWall_s": 39.0,
+        "steps": 4000.0,
+        "maxLoggedPressureRelative": 1.2848060578107834e-11,
+        "maxLoggedVelocityRelative": 3.3066349658383844e-11,
+        "maxLoggedMassRelative": 2.441071334967759e-13,
+        "maxLoggedEnergyAccountingRelative": 2.03995824948587e-13,
+        "finalSignedEnergyDefect_J": 284.6564942559393,
+        "maxLoggedEOSDensityRelative": 1.224914531014801e-14
+      },
+      {
+        "kind": "mixture",
+        "nx": "0.00001",
+        "loggedWitnesses": 62,
+        "solverWall_s": 56.0,
+        "steps": 5744.0,
+        "maxLoggedPressureRelative": 3.0641599247852963e-11,
+        "maxLoggedVelocityRelative": 4.3094061652482195e-11,
+        "maxLoggedMassRelative": 3.651741803877055e-13,
+        "maxLoggedEnergyAccountingRelative": 3.767459171090575e-13,
+        "finalSignedEnergyDefect_J": 568.758274984777,
+        "maxLoggedEOSDensityRelative": 4.520966096572282e-15
+      },
+      {
+        "kind": "mixture",
+        "nx": "2",
+        "loggedWitnesses": 62,
+        "solverWall_s": 55.0,
+        "steps": 5744.0,
+        "maxLoggedPressureRelative": 2.9920910795529684e-11,
+        "maxLoggedVelocityRelative": 4.208295933949557e-11,
+        "maxLoggedMassRelative": 3.638095583143142e-13,
+        "maxLoggedEnergyAccountingRelative": 3.8697533825477113e-13,
+        "finalSignedEnergyDefect_J": 546.93195552713,
+        "maxLoggedEOSDensityRelative": 4.719488629949645e-15
+      },
+      {
+        "kind": "mixture",
+        "nx": "4",
+        "loggedWitnesses": 62,
+        "solverWall_s": 56.0,
+        "steps": 5744.0,
+        "maxLoggedPressureRelative": 2.6928105702002843e-11,
+        "maxLoggedVelocityRelative": 4.304592238213445e-11,
+        "maxLoggedMassRelative": 3.6678161725636233e-13,
+        "maxLoggedEnergyAccountingRelative": 3.7775616419859914e-13,
+        "finalSignedEnergyDefect_J": 506.0118299034947,
+        "maxLoggedEOSDensityRelative": 4.758115099752004e-15
+      }
+    ],
+    "scope": "Maxima at actual logged timesteps; not a claim to sample unlogged pressure/velocity stages",
+    "scientificAcceptance": false
+  },
+  "comparisonMetrics": [
+    {
+      "figure": 5,
+      "nx": 2.0,
+      "quantity": "rho_kg_m3",
+      "matchedReferencePoints": 54,
+      "uncoveredReferencePoints": 0,
+      "RMS_absolute": 77.4918750449331,
+      "maximum_absolute": 253.8274685005738,
+      "normalization": "Units from quantity column; no relative division by near-zero reference",
+      "rawGraphicalReference": true
+    },
+    {
+      "figure": 5,
+      "nx": 4.0,
+      "quantity": "rho_kg_m3",
+      "matchedReferencePoints": 54,
+      "uncoveredReferencePoints": 0,
+      "RMS_absolute": 78.21054651526805,
+      "maximum_absolute": 246.99209968040384,
+      "normalization": "Units from quantity column; no relative division by near-zero reference",
+      "rawGraphicalReference": true
+    },
+    {
+      "figure": 5,
+      "nx": 6.0,
+      "quantity": "rho_kg_m3",
+      "matchedReferencePoints": 54,
+      "uncoveredReferencePoints": 0,
+      "RMS_absolute": 73.13994762528598,
+      "maximum_absolute": 209.0451602102795,
+      "normalization": "Units from quantity column; no relative division by near-zero reference",
+      "rawGraphicalReference": true
+    },
+    {
+      "figure": 5,
+      "nx": 2.0,
+      "quantity": "T_K",
+      "matchedReferencePoints": 54,
+      "uncoveredReferencePoints": 0,
+      "RMS_absolute": 21.232939229417017,
+      "maximum_absolute": 69.66203515664228,
+      "normalization": "Units from quantity column; no relative division by near-zero reference",
+      "rawGraphicalReference": true
+    },
+    {
+      "figure": 5,
+      "nx": 4.0,
+      "quantity": "T_K",
+      "matchedReferencePoints": 54,
+      "uncoveredReferencePoints": 0,
+      "RMS_absolute": 22.103197605842624,
+      "maximum_absolute": 72.09190413812073,
+      "normalization": "Units from quantity column; no relative division by near-zero reference",
+      "rawGraphicalReference": true
+    },
+    {
+      "figure": 5,
+      "nx": 6.0,
+      "quantity": "T_K",
+      "matchedReferencePoints": 54,
+      "uncoveredReferencePoints": 0,
+      "RMS_absolute": 22.301114851635116,
+      "maximum_absolute": 73.04738602412183,
+      "normalization": "Units from quantity column; no relative division by near-zero reference",
+      "rawGraphicalReference": true
+    },
+    {
+      "figure": 5,
+      "nx": 2.0,
+      "quantity": "p_MPa",
+      "matchedReferencePoints": 54,
+      "uncoveredReferencePoints": 0,
+      "RMS_absolute": 0.0020144292465378677,
+      "maximum_absolute": 0.0112329022036608,
+      "normalization": "Units from quantity column; no relative division by near-zero reference",
+      "rawGraphicalReference": true
+    },
+    {
+      "figure": 5,
+      "nx": 4.0,
+      "quantity": "p_MPa",
+      "matchedReferencePoints": 54,
+      "uncoveredReferencePoints": 0,
+      "RMS_absolute": 0.001701364186341972,
+      "maximum_absolute": 0.008951650484288365,
+      "normalization": "Units from quantity column; no relative division by near-zero reference",
+      "rawGraphicalReference": true
+    },
+    {
+      "figure": 5,
+      "nx": 6.0,
+      "quantity": "p_MPa",
+      "matchedReferencePoints": 54,
+      "uncoveredReferencePoints": 0,
+      "RMS_absolute": 0.0010289653570058697,
+      "maximum_absolute": 0.004503670625068068,
+      "normalization": "Units from quantity column; no relative division by near-zero reference",
+      "rawGraphicalReference": true
+    },
+    {
+      "figure": 5,
+      "nx": 2.0,
+      "quantity": "U_m_s",
+      "matchedReferencePoints": 54,
+      "uncoveredReferencePoints": 0,
+      "RMS_absolute": 0.02464502519091774,
+      "maximum_absolute": 0.09901278078871734,
+      "normalization": "Units from quantity column; no relative division by near-zero reference",
+      "rawGraphicalReference": true
+    },
+    {
+      "figure": 5,
+      "nx": 4.0,
+      "quantity": "U_m_s",
+      "matchedReferencePoints": 54,
+      "uncoveredReferencePoints": 0,
+      "RMS_absolute": 0.020795455908194625,
+      "maximum_absolute": 0.08208145469508032,
+      "normalization": "Units from quantity column; no relative division by near-zero reference",
+      "rawGraphicalReference": true
+    },
+    {
+      "figure": 5,
+      "nx": 6.0,
+      "quantity": "U_m_s",
+      "matchedReferencePoints": 54,
+      "uncoveredReferencePoints": 0,
+      "RMS_absolute": 0.0135162878369344,
+      "maximum_absolute": 0.04440820005716972,
+      "normalization": "Units from quantity column; no relative division by near-zero reference",
+      "rawGraphicalReference": true
+    },
+    {
+      "figure": 6,
+      "nx": 1e-05,
+      "quantity": "rho_kg_m3",
+      "matchedReferencePoints": 54,
+      "uncoveredReferencePoints": 0,
+      "RMS_absolute": 91.69438988304303,
+      "maximum_absolute": 339.6484299381209,
+      "normalization": "Units from quantity column; no relative division by near-zero reference",
+      "rawGraphicalReference": true
+    },
+    {
+      "figure": 6,
+      "nx": 2.0,
+      "quantity": "rho_kg_m3",
+      "matchedReferencePoints": 54,
+      "uncoveredReferencePoints": 0,
+      "RMS_absolute": 89.42370331912242,
+      "maximum_absolute": 295.3165737925133,
+      "normalization": "Units from quantity column; no relative division by near-zero reference",
+      "rawGraphicalReference": true
+    },
+    {
+      "figure": 6,
+      "nx": 4.0,
+      "quantity": "rho_kg_m3",
+      "matchedReferencePoints": 54,
+      "uncoveredReferencePoints": 0,
+      "RMS_absolute": 90.30356383481889,
+      "maximum_absolute": 302.5228448815808,
+      "normalization": "Units from quantity column; no relative division by near-zero reference",
+      "rawGraphicalReference": true
+    },
+    {
+      "figure": 6,
+      "nx": 1e-05,
+      "quantity": "T_K",
+      "matchedReferencePoints": 54,
+      "uncoveredReferencePoints": 0,
+      "RMS_absolute": 7.7334638647812435,
+      "maximum_absolute": 28.310236403543527,
+      "normalization": "Units from quantity column; no relative division by near-zero reference",
+      "rawGraphicalReference": true
+    },
+    {
+      "figure": 6,
+      "nx": 2.0,
+      "quantity": "T_K",
+      "matchedReferencePoints": 54,
+      "uncoveredReferencePoints": 0,
+      "RMS_absolute": 8.599210409619813,
+      "maximum_absolute": 24.097191744649322,
+      "normalization": "Units from quantity column; no relative division by near-zero reference",
+      "rawGraphicalReference": true
+    },
+    {
+      "figure": 6,
+      "nx": 4.0,
+      "quantity": "T_K",
+      "matchedReferencePoints": 54,
+      "uncoveredReferencePoints": 0,
+      "RMS_absolute": 8.136088734364906,
+      "maximum_absolute": 23.36248417886479,
+      "normalization": "Units from quantity column; no relative division by near-zero reference",
+      "rawGraphicalReference": true
+    },
+    {
+      "figure": 6,
+      "nx": 1e-05,
+      "quantity": "p_MPa",
+      "matchedReferencePoints": 299,
+      "uncoveredReferencePoints": 100,
+      "RMS_absolute": 0.000687618247439741,
+      "maximum_absolute": 0.007181468249439327,
+      "normalization": "Units from quantity column; no relative division by near-zero reference",
+      "rawGraphicalReference": true
+    },
+    {
+      "figure": 6,
+      "nx": 2.0,
+      "quantity": "p_MPa",
+      "matchedReferencePoints": 299,
+      "uncoveredReferencePoints": 100,
+      "RMS_absolute": 0.0008075822229445727,
+      "maximum_absolute": 0.008208942338901792,
+      "normalization": "Units from quantity column; no relative division by near-zero reference",
+      "rawGraphicalReference": true
+    },
+    {
+      "figure": 6,
+      "nx": 4.0,
+      "quantity": "p_MPa",
+      "matchedReferencePoints": 299,
+      "uncoveredReferencePoints": 100,
+      "RMS_absolute": 0.000815840423213948,
+      "maximum_absolute": 0.008411474740008806,
+      "normalization": "Units from quantity column; no relative division by near-zero reference",
+      "rawGraphicalReference": true
+    },
+    {
+      "figure": 6,
+      "nx": 1e-05,
+      "quantity": "U_m_s",
+      "matchedReferencePoints": 299,
+      "uncoveredReferencePoints": 100,
+      "RMS_absolute": 0.016625963361572953,
+      "maximum_absolute": 0.07098605780858058,
+      "normalization": "Units from quantity column; no relative division by near-zero reference",
+      "rawGraphicalReference": true
+    },
+    {
+      "figure": 6,
+      "nx": 2.0,
+      "quantity": "U_m_s",
+      "matchedReferencePoints": 299,
+      "uncoveredReferencePoints": 100,
+      "RMS_absolute": 0.02197131245715139,
+      "maximum_absolute": 0.06087912264487372,
+      "normalization": "Units from quantity column; no relative division by near-zero reference",
+      "rawGraphicalReference": true
+    },
+    {
+      "figure": 6,
+      "nx": 4.0,
+      "quantity": "U_m_s",
+      "matchedReferencePoints": 299,
+      "uncoveredReferencePoints": 100,
+      "RMS_absolute": 0.020996254383088015,
+      "maximum_absolute": 0.06434606986840663,
+      "normalization": "Units from quantity column; no relative division by near-zero reference",
+      "rawGraphicalReference": true
+    }
+  ],
+  "remaining": "First-order interface diffusion; distinct reacting-G2 enthalpy branch gap; reduced laminar/fixed-chiG2diagnostics not paperLES/PDF"
+}
