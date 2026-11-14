@@ -52,6 +52,7 @@ Description
 #include "fgmBoundaryEnthalpy.H"
 #include "fgmMatrixResidual.H"
 #include "fgmThermoClosure.H"
+#include "srkPressureDensitySlope.H"
 #include "fgmTable.H"
 #include "fgmTiming.H"
 #include <sstream>

@@ -4,13 +4,39 @@ rho = thermo.rho();
 // Default remains the stock reactingFoam psi-product time operator.
 const bool useRealFluidDensityTimeCorrection = runTime.controlDict()
     .lookupOrDefault<Switch>("realFluidDensityTimeCorrection", false);
+const bool useDifferentialPressure = runTime.controlDict()
+    .lookupOrDefault<Switch>("realFluidDifferentialPressure", false);
+volScalarField pressureDensitySlope("pressureDensitySlope", psi);
+autoPtr<volScalarField> pressureDensityTimeOffset;
+if (useDifferentialPressure)
+{
+    if (pimple.transonic() || LTS)
+        FatalErrorInFunction << "Differential pressure mode requires nontransonic global time"
+            << exit(FatalError);
+    updateSrkPressureDensitySlope(thermo, pressureDensitySlope);
+    // Evaluate once: repeated nonorthogonal solves retain the same reference.
+    pressureDensityTimeOffset.reset(new volScalarField
+    (
+        "pressureDensityTimeOffset",
+        fvc::ddt(rho)-fvc::ddt(pressureDensitySlope,p)
+    ));
+    if (runTime.timeIndex()==1 || runTime.writeTime())
+    {
+        const tmp<volScalarField> slopeRatio=pressureDensitySlope/psi;
+        Info<< "pressureTimeForm=srkDifferentialIncrement t=" << runTime.value()
+            << " slopeRatioMin=" << gMin(slopeRatio().primitiveField())
+            << " slopeRatioMax=" << gMax(slopeRatio().primitiveField()) << endl;
+    }
+}
 auto pressureTimeOperator = [&]() -> tmp<fvScalarMatrix>
 {
+    if (useDifferentialPressure)
+        return pressureDensityTimeOffset()+fvm::ddt(pressureDensitySlope,p);
     if (useRealFluidDensityTimeCorrection)
         return fvc::ddt(rho) - fvc::ddt(psi, p) + fvm::ddt(psi, p);
     return fvm::ddt(psi, p);
 };
-if (useRealFluidDensityTimeCorrection && (runTime.timeIndex()==1 || runTime.writeTime()))
+if (useRealFluidDensityTimeCorrection && !useDifferentialPressure && (runTime.timeIndex()==1 || runTime.writeTime()))
     Info<< "pressureTimeForm=realFluidDensityCorrection t=" << runTime.value() << endl;
 
 const volScalarField rAU(1.0/UEqn.A());

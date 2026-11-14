@@ -702,3 +702,8 @@ an isolated audited application. Only witnesses and the existing caloric check
 are added; equations remain upstream. It consumes the exact15-library parent
 runtime and original contact initializer, with no FGM/table/source dependency.
 Its README owns patch identity, read-only preparation and fresh-case qualification.
+
+reactingFoamSolveZ owns an experimental fixed-T,Y SRK pressure density-slope
+helper. It consumes existing mixture coefficients/root, without changing the
+library psi field, energy equation or EOS. Its README owns supported scope,
+frozen explicit pressure offset, default-off behavior and verification.

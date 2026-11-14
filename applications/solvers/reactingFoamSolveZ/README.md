@@ -424,3 +424,28 @@ an include guard, used inside mutually exclusive runtime scopes.
 Verification is a matched flag-off/on fresh interface experiment with the same
 qualified parent libraries, followed by independently initialized G2 cases. A
 normal exit alone does not establish mass/energy conservation or paper agreement.
+
+
+## Experimental SRK pressure density slope
+
+realFluidDifferentialPressure yes replaces only the nontransonic global-time
+pressure matrix's density linearization. Default no preserves existing behavior.
+The coefficient beta=(partial rho/partial p) at fixed T,Y is computed analytically
+from the executing SRK mixture coefficients and its selected density root. The
+matrix is ddt(rhoEOS)-explicit_ddt(beta*p)+implicit_ddt(beta*p). Freeze the explicit
+offset once per pressure assembly so nonorthogonal passes do not shift the
+linearization reference. This is not a replacement psi=rho/p field or an EOS fit.
+
+Initially only the exact sensible-enthalpy SRK Chung mixture, global time and
+nontransonic pressure form are supported. Unsupported combinations fail with an
+explicit message. Negative/nonfinite slopes are retained as failures, never
+clamped or absolute-valued. This is an isothermal matrix slope, not the complete
+fixed-Ha coupled Jacobian. Energy equations, chemistry, inversion and caloric
+thresholds stay unchanged; no density/energy projection is introduced.
+
+Inputs are the existing executing mixture and one controlDict switch; output
+includes startup/write slope-to-rho/p ranges. The helper owns only this pressure
+preconditioner. No network, secrets or separate property database are involved.
+Verify the algebra against the retained coefficient/finite-difference audit,
+compile against the exact parent runtime, then compare independent fresh off/on
+O2 and mixture contacts. A normal exit is not paper or conservation acceptance.
