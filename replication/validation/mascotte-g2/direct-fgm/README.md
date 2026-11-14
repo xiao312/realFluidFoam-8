@@ -291,3 +291,16 @@ Parallel baseline controls retain runTimeModifiable no, required by the frozen
 fgmSkipUnusedDimix policy. A bounded external timeout may end an allocation;
 periodic profiles/fields remain available, but a timeout is not a completed CFD
 run or guaranteed final write. Do not enable runtime dictionary edits to stop it.
+
+
+configure-pressure-refresh.mjs is a separate controlled override for a prepared,
+not-yet-initialized real-fluid case. It adds only realFluidPressureThermoRefresh
+yes and records before/after control hashes, retaining the original preparation
+manifest as the baseline plus this explicit override. It does not enable energy
+projection, change outer iterations, table/chemistry, meshes, physical inputs or
+acceptance. Default is a read-only plan; --apply requires Slurm and a fresh case,
+without initialization receipts or evolved/processor states. No network/secrets;
+Node built-ins only. Example: node configure-pressure-refresh.mjs CASE [--apply].
+Verify Node syntax, plan/no-write behavior and frozen solver linkage, then run
+bounded independent time-zero smoke/full diagnostics. A refresh build is not
+physical qualification; retain caloric failures and boundary/continuity budgets.
