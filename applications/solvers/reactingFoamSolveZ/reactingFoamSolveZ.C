@@ -133,6 +133,7 @@ int main(int argc, char *argv[])
             #include "setDeltaT.H"
         }
 
+        #include "densityPredictorTimeStep.H"
         #include "scheduledFgmIgnition.H"
 
         runTime++;

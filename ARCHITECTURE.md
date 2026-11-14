@@ -46,3 +46,8 @@ combustion ABI and requires a full consistent library/application rebuild.
 one-cell model-source diagnostics using the frozen build probe factory. It
 depends on the relaxedTable solver/probe and strict table inputs, not on HPC
 control; its output is not a physical flow solution.
+
+The solver's optional `densityPredictorTimeStep.H` owns a source-free fixed-mesh
+Euler mass-predictor step bound using accepted rho and mass phi. It constrains
+Time before field transport, never modifies thermodynamics or field values,
+and adds no library/controller dependency. Physical guards remain unchanged.

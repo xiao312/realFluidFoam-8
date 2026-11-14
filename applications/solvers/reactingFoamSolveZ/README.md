@@ -624,3 +624,32 @@ p/T/Hs/Ha/rho/oldRho/Y and location for up to16 invalid cells per rank. It does
 not recompute an EOS, mutate a field or change any validity/roundoff limit.
 Qualify this solver-only diagnostic against the consistent combustion ABI,
 then replay the exact fresh case; it does not qualify the failed state.
+
+## Optional mass-predictor timestep bound
+
+`limitDensityPredictorTimeStep yes` restricts the proposed global Euler step
+before Time advances. For source-free mass continuity on a fixed mesh,
+`rhoPredictor = rhoOld - dt*div(phiOld)`. A cell with positive net mass outflow
+therefore requires dt<rhoOld/div(phiOld), independently of the usual half-sum
+convective Courant convention. The bound uses a fixed numerical margin0.9,
+then takes the global minimum and the existing proposed step. It changes only
+deltaT, never rho, p, T, species, fluxes or validity/acceptance criteria.
+
+Inputs: accepted transported rho, actual mass phi, immutable controls. Requires
+adaptive global Euler, fixed mesh and empty fvOptions (no unaccounted mass
+sources). Outputs: selected deltaT and proposed/selected mass-depletion ratios.
+This owns only the initial explicit continuity predictor; it does not guarantee
+later pressure/scalar iterates, cure a caloric branch gap or qualify paper means.
+Dependencies: the existing FV divergence/MPI reductions/Time API. No new library
+ABI or external dependency. Defaultoff preserves the old timestep path.
+
+Verification: replay the actual R58 failed Euler cell with its stored old/new
+rho and deltaT; its previous proposed mass loss exceeds unity. Then compile
+and run independent original-zero Cr1 Schmitt/Cavalieri cases with unchanged
+physics, maxCo, field checks and source settings. Retain original failures and
+any later new failure; successful predictor admissibility is not science approval.
+
+The mass predictor equation is verified against the official OF8 source:
+https://github.com/OpenFOAM/OpenFOAM-8/blob/master/src/finiteVolume/cfdTools/compressible/rhoEqn.H
+The fvOptions emptiness check explicitly selects fv::optionList because the
+options wrapper also inherits IOdictionary. No constraint/source is ignored.
