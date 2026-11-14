@@ -53,6 +53,7 @@ Description
 #include "fgmMatrixResidual.H"
 #include "fgmThermoClosure.H"
 #include "srkPressureDensitySlope.H"
+#include "srkColdEnergyProjection.H"
 #include "fgmTable.H"
 #include "fgmTiming.H"
 #include <sstream>
@@ -77,6 +78,10 @@ int main(int argc, char *argv[])
 
     #include "createFgmIgnition.H"
 
+    if (runTime.controlDict().lookupOrDefault<Switch>("realFluidColdEnergyProjection",false)
+        && reaction->lookupOrDefault<word>("combustionModel","")!="none")
+        FatalErrorInFunction << "Cold projection supports nonreacting diagnostics only"
+            << exit(FatalError);
     turbulence->validate();
 
     #include "energyState.H"

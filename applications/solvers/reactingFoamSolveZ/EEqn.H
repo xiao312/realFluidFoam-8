@@ -113,6 +113,7 @@
     {
         thermo.he() == fgmAbsoluteEnthalpy() - fgmChemicalEnthalpy(mesh, composition);
     }
+    applySrkColdEnergyProjection(thermo, rho);
     const auto fgmThermoStart = fgmTiming.start();
     const label correctionPasses=runTime.controlDict().lookupOrDefault<label>
         ("fgmThermoCorrectionPasses",1);

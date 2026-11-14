@@ -449,3 +449,32 @@ preconditioner. No network, secrets or separate property database are involved.
 Verify the algebra against the retained coefficient/finite-difference audit,
 compile against the exact parent runtime, then compare independent fresh off/on
 O2 and mixture contacts. A normal exit is not paper or conservation acceptance.
+
+
+## Experimental cold-contact energy projection
+
+realFluidColdEnergyProjection yes is a separate, default-off nonreacting contact
+experiment. After the energy solve, before thermo inversion, it reconstructs T
+from transported rho, current p and Y using the executing SRK coefficients. In
+the strongly nonideal region Z=p/(rho*R*T)<0.9 it replaces sensible h with the
+executing Hs(p,T). This deliberately changes the energy discretization and logs
+the signed/absolute rho*delta_h*cellVolume for every application. That adjustment
+is not exact energy conservation and must not be hidden inside an inversion.
+
+This follows Schmitt2020 Eq25's cold-region stiff energy-relaxation idea, but the
+filter and placement differ: our finite-volume energy transport is followed by
+projection inside the pressure loop, rather than AVBP artificial-viscosity splitting.
+Do not describe it as an exact port. Boundary fields retain their configured
+conditions. The target temperature must reproduce the executing selected EOS
+root to the existing1e-8 density criterion; no root/range clipping is permitted.
+
+Initial scope: combustionModel none, sensible enthalpy and the exact SRK Chung
+mixture. Reacting/FGM application needs a separately verified absolute-Ha/source
+budget and is not enabled by this experiment. The original caloric audit still
+runs after thermo correction. Inputs are existing rho,p,Y and one switch; outputs
+include adjusted h,T and explicit correction witnesses. No external data/secrets.
+
+Verification: fresh off/on O2 and H2/O2 contacts with unchanged mesh, properties,
+transport, timestep and1e-8 closure checks. Only after short controls complete
+prepare independent20ms cases and compare paper profiles, mass and energy defects.
+The earlier differential-pressure-only candidate failed and stays disabled here.

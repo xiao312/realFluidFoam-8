@@ -707,3 +707,9 @@ reactingFoamSolveZ owns an experimental fixed-T,Y SRK pressure density-slope
 helper. It consumes existing mixture coefficients/root, without changing the
 library psi field, energy equation or EOS. Its README owns supported scope,
 frozen explicit pressure offset, default-off behavior and verification.
+
+The default-off SRK cold-energy projection is a separate nonreacting numerical
+experiment, not a thermodynamic inversion repair. It consumes transported rho,
+current p,Y and executing SRK coefficients; changes to energy are explicitly
+reported per equation application. Its README owns the Schmitt-inspired mask,
+unsupported reacting scope and fresh-case/conservation qualification boundary.
