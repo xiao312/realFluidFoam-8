@@ -1,5 +1,34 @@
 # Runtime real-fluid thermodynamic probe
 
+`-audit-contact-averaging` is a zero-flow H2/O2 closure diagnostic. On a fresh
+one-cell case it reads `constant/contactAveragingAudit`: `pressure` (Pa),
+`temperature` (K), `compositionIntervals` and `volumeFractionIntervals`.
+For example: `pressure 6000000; temperature 100; compositionIntervals 1000;
+volumeFractionIntervals 100;`. It queries the executing SRK library along the
+isothermal composition path and then forms conservative volume averages of
+two initially unmixed pure streams at that same pressure and temperature.
+It compares these averages with homogeneous constant-pressure enthalpy
+inversion, recording density mismatch, caloric residual and every failed row.
+
+This tests noncommutation of coarse averaging and thermodynamic reconstruction;
+it does not establish that this mechanism uniquely causes a CFD spike. The
+two-endpoint averaging model is not a quadrature of the paper's smooth erf
+profile, chemical equilibrium, VLE or a physical flame. Neither a thermodynamic
+mixing temperature nor a cell-averaged temperature is silently substituted for
+the paper's resolved100K state. No CFD restart, normalization, coefficient,
+root policy, tolerance or species-source change is made. Only the ephemeral
+one-cell probe's composition/temperature fields are changed.
+
+Outputs `contact-isothermal-composition.csv` and `contact-volume-averaging.csv`.
+Pure endpoint controls must reproduce the prescribed state. Nonfinite or
+incompatible homogeneous states yield exit3, even if files are delivered.
+The existing1e-8 caloric and relative density checks remain visible; numerical
+delivery is not scientific acceptance. The helper depends on the existing SRK
+pressure-slope type aliases and registered libraries, with no ABI or external
+dependency change, secrets or network. Build with the qualified probe `wmake`
+recipe and run through Slurm; default probe modes are unchanged. Actual runtime
+qualification is pending at introduction.
+
 The optional `-audit-pressure-jacobian` diagnostic reads
 `constant/pressureJacobianAudit` with a `temperatures` list and a
 `relativePressureSteps` list. On a one-cell case it compares the existing

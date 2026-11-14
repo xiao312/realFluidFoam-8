@@ -16,3 +16,9 @@ change is introduced by this model selection.
 plotting. Run wrappers submit through external FlamePilot HPC adapters;
 scientific source does not depend on controller/session/scheduler state.
 See the solver README and replication/README.md for configuration and checks.
+
+The optional contact-averaging audit in the realfluid-g2-thermo probe consumes
+the same registered SRK mixture and existing solver type aliases. It performs
+property queries and conservative-state averaging only; it cannot submit jobs,
+advance CFD or change the library's EOS/root policy. Probe outputs remain
+separate from scientific acceptance and the CFD solver's source identity.
