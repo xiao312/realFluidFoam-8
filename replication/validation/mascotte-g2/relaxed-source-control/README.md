@@ -48,3 +48,10 @@ ACTUAL_RETAINED_THERMOPHYSICAL_PROPERTIES` to verify the original quoted N2
 dictionary, an unquoted entry and negative controls. Expected: all six flags
 true, with every other byte unchanged. The R55 input failure preceded all
 source/property calculations; it does not invalidate the compiled C++ model.
+
+`configure-predictor-step.mjs NEW_CASE [--apply]` selects only the optional
+Euler mass-predictor timestep bound for an undecomposed original-zero relaxed
+case. It changes controlDict, records before/after hashes in its own manifest,
+and leaves physics, field values, tolerances and other timestep controls alone.
+Read-only plan precedes Slurm-only apply. Verify with the actual failed-cell
+arithmetic replay and a fresh original-case run; no field is repaired.
