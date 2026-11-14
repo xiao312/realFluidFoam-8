@@ -39,8 +39,12 @@ The first R45 app compiled/linked, but its low-Mach branch failed physically:
 one case exited0 with catastrophic mechanical velocity/density. A copied psi
 coefficient retains old-time storage in OF8; zeroing its current field cannot
 represent an absent compressibility time term. The revised projection uses a
-stationary zero diagonal and logs the copied-history witness. This correction
-still requires fresh runtime/physical qualification. Terminal0 is insufficient.
+stationary zero diagonal and logs the copied-history witness. R46 confirmed
+the nonzero old coefficient and qualified build/link/runtime linkage; both
+default-off controls exactly matched R43 fields. Its physical model still
+failed: mixed contact crashed near87.9us; oxygen reached3ms with24.5% mechanical
+pressure departure and53.2% velocity error. No reacting G2 applicability or
+contact-physics pass is established. Terminal0 is insufficient.
 
 This experimental executable adds mixture-fraction transport to the fork's
 reactingFoam and consumes the registered FGM progress and composition fields.

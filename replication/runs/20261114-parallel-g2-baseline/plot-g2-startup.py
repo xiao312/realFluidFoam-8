@@ -66,6 +66,12 @@ def main():
                           lw=1.6, label='Paper G2: time mean')
         axes[row, 0].set(xlabel='Axial position (m)', ylabel=label)
         axes[row, 1].set(xlabel='Paper x/d', ylabel='Paper axial velocity / U0' if row == 0 else label)
+        # Preserve the actual paper panel domain. The extracted oxygen trace
+        # ends near12d; overlapping baseline pixels were deliberately excluded.
+        # Autoscaling to that partial trace otherwise changes the apparent
+        # flame-length scale by almost a factor of seven.
+        axes[row, 1].set_xlim(0, 80)
+        axes[row, 1].set_ylim((-5, 3) if row == 0 else (0, 1))
         for ax in axes[row]:
             ax.grid(alpha=.15)
             ax.legend(loc='best')
@@ -73,7 +79,7 @@ def main():
     axes[0, 1].set_title('Schmitt Fig.21: retained paper means')
     fig.suptitle('G2 near-axis startup diagnostics', fontsize=14)
     fig.text(.08, .085, 'Separate units: the supplied paper does not unambiguously specify numerical U0 here.', fontsize=10)
-    fig.text(.08, .045, 'No inferred normalization, developed mean, oxygen RMS or scientific acceptance.', fontsize=10)
+    fig.text(.08, .045, 'Paper baseline pixels excluded. No inferred normalization, RMS or scientific acceptance.', fontsize=10)
     for ext in ('png', 'svg'):
         fig.savefig(args.out/('schmitt-g2-startup.'+ext), dpi=180)
     plt.close(fig)
