@@ -162,6 +162,10 @@ Outputs are `manifold-inlets.csv`, `manifold-inversion.csv` and the last-query
 literal enthalpy residual, so a heatmap cannot hide failed or ill-conditioned
 states. Verification requires exact input hashes, inlet-basis checks and actual
 probe compilation/link/execution through Slurm; parser checks are insufficient.
+The initial R53 compile failed because two integer arguments selected OF8's
+iterator-list constructor. The fill value is explicitly `scalar(0)`; this is a
+probe construction fix, not a library/CFD or acceptance change. Fresh compiled
+qualification is still required for the corrected source.
 
 ## Captured-enthalpy point diagnosis
 

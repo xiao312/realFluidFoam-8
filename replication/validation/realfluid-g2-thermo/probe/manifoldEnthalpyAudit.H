@@ -55,7 +55,7 @@ inline Foam::label auditManifoldEnthalpy
     scalar inletHa[2];
     for (label endpoint = 0; endpoint < 2; ++endpoint)
     {
-        scalarList y(species.size(), 0);
+        scalarList y(species.size(), scalar(0));
         const label selected = endpoint == 0 ? oxygen : fuel;
         const scalar t = endpoint == 0 ? oxygenTemperature : fuelTemperature;
         y[selected] = 1; assign(y);
