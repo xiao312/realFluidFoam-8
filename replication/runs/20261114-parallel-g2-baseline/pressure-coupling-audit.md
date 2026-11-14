@@ -38,3 +38,34 @@ cold-mixing controls. Preserve original pressure/velocity equilibrium targets,
 caloric/EOS limits and explicit mass/energy accounting. Only then test both fresh
 reacting-G2 conditions. Do not replace a missing enthalpy state by a fit or
 pretend that a pressure-operator change solves the separate EOS branch policy.
+
+## Offline coefficient characterization
+
+Using the executing probe's exported mixture coefficients and its retained
+forward-query temperatures, an independent NumPy polynomial-root calculation
+compared literal isothermal d(rho)/dp with rho/p. This is offline arithmetic on
+previously executed property states, not new CFD or qualification of a solver.
+The ratio ranges below include only points with unchanged root topology across
+a relative pressure perturbation1e-7 and finite-difference agreement within1e-4:
+
+| Captured composition | Original pressure ratio range | Failed pressure ratio range |
+| --- | --- | --- |
+| Cavalieri mixed cell | 0.1871–10.578 | 0.1919–220.288 |
+| Schmitt mixed cell | 0.1886–10.824 | 0.1932–239.258 |
+| Pure oxygen contact | 0.02194–0.05074 | 0.007948–106.833 |
+
+There are306 sampled property states. Nine near branch changes or poorly
+resolved finite-pressure differences are excluded from these summary ranges,
+but retained in the raw diagnostic with explicit flags. None is declared passed
+by omission. The1e-4 finite-difference comparison is a new arithmetic diagnostic,
+not a relaxation of any existing1e-8 caloric/EOS or paper agreement criterion.
+This derivative is at fixed T and composition; it is not the complete coupled
+absolute-Ha Jacobian or a substitute for conservation/pressure-equilibrium tests.
+
+The result supports testing a consistent differential-pressure linearization
+alongside the existing secant formulation. It does not establish it as the cause
+of the reacting-G2 failure or guarantee that changing a matrix coefficient alone
+will fix it. The distinct enthalpy-branch gap remains an observed limitation.
+Raw diagnostic and source identities are retained under the campaign state in
+srk-pressure-coefficient-audit.csv/.json; coefficients job128018627 and query
+states job128016838. All future CFD comparisons must start from fresh time zero.
