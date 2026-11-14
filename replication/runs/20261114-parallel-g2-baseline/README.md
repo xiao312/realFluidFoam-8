@@ -1,5 +1,23 @@
 # Parallel Schmitt / G2 baseline, 14 November 2026
 
+## 15 November00:06 correction: mixed thermal peaks and root replay
+
+The R36b raw mixed-contact temperatures reach226.94/231.64/246.74K from a100K
+initial contact. These peaks exceed the paper's60–140K plotting range. The
+reusable plot-r36.py now flags out-of-range cells on paper-scale panels and
+saves a full-range companion for every view. No computed values or graphical
+RMS metrics changed. The actual local Forge serves all16views with32checked
+image/data hashes, retains original captions and all earlier solver views.
+Sharper density and flat pressure do not establish a correct thermal solution.
+
+R37 job128042612 completed the full new-ABI build. Its opt-in homogeneous-Gibbs
+root selection repaired one captured point's CFD caloric residual but failed the
+stricter standalone probe verdict. R38 fresh CFD did not repair the solver:
+Cavalieri128044292 FAILED842s at148.4425us with526.456J/kg caloric error;
+Schmitt128044387 FAILED693s at92.9854us with31665.344J/kg error. The Cavalieri
+100us control completed; Schmitt's did not. Retain these failures and the
+default largest-root policy. No developed G2 profiles or scientific approval.
+
 All five requested targets were attempted. The first physical batch failed
 before paper comparison times; this report does not claim figure agreement.
 Separate fresh100us laminar G2 controls passed, but fresh longer cases failed

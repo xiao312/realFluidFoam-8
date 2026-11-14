@@ -55,8 +55,26 @@ for fig,kind,nxs in [(5,'oxygen',['2','4','6']),(6,'mixture',['0.00001','2','4']
   order=[i for i,l in enumerate(labels)if l.startswith('Paper')]+[i for i,l in enumerate(labels)if l.startswith('Ours')]
   axs[0,0].legend([handles[i]for i in order],[labels[i]for i in order],loc='upper right',frameon=False,ncol=2,handlelength=1.6,columnspacing=.7)
   suffix='all'if selected==nxs else'nx-'+selected[0]
-  f.savefig(p/f'schmitt-fig{fig}-contact-muscl-r36b-{suffix}.png');plt.close(f)
+  notices=[]
+  for ax,q,lim in zip(axs.flat,quantities,lims):
+   xmin,xmax=ax.get_xlim()
+   visible=np.concatenate([computed[n][q][(computed[n]['x_m']>=xmin)&(computed[n]['x_m']<=xmax)]for n in selected if n in computed])
+   count=int(np.count_nonzero((visible<lim[0])|(visible>lim[1])))
+   if count:
+    notices.append(ax.text(.02,.96,f'Ours outside y-range: {count} cells; full-range view available',transform=ax.transAxes,va='top',fontsize=6.8))
+  f.savefig(p/f'schmitt-fig{fig}-contact-muscl-r36b-{suffix}.png')
+  for notice in notices:notice.remove()
+  for ax,q,lim in zip(axs.flat,quantities,lims):
+   xmin,xmax=ax.get_xlim()
+   visible=np.concatenate([computed[n][q][(computed[n]['x_m']>=xmin)&(computed[n]['x_m']<=xmax)]for n in selected if n in computed])
+   low=min(lim[0],float(visible.min()));high=max(lim[1],float(visible.max()))
+   if low<lim[0] or high>lim[1]:
+    padding=.05*(high-low);ax.set_ylim(low-padding,high+padding)
+    ax.yaxis.set_major_locator(plt.MaxNLocator(5))
+  f.savefig(p/f'schmitt-fig{fig}-contact-muscl-r36b-{suffix}-full-range.png');plt.close(f)
  provenance=dict(completedWidths=list(computed),missingFinalTimeWidths=[n for n in nxs if n not in computed],fullBatchPassed=len(computed)==3 and all(r['numericalStartupPassed']for r in startup.values()),job='128042346',caseSource=runtime['source'],binarySource=qualification['source'],binarySHA256=app['sha256'],runtimeProducts=runtime['products'],figure=fig,time_s=.02,startTime_s=0,method='OpenFOAM8 isolated inviscid MC-limited MUSCL HLLC double-flux SSPRK3, executing SRK library',paper='AVBP TTGC/nonconservative artificial viscosity; plotted continuous reference traces',paperReference=sha(references/f'schmitt-fig{fig}-nonconservative-vector-traces.csv'),startupChecks=startup,rawFieldHashes=input_hashes,scientificAcceptance=False,limitations=['Methods differ; this is not the reacting FGM G2 solver','Quasi-conservative energy defect is reported in startup receipt; not exact energy conservation','Fig6 paper pressure/velocity cover x[-1,3], our computed domain[-2,2]; no extrapolation'],plotPolicy='Paper lines; ours raw cell markers. No smoothing or fit. Reference graphical stroke uncertainty retained in CSV.')
+ provenance['fullRangeViewsAvailable']=True
+ provenance['limitations'].append('Mixed contacts reach227–247K from a100K initial state; paper-scale panels flag out-of-range data and companion views show full range. Flat pressure alone does not establish correct thermal evolution.')
  (p/f'schmitt-fig{fig}-contact-muscl-r36b-evidence.json').write_text(json.dumps(provenance,indent=2)+'\n')
 (p/'schmitt-contact-muscl-r36b-comparison-metrics.json').write_text(json.dumps(comparisons,indent=2)+'\n')
 print(json.dumps(comparisons,indent=2))
