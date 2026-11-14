@@ -1,8 +1,9 @@
-import { readFile, writeFile, readdir, access, copyFile } from 'node:fs/promises';
+import { readFile, writeFile, readdir, access, copyFile, realpath } from 'node:fs/promises';
 import { resolve, join } from 'node:path';
 import { spawnSync } from 'node:child_process';
 import { openSync, closeSync, writeSync } from 'node:fs';
 import { digest } from '../../fgm-of8/direct-verification/physical-input.mjs';
+import { dynamicLibraries } from './runtime-linkage.mjs';
 
 const options = {}, args = process.argv.slice(2);
 for (let i = 0; i < args.length; i++) {
@@ -55,11 +56,10 @@ for (const name of ['probe', 'solver']) {
   const result = spawnSync('ldd', [binary], { encoding: 'utf8' });
   if (result.status !== 0 || /not found/.test(result.stdout)) throw new Error(`Unresolved ${name} runtime: ${result.stderr || result.stdout}`);
   const resolved = new Set();
-  for (const line of result.stdout.split('\n')) {
-    const match = /^\s*(\S+)\s+=>\s+(\S+)/.exec(line);
-    if (match && libraries.has(match[1])) {
-      if (resolve(match[2]) !== resolve(libraries.get(match[1]).path)) throw new Error(`Mixed stock/full runtime: ${line.trim()}`);
-      resolved.add(match[1]);
+  for (const linked of dynamicLibraries(result.stdout)) {
+    if (libraries.has(linked.name)) {
+      if (await realpath(linked.path) !== await realpath(libraries.get(linked.name).path)) throw new Error(`Mixed stock/full runtime: ${linked.name} ${linked.path}`);
+      resolved.add(linked.name);
     }
   }
   for (const lib of ['libspecie.so', 'libfluidThermophysicalModels.so', 'libreactionThermophysicalModels.so', ...(name === 'solver' ? ['libcombustionModels.so'] : [])]) {

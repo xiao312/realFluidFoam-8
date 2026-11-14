@@ -1,5 +1,11 @@
 # Cold real-fluid execution
 
+Runtime linkage accepts both ldd forms: `name => /path` and direct absolute
+dependencies. Each required custom library must still resolve to the exact
+registered file. Real paths permit explicit aliases to the same immutable bytes;
+hash checks remain mandatory. Missing libraries or a different real file fail.
+`runtime-linkage.mjs` preserves all entries for this audit; it grants no approval.
+
 The generator's `cold-real-fluid` mode is preparation, not a qualified runtime.
 It requires an actual cold physical table (85 K oxygen,288 K methane,5.61 MPa;
 or Schmitt's83K oxygen,300K methane,5.6MPa)
