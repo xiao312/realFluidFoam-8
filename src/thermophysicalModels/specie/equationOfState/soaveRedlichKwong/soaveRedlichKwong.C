@@ -34,8 +34,14 @@ Foam::soaveRedlichKwong<Specie>::soaveRedlichKwong
     const dictionary& dict
 )
 :
-    Specie(dict)
+    Specie(dict),
+    homogeneousGibbsRoot_(false)
 {
+    const word rootPolicy=dict.lookupOrDefault<word>("srkRootSelection","largest");
+    if (rootPolicy!="largest" && rootPolicy!="homogeneousGibbs")
+        FatalIOErrorInFunction(dict)<<"Use srkRootSelection largest or homogeneousGibbs"
+            <<exit(FatalIOError);
+    homogeneousGibbsRoot_=rootPolicy=="homogeneousGibbs";
     b_ = 0.08664*RR*this->Tc_/this->Pc_ ; 
 
     scalar a = 0.42747*sqr(RR*this->Tc_)/this->Pc_; 
@@ -60,6 +66,8 @@ template<class Specie>
 void Foam::soaveRedlichKwong<Specie>::write(Ostream& os) const
 {
     Specie::write(os);
+    if (homogeneousGibbsRoot_)
+        os.writeKeyword("srkRootSelection")<<"homogeneousGibbs"<<token::END_STATEMENT<<nl;
 }
 
 

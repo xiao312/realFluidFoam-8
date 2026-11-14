@@ -63,14 +63,16 @@ inline Foam::soaveRedlichKwong<Specie>::soaveRedlichKwong
     const scalar& b_,
     const scalar& coef1_,
     const scalar& coef2_,
-    const scalar& coef3_
+    const scalar& coef3_,
+    const bool homogeneousGibbsRoot
 )
 :
     Specie(sp),
     b_(b_),
     coef1_(coef1_),
     coef2_(coef2_),
-    coef3_(coef3_)
+    coef3_(coef3_),
+    homogeneousGibbsRoot_(homogeneousGibbsRoot)
 {}
 
 
@@ -85,7 +87,8 @@ inline Foam::soaveRedlichKwong<Specie>::soaveRedlichKwong
     b_(srk.b_),
     coef1_(srk.coef1_),
     coef2_(srk.coef2_),
-    coef3_(srk.coef3_)
+    coef3_(srk.coef3_),
+    homogeneousGibbsRoot_(srk.homogeneousGibbsRoot_)
 {}
 
 
@@ -291,6 +294,27 @@ inline Foam::scalar Foam::soaveRedlichKwong<Specie>::Z
             qm*cos((th + 4*constant::mathematical::pi)/3.0) - a2/3.0;
 
         root = max(r1, max(r2, r3));
+        if (homogeneousGibbsRoot_)
+        {
+            // Fixed-composition residual G/(R*T). Ideal-mixture terms cancel
+            // between roots. This does not test composition-changing phase splits.
+            scalar minimumGibbs=GREAT;
+            bool found=false;
+            const scalar candidates[3]={r1,r2,r3};
+            for (const scalar z:candidates)
+            {
+                const scalar stability=3*z*z-2*z+A-B-B*B;
+                if (z<=B || stability<=0) continue;
+                const scalar gibbs=z-1-log(z-B)-(A/B)*log((z+B)/z);
+                if (gibbs<minimumGibbs)
+                {
+                    minimumGibbs=gibbs;root=z;found=true;
+                }
+            }
+            if (!found)
+                FatalErrorInFunction<<"No admissible homogeneous SRK Gibbs root"
+                    <<exit(FatalError);
+        }
     }
     else
     {
@@ -366,6 +390,8 @@ inline void Foam::soaveRedlichKwong<Specie>::operator+=
     const soaveRedlichKwong<Specie>& srk
 )
 {
+    if (homogeneousGibbsRoot_!=srk.homogeneousGibbsRoot_)
+        FatalErrorInFunction<<"Mixed SRK root-selection policies"<<exit(FatalError);
     scalar Y1 = this->Y();
     Specie::operator+=(srk);
 
@@ -394,6 +420,8 @@ Foam::soaveRedlichKwong<Specie> Foam::operator+
     const soaveRedlichKwong<Specie>& srk2
 )
 {
+    if (srk1.homogeneousGibbsRoot_!=srk2.homogeneousGibbsRoot_)
+        FatalErrorInFunction<<"Mixed SRK root-selection policies"<<exit(FatalError);
     Specie sp
     (
         static_cast<const Specie&>(srk1)
@@ -408,7 +436,8 @@ Foam::soaveRedlichKwong<Specie> Foam::operator+
             srk1.b_,
             srk1.coef1_,
             srk1.coef2_,
-            srk1.coef3_
+            srk1.coef3_,
+            srk1.homogeneousGibbsRoot_
         );
     }
     else
@@ -420,7 +449,8 @@ Foam::soaveRedlichKwong<Specie> Foam::operator+
             b,
             srk1.coef1_,
             srk1.coef2_,
-            srk1.coef3_
+            srk1.coef3_,
+            srk1.homogeneousGibbsRoot_
         );
     }
 }
@@ -439,7 +469,8 @@ Foam::soaveRedlichKwong<Specie> Foam::operator*
         srk.b_,
         srk.coef1_,
         srk.coef2_,
-        srk.coef3_
+        srk.coef3_,
+        srk.homogeneousGibbsRoot_
     );
 }
 
@@ -451,6 +482,8 @@ Foam::soaveRedlichKwong<Specie> Foam::operator==
     const soaveRedlichKwong<Specie>& srk2
 )
 {
+    if (srk1.homogeneousGibbsRoot_!=srk2.homogeneousGibbsRoot_)
+        FatalErrorInFunction<<"Mixed SRK root-selection policies"<<exit(FatalError);
     Specie sp
     (
         static_cast<const Specie&>(srk1)
@@ -464,7 +497,8 @@ Foam::soaveRedlichKwong<Specie> Foam::operator==
         b,
         srk1.coef1_,
         srk1.coef2_,
-        srk1.coef3_
+        srk1.coef3_,
+        srk1.homogeneousGibbsRoot_
     );
 }
 

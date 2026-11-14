@@ -112,6 +112,7 @@ protected:
         scalar coef1_;
         scalar coef2_;
         scalar coef3_;
+        bool homogeneousGibbsRoot_;
         
 
 public:
@@ -125,7 +126,8 @@ public:
             const scalar& b_,
             const scalar& coef1_,
             const scalar& coef2_,
-            const scalar& coef3_
+            const scalar& coef3_,
+            const bool homogeneousGibbsRoot = false
         );
 
         //- Construct from dictionary
