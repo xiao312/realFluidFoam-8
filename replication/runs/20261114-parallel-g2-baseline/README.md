@@ -278,3 +278,24 @@ until an absolute-Ha/source budget is separately qualified. Differential pressur
 is disabled in this experiment. Job128032112 admitted20:21:20,8cores16GiB7200s,
 with four independent fresh1ms controls then separate20ms cases only if both
 candidate controls complete. Compilation and physical results remain pending.
+
+
+R30/sourcef91825f job128033548 finished with three oxygen20ms exits and three
+mixed failures. Final oxygen caloric closure passed but profiles remain poor:
+nx2rho1201kg/m3,T80.8K,Ux7.20–14.96m/s versus prescribed uniform10m/s.
+The localForge target now shows these actual results, including a full-range
+view so paper-axis clipping does not conceal outliers. R20DF views are retained.
+R31job128035812/sourceinitializerde70b13 reuses this exact solver and compares
+scalar transport and initial/old-time mass-flux compatibility in fresh3ms
+factorial controls, followed by independent20ms diagnostics. No acceptance.
+
+The run-specific plot-r30.py is a replay renderer for the exact f918 export.
+Inputs: read-only field export, graphical paper-reference CSV directory and a
+new output directory. Outputs: paper-axis/full-range/per-width PNGs, raw profile
+CSVs, metrics and source/hash evidence. It depends on the existing foam_fields
+parser, NumPy and Matplotlib, with no scheduler/network/secret dependency and
+no acceptance authority. Cache stays under the output directory. Example:
+python plot-r30.py EXPORT_DIR OUTPUT_DIR REFERENCES_DIR --plan
+Remove --plan to render. Verify py_compile, plan with no output creation, then
+render retained fields and visually inspect the figures. Paper references keep
+the original PDF/vector provenance; this replay does not redigitize or fit them.

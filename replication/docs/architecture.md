@@ -722,3 +722,7 @@ The contact initializer can write a compatible fresh upwind mass flux using
 OpenFOAM geometry/interpolation. Its case helper pairs this with Euler old-time
 flux-reference selection and independently varied multivariate scalar transport.
 Defaults, thermodynamic library and solver energy policy are unchanged.
+
+The pinned R30 replay renderer in the run record reads exported OpenFOAM fields
+and supplied graphical reference CSVs using the existing figures field parser,
+NumPy and Matplotlib. It has no scheduler or scientific-acceptance authority.
