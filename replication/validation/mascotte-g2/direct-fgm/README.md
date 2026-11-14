@@ -286,3 +286,8 @@ turbulent paper comparison or change the table, initializer or scalar bounds.
 asset for Schmitt. Observation `axialLength_m` must be0.4m for it; other modes
 retain0.2m. A mismatch fails before case writing. The square chamber and upstream
 taper remain absent; neither asset is a paper LES mesh.
+
+Parallel baseline controls retain runTimeModifiable no, required by the frozen
+fgmSkipUnusedDimix policy. A bounded external timeout may end an allocation;
+periodic profiles/fields remain available, but a timeout is not a completed CFD
+run or guaranteed final write. Do not enable runtime dictionary edits to stop it.

@@ -16,3 +16,7 @@ blockMesh/checkMesh inside Slurm. `node audit.mjs --case CASE` inspects geometry
 add `--out NEW_ASSET` to retain its qualified bytes and logs. Verify20000cells,
 40501points,80050faces, domain volume and inlet areas. Sampling must select0.4m.
 Mesh qualification does not establish paper-matched turbulence or combustion.
+
+The 400x50 collapsed-axis wedge has 39550 internal faces: 399x50 axial
+plus400x49 radial. BlockMesh/checkMesh confirmed the count on14November2026;
+the earlier39750 expectation was an arithmetic error, not a mesh defect.

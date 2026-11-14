@@ -10,13 +10,13 @@ const path=`${root}/system/controlDict`,before=await readFile(path);
 if(/projectTabulatedZRoundoff|fgmThermoCorrectionPasses/.test(before))throw Error('Baseline already configured');
 const densityFlags=[...before.toString().matchAll(/\bconserveTabulatedDensity\s+(yes|no)\s*;/g)];
 if(densityFlags.length>1||(densityFlags.length===1&&densityFlags[0][1]!=='yes'))throw Error('Conflicting conservative-density selection');
-const text=before.toString().replace(/runTimeModifiable\s+no\s*;/,'runTimeModifiable yes;')+
+const text=before.toString()+
  '\nwriteMixtureFractionBudget yes;\nwriteFgmTiming yes;\n'+(densityFlags.length?'':'conserveTabulatedDensity yes;\n')+
  'projectTabulatedZRoundoff yes;\nfgmThermoCorrectionPasses 3;\n';
 const receipt={schema:'parallel-g2-baseline-controls/v1',case:root,startTime_s:0,
  controlBeforeSha256:sha(before),controlAfterSha256:sha(text),manifestBeforeSha256:sha(raw),
  energy:'absoluteHa,unchanged stored h during three inversion passes',lookup:'endpoint64epsilon',
- acceptanceLimitChanged:false,fieldValuesChanged:false,operationalStopEnabled:true,
+ acceptanceLimitChanged:false,fieldValuesChanged:false,operationalStopEnabled:false,
  averaging:'retain instantaneous profiles; offline time-weighted statistics over declared actual window',scientificAcceptance:false};
 if(!action){console.log(JSON.stringify({readOnly:true,...receipt},null,2));process.exit(0);}
 if(!process.env.SLURM_JOB_ID)throw Error('Allocated execution required');

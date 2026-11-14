@@ -13,7 +13,7 @@ export const recipeSha256 = digest(JSON.stringify(recipe));
 export const patchTypes = { geom: 'wall', slipwalls: 'wall', noslipwalls: 'wall',
   ch4inlet: 'patch', loxinlet: 'patch', axisymmetric: 'empty', outlet: 'patch',
   planeMinus: 'wedge', planePlus: 'wedge' };
-export const expectedCounts = { cells: 20000, points: 40501, faces: 80050, internalFaces: 39750 };
+export const expectedCounts = { cells: 20000, points: 40501, faces: 80050, internalFaces: 39550 };
 export const expectedPatchFaces = { geom: 6, slipwalls: 0, noslipwalls: 426,
   ch4inlet: 10, loxinlet: 8, axisymmetric: 0, outlet: 50,
   planeMinus: 20000, planePlus: 20000 };

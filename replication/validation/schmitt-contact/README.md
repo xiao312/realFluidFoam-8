@@ -32,3 +32,9 @@ mesh spacing and erf limits. Inside Slurm compile the initializer, checkMesh,
 verify initial density residuals, then execute and retain every case exit code.
 Compare final fields, pressure/velocity departures, interface displacement and
 runtime against the paper. Never infer scientific acceptance from normal exit.
+
+The first contact baseline produced out-of-range inversion temperatures. The
+next fresh control caps dt at5us (previous50us) and uses the existing three
+fixed-enthalpy thermo inversion passes. Enable the unchanged1e-8 caloric audit.
+These are numerical hypotheses, not a correction to the EOS or paper data;
+preserve the failed baseline and compare its pressure/energy histories.
