@@ -26,3 +26,12 @@ Example: run the plan, then apply inside Slurm; run blockMesh, initialize Ha,
 hash active time-zero inputs and execute the diagnostic. Verification is the
 actual source recurrence, Qdot identity and caloric/unchanged-Ha CSV. Preserve
 failed rows/exit codes; compilation or synthetic algebra alone is not physics.
+
+`configure-flow.mjs NEW_CASE 1|100 [--apply]` is the companion adapter for a new
+undecomposed G2 factory case. It preserves table, mesh, initial/inlet fields and
+thermo coefficients, changes actual species ownership and inert bookkeeping,
+and enables the already tested conservative-density/fixed-h pressure controls.
+It records every changed dictionary hash in a separate active-input manifest.
+The existing factory manifest is preserved. Cr1 is compared with the old
+instantaneous model; Cr100 is a new physics/numerics diagnostic. Every flow run
+starts from original zero and reports actual Cr*dt. No paper mean is inferred.
