@@ -1,7 +1,11 @@
 # Design: one-dimensional real-fluid double-flux candidate
 
-**Implemented candidate; compilation and physical qualification pending.**
-No completed CFD comparison is claimed.
+**Experimental candidate; six fresh20ms numerical controls completed.**
+R20 job128022863/sourcec6d486e rebuilt the complete custom runtime and completed
+all published widths. Numerical startup/closure checks passed; paper profiles
+remain too diffuse and energy defects are explicitly reported. This is not
+scientific acceptance or reacting-G2 qualification. See the retained
+[run record](../../../runs/20261114-parallel-g2-baseline/README.md).
 
 This experimental OpenFOAM application tests pressure-equilibrium preservation
 on the six nonreacting Schmitt2020 Figures5/6 contacts. It uses the executing

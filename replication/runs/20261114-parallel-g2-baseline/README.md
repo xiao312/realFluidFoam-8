@@ -237,3 +237,21 @@ loop. The next prepared R25 experiment isolates that setting with both author
 coupling switches enabled and reuses this exact binary/library identity.
 Preparation is not execution; actual admission and terminal receipts are required.
 No chemistry fitting, evolved starts, threshold relaxation or scientific acceptance.
+
+
+R25 job128030125 FAILED164s after reusing the qualifiedf457906 solver, with no
+rebuild. Both author coupling switches were enabled; only additional continuity
+restoration differed across four fresh1ms cases. Neither survived longer:
+oxygen456.012us, mixture261.374us. Last complete energy-state histories nearly
+overlap. Mean pressure near6MPa conceals failed-cell pressures1.27–1.84MPa.
+The two new failed-history views in localForge retain this negative result.
+Energy integral changes are explicitly not boundary-flux-corrected residuals.
+
+The original-author-loop control is now independently admitted as128030606,
+source624c743 (new audit/preparation module; upstream equations unchanged),4cores,
+8GiB,1800s. It builds an isolated realFluidFoamAudited against the C6 parent
+libraries, adds the existing caloric check and state witnesses, and preserves
+one original thermo.correct call. Two independent fresh1ms cases are requested.
+No CFD result is claimed yet. Exact patch hashes, binary linkage and terminal
+receipts remain required. This compares solver ordering with a shared rebuilt
+runtime; it is not a reconstruction of the entire historical paper environment.
