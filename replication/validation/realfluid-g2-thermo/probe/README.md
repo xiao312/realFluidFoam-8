@@ -138,6 +138,31 @@ transport object's own guard. The optimized call must fail before indexing;
 the baseline call must complete. These controls require rebuilding the probe
 and both owning thermophysical registration libraries from the same headers.
 
+## Adiabatic manifold feasibility queries
+
+`-audit-manifold-enthalpy` reads `constant/manifoldEnthalpyAudit`: exact ordered
+species, `referencePressure`, `oxygenTemperature`, `fuelTemperature`, a pressure
+list, query `mixtureFractions`, linearly interpolated original `temperatures`
+and `massFractions`. It compares two compositions at each Z: the unchanged
+reacting table lookup and the analytic unburned O2/CH4 mixture. The target Ha
+is the affine inlet Ha from the executing library and the solver's formation
+enthalpy basis. Each composition converts this to its own sensible-h target.
+
+The actual SRK `THs` function is queried from three initial guesses. This is a
+direct library feasibility diagnostic with zero CFD steps, not a continuation,
+a new flamelet, a density constraint, VLE qualification, or proof that a CFD
+cell follows this adiabatic baseline. Kinetic energy, unsteadiness, differential
+transport and pressure work can move actual CFD Ha away from this baseline.
+Both the unchanged Cp*T-scaled CFD criterion and the stricter h-relative probe
+criterion are recorded. Any failed/unstable row returns3; do not equate delivery
+with a pass. Neither EOS/root policy nor inversion tolerances change.
+
+Outputs are `manifold-inlets.csv`, `manifold-inversion.csv` and the last-query
+`manifold-progress.txt`. The CSV includes target, recovered T/rho/Cp/Cv and
+literal enthalpy residual, so a heatmap cannot hide failed or ill-conditioned
+states. Verification requires exact input hashes, inlet-basis checks and actual
+probe compilation/link/execution through Slurm; parser checks are insufficient.
+
 ## Captured-enthalpy point diagnosis
 
 `extract-failed-point.mjs --case CASE --time EXACT_TIME --rank N --cell N`

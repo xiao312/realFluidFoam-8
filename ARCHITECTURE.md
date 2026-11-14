@@ -23,6 +23,11 @@ property queries and conservative-state averaging only; it cannot submit jobs,
 advance CFD or change the library's EOS/root policy. Probe outputs remain
 separate from scientific acceptance and the CFD solver's source identity.
 
+The optional manifold-enthalpy audit similarly queries the existing SRK THs
+inversion for reacting-table and passive compositions on an affine inlet-Ha
+baseline. It adds no phase model or CFD operator. Its pressure/composition map
+is a zero-step feasibility diagnostic, not an evolved solution or a flamelet.
+
 `replication/validation/mascotte-g2/passive-cold` creates a separate analytic
 unburned composition table and fresh-case configuration. It depends on the
 strict steady-flamelet input reader for its original header provenance, and

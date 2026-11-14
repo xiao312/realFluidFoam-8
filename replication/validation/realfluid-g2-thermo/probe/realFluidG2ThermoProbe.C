@@ -12,6 +12,7 @@
 #include "enthalpyTargetAudit.H"
 #include "pressureJacobianAudit.H"
 #include "contactAveragingAudit.H"
+#include "manifoldEnthalpyAudit.H"
 
 int main(int argc, char *argv[])
 {
@@ -23,6 +24,7 @@ int main(int argc, char *argv[])
     argList::addBoolOption("audit-mixture-setup", "Audit alternating physical cell and patch SRK mixture queries");
     argList::addBoolOption("audit-pressure-jacobian", "Compare fixed-T and fixed-h SRK pressure slopes with actual library finite differences");
     argList::addBoolOption("audit-contact-averaging", "Compare isothermal composition and conservative-volume averages through the actual SRK library;no CFD steps");
+    argList::addBoolOption("audit-manifold-enthalpy", "Query adiabatic reacting/passive manifold enthalpy feasibility through actual SRK;no CFD steps");
     #include "setRootCase.H"
     #include "createTime.H"
     #include "createMesh.H"
@@ -33,6 +35,8 @@ int main(int argc, char *argv[])
     basicSpecieMixture& composition = thermo.composition();
     if (args.optionFound("audit-contact-averaging"))
         return auditContactAveraging(thermo,mesh,runTime);
+    if (args.optionFound("audit-manifold-enthalpy"))
+        return auditManifoldEnthalpy(thermo,mesh,runTime);
     if (args.optionFound("audit-pressure-jacobian"))
         return auditPressureJacobian(thermo, mesh, runTime);
     if (args.optionFound("audit-mixture-setup") || args.optionFound("read-raw-Dimix"))
