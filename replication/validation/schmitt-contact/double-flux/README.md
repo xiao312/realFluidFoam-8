@@ -64,3 +64,8 @@ Numerical startup qualification checks completed time, EOS/caloric closure,
 pressure/velocity equilibrium and mass/budget residuals. For a uniform state
 only, energy-defect magnitude must also remain at roundoff scale. Interface
 energy defects are recorded for review, not declared conservative or accepted.
+
+Link the three custom libraries by explicit FOAM_USER_LIBBIN paths. Bare -l
+lookup can select stock OpenFOAM libraries ahead of the fork despite -L order,
+causing missing rfSpecie symbols or mixed ABI. The build receipt must verify
+resolved real paths and hashes before a physical run.
