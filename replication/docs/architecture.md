@@ -662,3 +662,7 @@ NASA coefficients and keeps caloric closure enforcement. Default remains one.
 `validation/mascotte-g2/paper-long-wedge` owns the distinct400mm exit-wedge recipe,
 reusing the coarse-wedge ASCII parser and paper-exit audit design. Direct-G2
 consumes qualified mesh bytes and explicit sampling extent; old assets stay fixed.
+
+`fgm/steady-flamelet-export` converts hashed physical profiles with Python standard
+library only. Direct-G2 consumes the unchanged species/grid and explicit source
+convergence flags; the converter accepts the two registered G2 stream recipes.
