@@ -1,5 +1,41 @@
 # Transported-Z reacting solver
 
+## Experimental constant-background low-Mach model
+
+Default-off `realFluidLowMachPressureSplit yes` separates uniform EOS pressure
+`p` from momentum/projection pressure `pMechanical`. It requires an explicit
+positive `realFluidThermodynamicPressure` (Pa) matching the original time-zero
+pressure and sensible-enthalpy thermodynamics. It transports thermal enthalpy
+without kinetic-energy or dynamic-pressure-work terms. Absolute-Ha composition
+coupling and all caloric/species acceptance limits remain unchanged. This is a
+separate governing-equation approximation, not a compressible-solver repair.
+
+Inputs are the usual original-zero case, the two control entries, and pressure
+solver/scheme entries for `pMechanical` and `pMechanicalFinal`. Closed/periodic
+cases also supply `pMechanicalRefCell` and `pMechanicalRefValue` in PIMPLE.
+The solver writes both pressures and reports actual SRK sound-speed Mach,
+mechanical-pressure departure, EOS/transport-density discrepancy and mass
+residuals. Compare mechanical pressure with contact/paper pressure; a uniform
+EOS pressure alone is not a pressure-equilibrium pass. Thermal H is the relevant
+constant-p0 energy budget; H+K-p0V remains a state diagnostic, not an exact
+conserved target of this approximation. Large Mach or mechanical-pressure
+departures invalidate the intended asymptotics and must remain visible.
+
+No library ABI or external dependency changes. `createLowMachPressure.H` owns
+field selection/configuration; `lowMachPressureAudit.H` owns model diagnostics.
+No secrets or scheduler operations. Unsupported transonic/LTS, internal-energy,
+or simultaneous differential-density pressure modes fail explicitly. This
+model does not cover acoustics, varying background pressure or closed-vessel
+thermodynamic-pressure evolution.
+
+Minimal example: set `realFluidLowMachPressureSplit yes;` and
+`realFluidThermodynamicPressure 6000000;` in a fresh contact controlDict, and
+add matching `pMechanical` solver controls. Build with qualified OF8 `wmake`.
+Verification requires an exact default-off control against c73e176, then fresh
+oxygen/mixed contacts measuring pMechanical/U, caloric closure, density and
+thermal conservation. Compilation or terminal0 alone is not model validation.
+Runtime qualification is pending at the introduction of this option.
+
 This experimental executable adds mixture-fraction transport to the fork's
 reactingFoam and consumes the registered FGM progress and composition fields.
 The base reactingFoam executable remains unchanged. It is not yet qualified for

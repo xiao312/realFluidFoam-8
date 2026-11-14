@@ -49,7 +49,7 @@ volVectorField U
     mesh
 );
 
-volScalarField& p = thermo.p();
+#include "createLowMachPressure.H"
 
 #include "compressibleCreatePhi.H"
 

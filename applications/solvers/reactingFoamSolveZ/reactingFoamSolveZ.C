@@ -85,6 +85,7 @@ int main(int argc, char *argv[])
     turbulence->validate();
 
     #include "energyState.H"
+    #include "lowMachPressureAudit.H"
     fgmTiming.stop(fgmWallTiming::startup, fgmStartupStart);
 
     if (!LTS)
@@ -219,6 +220,7 @@ int main(int argc, char *argv[])
         fgmTiming.stop(fgmWallTiming::postPressureAudit, fgmPostPressureStart);
         const auto fgmBudgetStart = fgmTiming.start();
         #include "energyState.H"
+        #include "lowMachPressureAudit.H"
         fgmTiming.stop(fgmWallTiming::energyBudget, fgmBudgetStart);
 
         const auto fgmWriteStart = fgmTiming.start();

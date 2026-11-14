@@ -8,6 +8,7 @@ const bool useDifferentialPressure = runTime.controlDict()
     .lookupOrDefault<Switch>("realFluidDifferentialPressure", false);
 volScalarField pressureDensitySlope("pressureDensitySlope", psi);
 autoPtr<volScalarField> pressureDensityTimeOffset;
+if (lowMachPressureSplit) pressureDensitySlope *= scalar(0);
 if (useDifferentialPressure)
 {
     if (pimple.transonic() || LTS)
@@ -37,6 +38,8 @@ if (useDifferentialPressure)
 }
 auto pressureTimeOperator = [&]() -> tmp<fvScalarMatrix>
 {
+    if (lowMachPressureSplit)
+        return fvc::ddt(rho)+fvm::ddt(pressureDensitySlope,p);
     if (useDifferentialPressure)
         return pressureDensityTimeOffset()+fvm::ddt(pressureDensitySlope,p);
     if (useRealFluidDensityTimeCorrection)
@@ -111,6 +114,8 @@ if (pimple.transonic())
             fvOptions(psi, p, rho.name())
         );
 
+        if (lowMachPressureSplit)
+            pEqn.setReference(lowMachReferenceCell,lowMachReferenceValue);
         pEqn.solve();
 
         if (pimple.finalNonOrthogonalIter())
@@ -141,6 +146,8 @@ else
             fvOptions(psi, p, rho.name())
         );
 
+        if (lowMachPressureSplit)
+            pEqn.setReference(lowMachReferenceCell,lowMachReferenceValue);
         pEqn.solve();
 
         if (pimple.finalNonOrthogonalIter())
@@ -178,7 +185,11 @@ if (pressureControl.limit(p))
     }
 }
 
-if (thermo.dpdt())
+if (lowMachPressureSplit)
+{
+    dpdt *= scalar(0);
+}
+else if (thermo.dpdt())
 {
     dpdt = fvc::ddt(p);
 }

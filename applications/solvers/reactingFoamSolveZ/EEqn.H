@@ -28,6 +28,11 @@
       ? tabulatedHeatRelease()
       : reaction->Qdot()()
     );
+    if (lowMachPressureSplit)
+    {
+        kineticTerms *= scalar(0);
+        pressureWork *= scalar(0);
+    }
     if (absoluteEnthalpyFGM) heatRelease *= scalar(0);
     fvScalarMatrix EEqn
     (
