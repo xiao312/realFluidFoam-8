@@ -59,3 +59,8 @@ Use configure.mjs FRESH_CASE END_TIME [--uniform] for a read-only plan; add
 sets150K pure oxygen at6MPa without copying any CFD state. Configuration records
 all changed input hashes and explicitly selects inviscid double flux. The
 normal six inputs retain their original densities, composition and temperatures.
+
+Numerical startup qualification checks completed time, EOS/caloric closure,
+pressure/velocity equilibrium and mass/budget residuals. For a uniform state
+only, energy-defect magnitude must also remain at roundoff scale. Interface
+energy defects are recorded for review, not declared conservative or accepted.

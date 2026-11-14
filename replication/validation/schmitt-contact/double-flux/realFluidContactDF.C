@@ -106,6 +106,7 @@ int main(int argc,char* argv[])
     const scalar initialMass=integral(state,0),initialEnergy=integral(state,2);
     label steps=0;
     Info<<"CONTACT_DF_INIT cells="<<n<<" dx="<<dx<<" area="<<area
+        <<" massKg="<<initialMass<<" absoluteEnergyJ="<<initialEnergy
         <<" acousticCo="<<cfl<<" reconstruction=firstOrder time=SSPRK3 energy=absoluteHa quasiConservative=1"<<endl;
     while(runTime.run())
     {
