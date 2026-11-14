@@ -41,3 +41,8 @@ The combustion interface explicitly separates Z transport, composition ownership
 absolute-Ha support and post-transport correction. The solver owns transport and
 energy, while the model owns its target/source update. This changes the custom
 combustion ABI and requires a full consistent library/application rebuild.
+
+`replication/validation/mascotte-g2/relaxed-source-control` prepares original-zero
+one-cell model-source diagnostics using the frozen build probe factory. It
+depends on the relaxedTable solver/probe and strict table inputs, not on HPC
+control; its output is not a physical flow solution.
