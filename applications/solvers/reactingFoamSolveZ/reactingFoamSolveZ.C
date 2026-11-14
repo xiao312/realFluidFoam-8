@@ -156,6 +156,23 @@ int main(int argc, char *argv[])
                 }
                 const auto fgmPressureStart = fgmTiming.start();
                 #include "pEqn.H"
+                if (runTime.controlDict().lookupOrDefault<Switch>("realFluidPressureThermoRefresh",false))
+                {
+                    const scalarField heldEnthalpy(thermo.he().primitiveField());
+                    const auto refreshStart=fgmTiming.start();
+                    thermo.correct();
+                    fgmTiming.stop(fgmWallTiming::thermoCorrection,refreshStart);
+                    const scalar mutation=gMax(mag(thermo.he().primitiveField()-heldEnthalpy));
+                    if (mutation!=0)
+                        FatalErrorInFunction << "Post-pressure inversion mutated internal sensible enthalpy"
+                            << exit(FatalError);
+                    rho=thermo.rho();
+                    auditFgmThermoClosure(thermo);
+                    auditFgmContinuityStage("afterPressureThermoRefresh",rho,phi);
+                    if (runTime.timeIndex()==1 || runTime.writeTime())
+                        Info<< "pressureThermoRefresh t=" << runTime.value()
+                            << " maxInternalHeChange_J_kg=" << mutation << endl;
+                }
                 if (absoluteEnthalpyFGM)
                 {
                     updateFgmFixedTemperatureEnthalpy(thermo, composition, fgmAbsoluteEnthalpy());

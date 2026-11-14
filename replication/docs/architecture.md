@@ -726,3 +726,7 @@ Defaults, thermodynamic library and solver energy policy are unchanged.
 The pinned R30 replay renderer in the run record reads exported OpenFOAM fields
 and supplied graphical reference CSVs using the existing figures field parser,
 NumPy and Matplotlib. It has no scheduler or scientific-acceptance authority.
+
+The solver has a default-off post-pressure thermo refresh diagnostic. It reuses
+the existing held-enthalpy inversion and caloric/continuity witnesses, changes
+only nonlinear coupling order and does not advance chemistry/source integration.

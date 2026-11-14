@@ -490,3 +490,27 @@ retain exactly the same EOS-root, caloric and temperature-range checks and repor
 all applied energy adjustments. Verify independent fresh1ms then20ms controls;
 a short normal exit is insufficient (both R29 short families passed but all six
 longer controls failed). The existing nonreacting-only scope remains enforced.
+
+
+## Experimental post-pressure property refresh
+
+realFluidPressureThermoRefresh yes, default no, calls thermo.correct immediately
+after each pressure solve at held internal sensible enthalpy, then assigns rho
+from the newly refreshed EOS cache. The existing boundary-Ha update follows it.
+The initial diagnostics use nonreacting/global-time/nontransonic contacts. The
+operation changes the nonlinear pressure/energy coupling order, not chemistry
+integration, EOS parameters or the transported energy equation. Internal h must
+remain unchanged, as in the existing energy-inversion refinement check. The same
+caloric audit enforces the returned state and continuity is measured after the
+EOS density update; no mass-conservation pass is inferred from caloric closure.
+
+This tests a remaining lifecycle issue: psiThermo::rho returns cached p*psi,
+so changing pressure alone does not perform a fresh nonlinear EOS evaluation.
+Compare four independent3ms mixed controls: refresh off/on crossed with2/12 outer
+correctors, plus oxygen anchors. Keep transport/mask/limits fixed and retain all
+failed states. Increased outer corrections are nonlinear iterations within the
+same physical timestep, never repeated chemistry advances or a CFD restart.
+Inputs are existing controlDict/thermo fields; outputs are updated T/psi/rho and
+closure/continuity witnesses. No network/secrets or new dependencies are involved.
+Build against the exact parent runtime and inspect normal-exit profiles and
+budgets before any scientific or reacting-FGM qualification.
