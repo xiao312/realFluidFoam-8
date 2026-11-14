@@ -1,5 +1,11 @@
 # Replication boundaries
 
+`validation/schmitt-contact` prepares the nonreacting real-fluid contact tests
+from Schmitt2020 Figures5/6. It consumes the thermo export and shared finite-volume
+schemes. Its initializer inverts density through the actual linked thermo model;
+it does not implement or tune an alternative equation of state. Batch admission,
+run identities and comparison interpretation remain operator responsibilities.
+
 `validation/mascotte-g2/log-stream` provides bounded streaming access to complete
 retained solver logs and incremental JSON output. `direct-fgm/check.mjs` and
 separately versioned operator endpoint/density/projection/conservation adapters
