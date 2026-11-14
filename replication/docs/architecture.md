@@ -658,3 +658,7 @@ submits or publishes. The operator supplies preview/catalog paths explicitly.
 An optional bounded number of selected-thermo inversion passes refines T at
 unchanged stored internal h. This uses the existing thermo interface, changes no
 NASA coefficients and keeps caloric closure enforcement. Default remains one.
+
+`validation/mascotte-g2/paper-long-wedge` owns the distinct400mm exit-wedge recipe,
+reusing the coarse-wedge ASCII parser and paper-exit audit design. Direct-G2
+consumes qualified mesh bytes and explicit sampling extent; old assets stay fixed.

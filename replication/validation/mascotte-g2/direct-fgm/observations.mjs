@@ -11,7 +11,7 @@ function finite(value, name, min, max) {
   return value;
 }
 export function observationConfig(input, endTime) {
-  keys(input, ['profileInterval_s', 'fieldInterval_s', 'averageStart_s', 'radialPositions_m', 'imageGrid', 'includeVelocity', 'nearAxisRadius_m'], 'observations');
+  keys(input, ['profileInterval_s', 'fieldInterval_s', 'averageStart_s', 'radialPositions_m', 'imageGrid', 'includeVelocity', 'nearAxisRadius_m', 'axialLength_m'], 'observations');
   if (input.includeVelocity !== undefined && typeof input.includeVelocity !== 'boolean') throw new Error('includeVelocity must be boolean');
   const config = {
     profileInterval_s: input.profileInterval_s ?? endTime / 4,
@@ -22,6 +22,7 @@ export function observationConfig(input, endTime) {
     includeVelocity: input.includeVelocity ?? false,
     axialCoordinate: 'raw registered mesh x; injector-exit paper transform not qualified',
     nearAxisRadius_m: input.nearAxisRadius_m ?? 0.0001,
+    axialLength_m: input.axialLength_m ?? 0.2,
     instantaneousFields: ['T', 'rho', 'Z', 'c', 'OH', 'CH4', 'O2', 'CO2', 'CO', 'Ha', 'fgmTdiag'],
     meanFields: ['T', 'rho', 'Z', 'c', 'OH'],
   };
@@ -30,6 +31,7 @@ export function observationConfig(input, endTime) {
     config.meanFields.push('U');
   }
   finite(config.nearAxisRadius_m,'nearAxisRadius_m',1e-8,0.01);
+  if (![0.2,0.4].includes(config.axialLength_m)) throw Error('Sampling axial length must be0.2 or0.4m');
   for (const name of ['profileInterval_s', 'fieldInterval_s']) finite(config[name], name, Number.MIN_VALUE, endTime);
   const fullWrites = endTime / config.fieldInterval_s;
   if (Math.abs(fullWrites - Math.round(fullWrites)) > 1e-8) throw new Error('fieldInterval_s must divide endTime so the final fields are written');
@@ -91,7 +93,7 @@ function sets(config, image = false) {
     // OF8 points returns only located fluid points. Keep holes, never fill solids.
     return `midplane { type points; ordered no; axis xyz; points (${points.join('\n')}); }`;
   }
-  return `nearAxis { type lineUniform; axis x; start (0.0001 ${config.nearAxisRadius_m} 0); end (0.1999 ${config.nearAxisRadius_m} 0); nPoints 400; }\n` +
+  return `nearAxis { type lineUniform; axis x; start (0.0001 ${config.nearAxisRadius_m} 0); end (${config.axialLength_m-0.0001} ${config.nearAxisRadius_m} 0); nPoints 400; }\n` +
     config.radialPositions_m.map((x, i) => `radial${i} { type lineUniform; axis y; start (${x} 0.0001 0); end (${x} 0.0248 0); nPoints 200; }`).join('\n');
 }
 function sample(name, fields, config, mean = false, image = false) {

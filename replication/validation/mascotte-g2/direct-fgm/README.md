@@ -1,5 +1,12 @@
 # Warm FGM coupling on the retained G2-related mesh
 
+`configure-baseline.mjs NEW_CASE [--apply]` selects the parallel batch controls
+before initialization. It records conservative density, unchanged64epsilon-only Z
+projection, three inversion passes at fixed internal h, timing/budget output and
+operational writeNow support. No field, EOS coefficient or acceptance limit changes.
+The plan is read-only; apply requires Slurm and an undecomposed time-zero case.
+Instantaneous profiles support separately declared offline statistical windows.
+
 `nearAxisRadius_m` in the observation JSON optionally selects a sampling-line
 radius in1e-8..0.01m. Default remains0.1mm. Record its actual radius; it is not the
 exact centerline. Sampling changes do not change geometry or physics. Retained
@@ -274,3 +281,8 @@ the corresponding guarded diffusion policy, and finite nonnegative k, epsilon,
 nut and alphat in addition to the unchanged thermodynamic and flow checks.
 Laminar cases keep their original checks. This extension does not qualify a
 turbulent paper comparison or change the table, initializer or scalar bounds.
+
+`--mesh-mode paper-exit-wedge-20000-long-v1` selects the separate400mm/20000-cell
+asset for Schmitt. Observation `axialLength_m` must be0.4m for it; other modes
+retain0.2m. A mismatch fails before case writing. The square chamber and upstream
+taper remain absent; neither asset is a paper LES mesh.

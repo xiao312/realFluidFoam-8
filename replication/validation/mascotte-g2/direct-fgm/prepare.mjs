@@ -6,6 +6,7 @@ import { loadPhysicalTable, thermoState } from '../../fgm-of8/direct-verificatio
 import { inspectMesh, copyMesh } from './mesh-input.mjs';
 import { inspectCoarseMesh, copyCoarseMesh } from '../coarse-wedge/mesh.mjs';
 import { inspectPaperExitMesh, copyPaperExitMesh } from '../paper-exit-wedge/mesh.mjs';
+import { inspectPaperExitMesh as inspectLongMesh, copyPaperExitMesh as copyLongMesh } from '../paper-long-wedge/mesh.mjs';
 import { loadRunControls, decompositionDictionary, functionObjects } from './observations.mjs';
 import { realFluidInput, initializationInput, ignitionDictionary } from './cold-input.mjs';
 import { solverSchemes } from '../../fgm-of8/direct-verification/schemes.mjs';
@@ -26,7 +27,7 @@ const steady = closure === 'steady-flamelet';
 const endpointPolicy = options['steady-endpoint-policy'] ?? 'strict';
 if (!['strict', 'endpoint64epsilon'].includes(endpointPolicy) || (!steady && options['steady-endpoint-policy'])) throw Error('Endpoint policy is steady-only: strict|endpoint64epsilon');
 const meshMode = options['mesh-mode'] ?? 'registered-200622';
-if (!['registered-200622', 'coarse-wedge-10000-v1', 'paper-exit-wedge-10000-v1'].includes(meshMode)) throw new Error('Use --mesh-mode registered-200622|coarse-wedge-10000-v1|paper-exit-wedge-10000-v1');
+if (!['registered-200622', 'coarse-wedge-10000-v1', 'paper-exit-wedge-10000-v1','paper-exit-wedge-20000-long-v1'].includes(meshMode)) throw new Error('Use --mesh-mode registered-200622|coarse-wedge-10000-v1|paper-exit-wedge-10000-v1');
 const transportTolerance = Number(options['transport-tolerance'] ?? 1e-10);
 if (!Number.isFinite(transportTolerance) || transportTolerance < 1e-12 || transportTolerance > 1e-6) {
   throw new Error('--transport-tolerance must be finite and within [1e-12, 1e-6]');
@@ -65,10 +66,12 @@ const nasaPolicy = realFluid ? null : nasaInversionPolicy(input.metadata, option
 const initialization = await (steady ? steadyInitialization : initializationInput)(options.initialization, input);
 if (!realFluid && initialization.config.mode === 'localized-covered') throw new Error('Localized preparation currently requires the full-runtime Ha initialization path');
 const coarseMesh = meshMode === 'coarse-wedge-10000-v1';
-const paperExitMesh = meshMode === 'paper-exit-wedge-10000-v1';
-const inspectSelectedMesh = paperExitMesh ? inspectPaperExitMesh : coarseMesh ? inspectCoarseMesh : inspectMesh;
-const copySelectedMesh = paperExitMesh ? copyPaperExitMesh : coarseMesh ? copyCoarseMesh : copyMesh;
+const longMesh = meshMode === 'paper-exit-wedge-20000-long-v1';
+const paperExitMesh = meshMode === 'paper-exit-wedge-10000-v1' || longMesh;
+const inspectSelectedMesh = longMesh ? inspectLongMesh : paperExitMesh ? inspectPaperExitMesh : coarseMesh ? inspectCoarseMesh : inspectMesh;
+const copySelectedMesh = longMesh ? copyLongMesh : paperExitMesh ? copyPaperExitMesh : coarseMesh ? copyCoarseMesh : copyMesh;
 const mesh = await inspectSelectedMesh(resolve(options['mesh-dir']));
+if (controls.observations.axialLength_m !== (longMesh ? 0.4 : 0.2)) throw Error('Sampling axial length must match mesh');
 const axisBoundaryType = coarseMesh || paperExitMesh ? 'empty' : 'symmetry';
 if (coarseMesh) controls.observations.axialCoordinate = 'x from explicit coarse co-planar inlet at 0 m; separate diagnostic, not registered/paper injector geometry';
 if (paperExitMesh) controls.observations.axialCoordinate = 'x from co-planar paper-sized injection exit at 0 m; upstream taper/ducts and square chamber omitted';
