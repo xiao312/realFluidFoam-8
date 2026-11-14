@@ -65,6 +65,6 @@ adjustTimeStep yes;maxCo .3;maxDeltaT .000005;writeControl adjustableRunTime;wri
 writeFormat ascii;writePrecision 14;timeFormat general;timePrecision 14;runTimeModifiable no;writeEnergyBudget yes;conserveTransportDensity yes;writeMixtureFractionBudget yes;fgmThermoCorrectionPasses 3;writeFgmThermoClosure yes;fgmThermoClosureRelativeLimit 1e-8;fgmThermoCorrectionPasses 3;writeFgmThermoClosure yes;fgmThermoClosureRelativeLimit 1e-8;
 functions {profiles {type sets;libs ("libsampling.so");writeControl runTime;writeInterval .001;
 setFormat csv;interpolationScheme cell;fields (T rho p U O2 H2);
-sets (axis {type uniform;axis x;start (-1.995 .005 .005);end (1.995 .005 .005);nPoints 400;});}}\n`);
+sets (axis {type lineUniform;axis x;start (-1.995 .005 .005);end (1.995 .005 .005);nPoints 400;});}}\n`);
 await put('contact-input.json',JSON.stringify({...plan,erfApproximationMaximumAbsoluteError:1.5e-7},null,2)+'\n');
 console.log(JSON.stringify({out,...plan}));
