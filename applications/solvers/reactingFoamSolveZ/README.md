@@ -383,3 +383,24 @@ legacy option still requires a tabulated model, and Z projection still requires
 tabulation. This selects the existing density equation, changes no EOS, energy
 reference or caloric threshold, and is not proof of pressure-equilibrium recovery.
 Compare stage-labelled continuity and actual paper profiles before acceptance.
+
+## Experimental author pressure-time correction
+
+`realFluidDensityTimeCorrection yes` in controlDict selects the density-time
+correction used by the upstream realFluidFoam pressure equation. The default is
+no and preserves the existing psi-product operator. The selected pressure time
+operator becomes fvc::ddt(rho)-fvc::ddt(psi,p)+fvm::ddt(psi,p). No EOS parameters,
+absolute-Ha transport, source terms, density-restoration policy or acceptance
+limits are changed. The first timestep/write records which operator was used.
+
+This ports only the pressure time term. Upstream realFluidFoam also puts species
+and energy solves inside the pressure corrector loop; this option does not yet
+change that ordering and must not be described as the complete published PIMPLE
+algorithm. The source reference is the unchanged upstream files at674468c.
+
+Inputs/dependencies remain the existing OF8 time operators and controlDict;
+outputs remain pressure/flux/density diagnostics. No network or secrets are used.
+Build with wmake, verify exact parent15-library linkage, then compare separate
+fresh uniform/interface controls with the flag off/on. Follow with independently
+fresh G2 condition sets. All original EOS/caloric checks and failed states remain.
+Compilation and the opt-in setting do not qualify a reacting-G2 prediction.

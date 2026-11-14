@@ -688,3 +688,7 @@ The inline SRK EOS kernel owns cubic-root numerical evaluation. A kernel change
 requires a fresh complete15-library custom runtime and rebuilt dependent apps;
 new headers must not be qualified against old thermodynamic binaries. Its local
 README records the Cardano cancellation regression and unchanged root policy.
+
+reactingFoamSolveZ has an opt-in author density-time pressure correction, using
+existing OF8 operators only. It does not yet reproduce upstream inner species/
+energy ordering. Its README owns the isolated experiment and verification scope.

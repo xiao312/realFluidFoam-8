@@ -1,5 +1,18 @@
 rho = thermo.rho();
 
+// Isolate the author's real-gas time correction from changes to energy ordering.
+// Default remains the stock reactingFoam psi-product time operator.
+const bool useRealFluidDensityTimeCorrection = runTime.controlDict()
+    .lookupOrDefault<Switch>("realFluidDensityTimeCorrection", false);
+auto pressureTimeOperator = [&]() -> tmp<fvScalarMatrix>
+{
+    if (useRealFluidDensityTimeCorrection)
+        return fvc::ddt(rho) - fvc::ddt(psi, p) + fvm::ddt(psi, p);
+    return fvm::ddt(psi, p);
+};
+if (useRealFluidDensityTimeCorrection && (runTime.timeIndex()==1 || runTime.writeTime()))
+    Info<< "pressureTimeForm=realFluidDensityCorrection t=" << runTime.value() << endl;
+
 const volScalarField rAU(1.0/UEqn.A());
 const surfaceScalarField rhorAUf("rhorAUf", fvc::interpolate(rho*rAU));
 
@@ -58,7 +71,7 @@ if (pimple.transonic())
     {
         fvScalarMatrix pEqn
         (
-            fvm::ddt(psi, p)
+            pressureTimeOperator()
           + fvc::div(phiHbyA) + fvm::div(phid, p)
           - fvm::laplacian(rhorAAtUf, p)
          ==
@@ -88,7 +101,7 @@ else
     {
         fvScalarMatrix pEqn
         (
-            fvm::ddt(psi, p)
+            pressureTimeOperator()
           + fvc::div(phiHbyA)
           - fvm::laplacian(rhorAAtUf, p)
          ==
