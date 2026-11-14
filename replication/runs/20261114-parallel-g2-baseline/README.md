@@ -299,3 +299,15 @@ python plot-r30.py EXPORT_DIR OUTPUT_DIR REFERENCES_DIR --plan
 Remove --plan to render. Verify py_compile, plan with no output creation, then
 render retained fields and visually inspect the figures. Paper references keep
 the original PDF/vector provenance; this replay does not redigitize or fit them.
+
+
+`plot-g2-startup.py --case NORMALIZED_CASE --run-record RUN_JSON
+--reference SCHMITT_REFERENCE --time SECONDS --out NEW_OUTPUT` prints a read-only
+plan; `--apply` plots the actual near-axis velocity/O2 beside the retained Fig.21
+curves. Inputs are immutable sampled CSVs and hash-checked reference extraction;
+outputs are PNG/SVG and a hash receipt. It reuses g2-review named-field readers
+and NumPy/Matplotlib. It does not run CFD, assume paper U0/diameter, normalize
+away discrepancies, infer RMS, award acceptance or publish. Dimensional startup
+and dimensionless paper means use separate labelled axes. No secrets/network.
+Verify with the read-only plan, actual retained smoke profiles, served hash checks
+and visual inspection; missing or changed reference curves must fail.
