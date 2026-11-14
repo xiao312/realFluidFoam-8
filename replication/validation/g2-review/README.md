@@ -72,3 +72,8 @@ convention; all missing map cells remain masked. Tests use explicitly synthetic
 parser fixtures only and cannot establish physical agreement. Final qualification
 requires a render from actual CSV samples and visual inspection of every figure.
 The fixed PDF and original-image hashes must match the reference JSON before use.
+
+Paper temperature curves use lines and our raw sampled temperatures use markers,
+following the owner comparison convention. No smoothing, fitted curve or
+statistical interpretation is added. Verify by rendering actual retained profiles
+and inspecting axial and all three radial panels.

@@ -28,7 +28,8 @@ def radial(data, references, out, origin):
             if 'y' not in fields:
                 raise ValueError('Radial CFD profile needs its actual y coordinate')
             x, y = line_with_gaps(fields['y'] * 1000, fields['T'], .0247 / 199 * 1000)
-            ax.plot(x, y, color=color, lw=2.2, label=f"Our instant: {record['time_s'] * 1e6:g} microseconds")
+            ax.plot(x, y, color=color, linestyle='none', marker='o', markersize=3,
+                    label=f"Our instant: {record['time_s'] * 1e6:g} microseconds")
         upper = max(2200, max(float(r['fields']['T'].max()) for r in matches) * 1.07)
         ax.set(xlabel='Radius (mm)', ylabel='Temperature (K)', xlim=(0, 25), ylim=(0, upper),
                title=f'Cavalieri Fig. 6 | x = {station} mm from exit')

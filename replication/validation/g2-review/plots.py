@@ -50,7 +50,7 @@ def centerline(data, reference, out, origin, label):
         for name, color, marker in [('fine', '#c25932', 's'), ('finer', '#3164af', 'o')]:
             points = np.asarray(reference['series'][name]['points'])
             x, y = line_with_gaps(points[:, 0], points[:, 1], reference['reading_uncertainty']['x_one_pixel_m'])
-            ax.plot(x, y, color=color, alpha=.85, marker=marker, markevery=24,
+            ax.plot(x, y, color=color, alpha=.85, linestyle='-',
                     label=f'Paper {name}: time mean')
         colors = plt.cm.viridis(np.linspace(.15, .8, len(records)))
         for record, color in zip(records, colors):
@@ -59,7 +59,8 @@ def centerline(data, reference, out, origin, label):
             if 'x' not in values:
                 raise ValueError('Near-axis profile requires x coordinate')
             x, y = line_with_gaps(values['x'] - origin, values[field], .1998 / 399)
-            ax.plot(x, y, color=color, lw=2.2, label=f'{label}: {time_label(record)}')
+            ax.plot(x, y, color=color, linestyle='none', marker='o', markersize=3,
+                    label=f'{label}: {time_label(record)}')
         radius = data['observations']['nearAxisRadius_m'] * 1000
         ax.set(xlabel='Axial position (m)', ylabel='Temperature (K)',
                title=f"{'Instantaneous' if kind == 'instantaneous' else 'Running-mean'} near-axis temperature | r = {radius:g} mm")

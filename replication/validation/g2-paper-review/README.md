@@ -69,3 +69,8 @@ exactly identical coordinates can be deduplicated. Conflicting values fail;
 there is no tolerance, averaging or interpolation. The first row/order is
 retained. Use the derived `case/` and `run-record.json` for rendering. The shared
 reader remains strict, and the derivation receipt exposes every removed row.
+
+Paper temperature curves use lines and our raw sampled temperatures use markers,
+following the owner comparison convention. No smoothing, fitted curve or
+statistical interpretation is added. Verify by rendering actual retained profiles
+and inspecting axial and all three radial panels.
