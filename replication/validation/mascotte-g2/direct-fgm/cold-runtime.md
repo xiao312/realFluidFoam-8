@@ -1,7 +1,8 @@
 # Cold real-fluid execution
 
 The generator's `cold-real-fluid` mode is preparation, not a qualified runtime.
-It requires an actual cold physical table (85 K oxygen, 288 K methane, 5.61 MPa)
+It requires an actual cold physical table (85 K oxygen,288 K methane,5.61 MPa;
+or Schmitt's83K oxygen,300K methane,5.6MPa)
 and exact PR/SRK export. A warm table is rejected. SRK and PR remain named
 choices; neither is the paper's volume-translated PRVTA model. The fixed-pressure
 table has no independent enthalpy dimension, so measured `T - fgmTdiag` and

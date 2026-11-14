@@ -31,9 +31,9 @@ if(!names.includes('0') || names.some(n=>/^processor/.test(n)||
     names.includes('cold-initialization-start.json'))throw Error('New undecomposed, uninitialized time-zero case required');
 const manifestRaw=await readFile(`${root}/direct-g2-input.json`), m=JSON.parse(manifestRaw);
 if(m.startTime!==0 || m.closure!=='steady-flamelet' || m.energyForm!=='absoluteEnthalpy' ||
-   m.thermodynamics?.mode!=='cold-real-fluid' || m.pressure!==5610000 ||
+   m.thermodynamics?.mode!=='cold-real-fluid' || ![5610000,5600000].includes(m.pressure) ||
    m.initialization?.config?.mode!=='uniform-steady' ||
-   m.streams?.loxinlet?.temperature!==85 || m.streams?.ch4inlet?.temperature!==288)
+   m.streams?.loxinlet?.temperature!==(m.pressure===5610000?85:83) || m.streams?.ch4inlet?.temperature!==(m.pressure===5610000?288:300))
   throw Error('Registered cold steady-table G2 case required');
 const original={}, changed={};
 async function read(name){const b=await readFile(`${root}/${name}`);original[name]=b;return b.toString();}

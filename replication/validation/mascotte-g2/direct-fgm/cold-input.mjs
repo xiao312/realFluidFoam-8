@@ -24,11 +24,13 @@ export async function realFluidInput(directory, input) {
     if (!new RegExp(`\\b${key}\\s+${value}\\s*;`).test(type)) throw new Error(`Dictionary runtime ${key} disagrees with manifest`);
   }
   const pressure = input.receipt.case.pressure_pa;
-  if (Math.abs(pressure - 5610000) > 1e-6) throw new Error('Cold G2 table requires 5.61 MPa');
+  const conditions = pressure === 5610000 ? { oxygen:85, methane:288 }
+    : pressure === 5600000 ? { oxygen:83, methane:300 } : null;
+  if (!conditions) throw new Error('Cold G2 requires registered5.61MPa/85/288K or Schmitt5.6MPa/83/300K conditions');
   const low = Math.max(...manifest.species.map(s => s.effectiveMinimumTemperature_K));
   const high = Math.min(...manifest.species.map(s => s.effectiveMaximumTemperature_K));
-  if (!(low <= 85 && high > 288)) throw new Error('Declared full-mixture inversion bounds do not cover cold streams');
-  for (const [name, species, temperature, z] of [['fuel', 'CH4', 288, 1], ['oxidizer', 'O2', 85, 0]]) {
+  if (!(low <= conditions.oxygen && high > conditions.methane)) throw new Error('Declared full-mixture inversion bounds do not cover cold streams');
+  for (const [name, species, temperature, z] of [['fuel', 'CH4', conditions.methane, 1], ['oxidizer', 'O2', conditions.oxygen, 0]]) {
     const declared = input.receipt.case[name], state = input.lookup(z, 0);
     if (declared?.temperature_k !== temperature || JSON.stringify(declared.mole_fractions) !== JSON.stringify({ [species]: 1 })) throw new Error(`Cold table receipt ${name} is not the required pure stream`);
     if (Math.abs(state.temperature - temperature) > 1e-6 || state.y.some((v, i) => Math.abs(v - (input.metadata.species[i].name === species ? 1 : 0)) > 1e-12)) throw new Error(`Actual table ${name} endpoint disagrees with cold receipt`);

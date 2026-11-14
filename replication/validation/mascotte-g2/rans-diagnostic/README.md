@@ -1,5 +1,9 @@
 # G2 RANS mixing diagnostic
 
+The generator accepts the registered5.61MPa/85/288K and Schmitt5.6MPa/83/300K
+stream sets. Each requires its own actual physical table and thermo identity.
+The kEpsilon/delta-PDF approximation remains distinct from the reference LES.
+
 This module prepares an explicit k-epsilon / unity-Lewis eddy-diffusivity
 diagnostic on a new G2 case. It tests mean-flow mixing with the existing fixed-chi
 steady flamelet. It is not Sharma's LES, a presumed-PDF combustion model, a
