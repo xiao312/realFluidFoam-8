@@ -22,3 +22,10 @@ the same registered SRK mixture and existing solver type aliases. It performs
 property queries and conservative-state averaging only; it cannot submit jobs,
 advance CFD or change the library's EOS/root policy. Probe outputs remain
 separate from scientific acceptance and the CFD solver's source identity.
+
+`replication/validation/mascotte-g2/passive-cold` creates a separate analytic
+unburned composition table and fresh-case configuration. It depends on the
+strict steady-flamelet input reader for its original header provenance, and
+reuses the existing C++ table reader as a passive affine lookup. It does not
+alter that reader, physical profiles, EOS libraries, source terms or acceptance
+criteria. The active diagnostic manifest remains separate from factory inputs.
