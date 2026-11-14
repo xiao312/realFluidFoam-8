@@ -1,6 +1,7 @@
 #ifndef contactFlux_H
 #define contactFlux_H
 #include "contactState.H"
+#include "contactReconstruction.H"
 
 // Double-flux energy localization follows Ma, Lv and Ihme (2017).
 // See NOTICE.md. Mass/momentum share one physical-acoustic HLLC face flux.
@@ -66,13 +67,16 @@ struct Evaluation
     scalar boundaryMass=0,boundaryMomentum=0,boundaryEnergy=0,internalEnergyDefect=0;
 };
 inline Evaluation evaluate(const std::vector<Primitive>& state,const std::vector<Primitive>& frozen,
-    const Primitive& leftFar,const Primitive& rightFar,scalar dx,scalar area)
+    const Primitive& leftFar,const Primitive& rightFar,scalar dx,scalar area,
+    const bool limitedLinear=false)
 {
     const unsigned n=state.size();Evaluation e;e.cells.resize(n);e.faces.resize(n+1);
     for(unsigned face=0;face<=n;++face)
     {
-        const Primitive& l=face?state[face-1]:(state[0].u>=0?leftFar:state[0]);
-        const Primitive& r=face<n?state[face]:(state[n-1].u<=0?rightFar:state[n-1]);
+        const Primitive l=face ? (limitedLinear?reconstructFace(state,face-1,1):state[face-1])
+            :(state[0].u>=0?leftFar:state[0]);
+        const Primitive r=face<n ? (limitedLinear?reconstructFace(state,face,-1):state[face])
+            :(state[n-1].u<=0?rightFar:state[n-1]);
         const Primitive& fl=frozen[face?face-1:0];const Primitive& fr=frozen[face<n?face:n-1];
         e.faces[face]=faceFlux(l,r,fl.gamma,fl.e0,fr.gamma,fr.e0);
     }

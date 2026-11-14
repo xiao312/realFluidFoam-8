@@ -44,6 +44,11 @@ int main(int argc,char* argv[])
          ||mag(mesh.C()[i].z()-mesh.C()[0].z())>1e-8*dx
          ||mag(mesh.V()[i]/(area*dx)-1)>1e-8||mag(U[i].y())+mag(U[i].z())>1e-12)
             FatalErrorInFunction<<"Only ordered uniform one-dimensional x meshes/velocities are supported"<<exit(FatalError);
+    const word reconstruction=runTime.controlDict().lookupOrDefault<word>
+        ("contactDFReconstruction","firstOrder");
+    if(reconstruction!="firstOrder" && reconstruction!="limitedLinear")
+        FatalErrorInFunction<<"Use firstOrder or limitedLinear reconstruction"<<exit(FatalError);
+    const bool limitedLinear=reconstruction=="limitedLinear";
     const scalar cfl=runTime.controlDict().lookupOrDefault<scalar>("maxAcousticCo",.3);
     const scalar maxDt=runTime.controlDict().lookupOrDefault<scalar>("maxDeltaT",1e-5);
     if(!(cfl>0&&cfl<=.5&&maxDt>0))FatalErrorInFunction<<"Require0<maxAcousticCo<=0.5 and positive maxDeltaT"<<exit(FatalError);
@@ -107,7 +112,7 @@ int main(int argc,char* argv[])
     label steps=0;
     Info<<"CONTACT_DF_INIT cells="<<n<<" dx="<<dx<<" area="<<area
         <<" massKg="<<initialMass<<" absoluteEnergyJ="<<initialEnergy
-        <<" acousticCo="<<cfl<<" reconstruction=firstOrder time=SSPRK3 energy=absoluteHa quasiConservative=1"<<endl;
+        <<" acousticCo="<<cfl<<" reconstruction="<<reconstruction<<" time=SSPRK3 energy=absoluteHa quasiConservative=1"<<endl;
     while(runTime.run())
     {
         std::vector<Primitive> frozen=primitive;
@@ -115,18 +120,18 @@ int main(int argc,char* argv[])
         dt=min(dt,runTime.endTime().value()-runTime.value());
         runTime.setDeltaT(dt);dt=runTime.deltaTValue();runTime++;
         const std::vector<Conserved> old=state;
-        const Evaluation l0=evaluate(primitive,frozen,leftFar,rightFar,dx,area);
+        const Evaluation l0=evaluate(primitive,frozen,leftFar,rightFar,dx,area,limitedLinear);
         const std::vector<Conserved> w1=stage(old,l0,dt);
         const std::vector<Primitive> v1=project(w1,frozen);
-        const Evaluation l1=evaluate(v1,frozen,leftFar,rightFar,dx,area);
+        const Evaluation l1=evaluate(v1,frozen,leftFar,rightFar,dx,area,limitedLinear);
         const std::vector<Conserved> e1=stage(w1,l1,dt);
         std::vector<Conserved> w2(n);for(unsigned i=0;i<n;++i)w2[i]=combine(old[i],e1[i],.75,.25);
         const std::vector<Primitive> v2=project(w2,frozen);
-        const Evaluation l2=evaluate(v2,frozen,leftFar,rightFar,dx,area);
+        const Evaluation l2=evaluate(v2,frozen,leftFar,rightFar,dx,area,limitedLinear);
         const std::vector<Conserved> e2=stage(w2,l2,dt);
         for(unsigned i=0;i<n;++i)state[i]=combine(old[i],e2[i],1.0/3,2.0/3);
         primitive=project(state,frozen);
-        updatePhi(evaluate(primitive,frozen,leftFar,rightFar,dx,area));
+        updatePhi(evaluate(primitive,frozen,leftFar,rightFar,dx,area,limitedLinear));
         thermo.p().correctBoundaryConditions();U.correctBoundaryConditions();
         forAll(composition.Y(),k)composition.Y()[k].correctBoundaryConditions();
         thermo.T().correctBoundaryConditions();thermo.he().correctBoundaryConditions();thermo.correct();

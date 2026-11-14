@@ -73,3 +73,24 @@ Link the three custom libraries by explicit FOAM_USER_LIBBIN paths. Bare -l
 lookup can select stock OpenFOAM libraries ahead of the fork despite -L order,
 causing missing rfSpecie symbols or mixed ABI. The build receipt must verify
 resolved real paths and hashes before a physical run.
+
+
+## Limited-linear spatial diagnostic
+
+`configure.mjs FRESH_CASE END_TIME --muscl [--apply]` selects
+`contactDFReconstruction limitedLinear`; default `firstOrder` is unchanged.
+The new reconstruction uses a monotonized-central slope on density, velocity,
+pressure, acoustic speed and H2 mass fraction; O2 is its exact complement.
+The cell-owned frozen gamma/e0 are not reconstructed. Each SSPRK stage still
+projects through the executing SRK model and retains existing range, closure
+and species checks. No species clipping, EOS fit or acceptance-limit change.
+
+This is a MUSCL/SSPRK accuracy experiment, not a claimed implementation of the
+full entropy-stable hybrid method in Ma et al.2017. Reconstructing the acoustic
+speed from valid cell states is a wave-speed estimate; face states are not
+claimed independently EOS-qualified. Scope remains nonreacting 1D contacts.
+Inputs/outputs, boundaries, secret handling and dependencies remain as above.
+Verify actual uniform-state roundoff, short controls, then all six fresh20ms
+profiles and budgets. Re-run first-order oxygen/mixed anchors as controls, and
+compare interface width, pressure/velocity equilibrium and explicit energy
+defects. A sharper plot alone does not qualify a reacting solver.
