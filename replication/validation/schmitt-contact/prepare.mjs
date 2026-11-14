@@ -5,16 +5,18 @@ import {solverSchemes} from '../fgm-of8/direct-verification/schemes.mjs';
 
 const args=process.argv.slice(2),options={};
 for(let i=0;i<args.length;i+=2){
-  if(!['--thermo-dir','--kind','--nx','--out'].includes(args[i])||!args[i+1]||options[args[i]])throw Error('Use --thermo-dir DIR --kind oxygen|mixture --nx VALUE [--out NEW_CASE]');
+  if(!['--thermo-dir','--kind','--nx','--out','--advection'].includes(args[i])||!args[i+1]||options[args[i]])throw Error('Use --thermo-dir DIR --kind oxygen|mixture --nx VALUE [--out NEW_CASE]');
   options[args[i]]=args[i+1];
 }
 const kind=options['--kind'],nx=Number(options['--nx']);
+const advection=options['--advection']??'limited-linear';
+if(!['upwind','limited-linear'].includes(advection))throw Error('advection must be upwind or limited-linear');
 if(!['oxygen','mixture'].includes(kind)||!(kind==='oxygen'?[2,4,6]:[1e-5,2,4]).includes(nx))throw Error('Select a published kind/nx combination');
 const raw=await readFile(`${options['--thermo-dir']}/thermophysicalProperties`);
 const manifest=JSON.parse(await readFile(`${options['--thermo-dir']}/manifest.json`));
 if(manifest.mixture!=='SRKchungTakaMixture'||JSON.stringify(manifest.species.map(s=>s.name))!==JSON.stringify(['H2','O2']))throw Error('Require exact H2/O2 SRK thermo export');
 const sha=b=>createHash('sha256').update(b).digest('hex');
-const plan={schema:'schmitt-contact/v1',kind,nx,pressure_Pa:6e6,velocity_m_s:10,dx_m:.01,cells:400,
+const plan={schema:'schmitt-contact/v1',kind,nx,advection,pressure_Pa:6e6,velocity_m_s:10,dx_m:.01,cells:400,
   domain_m:[-2,2],endTime_s:.02,cleanStart_s:0,maximumTimeStep_s:5e-6,thermoCorrectionPasses:3,maximumTimeStep_s:5e-6,thermoCorrectionPasses:3,thermoSha256:sha(raw),source:'Schmitt2020 equations26/27,Figures5/6',
   limitations:['Own pressure-based algorithm, no AVBP conservative/nonconservative artificial viscosity','Domain length reconstructed from far-field isolation','Cryogenic NASA extrapolation remains unvalidated']};
 if(!options['--out']){console.log(JSON.stringify(plan,null,2));process.exit(0);}
@@ -52,7 +54,7 @@ await put('0/H2',scalar('H2','[0 0 0 0 0 0 0]',oxygen.map(y=>1-y),inlet(0),inlet
 await put('0/rhoTarget',scalar('rhoTarget','[1 -3 0 0 0 0 0]',density,'type zeroGradient;','type zeroGradient;'));
 await put('0/U',header('U','volVectorField')+`dimensions [0 1 -1 0 0 0 0]; internalField uniform (10 0 0);
 boundaryField {left {type pressureInletOutletVelocity; value uniform (10 0 0);} right {type pressureInletOutletVelocity; value uniform (10 0 0);} sides {type empty;}}\n`);
-await put('system/fvSchemes',header('fvSchemes')+solverSchemes().replaceAll('Gauss upwind','Gauss limitedLinear 1').replace('div(phi,U) Gauss limitedLinear 1','div(phi,U) Gauss limitedLinearV 1'));
+await put('system/fvSchemes',header('fvSchemes')+(advection==='upwind'?solverSchemes():solverSchemes().replaceAll('Gauss upwind','Gauss limitedLinear 1').replace('div(phi,U) Gauss limitedLinear 1','div(phi,U) Gauss limitedLinearV 1')));
 await put('system/fvSolution',header('fvSolution')+`solvers {"p.*" {solver GAMG;smoother GaussSeidel;tolerance 1e-9;relTol 0;}
 "(rho|h|U|Yi).*" {solver smoothSolver;smoother symGaussSeidel;tolerance 1e-10;relTol 0;}}
 PIMPLE {nOuterCorrectors 2;nCorrectors 2;nNonOrthogonalCorrectors 0;momentumPredictor yes;transonic no;consistent no;pMin 1000;pMax 1e8;pRef 6000000;}

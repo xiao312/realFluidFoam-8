@@ -38,3 +38,8 @@ next fresh control caps dt at5us (previous50us) and uses the existing three
 fixed-enthalpy thermo inversion passes. Enable the unchanged1e-8 caloric audit.
 These are numerical hypotheses, not a correction to the EOS or paper data;
 preserve the failed baseline and compare its pressure/energy histories.
+
+Optional --advection upwind selects a separately labelled first-order numerical
+control. Default limited-linear retains the intended sharper baseline. Both
+use identical EOS, profiles, timestep cap and caloric acceptance; compare all
+six fresh cases to distinguish transport overshoot from thermo inversion.
