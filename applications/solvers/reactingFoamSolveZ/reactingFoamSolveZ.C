@@ -91,10 +91,13 @@ int main(int argc, char *argv[])
 
     const bool realFluidInnerThermoCorrectors = runTime.controlDict()
         .lookupOrDefault<Switch>("realFluidInnerThermoCorrectors", false);
-    if (realFluidInnerThermoCorrectors && reaction->type()!="none"
-        && reaction->type()!="steadyFlamelet")
-        FatalErrorInFunction << "Inner scalar/energy lifecycle currently supports none or steadyFlamelet; "
-            << "finite-rate/progress-source integration requires separate qualification" << exit(FatalError);
+    // Factory aliases (e.g. none) need not equal the C++ runtime type.
+    const word selectedCombustionModel = reaction->lookupOrDefault<word>("combustionModel", "");
+    if (realFluidInnerThermoCorrectors && selectedCombustionModel!="none"
+        && selectedCombustionModel!="steadyFlamelet")
+        FatalErrorInFunction << "Inner scalar/energy lifecycle supports configured none or steadyFlamelet; got "
+            << selectedCombustionModel << " (runtime type " << reaction->type() << "). "
+            << "Finite-rate/progress-source integration requires separate qualification" << exit(FatalError);
     Info<< "scalarEnergyCorrectors=" << (realFluidInnerThermoCorrectors ? "insidePressure" : "outerPimple") << endl;
 
     Info<< "\nStarting time loop\n" << endl;
