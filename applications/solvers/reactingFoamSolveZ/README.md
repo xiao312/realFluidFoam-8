@@ -358,6 +358,10 @@ initialization correction alone is not proof of a stable flame or paper agreemen
 
 ## Non-tabulated contact verification
 
+Energy-state diagnostics omit cmean when the selected model has no c field;
+they never invent a zero progress measurement. Tabulated diagnostics retain the
+same cmean expression and units.
+
 Only tabulated composition models enter ZEqn. Direct-species and none models do
 not construct a Z field and retain the ordinary species/energy path. The existing
 tabulated FGM equation order is unchanged. Nonreacting H2/O2 contacts have zero

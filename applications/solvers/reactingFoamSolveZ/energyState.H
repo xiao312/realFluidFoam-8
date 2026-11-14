@@ -17,8 +17,11 @@ if (writeEnergyBudget)
         << " pmean=" << PV/volume
         << " Cvmean=" << fvc::domainIntegrate(thermo.Cv()).value()/volume
         << " sourceW=" << (absoluteEnthalpyFGM ? 0 : fvc::domainIntegrate(reaction->Qdot()).value())
-        << " diagnosticSourceW=" << fvc::domainIntegrate(reaction->Qdot()).value()
-        << " cmean=" << fvc::domainIntegrate
-           (mesh.lookupObject<volScalarField>("c")).value()/volume
-        << endl;
+        << " diagnosticSourceW=" << fvc::domainIntegrate(reaction->Qdot()).value();
+    if (mesh.foundObject<volScalarField>("c"))
+    {
+        Info<< " cmean=" << fvc::domainIntegrate
+            (mesh.lookupObject<volScalarField>("c")).value()/volume;
+    }
+    Info<< endl;
 }
