@@ -33,7 +33,7 @@ int main(int argc,char* argv[])
     volScalarField Ha(IOobject("Ha",runTime.timeName(),mesh,IOobject::NO_READ,IOobject::AUTO_WRITE),thermo.he());
     volScalarField rhoEnergy(IOobject("rhoEnergyDF",runTime.timeName(),mesh,IOobject::NO_READ,IOobject::AUTO_WRITE),rho*(thermo.he()-thermo.p()/rho+.5*magSqr(U)));
     surfaceScalarField phi(IOobject("phi",runTime.timeName(),mesh,IOobject::NO_READ,IOobject::AUTO_WRITE),fvc::flux(rho*U));
-    Info.precision(16);
+    Info().precision(16);
     const unsigned n=mesh.nCells();
     if(n<2)FatalErrorInFunction<<"At least two ordered uniform x cells required"<<exit(FatalError);
     const scalar dx=mesh.C()[1].x()-mesh.C()[0].x(),area=mesh.V()[0]/dx;
