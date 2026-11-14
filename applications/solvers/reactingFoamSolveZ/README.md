@@ -1,23 +1,367 @@
-# Reacting flow with optional transported manifold coordinates
+# Transported-Z reacting solver
 
-Advance pressure, momentum, species/composition and energy with OF8 PIMPLE.
-Tabulated combustion models own their Z and optional progress fields. Direct
-species/none models use the species equations and do not require a dummy Z field.
-Only a tabulated model enters ZEqn; the existing tabulated equation order remains.
+This experimental executable adds mixture-fraction transport to the fork's
+reactingFoam and consumes the registered FGM progress and composition fields.
+The base reactingFoam executable remains unchanged. It is not yet qualified for
+reacting MASCOTTE predictions.
 
-Inputs are an OF8 case and explicit runtime libraries. Standard dictionaries
-select thermo, momentum transport, combustion and PIMPLE controls. Tabulated
-absolute-Ha mode requires a hashed actual table and fresh initialized Ha. A
-nonreacting H2/O2 contact can use sensible h because both formation references
-are zero. No chemistry, table, coefficients or acceptance is inferred here.
+The case supplies the usual OF8 dictionaries and, for `fgmTable`, `Z`, `c`,
+species fields and a table. The table supplies species, progress production and
+volumetric heat release. The thermophysical model owns density, temperature and
+sensible energy. Positive `Qdot` on the energy equation's right side heats the
+fluid. A mass-fraction progress source already has units kg/m3/s; it must not be
+multiplied by density again. A single constant normalization span is supported;
+a mixture-fraction-dependent normalized coordinate is not implemented.
 
-Outputs are solver fields, sampled diagnostics and optional energy/continuity
-budgets. Dependencies: matching realFluidFoam or explicitly qualified stock
-thermo headers/libraries and the custom combustionModels registration. Cases,
-evaluator and scheduler stay outside the solver. No network or credentials.
+The v2 table interface instead transports raw C and normalizes only lookup
+coordinates using Cmin/max(Z). Progress and energy sources are captured at the
+same pre-progress-solve state. Composition is refreshed after solving C and
+before energy inversion, avoiding output species from the preceding C state.
+The source written by the model after this refresh can differ from the source
+actually assembled; `energyEquation sourceW` records the latter. Z and C join
+the multivariate convection field list. This ordering still requires physical
+verification; it does not make a projected table composition exactly equivalent
+to solving every species equation.
 
-Minimal build: within Slurm set LIB_rfFoam8_SRC, FOAM_USER_LIBBIN and
-FOAM_USER_APPBIN to isolated matching paths, then wmake. Record source, compiler,
-exact linked libraries and executable hashes. Verification requires compile/link,
-an actual none-model Schmitt contact with no Z, and a fresh tabulated G2 startup.
-Normal exit establishes numerical execution only. Do not build into a live case.
+`writeEnergyBudget yes` in `controlDict` enables equation-stage and end-step
+records in the solver log and writes the actual `rho` and `he` fields. The
+`energyEquation` records report domain-integrated assembled terms in watts,
+before pressure correction or thermodynamic reconstruction. `energyState`
+reports actual discrete state integrals in joules and kilograms. Diagnostics
+retain additional matrices, so leave them disabled for routine production.
+The direct residual evaluator handles purely diagonal operators without
+accessing absent off-diagonal storage. Only the optional legacy-API witness
+allocates zero off-diagonal storage after solving, because that API otherwise
+aborts on a diagonal matrix. This changes diagnostic storage only.
+
+The equation budget now evaluates cell-integrated `source - A*he` explicitly
+from internal and boundary coefficients, counting each coupled neighbour once.
+OF8's scalar residual() applies coupled interfaces and then adds their source
+again. The retained r5 constant periodic cases exposed this exactly: the contact
+error was phi*h plus both cyclic diffusion coefficients times h. The new helper
+does not change the solved equation, coefficients or acceptance threshold.
+`writeEnergyResidualAudit yes` adds a diagnostic comparison against that legacy
+API and the predicted extra coupled contribution. It also reports the initial
+absolute residual and independently reconstructed OF8 normalization scale,
+alongside the actual solver iteration count. Near-constant fields can make that
+normalization scale approach roundoff and hit an iteration ceiling despite a
+small dimensional residual; the two facts must be reported separately.
+The implementation follows the actual coefficients used by OF8's
+[scalar solve](https://github.com/OpenFOAM/OpenFOAM-8/blob/master/src/finiteVolume/fvMatrices/fvScalarMatrix/fvScalarMatrix.C)
+and reconstructs its
+[normalization definition](https://github.com/OpenFOAM/OpenFOAM-8/blob/master/src/OpenFOAM/matrices/lduMatrix/lduMatrix/lduMatrixSolver.C).
+Runtime and parallel verification remain necessary; reading those sources alone
+does not qualify this implementation.
+The optional audit also measures the absolute stored matrix summands and a
+per-cell scalar operation count. A gamma_n bound (unit roundoff = epsilon/2)
+describes rounding in residual evaluation, separately from actual physical
+conservation or model error. It does not change the linear solver tolerances,
+acceptance thresholds, coefficients, or equation.
+
+Dependencies are the fork's combustion, thermophysical and transport libraries
+and OF8 finite-volume libraries. The module reads case files only; it does not
+handle secrets, submit jobs or choose remote paths.
+
+Build in the qualified Linux OF8 environment with `wmake` in this directory.
+Run `reactingFoamSolveZ -case CASE`. The direct verification module at
+`replication/validation/fgm-of8/direct-verification` supplies small, clean-start
+heating and passive-scalar transport cases and analytical checks. A successful
+build alone is not a physical verification result.
+
+## Absolute enthalpy FGM mode
+
+The opt-in `fgmEnergyForm absoluteEnthalpy` setting in controlDict transports
+`Ha=hs+sum(Yi*Hfi)` with pressure work, kinetic-energy terms and the selected
+unity-Lewis enthalpy diffusion. Chemical Q is omitted from this equation and
+retained as a diagnostic. After solving, `hs=Ha-sum(Yi*Hfi)` is passed to the
+thermophysical inversion. This closes chemical energy even when projected
+table composition does not have exactly the same source tangent as tabulated Q.
+The default `sensibleEnthalpy` path retains the existing equation.
+
+Absolute mode requires an explicit time-zero `Ha` field and its boundary
+conditions. It must use sensibleEnthalpy thermodynamics and Fourier or
+eddyDiffusivity transport; other diffusion closures are refused. Ha is the
+initial energy authority, so initial T is recomputed from Ha and the table's
+composition and initial mass flux is rebuilt. Inlet velocity conditions are
+reevaluated after the initialized density is set,
+so a mass-flow boundary does not retain an ideal-gas placeholder velocity after
+an EOS change. Kinetic energy is refreshed from that velocity before the first
+energy equation, including its inlet patch values. Fixed-temperature and fixed-Ha
+boundaries must represent the same inlet state. The first diagnostic uses
+constant transport, not a claim of matched preferential diffusion or real-fluid
+physics. Solver controls must include Ha. Sources in fvOptions must explicitly
+target Ha if needed.
+
+In absolute mode a fixedValue-class temperature patch must have a fixed-value
+Ha patch. After composition refresh and each pressure correction, the solver
+updates that Ha value to the executing thermo's patch Hs(p,T,Y) plus ideal
+formation enthalpy. This uses the current patch pressure and includes the EOS
+departure exactly once. It does not replace a temperature-gradient or insulated
+boundary with a fixed energy boundary. The same update occurs at initialization.
+Mixed/inletOutlet patches are left to their declared boundary conditions; they
+are not treated as fixed temperature merely because `fixesValue()` returns true.
+For real-fluid initialization, first use the runtime thermo probe to construct
+Ha from fresh prescribed p/T/Y; do not copy ideal-gas Ha into the new EOS case.
+Opt-in `fgmRequireHaInitialization yes` requires its time-zero marker and the
+same thermoType dictionary before reading Ha. This prevents executing cold-case
+placeholder energy; the default remains off for existing analytical/warm cases.
+The admitting wrapper must retain the initialized field and runtime hashes.
+`fgmProgressSourceEnabled no` is an explicit nonreacting transport diagnostic:
+the table still supplies composition, but its progress source is not applied.
+It requires absolute-enthalpy mode, where Q is already diagnostic only. The
+default is `yes`. Logs retain both tabulated and applied integrated source;
+disabled-source runs must not be presented as reacting flame calculations.
+Qualification requires a fixed-T pressure perturbation (Ha changes with PR/SRK
+departure) and a negative case with incompatible Ha boundary type, as well as
+the unchanged periodic heating/contact/conversion checks. These source changes
+do not retroactively qualify an earlier executable or result.
+
+This design follows the source-free absolute-enthalpy branch in
+[DeepFlame baseFGM at 7cb3294](https://github.com/deepmodeling/deepflame-dev/blob/7cb3294b275525cb8829ada3d3fbc067ab9323eb/src/dfCombustionModels/FGM/baseFGM/baseFGM.C)
+and the hs/ha distinction in its
+[energy equation](https://github.com/deepmodeling/deepflame-dev/blob/7cb3294b275525cb8829ada3d3fbc067ab9323eb/applications/solvers/dfLowMachFoam/EEqn.H).
+The compressible kinetic/pressure terms here remain those of OF8. There is no
+copied spray source or implicit use of DeepFlame's table-temperature closure.
+
+## Optional source splitting
+
+The separate `steadyFlamelet` model does not transport c. It maps a single
+physical fixed-dissipation profile from transported Z, then refreshes composition
+before the absolute-Ha equation. `cEqn.H` is entered only when the selected model
+reports `transportsProgress()`. The established FGM lifecycle is unchanged.
+Steady-flamelet cases require explicit/no-progress-source mode and full SRK
+enthalpy inversion; tabulated Q and T remain diagnostics. They are laminar
+delta-PDF diagnostics, not qualified turbulent paper replication. See the model's
+local README for table ownership and approximation/provenance requirements.
+
+`fgmSourceIntegration explicit` is the default and keeps the existing source
+assembly. Opt-in `strangFixedState` requires global Euler time stepping, enabled
+FGM source, absolute enthalpy, and a v2 raw-C table. LTS is refused.
+The mesh must remain stationary.
+
+At each physical timestep, the first half source stage uses old C, Z and density
+once. The solver keeps the original oldTime fields unchanged. Its source-free
+transport equation receives `rho.oldTime()*deltaC_half/deltaT`, which changes the
+transport initial state to the cached half-reacted state. Scalar under-relaxation
+is omitted on this opt-in transport solve, so previous outer-iteration reaction
+cannot enter through an under-relaxed matrix source.
+
+Each PIMPLE outer iteration solves transport from that same initial state.
+The second half source stage starts from the freshly solved transport field,
+never the preceding outer iteration's reacted field. Composition then updates
+through the existing table lookup. Ha remains the energy authority; no extra
+chemical Q is added. Existing inlet and coupled boundary conditions remain owned
+by the case. Any source-domain exit stops with its event evidence.
+
+The source stages freeze Z and density separately at their input state. Global
+Euler transport and variable-density coupling do not give a second-order CFD
+method. Refine the physical timestep and compare outer-corrector counts.
+The [verification plan](../../../replication/validation/fgm-source-split/README.md)
+uses actual table source curves and clean-start 0D/1D cases. Neither a source-ODE
+pass nor synthetic tests qualify a reacting G2 calculation.
+
+The history handling follows OF8's
+[GeometricField storage](https://github.com/OpenFOAM/OpenFOAM-8/blob/master/src/OpenFOAM/fields/GeometricFields/GeometricField/GeometricField.C).
+The first-stage correction follows the stored `rho.oldTime()*c.oldTime()` source
+in its [Euler matrix](https://github.com/OpenFOAM/OpenFOAM-8/blob/master/src/finiteVolume/finiteVolume/ddtSchemes/EulerDdtScheme/EulerDdtScheme.C).
+Runtime checks still verify these assumptions with the executing field objects.
+# Caloric closure with source stages
+
+`writeFgmThermoClosure yes` recomputes literal executing `thermo.he(p,T)` after
+inversion and compares it with stored sensible enthalpy at initialization and
+every energy correction. Successful summaries are emitted at written times;
+failures are emitted immediately, even between field writes. It reports internal/boundary maximum errors and internal
+RMS in J/kg. The normalized error uses max(1, |h|, |h(p,T)|, |Cp*T|).
+The default is off; enabled default limit is 1e-8. Nonfinite/unstable caloric
+states or excess error are fatal, without overwriting T or h. This catches
+false convergence at a JANAF bound. The source-stage full282 qualification uses
+1e-8 with its 1e-9 temperature iteration tolerance. Original polynomial ranges
+and any explicit diagnostic extrapolation remain separate input records.
+
+The audit runs immediately after thermo inversion, before the following pressure
+equation updates pressure. For a nonideal EOS it therefore qualifies inversion
+closure at that stage, not final post-pressure consistency or PIMPLE convergence.
+The latter still needs coupled residual and outer-iteration diagnostics.
+
+At written timesteps, `thermoPostPressureClosure` records the same measured
+quantity after the final pressure correction. It is a separate report-only
+witness: no field is changed and the inversion limit is not enforced there.
+Nonideal pressure dependence can produce a departure after a successful
+inversion; compare this drift under timestep and PIMPLE-outer refinement.
+The `limit` field is retained only as the inversion diagnostic's reference
+scale, not as post-pressure acceptance. Invalid counts remain visible.
+
+# Optional wall-time attribution
+
+`writeFgmTiming yes;` in `system/controlDict` enables a local steady-clock
+diagnostic; the default is off and the setting is read once at solver startup.
+The timer is declared in `createFields.H`, before field initialization. OF8 also
+includes this header through its post-processing path, so initialization timing
+must not depend on a variable declared only in the normal solve path. That path
+does not emit a timing summary or add a gather.
+It does not change equations, solver tolerances, guards or model selection.
+It times startup after mesh creation, complete steps, the main equations,
+source half-stages, reaction/table updates, thermo correction, caloric checks,
+energy bookkeeping and field writes. Equation/step categories are inclusive:
+for example energy includes thermo correction and its caloric audit, while
+progress includes the second source stage and subsequent table update.
+Source stages include their field copies/history checks and boundary updates,
+not only the scalar ODE kernel. `continuity` is the standalone step-start density
+solve; density solves inside pressure correction are included in `pressure`.
+`reactionCorrection` includes actual model/table updates in species/progress
+equations. Constructor work remains part of `startup`.
+
+Each region uses local clock reads only. At existing field-write points and
+normal termination, one Pstream gather collects the cumulative seconds, call
+counts and longest individual call from each rank. The master writes explicit
+`fgmTimingRank` records and `fgmTimingCategory` records with rank-0 and maximum
+values, plus the rank responsible for each maximum. Different maxima may come
+from different ranks; their sum is not a critical path or job wall time.
+Times include waits already present in the measured code. Reporting itself is
+outside the step/region counters but inside elapsed time since timer creation.
+No new synchronization occurs at region boundaries. A fatal path retains only
+previous complete summaries; no destructor attempts an unsafe MPI gather.
+
+Dependencies are C++ steady_clock and existing OF8 Pstream/List interfaces;
+there are no files, network operations, secrets or library ABI changes. The
+initial thermo constructor is included in startup rather than attributed to
+thermo.correct. Allocation setup, meshing and compilation are outside this
+instrument. No timing is a scientific acceptance result.
+
+Minimal use: add `writeFgmTiming yes;` to a new time-zero qualification case,
+run the exact rebuilt solver and retain its log. Read-only checks before an
+allocated build are `git diff --check` and review of the timing-only diff.
+The intended allocated check is a small existing physical case with timing off
+and on: the fields and scientific verdicts must agree, enabled logs must contain
+finite nonnegative counters, and rank identities/call counts must match the
+executed serial/MPI configuration. Compilation and that parity check remain
+pending until an admitted run supplies evidence.
+
+The `fgmZEndpoint` diagnostic subtracts0/1 before formatting the actual global
+Z range. It records out-of-range magnitudes without changing Z or its equation.
+This separates floating-point endpoint representation from material overshoot.
+
+The default-off `writeMixtureFractionBudget` diagnostic records the exact
+assembled Z residual, its ratio to the effective diagonal, and cellwise
+`ddt(rho)+div(phi)` after the scalar solve. A private constant-one field checks
+the conservative operator identity with the same density/flux and patch types.
+It changes neither Z nor rho. Each rank reports its worst out-of-range cell,
+coordinates, old/current Z and density, diagonal, residual and a separately
+reassembled post-solve diffusion witness. That last value is not a stored
+deferred correction for a nonorthogonal scheme. These reports distinguish
+iterative error, continuity mismatch and transport behavior; they impose no
+acceptance criterion or lookup-bound change. The stock compressible continuity
+message instead compares density with its EOS value and is not this residual.
+
+The opt-in `conserveTabulatedDensity yes;` control is a pressure-correction
+candidate for tabulated composition. Its default is off; selecting it with a
+non-tabulated model is an error. OF8 `pressureControl::limit()` returns true
+whenever pressure limits are configured, even when it changes no pressure.
+The inherited caller then replaces continuity-solved density with EOS density.
+Job126434026 measured a resulting local continuity defect that predicts the
+mixture-fraction overshoot; tightening the scalar solve did not remove it.
+
+The candidate retains that pressure/EOS update and then solves the unchanged
+conservative density equation again before the next outer scalar solve. It does
+not add a scalar source, alter pressure bounds or modify Z. With
+`writeMixtureFractionBudget yes;`, stage-labelled continuity records bracket the
+EOS replacement and the optional density solve. Both controls are in
+`system/controlDict`; no new dependency, network access or secrets are involved.
+Verification requires a solver-only allocated build, a fresh baseline that
+reproduces the defect, and a separate fresh candidate retaining the existing
+endpoint and conservation checks. No runtime qualification is claimed here.
+Use the same original Z tolerance in the two cases; the tighter tolerance was
+not a cure. This change does not alter the separate end-of-step EOS assignment:
+the next timestep still begins with the existing continuity solve. The audit
+brackets it as `beforeFinalEOSDensity` / `afterFinalEOSDensity`. Its effect
+on the reported final-state energy/mass balance remains an explicit coupling
+diagnostic, rather than being silently included in this pressure-loop repair.
+The upstream return-value contract is visible in
+[OF8 pressureControl.C](https://github.com/OpenFOAM/OpenFOAM-8/blob/master/src/finiteVolume/cfdTools/general/pressureControl/pressureControl.C).
+
+`projectTabulatedZRoundoff yes;` is a separate, default-off numerical policy.
+It requires tabulated composition and `conserveTabulatedDensity yes;`. After
+each Z solve, the original algebraic audit runs first. A global scan then
+refuses nonfinite Z, invalid positive density/volume weights, or any internal
+or boundary excursion larger than exactly64 double-precision epsilon. Nothing
+has been projected on any rank at that refusal. Within that unchanged bound,
+only internal Z values outside0..1 are set to the corresponding endpoint;
+oldTime and prescribed boundary values are never changed. Boundary conditions
+are reevaluated and checked. This differs from the existing lookup-only policy,
+which leaves the transported field unchanged and allows ulps to accumulate.
+
+Every call reports actual pre/post global extrema, corrected cell count and
+maximum delta, signed/absolute sums of rho*V*deltaZ, and cumulative signed/
+absolute mass corrections over all outer solves. `fieldsModified` explicitly
+identifies correction. These are recorded changes to transported mixture
+fraction, not exact scalar conservation. The pressure, energy, lookup and
+material-overshoot criteria are unchanged. Fresh100us qualification must retain
+this ledger and the independent conservation audit; bounded interior cases
+must remain unchanged. The header probe exercises the same decision routine
+at0/1,64/65epsilon and the retained4e-9 material error before actual CFD tests.
+Compile/run it in the admitted allocation with `g++ -std=c++11
+zRoundoffProbe.C -o zRoundoffProbe && ./zRoundoffProbe`. No new runtime library,
+network access, input file, credential or model ABI is introduced.
+
+The subsequent `fgmZEndpoint` line is report-only and records whether the
+roundoff policy is enabled. Actual field changes and their mass correction are
+reported by `fgmZRoundoffProjection`; the endpoint line does not claim that an
+earlier projection left Z unchanged.
+
+Optional `fgmThermoCorrectionPasses` (integer1..3, default1) repeats the selected
+thermo's energy-to-temperature inversion at unchanged internal sensible enthalpy.
+It is intended to refine OF8's temperature-step stopping near a NASA polynomial
+switch; coefficients, energy and caloric acceptance limit are unchanged. Each
+extra pass verifies and reports zero internal h mutation. Maders selects2 only
+after an actual-runtime switch probe. No new dependency or network/secrets.
+Verify thermo_switch_probe.C in the selected fresh case, then the actual clean-
+start flow; compile success alone does not qualify closure or paper agreement.
+The Foundation OF8 thermoI.H T() stops on temperature increment, so a small step
+crossing a discontinuous polynomial switch can require a second correct().
+
+## Scheduled cold-flow ignition
+
+Optional `fgmIgnitionTime` (seconds, default negative/disabled) enables a cold-flow
+stage and one ignition event in the same timezero process. This requires the
+existing raw weighted-C FGM, global time and absolute-enthalpy mode. Until ignition,
+both source half-steps have zero duration; transport and thermo still evolve.
+The case supplies `fgmIgnitionTable`, `fgmIgnitionAxialLength`, and Z min/max.
+The ignition reader uses the same validated table format. For each selected cell,
+its current Z identifies a source curve and the positive source maximum sets C.
+No Z, inlet boundary, absolute enthalpy or historical CFD state is fabricated.
+A50ms cold-flow Z/U-change diagnostic and the ignition mass/enthalpy jump are logged.
+The hook runs before advancing the clock so oldTime for the next transport step
+includes the ignited state. This is numerical ignition, not a new chemical model.
+Dependencies are the existing FGM reader and thermo modules; no network/secrets.
+Example: `fgmIgnitionTime 0.9; fgmIgnitionTable "constant/physical.tbl";`.
+Verify with a compiled staged cold-flow run: zero cold source, exactly one ignition,
+unchanged Ha at ignition, runtime EOS correction and continued reacting evolution.
+
+For controlled ignition sensitivity, `fgmIgnitionMode` is `sourcePeak` (unchanged
+default) or `upperProgress` (the local upper table progress state). Both preserve
+specific absolute enthalpy, use one event and log the selected mode. The latter is
+an ignition diagnostic, not an equilibrium-chemistry replacement or a claim that
+the author used that state. Compare sustained reaction after the event, not the
+prescribed ignition temperature. Reproduce the original extinction before using
+this control as evidence. The Z region remains separately configurable.
+
+Scheduled ignition also requires numerical state consistency. Default-on
+`fgmIgnitionNumericalReset` reconstructs phi from the changed density/current U,
+applies the existing MRF relative-flux operation, resets the event timestep to at
+most `fgmIgnitionDeltaT` (default1e-6s), and reruns the existing Courant/adaptive-step
+selection before time advancement. Existing Ha ownership/equation is unchanged.
+The event logs old/new dt, pre-refresh Courant and changed internal mass flux.
+Explicit `fgmIgnitionNumericalReset no` reproduces the original event ordering for
+a matched control. Check actual following-step Co/temperature histories; this
+initialization correction alone is not proof of a stable flame or paper agreement.
+
+
+## Non-tabulated contact verification
+
+Only tabulated composition models enter ZEqn. Direct-species and none models do
+not construct a Z field and retain the ordinary species/energy path. The existing
+tabulated FGM equation order is unchanged. Nonreacting H2/O2 contacts have zero
+species formation enthalpies, so their sensible h and absolute Ha share the same
+reference. This does not change reacting absolute-Ha ownership. Verify an actual
+none-model Schmitt contact without Z and a fresh tabulated G2 startup against the
+same compiled libraries. Compilation alone is not physical validation.
