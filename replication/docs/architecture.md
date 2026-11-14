@@ -713,3 +713,7 @@ experiment, not a thermodynamic inversion repair. It consumes transported rho,
 current p,Y and executing SRK coefficients; changes to energy are explicitly
 reported per equation application. Its README owns the Schmitt-inspired mask,
 unsupported reacting scope and fresh-case/conservation qualification boundary.
+
+Cold-energy projection has a separately selected all-region nonreacting diagnostic
+for pressure-equilibrium isolation. The default cold mask and the prohibition on
+reacting/FGM application remain unchanged; its README records the paper caution.

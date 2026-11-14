@@ -43,6 +43,9 @@ inline void applySrkColdEnergyProjection
 {
     const Time& time=rho.mesh().time();
     if (!time.controlDict().lookupOrDefault<Switch>("realFluidColdEnergyProjection",false)) return;
+    const word region=time.controlDict().lookupOrDefault<word>("realFluidProjectionRegion","cold");
+    if (region!="cold" && region!="all")
+        FatalErrorInFunction << "realFluidProjectionRegion must be cold or all" << exit(FatalError);
     const PressureSlopeMixture* mixture=
         dynamic_cast<const PressureSlopeMixture*>(&thermo.composition());
     if (!mixture || thermo.he().name()!="h")
@@ -55,7 +58,7 @@ inline void applySrkColdEnergyProjection
         const scalar pressure=thermo.p()[celli],density=rho[celli];
         const scalar targetT=coldContactTemperatureAtDensity(point,density,pressure,thermo.T()[celli]);
         const scalar compressibility=pressure/(density*point.R()*targetT);
-        if (compressibility>=.9) continue;
+        if (region=="cold" && compressibility>=.9) continue;
         const scalar error=mag(point.rho(pressure,targetT)-density)/density;
         if (!std::isfinite(error) || error>1e-8)
             FatalErrorInFunction << "Cold projection selected-root mismatch=" << error
@@ -73,7 +76,8 @@ inline void applySrkColdEnergyProjection
     reduce(signedJ,sumOp<scalar>());reduce(absoluteJ,sumOp<scalar>());
     reduce(maxDeltaH,maxOp<scalar>());reduce(changed,sumOp<label>());
     Info<< "coldEnergyProjection t=" << time.value() << " cells=" << changed
-        << " thresholdZ=0.9 appliedSigned_J=" << signedJ << " appliedAbsolute_J=" << absoluteJ
+        << " region=" << region << " thresholdZ=0.9 maskApplied=" << (region=="cold" ? 1 : 0)
+        << " appliedSigned_J=" << signedJ << " appliedAbsolute_J=" << absoluteJ
         << " maxDeltaH_J_kg=" << maxDeltaH
         << " budgetScope=eachEquationApplication cumulativePhysicalBalance=0" << endl;
 }

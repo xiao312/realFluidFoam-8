@@ -478,3 +478,15 @@ Verification: fresh off/on O2 and H2/O2 contacts with unchanged mesh, properties
 transport, timestep and1e-8 closure checks. Only after short controls complete
 prepare independent20ms cases and compare paper profiles, mass and energy defects.
 The earlier differential-pressure-only candidate failed and stays disabled here.
+
+
+realFluidProjectionRegion cold|all selects the projection mask; cold remains the
+default Schmitt-inspiredZ<0.9 region. The all setting is a nonreacting diagnostic
+of mask-induced pressure-equilibrium errors, motivated by the independently
+qualified all-cell contact double-flux control. It is not a fitted threshold and
+must not be enabled for reacting/FGM production: Schmitt explicitly cautions that
+all-region nonconservative treatment can produce temperature errors. Both modes
+retain exactly the same EOS-root, caloric and temperature-range checks and report
+all applied energy adjustments. Verify independent fresh1ms then20ms controls;
+a short normal exit is insufficient (both R29 short families passed but all six
+longer controls failed). The existing nonreacting-only scope remains enforced.
