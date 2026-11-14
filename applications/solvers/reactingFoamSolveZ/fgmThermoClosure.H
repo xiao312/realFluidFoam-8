@@ -71,6 +71,41 @@ inline void auditFgmThermoClosure
             << " boundaryMaxRelative=" << boundaryMaxRelative << " limit=" << limit << endl;
     }
     if (failed && enforceInversion)
+    {
+        // Retain the actual failing state for pointwise EOS/inversion diagnosis.
+        // These are failure snapshots, never authorized CFD restart inputs.
+        scalar localWorst = 0;
+        label worstCell = -1;
+        forAll(thermo.he(), celli)
+        {
+            const scalar error = mag(evaluated()[celli]-thermo.he()[celli]);
+            if (error > localWorst) { localWorst=error; worstCell=celli; }
+        }
+        if (worstCell >= 0)
+        {
+            Pout<< "thermoFailureCell time=" << time.value()
+                << " rank=" << Pstream::myProcNo() << " cell=" << worstCell
+                << " position=" << thermo.T().mesh().C()[worstCell]
+                << " p_Pa=" << thermo.p()[worstCell]
+                << " T_K=" << thermo.T()[worstCell]
+                << " storedH_J_kg=" << thermo.he()[worstCell]
+                << " evaluatedH_J_kg=" << evaluated()[worstCell]
+                << " Cp_J_kg_K=" << heatCapacity()[worstCell];
+            const PtrList<volScalarField>& species = thermo.composition().Y();
+            forAll(species, i)
+                if (mag(species[i][worstCell]) > 1e-12)
+                    Pout<< " Y_" << species[i].name() << "=" << species[i][worstCell];
+            Pout<< endl;
+        }
+        thermo.T().write();
+        thermo.p().write();
+        thermo.he().write();
+        const PtrList<volScalarField>& species = thermo.composition().Y();
+        forAll(species, i) species[i].write();
+        Info<< "thermoFailureSnapshot time=" << time.value()
+            << " authorizedForRestart=0 acceptanceChanged=0" << endl;
+    }
+    if (failed && enforceInversion)
         FatalErrorInFunction << "Stored h is inconsistent with executing h(p,T,Y); see thermoClosure"
             << exit(FatalError);
 }

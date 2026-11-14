@@ -369,3 +369,9 @@ species formation enthalpies, so their sensible h and absolute Ha share the same
 reference. This does not change reacting absolute-Ha ownership. Verify an actual
 none-model Schmitt contact without Z and a fresh tabulated G2 startup against the
 same compiled libraries. Compilation alone is not physical validation.
+
+On an enforcing caloric failure, the solver logs each rank's worst internal
+cell (p,T,h,evaluated h,Cp and non-negligible species) and writes the failed
+T,p,h,Y state at its actual time. These diagnostic snapshots preserve the
+original failed verdict and must never be relabelled as time-zero CFD inputs.
+No equation, caloric threshold, or success-path field is changed by this output.
