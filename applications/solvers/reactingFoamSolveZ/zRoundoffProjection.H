@@ -14,7 +14,29 @@ if (projectTabulatedZRoundoff)
         if (!std::isfinite(rho[celli]) || rho[celli]<=0
          || !std::isfinite(mesh.V()[celli]) || mesh.V()[celli]<=0
          || !std::isfinite(rho[celli]*mesh.V()[celli])
-         || rho[celli]*mesh.V()[celli]<=0) ++invalid;
+         || rho[celli]*mesh.V()[celli]<=0)
+        {
+            ++invalid;
+            // Read stored fields only, so another EOS evaluation cannot mask
+            // the original failure. Limit output per rank, never validity.
+            if (invalid <= 16)
+            {
+                std::ostringstream state;
+                state << std::setprecision(17) << "fgmZInvalidTransportState t="
+                    << runTime.value() << " rank=" << Pstream::myProcNo()
+                    << " cell=" << celli << " centre=" << mesh.C()[celli]
+                    << " rho=" << rho[celli] << " oldRho=" << rho.oldTime()[celli]
+                    << " volume=" << mesh.V()[celli] << " Z=" << Z[celli]
+                    << " p=" << thermo.p()[celli] << " T=" << thermo.T()[celli]
+                    << " Hs=" << thermo.he()[celli]
+                    << " Ha=" << (absoluteEnthalpyFGM ? fgmAbsoluteEnthalpy()[celli] : 0)
+                    << " absoluteHaEnabled=" << absoluteEnthalpyFGM
+                    << " massFractions=";
+                forAll(Y, i) state << Y[i].name() << ':' << Y[i][celli] << ',';
+                state << " fieldsModified=0 EOSreevaluated=0";
+                Info<< state.str().c_str() << endl;
+            }
+        }
     }
     forAll(Z.boundaryField(), patchi)
         forAll(Z.boundaryField()[patchi], facei) scan(Z.boundaryField()[patchi][facei]);

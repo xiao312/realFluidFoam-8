@@ -616,3 +616,11 @@ replay fixed-h finite differences, then fresh nonreacting contacts and bounded
 G2 controls with unchanged closure/continuity limits. R39's original audit is
 partial:24/24 rows passed at pressure step1e-4, but7/72 rows failed across all
 three step sizes. This supports a labelled development experiment, not approval.
+
+The Z endpoint pre-lookup scan also requires finite positive transported rho,
+cell volume and rho*V. A valid Z range does not imply that these other checks
+passed. The failure-only `fgmZInvalidTransportState` report captures stored
+p/T/Hs/Ha/rho/oldRho/Y and location for up to16 invalid cells per rank. It does
+not recompute an EOS, mutate a field or change any validity/roundoff limit.
+Qualify this solver-only diagnostic against the consistent combustion ABI,
+then replay the exact fresh case; it does not qualify the failed state.
