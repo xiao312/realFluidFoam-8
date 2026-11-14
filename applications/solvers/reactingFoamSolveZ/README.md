@@ -35,6 +35,12 @@ Verification requires an exact default-off control against c73e176, then fresh
 oxygen/mixed contacts measuring pMechanical/U, caloric closure, density and
 thermal conservation. Compilation or terminal0 alone is not model validation.
 Runtime qualification is pending at the introduction of this option.
+The first R45 app compiled/linked, but its low-Mach branch failed physically:
+one case exited0 with catastrophic mechanical velocity/density. A copied psi
+coefficient retains old-time storage in OF8; zeroing its current field cannot
+represent an absent compressibility time term. The revised projection uses a
+stationary zero diagonal and logs the copied-history witness. This correction
+still requires fresh runtime/physical qualification. Terminal0 is insufficient.
 
 This experimental executable adds mixture-fraction transport to the fork's
 reactingFoam and consumes the registered FGM progress and composition fields.

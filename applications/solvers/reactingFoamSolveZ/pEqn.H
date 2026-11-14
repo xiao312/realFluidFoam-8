@@ -39,7 +39,21 @@ if (useDifferentialPressure)
 auto pressureTimeOperator = [&]() -> tmp<fvScalarMatrix>
 {
     if (lowMachPressureSplit)
-        return fvc::ddt(rho)+fvm::ddt(pressureDensitySlope,p);
+    {
+        // A renamed copy of psi retains its old-time fields in OF8. Zeroing
+        // its current values does NOT zero the ddt source's old coefficient.
+        // A stationary zero diagonal has no coefficient history to leak into
+        // the incompressible projection. Keep the copied field as a witness.
+        if (runTime.timeIndex()==1)
+            Info<< "lowMachProjectionHistory t=" << runTime.value()
+                << " zeroCurrentSlopeMax=" << gMax(pressureDensitySlope.primitiveField())
+                << " copiedOldSlopeMax=" << gMax(pressureDensitySlope.oldTime().primitiveField())
+                << " activeOperator=stationaryZeroDiagonal" << endl;
+        return fvc::ddt(rho)+fvm::Sp
+        (
+            dimensionedScalar("zeroMechanicalSlope",psi.dimensions()/dimTime,0),p
+        );
+    }
     if (useDifferentialPressure)
         return pressureDensityTimeOffset()+fvm::ddt(pressureDensitySlope,p);
     if (useRealFluidDensityTimeCorrection)
