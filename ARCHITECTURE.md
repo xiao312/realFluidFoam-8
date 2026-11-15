@@ -15,6 +15,11 @@ and transport properties. `applications/solvers/reactingFoamSolveZ/` owns the
 experimental transported-coordinate flow/energy equations. It depends on those
 libraries and OF8, never on a scheduler or agent runtime.
 
+Within `src/combustionModels/relaxedTable/`, `relaxationClock.H` validates and
+evaluates the source clock. The model and one-cell qualification probe share
+this header. Default per-step relaxation and opt-in fixed-time diagnostics use
+the same species update; the clock cannot alter thermodynamics or field bounds.
+
 Within that solver, `createLowMachPressure.H` selects an optional uniform
 thermodynamic-pressure/separate mechanical-pressure model. `pEqn.H` owns the
 projection, `EEqn.H` the selected energy equation, and

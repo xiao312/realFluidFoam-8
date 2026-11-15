@@ -1,6 +1,7 @@
 #ifndef relaxationProbe_H
 #define relaxationProbe_H
 #include "steadyFlameletTable.H"
+#include "relaxationClock.H"
 #include <fstream>
 #include <iomanip>
 #include <cmath>
@@ -23,7 +24,8 @@ Foam::label auditRelaxedSpeciesSource
     if (configuration.lookupOrDefault<word>("combustionModel", "") != "relaxedTable")
         FatalErrorInFunction << "relaxedTable required" << exit(FatalError);
     const dictionary& coefficients = configuration.subDict("relaxedTableCoeffs");
-    const scalar Cr = coefficients.lookup<scalar>("relaxationSteps");
+    const auto clock = Foam::combustionModels::relaxedTableClock(coefficients, runTime.deltaTValue());
+    const scalar Cr = 1/clock.alpha;
     const fileName tableFile(coefficients.lookup("table"));
     const forgeSteady::Table table(tableFile.c_str());
     const volScalarField& Z = mesh.lookupObject<volScalarField>("Z");
@@ -44,7 +46,7 @@ Foam::label auditRelaxedSpeciesSource
     std::ofstream output((runTime.path()/"relaxation-probe.csv").c_str());
     output << std::setprecision(17)
         << "pseudoStep,Cr,alpha,dt_s,T_K,p_Pa,maxYReferenceError,sumYError,"
-        << "HaMutation_J_kg,HsRelativeError,Qdot_W_m3,QdotRelativeIdentityError,passed\n";
+        << "HaMutation_J_kg,HsRelativeError,Qdot_W_m3,QdotRelativeIdentityError,passed,mode,tau_s\n";
     bool allPassed = true;
     for (label step=1; step<=steps; ++step)
     {
@@ -57,7 +59,7 @@ Foam::label auditRelaxedSpeciesSource
         for (label pass=0; pass<3; ++pass) thermo.correct();
         auditFgmThermoClosure(thermo);
         scalar worst = 0, sum = 0;
-        const scalar factor = std::pow(1-1/Cr,step);
+        const scalar factor = std::pow(1-clock.alpha,step);
         forAll(map, s)
         {
             const scalar expected = target.y[s] + (initial[s]-target.y[s])*factor;
@@ -78,7 +80,8 @@ Foam::label auditRelaxedSpeciesSource
         allPassed = allPassed && passed;
         output << step << ',' << Cr << ',' << 1/Cr << ',' << dt << ',' << t << ','
             << thermo.p()[0] << ',' << worst << ',' << mag(sum-1) << ',' << mutation
-            << ',' << relative << ',' << q << ',' << qError << ',' << label(passed) << std::endl;
+            << ',' << relative << ',' << q << ',' << qError << ',' << label(passed)
+            << ',' << clock.mode.c_str() << ',' << clock.time << std::endl;
     }
     output.close();
     Info<< "RELAXATION_SOURCE_PROBE steps=" << steps << " allPassed=" << allPassed

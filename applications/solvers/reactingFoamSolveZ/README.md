@@ -9,6 +9,12 @@ follows Schmitt Eq.12; the first target remains the existing finite-chi profile,
 so it does not claim the paper's exact equilibrium/PDF/LES closure. See the
 model's local README for configuration and qualification boundaries.
 
+The optional fixed-time source diagnostic shares `relaxationClock.H` with the
+model's one-cell probe. It retains the default paper Cr100 mode, absolute-Ha
+equation and all field/thermo criteria. Probe CSVs append the selected mode and
+source time. A matched-alpha comparison must preserve the original recurrence;
+physical cases must separately test timestep/source-clock sensitivity from zero.
+
 The combustion lifecycle interface now distinguishes transported Z from
 prescribed composition and declares absolute-Ha support explicitly. Existing
 models inherit their old behavior. This interface changes the custom-library
