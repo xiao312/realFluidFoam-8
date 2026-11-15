@@ -1,0 +1,52 @@
+{
+  "sourceClockSource": "80fa810d34c179d136ce1e45242bc2238d95fddb",
+  "sourceClockSolverSha256": "3e62c8e874d32ca161a37ab2ca8f2f21ddc3e3a14d6a51af0fa9183c1ed55de7",
+  "sourceQualification": {
+    "executedExactSourceRows": 60,
+    "worstAlphaError": 0,
+    "physicalTimeA": 20,
+    "physicalTimeB": 20,
+    "endpointTemperatureDifference": 1.3642420526593924e-12,
+    "sourceRecurrencePassed": true,
+    "constantHaAndQdotIdentityPassed": true,
+    "CFDsteps": 0,
+    "scientificAcceptance": false
+  },
+  "APEC": {
+    "apec-s17": {
+      "source": "b659c7bc45cd1a3102c78884750405ce3a1f301b",
+      "products": [
+        {
+          "file": "bin/realFluidContactAPEC",
+          "sha256": "fe743ea50b8f1fe3afa4592002346a4571201d25cd7bd7794c1a7bcd2d331280"
+        },
+        {
+          "file": "bin/initializeSchmittContact",
+          "sha256": "7b171e0b6587660b13cdf10f55b0ea46dbc5a5ca03a3ed500e572efda0e272ff"
+        }
+      ]
+    },
+    "apec-s18": {
+      "source": "186955473d756fce85cc3716d0ed293f4dcd7a3f",
+      "products": [
+        {
+          "file": "bin/realFluidContactAPEC",
+          "sha256": "3c96072ca88fefc2f70c9c17897275e7458380cfd5151a4c2d2475d79bf27583"
+        },
+        {
+          "file": "bin/initializeSchmittContact",
+          "sha256": "7b171e0b6587660b13cdf10f55b0ea46dbc5a5ca03a3ed500e572efda0e272ff"
+        }
+      ]
+    }
+  },
+  "environmentProfileSha256": "f46b172cd5e40693c14e09ae43ca85df418ed3da7556e58fd71fad5b2fca1793",
+  "parentThermoSource": "51075d584e7a9bb12a85201b6dcc4eae55303b52",
+  "newAdmissions": 23,
+  "newAllocatedCoreHours": 206.51277777777776,
+  "historicalAdmissions": 85,
+  "historicalAllocatedCoreHours": 475.533889,
+  "allKnownJobsTerminal": true,
+  "scientificAcceptance": false,
+  "productionMerged": false
+}

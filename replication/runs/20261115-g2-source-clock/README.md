@@ -103,3 +103,20 @@ S14/S15 are fresh coarse-timestep G2 controls. S16 is a separately compiled
 oxygen-only conservative APEC contact prototype; its staged presence is not
 physical qualification. All three wrappers retain their failures and normal
 exit cannot establish paper agreement.
+
+`plot-apec-contacts.py` consumes hashed collection metadata, exported raw OF
+fields and digitized Schmitt references. It writes paper-limit and full-range
+comparisons plus metrics; partial-time samples are excluded from same-time RMS.
+Use --collection FILE --reference CSV --out DIR for a read-only plan and add
+--apply to render. `import-apec.mjs ROOT SITE CATALOG [--apply]` adds views while
+protecting original targets/captions/primary images. `plot-temporal-field.py`
+redraws the S12-specific raw-cell Cavalieri field from its collection/NPZ; its
+caption explicitly identifies fixed10us/maxdt0.5us, so do not reuse that label
+for other controls. All generated plots/state remain outside Git. These tools
+have no compute submission or credentials. Verify Python syntax, Node --check,
+image layout and byte-exact served asset hashes.
+
+For S17 use `import-apec.mjs ROOT SITE CATALOG --experiment=apec-s17 [--apply]`.
+`assess-contact-equilibrium.mjs PROFILES_JSON OUTPUT_JSON [--apply]` retains
+the original1e-6 pressure/velocity limits independently of conservation checks;
+a normal diagnostic exit never approves a failed equilibrium comparison.

@@ -1,0 +1,26 @@
+import fs from 'node:fs';import path from 'node:path';import crypto from 'node:crypto';
+const [rawRoot,rawSite,rawCatalog,...flags]=process.argv.slice(2);
+const action=flags.includes('--apply')?'--apply':undefined;
+const experiment=flags.find(f=>f.startsWith('--experiment='))?.split('=')[1]??'apec-s16';
+if(!['apec-s16','apec-s17'].includes(experiment)||flags.some(f=>f!=='--apply'&&!f.startsWith('--experiment=')))throw Error('Unsupported flags/experiment');
+const expectedJob=experiment==='apec-s16'?'128113043':'128113312';
+if(!rawRoot||!rawSite||!rawCatalog||![undefined,'--apply'].includes(action))throw Error('Use ROOT SITE CATALOG [--apply]');
+const root=path.resolve(rawRoot),site=path.resolve(rawSite),catalog=path.resolve(rawCatalog),read=f=>fs.readFileSync(f,'utf8'),json=f=>JSON.parse(read(f)),sha=b=>crypto.createHash('sha256').update(b).digest('hex');
+const data=JSON.parse(read(site+'/data.js').replace(/^export default /,'').replace(/;\s*$/,'')),central=json(catalog),collection=json(root+'/'+experiment+'-collection.json'),plots=root+'/'+experiment+'-plots';
+if(data.figures.length!==75||data.papers.length!==12||central.targets.length!==75||collection.job!==expectedJob)throw Error('Unexpected identity/catalog');
+const protectedFields=rows=>JSON.stringify(rows.map(({views,...r})=>r)),uiBefore=protectedFields(data.figures),centralBefore=protectedFields(central.targets);
+if(action!=='--apply'){console.log(JSON.stringify({readOnly:true,target:'schmitt2020-fig-5',newViews:fs.readdirSync(plots).filter(n=>n.endsWith('.png')).length,primaryChanged:false,scientificAcceptance:false}));process.exit(0);}
+const backup=root+'/before-apec-import-'+new Date().toISOString().replace(/[:.]/g,'-');fs.mkdirSync(backup);for(const n of ['data.js','index.html','site-manifest.json'])fs.copyFileSync(site+'/'+n,backup+'/'+n);fs.copyFileSync(catalog,backup+'/catalog.json');
+const assets=[];function asset(file){const b=fs.readFileSync(file),h=sha(b),n=path.basename(file),rel='assets/'+path.basename(n,path.extname(n))+'-'+h.slice(0,12)+path.extname(n);fs.writeFileSync(site+'/'+rel,b);assets.push(rel);return{file:rel,sha256:h};}
+const artifacts=[asset(root+'/'+experiment+'-collection.json'),asset(plots+'/comparison-metrics.json'),asset(plots+'/profiles.json'),asset(root+'/'+experiment+'-export/results/'+experiment+'/build-qualification.json')];
+const evidence={job:expectedJob,source:collection.source,method:'Conservative central APEC oxygen-only;direct rho/e recovery;SSPRK3',startTime_s:0,artifacts,scientificAcceptance:false,rows:collection.rows,note:experiment==='apec-s16'?'nx4/6 completed20ms with near-roundoff conservative budgets but large pressure/velocity errors;nx2 failed, lastwritten10ms. Not reactingG2.':'Same physical nx2 width:800cells completed20ms but pressure departure11.43%;1600cells payloadtimeout, lastlogged19.625ms/lastsaved15ms. Partial fields are not20ms results. Not reactingG2.'};
+fs.writeFileSync(root+'/'+experiment+'-site-evidence.json',JSON.stringify(evidence,null,2)+'\n');const ev=asset(root+'/'+experiment+'-site-evidence.json');
+const views=fs.readdirSync(plots).filter(name=>name.endsWith('.png')).sort().map(name=>{
+ const im=asset(plots+'/'+name);return{id:name.replace('.png',''),label:'Conservative APEC — '+name.replace(experiment+'-','').replace('.png',''),image:im.file,image_sha256:im.sha256,data:ev.file,data_sha256:ev.sha256,note:evidence.note+' Paper lines; raw cell markers; full-domain companions expose excursions beyond paper axes.',scientificAcceptance:false};
+});
+for(const list of [data.figures,central.targets]){const f=list.find(f=>f.id==='schmitt2020-fig-5');if(!f)throw Error('Missing target');f.views=[...views,...f.views.filter(v=>!v.id.startsWith(experiment+'-'))];}
+if(protectedFields(data.figures)!==uiBefore||protectedFields(central.targets)!==centralBefore)throw Error('Protected data changed');
+fs.writeFileSync(catalog,JSON.stringify(central,null,2)+'\n');data.central_ladder.catalog_sha256=sha(fs.readFileSync(catalog));data.captured_at=new Date().toISOString();delete data.snapshot_sha256;data.snapshot_sha256=sha(JSON.stringify(data));
+const serialized='export default '+JSON.stringify(data).replaceAll('<','\\u003c')+';\n',module='data-'+data.snapshot_sha256.slice(0,16)+'.js';fs.writeFileSync(site+'/data.js',serialized);fs.writeFileSync(site+'/'+module,serialized);
+const original=read(site+'/argos.js');if(!original.includes('from"./data.js"'))throw Error('Unexpected binding');const bundle=original.replace('from"./data.js"','from"./'+module+'"'),entry='argos-'+sha(bundle).slice(0,16)+'.js';fs.writeFileSync(site+'/'+entry,bundle);fs.writeFileSync(site+'/index.html',read(site+'/index.html').replace(/src="argos(?:-[a-f0-9]+)?\.js"/,'src="'+entry+'"'));
+const manifest=json(site+'/site-manifest.json');for(const n of [...assets,'data.js',module,entry,'index.html'])manifest.files[n]=sha(fs.readFileSync(site+'/'+n));manifest.snapshot_sha256=data.snapshot_sha256;fs.writeFileSync(site+'/site-manifest.json',JSON.stringify(manifest,null,2)+'\n');fs.writeFileSync(root+'/'+experiment+'-ui-import-receipt.json',JSON.stringify({backup,assets,targets:75,papers:12,primaryChanged:false,scientificAcceptance:false},null,2)+'\n');console.log(JSON.stringify({assets:assets.length,views:views.length,primaryChanged:false,scientificAcceptance:false}));

@@ -82,3 +82,7 @@ records completed NIST comparisons and failed inversion checks. The
 The [15 November G2 methods review](docs/g2-frontier-methods-20261115.md) compares
 public pressure-equilibrium fluxes, SRK reference solvers and coupling methods,
 and separates proposed experiments from current CFD qualification.
+
+The [15 November development pass](docs/g2-source-coupling-development-20261115.md)
+records actual source-clock and conservative-contact experiments, failures,
+updated comparisons and unresolved G2 coupling. It is not production qualification.

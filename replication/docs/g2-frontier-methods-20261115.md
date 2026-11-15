@@ -1,9 +1,9 @@
 # Methods to test for G2 thermodynamic coupling
 
-15 November 2026, Asia/Shanghai. Research and recommendations; no new algorithm
-in this note has been implemented or scientifically accepted. Existing S11/S12
-CFD runs continue under their original bounds. No new compute was submitted for
-this research.
+15 November 2026, Asia/Shanghai. Research with a subsequent authorized implementation follow-up. Exact source
+integration has actual source-probe qualification; the APEC prototype remains
+experimental. No new method has scientific acceptance. Original run identities
+and failures are preserved; follow-up compute uses separate immutable packets.
 
 ## Decision
 
@@ -267,3 +267,43 @@ rows passed with constant-Ha/Qdot checks and equal-time endpoint difference
 The oxygen-only APEC application is an experimental adaptation with direct
 rho/e recovery and shared conservative energy flux. It is not yet qualified
 or transferred to reacting G2. See its local module README and S16 receipts.
+
+## Physical findings from the implementation follow-up
+
+S12 Cavalieri completed1ms at maxdt0.5us. Its radial15mm peak is813K versus412K
+in the older Cr100adaptive1ms control; the paper mean curves peak around1800K.
+The45/70mm planes remain near288K. This is partial startup improvement, not
+agreement. Euler-consistent mass residual is-1.49e-14 relative; accepted-state
+energy-equation budget mismatch is+0.004279J, and final source-element change
+2.45e-6 remains unresolved. Fine Schmitt S11 crossed the earlier682us numerical
+failure but reached an8400s payload timeout: last completed time898us, not1ms.
+
+Exact-source S14 Cavalieri failed at156.806177551288us,3933.44J/kg caloric error,
+162.5794K and5.255MPa. Exact source integration alone is therefore insufficient
+to repair coarse-timestep G2. S15's first attempt failed before CFD because an
+operator-copied helper retained an old case prefix; it is not a solver failure.
+A separate original-zero S15b corrects the setup namespace.
+
+APEC S16 compiled and preserved a uniform oxygen state. Its nx4/6 contacts
+completed20ms, conserving mass/energy to approximately3e-13 relative without
+energy reset, but pressure departures were7.16%/4.72% and velocity errors large.
+Density/temperature profiles alone would conceal the defect. The sharp nx2
+case stopped because its previous-stage temperature was an infeasible Newton
+seed at the new density; this alone does not prove the target state impossible.
+An isolated repair searches admissible seeds without changing conservative
+rho/e, root checks or final residual criteria. Source1869554 stages that repair;
+actual physical qualification remains a separate receipt. S17 compares a central
+uncorrected baseline and800/1600cell APEC at the same physical nx2 width. Grid
+and timestep both refine at fixed acoustic CFL; do not call it pure spatial
+error isolation.
+
+Raw S16 result receipts contain a leading-decimal JSON formatting defect (.02).
+Their bytes remain preserved; collection records explicitly disclose adding a
+leading zero for reading. Later wrapper source uses0.02. No scientific data or
+running immutable input was rewritten to correct prose or metadata.
+
+These results support proceeding with pressure/energy formulation work alongside
+thermodynamic phase diagnostics. They do not qualify a production APEC replacement
+or justify silently accepting a homogeneous root inconsistent with transported
+states. Exact conservative budgets and pressure-equilibrium quality must be
+reported separately, including trade-offs with the retained double-flux method.
