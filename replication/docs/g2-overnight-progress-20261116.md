@@ -94,3 +94,11 @@ Detailed immutable receipts, small exports and current operator reports are in
 the outer workspace's `state/g2-source-coupling-20261115/overnight-20261115/`.
 Raw fields and large histories remain onSCNet. The source Git branch is
 `draft/parallel-g2-baseline-20261114`; production `develop/reacting` is untouched.
+
+## 05:00 dated correction and actual longer-run outcome
+
+S26 Cavalieri128135745 failed at1.376ms after7154s:12105.665J/kg caloric discrepancy at160.872K/5.206MPa, rank0/cell250. The last1.3ms four profiles are now visible inForge;15mm peak893K and45/70mm near288K remain poor startup agreement. Original failures and primary best views are retained.
+
+The shorthand Yi1e-12 in prior entries refers only to the ordinary solver. No YiFinal was defined, so final iterations selected the broader1e-8 regex. This is a configuration attribution correction; original1ms completions, raw values and receipts remain unchanged. New original-zero S28/job128145771 explicitly sets both entries to1e-12 and checks them with executing foamDictionary before CFD. Requested2ms/0.5us/exact10us, unchanged physics and acceptance; it is not a demonstrated caloric fix. S27 remains productive at0.721ms on its original partial-tight settings. Recipea486095 is pushed; actual S28 startup pending. Deadline09:20 unchanged; no scientific acceptance or production merge.
+
+05:16 payload verification: S28 began at05:11:55 and reached43.638us after both executing Yi/YiFinal1e-12 binding checks passed. Independent all53-species scalar reconstruction matches85actual library rows and S24/S25/S26 caloric errors. Fixed-rho/Ha S25 recovery is stable (+277148Pa), S24 metastable, S26 unstable intermediate root (isothermal slope-47.44Pa m3/kg); no general pressure correction is qualified. audit-failed-mixtures.py reproduces these diagnostics without scheduler/CFD writes.

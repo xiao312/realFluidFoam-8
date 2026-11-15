@@ -41,3 +41,6 @@ label, note, targets, image/evidence paths, inputSha256 and scientificAcceptance
 false. The default is read-only. Apply backs up the catalogue/export, verifies
 input hashes and preserves every non-view target field, including primary
 comparisons and original captions. It submits no compute and publishes no site.
+
+
+audit-failed-mixtures.py --state-root ROOT reconstructs SRK mixture coefficients and caloric states from retained original53-species failure witnesses. Inputs are the named S05 executing reference exports plus S24/S25/S26 JSON and in-memory tar dictionaries; output is ROOT/overnight-20261115/failed-mixtures-audit-0500.json. It requires NumPy and stock Python, has no network/scheduler/CFD writer, and handles no secrets. Run the command against the retained operator state to verify85reference rows and all three logged caloric errors. The expected result preserves unstable/metastable roots explicitly, with scientificAcceptance=false. This is a scalar diagnostic, not a phase flash or a qualified pressure correction. Missing or inconsistent reference assets fail explicitly.
