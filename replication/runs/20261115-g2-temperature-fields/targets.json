@@ -1,0 +1,228 @@
+{
+  "schema": "G2-temperature-field-targets/v1",
+  "authority": "Owner requested additional published G2 temperature-field targets on2026-11-15",
+  "targets": [
+    {
+      "id": "muller2015-fig6a-temperature-field",
+      "paper": "muller2015",
+      "title": "Instantaneous G2 temperature field",
+      "number": "6(a)",
+      "page_index": 7,
+      "crop_pt": [
+        64,
+        295,
+        300,
+        452
+      ],
+      "caption": "Figure 6: Instantaneous realizations in a plane perpendicular to the in\ufb02ow plane.",
+      "paper_image": "muller2015-fig6a-temperature-field-paper.png",
+      "paper_image_sha256": "cd0ce891f4e68e2a9d9fedb2878558afcff9c24d1a12a0b9fa6ce3fbc1b46650",
+      "original_caption": {
+        "status": "verified",
+        "image": "muller2015-fig6a-temperature-field-caption.png",
+        "image_sha256": "ac512a4f233b278003b826e6f3f8e9387a7cf69965877b9b54b10aa1fd3c3508",
+        "page_index": 7,
+        "source_pdf_sha256": "889bba9dc807b9197efcabbebba5a06f1dbf9d55c26582d19c88fbd10f15a8b9",
+        "method": "Original caption block rendered from supplied PDF; figure selection visually inspected.",
+        "panel_relation": "Complete original caption; selected temperature panel only."
+      },
+      "source_pdf": "FP_EUCASS-018.pdf",
+      "source_pdf_sha256": "889bba9dc807b9197efcabbebba5a06f1dbf9d55c26582d19c88fbd10f15a8b9",
+      "conditions_registered": {
+        "p_MPa": 5.61,
+        "T_O2_K": 85,
+        "T_CH4_K": 288,
+        "m_O2_kg_s": 0.0444,
+        "m_CH4_kg_s": 0.1431,
+        "case": "G2 / TF only",
+        "source": "Table2"
+      },
+      "statistic": "instantaneous",
+      "currentCase": "schmitt",
+      "experimentalTemperature": false,
+      "measurementBoundary": "Simulation reference. Any accompanying experimental backlight/emission is morphology, not calibrated temperature.",
+      "plot_spec": {
+        "coordinates": "physical axial/radial millimetres; preserve aspect ratio",
+        "current_data": "piecewise-constant actual mesh cells; no interpolation or smoothing",
+        "statistics": "instantaneous",
+        "quantities": [
+          "temperature_K"
+        ],
+        "comparisons": [
+          "global maximum and location",
+          "temperature1500/2000/2500K region extent and radial spread",
+          "radial/axial profiles after matched development/averaging"
+        ],
+        "acceptance": "Not yet specified; current instantaneous preview cannot pass a mean-field target. No pixel-temperature RMS before calibrated digitization.",
+        "paper_panel_scope": "Panel(a) only; experimental image is not a temperature map"
+      }
+    },
+    {
+      "id": "cavalieri2025-fig10a-tf-temperature-field",
+      "paper": "cavalieri2025",
+      "title": "G2/TF instantaneous temperature field",
+      "number": "10(a)",
+      "page_index": 12,
+      "crop_pt": [
+        65,
+        48,
+        290,
+        252
+      ],
+      "caption": "Fig. 10. Comparison between transcritical (top-panel) and doubly-transcritical (bottom-panel) flames with the SFM model. Longitudinal slices of instantaneous (a) temperature, (b) density, (c) axial velocity, and (d) isobaric-specific heat. The white solid isoline in (b) denotes the stoichiometric mixture fraction \u0303\ud835\udc4d\ud835\udc60\ud835\udc61= 0.2 and in (b) \u0303\ud835\udc62\ud835\udc65= 0 m\u2215s. The white solid and dashed isolines in (d) enclosed the pseudo-boiling region.",
+      "paper_image": "cavalieri2025-fig10a-tf-temperature-field-paper.png",
+      "paper_image_sha256": "288d8e74a4e1f2f84c4c98e18e7d7ab847aa790dc80241751c1ac4eac8d60588",
+      "original_caption": {
+        "status": "verified",
+        "image": "cavalieri2025-fig10a-tf-temperature-field-caption.png",
+        "image_sha256": "5998445563fb90be7d222a8545cd4d5f934fca43438166eaed82a76911d1aba4",
+        "page_index": 12,
+        "source_pdf_sha256": "bcd4f0fdac3c4063c744e331c0b2e6af7e311837f99230502cde2c97257d0843",
+        "method": "Original caption block rendered from supplied PDF; figure selection visually inspected.",
+        "panel_relation": "Complete original caption; selected temperature panel only."
+      },
+      "source_pdf": "1-s2.0-S0017931025006234-main.pdf",
+      "source_pdf_sha256": "bcd4f0fdac3c4063c744e331c0b2e6af7e311837f99230502cde2c97257d0843",
+      "conditions_registered": {
+        "p_MPa": 5.61,
+        "T_O2_K": 85,
+        "T_CH4_K": 288,
+        "m_O2_kg_s": 0.0444,
+        "m_CH4_kg_s": 0.1431,
+        "case": "G2 / TF only",
+        "source": "Table2"
+      },
+      "statistic": "instantaneous",
+      "currentCase": "cavalieri",
+      "experimentalTemperature": false,
+      "measurementBoundary": "Simulation reference. Any accompanying experimental backlight/emission is morphology, not calibrated temperature.",
+      "plot_spec": {
+        "coordinates": "physical axial/radial millimetres; preserve aspect ratio",
+        "current_data": "piecewise-constant actual mesh cells; no interpolation or smoothing",
+        "statistics": "instantaneous",
+        "quantities": [
+          "temperature_K"
+        ],
+        "comparisons": [
+          "global maximum and location",
+          "temperature1500/2000/2500K region extent and radial spread",
+          "radial/axial profiles after matched development/averaging"
+        ],
+        "acceptance": "Not yet specified; current instantaneous preview cannot pass a mean-field target. No pixel-temperature RMS before calibrated digitization.",
+        "paper_panel_scope": "Cavalieri top TF/G2 only; lower DTF retained as labelled context"
+      }
+    },
+    {
+      "id": "cavalieri2025-fig11a-tf-mean-temperature-field",
+      "paper": "cavalieri2025",
+      "title": "G2/TF mean temperature field",
+      "number": "11(a)",
+      "page_index": 13,
+      "crop_pt": [
+        65,
+        48,
+        290,
+        163
+      ],
+      "caption": "Fig. 11. Comparison between transcritical (top-panel) and doubly-transcritical (bottom-panel) flames with the SFM and MFM mixing model. Longitudinal slices of time-averaged (a) temperature and (b) axial velocity. The black dashed isoline in (a) denotes the stoichiometric mixture fraction \u27e8\u0303\ud835\udc4d\ud835\udc60\ud835\udc61\u27e9= 0.2. The white dashed isoline in (b) denotes average null velocity \u27e8\u0303\ud835\udc62\ud835\udc65\u27e9= 0 m\u2215s.",
+      "paper_image": "cavalieri2025-fig11a-tf-mean-temperature-field-paper.png",
+      "paper_image_sha256": "1e41fc8ce8a3a6adb6e20f30aeec43991ddbbad05919e14f049c6b4ae1e4a68a",
+      "original_caption": {
+        "status": "verified",
+        "image": "cavalieri2025-fig11a-tf-mean-temperature-field-caption.png",
+        "image_sha256": "97eca4797de958ec198e3ab4ec2f38eea9a1285e99a02a7c874ef8cdc9db3743",
+        "page_index": 13,
+        "source_pdf_sha256": "bcd4f0fdac3c4063c744e331c0b2e6af7e311837f99230502cde2c97257d0843",
+        "method": "Original caption block rendered from supplied PDF; figure selection visually inspected.",
+        "panel_relation": "Complete original caption; selected temperature panel only."
+      },
+      "source_pdf": "1-s2.0-S0017931025006234-main.pdf",
+      "source_pdf_sha256": "bcd4f0fdac3c4063c744e331c0b2e6af7e311837f99230502cde2c97257d0843",
+      "conditions_registered": {
+        "p_MPa": 5.61,
+        "T_O2_K": 85,
+        "T_CH4_K": 288,
+        "m_O2_kg_s": 0.0444,
+        "m_CH4_kg_s": 0.1431,
+        "case": "G2 / TF only",
+        "source": "Table2"
+      },
+      "statistic": "time-averaged",
+      "currentCase": "cavalieri",
+      "experimentalTemperature": false,
+      "measurementBoundary": "Simulation reference. Any accompanying experimental backlight/emission is morphology, not calibrated temperature.",
+      "plot_spec": {
+        "coordinates": "physical axial/radial millimetres; preserve aspect ratio",
+        "current_data": "piecewise-constant actual mesh cells; no interpolation or smoothing",
+        "statistics": "time-averaged",
+        "quantities": [
+          "temperature_K"
+        ],
+        "comparisons": [
+          "global maximum and location",
+          "temperature1500/2000/2500K region extent and radial spread",
+          "radial/axial profiles after matched development/averaging"
+        ],
+        "acceptance": "Not yet specified; current instantaneous preview cannot pass a mean-field target. No pixel-temperature RMS before calibrated digitization.",
+        "paper_panel_scope": "Upper TF/G2 SFM/MFM panel only; DTF excluded from crop."
+      }
+    },
+    {
+      "id": "degiorgi2014-fig4a-g2-temperature-field",
+      "paper": "degiorgi2014",
+      "title": "G2 RANS temperature fields and backlight",
+      "number": "4(a)",
+      "page_index": 10,
+      "crop_pt": [
+        65,
+        382,
+        290,
+        600
+      ],
+      "caption": "Figure 4. (a) Comparison between experimental backlight image (on the bottom) and predicted temperature contours and (b) temperature profiles along the symmetry with the experimental position of the temperature peak (grey rectangle). Pure Eulerian cases with Eddy Dissipation Concept Model, SRK EoS, Case 1: JL Reaction Mechanism; Case 2: SKEL Reaction Mechanism.",
+      "paper_image": "degiorgi2014-fig4a-g2-temperature-field-paper.png",
+      "paper_image_sha256": "32b235844a686515aa379b75d95811b5b66112c0cd6602e3cfdecc65a9fb6cd1",
+      "original_caption": {
+        "status": "verified",
+        "image": "degiorgi2014-fig4a-g2-temperature-field-caption.png",
+        "image_sha256": "f77fca2e9e0c522fbe2c51ff2a660bf097d1b5955de60ffccc6374ebc104d756",
+        "page_index": 10,
+        "source_pdf_sha256": "5ae009f33dc44c177398cdfbb20644033e9a6451861a92bc5a4d30538aef1d6c",
+        "method": "Original caption block rendered from supplied PDF; figure selection visually inspected.",
+        "panel_relation": "Complete original caption; selected temperature panel only."
+      },
+      "source_pdf": "energies-07-00477.pdf",
+      "source_pdf_sha256": "5ae009f33dc44c177398cdfbb20644033e9a6451861a92bc5a4d30538aef1d6c",
+      "conditions_registered": {
+        "p_MPa": 5.6,
+        "T_O2_K": 85,
+        "T_CH4_K": 288,
+        "m_O2_kg_s": 0.0444,
+        "m_CH4_kg_s": 0.1431,
+        "case": "G2 / TF only",
+        "source": "Table4"
+      },
+      "statistic": "RANS mean",
+      "currentCase": "cavalieri",
+      "experimentalTemperature": false,
+      "measurementBoundary": "Simulation reference. Any accompanying experimental backlight/emission is morphology, not calibrated temperature.",
+      "plot_spec": {
+        "coordinates": "physical axial/radial millimetres; preserve aspect ratio",
+        "current_data": "piecewise-constant actual mesh cells; no interpolation or smoothing",
+        "statistics": "RANS mean",
+        "quantities": [
+          "temperature_K"
+        ],
+        "comparisons": [
+          "global maximum and location",
+          "temperature1500/2000/2500K region extent and radial spread",
+          "radial/axial profiles after matched development/averaging"
+        ],
+        "acceptance": "Not yet specified; current instantaneous preview cannot pass a mean-field target. No pixel-temperature RMS before calibrated digitization.",
+        "paper_panel_scope": "Panel(a) only; experimental image is not a temperature map"
+      }
+    }
+  ],
+  "preserveExistingTargets": true,
+  "newCFDExecution": false
+}

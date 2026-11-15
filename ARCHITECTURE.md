@@ -1,5 +1,10 @@
 # Experimental solver boundaries
 
+`replication/runs/20261115-g2-temperature-fields/` maps retained partitioned ASCII
+OpenFOAM temperatures onto actual axial/radial cell polygons. It reads hashed
+local collections and writes images/data receipts for Forge. It has no solver,
+scheduler or network dependency and cannot advance CFD.
+
 `replication/validation/written-time/` owns read-only mapping from physical log
 times to unique serialized output directories. Post-run qualification readers
 depend on its Node filesystem interface; the solver, EOS and scheduler do not.
