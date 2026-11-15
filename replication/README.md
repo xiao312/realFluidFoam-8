@@ -78,3 +78,7 @@ The [2026-10-17 build record](docs/build-qualification-20261017.md) qualifies ta
 records completed NIST comparisons and failed inversion checks. The
 [flame pilots](docs/flame-pilots-20261017.md) passed startup checks only; the
 [next batch plan](docs/next-batch-plan.md) covers scaling and convergence.
+
+The [15 November G2 methods review](docs/g2-frontier-methods-20261115.md) compares
+public pressure-equilibrium fluxes, SRK reference solvers and coupling methods,
+and separates proposed experiments from current CFD qualification.
