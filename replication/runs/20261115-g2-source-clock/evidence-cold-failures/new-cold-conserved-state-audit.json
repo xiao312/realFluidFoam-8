@@ -1,0 +1,333 @@
+{
+  "sourceJob": "128103070",
+  "actualTransportedRho_kg_m3": 396.4533891,
+  "storedHa_J_kg": -447184.748038,
+  "storedPressure_Pa": 5281607.70081,
+  "targetInternalEnergy_J_kg": -460506.8884106676,
+  "verificationAgainstActualLibraryRows": {
+    "rows": 85,
+    "maxPressureRelative": 7.053326391300502e-15,
+    "maxHsError_J_kg": 1.7404090613126755e-08,
+    "maxCvError_J_kg_K": 3.2961224860628136e-09
+  },
+  "controls": [
+    {
+      "converged": true,
+      "T_K": 162.55024827937567,
+      "energyError_J_kg": 1.1641532182693481e-10,
+      "iterations": 5,
+      "p_Pa": 5281739.098653704,
+      "Cv_J_kg_K": 787.8739514619431,
+      "guess_K": 60.0,
+      "transportedRho_kg_m3": 396.4533891,
+      "pressureChange_Pa": 131.3978437036276,
+      "impliedHaChange_J_kg": 0.33143327139141765,
+      "dp_drho_T_Pa_m3_kg": 109.79406600413752,
+      "isothermalStable": true,
+      "dp_drho_s_Pa_m3_kg": 53574.47419818417,
+      "cubicRoots": [
+        {
+          "Z": 0.35316935459355725,
+          "rho": 352.3372592873494,
+          "isothermalStable": true,
+          "gibbsResidualOverRT": -0.40643415296093455
+        },
+        {
+          "Z": 0.33296090464262407,
+          "rho": 373.7217214595665,
+          "isothermalStable": false,
+          "gibbsResidualOverRT": -0.40643309651898907
+        },
+        {
+          "Z": 0.3138697407638185,
+          "rho": 396.45338910006933,
+          "isothermalStable": true,
+          "gibbsResidualOverRT": -0.40643420290994814
+        }
+      ],
+      "selectedStateZ": 0.31386974076387336,
+      "finiteDifference_dp_drho_T": {
+        "0.0001": 109.79424295409692,
+        "1e-05": 109.79406784956603,
+        "1e-06": 109.79406925904712
+      }
+    },
+    {
+      "converged": true,
+      "T_K": 162.55024827937555,
+      "energyError_J_kg": 5.820766091346741e-11,
+      "iterations": 5,
+      "p_Pa": 5281739.098653685,
+      "Cv_J_kg_K": 787.8739514619432,
+      "guess_K": 85.0,
+      "transportedRho_kg_m3": 396.4533891,
+      "pressureChange_Pa": 131.39784368500113,
+      "impliedHaChange_J_kg": 0.33143327134443495,
+      "dp_drho_T_Pa_m3_kg": 109.79406600406507,
+      "isothermalStable": true,
+      "dp_drho_s_Pa_m3_kg": 53574.47419818407,
+      "cubicRoots": [
+        {
+          "Z": 0.35316935459354865,
+          "rho": 352.33725928735697,
+          "isothermalStable": true,
+          "gibbsResidualOverRT": -0.4064341529609332
+        },
+        {
+          "Z": 0.3329609046426582,
+          "rho": 373.7217214595271,
+          "isothermalStable": false,
+          "gibbsResidualOverRT": -0.4064330965189875
+        },
+        {
+          "Z": 0.3138697407637924,
+          "rho": 396.4533891001011,
+          "isothermalStable": true,
+          "gibbsResidualOverRT": -0.4064342029099468
+        }
+      ],
+      "selectedStateZ": 0.3138697407638725,
+      "finiteDifference_dp_drho_T": {
+        "0.0001": 109.79424300107962,
+        "1e-05": 109.79406784956603,
+        "1e-06": 109.79406925904712
+      }
+    },
+    {
+      "converged": true,
+      "T_K": 162.55024827937564,
+      "energyError_J_kg": 5.820766091346741e-11,
+      "iterations": 4,
+      "p_Pa": 5281739.0986537,
+      "Cv_J_kg_K": 787.8739514619431,
+      "guess_K": 150.0,
+      "transportedRho_kg_m3": 396.4533891,
+      "pressureChange_Pa": 131.3978436999023,
+      "impliedHaChange_J_kg": 0.3314332713820211,
+      "dp_drho_T_Pa_m3_kg": 109.79406600412545,
+      "isothermalStable": true,
+      "dp_drho_s_Pa_m3_kg": 53574.47419818415,
+      "cubicRoots": [
+        {
+          "Z": 0.3531693545936093,
+          "rho": 352.3372592872973,
+          "isothermalStable": true,
+          "gibbsResidualOverRT": -0.40643415296093466
+        },
+        {
+          "Z": 0.33296090464252476,
+          "rho": 373.7217214596777,
+          "isothermalStable": false,
+          "gibbsResidualOverRT": -0.4064330965189886
+        },
+        {
+          "Z": 0.3138697407638653,
+          "rho": 396.45338910000993,
+          "isothermalStable": true,
+          "gibbsResidualOverRT": -0.4064342029099477
+        }
+      ],
+      "selectedStateZ": 0.3138697407638732,
+      "finiteDifference_dp_drho_T": {
+        "0.0001": 109.79424295409692,
+        "1e-05": 109.79406784956603,
+        "1e-06": 109.79406925904712
+      }
+    },
+    {
+      "converged": true,
+      "T_K": 162.55024827937558,
+      "energyError_J_kg": 5.820766091346741e-11,
+      "iterations": 5,
+      "p_Pa": 5281739.098653693,
+      "Cv_J_kg_K": 787.8739514619431,
+      "guess_K": 300.0,
+      "transportedRho_kg_m3": 396.4533891,
+      "pressureChange_Pa": 131.39784369245172,
+      "impliedHaChange_J_kg": 0.33143327136322803,
+      "dp_drho_T_Pa_m3_kg": 109.7940660041013,
+      "isothermalStable": true,
+      "dp_drho_s_Pa_m3_kg": 53574.47419818412,
+      "cubicRoots": [
+        {
+          "Z": 0.3531693545935777,
+          "rho": 352.3372592873285,
+          "isothermalStable": true,
+          "gibbsResidualOverRT": -0.4064341529609339
+        },
+        {
+          "Z": 0.33296090464259265,
+          "rho": 373.7217214596011,
+          "isothermalStable": false,
+          "gibbsResidualOverRT": -0.40643309651898873
+        },
+        {
+          "Z": 0.31386974076382906,
+          "rho": 396.4533891000553,
+          "isothermalStable": true,
+          "gibbsResidualOverRT": -0.4064342029099477
+        }
+      ],
+      "selectedStateZ": 0.31386974076387286,
+      "finiteDifference_dp_drho_T": {
+        "0.0001": 109.79424295409692,
+        "1e-05": 109.79406784956603,
+        "1e-06": 109.79406925904712
+      }
+    },
+    {
+      "converged": true,
+      "T_K": 162.55024827937558,
+      "energyError_J_kg": 5.820766091346741e-11,
+      "iterations": 6,
+      "p_Pa": 5281739.098653693,
+      "Cv_J_kg_K": 787.8739514619431,
+      "guess_K": 1000.0,
+      "transportedRho_kg_m3": 396.4533891,
+      "pressureChange_Pa": 131.39784369245172,
+      "impliedHaChange_J_kg": 0.33143327136322803,
+      "dp_drho_T_Pa_m3_kg": 109.7940660041013,
+      "isothermalStable": true,
+      "dp_drho_s_Pa_m3_kg": 53574.47419818412,
+      "cubicRoots": [
+        {
+          "Z": 0.3531693545935777,
+          "rho": 352.3372592873285,
+          "isothermalStable": true,
+          "gibbsResidualOverRT": -0.4064341529609339
+        },
+        {
+          "Z": 0.33296090464259265,
+          "rho": 373.7217214596011,
+          "isothermalStable": false,
+          "gibbsResidualOverRT": -0.40643309651898873
+        },
+        {
+          "Z": 0.31386974076382906,
+          "rho": 396.4533891000553,
+          "isothermalStable": true,
+          "gibbsResidualOverRT": -0.4064342029099477
+        }
+      ],
+      "selectedStateZ": 0.31386974076387286,
+      "finiteDifference_dp_drho_T": {
+        "0.0001": 109.79424295409692,
+        "1e-05": 109.79406784956603,
+        "1e-06": 109.79406925904712
+      }
+    },
+    {
+      "converged": true,
+      "T_K": 162.55024827937558,
+      "energyError_J_kg": 5.820766091346741e-11,
+      "iterations": 6,
+      "p_Pa": 5281739.098653693,
+      "Cv_J_kg_K": 787.8739514619431,
+      "guess_K": 3000.0,
+      "transportedRho_kg_m3": 396.4533891,
+      "pressureChange_Pa": 131.39784369245172,
+      "impliedHaChange_J_kg": 0.33143327136322803,
+      "dp_drho_T_Pa_m3_kg": 109.7940660041013,
+      "isothermalStable": true,
+      "dp_drho_s_Pa_m3_kg": 53574.47419818412,
+      "cubicRoots": [
+        {
+          "Z": 0.3531693545935777,
+          "rho": 352.3372592873285,
+          "isothermalStable": true,
+          "gibbsResidualOverRT": -0.4064341529609339
+        },
+        {
+          "Z": 0.33296090464259265,
+          "rho": 373.7217214596011,
+          "isothermalStable": false,
+          "gibbsResidualOverRT": -0.40643309651898873
+        },
+        {
+          "Z": 0.31386974076382906,
+          "rho": 396.4533891000553,
+          "isothermalStable": true,
+          "gibbsResidualOverRT": -0.4064342029099477
+        }
+      ],
+      "selectedStateZ": 0.31386974076387286,
+      "finiteDifference_dp_drho_T": {
+        "0.0001": 109.79424295409692,
+        "1e-05": 109.79406784956603,
+        "1e-06": 109.79406925904712
+      }
+    }
+  ],
+  "CFDSteps": 0,
+  "scientificAcceptance": false,
+  "sourceFunctionSha256": "41a71c056e26ebfb7a7e95626f41dfaac03d5133ab61754322bfe13af75847c4",
+  "scope": "Independent scalar reconstruction verified against the executing library. Actual transported rho retained. Fixed-volume/internal-energy recovery allows pressure to respond and has different constraints from the flow's enthalpy update. No phase flash, solver replacement or evolved CFD restart.",
+  "fixedDensityAbsoluteHaControls": [
+    {
+      "guess_K": 60.0,
+      "T_K": 162.54999272780242,
+      "p_Pa": 5281687.523704473,
+      "pressureChange_Pa": 79.82289447262883,
+      "HaError_J_kg": 0.0,
+      "transportedRho_kg_m3": 396.4533891,
+      "isothermalSlope": 109.5991738534408,
+      "minGibbsHomogeneous": true,
+      "iterations": 5
+    },
+    {
+      "guess_K": 85.0,
+      "T_K": 162.5499927278024,
+      "p_Pa": 5281687.523704469,
+      "pressureChange_Pa": 79.82289446890354,
+      "HaError_J_kg": 0.0,
+      "transportedRho_kg_m3": 396.4533891,
+      "isothermalSlope": 109.59917385342872,
+      "minGibbsHomogeneous": true,
+      "iterations": 5
+    },
+    {
+      "guess_K": 150.0,
+      "T_K": 162.5499927278024,
+      "p_Pa": 5281687.523704469,
+      "pressureChange_Pa": 79.82289446890354,
+      "HaError_J_kg": 0.0,
+      "transportedRho_kg_m3": 396.4533891,
+      "isothermalSlope": 109.59917385342872,
+      "minGibbsHomogeneous": true,
+      "iterations": 4
+    },
+    {
+      "guess_K": 300.0,
+      "T_K": 162.54999272780245,
+      "p_Pa": 5281687.52370448,
+      "pressureChange_Pa": 79.82289448007941,
+      "HaError_J_kg": 0.0,
+      "transportedRho_kg_m3": 396.4533891,
+      "isothermalSlope": 109.59917385346495,
+      "minGibbsHomogeneous": true,
+      "iterations": 5
+    },
+    {
+      "guess_K": 1000.0,
+      "T_K": 162.54999272780202,
+      "p_Pa": 5281687.523704398,
+      "pressureChange_Pa": 79.82289439812303,
+      "HaError_J_kg": -4.0745362639427185e-10,
+      "transportedRho_kg_m3": 396.4533891,
+      "isothermalSlope": 109.599173853151,
+      "minGibbsHomogeneous": true,
+      "iterations": 5
+    },
+    {
+      "guess_K": 3000.0,
+      "T_K": 162.54999272780242,
+      "p_Pa": 5281687.523704473,
+      "pressureChange_Pa": 79.82289447262883,
+      "HaError_J_kg": 0.0,
+      "transportedRho_kg_m3": 396.4533891,
+      "isothermalSlope": 109.5991738534408,
+      "minGibbsHomogeneous": true,
+      "iterations": 6
+    }
+  ]
+}

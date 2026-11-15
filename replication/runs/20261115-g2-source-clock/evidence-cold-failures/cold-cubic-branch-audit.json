@@ -1,0 +1,149 @@
+{
+  "scope": "Independent algebraic check of exported executing SRK coefficients; not a phase-split model or alternate CFD EOS",
+  "inputJob": "128104636",
+  "pressure_Pa": 5281607.70081,
+  "states": [
+    {
+      "T": 162.54609831599998,
+      "roots": [
+        {
+          "Z": 0.3100643388890839,
+          "rho": 401.3193007404762,
+          "cubicResidual": -6.938893903907228e-18,
+          "mechanicallyStable": true,
+          "gibbsResidualOverRT": -0.4064819744952831,
+          "Hdeparture_J_kg": -108348.98499622311
+        }
+      ]
+    },
+    {
+      "T": 162.54708831599999,
+      "roots": [
+        {
+          "Z": 0.3109541075085939,
+          "rho": 400.16852258041774,
+          "cubicResidual": 0.0,
+          "mechanicallyStable": true,
+          "gibbsResidualOverRT": -0.4064664439608916,
+          "Hdeparture_J_kg": -108110.21818789374
+        }
+      ]
+    },
+    {
+      "T": 162.547098216,
+      "roots": [
+        {
+          "Z": 0.3446342072023602,
+          "rho": 361.0611936157969,
+          "cubicResidual": -6.938893903907228e-18,
+          "mechanicallyStable": true,
+          "gibbsResidualOverRT": -0.4064629479690398,
+          "Hdeparture_J_kg": -99772.45692209236
+        },
+        {
+          "Z": 0.34440225698572274,
+          "rho": 361.3043633987465,
+          "cubicResidual": -6.938893903907228e-18,
+          "mechanicallyStable": false,
+          "gibbsResidualOverRT": -0.40646294796721816,
+          "Hdeparture_J_kg": -99825.71932792288
+        },
+        {
+          "Z": 0.31096353581191677,
+          "rho": 400.1563652420673,
+          "cubicResidual": 6.938893903907228e-18,
+          "mechanicallyStable": true,
+          "gibbsResidualOverRT": -0.4064662888327004,
+          "Hdeparture_J_kg": -108107.69384447682
+        }
+      ]
+    },
+    {
+      "T": 162.547098316,
+      "roots": [
+        {
+          "Z": 0.34464952702604684,
+          "rho": 361.0451440641651,
+          "cubicResidual": 2.7755575615628914e-17,
+          "mechanicallyStable": true,
+          "gibbsResidualOverRT": -0.4064629465229461,
+          "Hdeparture_J_kg": -99768.94086899214
+        },
+        {
+          "Z": 0.34438684186751234,
+          "rho": 361.32053554077413,
+          "cubicResidual": 2.7755575615628914e-17,
+          "mechanicallyStable": false,
+          "gibbsResidualOverRT": -0.4064629465202999,
+          "Hdeparture_J_kg": -99829.260910299
+        },
+        {
+          "Z": 0.31096363110644093,
+          "rho": 400.1562423683316,
+          "cubicResidual": 2.7755575615628914e-17,
+          "mechanicallyStable": true,
+          "gibbsResidualOverRT": -0.4064662872657676,
+          "Hdeparture_J_kg": -108107.66833083471
+        }
+      ]
+    },
+    {
+      "T": 162.54709841599998,
+      "roots": [
+        {
+          "Z": 0.3446632283140555,
+          "rho": 361.0307913289466,
+          "cubicResidual": -6.938893903907228e-18,
+          "mechanicallyStable": true,
+          "gibbsResidualOverRT": -0.4064629450768992,
+          "Hdeparture_J_kg": -99765.79647659455
+        },
+        {
+          "Z": 0.34437304528376717,
+          "rho": 361.3350108678739,
+          "cubicResidual": 6.938893903907228e-18,
+          "mechanicallyStable": false,
+          "gibbsResidualOverRT": -0.4064629450733326,
+          "Hdeparture_J_kg": -99832.43083228492
+        },
+        {
+          "Z": 0.310963726402177,
+          "rho": 400.1561194931117,
+          "cubicResidual": 6.938893903907228e-18,
+          "mechanicallyStable": true,
+          "gibbsResidualOverRT": -0.4064662856988348,
+          "Hdeparture_J_kg": -108107.64281688034
+        }
+      ]
+    },
+    {
+      "T": 162.547108316,
+      "roots": [
+        {
+          "Z": 0.3451438513063436,
+          "rho": 360.52802334601046,
+          "cubicResidual": 2.7755575615628914e-17,
+          "mechanicallyStable": true,
+          "gibbsResidualOverRT": -0.4064628020162573,
+          "Hdeparture_J_kg": -99655.609035882
+        },
+        {
+          "Z": 0.34388298214439694,
+          "rho": 361.8499226264572,
+          "cubicResidual": 2.7755575615628914e-17,
+          "mechanicallyStable": false,
+          "gibbsResidualOverRT": -0.40646280172380767,
+          "Hdeparture_J_kg": -99945.14721316367
+        },
+        {
+          "Z": 0.31097316654926066,
+          "rho": 400.1439476669253,
+          "cubicResidual": 1.3877787807814457e-17,
+          "mechanicallyStable": true,
+          "gibbsResidualOverRT": -0.40646613057436054,
+          "Hdeparture_J_kg": -108105.11542447942
+        }
+      ]
+    }
+  ]
+}

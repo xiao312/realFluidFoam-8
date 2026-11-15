@@ -1,0 +1,8 @@
+{
+  "source": "842cd98627d9fb5a898cadc9b41f6c9b1e00b370",
+  "archiveSha256": "5747b91852be2651b175c094a4523c333fbc1f47cc9588a7ea10c71fc556a4e3",
+  "APIQualifiedSource": "6a9a2acd725c8b381f8b807efb3bf02ed7408c7e",
+  "newCFDFeatureDefault": false,
+  "repairOfJob": "128107010",
+  "repair": "Include guard only; failed build retained"
+}

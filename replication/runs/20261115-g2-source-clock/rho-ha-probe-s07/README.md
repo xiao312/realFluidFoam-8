@@ -1,0 +1,3 @@
+# Compiled density/Ha recovery qualification
+
+Build only the new property probe against the unchanged qualified R54 library/header stack. The field-independent API adds no library class, correlation or CFD activation. Inputs are exact captured full-species states, actual runtime property rows and one invalid-density negative control. Outputs separate convergence, mechanical stability and consistency with the selected homogeneous root. Existing largest-root mismatch must remain rejected. Run all compilation/property compute through FlamePilot Slurm; preserve numerical exits and product hashes. No CFD, coefficient changes, acceptance relaxation or restarts. Plans, Bash/Node syntax and SHA256 checks precede admission.

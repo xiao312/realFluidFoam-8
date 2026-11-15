@@ -78,3 +78,10 @@ API and the solver's current transported fields. `pressureThermoCorrector.H`
 owns retrying the existing pressure/property solve after a predictor change;
 it cannot advance species or chemistry. Existing audits remain authoritative,
 and the default path executes one unchanged pressure solve.
+
+
+`replication/runs/20261115-g2-source-clock` freezes controlled source-clock and
+cold-state recovery experiments. Its plotting code consumes retained cell data;
+the optional Node importer consumes the existing local Forge catalogue/export
+schema and appends diagnostic views without changing primary comparisons. Neither
+component submits compute, publishes a site or grants scientific acceptance.

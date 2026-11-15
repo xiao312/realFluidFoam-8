@@ -43,3 +43,21 @@ Executed evidence:
 See `evidence-s01`, `evidence-default-cfd` and `evidence-enthalpy-s03`. These results support a source-lag investigation at the selected hot cells. They do not qualify cryogenic branches, transported element conservation, chemical equilibrium or the complete reacting CFD.
 
 Run `python plot-cell-queries.py RESULTS_ROOT` with Matplotlib and NumPy. The results root must contain `hot-enthalpy-query-summary.json` and `hot-state-target-audit.json`. The figure distinguishes captured CFD temperatures from independent fixed-enthalpy property queries.
+
+## Cold-state recovery experiments
+
+The paired fixed-time Schmitt control reached 300 microseconds with a 3,254 K peak, versus 1,689 K in the same-time default. Cavalieri failed at 161.809 microseconds with a 7,565 J/kg caloric mismatch. The longer original-zero Schmitt fixed-time run failed at 682.083 microseconds with an 11,668 J/kg mismatch in cold oxygen-rich fluid. These are failed physical results, not accepted paper replications.
+
+`cold-inversion-s05` and `cold-gibbs-s06` query the first retained failed state without advancing CFD. More inversion passes did not resolve it. The existing homogeneous-Gibbs root policy reduced but did not eliminate the fixed-pressure residual. This is a homogeneous cubic-root choice, not a phase-equilibrium flash.
+
+`rho-ha-probe-s07` builds the field-independent solver recovery API from source 6a9a2ac. It passed 21 actual queries across seven fixtures: 15 expected accepts and six expected rejections. The failed Cavalieri transported density and Ha admit a stable, selected-root-consistent state if pressure responds by approximately +79.82 Pa. See `evidence-rho-ha-s07` and `evidence-cold-failures`. No failed-state archive is authorized as CFD initialization.
+
+`coupled-solver-s08b` freezes source 842cd98 and rebuilds only the solver against S01's exact libraries. The original S08 build failed because a shared header lacked an include guard; the repair changes that guard only. S08b must pass build/link/help, product identities and default source parity. Build success is not CFD qualification.
+
+`coupled-cavalieri-s09b` runs three independent original-zero cases: default/off regression, existing Gibbs policy alone, and Gibbs with the optional density/Ha predictor. The default regression must pass before new experiments. The two experimental cases retain the same source clock, mesh, boundaries, table and audits. They cannot be admitted before S08b is qualified. Runtime receipts determine actual delivery; scripts alone do not establish completion. Post-pressure predictions require another ordinary pressure solve and an unmodified final audit.
+
+## Figure and evidence delivery
+
+`plot-short-temperature-fields.py RESULTS_ROOT` plots actual cell polygons from the collected NumPy files, with fixed axes and a common color scale. Failed raw fields are labelled and never treated as valid thermodynamic solutions. There is no interpolated or reflected field data.
+
+`import-investigation.mjs RESULTS_ROOT SITE CATALOG [--apply]` provides a read-only plan, validates the fixed 75-target/12-paper catalogue, preserves existing primary comparisons and captions, then adds diagnostic views and content-addressed evidence. It depends only on Node and the existing local Forge export schema; it has no HPC, model-provider or publication capability. Site/catalog writes are explicit and backed up. Verify every emitted asset by HTTP against its local bytes after applying. This is local ladder visibility, not independent acceptance or GitHub publication.

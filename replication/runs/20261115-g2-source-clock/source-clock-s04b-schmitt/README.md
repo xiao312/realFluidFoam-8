@@ -1,0 +1,3 @@
+# Longer Schmitt fixed-time diagnostic
+
+Fresh original-zero5ms Schmitt run, fixedTime10us. Source d020b8d and all library hashes stay pinned. Both actual S02b300us controls completed solver0. No evolved fields are reused. Same mesh,table,inlets,EoS,absoluteHa,maxdt5us andCo1. Output precision17 preserves future failed states more accurately; this changes only formatting. Slurm wall14400s,payload13800s fit the new investigation's six-hour operator cutoff. Actual short fixed-time CFD took1257s for300us, so full5ms delivery is not guaranteed; retain intermediate snapshots and distinguish resource timeout from numerical failure. This diagnostic does not establish developed means or conservation acceptance.
