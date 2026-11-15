@@ -1,0 +1,5 @@
+# Constant-p0 G2 diagnostic
+
+Fresh original-zero Cavalieri1ms with exact10us relaxation/maxdt5us. Reuses qualified source80fa810/S13 products. Changes only pressure model to constant thermodynamic p0 from the registered factory pressure, with a separate mechanical pressure and thermal-Ha low-Mach energy equation. Kinetic/dynamic-pressure terms are absent by model design; this is not a fully compressible paper simulation. Source, table, mesh, inlets and accepted-state criteria stay explicit. Outputs actual profiles, mass/EOS/caloric/energy diagnostics. Independent scientific acceptance remains false.
+
+Inputs are unchanged S14 case assets plus configure-pressure.mjs. Plan each case/configuration before applying; apply only in Slurm and before decomposition. Main requires a qualified exact-source runtime. 32cores64GiB,6000s allocation/5400s payload fits owner2026-11-16 09:20deadline. No chemistry fitting, evolved fields, network secrets or implicit transport changes. Verify Bash/Node syntax, hashes, original-zero factory receipt, actual executing pressure model and terminal data.

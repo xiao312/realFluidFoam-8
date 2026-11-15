@@ -92,3 +92,8 @@ contact prototype with direct conservative rho/e recovery. It depends on shared
 ContactDF state types, the contact initializer/factory and executing SRK library.
 It has no reacting-solver dependency edge in the reverse direction and cannot
 advance G2 or implement multicomponent APEC by its presence.
+
+`replication/runs/20261115-g2-overnight` owns frozen fresh-case pressure and
+property experiments. It depends on prior qualified source-clock/thermo products
+and existing factories, and feeds the paper-review visualization. It changes no
+production solver interface or scheduler dependency.
