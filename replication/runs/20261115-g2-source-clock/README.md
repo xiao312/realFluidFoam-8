@@ -92,3 +92,7 @@ field formatting match their respective coarse references. Inputs and acceptance
 are unchanged; extended final time exposes the previous failure points. These are
 sensitivity tests, not established temporal convergence. Jobs128109165/128109186
 are admitted; actual runtime/terminal receipts determine physical progress.
+
+S13 qualifies an opt-in exact frozen-target source update. See
+[exact source controls](exact-clock-s13/README.md); existing S01/S11/S12 Euler
+controls and all historical failures retain their identities.

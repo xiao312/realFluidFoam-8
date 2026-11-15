@@ -30,16 +30,22 @@ inline RelaxationClock relaxedTableClock(const dictionary& coefficients, scalar 
             FatalErrorInFunction << "relaxationSteps must be finite and at least1" << exit(FatalError);
         return {mode, 1/steps, steps*dt};
     }
-    if (mode == "fixedTime")
+    if (mode == "fixedTime" || mode == "fixedTimeExact")
     {
         if (coefficients.found("relaxationSteps"))
             FatalErrorInFunction << "Omit relaxationSteps when using relaxationMode fixedTime" << exit(FatalError);
         const scalar time = coefficients.lookup<scalar>("relaxationTime");
+        if (mode == "fixedTimeExact")
+        {
+            if (!std::isfinite(time) || time <= 0)
+                FatalErrorInFunction << "Exact relaxationTime must be positive and finite" << exit(FatalError);
+            return {mode, -std::expm1(-dt/time), time};
+        }
         if (!std::isfinite(time) || time <= 0 || dt > time)
             FatalErrorInFunction << "relaxationTime must be positive, finite and >= deltaT; set maxDeltaT accordingly" << exit(FatalError);
         return {mode, dt/time, time};
     }
-    FatalErrorInFunction << "Unknown relaxationMode " << mode << "; use steps or fixedTime" << exit(FatalError);
+    FatalErrorInFunction << "Unknown relaxationMode " << mode << "; use steps, fixedTime or fixedTimeExact" << exit(FatalError);
     return {mode, 0, 0};
 }
 }}

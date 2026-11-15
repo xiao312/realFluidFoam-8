@@ -19,6 +19,15 @@ preserves the convex source update without clipping or changing species bounds.
 Use an explicit timestep ceiling no greater than the selected time. Both modes
 report the applied alpha and time. No additional energy source is introduced.
 
+The opt-in `relaxationMode fixedTimeExact; relaxationTime SECONDS;` instead uses
+`alpha = -expm1(-deltaT/relaxationTime)`. It exactly integrates relaxation toward
+a frozen target over the current timestep and preserves a convex update for
+any positive finite deltaT/time. It is not exact integration of the coupled
+transport/chemistry problem when the target changes. Existing steps/fixedTime
+modes and their validation remain unchanged. No new source or field clipping is
+introduced. Qualify the actual model recurrence and equal-physical-time coarse/
+fine source endpoints before fresh CFD; retain element/source and energy audits.
+
 `relaxationClock.H` owns this dictionary/math interface. It has no field, mesh,
 scheduler or credential access. Inputs are coefficients and positive deltaT;
 outputs are mode, alpha and time. Conflicting or invalid controls fail explicitly.
