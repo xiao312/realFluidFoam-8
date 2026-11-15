@@ -1,0 +1,26 @@
+{
+  "job": "128107624",
+  "CFDsteps": 0,
+  "propertyDeliveryCompleted": true,
+  "physicalSolutionQualified": false,
+  "executedJointRecoveryQueries": 6,
+  "selectedRootRejections": 6,
+  "independentCheck": {
+    "rows": 85,
+    "maxPressureRelative": 1.7063529430252813e-14,
+    "maxHsError_J_kg": 3.4924596548080444e-10,
+    "maxCvError_J_kg_K": 6.202753866091371e-10
+  },
+  "fixedDensityHa": {
+    "guess_K": 60.0,
+    "T_K": 157.611047863042,
+    "p_Pa": 4608681.325044353,
+    "pressureChange_Pa": 23985.258063025773,
+    "HaError_J_kg": 1.1641532182693481e-10,
+    "transportedRho_kg_m3": 522.4627644412184,
+    "isothermalSlope": 4640.845665120145,
+    "minGibbsHomogeneous": false,
+    "iterations": 5
+  },
+  "meaning": "Both policies reject a metastable dense branch for the second failed state; the stable Cavalieri recovery does not generalize. No tolerance or root-selection criterion changed."
+}
