@@ -60,6 +60,18 @@ for label in ['s24','s25','s26']:
  v=W/rho;a=c['coef1']-c['coef2']*math.sqrt(t)+c['coef3']*t;slope=-W/rho**2*(-RR*t/(v-b)**2+a*(2*v+b)/(v*v*(v+b)**2))
  nearest=min(rr,key=lambda x:abs(x['Z']-z));rep=dict(label=label,job=q['job'],time_s=q['time_s'],stored=dict(T=T,p=P,rho=rho,Hs=q['storedHs_J_kg'],Ha=target),fixedPTroots=at,largestRootHsMismatch_J_kg=at[-1]['Hs']-q['storedHs_J_kg'],loggedHsMismatch_J_kg=q['logged']['evaluatedH_J_kg']-q['logged']['storedH_J_kg'],fixedRhoHa=dict(T=t,p=s['p'],pressureChange_Pa=s['p']-P,HaResidual_J_kg=f(t),isothermalSlope=slope,largestRootDensityRelativeError=abs(rr[-1]['rho']-rho)/rho,minGibbsStableRoot=bool(stable)and abs(nearest['gibbs']-min(x['gibbs']for x in stable))<1e-10,roots=rr),scientificAcceptance=False)
  assert abs(rep['largestRootHsMismatch_J_kg']-rep['loggedHsMismatch_J_kg'])<1e-4
+ # A bisection limit at a root switch is not a recovered enthalpy state.
+ # Keep both sides and their residuals instead of declaring convergence on T.
+ lowT,highT=60.,6000.;targetHs=q['storedHs_J_kg']
+ assert roots(P,lowT)[-1]['Hs']<targetHs<roots(P,highT)[-1]['Hs']
+ for _ in range(100):
+  mid=(lowT+highT)/2
+  if mid in (lowT,highT):break
+  if roots(P,mid)[-1]['Hs']>targetHs:highT=mid
+  else:lowT=mid
+ lowRoot,highRoot=roots(P,lowT)[-1],roots(P,highT)[-1]
+ rep['fixedPressureLargestRootBracket']=dict(lowT_K=lowT,highT_K=highT,lowHs_J_kg=lowRoot['Hs'],highHs_J_kg=highRoot['Hs'],lowResidual_J_kg=lowRoot['Hs']-targetHs,highResidual_J_kg=highRoot['Hs']-targetHs,bracketHsJump_J_kg=highRoot['Hs']-lowRoot['Hs'],enthalpyConverged=min(abs(lowRoot['Hs']-targetHs),abs(highRoot['Hs']-targetHs))<1e-5,note='Scalar root calculations near a multiple root can be ill-conditioned. A discontinuous selected-root enthalpy gap is not resolved by shrinking temperature tolerance; this bracket is diagnostic, not an accepted CFD state.')
+ rep['fixedPressureFiniteOffsets']=[dict(offset_K=eps,lowHsResidual_J_kg=roots(P,lowT-eps)[-1]['Hs']-targetHs,highHsResidual_J_kg=roots(P,highT+eps)[-1]['Hs']-targetHs)for eps in [1e-4,1e-5,1e-6]]
  reports.append(rep)
 report=dict(reference85rows=dict(rows=len(checks),coefficientRelative=relative,maxPressureRelative=max(x['p']for x in checks),maxHsError_J_kg=max(x['hs']for x in checks),maxCvError_J_kg_K=max(x['cv']for x in checks)),failedStates=reports,scope='Independent scalar postprocessing of retained actual53Y/dictionary/rho/Ha; no state write, phase flash, changed root selection or CFD qualification. NASA below200K remains unqualified.',scientificAcceptance=False)
 (o/'failed-mixtures-audit-0500.json').write_text(json.dumps(report,indent=2)+'\n',encoding='utf8');print(json.dumps(report,indent=2))
