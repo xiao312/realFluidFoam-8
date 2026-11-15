@@ -135,6 +135,8 @@
         Info<< "fgmThermoRefinement t=" << runTime.value() << " passes=" << correctionPasses
             << " maxInternalHeChange_J_kg=" << hMutation << endl;
     }
+    if (coupledRhoHaState)
+        applySrkRhoHaPredictor(thermo,rho,fgmAbsoluteEnthalpy(),"afterEnergy");
     fgmTiming.stop(fgmWallTiming::thermoCorrection, fgmThermoStart);
     const auto fgmCaloricStart = fgmTiming.start();
     auditFgmThermoClosure(thermo);

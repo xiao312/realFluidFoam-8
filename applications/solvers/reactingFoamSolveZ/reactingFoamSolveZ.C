@@ -54,6 +54,7 @@ Description
 #include "fgmThermoClosure.H"
 #include "srkPressureDensitySlope.H"
 #include "srkColdEnergyProjection.H"
+#include "srkRhoHaPredictor.H"
 #include "fgmTable.H"
 #include "fgmTiming.H"
 #include <sstream>
@@ -107,6 +108,16 @@ int main(int argc, char *argv[])
 
     const bool realFluidInnerThermoCorrectors = runTime.controlDict()
         .lookupOrDefault<Switch>("realFluidInnerThermoCorrectors", false);
+    const bool coupledRhoHaState=runTime.controlDict().lookupOrDefault<Switch>
+        ("realFluidRhoHaPredictor",false);
+    const label maxRhoHaPressureIterations=coupledRhoHaState
+        ? runTime.controlDict().lookupOrDefault<label>("maxRhoHaPressureIterations",6) : 1;
+    if (coupledRhoHaState && (!absoluteEnthalpyFGM || !conserveTransportDensity
+        || !realFluidInnerThermoCorrectors || pimple.nCorrPiso()<2
+        || !runTime.controlDict().lookupOrDefault<Switch>("realFluidPressureThermoRefresh",false)
+        || !runTime.controlDict().lookupOrDefault<Switch>("writeFgmThermoClosure",false)
+        || maxRhoHaPressureIterations<1 || maxRhoHaPressureIterations>50))
+        FatalErrorInFunction<<"Rho/Ha predictor requires absoluteHa, conservative rho, inner thermo, refresh/audit, nCorrectors>=2 and 1..50 pressure/property iterations"<<exit(FatalError);
     // Factory aliases (e.g. none) need not equal the C++ runtime type.
     const word selectedCombustionModel = reaction->lookupOrDefault<word>("combustionModel", "");
     if (realFluidInnerThermoCorrectors && selectedCombustionModel!="none"
@@ -166,33 +177,7 @@ int main(int argc, char *argv[])
                     #include "solveScalarsAndEnergy.H"
                 }
                 const auto fgmPressureStart = fgmTiming.start();
-                #include "pEqn.H"
-                if (runTime.controlDict().lookupOrDefault<Switch>("realFluidPressureThermoRefresh",false))
-                {
-                    const scalarField heldEnthalpy(thermo.he().primitiveField());
-                    const auto refreshStart=fgmTiming.start();
-                    thermo.correct();
-                    fgmTiming.stop(fgmWallTiming::thermoCorrection,refreshStart);
-                    const scalar mutation=gMax(mag(thermo.he().primitiveField()-heldEnthalpy));
-                    if (mutation!=0)
-                        FatalErrorInFunction << "Post-pressure inversion mutated internal sensible enthalpy"
-                            << exit(FatalError);
-                    const tmp<volScalarField> refreshedDensity=thermo.rho();
-                    // The scalar equations require the continuity-consistent rho.
-                    // A property-cache refresh must not undo that selected policy.
-                    if (!conserveTransportDensity) rho=refreshedDensity();
-                    auditFgmThermoClosure(thermo);
-                    auditFgmContinuityStage("afterPressureThermoRefresh",rho,phi);
-                    if (runTime.timeIndex()==1 || runTime.writeTime())
-                        Info<< "pressureThermoRefresh t=" << runTime.value()
-                            << " maxInternalHeChange_J_kg=" << mutation
-                            << " conservativeDensityPreserved=" << conserveTransportDensity
-                            << " maxThermoTransportDensityRelative=" << gMax
-                            (
-                                mag(rho.primitiveField()-refreshedDensity().primitiveField())
-                               /max(mag(refreshedDensity().primitiveField()),scalar(SMALL))
-                            ) << endl;
-                }
+                #include "pressureThermoCorrector.H"
                 if (absoluteEnthalpyFGM)
                 {
                     updateFgmFixedTemperatureEnthalpy(thermo, composition, fgmAbsoluteEnthalpy());

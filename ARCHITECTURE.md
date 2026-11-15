@@ -72,3 +72,9 @@ The property probe's optional density/Ha audit depends on the field-independent
 This header evaluates the same coefficients in rho/T form and returns explicit
 caloric/stability/root-consistency verdicts. It owns no fields or scheduler
 operations and is not activated in CFD by introducing the diagnostic.
+
+The optional `srkRhoHaPredictor.H` consumes the qualified density/Ha recovery
+API and the solver's current transported fields. `pressureThermoCorrector.H`
+owns retrying the existing pressure/property solve after a predictor change;
+it cannot advance species or chemistry. Existing audits remain authoritative,
+and the default path executes one unchanged pressure solve.

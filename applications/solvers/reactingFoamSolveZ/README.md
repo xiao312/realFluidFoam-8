@@ -686,3 +686,24 @@ reference pressure and temperature guess. Outputs include p/T, residuals,
 mechanical stability and selected-root consistency. It changes no fields,
 correlations, library ABI or existing solver path. The property probe owns its
 initial compiled qualification; CFD activation requires separate development.
+
+The experimental `realFluidRhoHaPredictor yes` switch enables a constraint-based
+p/T recovery only where the existing post-inversion caloric audit would fail.
+It holds transported density and internal Ha values, changes p/T only for a
+mechanically stable state that also matches the executing library root, then
+refreshes boundaries and properties. It does not add heat, normalize species,
+change an audit limit or overwrite old-time fields.
+
+A post-pressure recovery is a predictor, not an accepted mechanical pressure.
+`pressureThermoCorrector.H` reruns the normal pressure equation until no such
+recovery is needed, up to `maxRhoHaPressureIterations` (default 6). A final
+recovery with no subsequent pressure solve is not accepted; exhaustion writes
+a failed snapshot and stops. Species/source and energy equations are not
+advanced again inside these added pressure/property iterations.
+
+This mode requires absolute Ha, conservative transport density, inner
+scalar/energy correction, post-pressure property refresh and at least two PISO
+correctors so the momentum matrix is retained. It remains off by default.
+The density/Ha API has compiled point controls; the pressure predictor still
+requires original-zero flow and conservation/momentum qualification. Record
+all recovery counts, pressure changes and extra pressure iterations.
