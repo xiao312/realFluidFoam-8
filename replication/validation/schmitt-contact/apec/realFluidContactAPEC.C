@@ -72,6 +72,7 @@ int main(int argc,char* argv[])
     };
     // Conservative rho/e recovery: no frozen-gamma projection or energy reset.
     const ContactDF::Thermo& oxygen=mixture->cellMixture(0);
+    const bool applyAPEC=runTime.controlDict().lookupOrDefault<Switch>("contactAPECEnabled",true);
     for(unsigned i=0;i<n;++i)if(mag(primitive[i].species[0])>1e-14||mag(primitive[i].species[1]-1)>1e-14)
         FatalErrorInFunction<<"APEC prototype supports pure O2 only"<<exit(FatalError);
     if(limitedLinear)FatalErrorInFunction<<"APEC prototype uses two-point central face flux"<<exit(FatalError);
@@ -112,7 +113,7 @@ int main(int argc,char* argv[])
     label steps=0;
     Info<<"CONTACT_APEC_INIT cells="<<n<<" dx="<<dx<<" area="<<area
         <<" massKg="<<initialMass<<" absoluteEnergyJ="<<initialEnergy
-        <<" acousticCo="<<cfl<<" reconstruction="<<reconstruction<<" time=SSPRK3 energy=absoluteHa quasiConservative=0"<<endl;
+        <<" apecCorrection="<<applyAPEC<<" acousticCo="<<cfl<<" reconstruction="<<reconstruction<<" time=SSPRK3 energy=absoluteHa quasiConservative=0"<<endl;
     while(runTime.run())
     {
         std::vector<Primitive> frozen=primitive;
@@ -120,18 +121,18 @@ int main(int argc,char* argv[])
         dt=min(dt,runTime.endTime().value()-runTime.value());
         runTime.setDeltaT(dt);dt=runTime.deltaTValue();runTime++;
         const std::vector<Conserved> old=state;
-        const Evaluation l0=evaluate(primitive,frozen,leftFar,rightFar,dx,area,oxygen);
+        const Evaluation l0=evaluate(primitive,frozen,leftFar,rightFar,dx,area,oxygen,applyAPEC);
         const std::vector<Conserved> w1=stage(old,l0,dt);
         const std::vector<Primitive> v1=project(w1,frozen);
-        const Evaluation l1=evaluate(v1,frozen,leftFar,rightFar,dx,area,oxygen);
+        const Evaluation l1=evaluate(v1,frozen,leftFar,rightFar,dx,area,oxygen,applyAPEC);
         const std::vector<Conserved> e1=stage(w1,l1,dt);
         std::vector<Conserved> w2(n);for(unsigned i=0;i<n;++i)w2[i]=combine(old[i],e1[i],.75,.25);
         const std::vector<Primitive> v2=project(w2,frozen);
-        const Evaluation l2=evaluate(v2,frozen,leftFar,rightFar,dx,area,oxygen);
+        const Evaluation l2=evaluate(v2,frozen,leftFar,rightFar,dx,area,oxygen,applyAPEC);
         const std::vector<Conserved> e2=stage(w2,l2,dt);
         for(unsigned i=0;i<n;++i)state[i]=combine(old[i],e2[i],1.0/3,2.0/3);
         primitive=project(state,frozen);
-        updatePhi(evaluate(primitive,frozen,leftFar,rightFar,dx,area,oxygen));
+        updatePhi(evaluate(primitive,frozen,leftFar,rightFar,dx,area,oxygen,applyAPEC));
         thermo.p().correctBoundaryConditions();U.correctBoundaryConditions();
         forAll(composition.Y(),k)composition.Y()[k].correctBoundaryConditions();
         thermo.T().correctBoundaryConditions();thermo.he().correctBoundaryConditions();thermo.correct();

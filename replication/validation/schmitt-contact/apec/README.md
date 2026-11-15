@@ -28,3 +28,9 @@ realFluidContactAPEC -case NEW_CASE. First run a uniform control and nx2 oxygen
 contact. Verify normal end, actual EOS/caloric identities, derivative finite-
 difference agreement, mass/energy budgets and pressure/velocity departures.
 Neither compilation nor a normal exit establishes paper or reacting acceptance.
+
+The explicit --uncorrected control disables only the APEC internal-energy
+face correction. It retains the same central flux, recovery and time scheme.
+The S17 comparison keeps the nx2 physical erf width fixed while changing grid
+resolution400/800/1600, separating under-resolution from a source-clock issue.
+The inherited low-temperature NASA extrapolation remains a declared limitation.

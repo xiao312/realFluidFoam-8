@@ -2,7 +2,7 @@ import {readFile,writeFile,readdir} from 'node:fs/promises';
 import path from 'node:path';
 import {createHash} from 'node:crypto';
 const [directory,endRaw,...flags]=process.argv.slice(2),end=Number(endRaw);
-if(!directory||!Number.isFinite(end)||end<=0||flags.some(f=>!['--apply','--uniform','--muscl'].includes(f)))throw Error('Use FRESH_CONTACT_CASE END_TIME [--uniform] [--muscl] [--apply]');
+if(!directory||!Number.isFinite(end)||end<=0||flags.some(f=>!['--apply','--uniform','--muscl','--uncorrected'].includes(f)))throw Error('Use FRESH_CONTACT_CASE END_TIME [--uniform] [--muscl] [--apply]');
 const root=path.resolve(directory),uniform=flags.includes('--uniform'),apply=flags.includes('--apply'),listing=await readdir(root);
 if(listing.includes('contact-apec.json')||listing.includes('initial-thermo.csv')||listing.some(n=>/^processor/.test(n)||(Number.isFinite(Number(n))&&Number(n)>0)))throw Error('Configure a new undecomposed contact before initialization');
 const muscl=flags.includes('--muscl');
@@ -14,7 +14,7 @@ await change('system/controlDict',s=>{
   .replace('endTime .02;',`endTime ${end};`)
   .replace('writeControl adjustableRunTime;writeInterval .005;',`writeControl adjustableRunTime;writeInterval ${Math.min(.005,end)};`)
   .replace('writeControl runTime;writeInterval .001;',`writeControl runTime;writeInterval ${Math.min(.001,end/5)};`)
-  +`\ncontactAPECInviscid yes;\nmaxAcousticCo .3;\ncontactAPECReconstruction ${muscl?'limitedLinear':'firstOrder'};\n`;
+  +`\ncontactAPECInviscid yes;\ncontactAPECEnabled ${flags.includes('--uncorrected')?'no':'yes'};\nmaxAcousticCo .3;\ncontactAPECReconstruction ${muscl?'limitedLinear':'firstOrder'};\n`;
 });
 if(uniform){
  await change('constant/contactInput',s=>s.replace('densityInversion yes;','densityInversion no;'));
@@ -22,7 +22,7 @@ if(uniform){
  for(const [name,value]of [['O2',1],['H2',0]])await change(`0/${name}`,s=>s.replace(/internalField\s+(?:uniform\s+[^;]+|nonuniform\s+List<scalar>\s+\d+\s*\([\s\S]*?\))\s*;/,`internalField uniform ${value};`));
 }
 const sha=s=>createHash('sha256').update(s).digest('hex');
-const receipt={schema:'contact-apec-input/v1',startTime_s:0,endTime_s:end,uniformQualification:uniform,algorithm:'single-component-central-APEC-conservative-total-energy,SSPRK3',reconstruction:muscl?'limitedLinear':'firstOrder',inviscid:true,acousticCo:.3,trueEOS:'executing SRK Chung mixture',energy:'conservative total energy,absoluteHa reference',scientificAcceptance:false,acceptanceLimitsChanged:false,changes:changes.map(c=>({file:c.file,beforeSha256:sha(c.before),afterSha256:sha(c.after)}))};
+const receipt={schema:'contact-apec-input/v1',startTime_s:0,endTime_s:end,pressureEquilibriumCorrection:!flags.includes('--uncorrected'),uniformQualification:uniform,algorithm:'single-component-central-APEC-conservative-total-energy,SSPRK3',reconstruction:muscl?'limitedLinear':'firstOrder',inviscid:true,acousticCo:.3,trueEOS:'executing SRK Chung mixture',energy:'conservative total energy,absoluteHa reference',scientificAcceptance:false,acceptanceLimitsChanged:false,changes:changes.map(c=>({file:c.file,beforeSha256:sha(c.before),afterSha256:sha(c.after)}))};
 if(!apply){console.log(JSON.stringify({readOnly:true,...receipt},null,2));process.exit(0);}
 if(!process.env.SLURM_JOB_ID)throw Error('Allocated preparation required');
 for(const c of changes)await writeFile(c.file,c.after);

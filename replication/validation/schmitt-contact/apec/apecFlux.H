@@ -15,11 +15,11 @@ struct Evaluation
     scalar boundaryMass=0,boundaryMomentum=0,boundaryEnergy=0,internalEnergyDefect=0;
 };
 // One-dimensional adaptation of Trixi flux_terashima_etal (see NOTICE.md).
-inline FaceFlux faceFlux(const Thermo& model,const Primitive& l,const Primitive& r)
+inline FaceFlux faceFlux(const Thermo& model,const Primitive& l,const Primitive& r,bool correction)
 {
     const scalar rho=.5*(l.rho+r.rho),u=.5*(l.u+r.u),p=.5*(l.p+r.p);
     const scalar rhoe=.5*(l.rho*l.absoluteH-l.p+r.rho*r.absoluteH-r.p)
-        -.25*(pressureEnergyDerivative(model,r)-pressureEnergyDerivative(model,l))*(r.rho-l.rho);
+        -(correction?.25*(pressureEnergyDerivative(model,r)-pressureEnergyDerivative(model,l))*(r.rho-l.rho):0);
     FaceFlux f;f.mass=rho*u;f.momentum=f.mass*u+p;
     f.leftEnergy=(rhoe+.5*rho*l.u*r.u)*u+.5*(l.p*r.u+r.p*l.u);
     f.rightEnergy=f.leftEnergy;f.species[0]=0;f.species[1]=f.mass;
@@ -27,14 +27,14 @@ inline FaceFlux faceFlux(const Thermo& model,const Primitive& l,const Primitive&
 }
 inline Evaluation evaluate(const std::vector<Primitive>& state,const std::vector<Primitive>&,
     const Primitive& leftFar,const Primitive& rightFar,scalar dx,scalar area,
-    const Thermo& model)
+    const Thermo& model,bool correction)
 {
     const unsigned n=state.size();Evaluation e;e.cells.resize(n);e.faces.resize(n+1);
     for(unsigned face=0;face<=n;++face)
     {
         const Primitive& l=face?state[face-1]:(state[0].u>=0?leftFar:state[0]);
         const Primitive& r=face<n?state[face]:(state[n-1].u<=0?rightFar:state[n-1]);
-        e.faces[face]=faceFlux(model,l,r);
+        e.faces[face]=faceFlux(model,l,r,correction);
     }
     for(unsigned i=0;i<n;++i)
     {

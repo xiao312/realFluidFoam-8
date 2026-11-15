@@ -1,0 +1,11 @@
+import fs from 'node:fs';
+const[root,mode]=process.argv.slice(2),log=fs.readFileSync(root+'/log.solver','utf8'),input=JSON.parse(fs.readFileSync(root+'/contact-apec.json'));
+const parse=line=>Object.fromEntries([...line.matchAll(/([A-Za-z][A-Za-z0-9_]*)=([^\s]+)/g)].map(m=>[m[1],Number(m[2])]));
+const find=prefix=>log.split('\n').filter(l=>l.startsWith(prefix)).at(-1),start=parse(find('CONTACT_APEC_INIT ')),last=parse(find('CONTACT_APEC ')),end=parse(find('CONTACT_APEC_END '));
+if(!Number.isFinite(last.t)||Math.abs(end.t-input.endTime_s)>1e-12||/FOAM FATAL/.test(log))throw Error('Incomplete or failed physical case');
+const metrics={pressureRelativeDeparture:Math.max(Math.abs(last.pMin-6e6),Math.abs(last.pMax-6e6))/6e6,velocityRelativeDeparture:Math.max(Math.abs(last.uMin-10),Math.abs(last.uMax-10))/10,massRelativeResidual:Math.abs(last.cumulativeMassResidualKg)/start.massKg,energyRelativeResidual:Math.abs(last.cumulativeEnergyBalanceResidualJ)/Math.max(1,Math.abs(start.absoluteEnergyJ)),energySyncDefect_J:last.cumulativeEnergyDefectJ,EOSDensityRelative:last.rhoEOSrelative};
+if(!Object.values(metrics).every(Number.isFinite))throw Error('Nonfinite diagnostic');
+const conservationPassed=metrics.massRelativeResidual<=1e-8&&metrics.energyRelativeResidual<=1e-8&&metrics.energySyncDefect_J===0&&metrics.EOSDensityRelative<=1e-8;
+const uniformPassed=mode!=='uniform'||metrics.pressureRelativeDeparture<=1e-8&&metrics.velocityRelativeDeparture<=1e-8;
+console.log(JSON.stringify({mode,endTime_s:end.t,metrics,conservationPassed,uniformPassed,scientificAcceptance:false,pressureErrorIsReportedNotAssumedPassed:mode!=='uniform'},null,2));
+if(!conservationPassed||!uniformPassed)process.exitCode=3;
