@@ -1,3 +1,5 @@
+#ifndef fgmChemicalEnthalpy_H
+#define fgmChemicalEnthalpy_H
 // Chemical part of mixture enthalpy from the executing thermo package.
 // Hf is J/kg of species. No table or external gas constant is used here.
 inline Foam::tmp<Foam::volScalarField> fgmChemicalEnthalpy
@@ -21,3 +23,5 @@ inline Foam::tmp<Foam::volScalarField> fgmChemicalEnthalpy
     }
     return result;
 }
+
+#endif
