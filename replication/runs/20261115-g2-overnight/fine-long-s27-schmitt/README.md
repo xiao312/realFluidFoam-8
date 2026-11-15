@@ -1,0 +1,3 @@
+# S27 fine-timestep longer Schmitt control
+
+Freshzero2ms/maxdt0.5us, exact10us source/Yi1e-12/read-only predictor audit. Reuses qualifiedS23 source6b02d79/solver5a83ebca and all15parentproducts. S25 maxdt1us failed caloric consistency233.406266us; retain it. S22b source80fa810 completed originalzero1ms at0.5us. No changed chemistry, boundaries, table, clipping or acceptance. Requires actualS23 tight1ms and default16k parity. All execution through pinned FlamePilot Slurm adapter.20400sallocation/19800spayload mustfit owner09:20deadline. Plan/hash/Bash/Node checks before admission; actual fields/budgets determine interpretation. Not a restart or scientific approval.
