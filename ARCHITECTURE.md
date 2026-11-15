@@ -1,5 +1,10 @@
 # Experimental solver boundaries
 
+`replication/validation/written-time/` owns read-only mapping from physical log
+times to unique serialized output directories. Post-run qualification readers
+depend on its Node filesystem interface; the solver, EOS and scheduler do not.
+It uses explicit case output precision rather than a scientific-error tolerance.
+
 The upstream thermophysical libraries under `src/` own EOS, caloric inversion
 and transport properties. `applications/solvers/reactingFoamSolveZ/` owns the
 experimental transported-coordinate flow/energy equations. It depends on those
