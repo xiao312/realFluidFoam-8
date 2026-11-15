@@ -1,0 +1,14 @@
+import fs from 'node:fs';import crypto from 'node:crypto';import {spawnSync} from 'node:child_process';
+const[input,root,mode,action]=process.argv.slice(2),apply=action==='--apply';
+if(!/^s2[456]-(largest|gibbs)$/.test(mode)||![undefined,'--apply'].includes(action)||!root.startsWith('/workspace/cases/root-gap-s29-')||fs.existsSync(root))throw Error('Fresh owned query required');
+const[label,policy]=mode.split('-'),q=JSON.parse(fs.readFileSync(input+'/'+label+'.json')),raw=fs.readFileSync(input+'/'+label+'-thermo'),sha=b=>crypto.createHash('sha256').update(b).digest('hex');
+if(q.authorizedForCFDRestart!==false||sha(raw)!==q.thermoDictionarySha256)throw Error('Exact retained dictionary required');
+if(!apply){console.log(JSON.stringify({readOnly:true,mode,CFDsteps:0,job:q.job,authorizedForRestart:false}));process.exit(0);}if(!process.env.SLURM_JOB_ID)throw Error('Slurm required');
+const factory='/workspace/build/relaxed-table-r54/source/replication/validation/realfluid-g2-thermo/probe/prepare.mjs',s=spawnSync('node',[factory,'--thermo-dir','/workspace/results/g2-fixed-h-r42-schmitt/thermo','--species','O2','--out',root],{encoding:'utf8'});if(s.status!==0)throw Error(s.stderr||s.stdout);
+let dict=raw.toString();if(/srkRootSelection/.test(dict))throw Error('Unexpected inherited root policy');
+if(policy==='gibbs'){for(const name of q.species){const key=JSON.stringify(name)+' {';if(dict.split(key).length!==2)throw Error('Unique species block required');dict=dict.replace(key,key+'\n srkRootSelection homogeneousGibbs;');}if(dict.split('srkRootSelection homogeneousGibbs;').length-1!==53)throw Error('53 uniform root selections required');}
+fs.writeFileSync(root+'/constant/thermophysicalProperties',dict);
+for(const[name,value]of [...Object.entries(q.massFractions),['p',q.p_Pa],['T',q.T_K]]){const file=root+'/0/'+name,before=fs.readFileSync(file,'utf8');if(!/internalField uniform [^;]+;/.test(before))throw Error('Unexpected field');fs.writeFileSync(file,before.replace(/internalField uniform [^;]+;/,`internalField uniform ${value};`));}
+const t=q.T_K,temps=[...new Set([...Array.from({length:81},(_,i)=>t-.02+i*.0005),t-1e-4,t+1e-4,t-1e-5,t+1e-5,t-1e-6,t+1e-6,t])].sort((a,b)=>a-b);
+const config=`FoamFile {version 2.0;format ascii;class dictionary;object probeProperties;}\npressure ${q.p_Pa};temperatures (${temps.join(' ')});increments (0.001);initialGuessOffset 0.5;writeSrkCoefficients yes;enthalpyTargets (${q.storedHs_J_kg});targetGuesses (${t-.5} ${t} ${t+.5} 300);targetCorrectionPasses 50;targetRelativeLimit 1e-8;\n`;
+fs.writeFileSync(root+'/constant/probeProperties',config);fs.writeFileSync(root+'/query-input.json',JSON.stringify({...q,mode,CFDsteps:0,activeThermoSha256:sha(Buffer.from(dict))},null,2)+'\n');console.log(JSON.stringify({created:root,CFDsteps:0,mode}));
