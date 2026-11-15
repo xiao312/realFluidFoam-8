@@ -9,6 +9,12 @@ if (!reaction->compositionTabulated())
     reaction->correct();
     fgmTiming.stop(fgmWallTiming::reactionCorrection, fgmReactionStart);
     volScalarField Yt(0.0*Y[0]);
+    const bool auditSpeciesTransport = runTime.controlDict()
+        .lookupOrDefault<Switch>("writeFgmSpeciesTransportAudit", false);
+    scalar minimumRawSpecies = GREAT, maximumClipAddition = 0;
+    autoPtr<volScalarField> rawTransportSum;
+    if (auditSpeciesTransport)
+        rawTransportSum.reset(new volScalarField("rawTransportSum", 0.0*Y[0]));
 
     forAll(Y, i)
     {
@@ -34,6 +40,15 @@ if (!reaction->compositionTabulated())
 
             fvOptions.correct(Yi);
 
+            if (auditSpeciesTransport)
+            {
+                rawTransportSum() += Yi;
+                forAll(Yi, celli)
+                {
+                    minimumRawSpecies = min(minimumRawSpecies, Yi[celli]);
+                    maximumClipAddition = max(maximumClipAddition, max(-Yi[celli], scalar(0)));
+                }
+            }
             Yi.max(0.0);
             Yt += Yi;
         }
@@ -41,6 +56,7 @@ if (!reaction->compositionTabulated())
 
     Y[inertIndex] = scalar(1) - Yt;
     Y[inertIndex].max(0.0);
+    #include "speciesTransportAudit.H"
 }
 else
 {

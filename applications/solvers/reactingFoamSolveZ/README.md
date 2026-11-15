@@ -1,5 +1,18 @@
 # Transported-Z reacting solver
 
+`writeFgmSpeciesTransportAudit yes;` is a default-off, read-only predictor
+diagnostic. It reports the raw negative species, existing clipping addition,
+sum before/after clipping (excluding the closure species), implied unclipped
+closure and dimensionless continuity defect before table relaxation. If the
+nonclosure sum exceeds1+1e-8, it retains the actual predictor fields; these are
+not authorized restart inputs. It changes neither the existing closure formula
+nor the model's positivity/sum/caloric criteria. Inputs: existing species,
+rho/phi and time; outputs: logs/diagnostic snapshots; no new dependency or ABI.
+`speciesTransportAudit.H` owns only this diagnostic, called from `YEqn.H`.
+Verify a solver-only build against pinned libraries, actual default-off parity,
+then fresh-zero physical controls comparing predictor defects and acceptance.
+Compilation alone is not scientific validation. No secrets or network access.
+
 ## Relaxed table target candidate
 
 The experimental `relaxedTable` model transports actual species and Z, then

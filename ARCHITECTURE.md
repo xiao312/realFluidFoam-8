@@ -97,3 +97,8 @@ advance G2 or implement multicomponent APEC by its presence.
 property experiments. It depends on prior qualified source-clock/thermo products
 and existing factories, and feeds the paper-review visualization. It changes no
 production solver interface or scheduler dependency.
+
+The solver's default-off `speciesTransportAudit.H` consumes the species
+predictor, closure bookkeeping and rho/phi residuals from `YEqn.H`. It reports
+clipping/closure defects and retains invalid predictor witnesses before source
+relaxation. It owns no numerical correction, acceptance gate or library ABI.
