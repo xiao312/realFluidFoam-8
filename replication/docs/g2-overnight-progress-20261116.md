@@ -26,6 +26,7 @@ means, source element conservation and physical global energy remain unqualified
 | S22b Schmitt,0.5us ceiling,Yi1e-8 |128120313|COMPLETED9536s,1ms|Startup delivery, not developed statistics|
 | S23 build/default regression/tight Cavalieri |128125817|COMPLETED5790s, default100us plus independent1ms|Tighter Yi1e-12 passes the species-sum failure with unchanged checks|
 | S24 Cavalieri,1us ceiling,Yi1e-12 |128134006|FAILED889s at240.515672us|Separate storedh/EOS caloric inconsistency|
+| S25 Schmitt,1us ceiling,Yi1e-12 |128134111|FAILED1442s at233.406266us|Same cold near-injector caloric/coupling pattern|
 
 The case already used oxygen as the closure species. An initial nitrogen-closure
 hypothesis was checked and withdrawn without changing the case. S23 retains the
@@ -80,12 +81,14 @@ Low-temperature NASA extrapolation remains unqualified.
 
 ## Bounded next runs
 
-S25 Schmitt128134111 is an original-zero2ms diagnostic at1us ceiling. S26
-Cavalieri128135745 is a separate original-zero3ms control at the supported0.5us
-ceiling. Both retain exact10us source/Yi1e-12 and unchanged physical acceptance.
-Their actual outcomes are pending this checkpoint; an admitted allocation is
-not completed CFD. The owner compute cutoff is09:20Asia/Shanghai,16November2026.
-No production merge or scientific acceptance is claimed.
+S25 failed at162.938389K/5.304348MPa with706.580415J/kg caloric discrepancy;
+its actual53species/rho/Ha snapshot is retained and is not a restart input.
+S26 Cavalieri128135745 is a separate original-zero3ms control at0.5us. S27
+Schmitt128136638 requests a separate original-zero2ms control at0.5us after
+the S25 failure. Both retain exact10us source/Yi1e-12 and unchanged physical
+acceptance. Their actual outcomes are pending this checkpoint; an admitted
+allocation is not completed CFD. The owner compute cutoff is09:20Asia/Shanghai,
+16November2026. No production merge or scientific acceptance is claimed.
 
 Detailed immutable receipts, small exports and current operator reports are in
 the outer workspace's `state/g2-source-coupling-20261115/overnight-20261115/`.
