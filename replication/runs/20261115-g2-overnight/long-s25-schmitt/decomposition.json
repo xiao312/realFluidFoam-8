@@ -1,0 +1,9 @@
+{
+  "method": "hierarchical",
+  "n": [
+    8,
+    4,
+    1
+  ],
+  "order": "xyz"
+}

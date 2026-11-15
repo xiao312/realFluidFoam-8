@@ -1,0 +1,3 @@
+# long-s24-cavalieri
+
+Fresh-zero5ms diagnostic, exact10us source clock and maxdt1us. Yi tolerance1e-12 with read-only predictor audit; all positivity/sum/caloric limits unchanged. Registered cavalieri mesh/table/inlets, absoluteHa and full compressible coupling. QualifiedS23 source6b02d79/solver5a83ebca and parent15library hashes verified. Requires actualS23 default16k numeric parity and successful tight1ms control before running. No evolved restart or scientific approval. Plan via FlamePilot adapter; frozen main checks hashes/qualification before case preparation. Verify Bash/Node syntax and actual physical profiles/budgets; compare common1ms with maxdt0.5us control.
