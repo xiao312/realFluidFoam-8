@@ -57,3 +57,13 @@ No evolved CFD states, arbitrary added heat, chemistry fitting or hidden clippin
 The fixed-time mode is a hypothesis test. A successful case does not establish
 LES/PDF, source-transport conservation, developed statistics or a G2 paper pass.
 Results and full input/product identities belong in the central Forge comparisons.
+
+## Executed evidence
+
+The retained5ms logs report deltaT5us and Cr100 tau500us in both cases; the prior fine-step0.1us setting implied10us. The nominal relaxation scale changed50-fold. This is an observed numerical timescale change, not a fitted chemistry rate.
+
+Source d020b8d compiled and linked in Slurm128102177,335s,solver SHA25629ed7066d2d0b7ff84a4cffaee766fa46d7de31ab78595bfe3cca1991d720fa3.15library products pinned,14actuallyloaded,onefreshcombustionDSO.40actualsource rows passed; equal-alpha modes had exactly equal numerical results and invalidtau was rejected. Default flow profiles at actual20.4651195144us match retained baseline profiles exactly across32000numericalvalues in two conditions. These checks preserve the default; they do not validate the new clock physically.
+
+Actual-runtime enthalpy queries in128102509,361s,converged for8compositions from3guesses each. At the same capturedHa/p,the target compositions recover3399.54K(Schmitt hottest),3315.00K(Schmitt15mm),3361.73K(Cavalieri hottest),3383.86K(Cavalieri15mm). Captured compositions recover their original1983.99/1507.35/2215.11/1495.98K states. Thus highT is locally compatible with transportedHa in these four hot cells. This does not qualify cryogenic branches,element conservation,chemical equilibrium or globalenergy.
+
+The first physical wrapper128102594 failed beforeCFD due a legacy case-prefix restriction. Corrected S02b packets retain the inlet helper and use fresh compatible names;128102962/128103070 are the independently admitted Schmitt/Cavalieri paired controls. Both initial steps-mode cases advanced; fixedTime data remains pending at this update. All failures,admission refusals and exactreceipts remain operator evidence. No new5ms field is claimed yet.

@@ -1,0 +1,67 @@
+{
+  "nominal_time_s": 2e-05,
+  "actualTimes_s": {
+    "schmitt": [
+      2.04651195144e-05,
+      2.04651195144e-05
+    ],
+    "cavalieri": [
+      2.04651195144e-05,
+      2.04651195144e-05
+    ]
+  },
+  "readOnly": true,
+  "bytes": 314228,
+  "archiveSha256": "65017068eb68768c6c6935a23da72c603eaf61351a67ea4b2906267770de3bac",
+  "scope": "DefaultCr100 freshCFD regression at same physical time; no fixedTime conclusion",
+  "cases": {
+    "schmitt": {
+      "valuesCompared": 16000,
+      "numericExact": true,
+      "maxScaledDifference": 0,
+      "columnMaxScaledDifferences": {
+        "x": 0,
+        "U_0": 0,
+        "U_1": 0,
+        "U_2": 0,
+        "y": 0,
+        "T": 0,
+        "rho": 0,
+        "Z": 0,
+        "c": 0,
+        "OH": 0,
+        "CH4": 0,
+        "O2": 0,
+        "CO2": 0,
+        "CO": 0,
+        "Ha": 0,
+        "steadyTdiag": 0
+      },
+      "within1eMinus8": true
+    },
+    "cavalieri": {
+      "valuesCompared": 16000,
+      "numericExact": true,
+      "maxScaledDifference": 0,
+      "columnMaxScaledDifferences": {
+        "x": 0,
+        "U_0": 0,
+        "U_1": 0,
+        "U_2": 0,
+        "y": 0,
+        "T": 0,
+        "rho": 0,
+        "Z": 0,
+        "c": 0,
+        "OH": 0,
+        "CH4": 0,
+        "O2": 0,
+        "CO2": 0,
+        "CO": 0,
+        "Ha": 0,
+        "steadyTdiag": 0
+      },
+      "within1eMinus8": true
+    }
+  }
+}
