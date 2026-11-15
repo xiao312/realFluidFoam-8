@@ -1,5 +1,6 @@
 // Runtime factory and inversion pattern adapted from rfPropertyProbe.C.
-// No EOS or caloric correlation is implemented in this diagnostic.
+// Existing correlations are retained; density-form diagnostics evaluate the
+// same exported SRK coefficients and the executing library caloric reference.
 #include "fvCFD.H"
 #include "psiReactionThermo.H"
 #include "mixedFvPatchFields.H"
@@ -13,6 +14,7 @@
 #include "pressureJacobianAudit.H"
 #include "contactAveragingAudit.H"
 #include "manifoldEnthalpyAudit.H"
+#include "rhoHaStateAudit.H"
 
 int main(int argc, char *argv[])
 {
@@ -25,6 +27,7 @@ int main(int argc, char *argv[])
     argList::addBoolOption("audit-pressure-jacobian", "Compare fixed-T and fixed-h SRK pressure slopes with actual library finite differences");
     argList::addBoolOption("audit-contact-averaging", "Compare isothermal composition and conservative-volume averages through the actual SRK library;no CFD steps");
     argList::addBoolOption("audit-manifold-enthalpy", "Query adiabatic reacting/passive manifold enthalpy feasibility through actual SRK;no CFD steps");
+    argList::addBoolOption("audit-rho-ha-state", "Joint density/Ha recovery; zero CFD steps and no field mutation");
     #include "setRootCase.H"
     #include "createTime.H"
     #include "createMesh.H"
@@ -33,6 +36,7 @@ int main(int argc, char *argv[])
     Info<< "FGM_HA_PHASE stage=thermo-construction-complete elapsedWall_s=" << runTime.elapsedClockTime() << endl;
     psiReactionThermo& thermo = model();
     basicSpecieMixture& composition = thermo.composition();
+    if (args.optionFound("audit-rho-ha-state")) return auditRhoHaState(thermo,mesh,runTime);
     if (args.optionFound("audit-contact-averaging"))
         return auditContactAveraging(thermo,mesh,runTime);
     if (args.optionFound("audit-manifold-enthalpy"))

@@ -66,3 +66,9 @@ The solver's optional `densityPredictorTimeStep.H` owns a source-free fixed-mesh
 Euler mass-predictor step bound using accepted rho and mass phi. It constrains
 Time before field transport, never modifies thermodynamics or field values,
 and adds no library/controller dependency. Physical guards remain unchanged.
+
+The property probe's optional density/Ha audit depends on the field-independent
+`reactingFoamSolveZ/srkRhoHaRecovery.H` and existing concrete SRK mixture APIs.
+This header evaluates the same coefficients in rho/T form and returns explicit
+caloric/stability/root-consistency verdicts. It owns no fields or scheduler
+operations and is not activated in CFD by introducing the diagnostic.

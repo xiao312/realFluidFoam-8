@@ -1,23 +1,45 @@
 # G2 source-clock controls
 
-Responsibility: freeze and qualify an optional numerical relaxation-clock diagnostic, then compare paired original-zero G2 startup cases. This module does not fit chemistry or qualify developed LES/experimental agreement.
+This module freezes an optional numerical relaxation-clock diagnostic and compares paired G2 startup cases from original time zero. It does not fit chemistry or establish developed LES or experimental agreement.
 
-Inputs: immutable source archive d020b8df0d7ba6c9fd2306770bb08f08d5292773; qualified R54 parent build51075d5; existing53-species thermodynamics, target table92f947e2 and registered Schmitt/Cavalieri meshes. The source archive is generated with git archive on a case-sensitive Linux extraction. It is not stored here.
+## Inputs and outputs
 
-Outputs: actual compile/link/product receipts,40 executed source-probe rows, identical-alpha parity, invalid-clock rejection, and paired300us CFD fields, profiles and budgets. A failed case is retained and does not become accepted by a successful scheduler exit.
+Inputs are source `d020b8df0d7ba6c9fd2306770bb08f08d5292773`, the qualified R54 parent build `51075d5`, the existing 53-species thermodynamics, target table `92f947e2`, and registered Schmitt/Cavalieri meshes. Generate the source archive with `git archive`; extract it on case-sensitive Linux. The archive is not stored here.
 
-Configuration: default steps mode uses Cr100. The independent fixedTime diagnostic uses10us with unchanged maximum timestep5us/Co1. This is a convex Euler source update, not exact exponential integration; actual timestep/alpha histories must accompany comparison. Both modes start from the original pure-fuel zero fields. Source heating remains diagnostic only; absolute Ha is transported without adding chemical heat twice.
+Outputs include actual build and product receipts, 40 executed source-probe rows, equal-alpha parity, a specific invalid-clock rejection, and paired CFD profiles and budgets. Failed cases remain evidence. A successful scheduler exit does not establish scientific acceptance.
 
-Dependencies: OF8 qualified environment f46b172c; FlamePilot Slurm adapter0d2a63b; fourteen pinned parent DSOs and one freshly compiled combustion DSO; freshly compiled reactingFoamSolveZ. The class layout/vtable is unchanged. Dynamic library realpaths/hashes are checked before physical tests. No source under core/hpc is modified.
+## Configuration
 
-Security: controller/SSH configuration and credentials stay outside Git. All generated files remain within D:/FlamePilot workspace or /public/home/dfagent/FlamePilot. ECS receives no bulk files. Scripts refuse existing case/build/output destinations and have preparation plan paths before mutation.
+Default `steps` mode uses Cr = 100. The `fixedTime` diagnostic uses a 10 microsecond timescale, with maximum timestep 5 microseconds and Co = 1. Both cases start from original pure-fuel zero fields. Formation heat remains diagnostic; chemical heat is not added twice to the absolute-Ha equation.
 
-Example: create a packet from s01 plus the pinned git archive, generate LF SHA256 manifests, inspect its adapter plan, then submit s01/main.sh through FlamePilot Slurm. Only after actual build/probe qualification may either s02 packet be admitted. Do not execute compute on a login node.
+The fixed-time update uses Euler relaxation, not exact exponential integration. Preserve actual timestep and alpha histories; finite-step error still needs assessment. The chosen timescale comes from the earlier fine-step Cr = 100 control, not temperature fitting.
 
-Verification: bash -n each main.sh/run.sh; node --check each .mjs; sha256sum -c inputs.sha256 in the allocated environment; S01 requires15 pinned custom-library products and hashes/realpaths for each actually resolved custom DSO, successful help,40 passed rows with identical numerical values, and a specific negative-control rejection. S02 records actual exits/timezero hashes and preserves failures. Scientific acceptance remains false pending independent assessment.
+## Dependencies and boundaries
 
-Executed S01 qualification: job128102177 COMPLETED335s/0:0; source d020b8d; solver SHA25629ed7066d2d0b7ff84a4cffaee766fa46d7de31ab78595bfe3cca1991d720fa3. Inventory15 custom DSOs:14parent products and1fresh combustion. The solver actually loads14 of these (13parent+1fresh); the unused rhoReactionThermophysicalTransportModels product is retained/pinned but not falsely counted as loaded. Forty source-probe rows passed and equal-alpha modes were numerically identical; invalidtau was specifically rejected. This is build/source qualification, not CFD validation.
+The module uses the qualified OF8 environment `f46b172c` and FlamePilot Slurm adapter `0d2a63b`. It pins fourteen parent library products, compiles one new combustion library and compiles `reactingFoamSolveZ`. The combustion class layout and virtual interface are unchanged. Check every actually resolved custom library's realpath and hash before physical tests.
 
-Active flow packets are source-clock-s02b-schmitt and source-clock-s02b-cavalieri. Earlier S02 is retained evidence: job128102594 FAILED202s before CFD, because the reused inlet helper accepts only the g2-relaxed- case prefix. S02b selects fresh compatible case names and otherwise preserves that helper and physics. Cavalieri S02 was never admitted. Corrected S02b actual admissions128102962/128103070 use32cores64GiB4000s each.
+Credentials and controller/SSH configuration remain outside Git. Generated files stay in the D: workspace or `/public/home/dfagent/FlamePilot/`; ECS receives no bulk files. Scripts refuse existing destinations and provide preparation plans before mutation. Compilation, property queries and CFD run through Slurm, never on login nodes.
 
-S03 thermodynamic queries completed361s with all24 inversions converged. Captured compositions recover1507/1496K and1984/2215K; target compositions at the same capturedHa recover3315–3400K. This supports composition/source-lag investigation at these hot cells; it does not qualify cryogenic inversion, chemical equilibrium, transported element conservation or the whole reacting CFD. See evidence-enthalpy-s03. Run `python plot-cell-queries.py RESULTS_ROOT` where that root contains hot-enthalpy-query-summary.json and hot-state-target-audit.json. Standard Matplotlib/NumPy only.
+## Execution
+
+Create an S01 packet from these scripts and the pinned source archive. Generate LF SHA256 manifests, inspect the adapter plan, and submit `source-clock-s01/main.sh` through FlamePilot Slurm. Only after actual build/source qualification may an S02b packet run.
+
+The active physical packets are `source-clock-s02b-schmitt` and `source-clock-s02b-cavalieri`. Each executes a fresh Cr = 100 control and a separate fresh fixed-time case to 300 microseconds. Both retain the same mesh, boundaries, table, energy coupling and acceptance checks.
+
+Earlier S02 packets are retained history. Job 128102594 failed before CFD because the reused inlet helper accepts only the `g2-relaxed-` case prefix. S02b uses compatible fresh names and preserves the helper. The original Cavalieri S02 packet was never admitted.
+
+## Verification and retained results
+
+Run `bash -n` on shell entrypoints and `node --check` on JavaScript files. In the allocated environment, run `sha256sum -c inputs.sha256`. S01 requires pinned product identities, successful help, 40 passing source-probe rows with equal numerical values, and the specific negative-control rejection.
+
+Executed evidence:
+
+- S01 job 128102177 completed in 335 seconds, exit 0. Solver SHA256: `29ed7066d2d0b7ff84a4cffaee766fa46d7de31ab78595bfe3cca1991d720fa3`.
+- Fifteen custom library products are pinned. The solver loads fourteen: thirteen parent products and the fresh combustion library. The unused rho-reaction transport product is pinned but is not counted as loaded.
+- All 40 source-probe rows passed. Equal-alpha modes produced identical numerical CSV values. The retained receipt's historical field name includes `Bitwise`; the comparison is numerical equality, not an independent IEEE-bit audit.
+- The default fresh-CFD regression matched 32,000 values exactly against the retained baselines at actual time 20.4651195144 microseconds. No time interpolation was used.
+- S03 job 128102509 completed in 361 seconds. All 24 enthalpy inversions converged. Captured compositions recover their original hot-cell temperatures; target compositions at the same captured Ha recover 3,315–3,400 K.
+
+See `evidence-s01`, `evidence-default-cfd` and `evidence-enthalpy-s03`. These results support a source-lag investigation at the selected hot cells. They do not qualify cryogenic branches, transported element conservation, chemical equilibrium or the complete reacting CFD.
+
+Run `python plot-cell-queries.py RESULTS_ROOT` with Matplotlib and NumPy. The results root must contain `hot-enthalpy-query-summary.json` and `hot-state-target-audit.json`. The figure distinguishes captured CFD temperatures from independent fixed-enthalpy property queries.

@@ -210,3 +210,20 @@ a(T) coefficients, molecular weight and gas constant in srk-coefficients.csv.
 It uses the existing typed SRK mixture audit interface and adds no EOS model.
 An independent cubic-root/stability calculation can then distinguish the
 selected root from other admissible roots using the exact runtime parameters.
+
+The optional `-audit-rho-ha-state` mode evaluates a fresh one-cell state using
+`constant/rhoHaAudit`: `density`, `absoluteEnthalpy`, `referencePressure` and
+`guesses`. It holds the captured density and Ha, and solves for pressure and
+temperature jointly. It does not advance CFD or replace the flow equations.
+The shared `srkRhoHaRecovery.H` evaluates the existing SRK coefficients in
+rho/T form. The ideal caloric contribution comes from the executing library's
+Ha minus EOS departure H, and its CpIdeal. No critical data, NASA coefficients,
+reference energies or phase fractions are fitted or changed.
+
+The output separates caloric convergence, mechanical stability and consistency
+with the library's selected homogeneous root. All three are required to pass.
+An inadmissible or mismatched root remains a failed query. This is not a VLE
+flash. The existing probe modes, solver and library ABI are unchanged.
+Compile the probe against the pinned parent headers/products, run help and
+actual captured-state controls through Slurm, and retain `rho-ha-state.csv`.
+Successful scalar recovery is not qualification of a CFD coupling predictor.

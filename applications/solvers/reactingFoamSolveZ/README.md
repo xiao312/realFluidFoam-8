@@ -679,3 +679,10 @@ Verification requires compilation with the pinned OF8 runtime and a bounded
 deliberate failure control that checks field presence, values and nonzero exit.
 A normal-run comparison checks that the added failure-only path leaves sampled
 fields unchanged. Until those checks execute, this is an unqualified draft.
+
+`srkRhoHaRecovery.H` is a field-independent, density/absolute-enthalpy state
+recovery experiment. Inputs are the executing SRK mixture, density, Ha,
+reference pressure and temperature guess. Outputs include p/T, residuals,
+mechanical stability and selected-root consistency. It changes no fields,
+correlations, library ABI or existing solver path. The property probe owns its
+initial compiled qualification; CFD activation requires separate development.
