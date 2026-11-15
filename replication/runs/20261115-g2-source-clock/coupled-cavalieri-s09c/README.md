@@ -1,0 +1,5 @@
+# Controlled Cavalieri coupling experiment
+
+Inputs are the qualified S08 solver, unchanged S01 libraries and registered original-zero Cavalieri case. Run the old largest-root default for40us and compare actual20us profiles against the retained baseline before further cases. Then independently initialize two300us fixed-time10us cases: Gibbs-root policy alone and the same policy plus density/Ha predictor with at most6 pressure/property passes. Source/energy are not repeated in those added pressure iterations. All coefficients,mesh,inlets,table,transport and caloric limits remain unchanged. Format precision17 improves retained states. Failures remain in per-case receipts; wrapper completion only delivers the comparison batch. No scientific approval or restart. All compute through FlamePilot Slurm. Syntax,hashes,read-only preparation and exact runtime identity precede admission.
+
+S09b failed before CFD because a40us end rejected100us field interval. S09c uses100us default/off regression and unchanged100us output interval; it preserves the original sampled20us trajectory. Later variants remain300us. JSON numeric literals corrected; failed S09b receipt retained.

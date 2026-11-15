@@ -1,0 +1,116 @@
+[
+  {
+    "module": "src/ODE",
+    "beforeSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "compiledSha256": "c9bed1af3dfb7492bcb838e80e74a6c41dc34f52fecd7deda34e39578c08ffa1",
+    "reason": "Qualified GCC11 multiarch include/link paths, quoted against wmake preprocessing"
+  },
+  {
+    "module": "src/thermophysicalModels/specie",
+    "beforeSha256": "4b028b3624d217d17e535e1c54cae0cb2da00d06308e55b45901c69fde051a72",
+    "compiledSha256": "d2350d6936f92fc31b0e0103d93e81c2846b63bfecd32a2efcea411e5e2189fc",
+    "reason": "Qualified GCC11 multiarch include/link paths, quoted against wmake preprocessing"
+  },
+  {
+    "module": "src/thermophysicalModels/thermophysicalProperties",
+    "beforeSha256": "3d3f8e6429b8b5c94dafc624905313ad0c8ad68dac09f536dd1e4f0e8ce5b53b",
+    "compiledSha256": "06cb526660fe65079b23495c81fb3072ccf5a446c3e84b513bf8e4b470e34c8b",
+    "reason": "Qualified GCC11 multiarch include/link paths, quoted against wmake preprocessing"
+  },
+  {
+    "module": "src/thermophysicalModels/basic",
+    "beforeSha256": "ecd0e90310d36b46d13ad10e182d640a9a1d96cd2338009217b128eb4897b03e",
+    "compiledSha256": "993cdc29f4ea46ccbeb2843bc77b8a4da433d1fa9bf52b737e26fb45a254724c",
+    "reason": "Qualified GCC11 multiarch include/link paths, quoted against wmake preprocessing"
+  },
+  {
+    "module": "src/thermophysicalModels/reactionThermo",
+    "beforeSha256": "0be59de562d688f647f7db672cce1ad3404c5c33a5fc6c98fd334b5099393618",
+    "compiledSha256": "e5087912f04c7b38f3ac6da1387559fee440e47a8d7f168c8c6aa992dbfabfa3",
+    "reason": "Qualified GCC11 multiarch include/link paths, quoted against wmake preprocessing"
+  },
+  {
+    "module": "src/thermophysicalModels/chemistryModel",
+    "beforeSha256": "c5dcb851513a6cf9eb0042d5d2a83c667fe45c93d0e69c5e125792c3964401a3",
+    "compiledSha256": "936d99c9cc86532f3062d32b7aa0003a88a00a9f575569939314e38724719c66",
+    "reason": "Qualified GCC11 multiarch include/link paths, quoted against wmake preprocessing"
+  },
+  {
+    "module": "src/thermophysicalModels/solidThermo",
+    "beforeSha256": "695dc8430af96681b91168ff3859ab70f626d24eb8965390f609f95e50fd80b3",
+    "compiledSha256": "5aad6567f08e58185d81127a71f5fac10f9362d6fb5b343841b217fc363bc98a",
+    "reason": "Qualified GCC11 multiarch include/link paths, quoted against wmake preprocessing"
+  },
+  {
+    "module": "src/MomentumTransportModels/momentumTransportModels",
+    "beforeSha256": "a7f70b25db8463d4ad3af8dde19d2dc14fc65c297dfa40f38265470b9ee42ac3",
+    "compiledSha256": "1c221549453f686afc411c3295417ed4474bb95eecafe99ac026146ba9fd8056",
+    "reason": "Qualified GCC11 multiarch include/link paths, quoted against wmake preprocessing"
+  },
+  {
+    "module": "src/MomentumTransportModels/compressible",
+    "beforeSha256": "9a9d765d50331002c69438498b65a35d0a9e280d64760e73a68cbf4f6cd56ae5",
+    "compiledSha256": "9e26ec8b61b259d68f5aba63036be65d73ddbb66ac1cae0a2013dbff39e7ca15",
+    "reason": "Qualified GCC11 multiarch include/link paths, quoted against wmake preprocessing"
+  },
+  {
+    "module": "src/ThermophysicalTransportModels",
+    "beforeSha256": "3de5721b7ab8abbd693d2051c7b76cf405a7eccf737ff2fc4b22d82ed05ecbb1",
+    "compiledSha256": "8014d71f0e0e721db934f7679573aa185c227234f58118bffccf24763626f1b6",
+    "reason": "Qualified GCC11 multiarch include/link paths, quoted against wmake preprocessing"
+  },
+  {
+    "module": "src/ThermophysicalTransportModels/psiReactionThermo",
+    "beforeSha256": "ae30ac5dfe55dcb18ee1554bd2da46b637a2f1948411beb8331e0e15735cfef2",
+    "compiledSha256": "3510d5f6cbec1127c6db06663670955f4e24e8f5e8a6de63b9358a26d455b566",
+    "reason": "Qualified GCC11 multiarch include/link paths, quoted against wmake preprocessing"
+  },
+  {
+    "module": "src/ThermophysicalTransportModels/rhoReactionThermo",
+    "beforeSha256": "ae30ac5dfe55dcb18ee1554bd2da46b637a2f1948411beb8331e0e15735cfef2",
+    "compiledSha256": "3510d5f6cbec1127c6db06663670955f4e24e8f5e8a6de63b9358a26d455b566",
+    "reason": "Qualified GCC11 multiarch include/link paths, quoted against wmake preprocessing"
+  },
+  {
+    "module": "src/radiationModels",
+    "beforeSha256": "fb731b35f4626b861e3215f6480078be50e5ee9df97b44796c47b80c1a4ef7ec",
+    "compiledSha256": "e8dd3b85b10ef3c87fd1b6ea7430fffb4889f4f14d031ac78e061de981055134",
+    "reason": "Qualified GCC11 multiarch include/link paths, quoted against wmake preprocessing"
+  },
+  {
+    "module": "src/combustionModels",
+    "beforeSha256": "46a9759fef17ad0225f10341defef984152dc42715211946db09ac959954e0bb",
+    "compiledSha256": "e55e19172c51fab57903dcdf1925bb14b0353e8f1e28a5b34731e326a9586b4a",
+    "reason": "Qualified GCC11 multiarch include/link paths, quoted against wmake preprocessing"
+  },
+  {
+    "module": "src/fvOptions",
+    "beforeSha256": "f9bb15e63f786ae4531309457197da73b1d97cc547adbfd922b101354bfd02a0",
+    "compiledSha256": "bf4c08cdf8e51e73bc7fc63e418e21f8b7beb6fd9ac4cc41e3dc4aa649dbd76f",
+    "reason": "Qualified GCC11 multiarch include/link paths, quoted against wmake preprocessing"
+  },
+  {
+    "module": "applications/solvers/reactingFoamSolveZ",
+    "beforeSha256": "ebfa954282680b48cfaee74966892ae20ccbd2508112c373c784ffa04fdf2544",
+    "compiledSha256": "0d1b30e94c3c9b8ed18d1d194812083bd819210764f43bdaae2e52c673c2ccbb",
+    "reason": "Qualified GCC11 multiarch include/link paths, quoted against wmake preprocessing"
+  },
+  {
+    "module": "replication/validation/realfluid-g2-thermo/probe",
+    "beforeSha256": "ec924fa9b6f6015a8ae16371d1265d794c5505fed222f8ccbab5ded449656329",
+    "compiledSha256": "b76b542b507ed8b9a4e475517e5ee16edb1f8a84883054938afafcff7389704b",
+    "reason": "Qualified GCC11 multiarch include/link paths, quoted against wmake preprocessing"
+  },
+  {
+    "module": "replication/validation/schmitt-contact",
+    "beforeSha256": "ec924fa9b6f6015a8ae16371d1265d794c5505fed222f8ccbab5ded449656329",
+    "compiledSha256": "b76b542b507ed8b9a4e475517e5ee16edb1f8a84883054938afafcff7389704b",
+    "reason": "Qualified GCC11 multiarch include/link paths, quoted against wmake preprocessing"
+  },
+  {
+    "module": "replication/validation/schmitt-contact/double-flux",
+    "beforeSha256": "fb51355a76a354885eb308d5b7477bd749d7f73e2f59fbbadb93fada1d266bbd",
+    "compiledSha256": "38dad6c07cb21be143f237830f8dbcb07175c7ad7deea4f5c435308b486908cf",
+    "reason": "Qualified GCC11 multiarch include/link paths, quoted against wmake preprocessing"
+  }
+]

@@ -1,0 +1,1 @@
+Exact failed Schmitt state: field-independent fixed-pressure scan and joint density/Ha queries. No CFD advancement, restart, model-data changes or acceptance relaxation. Inputs pin actual job128105658 full53Y/rho/Ha; both root policies remain separate diagnostics.

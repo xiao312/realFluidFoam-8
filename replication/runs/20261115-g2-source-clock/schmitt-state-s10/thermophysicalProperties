@@ -1,0 +1,376 @@
+FoamFile { version 2.0; format ascii; class dictionary; object thermophysicalProperties; }
+thermoType { type hePsiThermo; mixture SRKchungTakaMixture; transport chungTaka;
+ thermo rfJanaf; equationOfState soaveRedlichKwong; specie rfSpecie; energy sensibleEnthalpy; }
+inertSpecie O2;
+species ("H2" "H" "O" "O2" "OH" "H2O" "HO2" "H2O2" "C" "CH" "CH2" "CH2(S)" "CH3" "CH4" "CO" "CO2" "HCO" "CH2O" "CH2OH" "CH3O" "CH3OH" "C2H" "C2H2" "C2H3" "C2H4" "C2H5" "C2H6" "HCCO" "CH2CO" "HCCOH" "N" "NH" "NH2" "NH3" "NNH" "NO" "NO2" "N2O" "HNO" "CN" "HCN" "H2CN" "HCNN" "HCNO" "HOCN" "HNCO" "NCO" "N2" "AR" "C3H7" "C3H8" "CH2CHO" "CH3CHO");
+"H2" {
+ specie { molWeight 2.016; }
+ thermodynamics { Tlow 60; Tcommon 1000; Thigh 6000;
+ lowCpCoeffs (2.34433112 0.00798052075 -0.000019478151 2.01572094e-8 -7.37611761e-12 -917.935173 0.683010238); highCpCoeffs (3.3372792 -0.0000494024731 4.99456778e-7 -1.79566394e-10 2.00255376e-14 -950.158922 -3.20502331); }
+ dataForRealGas { Tc 33.18; Pc 1.3; Vc 64.935; omega -0.216; kappai 0; miui 0; sigmvi 7.07; }
+ elements { H 2; }
+}
+"H" {
+ specie { molWeight 1.008; }
+ thermodynamics { Tlow 60; Tcommon 1000; Thigh 6000;
+ lowCpCoeffs (2.5 7.05332819e-13 -1.99591964e-15 2.30081632e-18 -9.27732332e-22 25473.6599 -0.446682853); highCpCoeffs (2.50000001 -2.30842973e-11 1.61561948e-14 -4.73515235e-18 4.98197357e-22 25473.6599 -0.446682914); }
+ dataForRealGas { Tc 190.82; Pc 31.009; Vc 17.069; omega 0; kappai 0; miui 0; sigmvi 1.98; }
+ elements { H 1; }
+}
+"O" {
+ specie { molWeight 15.999; }
+ thermodynamics { Tlow 60; Tcommon 1000; Thigh 6000;
+ lowCpCoeffs (3.1682671 -0.00327931884 0.00000664306396 -6.12806624e-9 2.11265971e-12 29122.2592 2.05193346); highCpCoeffs (2.56942078 -0.0000859741137 4.19484589e-8 -1.00177799e-11 1.22833691e-15 29217.5791 4.78433864); }
+ dataForRealGas { Tc 105.28; Pc 7.087; Vc 41.204; omega 0; kappai 0; miui 0; sigmvi 5.48; }
+ elements { O 1; }
+}
+"O2" {
+ specie { molWeight 31.998; }
+ thermodynamics { Tlow 60; Tcommon 1000; Thigh 6000;
+ lowCpCoeffs (3.78245636 -0.00299673416 0.00000984730201 -9.68129509e-9 3.24372837e-12 -1063.94356 3.65767573); highCpCoeffs (3.28253784 0.00148308754 -7.57966669e-7 2.09470555e-10 -2.16717794e-14 -1088.45772 5.45323129); }
+ dataForRealGas { Tc 154.58; Pc 5.043; Vc 73.529; omega 0.025; kappai 0; miui 0; sigmvi 16.6; }
+ elements { O 2; }
+}
+"OH" {
+ specie { molWeight 17.007; }
+ thermodynamics { Tlow 60; Tcommon 1000; Thigh 6000;
+ lowCpCoeffs (3.99201543 -0.00240131752 0.00000461793841 -3.88113333e-9 1.3641147e-12 3615.08056 -0.103925458); highCpCoeffs (3.09288767 0.000548429716 1.26505228e-7 -8.79461556e-11 1.17412376e-14 3858.657 4.4766961); }
+ dataForRealGas { Tc 105.28; Pc 7.087; Vc 41.204; omega 0; kappai 0; miui 0; sigmvi 7.46; }
+ elements { H 1; O 1; }
+}
+"H2O" {
+ specie { molWeight 18.015; }
+ thermodynamics { Tlow 60; Tcommon 1000; Thigh 6000;
+ lowCpCoeffs (4.19864056 -0.0020364341 0.00000652040211 -5.48797062e-9 1.77197817e-12 -30293.7267 -0.849032208); highCpCoeffs (3.03399249 0.00217691804 -1.64072518e-7 -9.7041987e-11 1.68200992e-14 -30004.2971 4.9667701); }
+ dataForRealGas { Tc 647; Pc 22.064; Vc 55.866; omega 0.344; kappai 0.076; miui 1.844; sigmvi 12.7; }
+ elements { H 2; O 1; }
+}
+"HO2" {
+ specie { molWeight 33.006; }
+ thermodynamics { Tlow 60; Tcommon 1000; Thigh 6000;
+ lowCpCoeffs (4.30179801 -0.00474912051 0.0000211582891 -2.42763894e-8 9.29225124e-12 294.80804 3.71666245); highCpCoeffs (4.0172109 0.00223982013 -6.3365815e-7 1.1424637e-10 -1.07908535e-14 111.856713 3.78510215); }
+ dataForRealGas { Tc 141.338; Pc 4.785; Vc 81.924; omega 0; kappai 0; miui 0; sigmvi 12.94; }
+ elements { H 1; O 2; }
+}
+"H2O2" {
+ specie { molWeight 34.014; }
+ thermodynamics { Tlow 60; Tcommon 1000; Thigh 6000;
+ lowCpCoeffs (4.27611269 -0.000542822417 0.0000167335701 -2.15770813e-8 8.62454363e-12 -17702.5821 3.43505074); highCpCoeffs (4.16500285 0.00490831694 -0.00000190139225 3.71185986e-10 -2.87908305e-14 -17861.7877 2.91615662); }
+ dataForRealGas { Tc 728; Pc 22; Vc 81.924; omega 0; kappai 0; miui 0; sigmvi 14.92; }
+ elements { H 2; O 2; }
+}
+"C" {
+ specie { molWeight 12.011; }
+ thermodynamics { Tlow 60; Tcommon 1000; Thigh 6000;
+ lowCpCoeffs (2.55423955 -0.000321537724 7.33792245e-7 -7.32234889e-10 2.66521446e-13 85443.8832 4.53130848); highCpCoeffs (2.49266888 0.0000479889284 -7.2433502e-8 3.74291029e-11 -4.87277893e-15 85451.2953 4.80150373); }
+ dataForRealGas { Tc 7020.5; Pc 796.719; Vc 26.62; omega 0; kappai 0; miui 0; sigmvi 16.5; }
+ elements { C 1; }
+}
+"CH" {
+ specie { molWeight 13.018999999999998; }
+ thermodynamics { Tlow 60; Tcommon 1000; Thigh 6000;
+ lowCpCoeffs (3.48981665 0.000323835541 -0.00000168899065 3.16217327e-9 -1.40609067e-12 70797.2934 2.08401108); highCpCoeffs (2.87846473 0.000970913681 1.44445655e-7 -1.30687849e-10 1.76079383e-14 71012.4364 5.48497999); }
+ dataForRealGas { Tc 105.28; Pc 7.087; Vc 41.204; omega 0; kappai 0; miui 0; sigmvi 18.48; }
+ elements { C 1; H 1; }
+}
+"CH2" {
+ specie { molWeight 14.027; }
+ thermodynamics { Tlow 60; Tcommon 1000; Thigh 6000;
+ lowCpCoeffs (3.76267867 0.000968872143 0.00000279489841 -3.85091153e-9 1.68741719e-12 46004.0401 1.56253185); highCpCoeffs (2.87410113 0.00365639292 -0.00000140894597 2.60179549e-10 -1.87727567e-14 46263.604 6.17119324); }
+ dataForRealGas { Tc 189.504; Pc 4.835; Vc 108.714; omega 0; kappai 0; miui 0; sigmvi 20.46; }
+ elements { C 1; H 2; }
+}
+"CH2(S)" {
+ specie { molWeight 14.027; }
+ thermodynamics { Tlow 60; Tcommon 1000; Thigh 6000;
+ lowCpCoeffs (4.19860411 -0.00236661419 0.0000082329622 -6.68815981e-9 1.94314737e-12 50496.8163 -0.769118967); highCpCoeffs (2.29203842 0.00465588637 -0.00000201191947 4.17906e-10 -3.39716365e-14 50925.9997 8.62650169); }
+ dataForRealGas { Tc 189.504; Pc 4.835; Vc 108.714; omega 0; kappai 0; miui 0; sigmvi 20.46; }
+ elements { C 1; H 2; }
+}
+"CH3" {
+ specie { molWeight 15.035; }
+ thermodynamics { Tlow 60; Tcommon 1000; Thigh 6000;
+ lowCpCoeffs (3.6735904 0.00201095175 0.00000573021856 -6.87117425e-9 2.54385734e-12 16444.9988 1.60456433); highCpCoeffs (2.28571772 0.00723990037 -0.00000298714348 5.95684644e-10 -4.67154394e-14 16775.5843 8.48007179); }
+ dataForRealGas { Tc 189.504; Pc 4.835; Vc 108.714; omega 0; kappai 0; miui 0; sigmvi 22.44; }
+ elements { C 1; H 3; }
+}
+"CH4" {
+ specie { molWeight 16.043; }
+ thermodynamics { Tlow 60; Tcommon 1000; Thigh 6000;
+ lowCpCoeffs (5.14987613 -0.0136709788 0.0000491800599 -4.84743026e-8 1.66693956e-11 -10246.6476 -4.64130376); highCpCoeffs (0.074851495 0.0133909467 -0.00000573285809 1.22292535e-9 -1.0181523e-13 -9468.34459 18.437318); }
+ dataForRealGas { Tc 190.6; Pc 4.61; Vc 98.6; omega 0.011; kappai 0; miui 0; sigmvi 24.42; }
+ elements { C 1; H 4; }
+}
+"CO" {
+ specie { molWeight 28.009999999999998; }
+ thermodynamics { Tlow 60; Tcommon 1000; Thigh 6000;
+ lowCpCoeffs (3.57953347 -0.00061035368 0.00000101681433 9.07005884e-10 -9.04424499e-13 -14344.086 3.50840928); highCpCoeffs (2.71518561 0.00206252743 -9.98825771e-7 2.30053008e-10 -2.03647716e-14 -14151.8724 7.81868772); }
+ dataForRealGas { Tc 134.45; Pc 3.499; Vc 90.09; omega 0.066; kappai 0; miui 0; sigmvi 18.9; }
+ elements { C 1; O 1; }
+}
+"CO2" {
+ specie { molWeight 44.009; }
+ thermodynamics { Tlow 60; Tcommon 1000; Thigh 6000;
+ lowCpCoeffs (2.35677352 0.00898459677 -0.00000712356269 2.45919022e-9 -1.43699548e-13 -48371.9697 9.90105222); highCpCoeffs (3.85746029 0.00441437026 -0.00000221481404 5.23490188e-10 -4.72084164e-14 -48759.166 2.27163806); }
+ dataForRealGas { Tc 304.18; Pc 7.38; Vc 91.9; omega 0.239; kappai 0; miui 0; sigmvi 26.9; }
+ elements { C 1; O 2; }
+}
+"HCO" {
+ specie { molWeight 29.018; }
+ thermodynamics { Tlow 60; Tcommon 1000; Thigh 6000;
+ lowCpCoeffs (4.22118584 -0.00324392532 0.0000137799446 -1.33144093e-8 4.33768865e-12 3839.56496 3.39437243); highCpCoeffs (2.77217438 0.00495695526 -0.00000248445613 5.89161778e-10 -5.33508711e-14 4011.91815 9.79834492); }
+ dataForRealGas { Tc 655.368; Pc 19.83; Vc 91.668; omega 0; kappai 0; miui 0; sigmvi 23.96; }
+ elements { C 1; H 1; O 1; }
+}
+"CH2O" {
+ specie { molWeight 30.026; }
+ thermodynamics { Tlow 60; Tcommon 1000; Thigh 6000;
+ lowCpCoeffs (4.79372315 -0.00990833369 0.0000373220008 -3.79285261e-8 1.31772652e-11 -14308.9567 0.6028129); highCpCoeffs (1.76069008 0.00920000082 -0.00000442258813 1.00641212e-9 -8.8385564e-14 -13995.8323 13.656323); }
+ dataForRealGas { Tc 408; Pc 6.59; Vc 115; omega 0.253; kappai 0; miui 0; sigmvi 25.94; }
+ elements { C 1; H 2; O 1; }
+}
+"CH2OH" {
+ specie { molWeight 31.034; }
+ thermodynamics { Tlow 60; Tcommon 1000; Thigh 6000;
+ lowCpCoeffs (3.86388918 0.00559672304 0.00000593271791 -1.04532012e-8 4.36967278e-12 -3193.91367 5.47302243); highCpCoeffs (3.69266569 0.00864576797 -0.0000037510112 7.87234636e-10 -6.48554201e-14 -3242.50627 5.81043215); }
+ dataForRealGas { Tc 548.772; Pc 15.291; Vc 99.544; omega 0; kappai 0; miui 1.7; sigmvi 27.92; }
+ elements { C 1; H 3; O 1; }
+}
+"CH3O" {
+ specie { molWeight 31.034; }
+ thermodynamics { Tlow 60; Tcommon 1000; Thigh 6000;
+ lowCpCoeffs (2.106204 0.007216595 0.000005338472 -7.377636e-9 2.07561e-12 978.6011 13.152177); highCpCoeffs (3.770799 0.007871497 -0.000002656384 3.944431e-10 -2.112616e-14 127.83252 2.929575); }
+ dataForRealGas { Tc 548.772; Pc 15.291; Vc 99.544; omega 0; kappai 0; miui 1.7; sigmvi 27.92; }
+ elements { C 1; H 3; O 1; }
+}
+"CH3OH" {
+ specie { molWeight 32.042; }
+ thermodynamics { Tlow 60; Tcommon 1000; Thigh 6000;
+ lowCpCoeffs (5.71539582 -0.0152309129 0.0000652441155 -7.10806889e-8 2.61352698e-11 -25642.7656 -1.50409823); highCpCoeffs (1.78970791 0.0140938292 -0.00000636500835 1.38171085e-9 -1.1706022e-13 -25374.8747 14.5023623); }
+ dataForRealGas { Tc 513; Pc 8.1; Vc 117; omega 0.556; kappai 0; miui 0; sigmvi 29.9; }
+ elements { C 1; H 4; O 1; }
+}
+"C2H" {
+ specie { molWeight 25.029999999999998; }
+ thermodynamics { Tlow 60; Tcommon 1000; Thigh 6000;
+ lowCpCoeffs (2.88965733 0.0134099611 -0.0000284769501 2.94791045e-8 -1.09331511e-11 66839.3932 6.22296438); highCpCoeffs (3.16780652 0.00475221902 -0.00000183787077 3.04190252e-10 -1.7723277e-14 67121.065 6.63589475); }
+ dataForRealGas { Tc 349.135; Pc 9.487; Vc 102.074; omega 0; kappai 0; miui 0; sigmvi 34.98; }
+ elements { C 2; H 1; }
+}
+"C2H2" {
+ specie { molWeight 26.037999999999997; }
+ thermodynamics { Tlow 60; Tcommon 1000; Thigh 6000;
+ lowCpCoeffs (0.808681094 0.0233615629 -0.0000355171815 2.80152437e-8 -8.50072974e-12 26428.9807 13.9397051); highCpCoeffs (4.14756964 0.00596166664 -0.00000237294852 4.67412171e-10 -3.61235213e-14 25935.9992 -1.23028121); }
+ dataForRealGas { Tc 308.3; Pc 6.138; Vc 112.2; omega 0.19; kappai 0; miui 0; sigmvi 36.96; }
+ elements { C 2; H 2; }
+}
+"C2H3" {
+ specie { molWeight 27.046; }
+ thermodynamics { Tlow 60; Tcommon 1000; Thigh 6000;
+ lowCpCoeffs (3.21246645 0.00151479162 0.0000259209412 -3.57657847e-8 1.47150873e-11 34859.8468 8.51054025); highCpCoeffs (3.016724 0.0103302292 -0.00000468082349 1.01763288e-9 -8.62607041e-14 34612.8739 7.78732378); }
+ dataForRealGas { Tc 349.135; Pc 9.487; Vc 102.074; omega 0; kappai 0; miui 0; sigmvi 38.94; }
+ elements { C 2; H 3; }
+}
+"C2H4" {
+ specie { molWeight 28.054; }
+ thermodynamics { Tlow 60; Tcommon 1000; Thigh 6000;
+ lowCpCoeffs (3.95920148 -0.00757052247 0.0000570990292 -6.91588753e-8 2.69884373e-11 5089.77593 4.09733096); highCpCoeffs (2.03611116 0.0146454151 -0.00000671077915 1.47222923e-9 -1.25706061e-13 4939.88614 10.3053693); }
+ dataForRealGas { Tc 282.5; Pc 5.06; Vc 131.1; omega 0.089; kappai 0; miui 0; sigmvi 40.92; }
+ elements { C 2; H 4; }
+}
+"C2H5" {
+ specie { molWeight 29.061999999999998; }
+ thermodynamics { Tlow 60; Tcommon 1000; Thigh 6000;
+ lowCpCoeffs (4.30646568 -0.00418658892 0.0000497142807 -5.99126606e-8 2.30509004e-11 12841.6265 4.70720924); highCpCoeffs (1.95465642 0.0173972722 -0.00000798206668 1.75217689e-9 -1.49641576e-13 12857.52 13.4624343); }
+ dataForRealGas { Tc 332.027; Pc 5.838; Vc 157.742; omega 0; kappai 0; miui 0; sigmvi 42.9; }
+ elements { C 2; H 5; }
+}
+"C2H6" {
+ specie { molWeight 30.07; }
+ thermodynamics { Tlow 60; Tcommon 1000; Thigh 6000;
+ lowCpCoeffs (4.29142492 -0.0055015427 0.0000599438288 -7.08466285e-8 2.68685771e-11 -11522.2055 2.66682316); highCpCoeffs (1.0718815 0.0216852677 -0.0000100256067 2.21412001e-9 -1.9000289e-13 -11426.3932 15.1156107); }
+ dataForRealGas { Tc 305.3; Pc 4.9; Vc 147; omega 0.099; kappai 0; miui 0; sigmvi 44.88; }
+ elements { C 2; H 6; }
+}
+"HCCO" {
+ specie { molWeight 41.028999999999996; }
+ thermodynamics { Tlow 60; Tcommon 1000; Thigh 6000;
+ lowCpCoeffs (2.2517214 0.017655021 -0.000023729101 1.7275759e-8 -5.0664811e-12 20059.449 12.490417); highCpCoeffs (5.6282058 0.0040853401 -0.0000015934547 2.8626052e-10 -1.9407832e-14 19327.215 -3.9302595); }
+ dataForRealGas { Tc 197.4; Pc 17.687; Vc 30.957; omega 0; kappai 0; miui 0; sigmvi 40.46; }
+ elements { C 2; H 1; O 1; }
+}
+"CH2CO" {
+ specie { molWeight 42.037; }
+ thermodynamics { Tlow 60; Tcommon 1000; Thigh 6000;
+ lowCpCoeffs (2.1358363 0.0181188721 -0.0000173947474 9.34397568e-9 -2.01457615e-12 -7042.91804 12.215648); highCpCoeffs (4.51129732 0.00900359745 -0.00000416939635 9.23345882e-10 -7.94838201e-14 -7551.05311 0.632247205); }
+ dataForRealGas { Tc 573.776; Pc 12.838; Vc 123.968; omega 0; kappai 0; miui 0; sigmvi 42.44; }
+ elements { C 2; H 2; O 1; }
+}
+"HCCOH" {
+ specie { molWeight 42.037; }
+ thermodynamics { Tlow 60; Tcommon 1000; Thigh 6000;
+ lowCpCoeffs (1.2423733 0.031072201 -0.000050866864 4.3137131e-8 -1.4014594e-11 8031.6143 13.874319); highCpCoeffs (5.9238291 0.00679236 -0.0000025658564 4.4987841e-10 -2.9940101e-14 7264.626 -7.6017742); }
+ dataForRealGas { Tc 573.776; Pc 12.838; Vc 123.968; omega 0; kappai 0.18; miui 0; sigmvi 42.44; }
+ elements { C 2; H 2; O 1; }
+}
+"N" {
+ specie { molWeight 14.007; }
+ thermodynamics { Tlow 60; Tcommon 1000; Thigh 6000;
+ lowCpCoeffs (2.5 0 0 0 0 56104.637 4.1939087); highCpCoeffs (2.4159429 0.00017489065 -1.1902369e-7 3.0226245e-11 -2.0360982e-15 56133.773 4.6496096); }
+ dataForRealGas { Tc 93.962; Pc 3.667; Vc 71.07; omega 0; kappai 0; miui 0; sigmvi 5.69; }
+ elements { N 1; }
+}
+"NH" {
+ specie { molWeight 15.015; }
+ thermodynamics { Tlow 60; Tcommon 1000; Thigh 6000;
+ lowCpCoeffs (3.4929085 0.00031179198 -0.0000014890484 2.4816442e-9 -1.0356967e-12 41880.629 1.8483278); highCpCoeffs (2.7836928 0.001329843 -4.2478047e-7 7.8348501e-11 -5.504447e-15 42120.848 5.7407799); }
+ dataForRealGas { Tc 105.28; Pc 7.92; Vc 36.87; omega 0; kappai 0; miui 0; sigmvi 7.67; }
+ elements { H 1; N 1; }
+}
+"NH2" {
+ specie { molWeight 16.023; }
+ thermodynamics { Tlow 60; Tcommon 1000; Thigh 6000;
+ lowCpCoeffs (4.2040029 -0.0021061385 0.0000071068348 -5.6115197e-9 1.6440717e-12 21885.91 -0.14184248); highCpCoeffs (2.8347421 0.0032073082 -9.3390804e-7 1.3702953e-10 -7.9206144e-15 22171.957 6.5204163); }
+ dataForRealGas { Tc 105.28; Pc 7.92; Vc 36.87; omega 0; kappai 0; miui 0; sigmvi 9.65; }
+ elements { H 2; N 1; }
+}
+"NH3" {
+ specie { molWeight 17.031; }
+ thermodynamics { Tlow 60; Tcommon 1000; Thigh 6000;
+ lowCpCoeffs (4.2860274 -0.004660523 0.000021718513 -2.2808887e-8 8.2638046e-12 -6741.7285 -0.62537277); highCpCoeffs (2.6344521 0.005666256 -0.0000017278676 2.3867161e-10 -1.2578786e-14 -6544.6958 6.5662928); }
+ dataForRealGas { Tc 405.4; Pc 11.3; Vc 72; omega 0.25; kappai 0; miui 1.47; sigmvi 14.9; }
+ elements { H 3; N 1; }
+}
+"NNH" {
+ specie { molWeight 29.022; }
+ thermodynamics { Tlow 60; Tcommon 1000; Thigh 6000;
+ lowCpCoeffs (4.3446927 -0.0048497072 0.000020059459 -2.1726464e-8 7.9469539e-12 28791.973 2.977941); highCpCoeffs (3.7667544 0.0028915082 -0.000001041662 1.6842594e-10 -1.0091896e-14 28650.697 4.4705067); }
+ dataForRealGas { Tc 93.962; Pc 2.401; Vc 108.543; omega 0; kappai 0; miui 0; sigmvi 13.36; }
+ elements { H 1; N 2; }
+}
+"NO" {
+ specie { molWeight 30.006; }
+ thermodynamics { Tlow 60; Tcommon 1000; Thigh 6000;
+ lowCpCoeffs (4.2184763 -0.004638976 0.000011041022 -9.3361354e-9 2.803577e-12 9844.623 2.2808464); highCpCoeffs (3.2606056 0.0011911043 -4.2917048e-7 6.9457669e-11 -4.0336099e-15 9920.9746 6.3693027); }
+ dataForRealGas { Tc 128.349; Pc 3.785; Vc 94.064; omega 0; kappai 0; miui 0; sigmvi 11.17; }
+ elements { N 1; O 1; }
+}
+"NO2" {
+ specie { molWeight 46.005; }
+ thermodynamics { Tlow 60; Tcommon 1000; Thigh 6000;
+ lowCpCoeffs (3.9440312 -0.001585429 0.000016657812 -2.0475426e-8 7.8350564e-12 2896.6179 6.3119917); highCpCoeffs (4.8847542 0.0021723956 -8.2806906e-7 1.574751e-10 -1.0510895e-14 2316.4983 -0.11741695); }
+ dataForRealGas { Tc 431; Pc 10.1; Vc 167.8; omega 0.834; kappai 0; miui 0; sigmvi 11.17; }
+ elements { N 1; O 2; }
+}
+"N2O" {
+ specie { molWeight 44.013; }
+ thermodynamics { Tlow 60; Tcommon 1000; Thigh 6000;
+ lowCpCoeffs (2.2571502 0.011304728 -0.000013671319 9.6819806e-9 -2.9307182e-12 8741.7744 10.757992); highCpCoeffs (4.8230729 0.0026270251 -9.5850874e-7 1.6000712e-10 -9.7752303e-15 8073.4048 -2.2017207); }
+ dataForRealGas { Tc 309.56; Pc 7.238; Vc 95.5; omega 0.165; kappai 0; miui 0; sigmvi 35.9; }
+ elements { N 2; O 1; }
+}
+"HNO" {
+ specie { molWeight 31.014000000000003; }
+ thermodynamics { Tlow 60; Tcommon 1000; Thigh 6000;
+ lowCpCoeffs (4.5334916 -0.0056696171 0.000018473207 -1.7137094e-8 5.5454573e-12 11548.297 1.7498417); highCpCoeffs (2.9792509 0.0034944059 -7.8549778e-7 5.7479594e-11 -1.9335916e-16 11750.582 8.6063728); }
+ dataForRealGas { Tc 153.577; Pc 5.049; Vc 84.364; omega 0; kappai 0; miui 0; sigmvi 13.15; }
+ elements { H 1; N 1; O 1; }
+}
+"CN" {
+ specie { molWeight 26.018; }
+ thermodynamics { Tlow 60; Tcommon 1000; Thigh 6000;
+ lowCpCoeffs (3.6129351 -0.00095551327 0.0000021442977 -3.1516323e-10 -4.6430356e-13 51708.34 3.9804995); highCpCoeffs (3.7459805 0.000043450775 2.9705984e-7 -6.8651806e-11 4.4134173e-15 51536.188 2.7867601); }
+ dataForRealGas { Tc 98.7; Pc 2.41; Vc 113.592; omega 0; kappai 0; miui 0; sigmvi 22.19; }
+ elements { C 1; N 1; }
+}
+"HCN" {
+ specie { molWeight 27.025999999999996; }
+ thermodynamics { Tlow 60; Tcommon 1000; Thigh 6000;
+ lowCpCoeffs (2.2589886 0.01005117 -0.000013351763 1.0092349e-8 -3.0089028e-12 14712.633 8.9164419); highCpCoeffs (3.8022392 0.0031464228 -0.0000010632185 1.6619757e-10 -9.799757e-15 14407.292 1.5754601); }
+ dataForRealGas { Tc 748.804; Pc 21.917; Vc 94.767; omega 0; kappai 0; miui 0; sigmvi 24.17; }
+ elements { C 1; H 1; N 1; }
+}
+"H2CN" {
+ specie { molWeight 28.034; }
+ thermodynamics { Tlow 60; Tcommon 1000; Thigh 6000;
+ lowCpCoeffs (2.851661 0.0056952331 0.00000107114 -1.622612e-9 -2.3511081e-13 28637.82 8.9927511); highCpCoeffs (5.209703 0.0029692911 -2.8555891e-7 -1.63555e-10 3.0432589e-14 27677.109 -4.444478); }
+ dataForRealGas { Tc 748.804; Pc 21.917; Vc 94.767; omega 0; kappai 0; miui 0; sigmvi 26.15; }
+ elements { C 1; H 2; N 1; }
+}
+"HCNN" {
+ specie { molWeight 41.033; }
+ thermodynamics { Tlow 60; Tcommon 1000; Thigh 6000;
+ lowCpCoeffs (2.5243194 0.015960619 -0.000018816354 1.212554e-8 -3.2357378e-12 54261.984 11.67587); highCpCoeffs (5.8946362 0.0039895959 -0.000001598238 2.9249395e-10 -2.0094686e-14 53452.941 -5.1030502); }
+ dataForRealGas { Tc 197.4; Pc 17.687; Vc 30.957; omega 0; kappai 0; miui 0; sigmvi 29.86; }
+ elements { C 1; H 1; N 2; }
+}
+"HCNO" {
+ specie { molWeight 43.025; }
+ thermodynamics { Tlow 60; Tcommon 1382; Thigh 6000;
+ lowCpCoeffs (2.64727989 0.0127505342 -0.0000104794236 4.41432836e-9 -7.57521466e-13 19299.0252 10.7332972); highCpCoeffs (6.59860456 0.00302778626 -0.00000107704346 1.71666528e-10 -1.01439391e-14 17966.1339 -10.3306599); }
+ dataForRealGas { Tc 305.838; Pc 7.633; Vc 111.135; omega 0; kappai 0; miui 0; sigmvi 29.65; }
+ elements { C 1; H 1; N 1; O 1; }
+}
+"HOCN" {
+ specie { molWeight 43.025; }
+ thermodynamics { Tlow 60; Tcommon 1368; Thigh 6000;
+ lowCpCoeffs (3.78604952 0.00688667922 -0.00000321487864 5.17195767e-10 1.19360788e-14 -2826.984 5.63292162); highCpCoeffs (5.89784885 0.00316789393 -0.00000111801064 1.77243144e-10 -1.04339177e-14 -3706.53331 -6.18167825); }
+ dataForRealGas { Tc 305.838; Pc 7.633; Vc 111.135; omega 0; kappai 0; miui 0; sigmvi 29.65; }
+ elements { C 1; H 1; N 1; O 1; }
+}
+"HNCO" {
+ specie { molWeight 43.025; }
+ thermodynamics { Tlow 60; Tcommon 1478; Thigh 6000;
+ lowCpCoeffs (3.63096317 0.00730282357 -0.00000228050003 -6.61271298e-10 3.62235752e-13 -15587.3636 6.19457727); highCpCoeffs (6.22395134 0.00317864004 -0.00000109378755 1.70735163e-10 -9.95021955e-15 -16659.9344 -8.38224741); }
+ dataForRealGas { Tc 305.838; Pc 7.633; Vc 111.135; omega 0; kappai 0; miui 0; sigmvi 29.65; }
+ elements { C 1; H 1; N 1; O 1; }
+}
+"NCO" {
+ specie { molWeight 42.016999999999996; }
+ thermodynamics { Tlow 60; Tcommon 1000; Thigh 6000;
+ lowCpCoeffs (2.8269308 0.0088051688 -0.0000083866134 4.8016964e-9 -1.3313595e-12 14682.477 9.5504646); highCpCoeffs (5.1521845 0.0023051761 -8.8033153e-7 1.4789098e-10 -9.0977996e-15 14004.123 -2.544266); }
+ dataForRealGas { Tc 305.838; Pc 7.633; Vc 111.135; omega 0; kappai 0; miui 0; sigmvi 27.67; }
+ elements { C 1; N 1; O 1; }
+}
+"N2" {
+ specie { molWeight 28.014; }
+ thermodynamics { Tlow 60; Tcommon 1000; Thigh 6000;
+ lowCpCoeffs (3.298677 0.0014082404 -0.000003963222 5.641515e-9 -2.444854e-12 -1020.8999 3.950372); highCpCoeffs (2.92664 0.0014879768 -5.68476e-7 1.0097038e-10 -6.753351e-15 -922.7977 5.980528); }
+ dataForRealGas { Tc 126.19; Pc 3.398; Vc 89.445; omega 0.039; kappai 0; miui 0; sigmvi 17.9; }
+ elements { N 2; }
+}
+"AR" {
+ specie { molWeight 39.95; }
+ thermodynamics { Tlow 60; Tcommon 1000; Thigh 6000;
+ lowCpCoeffs (2.5 0 0 0 0 -745.375 4.366); highCpCoeffs (2.5 0 0 0 0 -745.375 4.366); }
+ dataForRealGas { Tc 150.86; Pc 4.898; Vc 74.571; omega 0.001; kappai 0; miui 0; sigmvi 16.1; }
+ elements { Ar 1; }
+}
+"C3H7" {
+ specie { molWeight 43.089; }
+ thermodynamics { Tlow 60; Tcommon 1000; Thigh 6000;
+ lowCpCoeffs (1.0515518 0.02599198 0.000002380054 -1.9609569e-8 9.373247e-12 10631.863 21.122559); highCpCoeffs (7.7026987 0.016044203 -0.000005283322 7.629859e-10 -3.9392284e-14 8298.4336 -15.48018); }
+ dataForRealGas { Tc 351.109; Pc 3.975; Vc 244.99; omega 0; kappai 0; miui 0; sigmvi 63.36; }
+ elements { C 3; H 7; }
+}
+"C3H8" {
+ specie { molWeight 44.097; }
+ thermodynamics { Tlow 60; Tcommon 1000; Thigh 6000;
+ lowCpCoeffs (0.93355381 0.026424579 0.0000061059727 -2.1977499e-8 9.5149253e-12 -13958.52 19.201691); highCpCoeffs (7.5341368 0.018872239 -0.0000062718491 9.1475649e-10 -4.7838069e-14 -16467.516 -17.892349); }
+ dataForRealGas { Tc 369.9; Pc 4.25; Vc 200; omega 0.153; kappai 0; miui 0; sigmvi 65.34; }
+ elements { C 3; H 8; }
+}
+"CH2CHO" {
+ specie { molWeight 43.045; }
+ thermodynamics { Tlow 60; Tcommon 1000; Thigh 6000;
+ lowCpCoeffs (3.409062 0.010738574 0.000001891492 -7.158583e-9 2.867385e-12 1521.4766 9.55829); highCpCoeffs (5.97567 0.008130591 -0.000002743624 4.070304e-10 -2.176017e-14 490.3218 -5.045251); }
+ dataForRealGas { Tc 573.776; Pc 12.838; Vc 123.968; omega 0; kappai 0; miui 0; sigmvi 42.44; }
+ elements { C 2; H 3; O 1; }
+}
+"CH3CHO" {
+ specie { molWeight 44.053; }
+ thermodynamics { Tlow 60; Tcommon 1000; Thigh 6000;
+ lowCpCoeffs (4.7294595 -0.0031932858 0.000047534921 -5.7458611e-8 2.1931112e-11 -21572.878 4.1030159); highCpCoeffs (5.4041108 0.011723059 -0.0000042263137 6.8372451e-10 -4.0984863e-14 -22593.122 -3.4807917); }
+ dataForRealGas { Tc 466; Pc 5.57; Vc 154.083; omega 0.303; kappai 0; miui 0; sigmvi 46.4; }
+ elements { C 2; H 4; O 1; }
+}

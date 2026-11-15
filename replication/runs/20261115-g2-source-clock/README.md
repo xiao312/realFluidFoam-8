@@ -61,3 +61,16 @@ The paired fixed-time Schmitt control reached 300 microseconds with a 3,254 K pe
 `plot-short-temperature-fields.py RESULTS_ROOT` plots actual cell polygons from the collected NumPy files, with fixed axes and a common color scale. Failed raw fields are labelled and never treated as valid thermodynamic solutions. There is no interpolated or reflected field data.
 
 `import-investigation.mjs RESULTS_ROOT SITE CATALOG [--apply]` provides a read-only plan, validates the fixed 75-target/12-paper catalogue, preserves existing primary comparisons and captions, then adds diagnostic views and content-addressed evidence. It depends only on Node and the existing local Forge export schema; it has no HPC, model-provider or publication capability. Site/catalog writes are explicit and backed up. Verify every emitted asset by HTTP against its local bytes after applying. This is local ladder visibility, not independent acceptance or GitHub publication.
+
+
+S08b actually completed in job128107449,258seconds,exit0: solver SHA256
+`5822d5252af9c0036dca8d5d88d5b41ecfc800738de7e39d39d9d78e1abff2d4`.
+All14resolved custom DSOs matched S01;40default source rows matched exactly.
+S09b job128107604 failed before CFD: its40us end rejected the100us field-output
+interval. Its malformed numeric phase literal is also retained as a recipe defect,
+not interpreted as physical evidence. `coupled-cavalieri-s09c` corrects that recipe
+with a100us default/off run, preserving the original100us write interval and20us
+sampling. The300us experiments and solver/runtime are unchanged. The actual
+factory rejects the old configuration and accepts all3corrected configurations.
+`schmitt-state-s10` queries the independently retained second cold failure using
+S07's qualified property executable. This is separate from advancing CFD.
