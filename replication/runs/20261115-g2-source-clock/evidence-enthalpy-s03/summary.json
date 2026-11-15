@@ -1,0 +1,122 @@
+[
+  {
+    "id": "schmitt-global-hot-captured",
+    "compositionMode": "captured",
+    "capturedT_K": 1983.99183351,
+    "tableDiagnosticT_K": 3486.67704657,
+    "capturedHa_J_kg": -1305798.91691,
+    "recoveredTemperatures_K": [
+      1983.9918335195662,
+      1983.9918335247862,
+      1983.9918335196269
+    ],
+    "maxGuessSpread_K": 5.220044840825722e-09,
+    "allConverged": true,
+    "maxEnthalpyRelativeError": 3.632177911567615e-12
+  },
+  {
+    "id": "schmitt-global-hot-target",
+    "compositionMode": "target",
+    "capturedT_K": 1983.99183351,
+    "tableDiagnosticT_K": 3486.67704657,
+    "capturedHa_J_kg": -1305798.91691,
+    "recoveredTemperatures_K": [
+      3399.536862292133,
+      3399.536862292368,
+      3399.536862291826
+    ],
+    "maxGuessSpread_K": 5.420588422566652e-10,
+    "allConverged": true,
+    "maxEnthalpyRelativeError": 2.573954141572652e-13
+  },
+  {
+    "id": "schmitt-radial-hot-15-captured",
+    "compositionMode": "captured",
+    "capturedT_K": 1507.35149621,
+    "tableDiagnosticT_K": 3413.76365842,
+    "capturedHa_J_kg": -1122313.66104,
+    "recoveredTemperatures_K": [
+      1507.3514962104152,
+      1507.3514962106115,
+      1507.3514962105546
+    ],
+    "maxGuessSpread_K": 1.9622348190750927e-10,
+    "allConverged": true,
+    "maxEnthalpyRelativeError": 1.8838915705529538e-13
+  },
+  {
+    "id": "schmitt-radial-hot-15-target",
+    "compositionMode": "target",
+    "capturedT_K": 1507.35149621,
+    "tableDiagnosticT_K": 3413.76365842,
+    "capturedHa_J_kg": -1122313.66104,
+    "recoveredTemperatures_K": [
+      3315.000062306153,
+      3315.0000623053447,
+      3315.0000623043884
+    ],
+    "maxGuessSpread_K": 1.7644197214394808e-09,
+    "allConverged": true,
+    "maxEnthalpyRelativeError": 6.716194400687998e-13
+  },
+  {
+    "id": "cavalieri-global-hot-captured",
+    "compositionMode": "captured",
+    "capturedT_K": 2215.11415154,
+    "tableDiagnosticT_K": 3445.9909211,
+    "capturedHa_J_kg": -1457005.28706,
+    "recoveredTemperatures_K": [
+      2215.1141515429476,
+      2215.114151544443,
+      2215.1141515429686
+    ],
+    "maxGuessSpread_K": 1.495209289714694e-09,
+    "allConverged": true,
+    "maxEnthalpyRelativeError": 9.181467003442295e-13
+  },
+  {
+    "id": "cavalieri-global-hot-target",
+    "compositionMode": "target",
+    "capturedT_K": 2215.11415154,
+    "tableDiagnosticT_K": 3445.9909211,
+    "capturedHa_J_kg": -1457005.28706,
+    "recoveredTemperatures_K": [
+      3361.73414780885,
+      3361.7341478092744,
+      3361.73414780904
+    ],
+    "maxGuessSpread_K": 4.24279278377071e-10,
+    "allConverged": true,
+    "maxEnthalpyRelativeError": 2.332252592055361e-13
+  },
+  {
+    "id": "cavalieri-radial-hot-15-captured",
+    "compositionMode": "captured",
+    "capturedT_K": 1495.97696069,
+    "tableDiagnosticT_K": 3468.49750046,
+    "capturedHa_J_kg": -1409272.3496,
+    "recoveredTemperatures_K": [
+      1495.976960690382,
+      1495.9769606905866,
+      1495.9769606906145
+    ],
+    "maxGuessSpread_K": 2.326032699784264e-10,
+    "allConverged": true,
+    "maxEnthalpyRelativeError": 2.3067120163926533e-13
+  },
+  {
+    "id": "cavalieri-radial-hot-15-target",
+    "compositionMode": "target",
+    "capturedT_K": 1495.97696069,
+    "tableDiagnosticT_K": 3468.49750046,
+    "capturedHa_J_kg": -1409272.3496,
+    "recoveredTemperatures_K": [
+      3383.8599072517513,
+      3383.8599072505167,
+      3383.8599072498932
+    ],
+    "maxGuessSpread_K": 1.8580976757220924e-09,
+    "allConverged": true,
+    "maxEnthalpyRelativeError": 6.896166593817985e-13
+  }
+]

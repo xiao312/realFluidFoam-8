@@ -1,0 +1,13 @@
+{
+  "job": "128102509",
+  "source": "51075d584e7a9bb12a85201b6dcc4eae55303b52",
+  "terminal": "COMPLETED",
+  "elapsedSeconds": 361,
+  "payloadSecondsIncludingPreparation": 359,
+  "physicalCFDSteps": 0,
+  "states": 8,
+  "guessesEach": 3,
+  "all24QueriesConverged": true,
+  "scientificAcceptance": false,
+  "sourceArtifactSha256": "c4dfd3b806ce45bc068578b99f6cb6c03d88944583e56754e819fb9659ef73f9"
+}

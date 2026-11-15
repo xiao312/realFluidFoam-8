@@ -1,0 +1,1 @@
+Source-clock controls: cavalieri. Original-zero paired cases, identical physics except numerical relaxation clock. steps100 versus fixedTime10us; maxdt5us and Co1 unchanged. Each case cap1800s; wholejob4000s. No evolved fields. Failed cases retained. No paper acceptance from300us startup. Requires exact S01 compile/link/source parity.
