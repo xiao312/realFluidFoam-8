@@ -86,3 +86,9 @@ cold-state recovery experiments. Its plotting code consumes retained cell data;
 the optional Node importer consumes the existing local Forge catalogue/export
 schema and appends diagnostic views without changing primary comparisons. Neither
 component submits compute, publishes a site or grants scientific acceptance.
+
+`replication/validation/schmitt-contact/apec` owns a serial pure-oxygen APEC
+contact prototype with direct conservative rho/e recovery. It depends on shared
+ContactDF state types, the contact initializer/factory and executing SRK library.
+It has no reacting-solver dependency edge in the reverse direction and cannot
+advance G2 or implement multicomponent APEC by its presence.

@@ -96,3 +96,10 @@ are admitted; actual runtime/terminal receipts determine physical progress.
 S13 qualifies an opt-in exact frozen-target source update. See
 [exact source controls](exact-clock-s13/README.md); existing S01/S11/S12 Euler
 controls and all historical failures retain their identities.
+
+S13 job128112392 completed320s and qualified exact frozen-target relaxation: default
+parity unchanged;60exact source rows; equal-time endpoints differ1.364e-12K.
+S14/S15 are fresh coarse-timestep G2 controls. S16 is a separately compiled
+oxygen-only conservative APEC contact prototype; its staged presence is not
+physical qualification. All three wrappers retain their failures and normal
+exit cannot establish paper agreement.

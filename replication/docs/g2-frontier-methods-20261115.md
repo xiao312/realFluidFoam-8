@@ -257,3 +257,13 @@ The first practical implementation choice is therefore **exact source
 integration plus an APEC contact kernel**, with a pressure/energy formulation
 study next. PEQSI and the newer PEP papers are valuable architectural references;
 none is an established drop-in fix for our current reacting solver.
+
+## Implementation follow-up, 15 November
+
+Opt-in fixedTimeExact is implemented in source80fa810 and actually qualified
+by job128112392 (320s): original default rows unchanged;60exact model-source
+rows passed with constant-Ha/Qdot checks and equal-time endpoint difference
+1.364e-12K. This is source integration qualification, not physical validation.
+The oxygen-only APEC application is an experimental adaptation with direct
+rho/e recovery and shared conservative energy flux. It is not yet qualified
+or transferred to reacting G2. See its local module README and S16 receipts.
