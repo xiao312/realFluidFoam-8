@@ -6,6 +6,31 @@ After a conservative pure-mixing species predictor Yplus, it applies
 `Ynew = (1 - 1/Cr)*Yplus + Ye(Z)/Cr`. The paper selects Cr=100. This is an
 explicit numerical relaxation toward a table target, not a fitted chemical rate.
 
+## Source-clock diagnostic
+
+The optional `relaxationMode fixedTime; relaxationTime SECONDS;` uses the Euler
+fraction `alpha = deltaT/relaxationTime`. Omit `relaxationSteps` in this mode.
+The default `steps` mode retains exactly `alpha = 1/Cr`, including the paper's
+Cr100 choice. A fixed time is an investigation control, not an inferred chemical
+rate or a claim that the paper is incorrect. Never select it by fitting a plot.
+
+The fixed time must be positive and at least the executing timestep. This
+preserves the convex source update without clipping or changing species bounds.
+Use an explicit timestep ceiling no greater than the selected time. Both modes
+report the applied alpha and time. No additional energy source is introduced.
+
+`relaxationClock.H` owns this dictionary/math interface. It has no field, mesh,
+scheduler or credential access. Inputs are coefficients and positive deltaT;
+outputs are mode, alpha and time. Conflicting or invalid controls fail explicitly.
+No existing class layout or virtual interface changes. Rebuild the combustion
+implementation and solver against pinned parent libraries; identify all fifteen
+resolved products, and verify default-mode parity before physical comparisons.
+
+Verification uses the real one-cell source recurrence, default/fixed-clock
+matching-alpha parity, and fresh physical cases at matched timestep/source time.
+The one-cell check cannot establish CFD or paper agreement. Retained hot-cell
+states and source/energy/element diagnostics select subsequent experiments.
+
 The target uses the existing strict steady-table reader. Initial experiments
 retain the original finite-chi table to isolate the change from instantaneous
 composition replacement. That target is not the paper's seven-species

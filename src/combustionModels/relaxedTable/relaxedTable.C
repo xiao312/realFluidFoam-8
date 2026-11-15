@@ -5,6 +5,7 @@
 #include "Switch.H"
 #include "fgmDimixPolicy.H"
 #include "endpointCoordinate.H"
+#include "relaxationClock.H"
 #include <cmath>
 #include <exception>
 
@@ -57,9 +58,11 @@ relaxedTable<ReactionThermo>::relaxedTable
         || !transport.found("laminar")
         || transport.subDict("laminar").lookupOrDefault<word>("model", "") != "Fourier")
         refuse("initial qualification requires laminar Fourier unity-Lewis transport");
-    relaxationSteps_ = this->coeffs().template lookup<scalar>("relaxationSteps");
-    if (!std::isfinite(relaxationSteps_) || relaxationSteps_ < 1)
-        refuse("relaxationSteps must be finite and at least1 for a convex update");
+    const RelaxationClock clock = relaxedTableClock
+        (this->coeffs(), this->mesh().time().deltaTValue());
+    // Keep the existing class layout. In fixed-time mode this is an initial
+    // effective step count; each update uses the actual executing timestep.
+    relaxationSteps_ = 1/clock.alpha;
     const word policy(this->coeffs().template lookupOrDefault<word>("lookupRoundoffPolicy", "strict"));
     if (policy != "strict" && policy != "endpoint64epsilon") refuse("unknown endpoint policy");
     allowEndpointRoundoff_ = policy == "endpoint64epsilon";
@@ -83,7 +86,7 @@ relaxedTable<ReactionThermo>::relaxedTable
     }
     if (co2_ < 0 || co_ < 0) refuse("carbon diagnostic requires CO and CO2");
     Info<< "relaxedTable contract: Cr=" << relaxationSteps_
-        << " alpha=" << 1/relaxationSteps_
+        << " alpha=" << clock.alpha << " mode=" << clock.mode << " tau_s=" << clock.time
         << " actualSpeciesTransport=1 targetTemperatureDiagnosticOnly=1"
         << " sourceAfterPureMixing=1 energy=absoluteHa addedEnergySource=0"
         << " targetChiLabel=" << table_().chi << endl;
@@ -137,8 +140,9 @@ void relaxedTable<ReactionThermo>::correctSpeciesAfterTransport()
 {
     PtrList<volScalarField>& species =
         const_cast<ReactionThermo&>(this->thermo()).composition().Y();
-    const scalar dt = this->mesh().time().deltaTValue(), alpha = 1/relaxationSteps_;
-    if (!(dt > 0)) refuse("positive physical time step required");
+    const scalar dt = this->mesh().time().deltaTValue();
+    const RelaxationClock clock = relaxedTableClock(this->coeffs(), dt);
+    const scalar alpha = clock.alpha;
     const volScalarField& density = this->rho();
     scalar worstSum = 0, minimum = GREAT, largestUpdate = 0, largestElementChange = 0;
     scalarField delta(map_.size(), scalar(0));
@@ -171,7 +175,8 @@ void relaxedTable<ReactionThermo>::correctSpeciesAfterTransport()
     reduce(worstSum, maxOp<scalar>()); reduce(minimum, minOp<scalar>());
     reduce(largestUpdate, maxOp<scalar>()); reduce(largestElementChange, maxOp<scalar>());
     Info<< "relaxedTableSource t=" << this->mesh().time().value()
-        << " Cr=" << relaxationSteps_ << " alpha=" << alpha << " tau_s=" << relaxationSteps_*dt
+        << " Cr=" << 1/alpha << " alpha=" << alpha << " tau_s=" << clock.time
+        << " relaxationMode=" << clock.mode
         << " maxDeltaY=" << largestUpdate << " maxSumError=" << worstSum
         << " minY=" << minimum << " maxElementChange=" << largestElementChange
         << " sourceElementAudit=reportOnly addedEnergySource=0 oldTimeModified=0" << endl;
