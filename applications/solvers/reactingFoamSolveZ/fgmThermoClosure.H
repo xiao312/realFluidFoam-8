@@ -91,6 +91,12 @@ inline void auditFgmThermoClosure
                 << " storedH_J_kg=" << thermo.he()[worstCell]
                 << " evaluatedH_J_kg=" << evaluated()[worstCell]
                 << " Cp_J_kg_K=" << heatCapacity()[worstCell];
+            const fvMesh& mesh = thermo.T().mesh();
+            if (mesh.foundObject<volScalarField>("rho"))
+                Pout<< " storedRho_kg_m3="
+                    << mesh.lookupObject<volScalarField>("rho")[worstCell];
+            else
+                Pout<< " storedRhoAvailable=0";
             const PtrList<volScalarField>& species = thermo.composition().Y();
             forAll(species, i)
                 if (mag(species[i][worstCell]) > 1e-12)
@@ -102,6 +108,28 @@ inline void auditFgmThermoClosure
         thermo.he().write();
         const PtrList<volScalarField>& species = thermo.composition().Y();
         forAll(species, i) species[i].write();
+        // Retain actual conserved/transport fields, never an EOS reconstruction.
+        // A successful inversion at a chosen EOS density is a different test.
+        const fvMesh& mesh = thermo.T().mesh();
+        const word scalarNames[] = {"rho", "Ha", "K", "Z", "c"};
+        for (const word& name : scalarNames)
+        {
+            const bool available = mesh.foundObject<volScalarField>(name);
+            const bool written = available
+                && mesh.lookupObject<volScalarField>(name).write();
+            Pout<< "thermoFailureField name=" << name
+                << " available=" << available << " written=" << written << endl;
+        }
+        const bool velocityAvailable = mesh.foundObject<volVectorField>("U");
+        const bool velocityWritten = velocityAvailable
+            && mesh.lookupObject<volVectorField>("U").write();
+        const bool fluxAvailable = mesh.foundObject<surfaceScalarField>("phi");
+        const bool fluxWritten = fluxAvailable
+            && mesh.lookupObject<surfaceScalarField>("phi").write();
+        Pout<< "thermoFailureField name=U available=" << velocityAvailable
+            << " written=" << velocityWritten << endl
+            << "thermoFailureField name=phi available=" << fluxAvailable
+            << " written=" << fluxWritten << endl;
         Info<< "thermoFailureSnapshot time=" << time.value()
             << " authorizedForRestart=0 acceptanceChanged=0" << endl;
     }

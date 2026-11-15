@@ -653,3 +653,23 @@ The mass predictor equation is verified against the official OF8 source:
 https://github.com/OpenFOAM/OpenFOAM-8/blob/master/src/finiteVolume/cfdTools/compressible/rhoEqn.H
 The fvOptions emptiness check explicitly selects fv::optionList because the
 options wrapper also inherits IOdictionary. No constraint/source is ignored.
+
+## Caloric-failure evidence
+
+When the existing enforcing caloric check fails, `fgmThermoClosure.H` retains
+the stored thermodynamic fields and species. It also writes available registered
+transported density, absolute enthalpy, kinetic energy, coordinates, velocity
+and mass flux (`rho`, `Ha`, `K`, `Z`, `c`, `U`, `phi`). These are existing
+objects, not values reconstructed from the EOS. Missing objects and write
+results are reported explicitly. No new switch or numerical operator is added.
+
+The failure record includes transported density at the reported cell when it
+exists. This supports distinguishing a conserved-density/internal-energy
+diagnostic from an EOS-density hypothesis. Failure snapshots remain unauthorized
+for CFD restarts. The code does not repair the failed state or change its verdict.
+No external service or secret is involved; files stay in the existing case.
+
+Verification requires compilation with the pinned OF8 runtime and a bounded
+deliberate failure control that checks field presence, values and nonzero exit.
+A normal-run comparison checks that the added failure-only path leaves sampled
+fields unchanged. Until those checks execute, this is an unqualified draft.
