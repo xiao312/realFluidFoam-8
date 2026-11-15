@@ -34,3 +34,10 @@ solutions exist at154.01755K/4.940324MPa and154.43902K/5.017372MPa, conserving t
 specified volume and energy. This explains a failure mode in the pure-fluid
 contact adaptation. It does not establish that the multicomponent G2 failures
 have the same cause or that their physical solution requires a flash.
+
+`node import-diagnostic-field.mjs SPEC SITE CATALOG [--apply]` appends diagnostic
+views to the retained75-target/12-paper local Forge export. SPEC supplies id,
+label, note, targets, image/evidence paths, inputSha256 and scientificAcceptance
+false. The default is read-only. Apply backs up the catalogue/export, verifies
+input hashes and preserves every non-view target field, including primary
+comparisons and original captions. It submits no compute and publishes no site.
