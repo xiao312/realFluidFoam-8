@@ -1,0 +1,11 @@
+{
+  "valuesCompared": 16000,
+  "actualTimes_s": [
+    0.0000204651195144,
+    0.0000204651195144
+  ],
+  "numericExact": true,
+  "maxScaledDifference": 0,
+  "within1eMinus8": true,
+  "scope": "Default solver CFD regression only; no candidate scientific acceptance"
+}

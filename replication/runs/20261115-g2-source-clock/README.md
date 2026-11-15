@@ -63,14 +63,32 @@ The paired fixed-time Schmitt control reached 300 microseconds with a 3,254 K pe
 `import-investigation.mjs RESULTS_ROOT SITE CATALOG [--apply]` provides a read-only plan, validates the fixed 75-target/12-paper catalogue, preserves existing primary comparisons and captions, then adds diagnostic views and content-addressed evidence. It depends only on Node and the existing local Forge export schema; it has no HPC, model-provider or publication capability. Site/catalog writes are explicit and backed up. Verify every emitted asset by HTTP against its local bytes after applying. This is local ladder visibility, not independent acceptance or GitHub publication.
 
 
-S08b actually completed in job128107449,258seconds,exit0: solver SHA256
+S08b actually completed in job 128107449,258seconds,exit0: solver SHA256
 `5822d5252af9c0036dca8d5d88d5b41ecfc800738de7e39d39d9d78e1abff2d4`.
-All14resolved custom DSOs matched S01;40default source rows matched exactly.
-S09b job128107604 failed before CFD: its40us end rejected the100us field-output
+All 14resolved custom DSOs matched S01;40default source rows matched exactly.
+S09b job 128107604 failed before CFD: its40us end rejected the100us field-output
 interval. Its malformed numeric phase literal is also retained as a recipe defect,
 not interpreted as physical evidence. `coupled-cavalieri-s09c` corrects that recipe
 with a100us default/off run, preserving the original100us write interval and20us
-sampling. The300us experiments and solver/runtime are unchanged. The actual
-factory rejects the old configuration and accepts all3corrected configurations.
+sampling. The 300 us experiments and solver/runtime are unchanged. The actual
+factory rejects the old configuration and accepts all three corrected configurations.
 `schmitt-state-s10` queries the independently retained second cold failure using
 S07's qualified property executable. This is separate from advancing CFD.
+
+
+S09c job 128108126 delivered all three cases in 1218allocation seconds, wrapper exit 0.
+The default100uscase completed and all 16,000 sampled values matched exactly at
+the same physical time, 20.4651195144 microseconds. Both Gibbs-only and coupled experiments FAILED
+at 141.918122745us with 8696.03J/kg caloric mismatch. The predictor rejected its
+one candidate and changed no state. All 10000rawcelltemperatures were exactly
+equal in thosefailed cases, peak3058.00K. The precise recovery rejection reason
+was notlogged; do not infer it from the separate Schmitt property query.
+See `evidence-coupled-cfd-s09c`. No candidate scientific acceptance or merge.
+
+`temporal-s11-schmitt` and `temporal-s12-cavalieri` retain the original largest-root
+EOS and fixed 10 usclock, reducing maximum timestep from 5 us to 0.5 us. Each starts from original time zero
+and requests 1 ms; none restarts a saved state. Schmitt 17-digit and Cavalieri 12-digit
+field formatting match their respective coarse references. Inputs and acceptance
+are unchanged; extended final time exposes the previous failure points. These are
+sensitivity tests, not established temporal convergence. Jobs128109165/128109186
+are admitted; actual runtime/terminal receipts determine physical progress.

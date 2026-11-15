@@ -31,13 +31,22 @@ const evidence={kind:'source-clock-and-thermodynamic-coupling-investigation',sci
  fields:asset(path.join(fieldRoot,'collection.json')),fieldArchive:asset(path.join(fieldRoot,'temperature-fields.tar.gz')),
  hotCellQueries:asset(path.join(root,'hot-enthalpy-query-summary.json')),conservedStateAudit:asset(path.join(root,'new-cold-conserved-state-audit.json')),
  hotCellFigure:asset(path.join(root,'hot-cell-source-diagnostic.png')),
- sourceClockCFD:'d020b8df0d7ba6c9fd2306770bb08f08d5292773',APIProbeSource:'6a9a2acd725c8b381f8b807efb3bf02ed7408c7e',candidateSource:'4e1a6acf88bb7b74799373018d5eb8df4bf63ee6',candidateCFDQualified:false};
+ coldBranchFigure:asset(path.join(root,'cold-branch-discontinuities.png')),
+ schmittStateQueries:asset(path.join(root,'s10-result-summary.json')),schmittStateAudit:asset(path.join(root,'schmitt-cold-conserved-state-audit.json')),
+ failedCFDFields:asset(path.join(root,'s09c-failed-fields/collection.json')),failedCFDArchive:asset(path.join(root,'s09c-failed-fields/failed-temperature-fields.tar.gz')),
+ candidateBuild:asset(path.join(root,'s08b-receipts/solver-qualification.json')),candidateDefaultCFD:asset(path.join(root,'s09c-default-flow-regression.json')),
+ sourceClockCFD:'d020b8df0d7ba6c9fd2306770bb08f08d5292773',APIProbeSource:'6a9a2acd725c8b381f8b807efb3bf02ed7408c7e',candidateSource:json(path.join(root,'s08b-receipts/solver-qualification.json')).source,candidateCFDQualified:false};
 fs.writeFileSync(path.join(root,'site-investigation-evidence.json'),JSON.stringify(evidence,null,2)+'\n');const ev=asset(path.join(root,'site-investigation-evidence.json'));
 const images=Object.fromEntries(['schmitt','cavalieri'].map(c=>[c,asset(path.join(fieldRoot,c+'-source-clock-short-controls.png'))]));
 for(const list of [data.figures,central.targets])for(const[id,c]of Object.entries(bindings)){
  const target=list.find(f=>f.id===id),im=images[c];
  const view={id:'source-clock-controls-20261115',label:c==='schmitt'?'Source-clock controls — same-time 300 µs':'Source-clock controls — failed faster-source state',image:im.file,image_sha256:im.sha256,data:ev.file,data_sha256:ev.sha256,
- note:c==='schmitt'?'Original-zero Schmitt job128102962: both300µs cases completed. Peak1689K→3254K with fixed10µs relaxation. Startup control; developed statistics and conservation acceptance remain open.':'Cavalieri job128103070: Cr100 control completed300µs; fixed10µs case failed caloric closure at161.809µs. Unequal times; hotter failed field is retained without acceptance.',scientificAcceptance:false};
+ note:c==='schmitt'?'Original-zero Schmitt job128102962: both300µs cases completed. Peak1689K→3254K with fixed10µs relaxation. Longer fixed-time run128105658 failed caloric closure at682µs. Developed statistics and conservation acceptance remain open.':'Cavalieri job128103070: Cr100 control completed300µs; fixed10µs case failed caloric closure at161.809µs. Unequal times; hotter failed field is retained without acceptance.',scientificAcceptance:false};
+ target.views=[...(target.views??[]).filter(v=>v.id!==view.id),view];
+}
+const failedImage=asset(path.join(root,'s09c-failed-fields/coupled-recovery-failed-fields.png'));
+for(const list of [data.figures,central.targets])for(const id of ['cavalieri2025-fig-6','sharma2023-fig-4b','cavalieri2025-fig10a-tf-temperature-field']){
+ const target=list.find(f=>f.id===id),view={id:'coupled-recovery-failure-20261115',label:'Coupled recovery — failed CFD control',image:failedImage.file,image_sha256:failedImage.sha256,data:ev.file,data_sha256:ev.sha256,note:'Fresh-zero Gibbs-only and coupled-recovery cases both failed at141.918us with8.696kJ/kg caloric mismatch. All10000cell temperatures identical; peak3058K. Whitecross marks the failing cell. Raw failed states, not accepted temperatures or developed paper means.',scientificAcceptance:false};
  target.views=[...(target.views??[]).filter(v=>v.id!==view.id),view];
 }
 if(protectedFields(data.figures)!==protectedUI||protectedFields(central.targets)!==protectedCentral)throw Error('Protected target data changed');

@@ -1,0 +1,53 @@
+{
+  "job": "128108126",
+  "source": "842cd98627d9fb5a898cadc9b41f6c9b1e00b370",
+  "CFDStartTime": 0,
+  "entries": [
+    {
+      "mode": "gibbs",
+      "case": "cases/g2-relaxed-coupled-s09c-cavalieri-gibbs",
+      "timeName": "0.000141918122745",
+      "Tmin_K": 161.68895589071326,
+      "Tmax_K": 3058.0019687120644,
+      "peakPosition_x_r_mm": [
+        3.5,
+        1.09375
+      ],
+      "cells": 10000,
+      "caloricClosureFailed": true,
+      "scientificAcceptance": false,
+      "geometryHashes": {
+        "points": "69a6ed4b830e5e1d704c04c98ffc7a1b7175cd0c42a1523c2fc0f61e852cfd43",
+        "faces": "98a7ad8c1948a92893514ee4d0d08b4bcacf2a6366b07a3d8803700fb64c6e96",
+        "owner": "ebed89734ab8b99417b98af9edc86d3951ae28105103227dfdb3a924167ffa41",
+        "neighbour": "92a9410b94fd3e63dfcf7736c804510a7bbc07635bed577651ad563a4e1051cf"
+      }
+    },
+    {
+      "mode": "coupled",
+      "case": "cases/g2-relaxed-coupled-s09c-cavalieri-coupled",
+      "timeName": "0.000141918122745",
+      "Tmin_K": 161.68895589071326,
+      "Tmax_K": 3058.0019687120644,
+      "peakPosition_x_r_mm": [
+        3.5,
+        1.09375
+      ],
+      "cells": 10000,
+      "caloricClosureFailed": true,
+      "scientificAcceptance": false,
+      "geometryHashes": {
+        "points": "69a6ed4b830e5e1d704c04c98ffc7a1b7175cd0c42a1523c2fc0f61e852cfd43",
+        "faces": "98a7ad8c1948a92893514ee4d0d08b4bcacf2a6366b07a3d8803700fb64c6e96",
+        "owner": "ebed89734ab8b99417b98af9edc86d3951ae28105103227dfdb3a924167ffa41",
+        "neighbour": "92a9410b94fd3e63dfcf7736c804510a7bbc07635bed577651ad563a4e1051cf"
+      }
+    }
+  ],
+  "arraysIdentical": true,
+  "maxTemperatureDifference_K": 0.0,
+  "archiveSha256": "f05d6c32ca772a20b3f9c87f975687c5d36aa11f33fba02992ee9e1b9a15677e",
+  "archiveBytes": 191256,
+  "scientificAcceptance": false,
+  "note": "All32partition addresses cover every cell once; four global mesh hashes match retained mesh. Raw failed temperatures are not thermodynamically accepted fields."
+}
