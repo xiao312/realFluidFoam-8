@@ -22,6 +22,11 @@ inline scalar pressureEnergyDerivative(const Thermo& model,const Primitive& v)
     if(!std::isfinite(pt)||pt<=0)FatalErrorInFunction<<"Invalid APEC pressure derivative"<<Foam::exit(Foam::FatalError);
     return v.absoluteH-rho*model.Cp(v.p,T)*pr/pt;
 }
+inline unsigned& recoverySeedSearches()
+{
+    static unsigned count=0;
+    return count;
+}
 inline Primitive recover(const Thermo& model,const Conserved& c,scalar guess)
 {
     if(!(c.rho>0)||!std::isfinite(c.rho+c.momentum+c.energy))
@@ -38,7 +43,21 @@ inline Primitive recover(const Thermo& model,const Conserved& c,scalar guess)
         return std::isfinite(e);
     };
     scalar T=guess,p=0,e=0;
-    if(!query(T,p,e))FatalErrorInFunction<<"Invalid APEC recovery initial state"<<Foam::exit(Foam::FatalError);
+    if(!query(T,p,e))
+    {
+        // A valid previous-stage T need not be admissible at the new rho.
+        // Find a feasible Newton seed; never change rho, energy or acceptance.
+        ++recoverySeedSearches();
+        bool found=false;scalar best=Foam::GREAT;
+        for(unsigned k=1;k<=48;++k)for(int sign=-1;sign<=1;sign+=2)
+        {
+            const scalar trial=guess*std::exp(sign*.05*k);scalar tp=0,te=0;
+            if(query(trial,tp,te)&&Foam::mag(te-target)<best)
+            {T=trial;p=tp;e=te;best=Foam::mag(te-target);found=true;}
+        }
+        if(!found)FatalErrorInFunction<<"No admissible APEC rho/e Newton seed; rho="<<c.rho
+            <<" target_e="<<target<<Foam::exit(Foam::FatalError);
+    }
     for(unsigned iteration=0;iteration<80;++iteration)
     {
         const scalar residual=e-target,scale=Foam::max(scalar(1),Foam::max(Foam::mag(e),Foam::mag(target)));

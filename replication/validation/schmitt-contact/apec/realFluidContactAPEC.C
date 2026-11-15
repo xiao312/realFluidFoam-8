@@ -166,6 +166,6 @@ int main(int argc,char* argv[])
                 <<" cumulativeEnergyBalanceResidualJ="<<integral(state,2)-initialEnergy-cumulativeEnergyBoundary-cumulativeDefect
                 <<" elapsedWall_s="<<runTime.elapsedClockTime()<<endl;
     }
-    Info<<"CONTACT_APEC_END t="<<runTime.value()<<" steps="<<steps<<" scientificAcceptance=0"<<nl<<"End"<<endl;
+    Info<<"CONTACT_APEC_END t="<<runTime.value()<<" steps="<<steps<<" recoverySeedSearches="<<recoverySeedSearches()<<" scientificAcceptance=0"<<nl<<"End"<<endl;
     return 0;
 }

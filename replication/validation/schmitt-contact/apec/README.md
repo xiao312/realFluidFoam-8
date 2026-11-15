@@ -34,3 +34,10 @@ face correction. It retains the same central flux, recovery and time scheme.
 The S17 comparison keeps the nx2 physical erf width fixed while changing grid
 resolution400/800/1600, separating under-resolution from a source-clock issue.
 The inherited low-temperature NASA extrapolation remains a declared limitation.
+
+S16 sharp-contact termination exposed an inadmissible previous-stage temperature
+used as a Newton seed at the new density. Recovery now searches feasible seeds
+and backtracks while holding conservative rho/e fixed. Root consistency, final
+energy residual and all accepted-state criteria remain unchanged. The count
+recoverySeedSearches is reported. This repair does not establish pressure
+equilibrium or repair the large departures in already-completed contacts.

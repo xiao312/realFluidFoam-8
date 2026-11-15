@@ -28,9 +28,9 @@ for app in realFluidContactAPEC initializeSchmittContact;do
  ldd "$build/bin/$app" > "$build/logs/$app-ldd.txt"
 done
 node "$input/qualify.mjs" "$build" "$parent" "$input" > "$out/build-qualification.json"
-bash -euo pipefail "$input/run.sh" uniform 2 .0001
+bash -euo pipefail "$input/run.sh" uniform 2 0.0001
 pids=()
-for nx in 2 4 6;do bash -euo pipefail "$input/run.sh" full "$nx" .02 & pids+=("$!");done
+for nx in 2 4 6;do bash -euo pipefail "$input/run.sh" full "$nx" 0.02 & pids+=("$!");done
 failed=0;for pid in "${pids[@]}";do if wait "$pid";then :;else failed=$((failed+1));fi;done
 printf 'APEC_CONTACT_BATCH_END failures=%s scientificAcceptance=0\n' "$failed"
 [[ $failed == 0 ]]
