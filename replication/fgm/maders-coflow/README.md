@@ -187,6 +187,23 @@ species/source and weighted-C consistency; C++ lookup/runtime checks stay separa
 
 ## Source/ignition debugging controls
 
+`field_audit.py` independently reconstructs table temperature/source from the
+exact executed NPZ at sampled Z/raw-C, and compares transported Ha with the
+linear inlet enthalpy. Inputs are that NPZ, its expected SHA256, initialization
+JSON and one radial sampling directory. It reads only, or writes a new JSON
+receipt with `--out`; `--plan` reports paths/hashes without calculations. Requires
+NumPy, no Cantera, network, scheduler or secrets. This does not replace CFD or
+acceptance: point interpolation differs from cellwise closure, heat diffusion
+and mechanical work can produce nonzero enthalpy differences, and out-of-table
+samples are counted rather than silently extrapolated. It flags stale sampled
+diagnostic fields separately. Verify on retained physical samples, then reject
+a deliberately wrong table hash. Example:
+
+```sh
+python field_audit.py --table TABLE.npz --table-sha256 SHA256 \
+  --initialization initialization.json --samples radialProfiles/TIME --plan
+```
+
 `closure_probe.py` compares the actual two exported tables at fixed Z/C with
 Cantera DRM19 chemical sources evaluated at both tabulated T and the existing
 inlet-mixed absolute enthalpy. It invokes `source_replay_probe.C`, linked to the

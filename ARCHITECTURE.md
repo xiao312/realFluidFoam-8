@@ -1,5 +1,16 @@
 # Experimental solver boundaries
 
+`replication/validation/mascotte-g2/paper-injector-wedge/` owns a separate
+coarse tapered-injector geometry sensitivity. It generates dictionaries using
+Node, with allocated OF8 mesh tools as the qualification boundary. It does not
+alter registered mesh assets or select CFD closures. Its topology test shares
+only the ASCII face-area helper from `coarse-wedge`.
+
+Within `replication/fgm/maders-coflow`, `field_audit.py` consumes hashed exported
+NPZ tables and retained CSV profiles. It independently compares mapped-C lookup
+and inlet enthalpy; NumPy is its only external dependency. It never changes CFD,
+reference data, diagnostic fields or scientific acceptance.
+
 `replication/runs/20261115-g2-temperature-fields/` maps retained partitioned ASCII
 OpenFOAM temperatures onto actual axial/radial cell polygons. It reads hashed
 local collections and writes images/data receipts for Forge. It has no solver,
