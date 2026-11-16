@@ -1,0 +1,18 @@
+{
+  "schema": "maders-startup-control/v1",
+  "CFDStartTime_s": 0,
+  "ignitionTime_s": 0.05,
+  "endTime_s": 0.25,
+  "ignitionMode": "upperProgress",
+  "axialCells": 400,
+  "maxCo": 0.125,
+  "maxDeltaT_s": 2.5e-05,
+  "outerWallVelocity": "noSlip",
+  "baselineCaseSource": "f6e2ae80116b0ea46c58ecfc3660bc1bdf2bcb54",
+  "baselineSolverSource": "ea2a4046ab239ae4fdb1197cd65fd83ebc933785",
+  "physicalTableSha256": "35a6b46b5a56d2831a598acb7810119b6bc27ced27d90d217d2258514295c1cc",
+  "purpose": "Physical temporal-refinement control against A07 maxCo0.25/maxdt50us: same original-zero case/table/inlets/mesh/upperProgress ignition, maxCo0.125/maxdt25us. No source fitting or threshold change. Compare matched ages and drift, not peaks alone.",
+  "paperIgnitionProtocolClaimed": false,
+  "restarted": false,
+  "scientificAcceptance": false
+}

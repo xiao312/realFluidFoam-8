@@ -1,5 +1,14 @@
 # Maders 2017 reacting coflow preparation
 
+`timestep-co0125.json` declares an original-zero temporal-refinement control:
+same A07 physical table, geometry, inlets and50ms upper-progress ignition,
+maxCo0.125/maxdt25us instead of0.25/50us, requested end250ms. Apply its values
+through the existing `prepare_case.mjs` read-only plan before case generation.
+The batch binds the exact JSON hash. Compare matched times and profile drift;
+neither peak agreement nor synthetic tests establish temporal convergence.
+The coarse Co1 control and every failed/unsteady profile remain evidence.
+Dependencies, secret handling and scheduler ownership are unchanged.
+
 `startup-earlier-ignition.json` declares a separate original-zero coarse-grid
 startup experiment. It retains paper inlet profiles, composition, absolute Ha,
 physical table and source integration, but ignites at0.05s rather than0.9s and
