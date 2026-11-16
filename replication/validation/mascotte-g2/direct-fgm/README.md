@@ -455,6 +455,18 @@ The stationary inlet-ramp initializer also accepts the explicit audited reviewed
 `configure-low-mach.mjs CASE [--apply]` selects the existing compiled constant-p0 open-domain approximation for a separate original-zero split-FGM experiment after `configure-fgm` and `configure-coupled inner`, before initialization. It refuses differential pressure or rho/Ha predictors, clones the actual pressure solver groups for pMechanical, records original/new hashes, and leaves all caloric/species criteria unchanged. Thermal absolute Ha omits kinetic/dynamic-pressure work consistently with the compiled low-Mach model. EOS pressure is fixed at the declared case pressure; mechanical pressure remains separately solved/written. This is not a repair/qualification of the fully compressible baseline or a claim that earlier failed contact tests now pass. Node standard library only; no scheduler, secrets, kinetics, table or geometry ownership. Verification: read-only plan, fresh-case rejection controls, exact compatible runtime identity and actual original-zero physical output including Mach/pressure/EOS/mass/Ha diagnostics. Default behavior stays unchanged.
 # Local-Z ignition control
 
+The two `local-z-transit-*.json` controls retain the same chemistry, geometry,
+inlet ramp and acceptance limits, but wait2.2ms before sourcePeak/upperProgress
+ignition. Executing inlet density and the measured2.5mm exit radius give an
+estimated1.914m/s oxygen exit speed and2.139ms transit through the4mm region,
+including the100us ramp. This is an inlet-based initialization estimate, not a
+measured developed mixing layer. The100us experiment selected only9cells in one
+axial row: its seed persisted through the first source/transport iterations but
+disappeared later. Compare actual selected volumes, source/transport histories
+and subsequent fields; do not assume either larger seed sustains a flame.
+UpperProgress means maximum covered table C, not independently computed chemical
+equilibrium. Source rates and final criteria are unchanged.
+
 Coupling receipts report the effective caloric-trial switch in the resulting
 control dictionary, including a value supplied before coupling configuration.
 The CLI option alone is not the execution authority. This reporting correction
