@@ -226,3 +226,41 @@ control exposed cancellation in the first variance implementation; the retained
 v1 was replaced by a stable centered-moment integration and verified before
 use of v2. Prior instantaneous/better/worse snapshots remain visible. This is
 additional finite-window evidence, not the paper's steady solution or acceptance.
+
+The owner extended this day's work to21:00 Shanghai. B25 delivered a completed
+annular laminar100us control, but both hot and source-paused cold evolving
+kEpsilon controls failed at the same86.42ns. Priming passage turbulence delayed
+failure to0.939us; eight corrections and tighter linear tolerances did not fix it.
+B28b/128193051's full-property frozen-turbulence control completed10us, while
+its evolving control failed. This implicates turbulence evolution/coupling in
+the tested cold failures, independently of chemistry. It does not qualify frozen
+viscosity as a physical turbulence model. B29b/128193128's constant-p0 prototype
+also diverged, despite a successful evidence-delivery envelope.
+
+Sourcef64bd0e adds a separately recorded100us inlet ramp from stationary original
+zero. Fresh B30/128194195 and B31/128194209 compare constant-p0 and compressible
+coupling; B31 failed around12.7us. A delayed failure is not a repaired solver.
+An optional stock Smagorinsky algebraic-SGS preparation now isolates the solved
+kEpsilon equations without freezing viscosity. Full properties remain enabled;
+no unused-Dimix guard is relaxed. It is a wedge diagnostic, not3D or dynamic
+LES, and uses a shared Prt/Sct0.85 operator rather than paper Sct0.7. Physical
+execution and independent qualification remain pending at this source checkpoint.
+
+Rereading Sharma pages7/40 confirms enthalpy-dependent scalar tables at21 levels,
+in addition to PDF/variance treatment. The present single-quench Z/C table lacks
+these features. An independent20,301-node frozen-Y/T Cantera3.2 audit gives
+0.0577% aggregate source L1 disagreement, but18 resolved sign disagreements.
+The200–500K subset disagrees12.10%; below200K18.28% with unqualified cold NASA
+extrapolation. These unweighted node metrics are distinct from the actual300us
+CFD source-volume errors:7.76% at tableT and174.28% at CFD T/p. Good aggregate
+table-node agreement does not resolve off-manifold thermal coupling. No rates
+or paper curves were fitted and no CFD source was changed by this audit.
+
+B23 timed out at the original bound after accepted physical time2.11523ms;
+the complete2.1ms field is retained. The hot region remains confined near the
+injector, far from a developed paper flame. Maders fine completed1.10s;
+coarse retained1.41999s before timeout. Latest T RMS errors are345/679K and
+515/326K respectively. Actual profiles, histories and matched finite windows
+remain visible alongside earlier favorable snapshots; none establishes steady
+or mesh convergence. Local Forge retains75targets/12papers/captions, with no
+independent scientific approval, main merge or public scientific publication.

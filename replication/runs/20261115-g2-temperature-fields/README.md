@@ -120,3 +120,19 @@ The verified evidence has 75 targets, preserves the original 71 in relative orde
 and leaves their captions and primary comparison images unchanged. A labelled
 axisymmetric reflection provides a second near-field display. It adds no cells
 or information to the simulated upper half-domain.
+
+`audit-table-chemistry.py` separately checks the stored source at every physical
+table node against pressure-based Cantera kinetics at the same frozen Y/T.
+It also reports sensitivity to declared temperature offsets; it integrates no
+flame, changes no CFD/source/table, and fits no rates. Inputs are a complete v2
+CO2+CO table, exact phase metadata/mechanism, explicit reference pressure in Pa,
+and a new output directory. Dependencies are NumPy and the producer's exact
+Cantera version; no network, credentials or scheduler interface. Default is
+read-only; `--apply` writes node CSV and hash-bound audit JSON. Example:
+`python audit-table-chemistry.py --table physical.tbl --metadata phase.json
+--mechanism original.yaml --pressure 5610000 --out audit [--apply]`.
+Verify original mechanism/version binding, all finite table nodes, direct
+stoichiometric rate projection at the worst node and unchanged input hashes.
+NASA extrapolation at cold temperatures and ideal concentration kinetics remain
+explicit limitations; neither a node audit nor a sensitivity result is physical
+FGM validation.

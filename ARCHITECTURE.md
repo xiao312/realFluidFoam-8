@@ -198,3 +198,8 @@ The optional inlet-ramp configurator consumes a stationary original-zero case
 and executing-EOS inlet receipt. It emits native OF8 flow tables and a manifest
 schedule consumed by the equation-budget reader. It does not depend on or
 change turbulence initialization, table chemistry or thermodynamic recovery.
+
+The optional algebraic-SGS diagnostic consumes a full-property RANS preparation
+and explicitly overrides only turbulence-model dictionaries and metadata before
+initialization. It depends on stock OF8 Smagorinsky/eddyDiffusivity, not a custom
+turbulence implementation. It has no scientific acceptance or scheduler authority.
