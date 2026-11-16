@@ -1,5 +1,19 @@
 # Warm FGM coupling on the retained G2-related mesh
 
+`pressure-damped-debug-sourcePeak.json` declares a separately identified
+4460-cell diagnostic using the executed owner-geometry asset from qualification
+job128229154. Geometry, table, model, original-zero cold transit and ignition,
+coupling and final acceptance criteria remain those of the17840-cell candidate.
+Only the measured resolution asset changes. Its input requires the exact mesh
+SHA and the resolution-aware reviewed-mesh helpers fromf62f738. The original
+case generator remains1b90d08; the executable remains01a14d2 with30968b8 libraries.
+Verify the delivered asset, default geometry identities, generated original-zero
+fields and every coarse pure-stream duct cell before running through the Slurm
+adapter. Compare actual pressure/source/energy histories with the fine run;
+this is a debugging control, not a grid-converged paper result. Do not edit a
+running case or import a developed state. Merely adding this protocol does not
+authorize an allocation beyond the owner deadline or known free slots.
+
 `node equation-budget.mjs --case COLLECTED_CASE --log RETAINED_LOG [--out NEW_JSON]`
 integrates the last assembled Ha equation at each physical timestep and compares
 its ddt integral with the reported final extensive Ha. It also computes the
