@@ -187,6 +187,14 @@ species/source and weighted-C consistency; C++ lookup/runtime checks stay separa
 
 ## Source/ignition debugging controls
 
+The default outer velocity boundary is `noSlip`, matching Verhoeven2011 PDFp44.
+An audit on16November found that the former `paper` protocol silently selected
+`slip`; actual retainedR19/0/U confirmed it. That executed result remains unchanged
+and must carry the mismatch. `--outer-wall-velocity slip` explicitly reproduces
+that historical diagnostic; the selected boundary enters the case manifest.
+No-slip is a setup correction, not an established explanation for profile error.
+Compare matched fresh-zero cases before attributing improvement to this change.
+
 `field_audit.py` independently reconstructs table temperature/source from the
 exact executed NPZ at sampled Z/raw-C, and compares transported Ha with the
 linear inlet enthalpy. Inputs are that NPZ, its expected SHA256, initialization

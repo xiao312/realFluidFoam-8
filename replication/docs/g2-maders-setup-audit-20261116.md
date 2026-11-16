@@ -123,6 +123,17 @@ radial/axial resolution and manifold source error. Keep absoluteHa. The current
 same numerical protocol, measured settling and original profile coordinates;
 do not alter chemistry to move the flame peak.
 
+The recovered Verhoeven thesis PDFp44 confirms0.23m/s **maximum** fuel velocity,
+300K streams and a no-slip outer wall. Maders uses298K. Do not double the fuel
+flow by interpreting0.23 as its mean. A direct read of the retainedR19 time-zero
+U dictionary found `outerWall { type slip; }`, selected by the old `paper` case
+generator. This is a confirmed setup mismatch. The generator now defaults to
+noSlip and offers an explicitly recorded historical slip control. A paired fresh
+physical comparison is still required; this change alone does not establish the
+cause of the large flame-shape discrepancy. The recovered thesis is retained at
+`state/fgm-published-targets-20261112/verhoeven2011.pdf` and was actually read,
+not inferred from the unsuccessful new download.
+
 ## Development sequence
 
 1. Qualify the new injector mesh with actual blockMesh/checkMesh and retain

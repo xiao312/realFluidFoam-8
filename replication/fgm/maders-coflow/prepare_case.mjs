@@ -9,7 +9,7 @@ const options = {};
 for (let i=2; i<process.argv.length; i++) {
   const key=process.argv[i];
   if (key === '--plan') options.plan=true;
-  else if (['--table','--out','--end-time','--ranks','--protocol','--ignition-time','--ignition-mode','--ignition-z-min','--ignition-z-max','--max-co','--max-delta-t','--mesh-protocol','--axial-cells','--ignition-step-reset','--ignition-delta-t'].includes(key) && process.argv[i+1]) options[key.slice(2)]=process.argv[++i];
+  else if (['--table','--out','--end-time','--ranks','--protocol','--ignition-time','--ignition-mode','--ignition-z-min','--ignition-z-max','--max-co','--max-delta-t','--mesh-protocol','--axial-cells','--ignition-step-reset','--ignition-delta-t','--outer-wall-velocity'].includes(key) && process.argv[i+1]) options[key.slice(2)]=process.argv[++i];
   else throw Error(`Unknown or missing option ${key}`);
 }
 if (!options.table) throw Error('Use --table TABLE_DIRECTORY [--out NEW_CASE] [--plan]');
@@ -25,6 +25,8 @@ if (hash(fs.readFileSync(path.join(table,'phase-metadata.json')))!==receipt.meta
 const protocol=options.protocol??'baseline';
 if(!['baseline','paper','paper-fine'].includes(protocol))throw Error('Unknown case protocol');
 const paper=protocol!=='baseline';
+const outerWallVelocity=options['outer-wall-velocity']??'noSlip';
+if(!['noSlip','slip'].includes(outerWallVelocity))throw Error('Outer wall velocity must be noSlip or explicit historical slip control');
 const ignitionMode=options['ignition-mode']??'sourcePeak';
 const ignitionStepReset=options['ignition-step-reset']??'yes',ignitionDeltaT=Number(options['ignition-delta-t']??1e-6);
 if(!['yes','no'].includes(ignitionStepReset)||!Number.isFinite(ignitionDeltaT)||ignitionDeltaT<=0)throw Error('Invalid ignition step reset');
@@ -49,7 +51,8 @@ const plan={target:'maders2017-fig-4',table_sha256:receipt.table_sha256,table_ex
     sample_interval_s:.005,steady_screen:'two nominal traversals; 50/100ms profile windows; three checks'},
   models:{thermo:'NASA7/perfectGas',transport:'Smooke Cp-dependent mu/kappa; stock OF8 Fourier unity-Le diffusion',
     combustion:'FGM weighted raw progress; absolute-Ha energy; signed source integration',
-    buoyancy:'stock fvOptions buoyancyForce(U) and buoyancyEnergy(Ha), g=(-9.81,0,0)'},
+    buoyancy:'stock fvOptions buoyancyForce(U) and buoyancyEnergy(Ha), g=(-9.81,0,0)',
+    outer_wall_velocity:outerWallVelocity},
   limits:paper?['Structured reconstructed mesh; author mesh unavailable; paper120k axial200um remains coarser than thesis near-front guidance','Limited second-order spatial convection; Euler temporal integration retained','Cold flow then scheduled ignition within one timezero process; cold settling measured separately','Reconstructed sparse baseline table; physical quenching extension not yet substituted']:[ 'Structured40000-cell reconstructed mesh; author mesh unavailable','First diagnostic uses upwind convection; paper reports second order',
     'Fresh hot ring at timezero; differs from paper cold-steady-first numerical initialization',
     'Finite transient run; steady state and paper agreement require measured profile histories']};
@@ -91,7 +94,7 @@ boundaryField {
  fuel { type fixedValue; value uniform (0.115 0 0); }
  air { type fixedValue; value uniform (0.23 0 0); }
  outlet { ${paper?'type zeroGradient;':'type pressureInletOutletVelocity; value uniform (0 0 0);'} }
- outerWall { type ${paper?'slip':'noSlip'}; } axis { type empty; } planeMinus { type wedge; } planePlus { type wedge; }
+ outerWall { type ${outerWallVelocity}; } axis { type empty; } planeMinus { type wedge; } planePlus { type wedge; }
 }\n`);
 put('constant/g',header('g','uniformDimensionedVectorField')+'dimensions [0 1 -2 0 0 0 0]; value (-9.81 0 0);\n');
 put('constant/fvOptions',header('fvOptions')+`gravityForce { type buoyancyForce; active yes; buoyancyForceCoeffs { fields (U); } }
