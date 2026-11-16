@@ -189,3 +189,7 @@ does not depend on the averaging implementation or grant statistical acceptance.
 The optional RANS passage initializer consumes the inlet mesh/velocity and
 executing-EOS receipts, then initializes only turbulence fields. It has no
 reverse dependency into mesh generation, thermodynamics or solver source.
+
+Science-batch syntax preflight invokes explicit Bash and the current Node binary
+in parse-only modes. It consumes frozen payload/child files and emits hash-bound
+receipts; it does not depend on or invoke scheduler adapters or scientific code.

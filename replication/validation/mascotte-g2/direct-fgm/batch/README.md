@@ -1,5 +1,19 @@
 # Bounded warm-G2 execution batch
 
+`node preflight-payload.mjs --bash BASH_EXE --file PAYLOAD.sh [--file CHILD.sh]`
+checks shell syntax and every explicit Node heredoc in these frozen science
+wrappers before scheduler admission. It invokes Bash `-n` and Node `--check`;
+it never executes a payload, imports its dependencies or changes a case. The
+heredoc contract is a one-line bare `node` command with a quoted identifier delimiter;
+unsupported Node heredoc syntax is refused rather than silently skipped. Pass
+separately staged child scripts explicitly. This is not a full shell parser;
+dynamic executable aliases and other languages require separate verification. Outputs are JSON with file hashes,
+block line numbers and syntax verdicts; optional `--out NEW_JSON` retains the
+receipt. Node built-ins and an explicit Bash binary are the only dependencies.
+No network, scheduler, secrets or physical-qualification authority. Verification:
+the retained B28 duplicate-variable payload must fail, corrected payloads must
+pass, and a side-effect witness in a checked block must never be created.
+
 This module rebuilds the solver against the retained, hash-qualified custom
 combustion library and stock OF8 thermodynamics. It then runs fresh heating,
 contact, formation-energy conversion, and physical-table closed-state cases.
