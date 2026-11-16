@@ -11,7 +11,10 @@ const keys=(v,allowed,label)=>{
   if(!v||typeof v!=='object'||Array.isArray(v)||Object.keys(v).some(k=>!allowed.includes(k)))
     throw Error(`Unknown or invalid ${label} fields`);
 };
-keys(config,['schema','model','transport','Prt','inlets','initial','provenance','sourceTreatment'],'configuration');
+keys(config,['schema','model','transport','Prt','inlets','initial','provenance','sourceTreatment','unusedDiffusionPolicy'],'configuration');
+if(config.unusedDiffusionPolicy!==undefined&&config.unusedDiffusionPolicy!=='suppress-unity-Le')
+  throw Error('Unknown unused-diffusion policy');
+const suppressProgress=config.unusedDiffusionPolicy==='suppress-unity-Le';
 keys(config.inlets,['loxinlet','ch4inlet'],'inlets');
 keys(config.initial,['k_m2_s2','length_m'],'initial');
 if (config.schema!=='g2-rans-diagnostic/v1' || config.model!=='kEpsilon' ||
@@ -32,13 +35,15 @@ if(!names.includes('0') || names.some(n=>/^processor/.test(n)||
 const manifestRaw=await readFile(`${root}/direct-g2-input.json`), m=JSON.parse(manifestRaw);
 const steady=m.closure==='steady-flamelet';
 const progress=m.closure==='fgm' && config.sourceTreatment==='delta-at-mean-Z-C'
-  && m.sourceIntegration==='strangFixedState' && m.chemistry==='table' && m.skipUnusedDiffusion===false;
+  && m.sourceIntegration==='strangFixedState' && m.chemistry==='table'
+  && m.skipUnusedDiffusion===suppressProgress;
+if(suppressProgress&&!progress)throw Error('Suppressed-progress policy requires the explicit split raw-C FGM case');
 if(m.startTime!==0 || (!steady&&!progress) || m.energyForm!=='absoluteEnthalpy' ||
    m.thermodynamics?.mode!=='cold-real-fluid' || ![5610000,5600000].includes(m.pressure) ||
    (steady ? m.initialization?.config?.mode!=='uniform-steady'
      : !['uniform-covered','uniform-cmin','localized-covered'].includes(m.initialization?.config?.mode)) ||
    m.streams?.loxinlet?.temperature!==(m.pressure===5610000?85:83) || m.streams?.ch4inlet?.temperature!==(m.pressure===5610000?288:300))
-  throw Error('Registered cold steady case or explicitly declared full-property raw-C FGM case required');
+  throw Error('Registered cold steady case or explicitly declared raw-C FGM transport path required');
 const original={}, changed={};
 async function read(name){const b=await readFile(`${root}/${name}`);original[name]=b;return b.toString();}
 const once=(text,pattern,replacement,label)=>{
@@ -52,8 +57,13 @@ const transport=await read('constant/thermophysicalTransport');
 changed['constant/thermophysicalTransport']=once(transport,/laminar\s*\{\s*model\s+Fourier\s*;\s*\}/,
   'RAS { model eddyDiffusivity; Prt 0.7; }','thermal transport selection');
 let control=await read('system/controlDict');
+if(progress){
+  const flags=[...control.matchAll(/\bfgmSkipUnusedDimix\s+(yes|no)\s*;/g)];
+  if(flags.length!==1||(flags[0][1]==='yes')!==suppressProgress)
+    throw Error('Compiled diffusion-policy flag differs from the declared FGM case/configuration');
+}
 if(/fgmRansUnityLeDiagnostic/.test(control))throw Error('RAS diagnostic already selected');
-if(steady)control+='\nfgmRansUnityLeDiagnostic yes;\n';
+if(steady||suppressProgress)control+='\nfgmRansUnityLeDiagnostic yes;\n';
 const densityFlags=[...control.matchAll(/\bconserveTabulatedDensity\s+(yes|no)\s*;/g)];
 if(!densityFlags.length)control+='conserveTabulatedDensity yes;\n';
 else if(densityFlags.length!==1||densityFlags[0][1]!=='yes')throw Error('Conservative tabulated density required');
@@ -102,7 +112,7 @@ const report={schema:'g2-rans-diagnostic-preparation/v1',case:root,config,config
   inletFormula:'k=1.5*(I*|actual U|)^2; epsilon=Cmu^0.75*k^1.5/L; Cmu=0.09',
   policy:steady?'RAS kEpsilon; eddyDiffusivity; fixed-chi delta-PDF; Prt=Sct=0.7'
     :'RAS kEpsilon; eddyDiffusivity; raw-C FGM source at mean Z/C; Prt=Sct=0.7; no PDF',
-  policyMode:steady?'qualified-steady-suppression':'full-property-FGM-diagnostic',
+  policyMode:steady?'qualified-steady-suppression':suppressProgress?'experimental-suppressed-FGM-parity-required':'full-property-FGM-diagnostic',
   skipUnusedDiffusion:m.skipUnusedDiffusion,
   files:Object.fromEntries(Object.entries(changed).map(([name,value])=>[name,{beforeSha256:original[name]?hash(original[name]):null,afterSha256:hash(value)}])),
   scientificAcceptance:false,thermoOrMeanFlowInputsChanged:false};

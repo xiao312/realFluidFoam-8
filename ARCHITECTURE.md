@@ -1,5 +1,11 @@
 # Experimental solver boundaries
 
+The psi-thermo Dimix policy has an explicitly bounded split-FGM RANS path.
+Only kEpsilon/unity-Lewis eddyDiffusivity Prt0.7 is eligible; its scalar fluxes
+use alphaEff. The RANS case module declares this optional optimization, while
+the compiled thermo policy and rejecting Dimix accessors remain authoritative.
+Matching concrete thermo products and physical parity/timing must be qualified.
+
 The tapered-injector module also owns optional analytic duct-velocity priming.
 It consumes executing inlet density receipts and geometry, modifies only fresh
 internal duct U and records the initial-condition change. It owns no thermo

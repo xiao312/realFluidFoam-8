@@ -1,9 +1,20 @@
 # G2 RANS mixing diagnostic
 
+Optional `unusedDiffusionPolicy: suppress-unity-Le` selects a separately
+identified optimized split-FGM case with `skipUnusedDiffusion:true`. The default
+example remains on the full-property path. The optimized combination requires
+newly built thermo-policy products: old binaries must reject it. Exact
+kEpsilon/eddyDiffusivity Prt0.7 and immutable absolute-Ha configuration remain
+required. Source inspection shows DEff=alphaEff, with the same coefficient in
+Z/C/Ha diffusion; species Dimix is unused. Its accessors still fail if called.
+Before a longer run, compare actual full-versus-suppressed properties, field
+histories and elapsed time from identical fresh initial conditions, plus
+internal/boundary/raw-Dimix negative controls. No transport or chemical
+coefficient is fitted. This is implemented but not yet physically qualified.
+
 `example-fgm.json` selects a separate transported-progress FGM diagnostic. It
 requires `sourceTreatment:delta-at-mean-Z-C`, a fresh original-zero raw-C case,
-and `skipUnusedDiffusion:false`. It uses the normal full-property path; the
-steady-flamelet-only suppressed-Dimix policy is not enabled or relaxed. The
+and, by default, `skipUnusedDiffusion:false`. It uses the normal full-property path. The
 existing runtime already registers kEpsilon/eddyDiffusivity and transports C
 with the same alphaEff as Z and Ha. Source/composition are queried at mean Z/C;
 there is no presumed PDF or scalar-variance model. The unchanged source table,
@@ -54,14 +65,14 @@ does not establish a developed mean or wall-resolved result.
 This first combination fixes Prt=0.7 and uses the same effective mass and heat
 diffusivity, alpha+rho*nut/0.7. It therefore differs from Sharma's Prt 0.85.
 The selected eddyDiffusivity flux uses thermo.alphaEff, not species Dimix.
-The existing suppression policy remains restricted to its qualified steady
-path. The FGM variant uses the normal full-property path and computes the
-otherwise unused Dimix; its overhead is retained and must be measured. Non-unity transport is deliberately
+The default FGM variant uses the normal full-property path and computes the
+otherwise unused Dimix; its overhead must be measured against the explicitly
+selected new optimization. Non-unity transport is deliberately
 excluded: its species enthalpy flux needs a separate absolute-Ha audit.
 
 Dependencies are Node, the direct-G2 generator/initializer, the existing full
 SRK runtime, stock kEpsilon/eddyDiffusivity models and boundary conditions, and
-the narrow steadyFlamelet/Dimix policy extension. Their constructor guards must
+the narrowly declared steady/split-FGM Dimix policy. Their constructor guards must
 be rebuilt and qualified; dictionary changes alone cannot enable this path.
 No new external library, model ABI, network access or secret is introduced.
 Downstream allocated execution owns compilation, MPI, run timing and evidence.
