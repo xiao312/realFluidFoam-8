@@ -1,5 +1,21 @@
 # Transported-Z reacting solver
 
+Optional `fgmPostIgnitionMaxDeltaT SECONDS` caps the adaptive global timestep only
+after the configured scheduled ignition. The default `-1` disables it and retains
+the original arithmetic. Enabled values must be finite and positive, with a
+fresh scheduled split-FGM/absolute-Ha case and adaptive global timestepping.
+The cap applies inside the event's initial timestep reset and after every later
+`readTimeControls`, before `setDeltaT`; cold transit is unchanged. It changes no
+field, chemistry, source, pressure/density repair, or final acceptance criterion.
+This is an explicit temporal-resolution diagnostic for a newly frozen zero-time
+case, not a way to relabel or continue a failed state. No external dependencies
+or secrets are involved. Example: `fgmPostIgnitionMaxDeltaT 2e-9;` alongside a
+scheduled ignition. Qualify compile/link identity, actual default-off field parity,
+rejection of invalid values and an enabled physical ignition control whose first
+and subsequent accepted timesteps respect the cap, then execute the real case
+through the Slurm adapter. A tiny timestep alone does not establish convergence
+or physical agreement.
+
 Optional `realFluidConservativePressureDamping yes` limits a pressure correction
 that would consume more than90% of the continuity-based reference cell density.
 It blends pressure and mass flux by the same global factor, then solves the

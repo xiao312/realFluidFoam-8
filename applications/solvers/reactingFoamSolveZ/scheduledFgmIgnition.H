@@ -61,6 +61,12 @@ if (fgmColdFlowActive)
             << " massBefore=" << massBefore << " massAfter=" << fvc::domainIntegrate(rho).value()
             << " Tmin=" << min(thermo.T()).value() << " Tmax=" << max(thermo.T()).value()
             << " sameProcess=1 sourceEnabled=1" << endl;
+        if (fgmPostIgnitionMaxDeltaT > 0)
+        {
+            maxDeltaT = min(maxDeltaT, fgmPostIgnitionMaxDeltaT);
+            if (!fgmIgnitionNumericalReset)
+                runTime.setDeltaT(min(runTime.deltaTValue(),maxDeltaT));
+        }
         if (fgmIgnitionNumericalReset)
         {
             // The pre-event timestep/phi used cold density. Rebuild this numerical

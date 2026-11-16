@@ -147,6 +147,11 @@ int main(int argc, char *argv[])
         const auto fgmStepStart = fgmTiming.start();
         #include "readTimeControls.H"
 
+        // readTimeControls restores the dictionary value each step. Apply the
+        // optional event-specific cap again before selecting the next deltaT.
+        if (!fgmColdFlowActive && fgmPostIgnitionMaxDeltaT > 0)
+            maxDeltaT = min(maxDeltaT, fgmPostIgnitionMaxDeltaT);
+
         if (LTS)
         {
             #include "setRDeltaT.H"

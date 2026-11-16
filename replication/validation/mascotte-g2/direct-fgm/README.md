@@ -1,5 +1,17 @@
 # Warm FGM coupling on the retained G2-related mesh
 
+`pressure-debug-poststep-sourcePeak.json` is a two-microsecond post-ignition
+time-resolution diagnostic on the same qualified4460-cell mesh as the coarse
+pressure control. It adds only the separately compiled optional
+`fgmPostIgnitionMaxDeltaT=2e-9` after the unchanged2.2ms original-zero cold transit.
+The short end time is explicit; this cannot provide a developed paper mean.
+The executable must first pass compile/link identity, real default-off field
+parity, an enabled physical ignition with every post-event timestep bounded,
+and invalid-parameter refusal. Existing closure/source/pressure criteria remain
+unchanged. Stage the original-zero case and retain both baseline/candidate
+failures; no progressed field is an input. The exact application source is
+bound by the allocation build receipt, not inferred from a protocol filename.
+
 `pressure-damped-debug-sourcePeak.json` declares a separately identified
 4460-cell diagnostic using the executed owner-geometry asset from qualification
 job128229154. Geometry, table, model, original-zero cold transit and ignition,

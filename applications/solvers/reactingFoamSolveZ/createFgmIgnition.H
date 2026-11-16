@@ -12,6 +12,16 @@ const Switch fgmIgnitionNumericalReset(runTime.controlDict().lookupOrDefault<Swi
 const scalar fgmIgnitionDeltaT=runTime.controlDict().lookupOrDefault<scalar>("fgmIgnitionDeltaT", 1e-6);
 if (!std::isfinite(fgmIgnitionDeltaT) || fgmIgnitionDeltaT <= 0)
     FatalErrorInFunction << "fgmIgnitionDeltaT must be positive and finite" << exit(FatalError);
+const scalar fgmPostIgnitionMaxDeltaT = runTime.controlDict()
+    .lookupOrDefault<scalar>("fgmPostIgnitionMaxDeltaT", -1);
+if (!std::isfinite(fgmPostIgnitionMaxDeltaT)
+    || (fgmPostIgnitionMaxDeltaT != -1
+        && (fgmPostIgnitionMaxDeltaT <= 0 || !fgmColdFlowActive || LTS
+            || !runTime.controlDict().lookupOrDefault<Switch>("adjustTimeStep",false))))
+    FatalErrorInFunction
+        << "fgmPostIgnitionMaxDeltaT requires -1 or a positive finite limit"
+        << " with scheduled ignition and adaptive global timestepping"
+        << exit(FatalError);
 autoPtr<fgm::fgmTableReader> fgmIgnitionTable;
 scalar fgmColdLastTime = runTime.value();
 scalarField fgmColdPreviousZ;
