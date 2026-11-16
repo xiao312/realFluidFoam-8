@@ -1,5 +1,10 @@
 # Experimental solver boundaries
 
+The tapered-injector module also owns optional analytic duct-velocity priming.
+It consumes executing inlet density receipts and geometry, modifies only fresh
+internal duct U and records the initial-condition change. It owns no thermo
+recovery, source integration, scheduler operation or developed precursor state.
+
 The optional nonlinear caloric-audit lifecycle is solver owned: intermediate
 scalar/pressure iterates report finite caloric defects, while the original
 enforcing audit remains mandatory after the complete PIMPLE loop. Nonphysical

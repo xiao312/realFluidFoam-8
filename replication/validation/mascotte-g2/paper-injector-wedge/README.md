@@ -1,5 +1,23 @@
 # Tapered injector diagnostic
 
+`node initialize-duct-velocity.mjs FRESH_CASE [--apply]` is a separate initial
+condition experiment after executing-EOS Ha and inlet initialization, before
+decomposition. It reads their hash-bound pure-stream densities and the actual
+mesh. Methane receives its declared bulk axial velocity; oxygen receives a
+constant-density plug profile with Ux proportional to inverse taper area and
+Ur = Ux r R'/R. This continuous field satisfies axisymmetric continuity in the
+expanding passage and is tangent to its wall. Wall boundary conditions remain
+no-slip; no developed boundary layer or discrete projection is claimed.
+Only internal duct velocity changes. Chamber velocity stays zero, and pressure,
+temperature, composition and absolute Ha are untouched. The initial kinetic
+energy changes explicitly. There is no evolved-state input or hidden precursor.
+The default plan writes nothing; application requires an admitted case and
+records the input/output field hashes, geometry and analytic approximation.
+Verify 320/400 classified cells, executing inlet mass-flow consistency and
+actual fresh-zero pressure/conservation histories versus the zero-velocity
+anchor. A successful initializer is not a steady-flow qualification. It reuses
+the module's existing ASCII mesh parser and Node standard library only.
+
 Reconstruct the G2 oxygen taper and methane annulus as a distinct axisymmetric
 mesh. This is a geometry sensitivity, not the full square-chamber LES geometry.
 The existing exit-only meshes and their qualifications remain unchanged.
