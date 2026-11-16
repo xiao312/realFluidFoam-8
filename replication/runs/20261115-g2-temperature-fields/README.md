@@ -1,5 +1,20 @@
 # Retained G2 temperature fields
 
+`audit-species.py --collection RECEIPT --metadata PHASE_JSON --wedge-degrees 5
+--out NEW_DIRECTORY [--apply]` measures actual species/element/raw-progress
+consistency. Its default is read-only. The receipt additionally binds the
+original case-sensitive archive and each member hash. H and h remain distinct
+in that archive and must never be extracted together onto a case-insensitive
+filesystem. The tool reads species directly from archive members and verifies
+their Foam object names. Metadata composition/molecular weights determine
+element masses; no normalization, chemistry fitting or field correction occurs.
+Outputs include mass-sum, CO+CO2 progress and elemental mixing-line deviations,
+with mass-weighted integrals and worst-cell indices. Geometry uses the existing
+renderer. Dependencies remain local NumPy and standard Python. It neither
+performs EOS recovery nor grants physical acceptance. Verify exact metadata
+binding, archive identity, one-to-one cell mapping and independent element sums
+on actual fresh-zero CFD snapshots before interpreting the deviations.
+
 `audit-cell-state.py --collection RECEIPT --wedge-degrees 5 --out NEW_DIRECTORY`
 compares executing CFD temperature with the table diagnostic at the same
 internal cells. The default is read-only; `--apply` writes JSON and per-cell CSV.

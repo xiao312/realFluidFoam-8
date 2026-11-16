@@ -20,6 +20,9 @@ The retained-temperature-field module additionally owns internal-cell
 CFD/table thermal-state audits. It consumes immutable mesh/field receipts and
 the existing renderer, measures volume and absolute-source weighted departures,
 and never modifies the source table, CFD fields or acceptance limits.
+Its species audit reads hash-bound case-sensitive archive members directly,
+preserving atomic H versus sensible h and measuring element/progress consistency
+against the exact mechanism metadata. No species normalization is performed.
 
 The direct-FGM case module owns explicit inner/density-Ha/differential-pressure
 experiment configuration and dictionary provenance. It selects existing solver

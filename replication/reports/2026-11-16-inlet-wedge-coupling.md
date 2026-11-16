@@ -139,3 +139,45 @@ or a reason to accept the current failures.
 Raw receipts, retained collections and operator records are under the configured
 day project directory, `state/g2-inlet-fgm-20261116/`, outside Git. The fixed
 75-target/12-paper local ladder retains all captions and prior results.
+
+## 17:05 — inlet priming resolves the tested startup failure
+
+The completed original-zero B21/128182289 reached 300 microseconds in652
+physical steps. It uses the same coupled30a solver, Kong23 table and center
+kernel as B15, but initializes mass-consistent velocity inside both actual
+inlet passages. The chamber still starts at rest. This changed initial condition
+is not a developed precursor, and its effect must not be attributed to chemistry
+or a new EOS. Final caloric relative residual2.82e-9 remains below the original
+1e-8 limit. Actual species and raw-progress consistency errors are~1e-12;
+elemental mixing-line error is below7.3e-12. No normalization was applied.
+
+The accepted-state equation budget, independently reproduced using Python
+compensated sums, gives a boundary mass residual3.16e-17kg. Its Ha state/equation
+residual is0.003458J over5.7987J absolute assembled terms. This checks the Ha
+operator and state record; it is not an independent total-energy proof. Actual
+cell temperature spans84.986–3386.697K. At15/45/70mm, temperature profiles remain
+largely cold at300us. They are visibly poor comparisons with developed paper
+means and are displayed as such, using paper lines and CFD markers.
+
+B22/128183633 rebuilt all15 libraries and both applications from30968b8;
+compilation/link identity succeeded, but a wrapper passed a table file where a
+directory was required. The preserved batch failed before CFD. B22b/128185960
+reused these exact compiled products, completed its physical controls, and
+passed all15 field and8 property comparisons exactly. Both variants took one
+fresh1ns step. Three actual forbidden-Dimix access controls failed as expected.
+Full/optimized elapsed time was11.26/6.31s; this short control does not establish
+sustained speed. No precision or acceptance criterion was changed.
+
+B23/128184868 is a separate fresh-zero3ms laminar run with a1us cap; B24/128186968
+is an independently admitted fresh-zero kEpsilon mean-Z/C diagnostic with an
+annular kernel, initialized inlet velocities and the qualified30968b8 optimized
+runtime. They are different turbulence/ignition experiments, not a matched
+single-variable comparison. Both are bounded by the unchanged19:00 owner
+deadline. No developed mean or scientific approval is inferred.
+
+Maders fineA03 at1.040005s has temperature RMS343/545K and CO RMS0.0103/0.0189;
+coarseA04 at1.280008s has temperature RMS934/771K. Later time alone has not
+improved the comparison. Histories show oscillating peak location/axis heating,
+particularly on the coarse grid. Keep the earlier65ms fine view as the best
+retained snapshot, display these later failures too, and do not cherry-pick a
+transient minimum as steady validation.

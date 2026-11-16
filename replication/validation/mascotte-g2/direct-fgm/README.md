@@ -1,5 +1,18 @@
 # Warm FGM coupling on the retained G2-related mesh
 
+`node equation-budget.mjs --case COLLECTED_CASE --log RETAINED_LOG [--out NEW_JSON]`
+integrates the last assembled Ha equation at each physical timestep and compares
+its ddt integral with the reported final extensive Ha. It also computes the
+right-endpoint Euler boundary-mass balance only when every energy-state time
+has all three flux samples. Missing times remain explicitly unavailable; no
+trapezoidal substitution or acceptance threshold is introduced. The first
+source half and repeated PIMPLE corrections are not summed as extra physical
+steps. Default output is read-only JSON; an explicit new output path is the
+only write. Inputs and their hashes remain bound in the report. This is an
+assembled-equation/accepted-state consistency diagnostic, not a complete total
+energy or scientific-validation certificate. Verify against actual original-zero
+histories and independent sums before interpreting the measured defects.
+
 The result checker recognizes the explicitly configured optimized FGM RANS
 identity only when its manifest, suppression flag, named policy and source
 integration agree. Runtime model-selection and diffusion-policy log checks
@@ -387,8 +400,11 @@ identity and original line mappings. A changed or over-budget log fails openly.
 The separate [RANS configurator](../rans-diagnostic/README.md) can prepare a new
 cold steady-flamelet case or an explicit full-property transported-progress
 FGM case with a declared kEpsilon/eddyDiffusivity closure. The latter requires
-sourceTreatment=delta-at-mean-Z-C and skipUnusedDiffusion=false; it introduces
-no PDF or variance closure and does not extend the suppressed-Dimix guard.
+sourceTreatment=delta-at-mean-Z-C. The default full-property policy requires
+skipUnusedDiffusion=false. The separately declared suppress-unity-Le policy
+requires the matching qualified library build and example-fgm-fast.json;
+it omits unused binary mass diffusion while retaining the actual unity-Le
+eddyDiffusivity operators. Neither policy introduces a PDF or variance closure.
 The result checker requires exact model-selection messages, the corresponding
 declared diffusion policy, and finite nonnegative k, epsilon,
 nut and alphat in addition to the unchanged thermodynamic and flow checks.
