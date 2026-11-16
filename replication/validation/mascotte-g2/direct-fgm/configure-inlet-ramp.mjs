@@ -9,7 +9,7 @@ const root=resolve(directory),duration=Number(durationText),apply=action==='--ap
 const sha=b=>createHash('sha256').update(b).digest('hex');
 const manifestPath=root+'/direct-g2-input.json',manifestBytes=await readFile(manifestPath);
 const manifest=JSON.parse(manifestBytes),names=await readdir(root);
-if(manifest.startTime!==0||manifest.meshMode!=='g2-tapered-injector-wedge-v1'||
+if(manifest.startTime!==0||!['g2-tapered-injector-wedge-v1','reviewed-legacy-injector-v1'].includes(manifest.meshMode)||
   names.some(n=>n.startsWith('processor')||(Number.isFinite(Number(n))&&Number(n)>0)))
   throw Error('Original-zero undecomposed tapered-injector case required');
 if(!(duration>0&&duration<manifest.endTime)||manifest.inletStartup)
