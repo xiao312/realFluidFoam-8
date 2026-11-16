@@ -1,0 +1,14 @@
+{
+  "profileInterval_s": 0.0001,
+  "fieldInterval_s": 0.0001,
+  "averageStart_s": null,
+  "radialPositions_m": [
+    0.015,
+    0.045,
+    0.07
+  ],
+  "imageGrid": null,
+  "includeVelocity": true,
+  "nearAxisRadius_m": 1e-07,
+  "axialLength_m": 0.2
+}
