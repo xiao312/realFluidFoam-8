@@ -1,5 +1,18 @@
 # Direct finite-volume verification
 
+`compare-boundary-diagnostics.mjs --old CASE --new CASE --metadata PHASE [--out NEW_JSON]`
+compares all physical species and transported/internal diagnostic fields of
+two independently initialized closed homogeneous cases. It also requires the
+new left/right diagnostic temperature to equal the homogeneous internal table
+temperature, reproducing old calculated-patch zeros. The source model's new
+boundary lookup must not change internal evolution. Inputs include original-zero
+verification manifests and exact producer phase metadata; output is hash-bound
+JSON, stdout by default. Node built-ins only; no network, secrets, case writes,
+scheduler or acceptance authority. Run on the case-sensitive Linux filesystem
+to preserve H/h. Verification requires actual old/new compiled CFD, not a source
+assertion or synthetic plot. Internal parity uses the existing1e-12 relative
+control; successful diagnostic parity is not physical flame validation.
+
 This module isolates energy-source sign, closed-domain energy conservation and
 mixture-fraction transport before larger MASCOTTE diagnostics. Its tables are
 explicitly analytic fixtures, not chemical flamelets or paper replication data.
