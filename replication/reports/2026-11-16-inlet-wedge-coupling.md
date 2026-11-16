@@ -217,3 +217,12 @@ three-control delivery: annular laminar, center-kernel RANS and cold source-paus
 RANS, all originalzero, same qualified309 runtime and primed passages. Each
 runs in its own strict-Bash child and preserves actual exit separately; a
 successful delivery envelope will not imply physical success. No gates changed.
+
+The predeclared coarse Maders saved-time mean over1.0–1.25s gives T RMS292/469K
+and CO RMS0.00864/0.01626. It does not remove the narrow upper-plane flame
+or establish statistical convergence. Mean/std use actual irregular time intervals
+and unchanged radial coordinates. A closed-form irregular-time linear/constant
+control exposed cancellation in the first variance implementation; the retained
+v1 was replaced by a stable centered-moment integration and verified before
+use of v2. Prior instantaneous/better/worse snapshots remain visible. This is
+additional finite-window evidence, not the paper's steady solution or acceptance.

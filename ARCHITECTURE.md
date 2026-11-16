@@ -181,3 +181,7 @@ relaxation. It owns no numerical correction, acceptance gate or library ABI.
 The retained-field source audit optionally depends on local Cantera3.2 for
 pointwise pressure-based chemistry replay. It has no CFD execution or source
 correction authority; simulation and tabulation modules do not depend on it.
+
+Maders finite-window statistics depend on the existing local sampled-profile
+reader and NumPy. Its optional receipt flows into paper plotting; the plotter
+does not depend on the averaging implementation or grant statistical acceptance.

@@ -51,7 +51,20 @@ def main():
     p.add_argument('--source-commit',required=True)
     p.add_argument('--out',type=Path,required=True)
     p.add_argument('--plan',action='store_true')
+    p.add_argument('--window-receipt',type=Path)
     a=p.parse_args()
+    window=None
+    if a.window_receipt:
+        window=json.loads(a.window_receipt.read_text())
+        if window.get('schema')!='maders-temporal-window/v1' or window['job_id']!=a.job_id or window['startTime']!=0:
+            raise ValueError('Window receipt differs from the actual fresh-zero run')
+        if set(window['outputHashes'])!={'samples/h10_T_CO.csv','samples/h40_T_CO.csv'}:
+            raise ValueError('Both actual window profiles must be hash-bound')
+        if a.time!=window['actualWindow_s'][1]:raise ValueError('Window endpoint differs from plotted time')
+        for relative,expected in window['outputHashes'].items():
+            file=(a.window_receipt.parent/relative).resolve()
+            if file.parent!=a.samples.resolve() or hashlib.sha256(file.read_bytes()).hexdigest()!=expected:
+                raise ValueError('Changed or escaping window sample')
     if a.plan:
         print(json.dumps({'paper_reference':str(a.reference),'samples':str(a.samples),'time_s':a.time,'CFD_job':a.job_id,'out':str(a.out)}));return
     if not a.job_id.isdigit() or len(a.source_commit)!=40:raise ValueError('Exact run/source identity required')
@@ -70,7 +83,9 @@ def main():
         file,data=samples[height];sx=data['r_m'];sy=data[quantity]
         if not np.isfinite(sy).all():raise ValueError('Nonfinite sampled CFD field')
         # All samples remain in metrics/data; thin markers only for readability.
-        ax.plot(sx[::4],sy[::4],linestyle='none',marker='o',ms=2.5,mew=0,color='#7451b8',label=f'Our OF8 · {1000*a.time:.0f} ms')
+        label=('OF8 window mean'
+               if window else f'Our OF8 · {1000*a.time:.0f} ms')
+        ax.plot(sx[::4],sy[::4],linestyle='none',marker='o',ms=2.5,mew=0,color='#7451b8',label=label)
         ax.set_xlim(0,.03);ax.set_ylim(*curve['yrange'])
         ax.set_xlabel(f'Radial distance for H = {height:g} [m]')
         ax.set_ylabel('Temperature [K]' if quantity=='T_K' else 'CO mass fraction')
@@ -85,6 +100,9 @@ def main():
             'max_abs_error':float(abs(delta).max()),'computed_min':float(sy.min()),'computed_max':float(sy.max()),
             'sample_file':str(file),'sample_sha256':hashlib.sha256(file.read_bytes()).hexdigest(),
             'reference_series':'Detailed - Verhoeven; digitized filled squares'})
+    if window:
+        fig.text(.5,.004,f'Saved-time mean: {window["actualWindow_s"][0]:g}–{a.time:g} s; statistical convergence not established.',
+                 ha='center',fontsize=6.5)
     for suffix in ['svg','png']:
         file=a.out/('figure4.'+suffix);fig.savefig(file,dpi=220,facecolor='white');artifacts[file.name]=hashlib.sha256(file.read_bytes()).hexdigest()
     plt.close(fig)
@@ -93,6 +111,10 @@ def main():
         'reference_sha256':hashlib.sha256(a.reference.read_bytes()).hexdigest(),
         'style':{'size_inches':[6.7,5.05],'paper':'PCHIP display lines; raw marker coordinates for metrics','ours':'Markers; no smoothing; every fourth sample displayed','xlim_m':[0,.03]},
         'scientific_acceptance':False,'status':'Startup comparison; steady state is not inferred from job completion'}
+    if window:
+        report['temporal_window']=window
+        report['window_receipt_sha256']=hashlib.sha256(a.window_receipt.read_bytes()).hexdigest()
+        report['status']='Finite saved-time window mean; statistical convergence and paper-equivalent statistics are not established'
     (a.out/'comparison.json').write_text(json.dumps(report,indent=2)+'\n')
     print(json.dumps(report,indent=2))
 

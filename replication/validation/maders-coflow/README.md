@@ -1,5 +1,19 @@
 # Maders reference extraction
 
+`window.py --samples RADIAL_DIRECTORY --collection COLLECTION_JSON --start S
+--end S --out NEW_DIRECTORY [--apply]` computes a predeclared temporal window
+from actual fresh-zero saved profiles. The collection binds every input hash.
+Only saved times inside the requested interval are used; the reported actual
+interval may be shorter. No endpoint extrapolation or spatial interpolation.
+Piecewise-linear time integration produces mean and temporal standard deviation
+of T/CO at unchanged radial coordinates. These are finite-window statistics,
+not a steady solution, convergence qualification or independent samples. Inputs
+are local NumPy and the existing profile reader; no secrets, scheduler or CFD
+interface. Default is a read-only plan. Verify the time quadrature independently
+and compare disjoint window halves before interpreting a mean. `plot.py` accepts
+the resulting `--window-receipt` to label its markers as a finite-window mean
+and bind the derived sample hashes; original instantaneous plotting is unchanged.
+
 Extract filled-square Detailed–Verhoeven reference markers from the four original
 embedded raster panels in Maders2017 Figure4. This module does not compute flames,
 fit physics or identify the overlapping hollow FGM markers as detailed data.
