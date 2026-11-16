@@ -65,3 +65,24 @@ the injector mesh qualification alone cannot establish a solvedG2 flame.
 
 Detailed raw receipts, reconciliation and current exact job status live outside
 Git in `state/g2-fgm-setup-audit-20261116/OPERATOR.md` and `maders-followup/`.
+
+## Allocation revision,10:45 Shanghai
+
+Measured fine-grid cold-flow cost was187s for approximately12ms. The5400s
+allocation was unlikely to reach the0.9s ignition. It was therefore stopped as
+an operationally under-sized cold-start check, not a solver failure. Actual
+128162325 terminal accounting isCANCELLED/613s; its fields/logs remain retained.
+
+Replacement128163193, key `maders-noslip-a03-f6e2ae8`, was admitted10:44:58,
+32ranks/64GiB/43200s. It creates a different new case from original timezero;
+no state from128162325 orR19 is read. The same recipef6e2ae8, compiledea2a404,
+table35a6, mesh, inlet,0.9s ignition and1.1s endpoint are retained. Only the
+runtime estimate/allocation is revised. The new-task operator bound is
+2026-11-16T23:42:24+08:00. It does not extend or reset the closed overnight
+campaign. Source preparation and comparison are pending actual new output.
+
+The independent density extension of theR19 audit gives hot relative RMS
+differences0.0515%/0.0572% between CFD density and interpolated ideal-gas nodal
+density. This is a sampled diagnostic, not the original author's table or a
+real-fluidG2 qualification. It further argues against treating the Maders
+temperature discrepancy as a gross caloric/density reconstruction error.

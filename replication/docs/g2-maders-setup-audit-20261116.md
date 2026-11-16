@@ -134,6 +134,14 @@ cause of the large flame-shape discrepancy. The recovered thesis is retained at
 `state/fgm-published-targets-20261112/verhoeven2011.pdf` and was actually read,
 not inferred from the unsuccessful new download.
 
+An additional ideal-gas diagnostic forms density at the executed table nodes
+from theirT/Y and phase metadata, then interpolates it at the sampledZ/C. Hot
+relative density RMS differences are0.0515%/0.0572%, with maxima0.264%/0.309%.
+This is not the unavailable author density table, but it does not support a
+large density-reconstruction discrepancy as the cause of this Maders mismatch.
+The analogous comparison forG2 would require the executing real-fluidEOS and
+actual manifold/CFD states; these atmospheric figures cannot qualifyG2.
+
 ## Development sequence
 
 1. Qualify the new injector mesh with actual blockMesh/checkMesh and retain

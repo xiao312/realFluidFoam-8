@@ -207,6 +207,13 @@ samples are counted rather than silently extrapolated. It flags stale sampled
 diagnostic fields separately. Verify on retained physical samples, then reject
 a deliberately wrong table hash. Example:
 
+Optional `--metadata PHASE.json --pressure-pa 101325` additionally reconstructs
+ideal-gas nodal density from the exported T/Y, then applies mapped interpolation.
+It compares that field with sampled rho. This diagnoses the distinction between
+interpolated table density and EOS reconstruction in Maders; it is not SRK and
+must not be used as a G2 real-fluid density evaluator. Metadata order/hash and
+the reference pressure are recorded. It does not reconstruct the author's table.
+
 ```sh
 python field_audit.py --table TABLE.npz --table-sha256 SHA256 \
   --initialization initialization.json --samples radialProfiles/TIME --plan
