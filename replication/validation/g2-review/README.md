@@ -6,6 +6,12 @@ The paper panel contains **time-averaged axial temperature**, with separate fine
 and finer grids. Its gray band marks experimental flame location, not temperature.
 The original caption is retained in the review.
 
+CFD markers preserve every raw sampled coordinate, including repeated processor
+boundary points with different values. They have no connecting lines, so gaps
+need no filling and duplicate coordinates need no averaging or rejection.
+Paper display lines retain their existing gap/ordering checks. This presentation
+policy does not change the sampled data, numerical evaluator or acceptance.
+
 ## Inputs and outputs
 
 Run `python review.py --case CASE --reference sharma-fig4b.json --pdf PAPER
@@ -77,3 +83,6 @@ Paper temperature curves use lines and our raw sampled temperatures use markers,
 following the owner comparison convention. No smoothing, fitted curve or
 statistical interpretation is added. Verify by rendering actual retained profiles
 and inspecting axial and all three radial panels.
+
+Input SHA256 is streamed in64KiB blocks so large retained PDFs/logs do not
+require a second full-file memory allocation. Digest values and bindings are unchanged.

@@ -10,7 +10,12 @@ import numpy as np
 
 
 def sha256(path):
-    return hashlib.sha256(Path(path).read_bytes()).hexdigest()
+    # PDFs and retained logs can exceed available contiguous local memory.
+    result = hashlib.sha256()
+    with Path(path).open('rb') as handle:
+        for block in iter(lambda: handle.read(65536), b''):
+            result.update(block)
+    return result.hexdigest()
 
 
 def read_csv(path):

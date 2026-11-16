@@ -5,6 +5,11 @@ Cavalieri Figure 6, Sharma Figure 4b/9 and Singla Figure 4(c,d) targets. It owns
 presentation and provenance only. It does not run CFD, infer missing fields,
 award acceptance, publish, or turn startup snapshots into LES statistics.
 
+Raw CFD markers retain repeated processor-boundary coordinates and all values.
+No deduplication or tolerance-based merging is required for marker-only plots.
+The separate strict normalization utility remains available when a downstream
+operation genuinely requires unique coordinates; its conflict rules are unchanged.
+
 ## Inputs and outputs
 
 `--case` is a retained case snapshot with `direct-g2-input.json` and named sampled

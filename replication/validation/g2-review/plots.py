@@ -58,7 +58,7 @@ def centerline(data, reference, out, origin, label):
             values = record['fields']
             if 'x' not in values:
                 raise ValueError('Near-axis profile requires x coordinate')
-            x, y = line_with_gaps(values['x'] - origin, values[field], .1998 / 399)
+            x, y = values['x'] - origin, values[field]
             ax.plot(x, y, color=color, linestyle='none', marker='o', markersize=3,
                     label=f'{label}: {time_label(record)}')
         radius = data['observations']['nearAxisRadius_m'] * 1000
@@ -96,7 +96,7 @@ def radial(data, out, origin, label):
             for axis, field in zip(axes[0], [temperature, oh]):
                 if field not in values:
                     continue
-                x, y = line_with_gaps(values['y'] * 1000, values[field], .0247 / 199 * 1000)
+                x, y = values['y'] * 1000, values[field]
                 axis.plot(x, y, label=caption)
                 axis.set(xlabel='Radius (mm)', ylabel='Temperature (K)' if field == temperature else 'OH mass fraction')
                 axis.grid(alpha=.18)
