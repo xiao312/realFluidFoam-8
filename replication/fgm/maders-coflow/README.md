@@ -208,6 +208,41 @@ case.json and the mechanism, outputs a new directory. No network/secrets. Plan:
 only inside a FlamePilot-admitted Slurm allocation. Compare coverage and held-out
 source errors before table integration; Peters-chi remains a declared approximation.
 
+Verhoeven2011, printed page49/PDFpage56, explicitly extends its non-premixed
+steady flamelet family with time-dependent quenching states beyond extinction.
+Our quenching extension follows that construction choice; it is not a reason
+to replace the physical family with steady profiles alone. Remaining differences
+include prescribed Peters scalar dissipation versus resolved counterflow strain,
+finite trajectory sampling and mapped progress coordinates. Strain rate `a` and
+stoichiometric scalar dissipation `chi_st` both have units1/s but are not equal.
+The reference's uniform201x201 tabulation also differs from retaining the
+clustered physical flamelet Z grid. Source:
+https://pure.tue.nl/ws/portalfiles/portal/3577661/719415.pdf#page=56
+
+`export_table.py --mixture-fraction-grid uniform` isolates that Z-grid choice.
+It resamples the same hash-bound physical family on201uniform Z points, keeping
+the existing mapped progress interpolation, source values, cold/equilibrium
+limits and chemistry. The default `profile` retains the previous numeric path.
+The plan and receipt state the selected grid. This numerical control is not a
+new solved flamelet family or an exact replica of the author's absolute-progress
+grid. Qualify default numeric-table parity (excluding only the source-header
+revision), candidate mass/progress consistency, actual reader parity and the
+unchanged held-out data before an independently fresh CFD comparison. Neither
+held-out scores nor a new grid imply scientific acceptance. No new dependencies,
+network or secret access; all actual construction/CFD uses admitted Slurm compute.
+
+`qualify_export_grid.py` checks that control before CFD. Inputs are the retained
+baseline, a default-path re-export and a uniform-Z export. It requires numeric
+default-table parity (only the declared source header may differ), unchanged
+NASA/species/stream properties, exact uniform coordinates and finite conserved
+mass/progress/element-derived mixture fraction. It records all consumed hashes.
+It does not replace the independent C++ reader or held-out evaluator. Example:
+`python qualify_export_grid.py --baseline BASE --reproduced DEFAULT --candidate
+UNIFORM --out NEW_DIR`; add `--apply` only after the read-only plan. NumPy and
+standard library only, no network/secrets. Qualification failures preserve the
+input/output directories and stop that candidate's CFD phase; no chemistry or
+scientific comparison criteria are adjusted to make it pass.
+
 `export_table.py --family-manifest MANIFEST` accepts only hash-bound finite
 transient quenching snapshots and residual-qualified steady members, withholding
 chi5/10 from training. It preserves all failures in provenance, writes a201x201

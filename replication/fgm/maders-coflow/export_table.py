@@ -21,6 +21,7 @@ def main():
     p.add_argument('--profile-origin',type=Path)
     p.add_argument('--family-manifest',type=Path)
     p.add_argument('--environment-sha256',required=True)
+    p.add_argument('--mixture-fraction-grid',choices=['profile','uniform'],default='profile')
     p.add_argument('--out',type=Path,required=True)
     p.add_argument('--plan',action='store_true')
     a=p.parse_args()
@@ -44,7 +45,8 @@ def main():
     if a.plan:
         print(json.dumps({'profiles':[str(f) for f in files], 'weighted_progress':True,
             'limits':'Explicit cold mixed reactants and HP equilibrium; no curve fitting',
-            'format':'forge-fgm-table-v3','out':str(a.out)}));return
+            'format':'forge-fgm-table-v3','mixture_fraction_grid':a.mixture_fraction_grid,
+            'out':str(a.out)}));return
     if len(a.source_commit)!=40 or len(a.environment_sha256)!=64:
         raise ValueError('Exact source and environment identities required')
     for file in files:
@@ -83,6 +85,12 @@ def main():
         row_models.append((c,values[first,1:]))
     model=(z,row_models);eta=np.linspace(0,1,len(z) if a.family_manifest else 129)
     lower=np.array([row[0][0] for row in row_models]);upper=np.array([row[0][-1] for row in row_models])
+    if a.mixture_fraction_grid=='uniform':
+        # Resample the same physical row model; never invent extra flamelets.
+        # Keep model's original Z grid and interpolate its local progress bounds.
+        z=np.linspace(z[0],z[-1],len(z))
+        lower=np.interp(z,model[0],lower)
+        upper=np.interp(z,model[0],upper)
     values=[]
     for j,mixture in enumerate(z):
         values.append([query(model,float(mixture),float(lower[j]+e*(upper[j]-lower[j]))) for e in eta])
@@ -132,6 +140,7 @@ def main():
         'mechanism_sha256':digest(a.mechanism),'environment_sha256':a.environment_sha256,
         'processing_environment':{'platform':platform.platform(),'python':platform.python_version(),'cantera':ct.__version__,'numpy':np.__version__},'profile_origin':origin,'profile_hashes':{str(f):digest(f) for f in files},'table_sha256':digest(a.out/'physical.tbl'),
         'metadata_sha256':digest(a.out/'phase-metadata.json'),'nZ':len(z),'nC':len(eta),
+        'mixture_fraction_grid':a.mixture_fraction_grid,
         'minimum_Y':float(y.min()),'max_mass_sum_error':float(abs(y.sum(axis=2)-1).max()),
         'max_weighted_C_error':float(abs(y@weights-c).max()),'cold_equilibrium_limits_added':True,
         'duplicate_state_max_spread':max(duplicate_spread,default=0),

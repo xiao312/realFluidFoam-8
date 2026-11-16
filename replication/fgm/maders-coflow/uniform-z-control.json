@@ -1,0 +1,23 @@
+{
+  "schema": "maders-table-grid-control/v1",
+  "baselineTableSha256": "35a6b46b5a56d2831a598acb7810119b6bc27ced27d90d217d2258514295c1cc",
+  "physicalFamilyManifestSha256": "044af08b755b048016c3777f6d77c8513b5272895ba7e58a389b5da31d1fc210",
+  "heldoutSha256": "af29f6167e64b53de9c8291dc8d20b35cf3d6d854ce323d9054704e29da3a696",
+  "baselineSolverSource": "ea2a4046ab239ae4fdb1197cd65fd83ebc933785",
+  "baselineCaseSource": "f6e2ae80116b0ea46c58ecfc3660bc1bdf2bcb54",
+  "mixtureFractionGrid": "uniform",
+  "progressGrid": "unchanged mapped eta; not the author's global absolute-progress grid",
+  "CFDStartTime_s": 0,
+  "ignitionTime_s": 0.05,
+  "ignitionMode": "upperProgress",
+  "endTime_s": 0.25,
+  "axialCells": 400,
+  "maxCo": 0.125,
+  "maxDeltaT_s": 0.000025,
+  "outerWallVelocity": "noSlip",
+  "chemistryFitted": false,
+  "evolvedStateImported": false,
+  "acceptanceChanged": false,
+  "scientificAcceptance": false,
+  "purpose": "Isolate the reference's equidistant mixture-fraction tabulation choice using the unchanged physical family; first prove default numeric parity, conserved coordinates and executing reader parity. Report fixed held-out results and fresh CFD whether agreement improves or worsens."
+}
