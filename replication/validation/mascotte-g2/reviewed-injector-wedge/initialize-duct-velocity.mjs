@@ -2,7 +2,7 @@ import {readFile,readdir,writeFile} from 'node:fs/promises';
 import {resolve} from 'node:path';
 import {parsePoints,parseFaces,parseLabels} from '../coarse-wedge/ascii-mesh.mjs';
 import {readMesh} from './mesh.mjs';
-import {recipe,hash} from './recipe.mjs';
+import {recipe,hash,ductCellCounts} from './recipe.mjs';
 
 const [directory,action]=process.argv.slice(2);
 if(!directory||![undefined,'--apply'].includes(action)||process.argv.length>4)
@@ -13,7 +13,8 @@ if(listing.includes('duct-velocity-initialization.json')||listing.some(n=>/^proc
 const manifestPath=`${root}/direct-g2-input.json`,manifestRaw=await readFile(manifestPath),input=JSON.parse(manifestRaw);
 if(input.startTime!==0||input.meshMode!=='reviewed-legacy-injector-v1'||!input.requiresDuctPriming)
   throw Error('Original-zero explicitly bound tapered-injector case required');
-const mesh=await readMesh(`${root}/constant/polyMesh`);
+const profile=input.mesh.resolutionProfile??'standard';
+const mesh=await readMesh(`${root}/constant/polyMesh`,profile);
 if(mesh.meshSha256!==input.mesh.meshSha256)throw Error('Mesh differs from the case binding');
 const inletRaw=await readFile(`${root}/inlet-runtime-initialization.json`),inlet=JSON.parse(inletRaw);
 const boundaryRaw=await readFile(`${root}/ha-initialization-boundaries.csv`);
@@ -63,7 +64,8 @@ for(let i=0;i<count;i++){
     values[i]=[streams.ch4inlet.velocity_m_s,0,0];counts.methane++;
   }
 }
-if(counts.oxygen!==640||counts.methane!==800)throw Error('Duct cell counts differ from qualified geometry');
+const expected=ductCellCounts(profile);
+if(counts.oxygen!==expected.oxygen||counts.methane!==expected.methane)throw Error('Duct cell counts differ from qualified geometry');
 if(values.some(v=>v.some(x=>!Number.isFinite(x))))throw Error('Nonfinite analytic initial velocity');
 const after=text.replace(/^internalField\s+uniform\s+\(0\s+0\s+0\)\s*;/m,
   `internalField nonuniform List<vector>\n${count}\n(\n${values.map(v=>`(${v.join(' ')})`).join('\n')}\n);`);

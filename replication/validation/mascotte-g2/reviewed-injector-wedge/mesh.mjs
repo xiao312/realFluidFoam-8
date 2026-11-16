@@ -12,7 +12,8 @@ function near(actual,expected,tolerance,name) {
     throw Error(`${name}: measured ${actual}, expected ${expected}`);
 }
 
-export async function readMesh(directory) {
+export async function readMesh(directory,profile='standard') {
+  const selectedPlan=plan(profile);
   const listing=await readdir(directory),raw={},files=[];
   for(const name of [...required,...optional.filter(n=>listing.includes(n))]) {
     raw[name]=await readFile(`${directory}/${name}`);
@@ -22,7 +23,7 @@ export async function readMesh(directory) {
   const owner=parseLabels(raw.owner),neighbour=parseLabels(raw.neighbour),patches=parseBoundary(raw.boundary);
   const counts={points:points.length,faces:faces.length,internalFaces:neighbour.length,
     cells:Math.max(...owner,...neighbour)+1};
-  if(counts.cells!==plan().expectedCells||owner.length!==faces.length||
+  if(counts.cells!==selectedPlan.expectedCells||owner.length!==faces.length||
      !Number.isInteger(counts.points)||counts.internalFaces<=0)
     throw Error('Tapered injector mesh differs from the qualified topology');
   for(const [x,y,z] of points) {
@@ -99,7 +100,8 @@ export async function readMesh(directory) {
     geometryErrors[row.patch]={generatedToReference_m:a,referenceToGenerated_m:b};
     if(Math.max(a,b)>coordinateTolerance)throw Error('Changed reviewed geometry '+row.patch+' '+JSON.stringify(geometryErrors[row.patch]));
   }
-  return {schema:'g2-tapered-injector-measured-mesh/v1',mode,recipeSha256:plan().recipeSha256,
+  return {schema:'g2-tapered-injector-measured-mesh/v1',mode,recipeSha256:selectedPlan.recipeSha256,
+    ...(profile==='standard'?{}:{resolutionProfile:profile}),
     counts,pointCount:counts.points,faceCount:counts.faces,cellCount:counts.cells,
     files,meshSha256:hash(JSON.stringify(files)),patches,exits,volume_m3:volume,
     geometryErrors,referenceBoundarySha256:hash(referenceBytes),surfaceClosure_m2:closure,diagnosticAxialOrigin_m:0,paperAxialOrigin_m:.01,
@@ -111,7 +113,8 @@ export async function readMesh(directory) {
 
 export async function evidence(root,logs=root,dictionaryPath='blockMeshDict') {
   const d=await readFile(`${root}/${dictionaryPath}`),r=await readFile(`${root}/mesh-recipe.json`);
-  if(hash(d)!==hash(dictionary())||JSON.parse(r).recipeSha256!==plan().recipeSha256) throw Error('Recipe/dictionary identity differs');
+  const profile=JSON.parse(r).recipe.resolutionProfile??'standard';
+  if(hash(d)!==hash(dictionary(profile))||JSON.parse(r).recipeSha256!==plan(profile).recipeSha256) throw Error('Recipe/dictionary identity differs');
   const receipts={};
   for(const name of ['log.blockMesh','log.checkMesh']) {
     const bytes=await readFile(`${logs}/${name}`),text=bytes.toString();
@@ -124,7 +127,9 @@ export async function evidence(root,logs=root,dictionaryPath='blockMeshDict') {
 export async function inspectInjectorMesh(root) {
   const bytes=await readFile(`${root}/manifest.json`),m=JSON.parse(bytes);
   if(m.schema!=='g2-reviewed-injector-qualified-asset/v1'||m.mode!==mode)throw Error('Not a qualified tapered-injector asset');
-  const actual=await readMesh(`${root}/polyMesh`),e=await evidence(root);
+  const receipt=JSON.parse(await readFile(`${root}/mesh-recipe.json`));
+  const profile=receipt.recipe.resolutionProfile??'standard';
+  const actual=await readMesh(`${root}/polyMesh`,profile),e=await evidence(root);
   if(m.meshSha256!==actual.meshSha256||JSON.stringify(m.files)!==JSON.stringify(actual.files)||
      JSON.stringify(m.evidence)!==JSON.stringify(e))throw Error('Measured mesh/evidence changed after qualification');
   return {...actual,evidence:e,manifestSha256:hash(bytes)};

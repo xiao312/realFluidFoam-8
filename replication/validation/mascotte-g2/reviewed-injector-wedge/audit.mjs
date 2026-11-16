@@ -1,4 +1,4 @@
-import {mkdir,copyFile,writeFile} from 'node:fs/promises';
+import {mkdir,copyFile,writeFile,readFile} from 'node:fs/promises';
 import {resolve} from 'node:path';
 import {readMesh,evidence,inspectInjectorMesh} from './mesh.mjs';
 
@@ -9,7 +9,9 @@ for(let i=0;i<args.length;i+=2){
 }
 if(!options.case)throw Error('Missing executed mesh case');
 const logs=options.logs??options.case;
-const measured=await readMesh(`${options.case}/constant/polyMesh`);
+const receipt=JSON.parse(await readFile(`${options.case}/mesh-recipe.json`));
+const profile=receipt.recipe.resolutionProfile??'standard';
+const measured=await readMesh(`${options.case}/constant/polyMesh`,profile);
 const proof=await evidence(options.case,logs,'system/blockMeshDict');
 const manifest={...measured,schema:'g2-reviewed-injector-qualified-asset/v1',evidence:proof,
   qualification:'Executed mesh tools plus measured inlet/exit geometry; not reacting CFD or paper acceptance'};

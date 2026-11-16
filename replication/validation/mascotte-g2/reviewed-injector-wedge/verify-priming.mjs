@@ -3,6 +3,7 @@ import {resolve} from 'node:path';
 import {parsePoints,parseFaces,parseLabels} from '../coarse-wedge/ascii-mesh.mjs';
 import {scalarValues} from '../direct-fgm/diagnostics.mjs';
 import {readMesh} from './mesh.mjs';
+import {ductCellCounts} from './recipe.mjs';
 
 const [directory]=process.argv.slice(2);
 if(!directory||process.argv.length!==3)throw Error('Use verify-priming.mjs FRESH_CASE');
@@ -10,7 +11,8 @@ const root=resolve(directory),input=JSON.parse(await readFile(`${root}/direct-g2
 if(input.startTime!==0||!input.requiresDuctPriming||(await readdir(root)).some(n=>n.startsWith('processor')||(Number.isFinite(Number(n))&&Number(n)>0)))
   throw Error('Fresh inlet-resolved timezero case before decomposition required');
 // Verify the bound original mesh identity before using its geometry classification.
-const sourceMesh=await readMesh(`${root}/constant/polyMesh`);
+const profile=input.mesh.resolutionProfile??'standard';
+const sourceMesh=await readMesh(`${root}/constant/polyMesh`,profile);
 if(sourceMesh.meshSha256!==input.mesh.meshSha256)throw Error('Copied case mesh differs from the bound asset');
 const raw=Object.fromEntries(await Promise.all(['points','faces','owner','neighbour'].map(async n=>[n,await readFile(`${root}/constant/polyMesh/${n}`)])));
 const points=parsePoints(raw.points),faces=parseFaces(raw.faces,points.length),owner=parseLabels(raw.owner),neighbour=parseLabels(raw.neighbour);
@@ -34,6 +36,7 @@ for(let i=0;i<count;i++) {
       throw Error(`Unprimed ${name} cell${i}: ${field}=${value(field,i)}, expected${expected}`);
   counts[oxygen?'oxygen':'methane']++;
 }
-if(counts.oxygen!==640||counts.methane!==800||count!==sourceMesh.cellCount)throw Error('Duct cell classification differs from measured recipe');
+const expected=ductCellCounts(profile);
+if(counts.oxygen!==expected.oxygen||counts.methane!==expected.methane||count!==sourceMesh.cellCount)throw Error('Duct cell classification differs from measured recipe');
 console.log(JSON.stringify({schema:'g2-duct-priming-check/v1',time:0,counts,CFD_steps:0,fields_modified:false,
   mesh_sha256:input.mesh.meshSha256,scientific_acceptance:false},null,2));

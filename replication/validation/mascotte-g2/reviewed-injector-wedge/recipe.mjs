@@ -14,7 +14,22 @@ export const patchTypes = { loxinlet: 'patch', ch4inlet: 'patch', outlet: 'patch
   geom: 'wall', noslipwalls: 'wall', slipwalls: 'wall', axisymmetric: 'empty',
   planeMinus: 'wedge', planePlus: 'wedge' };
 
-export function geometry() {
+export function recipeForProfile(profile='standard') {
+  if(profile==='standard')return recipe;
+  if(profile==='debug-coarse')return Object.freeze({...recipe,
+    upstreamCells:20,nearAxialCells:50,farAxialCells:75,
+    radialCells:[4,2,5,2,15],resolutionProfile:'debug-coarse'});
+  throw Error(`Unknown resolution profile ${profile}; use standard or debug-coarse`);
+}
+
+export function ductCellCounts(profile='standard') {
+  const selected=recipeForProfile(profile);
+  return {oxygen:2*selected.upstreamCells*selected.radialCells[0],
+    methane:2*selected.upstreamCells*selected.radialCells[2]};
+}
+
+export function geometry(profile='standard') {
+  const selected=recipeForProfile(profile);
   const vertices=[], indices=new Map(), blocks=[];
   const patches=Object.fromEntries(Object.keys(patchTypes).map(name=>[name,[]]));
   const angle=recipe.halfAngle_deg*Math.PI/180;
@@ -35,26 +50,26 @@ export function geometry() {
       inner:[v[0],v[1],v[5],v[4]],outer:[v[3],v[7],v[6],v[2]]};
   }
   const radii=[0,.0025,.0028,.005,.0065,.025];
-  for(let i=0;i<5;i++)for(const [x0,x1,nx,g]of [[.01,.03,100,1],[.03,.2,150,4]]){
-    const f=block(x0,x1,radii[i],radii[i+1],radii[i],radii[i+1],nx,recipe.radialCells[i],g);
+  for(let i=0;i<5;i++)for(const [x0,x1,nx,g]of [[.01,.03,selected.nearAxialCells,1],[.03,.2,selected.farAxialCells,4]]){
+    const f=block(x0,x1,radii[i],radii[i+1],radii[i],radii[i+1],nx,selected.radialCells[i],g);
     if(x1===.2)patches.outlet.push(f.outlet);
     if(i===0)patches.axisymmetric.push(f.inner);
     if(i===4)patches.geom.push(f.outer);
     if(x0===.01&&(i===1||i===3))patches.noslipwalls.push(f.inlet);
   }
   for(const [x0,x1,r0,r1]of [[0,.005,.0016,.0016],[.005,.01,.0016,.0025]]){
-    const o=block(x0,x1,0,r0,0,r1,40,8);if(x0===0)patches.loxinlet.push(o.inlet);
+    const o=block(x0,x1,0,r0,0,r1,selected.upstreamCells,selected.radialCells[0]);if(x0===0)patches.loxinlet.push(o.inlet);
     patches.axisymmetric.push(o.inner);patches.noslipwalls.push(o.outer);
-    const f=block(x0,x1,.0028,.005,.0028,.005,40,10);if(x0===0)patches.ch4inlet.push(f.inlet);
+    const f=block(x0,x1,.0028,.005,.0028,.005,selected.upstreamCells,selected.radialCells[2]);if(x0===0)patches.ch4inlet.push(f.inlet);
     patches.noslipwalls.push(f.inner,f.outer);
-    const p=block(x0,x1,.0065,.025,.0065,.025,40,30);if(x0===0)patches.slipwalls.push(p.inlet);
+    const p=block(x0,x1,.0065,.025,.0065,.025,selected.upstreamCells,selected.radialCells[4]);if(x0===0)patches.slipwalls.push(p.inlet);
     patches.noslipwalls.push(p.inner);patches.geom.push(p.outer);
   }
   return {vertices,blocks,patches};
 }
 
-export function dictionary() {
-  const g=geometry(),tuple=x=>`(${x.join(' ')})`;
+export function dictionary(profile='standard') {
+  const g=geometry(profile),tuple=x=>`(${x.join(' ')})`;
   return header('blockMeshDict')+'convertToMeters 1;\nvertices\n(\n'+g.vertices.map(tuple).join('\n')+
     '\n);\nblocks\n(\n'+g.blocks.map(b=>`hex ${tuple(b.vertices)} ${tuple(b.cells)} simpleGrading (${b.grading} 1 1)`).join('\n')+
     '\n);\nedges ();\nboundary\n(\n'+Object.entries(g.patches).map(([name,faces])=>
@@ -62,6 +77,9 @@ export function dictionary() {
     '\n);\nmergePatchPairs ();\n';
 }
 
-export function plan(){return {recipe,coordinateOrigin:'raw legacy x; injector exit at .01m',
- expectedCells:17840,paperAxialOrigin_m:.01,recipeSha256:hash(JSON.stringify(recipe)),
- dictionarySha256:hash(dictionary()),CFD_executed:false,meshToolsExecuted:false};}
+export function plan(profile='standard'){
+ const selected=recipeForProfile(profile),g=geometry(profile);
+ return {recipe:selected,coordinateOrigin:'raw legacy x; injector exit at .01m',
+ expectedCells:g.blocks.reduce((sum,b)=>sum+b.cells.reduce((a,n)=>a*n,1),0),
+ paperAxialOrigin_m:.01,recipeSha256:hash(JSON.stringify(selected)),
+ dictionarySha256:hash(dictionary(profile)),CFD_executed:false,meshToolsExecuted:false};}
