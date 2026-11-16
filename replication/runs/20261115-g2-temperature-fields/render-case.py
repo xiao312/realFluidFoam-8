@@ -120,11 +120,24 @@ def main():
         file = (base / name).resolve()
         if not file.is_relative_to(base) or digest(file) != expected:
             raise ValueError(f"Input escapes collection or changed: {name}")
+    origin = receipt.get("axialOrigin_m", 0)
+    if not isinstance(origin, (float, int)) or not np.isfinite(origin) or not 0 <= origin <= .02:
+        raise ValueError("Invalid explicitly recorded axial origin")
+    if origin:
+        manifest_name = f"cases/{receipt['case']}/direct-g2-input.json"
+        if manifest_name not in receipt["inputHashes"]:
+            raise ValueError("Nonzero origin requires a hash-bound case manifest")
+        manifest = json.loads((base / manifest_name).read_text())
+        if manifest.get("observations", {}).get("axialOrigin_m") != origin:
+            raise ValueError("Display origin differs from executing case observations")
     plan = dict(readOnly=not args.apply, collectionSha256=digest(args.collection), sourceJob=receipt["sourceJob"], time_s=receipt["time_s"], out=str(args.out.resolve()))
     if not args.apply:
         print(json.dumps(plan))
         return
     polygons, centers, values = load_cells(receipt, base)
+    if origin:
+        polygons = [polygon - np.array([origin*1000, 0]) for polygon in polygons]
+        centers = centers - np.array([origin*1000, 0])
     args.out.mkdir(parents=True, exist_ok=False)
     import matplotlib
     matplotlib.use("Agg")
@@ -133,10 +146,12 @@ def main():
     plt.rcParams.update({"font.family": "DejaVu Sans", "font.size": 12})
     norm = plt.Normalize(80, 3600)
     fig, axes = plt.subplots(2, 1, figsize=(13, 6), layout="constrained")
-    for axis, xlim, ylim in zip(axes, [(-4.5, 200), (-4.5, 20)], [(0, 25), (0, 7)]):
+    extent = (min(p[:, 0].min() for p in polygons), max(p[:, 0].max() for p in polygons))
+    limits = [extent, (extent[0], 20)] if origin else [(-4.5, 200), (-4.5, 20)]
+    for axis, xlim, ylim in zip(axes, limits, [(0, 25), (0, 7)]):
         collection = PolyCollection(polygons, array=values, cmap="inferno", norm=norm, edgecolors="none", rasterized=True)
         axis.add_collection(collection)
-        axis.set(xlim=xlim, ylim=ylim, xlabel="Axial position x (mm)", ylabel="Radius r (mm)")
+        axis.set(xlim=xlim, ylim=ylim, xlabel="Distance from injector exit (mm)" if origin else "Axial position x (mm)", ylabel="Radius r (mm)")
         axis.set_aspect("equal")
         axis.set_facecolor("#e7e7e7")
     fig.colorbar(collection, ax=list(axes), label="Temperature (K)", pad=.02, extend="both")
@@ -150,6 +165,8 @@ def main():
     np.savez_compressed(args.out / "cells.npz", T_K=values, center_x_r_mm=centers, polygons_mm=np.array(polygons, dtype=object))
     evidence = dict(**plan, cells=len(values), Tmin_K=float(values.min()), Tmax_K=float(values.max()), imageSha256=digest(image), plottingCodeSha256=digest(Path(__file__)), mappedCellsExactlyOnce=True, fieldMethod="Piecewise-constant actual finite-volume polygons; no smoothing or interpolation", inputHashes=receipt["inputHashes"], CFDStartTime_s=0, isTimeMean=False, scientificAcceptance=False)
     evidence['stateQualification'] = qualification
+    evidence['axialOrigin_m'] = origin
+    evidence['displayedMeshExtent_mm'] = [float(v) for v in extent]
     if failure is not None:
         evidence['failureRecord'] = failure
     (args.out / "evidence.json").write_text(json.dumps(evidence, indent=2)+"\n")

@@ -64,6 +64,14 @@ Use `--apply` to render; verify positive finite fields, polygon areas, exact
 cell mapping, source identities and image layout. Dependencies and storage
 boundaries are the same NumPy/Matplotlib/local-only ones documented below.
 
+A collection may explicitly supply `axialOrigin_m`. The renderer verifies that
+offset against the hash-bound direct-case observations and translates displayed
+polygons/centres only. Full-domain limits then follow the actual mesh extent;
+the reviewed geometry has10mm upstream passage and190mm downstream of its exit.
+Default zero retains older rendering. Raw fields, geometry readers, volumes and
+thermodynamic audits are unchanged. Verify the displayed inlet/taper/lip and
+both actual end coordinates; never stretch a shorter mesh to paper dimensions.
+
 Render completed OpenFOAM cell temperatures without advancing CFD. This module
 does not submit jobs, restart cases, interpolate fields, or declare validation.
 
