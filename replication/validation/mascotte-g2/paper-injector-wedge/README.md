@@ -19,10 +19,27 @@ blockMesh dictionary, mesh-tool dictionaries and recipe receipt. Existing output
 is refused. Run blockMesh/checkMesh through FlamePilot Slurm; a generated
 dictionary or local topology test is not an executed-mesh qualification. This
 module does not select a CFD closure, import states or submit jobs. Its mesh is
-not automatically accepted by the existing direct-fgm mesh loaders.
+accepted only by the explicit `g2-tapered-injector-wedge-v1` direct-fgm mode
+after `audit.mjs` has created a measured asset. The audit reads original mesh
+bytes, counts, inlet and exit areas, volume and actual mesh-tool receipts; the
+loader checks these again. It never relabels an exit-only or registered asset.
+
+`node audit.mjs --case EXECUTED_CASE --logs TOOL_LOG_DIRECTORY` prints the
+read-only measurement. Add `--out NEW_ASSET` to preserve immutable input bytes,
+logs and the measured manifest. Run measurement in the admitted qualification
+or CFD allocation, then consume that asset with the case generator. The oxygen
+boundary area is the3.6mm upstream section; its5mm exit area is measured on the
+internal x=0 interface. Sampling uses x=0 at the exit, not the upstream boundary.
+
+`priming.mjs` emits the two time-zero pure-stream field regions for the case
+generator. It sets composition, Z, C and temperature; real-fluid Ha remains a
+placeholder until the executing runtime initializer runs. It neither supplies a
+velocity precursor nor ignites the chamber. Its input states come from the exact
+table endpoints; no evolved field is read.
 
 Dependencies: Node standard library. Verification additionally uses the existing
-ASCII face-area helper and allocated OpenFOAM 8 utilities. No secrets or network
+ASCII mesh parser and allocated OpenFOAM 8 utilities. The direct-fgm case
+generator consumes the qualified asset. No secrets or network
 access. Outputs and logs belong under the selected project root.
 
 ```sh

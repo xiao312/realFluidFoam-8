@@ -1,5 +1,28 @@
 # Warm FGM coupling on the retained G2-related mesh
 
+The explicit `--mesh-mode g2-tapered-injector-wedge-v1` consumes a measured asset
+from `../paper-injector-wedge`. Oxygen enters through the3.6mm upstream section,
+expands to5mm at x=0, and is separated from the5.6/10mm methane annulus by the
+0.3mm lip. The methane passage extends to the same upstream plane. Measured
+areas own mass-flow scaling. Coordinates for literature profiles begin at the
+exit. All existing mesh identities remain unchanged. This is an inlet-resolved
+axisymmetric approximation, with explicit missing upstream/casing dimensions;
+no3D or experimental-geometry qualification is implied.
+
+This mode writes pure-stream duct regions in `system/setFieldsDict` and records
+`requiresDuctPriming:true` in both read-only plan and case manifest. Run setFields
+before full-runtime Ha initialization and decomposition. Oxygen fills its own
+upstream passage and methane its annulus at timezero; this does not import a
+developed flow. Chamber initialization remains the explicit case selection.
+`uniform-cmin` may select a pure-stream endpoint, including pure fuel Z=1/C=0;
+hot covered and localized seeds still require an interior mixture fraction.
+
+`strangFixedState` accepts the existing explicit `error` or `clamp` policy,
+matching the already implemented reader/source integrator. The default remains
+error; operational clamp reports coordinate corrections and source-stage mass
+changes. Enabling that combination changes no acceptance limit and does not
+approve a clipped result. It requires table chemistry and absoluteHa as before.
+
 `configure-baseline.mjs NEW_CASE [--apply]` selects the parallel batch controls
 before initialization. It records conservative density, unchanged64epsilon-only Z
 projection, three inversion passes at fixed internal h, timing/budget output and

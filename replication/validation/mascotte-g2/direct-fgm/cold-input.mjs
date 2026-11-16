@@ -52,7 +52,8 @@ export async function initializationInput(path, input) {
   for (const key of Object.keys(config)) if (!allowed.includes(key)) throw new Error(`Unknown initialization.${key}`);
   const eta = config.mode === 'uniform-cmin' ? 0 : config.hotEta;
   if (!['uniform-covered', 'uniform-cmin', 'localized-covered'].includes(config.mode) || !Number.isFinite(config.mixtureFraction) ||
-      !(config.mixtureFraction > 0 && config.mixtureFraction < 1) || !Number.isFinite(eta) || eta < 0 || eta > 1 ||
+      !(config.mixtureFraction >= 0 && config.mixtureFraction <= 1) ||
+      (config.mode !== 'uniform-cmin' && !(config.mixtureFraction > 0 && config.mixtureFraction < 1)) || !Number.isFinite(eta) || eta < 0 || eta > 1 ||
       (config.mode !== 'uniform-cmin' && eta === 0) || (config.mode === 'uniform-cmin' && config.hotEta !== undefined)) throw new Error('Invalid covered initialization state');
   const hot = input.lookup(config.mixtureFraction, eta);
   const background = config.mode === 'localized-covered' ? input.lookup(config.mixtureFraction, 0) : hot;
@@ -71,12 +72,13 @@ export async function initializationInput(path, input) {
         : 'Uniform table-covered partly reacted fill; startup coupling only, not physical flame morphology.' };
 }
 
-export function ignitionDictionary(initialization, names) {
+export function ignitionDictionary(initialization, names, prependRegions='') {
   const { config, hot } = initialization;
-  if (config.mode !== 'localized-covered') return null;
+  if (config.mode !== 'localized-covered') return prependRegions ? `FoamFile { version 2.0; format ascii; class dictionary; object setFieldsDict; }
+defaultFieldValues (); regions (${prependRegions});\n` : null;
   const fields = [['T', hot.temperature], ['Z', hot.z], ['c', hot.c], ...names.map((name, i) => [name, hot.y[i]])];
   return `FoamFile { version 2.0; format ascii; class dictionary; object setFieldsDict; }
 defaultFieldValues ();
-regions (boxToCell { box (${config.boxMin_m.join(' ')}) (${config.boxMax_m.join(' ')});
+regions (${prependRegions}\nboxToCell { box (${config.boxMin_m.join(' ')}) (${config.boxMax_m.join(' ')});
  fieldValues (${fields.map(([name, value]) => `volScalarFieldValue "${name}" ${value}`).join('\n')}); });\n`;
 }

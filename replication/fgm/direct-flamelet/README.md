@@ -1,5 +1,11 @@
 # Direct methane/oxygen flamelets
 
+`../g2-manifold/run.mjs` is an additional consumer of this module's existing
+unsteady driver and table exporter. It fixes the actualTF streams, records all
+phase exits and applies the already declared extinction/numerical-tail policies.
+It adds no kinetics or acceptance threshold here. Raw trajectories and failed
+tables remain separate from OF8 CFD qualification.
+
 This module computes a fresh Cantera counterflow diffusion flame with Cantera's
 standard initial guess and automatic solve sequence. It preserves the earlier
 `mascotte/flamelet_ch4o2.cpp` driver and its failed runs.

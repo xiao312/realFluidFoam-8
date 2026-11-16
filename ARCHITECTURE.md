@@ -1,10 +1,18 @@
 # Experimental solver boundaries
 
+`replication/fgm/g2-manifold/` selects the actual TF streams and orchestrates
+the existing `direct-flamelet` physical transient and table exporter. Node owns
+phase receipts; pinned Cantera/Spitfire own chemistry/integration. It consumes
+no CFD state and depends on neither scheduler nor agent libraries. The OF8 FGM
+reader/case generator are downstream consumers only after separate qualification.
+
 `replication/validation/mascotte-g2/paper-injector-wedge/` owns a separate
 coarse tapered-injector geometry sensitivity. It generates dictionaries using
 Node, with allocated OF8 mesh tools as the qualification boundary. It does not
 alter registered mesh assets or select CFD closures. Its topology test shares
-only the ASCII face-area helper from `coarse-wedge`.
+the ASCII mesh parser from `coarse-wedge`. Its measured-asset loader is consumed
+by the explicit injector mode in `direct-fgm/prepare.mjs`; mass-flow areas and
+profile origin come from the measured inlet/exit geometry, not schematic pixels.
 
 Within `replication/fgm/maders-coflow`, `field_audit.py` consumes hashed exported
 NPZ tables and retained CSV profiles. It independently compares mapped-C lookup
