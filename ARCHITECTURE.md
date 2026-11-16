@@ -1,5 +1,10 @@
 # Experimental solver boundaries
 
+The optional nonlinear caloric-audit lifecycle is solver owned: intermediate
+scalar/pressure iterates report finite caloric defects, while the original
+enforcing audit remains mandatory after the complete PIMPLE loop. Nonphysical
+trial states, source history and pressure retry bounds retain separate guards.
+
 The retained-temperature-field module additionally owns internal-cell
 CFD/table thermal-state audits. It consumes immutable mesh/field receipts and
 the existing renderer, measures volume and absolute-source weighted departures,

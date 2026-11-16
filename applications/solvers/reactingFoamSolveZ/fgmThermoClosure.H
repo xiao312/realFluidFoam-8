@@ -8,14 +8,15 @@
 inline void auditFgmThermoClosure
 (
     const Foam::psiReactionThermo& thermo,
-    const bool enforceInversion = true
+    const bool enforceInversion = true,
+    const bool nonlinearTrial = false
 )
 {
     using namespace Foam;
     const Time& time = thermo.T().mesh().time();
     if (!time.controlDict().lookupOrDefault<Switch>("writeFgmThermoClosure", false)) return;
     const bool writeSummary = time.value() == 0 || time.writeTime();
-    if (!enforceInversion && !writeSummary) return;
+    if (!enforceInversion && !nonlinearTrial && !writeSummary) return;
     if (thermo.he().name() != "h")
         FatalErrorInFunction << "FGM caloric audit currently requires sensible enthalpy" << exit(FatalError);
     const scalar limit = time.controlDict().lookupOrDefault<scalar>("fgmThermoClosureRelativeLimit", 1e-8);
@@ -30,7 +31,8 @@ inline void auditFgmThermoClosure
     {
         const scalar actual = evaluated()[celli], stored = thermo.he()[celli];
         const scalar cpT = heatCapacity()[celli]*thermo.T()[celli];
-        if (!std::isfinite(actual) || !std::isfinite(stored) || !(cpT > 0) || !std::isfinite(cpT)) { ++invalid; continue; }
+        if (!std::isfinite(actual) || !std::isfinite(stored) || !(cpT > 0) || !std::isfinite(cpT)
+            || (nonlinearTrial && !(thermo.T()[celli]>0 && thermo.p()[celli]>0 && heatCapacity()[celli]>0))) { ++invalid; continue; }
         const scalar error = mag(actual-stored);
         const scalar scale = max(scalar(1), max(mag(actual), max(mag(stored), mag(cpT))));
         maxAbsolute = max(maxAbsolute, error);
@@ -45,7 +47,9 @@ inline void auditFgmThermoClosure
         {
             const scalar actual = evaluated().boundaryField()[patchi][facei];
             const scalar cpT = heatCapacity().boundaryField()[patchi][facei]*thermo.T().boundaryField()[patchi][facei];
-            if (!std::isfinite(actual) || !std::isfinite(stored[facei]) || !(cpT > 0) || !std::isfinite(cpT)) { ++invalid; continue; }
+            if (!std::isfinite(actual) || !std::isfinite(stored[facei]) || !(cpT > 0) || !std::isfinite(cpT)
+                || (nonlinearTrial && !(thermo.T().boundaryField()[patchi][facei]>0
+                    && thermo.p().boundaryField()[patchi][facei]>0 && heatCapacity().boundaryField()[patchi][facei]>0))) { ++invalid; continue; }
             const scalar error = mag(actual-stored[facei]);
             const scalar scale = max(scalar(1), max(mag(actual), max(mag(stored[facei]), mag(cpT))));
             boundaryMaxAbsolute = max(boundaryMaxAbsolute, error);
@@ -58,19 +62,21 @@ inline void auditFgmThermoClosure
     reduce(squareSum, sumOp<scalar>()); reduce(cells, sumOp<label>());
     reduce(faces, sumOp<label>()); reduce(invalid, sumOp<label>());
     const bool failed = invalid || !cells || maxRelative > limit || boundaryMaxRelative > limit;
+    const bool reject = (failed && enforceInversion) || (nonlinearTrial && (invalid || !cells));
     // Checking and summary frequency are deliberately separate. Always report
     // a failure, including one on a timestep which does not write fields.
     if (writeSummary || failed)
     {
-        Info<< (enforceInversion ? "thermoClosure t=" : "thermoPostPressureClosure t=")
+        Info<< (nonlinearTrial ? "thermoNonlinearTrialClosure t=" : enforceInversion ? "thermoClosure t=" : "thermoPostPressureClosure t=")
             << time.value() << " initial=" << (time.value() == 0 ? 1 : 0)
             << " afterInversion=" << (enforceInversion ? 1 : 0)
             << " cells=" << cells << " boundaryFaces=" << faces << " invalid=" << invalid
             << " maxAbs_J_kg=" << maxAbsolute << " rms_J_kg=" << std::sqrt(squareSum/max(label(1), cells))
             << " maxRelative=" << maxRelative << " boundaryMaxAbs_J_kg=" << boundaryMaxAbsolute
-            << " boundaryMaxRelative=" << boundaryMaxRelative << " limit=" << limit << endl;
+            << " boundaryMaxRelative=" << boundaryMaxRelative << " limit=" << limit
+            << " nonlinearTrial=" << nonlinearTrial << " finalCriterionUnchanged=1" << endl;
     }
-    if (failed && enforceInversion)
+    if (reject)
     {
         // Retain the actual failing state for pointwise EOS/inversion diagnosis.
         // These are failure snapshots, never authorized CFD restart inputs.
@@ -133,7 +139,7 @@ inline void auditFgmThermoClosure
         Info<< "thermoFailureSnapshot time=" << time.value()
             << " authorizedForRestart=0 acceptanceChanged=0" << endl;
     }
-    if (failed && enforceInversion)
+    if (reject)
         FatalErrorInFunction << "Stored h is inconsistent with executing h(p,T,Y); see thermoClosure"
             << exit(FatalError);
 }

@@ -20,7 +20,7 @@ for (label couplingPass=0;couplingPass<maxRhoHaPressureIterations;++couplingPass
         // The scalar equations require the continuity-consistent rho.
         // A property-cache refresh must not undo that selected policy.
         if (!conserveTransportDensity) rho=refreshedDensity();
-        auditFgmThermoClosure(thermo);
+        auditFgmThermoClosure(thermo, !deferCaloricTrialAudit, deferCaloricTrialAudit);
         auditFgmContinuityStage("afterPressureThermoRefresh",rho,phi);
         if (runTime.timeIndex()==1 || runTime.writeTime())
             Info<< "pressureThermoRefresh t=" << runTime.value()

@@ -32,7 +32,16 @@ inline Foam::label applySrkRhoHaPredictor
         if (std::isfinite(error+T+cp()[celli]) && T>0 && cp()[celli]>0 && error<=limit) continue;
         ++candidates;
         const auto result=recoverSrkDensityEnthalpy(mixture->cellMixture(celli),rho[celli],Ha[celli],thermo.p()[celli],T);
-        if (!result.passed()) {++rejected;continue;}
+        if (!result.passed())
+        {
+            ++rejected;
+            Pout<<"rhoHaPredictorRejected t="<<time.value()<<" stage="<<stage
+                <<" rank="<<Pstream::myProcNo()<<" cell="<<celli
+                <<" reason="<<result.reason<<" candidateT_K="<<result.temperature
+                <<" candidateP_Pa="<<result.pressure<<" dPDRho="<<result.isothermalSlope
+                <<" selectedDensityRelativeError="<<result.selectedDensityRelativeError<<endl;
+            continue;
+        }
         maximumDeltaP=max(maximumDeltaP,mag(result.pressure-thermo.p()[celli]));
         maximumDeltaT=max(maximumDeltaT,mag(result.temperature-T));
         thermo.p().primitiveFieldRef()[celli]=result.pressure;

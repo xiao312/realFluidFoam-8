@@ -4,7 +4,16 @@
 prepares a separately identified pressure/scalar iteration experiment. Its
 default is a read-only plan; writes require an allocation and a fresh,
 undecomposed split-FGM absolute-Ha case after `configure-fgm.mjs`, before
-runtime initialization. `inner` repeats scalar/energy corrections within PISO
+runtime initialization.
+
+Optional `--defer-caloric --correctors 8` selects the compiled solver's
+nonlinear trial-audit lifecycle and an explicit bounded pressure/energy
+correction count. Intermediate finite
+caloric discrepancies are reported; the unchanged final timestep criterion
+still enforces rejection. The manifest binds both solver-dictionary hashes
+and the chosen count. This option requires a newly qualified executable;
+older binaries must not silently consume it. No default setting changes.
+`inner` repeats scalar/energy corrections within PISO
 using the unchanged source old-time anchor. `densityHa` additionally selects
 the existing conserved-density/Ha recovery and bounded pressure/property loop.
 `densityHaDifferential` also uses the existing fixed-h SRK pressure tangent.

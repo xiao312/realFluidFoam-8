@@ -1,5 +1,19 @@
 # Transported-Z reacting solver
 
+Experimental `realFluidDeferCaloricTrialAudit yes` distinguishes an unfinished
+coupled iterate from an accepted timestep. It requires absolute Ha, the inner
+scalar/energy loop, pressure refresh and enforcing audit. Energy and
+pressure subiterations report caloric discrepancies without immediately
+terminating; nonfinite/nonpositive thermodynamic trials still terminate. After
+the complete PIMPLE loop the unchanged original internal/boundary caloric
+criterion is enforced, before energy reporting or timestep output. A final
+failed state is saved and rejected. Predictor mechanical/root checks, pressure
+retry bounds, old-time source anchors and default-off behavior are unchanged.
+This permits a later energy correction to respond to the trial pressure; it
+does not guarantee that such a correction exists. Qualify default-off parity,
+physical inner-count controls and fresh-zero failed-flow reproductions before
+making claims. No library ABI, EOS or acceptance-limit change is introduced.
+
 `writeFgmSpeciesTransportAudit yes;` is a default-off, read-only predictor
 diagnostic. It reports the raw negative species, existing clipping addition,
 sum before/after clipping (excluding the closure species), implied unclipped

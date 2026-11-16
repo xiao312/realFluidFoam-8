@@ -110,6 +110,13 @@ int main(int argc, char *argv[])
         .lookupOrDefault<Switch>("realFluidInnerThermoCorrectors", false);
     const bool coupledRhoHaState=runTime.controlDict().lookupOrDefault<Switch>
         ("realFluidRhoHaPredictor",false);
+    const bool deferCaloricTrialAudit=runTime.controlDict().lookupOrDefault<Switch>
+        ("realFluidDeferCaloricTrialAudit",false);
+    if (deferCaloricTrialAudit && (!absoluteEnthalpyFGM || !realFluidInnerThermoCorrectors
+        || pimple.nCorrPiso()<2
+        || !runTime.controlDict().lookupOrDefault<Switch>("realFluidPressureThermoRefresh",false)
+        || !runTime.controlDict().lookupOrDefault<Switch>("writeFgmThermoClosure",false)))
+        FatalErrorInFunction<<"Deferred caloric trials require absolute Ha, inner corrections, refresh/audit and nCorrectors>=2; final audit remains mandatory"<<exit(FatalError);
     const label maxRhoHaPressureIterations=coupledRhoHaState
         ? runTime.controlDict().lookupOrDefault<label>("maxRhoHaPressureIterations",6) : 1;
     if (coupledRhoHaState && (!absoluteEnthalpyFGM || !conserveTransportDensity
@@ -199,6 +206,13 @@ int main(int argc, char *argv[])
             }
         }
 
+        if (deferCaloricTrialAudit)
+        {
+            auditFgmThermoClosure(thermo);
+            if (runTime.timeIndex()==1 || runTime.writeTime())
+                Info<<"thermoCoupledFinalAudit t="<<runTime.value()
+                    <<" originalCaloricCriterionPassed=1 scientificAcceptance=0"<<endl;
+        }
         auditFgmContinuityStage("beforeFinalEOSDensity", rho, phi);
         const bool preserveRefreshedTransportDensity=conserveTransportDensity
             && runTime.controlDict().lookupOrDefault<Switch>("realFluidPressureThermoRefresh",false);

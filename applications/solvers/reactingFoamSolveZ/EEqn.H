@@ -139,7 +139,7 @@
         applySrkRhoHaPredictor(thermo,rho,fgmAbsoluteEnthalpy(),"afterEnergy");
     fgmTiming.stop(fgmWallTiming::thermoCorrection, fgmThermoStart);
     const auto fgmCaloricStart = fgmTiming.start();
-    auditFgmThermoClosure(thermo);
+    auditFgmThermoClosure(thermo, !deferCaloricTrialAudit, deferCaloricTrialAudit);
     fgmTiming.stop(fgmWallTiming::caloricAudit, fgmCaloricStart);
 
     Info<< "min/max(T) = "
