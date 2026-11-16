@@ -445,3 +445,5 @@ Node built-ins only. Example: node configure-pressure-refresh.mjs CASE [--apply]
 Verify Node syntax, plan/no-write behavior and frozen solver linkage, then run
 bounded independent time-zero smoke/full diagnostics. A refresh build is not
 physical qualification; retain caloric failures and boundary/continuity budgets.
+
+The explicit reviewed-legacy-injector-v1 mesh mode consumes the independently audited reviewed-injector-wedge asset. Its raw injector exit is x=.01m. Pure-stream duct composition is initialized at original time zero; the chamber and pocket retain the declared background. No legacy solution fields are imported.

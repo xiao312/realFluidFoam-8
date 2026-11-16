@@ -208,3 +208,5 @@ The uniform-methane isolation initializer consumes the same fresh RANS case,
 physical-table species header and qualified pure-stream density references.
 It explicitly replaces both stream states before executing-EOS Ha initialization;
 it owns no thermodynamic correction, chemistry rate or acceptance decision.
+
+The reviewed-injector-wedge module preserves measured legacy inlet/casing/pocket geometry at a reduced resolution. It depends on the existing ASCII mesh parser and retained reference edge data. Direct-fgm consumes its executed mesh asset and pure-stream zero-time region definitions; solver physics and scientific criteria remain separately owned.

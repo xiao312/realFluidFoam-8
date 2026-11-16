@@ -8,6 +8,8 @@ import { inspectCoarseMesh, copyCoarseMesh } from '../coarse-wedge/mesh.mjs';
 import { inspectPaperExitMesh, copyPaperExitMesh } from '../paper-exit-wedge/mesh.mjs';
 import { inspectPaperExitMesh as inspectLongMesh, copyPaperExitMesh as copyLongMesh } from '../paper-long-wedge/mesh.mjs';
 import { inspectInjectorMesh, copyInjectorMesh } from '../paper-injector-wedge/mesh.mjs';
+import { inspectInjectorMesh as inspectReviewedMesh, copyInjectorMesh as copyReviewedMesh } from '../reviewed-injector-wedge/mesh.mjs';
+import { reviewedRegions } from '../reviewed-injector-wedge/priming.mjs';
 import { injectorRegions } from '../paper-injector-wedge/priming.mjs';
 import { loadRunControls, decompositionDictionary, functionObjects } from './observations.mjs';
 import { realFluidInput, initializationInput, ignitionDictionary } from './cold-input.mjs';
@@ -29,7 +31,7 @@ const steady = closure === 'steady-flamelet';
 const endpointPolicy = options['steady-endpoint-policy'] ?? 'strict';
 if (!['strict', 'endpoint64epsilon'].includes(endpointPolicy) || (!steady && options['steady-endpoint-policy'])) throw Error('Endpoint policy is steady-only: strict|endpoint64epsilon');
 const meshMode = options['mesh-mode'] ?? 'registered-200622';
-if (!['registered-200622', 'coarse-wedge-10000-v1', 'paper-exit-wedge-10000-v1','paper-exit-wedge-20000-long-v1','g2-tapered-injector-wedge-v1'].includes(meshMode)) throw new Error('Unknown explicitly supported G2 mesh mode');
+if (!['registered-200622', 'coarse-wedge-10000-v1', 'paper-exit-wedge-10000-v1','paper-exit-wedge-20000-long-v1','g2-tapered-injector-wedge-v1','reviewed-legacy-injector-v1'].includes(meshMode)) throw new Error('Unknown explicitly supported G2 mesh mode');
 const transportTolerance = Number(options['transport-tolerance'] ?? 1e-10);
 if (!Number.isFinite(transportTolerance) || transportTolerance < 1e-12 || transportTolerance > 1e-6) {
   throw new Error('--transport-tolerance must be finite and within [1e-12, 1e-6]');
@@ -68,16 +70,18 @@ const nasaPolicy = realFluid ? null : nasaInversionPolicy(input.metadata, option
 const initialization = await (steady ? steadyInitialization : initializationInput)(options.initialization, input);
 if (!realFluid && initialization.config.mode === 'localized-covered') throw new Error('Localized preparation currently requires the full-runtime Ha initialization path');
 const coarseMesh = meshMode === 'coarse-wedge-10000-v1';
+const reviewedMesh=meshMode==='reviewed-legacy-injector-v1';
 const injectorMesh = meshMode === 'g2-tapered-injector-wedge-v1';
 const longMesh = meshMode === 'paper-exit-wedge-20000-long-v1';
 const paperExitMesh = meshMode === 'paper-exit-wedge-10000-v1' || longMesh;
-const inspectSelectedMesh = injectorMesh ? inspectInjectorMesh : longMesh ? inspectLongMesh : paperExitMesh ? inspectPaperExitMesh : coarseMesh ? inspectCoarseMesh : inspectMesh;
-const copySelectedMesh = injectorMesh ? copyInjectorMesh : longMesh ? copyLongMesh : paperExitMesh ? copyPaperExitMesh : coarseMesh ? copyCoarseMesh : copyMesh;
+const inspectSelectedMesh = reviewedMesh ? inspectReviewedMesh : injectorMesh ? inspectInjectorMesh : longMesh ? inspectLongMesh : paperExitMesh ? inspectPaperExitMesh : coarseMesh ? inspectCoarseMesh : inspectMesh;
+const copySelectedMesh = reviewedMesh ? copyReviewedMesh : injectorMesh ? copyInjectorMesh : longMesh ? copyLongMesh : paperExitMesh ? copyPaperExitMesh : coarseMesh ? copyCoarseMesh : copyMesh;
 const mesh = await inspectSelectedMesh(resolve(options['mesh-dir']));
 if (controls.observations.axialLength_m !== (longMesh ? 0.4 : 0.2)) throw Error('Sampling axial length must match mesh');
-const axisBoundaryType = injectorMesh || coarseMesh || paperExitMesh ? 'empty' : 'symmetry';
+const axisBoundaryType = reviewedMesh || injectorMesh || coarseMesh || paperExitMesh ? 'empty' : 'symmetry';
 if (coarseMesh) controls.observations.axialCoordinate = 'x from explicit coarse co-planar inlet at 0 m; separate diagnostic, not registered/paper injector geometry';
 if (paperExitMesh) controls.observations.axialCoordinate = 'x from co-planar paper-sized injection exit at 0 m; upstream taper/ducts and square chamber omitted';
+if(reviewedMesh) controls.observations.axialCoordinate='raw legacy x; subtract .01m for paper injector-exit distance';
 if (injectorMesh) controls.observations.axialCoordinate = 'x from injector exit at0m; upstream tapered O2 and annular methane passages occupy negative x';
 const pressure = input.receipt.case.pressure_pa;
 if (!(pressure > 0 && Number.isFinite(pressure))) throw new Error('Missing physical table pressure');
@@ -108,7 +112,7 @@ const plan = { schema: steady ? 'forge-direct-g2-steady-flamelet-v1' : 'forge-di
   linearSolverControls: { transportTolerance, transportFields: steady ? ['U', 'h', 'Ha', 'Z'] : ['U', 'h', 'Ha', 'Z', 'c', 'Yi'],
     pressureTolerance: 1e-9, densityTolerance: 1e-10, relativeTolerance: 0,
     interpretation: 'Linear normalized residual control only; conservation and physical acceptance criteria are unchanged.' },
-  energyForm: 'absoluteEnthalpy', chemistry, sourceIntegration, requiresDuctPriming:injectorMesh,
+  energyForm: 'absoluteEnthalpy', chemistry, sourceIntegration, requiresDuctPriming:injectorMesh||reviewedMesh,
   skipUnusedDiffusion: skipUnusedDiffusion === 'yes', boundsPolicy: bounds, initial, streams, mesh,
   thermodynamics: realFluid?.record ?? { mode: 'warm-ideal', requiresRuntimeHaInitialization: false, nasaPolicy }, initialization,
   caloricClosure: { required: true, relativeLimit: realFluid ? 1e-8 : 1e-4,
@@ -117,7 +121,7 @@ const plan = { schema: steady ? 'forge-direct-g2-steady-flamelet-v1' : 'forge-di
   inputHashes: input.inputHashes, sourceTableCase: input.receipt.case,
   approximations: [...(realFluid ? ['PR/SRK with explicitly declared NASA extrapolation', 'fixed-pressure source table without enthalpy coordinate']
     : ['warm ideal-gas thermo', 'constant viscosity and Prandtl number']), 'unity Lewis diffusion',
-    'laminar resolved diagnostic', injectorMesh ? 'Sharma inlet-resolved axisymmetric reconstruction; unknown straight-duct/casing dimensions explicit, square chamber deferred' : paperExitMesh ? 'paper-sized exit areas on separate coarse wedge; upstream taper/ducts, rim and square chamber omitted' : coarseMesh ? 'separate coarse co-planar wedge; upstream ducts and paper lip omitted' : 'retained wedge geometry differs from paper',
+    'laminar resolved diagnostic', reviewedMesh ? 'Owner-reviewed legacy geometry with measured pocket/casing, raw injector exit .01m; not exact paper geometry' : injectorMesh ? 'Sharma inlet-resolved axisymmetric reconstruction; unknown straight-duct/casing dimensions explicit, square chamber deferred' : paperExitMesh ? 'paper-sized exit areas on separate coarse wedge; upstream taper/ducts, rim and square chamber omitted' : coarseMesh ? 'separate coarse co-planar wedge; upstream ducts and paper lip omitted' : 'retained wedge geometry differs from paper',
     initialization.interpretation, 'early transient, not steady morphology'],
   convectiveTimes_s: { axial50mm: 0.05 / slowerInlet, chamber200mm: 0.2 / slowerInlet,
     interpretation: realFluid ? 'Ideal-density placeholder estimate only. Use measured ha-initialization-boundaries.csv densities before estimating physical residence times.'
@@ -161,7 +165,7 @@ await scalar('c', '0 0 0 0 0 0 0', initial.c, s => s.c);
 await scalar('T', '0 0 0 1 0 0 0', initial.temperature, s => s.temperature);
 await scalar('Ha', '0 2 -2 0 0 0 0', realFluid ? 0 : initial.thermo.enthalpy, s => realFluid ? 0 : s.thermo.enthalpy);
 // setFields must precede full-runtime Ha initialization and decomposition.
-const ignition = ignitionDictionary(initialization, names, injectorMesh ? injectorRegions(streams,names,Boolean(realFluid)) : '');
+const ignition = ignitionDictionary(initialization, names, reviewedMesh ? reviewedRegions(streams,names,Boolean(realFluid)) : injectorMesh ? injectorRegions(streams,names,Boolean(realFluid)) : '');
 if (ignition) await put('system/setFieldsDict', ignition);
 await put('0/p', header('p', 'volScalarField') + `dimensions [1 -1 -2 0 0 0 0];
 internalField uniform ${pressure};
