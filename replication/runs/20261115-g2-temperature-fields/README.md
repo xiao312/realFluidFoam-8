@@ -164,3 +164,20 @@ stoichiometric rate projection at the worst node and unchanged input hashes.
 NASA extrapolation at cold temperatures and ideal concentration kinetics remain
 explicit limitations; neither a node audit nor a sensitivity result is physical
 FGM validation.
+
+`plot-source-history.py` compares completed-step extrema with the first and
+final second source-stage increments from the same immutable solver log. Inputs
+are `--history` and `--stages` JSON receipts sharing job, log hash, time-zero
+origin and exact completed-step times. It rejects repeated first stages and
+missing reactive second stages. The producer must bind a first-stage line to
+its own `t=`: this solver prints it before the corresponding `Time =` line.
+It must retain only the final second-stage evaluation, never sum PIMPLE trials.
+Outputs under a new `--out` are PNG, SVG and hash-bound evidence; default is a
+read-only plan and `--apply` writes them. NumPy and Matplotlib are rendering
+dependencies; no solver, network, credentials or remote writes are involved.
+Example: `python plot-source-history.py --history completed.json --stages
+source-stages.json --out source-history [--apply]`. Verify input/log identities,
+strictly increasing finite rows and an independently read first ignited step.
+Stage increments are kilograms per evaluation, not rates or a closed progress
+budget. A positive global increment does not establish every cell's source sign
+or prove the cause of extinction. No source scaling or science approval occurs.
