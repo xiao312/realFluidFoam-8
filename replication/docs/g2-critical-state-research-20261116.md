@@ -17,3 +17,27 @@ Two fresh cases on the approved geometry reject oxygen-rich near-exit states aro
 Select the existing constant-background low-Mach approximation in a separate original-zero genuine-FGM case: EOS p0=5.61MPa, projected mechanical pressure, thermal absolute Ha, unchanged table, geometry and caloric/species criteria. It deliberately omits acoustics and kinetic/dynamic-pressure-work contributions. It is not a fix of the compressible baseline and does not reclassify earlier failed contact tests. Measure both pressures, Mach, density consistency, mass/Ha budgets and temperature profiles. In parallel retain the cold source-paused control to distinguish mixing from reacting-product state effects. If captured roots remain inadmissible atp0, investigate phase-aware thermodynamics/manifold coverage rather than widening tolerances or fitting rates.
 
 Source downloads and SHA256 receipts are retained in the operator workspace references/source-index.json. The PelePhysics development URL and CoolProp master URL are moving sources; this note records inspected implementation patterns, not a claim that a particular unpinned upstream revision was deployed.
+
+## 17 November, startup and pressure-model distinction
+
+The constant-p0 experiment128208849 developed mechanical pressure near
+−6.32e37Pa at1.83ns and was stopped. It does not qualify that model. A separate
+original-zero density-weighted mass-flux projection tests whether inconsistent
+duct/chamber initial flux contributes to startup failure. Its first allocation
+128210107 compiled/linked the standalone helper, but rejected an invalid cold
+case configuration before running the projection. Corrected controls remain
+pending; no physical success is implied by the build receipt.
+
+[DeepFlame's current pEqn.H](https://github.com/deepmodeling/deepflame-dev/blob/master/applications/solvers/dfLowMachFoam/pEqn.H)
+retains a pressure correction proportional to psi together with an explicit
+density time derivative and corrects thermodynamic density after pressure.
+Its solver name does not mean it implements our strict constant-p0 experiment.
+Copying its pressure equation without its thermo/density lifecycle would be an
+unsupported substitution.
+
+[PeleLMeX's mathematical model](https://github.com/Pele-Suite/PeleLMeX/blob/development/Docs/sphinx/manual/Model.rst)
+derives a velocity-divergence constraint from the EOS, species and enthalpy
+equations. The constraint depends on the EOS. This supports checking the whole
+mass/scalar/thermo/projection lifecycle, rather than only suppressing acoustic
+pressure dependence. Our time-zero fixed-density projection tests initial flux
+compatibility only; it is not that reacting divergence constraint or a VLE model.
