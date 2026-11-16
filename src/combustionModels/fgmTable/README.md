@@ -1,5 +1,18 @@
 # FGM composition and source lookup
 
+`fgmMappedSource.H` handles representationally collapsed raw-C knots. A tiny
+positive Z next to a pure-stream row can produce a nonzero subnormal C span
+with repeated interior double values. Only when exact knot equality occurs,
+source integration uses the original strict eta grid and d(eta)/dt=Sc/(rho*span),
+then maps the result back to raw C with long-double intermediates. Ordinary
+strictly increasing raw-C curves use the unchanged kernel. Fully zero-span rows
+retain their existing boundary-event handling. This changes no Z tolerance,
+coverage, chemistry or acceptance criterion. The captured physical failure is
+job128168812, Z=1.58101006669e-322, rho=1181.27902984, C=0. Verify normal-path
+parity, subnormal/offset knot collapse, signed sources and invalid-input refusal
+with `replication/validation/mascotte-g2/direct-fgm/mapped_source_probe.C`, then
+rerun the actual physical table/cold-mixing case from zero.
+
 This module reads a declared table and supplies composition, raw progress
 production and volumetric heat release to the solver. Thermodynamics owns
 density, temperature and sensible energy. It does not generate flamelets,

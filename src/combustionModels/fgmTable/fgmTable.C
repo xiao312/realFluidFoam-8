@@ -24,6 +24,7 @@ License
 \*---------------------------------------------------------------------------*/
 
 #include "fgmTable.H"
+#include "fgmMappedSource.H"
 #include "Switch.H"
 #include "fvmSup.H"
 #include "error.H"
@@ -407,14 +408,17 @@ void Foam::combustionModels::fgmTable<ReactionThermo>::correct()
     scalar clipCount = table.clipCount();
     scalar maxCExcursion = table.maxProgressExcursion();
     scalar maxZExcursion = table.maxZExcursion();
+    scalar sourceCoordinateFallbacks = forgeFgm::mappedSourceFallbackCount();
     reduce(lookupCount, sumOp<scalar>());
     reduce(clipCount, sumOp<scalar>());
     reduce(maxCExcursion, maxOp<scalar>());
     reduce(maxZExcursion, maxOp<scalar>());
+    reduce(sourceCoordinateFallbacks, sumOp<scalar>());
     Info<< "fgmBounds cumulativeLookups=" << lookupCount
         << " cumulativeCorrections=" << clipCount
         << " maxProgressExcursion=" << maxCExcursion
-        << " maxZExcursion=" << maxZExcursion << endl;
+        << " maxZExcursion=" << maxZExcursion
+        << " sourceCoordinateFallbacks=" << sourceCoordinateFallbacks << endl;
 
     worstCellSum_ = max(worstCellSum_, worstSum);
     ++nCorrect_;

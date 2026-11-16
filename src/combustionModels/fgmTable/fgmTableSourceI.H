@@ -71,5 +71,10 @@ forgeFgm::SourceAdvance Foam::fgm::fgmTableReader::advanceSource
             if (source != 0) return {initial, 0, 0, true};
         return {initial, duration, 0, false};
     }
-    return forgeFgm::FixedStateSource(coordinates, sources).advance(density, initial, duration);
+    // Keep the ordinary hot/mixing path allocation and arithmetic unchanged.
+    if (std::adjacent_find(coordinates.begin(),coordinates.end())==coordinates.end())
+        return forgeFgm::FixedStateSource(coordinates,sources).advance(density,initial,duration);
+    const std::vector<double> normalized(c_.begin(), c_.end());
+    return forgeFgm::advanceMappedSource
+        (coordinates, normalized, sources, density, initial, duration);
 }

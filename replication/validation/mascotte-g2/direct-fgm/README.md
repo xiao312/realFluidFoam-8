@@ -1,5 +1,13 @@
 # Warm FGM coupling on the retained G2-related mesh
 
+`mapped_source_probe.C` exercises the production std-only mapped-source helper:
+compile with `g++ -std=c++11 -O2 -I ../../../../src/combustionModels/fgmTable`
+from this module (or use an absolute include directory), then run the executable.
+Expected `MAPPED_SOURCE ... PASS`. It enables invalid/divzero/overflow traps and
+checks the exact normal integration path, subnormal/offset collapsed knots,
+signed evolution and malformed-coordinate refusal. This arithmetic control must
+be followed by the actual failing physical table and fresh-zero mixing case.
+
 `product-identity.mjs` verifies both full-build receipts with byte counts and
 derived receipts with explicit inherited-library paths. SHA256 verification is
 mandatory in both; the initializer also verifies the real inherited path and
