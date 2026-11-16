@@ -121,6 +121,14 @@ and leaves their captions and primary comparison images unchanged. A labelled
 axisymmetric reflection provides a second near-field display. It adds no cells
 or information to the simulated upper half-domain.
 
+For rejected nonlinear snapshots, the collection must explicitly set
+`stateQualification: rejected-nonlinear-state` and bind a local failure record
+with `{path, sha256}`. `render-case.py` verifies that record and labels the
+image as rejected rather than an accepted timestep. The cell mapping, input
+hashes, finite-field checks and raw values are unchanged. Rendering a failed
+state exposes a diagnostic; it cannot qualify a scientific comparison or a
+CFD restart. Existing retained-timestep collections keep their original title.
+
 `audit-table-chemistry.py` separately checks the stored source at every physical
 table node against pressure-based Cantera kinetics at the same frozen Y/T.
 It also reports sensitivity to declared temperature offsets; it integrates no

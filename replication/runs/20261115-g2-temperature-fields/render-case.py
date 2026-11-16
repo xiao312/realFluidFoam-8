@@ -104,6 +104,13 @@ def main():
     if args.plan and args.apply:
         parser.error("Use --plan or --apply")
     receipt = json.loads(args.collection.read_text())
+    qualification = receipt.get('stateQualification', 'retained-timestep')
+    if qualification not in ['retained-timestep', 'rejected-nonlinear-state']:
+        raise ValueError('Unknown retained-state qualification')
+    failure = receipt.get('failureRecord')
+    if qualification == 'rejected-nonlinear-state':
+        if not isinstance(failure, dict) or digest(Path(failure['path'])) != failure['sha256']:
+            raise ValueError('Rejected state requires a hash-bound failure record')
     if receipt.get("schema") != "retained-cfd-cell-field/v1" or receipt.get("CFDStartTime_s") != 0 or receipt.get("isTimeMean") is not False:
         raise ValueError("Explicit original-zero instantaneous collection required")
     if not isinstance(receipt["ranks"], int) or receipt["ranks"] < 1 or not 0 < receipt["time_s"] == float(receipt["timeDirectory"]):
@@ -133,12 +140,18 @@ def main():
         axis.set_aspect("equal")
         axis.set_facecolor("#e7e7e7")
     fig.colorbar(collection, ax=list(axes), label="Temperature (K)", pad=.02, extend="both")
-    fig.suptitle(f"Inlet-resolved G2 | job {receipt['sourceJob']} | t = {receipt['time_s']*1e6:g} μs\nInstantaneous startup, not a developed paper mean", fontsize=14)
+    status = ('Rejected nonlinear state, not an accepted timestep or paper mean'
+              if qualification == 'rejected-nonlinear-state'
+              else 'Instantaneous startup, not a developed paper mean')
+    fig.suptitle(f"Inlet-resolved G2 | job {receipt['sourceJob']} | t = {receipt['time_s']*1e6:g} μs\n{status}", fontsize=14)
     image = args.out / "temperature-field.png"
     fig.savefig(image, dpi=180)
     plt.close(fig)
     np.savez_compressed(args.out / "cells.npz", T_K=values, center_x_r_mm=centers, polygons_mm=np.array(polygons, dtype=object))
     evidence = dict(**plan, cells=len(values), Tmin_K=float(values.min()), Tmax_K=float(values.max()), imageSha256=digest(image), plottingCodeSha256=digest(Path(__file__)), mappedCellsExactlyOnce=True, fieldMethod="Piecewise-constant actual finite-volume polygons; no smoothing or interpolation", inputHashes=receipt["inputHashes"], CFDStartTime_s=0, isTimeMean=False, scientificAcceptance=False)
+    evidence['stateQualification'] = qualification
+    if failure is not None:
+        evidence['failureRecord'] = failure
     (args.out / "evidence.json").write_text(json.dumps(evidence, indent=2)+"\n")
     print(json.dumps({key: value for key, value in evidence.items() if key != "inputHashes"}))
 
