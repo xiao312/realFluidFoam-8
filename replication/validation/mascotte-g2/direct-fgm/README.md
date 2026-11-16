@@ -1,5 +1,11 @@
 # Warm FGM coupling on the retained G2-related mesh
 
+The result checker recognizes the explicitly configured optimized FGM RANS
+identity only when its manifest, suppression flag, named policy and source
+integration agree. Runtime model-selection and diffusion-policy log checks
+remain mandatory. This is execution-identity checking, not transport parity
+qualification or paper acceptance; those require separate actual receipts.
+
 `configure-coupled.mjs CASE inner|densityHa|densityHaDifferential [--apply]`
 prepares a separately identified pressure/scalar iteration experiment. Its
 default is a read-only plan; writes require an allocation and a fresh,

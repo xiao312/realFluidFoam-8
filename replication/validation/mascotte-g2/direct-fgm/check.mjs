@@ -70,8 +70,13 @@ if (!steady && manifest.sourceIntegration) mechanicalChecks.executedSourceIntegr
 if (manifest.skipUnusedDiffusion !== undefined) mechanicalChecks.executedDiffusionPolicy =
   log.includes(`FGM_DIMIX_POLICY calculation=suppressed access=forbidden transport=${rans ? 'RAS-eddyDiffusivity' : 'Fourier'} energy=absoluteEnthalpy`) === manifest.skipUnusedDiffusion;
 if (rans) {
-  const declaredFgm = manifest.closure==='fgm' && manifest.skipUnusedDiffusion===false &&
-    manifest.ransDiagnostic.policyMode==='full-property-FGM-diagnostic' &&
+  const fullPropertyIdentity = manifest.skipUnusedDiffusion===false &&
+    manifest.ransDiagnostic.policyMode==='full-property-FGM-diagnostic';
+  const suppressedIdentity = manifest.skipUnusedDiffusion===true &&
+    manifest.ransDiagnostic.policyMode==='experimental-suppressed-FGM-parity-required' &&
+    manifest.ransDiagnostic.config.unusedDiffusionPolicy==='suppress-unity-Le' &&
+    manifest.sourceIntegration==='strangFixedState';
+  const declaredFgm = manifest.closure==='fgm' && (fullPropertyIdentity||suppressedIdentity) &&
     manifest.fgmMeanSource?.sourceTreatment==='delta-at-mean-Z-C' &&
     manifest.fgmMeanSource.presumedPDF===false && /Selecting combustion model fgmTable/.test(log);
   mechanicalChecks.declaredRansClosure = (steady||declaredFgm) && manifest.ransDiagnostic.config.model === 'kEpsilon' &&
