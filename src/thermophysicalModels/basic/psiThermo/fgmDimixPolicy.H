@@ -18,7 +18,7 @@ inline bool fgmDimixSuppressed(const fvMesh& mesh)
 }
 
 // An explicit development closure, not a blanket permission for turbulent
-// transport. This exact model uses alphaEff for both Ha and Z, never Dimix.
+// transport. This exact model uses alphaEff for Ha, Z and raw C, never Dimix.
 inline bool validateFgmRansUnityLeDiagnostic
 (
     const fvMesh& mesh, const dictionary& momentum,
@@ -27,9 +27,12 @@ inline bool validateFgmRansUnityLeDiagnostic
 {
     if (!mesh.time().controlDict().lookupOrDefault<Switch>
         ("fgmRansUnityLeDiagnostic", false)) return false;
+    const bool splitProgress = combustionType == "fgmTable"
+        && mesh.time().controlDict().lookupOrDefault<word>
+            ("fgmSourceIntegration", "") == "strangFixedState";
     if
     (
-        combustionType != "steadyFlamelet"
+        !(combustionType == "steadyFlamelet" || splitProgress)
      || momentum.lookupOrDefault<word>("simulationType", "") != "RAS"
      || !momentum.found("RAS")
      || momentum.subDict("RAS").lookupOrDefault<word>("model", "") != "kEpsilon"
@@ -41,7 +44,7 @@ inline bool validateFgmRansUnityLeDiagnostic
     )
     {
         FatalErrorInFunction
-            << "fgmRansUnityLeDiagnostic requires steadyFlamelet, RAS kEpsilon "
+            << "fgmRansUnityLeDiagnostic requires steadyFlamelet or strangFixedState fgmTable, RAS kEpsilon "
             << "with turbulence on, and RAS eddyDiffusivity Prt 0.7"
             << exit(FatalError);
     }
