@@ -193,3 +193,8 @@ reverse dependency into mesh generation, thermodynamics or solver source.
 Science-batch syntax preflight invokes explicit Bash and the current Node binary
 in parse-only modes. It consumes frozen payload/child files and emits hash-bound
 receipts; it does not depend on or invoke scheduler adapters or scientific code.
+
+The optional inlet-ramp configurator consumes a stationary original-zero case
+and executing-EOS inlet receipt. It emits native OF8 flow tables and a manifest
+schedule consumed by the equation-budget reader. It does not depend on or
+change turbulence initialization, table chemistry or thermodynamic recovery.

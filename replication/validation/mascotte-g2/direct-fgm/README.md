@@ -397,6 +397,18 @@ and acceptance threshold is identical; the streamed report adds full raw-log
 identity and original line mappings. A changed or over-budget log fails openly.
 # Optional RANS diagnostic
 
+`configure-inlet-ramp.mjs CASE --duration SECONDS [--apply]` optionally replaces
+the two constant inlet mass flows with native OF8 Function1 tables ramping from
+zero to the unchanged final targets. It requires a stationary original-zero,
+undecomposed tapered-injector case after executing-EOS inlet initialization.
+It changes only initial boundary velocity, flow schedules and their provenance;
+temperature, composition, enthalpy, geometry and acceptance stay unchanged.
+Before the ramp ends, this is a startup diagnostic rather than paper steady
+inlet conditions. Node built-ins only; no network or secrets. Apply requires
+an admitted Slurm workspace. Verify syntax, read-only hash stability, duration
+rejection and the actual batch boundary-flow histories. The budget reader uses
+the declared schedule when computing inlet flux errors.
+
 The separate [RANS configurator](../rans-diagnostic/README.md) can prepare a new
 cold steady-flamelet case or an explicit full-property transported-progress
 FGM case with a declared kEpsilon/eddyDiffusivity closure. The latter requires

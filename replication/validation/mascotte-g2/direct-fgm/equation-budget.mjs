@@ -12,6 +12,9 @@ for(let i=2;i<process.argv.length;i+=2){
 if(!options['--case']||!options['--log'])throw Error('Explicit case and retained log required');
 const root=options['--case'],sha=b=>createHash('sha256').update(b).digest('hex');
 const manifestRaw=await readFile(root+'/direct-g2-input.json'),manifest=JSON.parse(manifestRaw);
+const startup=manifest.inletStartup;
+if(startup&&(startup.mode!=='linear-mass-flow-ramp-from-rest'||
+  !(startup.duration_s>0&&startup.duration_s<manifest.endTime)))throw Error('Unsupported inlet schedule');
 if(manifest.startTime!==0||manifest.energyForm!=='absoluteEnthalpy')throw Error('Original-zero absolute-Ha case required');
 const raw=await readFile(options['--log']),text=raw.toString();
 function records(prefix,keys){
@@ -71,7 +74,8 @@ if(!boundaryUnavailable)for(let i=1;i<states.length;i++){
   if(rows.some(r=>!r)){missingBoundary.push(state.t);continue;}
   boundaryIntegral+=dt*rows.reduce((s,r)=>s+r.flux,0);
   for(let j=0;j<2;j++){
-    const patch=patches[j],expected=-manifest.streams[patch].massFlow_kg_s;
+    const patch=patches[j],fraction=startup?Math.min(state.t/startup.duration_s,1):1;
+    const expected=-manifest.streams[patch].massFlow_kg_s*fraction;
     inletErrors[patch]=Math.max(inletErrors[patch],Math.abs(rows[j].flux/expected-1));
   }
 }
