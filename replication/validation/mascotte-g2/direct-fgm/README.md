@@ -453,3 +453,15 @@ Reviewed-mesh observations require explicit `axialOrigin_m:0.01`. Radial station
 The stationary inlet-ramp initializer also accepts the explicit audited reviewed-legacy mesh mode. It still requires original-zero undecomposed stationary U and an executing-EOS inlet receipt. Geometry selection does not alter mass-flow targets, thermodynamics or rejection criteria.
 
 `configure-low-mach.mjs CASE [--apply]` selects the existing compiled constant-p0 open-domain approximation for a separate original-zero split-FGM experiment after `configure-fgm` and `configure-coupled inner`, before initialization. It refuses differential pressure or rho/Ha predictors, clones the actual pressure solver groups for pMechanical, records original/new hashes, and leaves all caloric/species criteria unchanged. Thermal absolute Ha omits kinetic/dynamic-pressure work consistently with the compiled low-Mach model. EOS pressure is fixed at the declared case pressure; mechanical pressure remains separately solved/written. This is not a repair/qualification of the fully compressible baseline or a claim that earlier failed contact tests now pass. Node standard library only; no scheduler, secrets, kinetics, table or geometry ownership. Verification: read-only plan, fresh-case rejection controls, exact compatible runtime identity and actual original-zero physical output including Mach/pressure/EOS/mass/Ha diagnostics. Default behavior stays unchanged.
+# Local-Z ignition control
+
+`local-z-ignition-control.json` records the reviewed-mesh cold-to-reacting
+experiment: original-zero primed ducts and100us flow ramp, followed in the same
+process by source-peak ignition at raw x10–14mm and local Z0.08–0.30. It preserves
+Z/absolute Ha at ignition and reports its numerical density/mass change. The
+reference protocol is applied by a frozen batch through the existing preparation
+and compiled ignition interfaces; it is not a new generic CLI schema. Dependencies
+and secret/scheduler boundaries are unchanged. Verify exact JSON/hash binding,
+compiled origin selection, actual event location/count, local Z/Ha accounting,
+final caloric enforcement, conservation and physical profiles. No source fitting,
+saved CFD start, paper ignition or LES/PDF equivalence is implied.
