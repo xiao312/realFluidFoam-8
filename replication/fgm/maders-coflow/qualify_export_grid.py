@@ -20,6 +20,23 @@ def load(directory):
     initial = json.loads((directory / 'initialization.json').read_text())
     with np.load(directory / 'table.npz') as stored:
         arrays = {key: stored[key].copy() for key in stored.files}
+    # NPZ is used by the evaluator, while CFD reads ASCII. Bind every numeric
+    # block, rather than trusting two files merely because they share a folder.
+    lines = (directory / 'physical.tbl').read_text().splitlines()
+    for prefix, key in [('z ', 'Z'), ('c ', 'eta'), ('c-min ', 'c_min'), ('c-max ', 'c_max')]:
+        matches = [line for line in lines if line.startswith(prefix)]
+        if len(matches) != 1 or not np.array_equal(np.fromstring(matches[0][len(prefix):], sep=' '), arrays[key]):
+            raise ValueError('ASCII/NPZ coordinate mismatch: ' + key)
+    blocks = [('Y ' + name, arrays['values'][:, :, 3+i]) for i, name in enumerate(arrays['species'])]
+    blocks += [('Sc', arrays['values'][:, :, 1]), ('Q', arrays['values'][:, :, 2]), ('Tdiag', arrays['values'][:, :, 0])]
+    for name, expected in blocks:
+        marker = 'block ' + name
+        if lines.count(marker) != 1:
+            raise ValueError('Missing/duplicate ASCII block: ' + name)
+        start = lines.index(marker) + 1
+        actual = np.array([np.fromstring(line, sep=' ') for line in lines[start:start+len(arrays['Z'])]])
+        if lines[start+len(arrays['Z'])] != 'end' or not np.array_equal(actual, expected):
+            raise ValueError('ASCII/NPZ values mismatch: ' + name)
     return receipt, metadata, initial, arrays
 
 
