@@ -33,6 +33,15 @@ developed flow. Chamber initialization remains the explicit case selection.
 `uniform-cmin` may select a pure-stream endpoint, including pure fuel Z=1/C=0;
 hot covered and localized seeds still require an interior mixture fraction.
 
+For an independent ignition-method control, `localized-covered` accepts optional
+`backgroundMixtureFraction` in [0,1]. The default remains the hot state's Z.
+Selecting1 gives cold fuel outside a declared hot table-consistent kernel. The
+executing EOS initializes Ha/density everywhere before the first CFD timestep;
+there is no mid-run density/mass jump. The kernel still constitutes an explicit
+initial-condition assumption, not recovered literature ignition or convergence.
+Compare against scheduled ignition as separate original-zero cases. Verify with
+the actual physical-table plan and inspect the selected kernel/duct cell counts.
+
 `strangFixedState` accepts the existing explicit `error` or `clamp` policy,
 matching the already implemented reader/source integrator. The default remains
 error; operational clamp reports coordinate corrections and source-stage mass

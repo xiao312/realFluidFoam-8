@@ -48,7 +48,7 @@ export async function realFluidInput(directory, input) {
 export async function initializationInput(path, input) {
   const raw = path ? await readFile(path) : null;
   const config = raw ? JSON.parse(raw) : { mode: 'uniform-covered', mixtureFraction: 0.2, hotEta: 0.5 };
-  const allowed = ['mode', 'mixtureFraction', 'hotEta', 'boxMin_m', 'boxMax_m'];
+  const allowed = ['mode', 'mixtureFraction', 'hotEta', 'boxMin_m', 'boxMax_m', 'backgroundMixtureFraction'];
   for (const key of Object.keys(config)) if (!allowed.includes(key)) throw new Error(`Unknown initialization.${key}`);
   const eta = config.mode === 'uniform-cmin' ? 0 : config.hotEta;
   if (!['uniform-covered', 'uniform-cmin', 'localized-covered'].includes(config.mode) || !Number.isFinite(config.mixtureFraction) ||
@@ -56,7 +56,12 @@ export async function initializationInput(path, input) {
       (config.mode !== 'uniform-cmin' && !(config.mixtureFraction > 0 && config.mixtureFraction < 1)) || !Number.isFinite(eta) || eta < 0 || eta > 1 ||
       (config.mode !== 'uniform-cmin' && eta === 0) || (config.mode === 'uniform-cmin' && config.hotEta !== undefined)) throw new Error('Invalid covered initialization state');
   const hot = input.lookup(config.mixtureFraction, eta);
-  const background = config.mode === 'localized-covered' ? input.lookup(config.mixtureFraction, 0) : hot;
+  if (config.backgroundMixtureFraction !== undefined &&
+      (config.mode !== 'localized-covered' || !Number.isFinite(config.backgroundMixtureFraction) ||
+       config.backgroundMixtureFraction < 0 || config.backgroundMixtureFraction > 1))
+    throw Error('backgroundMixtureFraction is a localized-only fraction in [0,1]');
+  const background = config.mode === 'localized-covered'
+    ? input.lookup(config.backgroundMixtureFraction ?? config.mixtureFraction, 0) : hot;
   if (config.mode === 'localized-covered') {
     for (const key of ['boxMin_m', 'boxMax_m']) if (!Array.isArray(config[key]) || config[key].length !== 3 || !config[key].every(Number.isFinite)) throw new Error(`Invalid initialization.${key}`);
     if (config.boxMin_m.some((v, i) => v >= config.boxMax_m[i]) || config.boxMin_m[0] < 0 || config.boxMax_m[0] > 0.2 ||
@@ -66,7 +71,7 @@ export async function initializationInput(path, input) {
   } else if (config.boxMin_m || config.boxMax_m) throw new Error('Uniform initialization does not consume an ignition box');
   return { config, sha256: raw ? digest(raw) : null, hot, background,
     interpretation: config.mode === 'localized-covered'
-      ? 'Table Cmin background and covered hot state in an explicit raw-coordinate box; no evolved CFD, no rounding Cmin to zero.'
+      ? 'Declared table Cmin background and covered hot state in an explicit raw-coordinate box at timezero; executing EOS initializes Ha and density. No runtime mass/temperature jump, evolved CFD or rounding Cmin to zero.'
       : config.mode === 'uniform-cmin'
         ? 'Uniform actual table Cmin state, retaining any tiny positive C; source-disabled transport diagnostic, not a flame.'
         : 'Uniform table-covered partly reacted fill; startup coupling only, not physical flame morphology.' };
