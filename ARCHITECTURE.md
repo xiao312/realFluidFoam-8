@@ -1,5 +1,10 @@
 # Experimental solver boundaries
 
+The direct-FGM case module owns explicit inner/density-Ha/differential-pressure
+experiment configuration and dictionary provenance. It selects existing solver
+helpers, never implements EOS recovery, grants scheduler resources or changes
+scientific acceptance. The compiled solver remains the execution authority.
+
 The solver inner scalar/energy lifecycle supports the existing split FGM
 source only through its unchanged old-time transport anchor. Source first-half
 ownership remains outside PIMPLE; repeated corrections recompute the second

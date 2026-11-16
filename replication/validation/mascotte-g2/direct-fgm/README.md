@@ -1,5 +1,27 @@
 # Warm FGM coupling on the retained G2-related mesh
 
+`configure-coupled.mjs CASE inner|densityHa|densityHaDifferential [--apply]`
+prepares a separately identified pressure/scalar iteration experiment. Its
+default is a read-only plan; writes require an allocation and a fresh,
+undecomposed split-FGM absolute-Ha case after `configure-fgm.mjs`, before
+runtime initialization. `inner` repeats scalar/energy corrections within PISO
+using the unchanged source old-time anchor. `densityHa` additionally selects
+the existing conserved-density/Ha recovery and bounded pressure/property loop.
+`densityHaDifferential` also uses the existing fixed-h SRK pressure tangent.
+No case state, table, chemistry, timestep, acceptance criterion or library
+property is changed. The manifest retains the precise mode and dictionary
+hashes. Repeated/evolved case configuration is refused.
+
+This depends on the compiled solver's split-FGM inner lifecycle and existing
+SRK recovery/pressure-slope helpers, with all matching runtime products. It
+does not implement VLE or make an unstable captured state admissible. Example:
+`node configure-coupled.mjs /workspace/cases/new-g2 densityHaDifferential`.
+Verify syntax and the read-only plan, then execute captured-state queries,
+default-off/source-iteration controls and fresh-zero flows. Inspect actual
+source history, pressure retries and all original energy/closure failures.
+An independently permitted diagnostic does not turn a failed baseline check
+into a pass. No network, secret or infrastructure interface is introduced.
+
 `mapped_source_probe.C` exercises the production std-only mapped-source helper:
 compile with `g++ -std=c++11 -O2 -I ../../../../src/combustionModels/fgmTable`
 from this module (or use an absolute include directory), then run the executable.
