@@ -404,6 +404,29 @@ void Foam::combustionModels::fgmTable<ReactionThermo>::correct()
     // patches after replacing internal composition; preserve case-fixed inlets.
     forAll(Y, s) Y[s].correctBoundaryConditions();
 
+    // These calculated fields have no transported boundary equation to refresh
+    // their constructor values. Evaluate the actual boundary lookup; copying
+    // adjacent internal diagnostics would misrepresent fixed inlet Z/C states.
+    // Tdiag remains diagnostic and never overwrites thermodynamic temperature.
+    forAll(Z_.boundaryField(), patchi)
+    {
+        const scalarField& zp = Z_.boundaryField()[patchi];
+        const scalarField& cp = c_.boundaryField()[patchi];
+        scalarField scp(zp.size()), sourcep(zp.size()), qp(zp.size()), tp(zp.size());
+        forAll(zp, facei)
+        {
+            table.lookup(zp[facei], cp[facei], Ylookup, Sc, Q, Td);
+            scp[facei] = Sc;
+            sourcep[facei] = table.sourceOfC(Sc);
+            qp[facei] = Q;
+            tp[facei] = Td;
+        }
+        Sc_.boundaryFieldRef()[patchi] == scp;
+        ScSource_.boundaryFieldRef()[patchi] == sourcep;
+        Qdot_.boundaryFieldRef()[patchi] == qp;
+        Tdiag_.boundaryFieldRef()[patchi] == tp;
+    }
+
     scalar lookupCount = table.lookupCount();
     scalar clipCount = table.clipCount();
     scalar maxCExcursion = table.maxProgressExcursion();

@@ -1,5 +1,17 @@
 # FGM composition and source lookup
 
+Derived source/temperature diagnostic patch values are evaluated from the
+current boundary Z/C, after species boundary updates. These fields are created
+as calculated fields, so assigning internal values alone leaves their patches
+at the constructor's zero. Explicit patch assignment refreshes fgmSc,
+fgmScSource, fgmQdot and fgmTdiag without changing transported coordinates,
+species boundary types or thermodynamic temperature. This is table-state
+diagnostic data, not measured boundary heat flux. Qualify with fresh old/new
+internal-field parity and nonzero boundary-table lookups through the real
+compiled runtime before relying on a new build's patch diagnostics. Existing
+309 and earlier runtime receipts still have stale diagnostic patches and must
+retain their internal-cell-only audit limitation.
+
 `fgmMappedSource.H` handles representationally collapsed raw-C knots. A tiny
 positive Z next to a pure-stream row can produce a nonzero subnormal C span
 with repeated interior double values. Only when exact knot equality occurs,
