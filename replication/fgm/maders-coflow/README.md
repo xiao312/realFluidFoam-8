@@ -15,6 +15,31 @@ Verify against the retained A07 final-step mass/flux values and reject mismatche
 patch hashes or a final-time mismatch. The caller must bind the log excerpt to
 the actual job and executing source; an excerpt alone is not a full-log receipt.
 
+`quenching.py` accepts optional `quenching_times_s` and
+`quenching_holdout_times_s` in its existing JSON configuration. These change
+output sampling only; the mechanism, streams, scalar dissipation, solver
+tolerances and default time list remain unchanged. Times must start at zero,
+increase strictly and be finite; held-out times must be a unique subset.
+The driver marks held-out snapshots in the physical manifest, and
+`export_table.py` excludes them from training. Numerical flamelet continuation
+belongs to library construction; CFD still starts at its original time zero.
+
+`quenching-dense-output.json` declares finer logarithmic sampling with interleaved
+withheld times. Its purpose is to test source/state interpolation across the
+previous100–300microsecond quenching gap, not fit paper curves. The original
+steady held-out data remain independent and unchanged. `export_holdout.py`
+creates a separate hash-bound temporal hold-out dataset from marked physical
+states. `qualify_family_refinement.py` checks unchanged thermochemistry/streams,
+the same Z/eta axes and existing composition/progress tolerances. It does not
+turn a failed physical error metric into acceptance.
+
+Example: `python quenching.py --config quenching-dense-output.json --out NEW_FAMILY
+--plan`, then execute the same command without `--plan` in a Slurm allocation.
+Plan and execute `export_holdout.py --family NEW_FAMILY --out NEW_REFERENCE` and
+evaluate each candidate against both the frozen steady reference and the new
+withheld temporal states. Run allocated C++ reader parity before CFD. Preserve
+every physical failure; no rates, species or table values are clipped or fitted.
+
 `timestep-co0125.json` declares an original-zero temporal-refinement control:
 same A07 physical table, geometry, inlets and50ms upper-progress ignition,
 maxCo0.125/maxdt25us instead of0.25/50us, requested end250ms. Apply its values

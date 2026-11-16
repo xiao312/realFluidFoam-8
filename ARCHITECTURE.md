@@ -88,6 +88,10 @@ Within `replication/fgm/maders-coflow`, `field_audit.py` consumes hashed exporte
 NPZ tables and retained CSV profiles. It independently compares mapped-C lookup
 and inlet enthalpy; NumPy is its only external dependency. It never changes CFD,
 reference data, diagnostic fields or scientific acceptance.
+The same physical-family module supports explicit temporal sampling and marked
+hold-out states. Table export excludes those states; a separate reference export
+and family-refinement check bind unchanged physics and prevent training leakage.
+This adds an interpolation diagnostic, not a new scientific acceptance policy.
 
 `replication/runs/20261115-g2-temperature-fields/` includes a receipt-driven
 single-case renderer with explicit ranks/time for tapered injector meshes. It

@@ -31,7 +31,8 @@ def main():
         family=json.loads(a.family_manifest.read_text())
         if family.get('schema')!='maders-quenching-family/v1':raise ValueError('Unknown family manifest')
         if not family.get('quenching_reached_cold'):raise ValueError('Quenching path incomplete; retain evidence before export')
-        rows=[r for r in family['profiles'] if r['finite'] and r.get('solver_error') is None
+        rows=[r for r in family['profiles'] if not r.get('held_out', False)
+              and r['finite'] and r.get('solver_error') is None
               and (r['kind']=='transient-quenching' or
                    (r['steady_residual_pass'] and r['chi_st_s_inverse'] not in [5.,10.]))]
         files=[a.family_manifest.parent/r['profile'] for r in rows]

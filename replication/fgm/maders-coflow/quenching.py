@@ -2,6 +2,7 @@
 import argparse
 import hashlib
 import json
+import math
 from pathlib import Path
 import time
 import traceback
@@ -15,6 +16,23 @@ def write(path, value):
     path.write_text(json.dumps(value, indent=2, allow_nan=False) + "\n")
 
 
+def sampling(config):
+    default = [0., 1e-6, 3e-6, 1e-5, 3e-5, .0001, .0003, .001, .003, .01, .03, .1, .2]
+    times = config.get('quenching_times_s', default)
+    held = config.get('quenching_holdout_times_s', [])
+    if (not isinstance(times, list) or len(times)<2 or times[0]!=0 or
+        any(isinstance(t, bool) or not isinstance(t, (int, float)) or
+            not math.isfinite(t) or t<0 for t in times) or
+        any(b<=a for a,b in zip(times, times[1:]))):
+        raise ValueError('Quenching times must be finite, start at zero and increase strictly')
+    if (not isinstance(held, list) or
+        any(isinstance(t, bool) or not isinstance(t, (int, float)) or
+            not math.isfinite(t) for t in held) or len(set(held))!=len(held) or
+        any(t not in times for t in held)):
+        raise ValueError('Held-out quenching times must be a unique subset of output times')
+    return times, held
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--config', type=Path, required=True)
@@ -24,10 +42,12 @@ def main():
     args = parser.parse_args()
     config = json.loads(args.config.read_text(encoding='utf-8-sig'))
     chis = [.03, .1, .3, 1., 3., 5., 10., 15., 20., 25., 30., 35., 40., 45., 50., 60., 80., 100.]
-    times = [0., 1e-6, 3e-6, 1e-5, 3e-5, .0001, .0003, .001, .003, .01, .03, .1, .2]
+    times, withheld = sampling(config)
     plan = dict(schema='maders-quenching-family/v1', grid_points=201,
                 chi_st_s_inverse=chis, transient_times_s=times,
+                withheld_transient_times_s=withheld,
                 mechanism_sha256=digest(args.mechanism), driver_sha256=digest(__file__),
+                configuration_sha256=digest(args.config),
                 formulation='Spitfire unity-Le, prescribed Peters chi; not resolved counterflow strain',
                 CFD=False, numerical_flamelet_continuation=True,
                 fit_to_paper=False, scientific_acceptance=False)
@@ -95,6 +115,8 @@ def main():
             diagnostic_Qdot_peak_W_m3=float((-omega@h0).max()),
             source_peak_kg_m3_s=float((omega@weights).max()),
             upstream_clipping='Retained Spitfire numerical policy; raw exported fractions preserved')
+        if kind=='transient-quenching' and time_s in withheld:
+            row['held_out'] = True
         write(directory/'receipt.json', row)
         manifest['profiles'].append(row); write(args.out/'manifest.json', manifest)
         print('PHYSICAL_PROFILE '+json.dumps(row), flush=True)
