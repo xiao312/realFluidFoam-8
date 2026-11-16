@@ -1,5 +1,20 @@
 # Maders 2017 reacting coflow preparation
 
+`profile_flow_audit.py` reads retained radial profiles, the hash-bound three-patch
+mass-flux collection, and a bounded native `energyState` log excerpt. It reports
+axial/radial velocities, axisymmetric advective mixture-fraction flux, and the
+final Euler global mass balance. It does not modify a case, fit chemistry, infer
+missing diffusive flux, or establish stationarity. Radial quadrature excludes
+unsampled end caps; its full-annulus approximation is separate from the exact
+wedge patch balance. Inputs are explicit local paths; output is a new directory,
+with source hashes and scientificAcceptance=false. NumPy and Python standard
+library only; no scheduler, network or secrets. Default mode is a read-only plan;
+use `--apply` to write. Example: `python profile_flow_audit.py --samples TIME_DIR
+--flux-collection COLLECTION.json --mass-log EXCERPT.txt --out NEW_DIR --apply`.
+Verify against the retained A07 final-step mass/flux values and reject mismatched
+patch hashes or a final-time mismatch. The caller must bind the log excerpt to
+the actual job and executing source; an excerpt alone is not a full-log receipt.
+
 `timestep-co0125.json` declares an original-zero temporal-refinement control:
 same A07 physical table, geometry, inlets and50ms upper-progress ignition,
 maxCo0.125/maxdt25us instead of0.25/50us, requested end250ms. Apply its values
