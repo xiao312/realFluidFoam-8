@@ -25,6 +25,15 @@ default is a read-only plan; writes require an allocation and a fresh,
 undecomposed split-FGM absolute-Ha case after `configure-fgm.mjs`, before
 runtime initialization.
 
+Optional `--pressure-damping --pressure-iterations 20` selects the separately
+qualified conservative pressure-step candidate and its bounded nonlinear solve
+budget. It requires a density/Ha mode; the existing1..50 iteration range and all
+final closure criteria remain unchanged. The receipt records the actual flag and
+count, and requests rejected-source state capture. Default output remains the
+same6-iteration coupling configuration. A new original-zero case and an exact
+qualified candidate executable are required; no live case is edited. Verify the
+read-only plan and emitted dictionary/receipt before physical execution.
+
 Optional `--defer-caloric --correctors 8` selects the compiled solver's
 nonlinear trial-audit lifecycle and an explicit bounded pressure/energy
 correction count. Intermediate finite

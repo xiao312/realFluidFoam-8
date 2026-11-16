@@ -2,17 +2,24 @@ import {readFile,readdir,writeFile} from 'node:fs/promises';
 import {resolve} from 'node:path';
 import {createHash} from 'node:crypto';
 
-const [directory,mode,...args]=process.argv.slice(2),options={apply:false,deferCaloric:false,correctors:null};
+const [directory,mode,...args]=process.argv.slice(2),options={apply:false,deferCaloric:false,correctors:null,pressureDamping:false,pressureIterations:null};
 if(!directory||!['inner','densityHa','densityHaDifferential'].includes(mode))
-  throw Error('Use NEW_CASE inner|densityHa|densityHaDifferential [--defer-caloric] [--correctors N] [--apply]');
+  throw Error('Use NEW_CASE inner|densityHa|densityHaDifferential [--defer-caloric] [--correctors N] [--pressure-damping] [--pressure-iterations N] [--apply]');
 for(let i=0;i<args.length;i++){
   if(args[i]==='--apply'&&!options.apply)options.apply=true;
   else if(args[i]==='--defer-caloric'&&!options.deferCaloric)options.deferCaloric=true;
   else if(args[i]==='--correctors'&&options.correctors===null&&args[i+1])options.correctors=Number(args[++i]);
+  else if(args[i]==='--pressure-damping'&&!options.pressureDamping)options.pressureDamping=true;
+  else if(args[i]==='--pressure-iterations'&&options.pressureIterations===null&&args[i+1])options.pressureIterations=Number(args[++i]);
   else throw Error(`Unknown or repeated option ${args[i]}`);
 }
 if(options.correctors!==null&&(!Number.isInteger(options.correctors)||options.correctors<2||options.correctors>16))
   throw Error('Explicit correction count must be an integer in 2..16');
+if(options.pressureIterations!==null&&(!Number.isInteger(options.pressureIterations)||options.pressureIterations<1||options.pressureIterations>50))
+  throw Error('Pressure/property iteration count must be an integer in 1..50');
+if(mode==='inner'&&(options.pressureDamping||options.pressureIterations!==null))
+  throw Error('Pressure damping/iteration options require a density/Ha mode');
+const pressureIterations=mode==='inner'?1:(options.pressureIterations??6);
 const root=resolve(directory),listing=await readdir(root);
 if(listing.some(n=>/^processor/.test(n)||(Number.isFinite(Number(n))&&Number(n)>0))||
    listing.includes('coupled-pressure-input.json')||listing.includes('cold-initialization-start.json'))
@@ -27,18 +34,20 @@ if(manifest.startTime!==0||manifest.closure!=='fgm'||manifest.sourceIntegration!
    !/writeFgmThermoClosure\s+yes\s*;/.test(text)||
    !/nCorrectors\s+(?:[2-9]|[1-9]\d+)\s*;/.test(solution))
   throw Error('Configured cold real-fluid split-FGM/Ha/conservative-density/audit case with >=2 pressure correctors required');
-if(/\b(?:realFluidInnerThermoCorrectors|realFluidRhoHaPredictor|realFluidDifferentialPressure|realFluidLowMachPressureSplit|maxRhoHaPressureIterations)\b/.test(text))
+if(/\b(?:realFluidInnerThermoCorrectors|realFluidRhoHaPredictor|realFluidDifferentialPressure|realFluidLowMachPressureSplit|maxRhoHaPressureIterations|realFluidConservativePressureDamping)\b/.test(text))
   throw Error('Pressure coupling mode already selected; preserve it and create another case');
 let after=text+'\nrealFluidInnerThermoCorrectors yes;\n';
-if(mode!=='inner')after+='realFluidRhoHaPredictor yes;\nmaxRhoHaPressureIterations 6;\n';
+if(mode!=='inner')after+=`realFluidRhoHaPredictor yes;\nmaxRhoHaPressureIterations ${pressureIterations};\n`;
 if(mode==='densityHaDifferential')after+='realFluidDifferentialPressure yes;\nrealFluidPressureDensityConstraint enthalpy;\n';
 if(options.deferCaloric)after+='realFluidDeferCaloricTrialAudit yes;\n';
+if(options.pressureDamping)after+='realFluidConservativePressureDamping yes;\nwriteInvalidSourceState yes;\n';
 const nextSolution=options.correctors===null?solution:solution.replace(/\bnCorrectors\s+\d+\s*;/,`nCorrectors ${options.correctors};`);
 const sha=b=>createHash('sha256').update(b).digest('hex');
 const report={schema:'g2-split-fgm-pressure-iteration/v1',mode,startTime:0,CFD_steps:0,
   sourceLifecycle:'First half once per physical step; inner Euler re-solves from unchanged oldTime; second half recomputed from transport',
   densityHaPredictor:mode!=='inner',pressureTangent:mode==='densityHaDifferential'?'fixed-enthalpy SRK derivative':'existing psi product',
-  maximumPressurePropertyIterations:mode==='inner'?1:6,
+  maximumPressurePropertyIterations:pressureIterations,
+  conservativePressureDamping:options.pressureDamping,
   deferCaloricTrialAudit:/\brealFluidDeferCaloricTrialAudit\s+yes\s*;/.test(after),finalCaloricCriterionEnforced:true,
   pressureEnergyCorrectors:Number(nextSolution.match(/\bnCorrectors\s+(\d+)\s*;/)[1]),
   beforeSolutionSha256:sha(solution),afterSolutionSha256:sha(nextSolution),
