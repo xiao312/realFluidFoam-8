@@ -1,0 +1,20 @@
+{
+  "schema": "g2-table-covered-hot-kernel/v1",
+  "CFDStartTime_s": 0,
+  "mixtureFraction": 0.2,
+  "selection": "maximum temperature over retained eta knots",
+  "baselineSelection": "maximum signed progress source over retained eta knots",
+  "backgroundMixtureFraction": 1,
+  "boxMin_m": [0, 0.0022, -0.001],
+  "boxMax_m": [0.004, 0.0032, 0.001],
+  "tableSha256": "7bd5d213aad69ae50e4b15af161d81bc8d34269b47cdc96ec2283c1064193ac8",
+  "inletRampDuration_s": 0.0001,
+  "requestedEndTime_s": 0.0003,
+  "runtimeSource": "30968b8bdadb7a196a80cdf71840970120a9d2dd",
+  "sgsConfiguratorSource": "b52378d38c200dffa0f3de102aab5bdc85469dd4",
+  "equilibriumClaimed": false,
+  "ongoingForcing": false,
+  "chemistryFitting": false,
+  "restarted": false,
+  "scientificAcceptance": false
+}

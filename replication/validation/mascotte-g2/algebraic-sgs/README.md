@@ -25,3 +25,11 @@ Verify Node syntax, actual fresh-case read-only behavior, rejection of optimized
 Dimix suppression and evolved cases, then actual model selection, finite nonnegative
 nut/alphat and unchanged enforcing caloric/coordinate/element gates in physical runs.
 The RANS checker cannot qualify this different model; retain exact raw diagnostics.
+
+`hot-kernel-control.json` declares a separate original-zero initialization
+experiment: choose the maximum table temperature at fixed Z0.2 instead of the
+maximum source. The table's existing eta knots are used without optimization
+against paper curves. This tests the strong initial reaction transient of the
+source-peak seed. It does not assert thermochemical equilibrium, alter kinetics,
+introduce ongoing forcing or reuse cold/evolved states. Report actual selected
+eta/C/T/Sc and retain the source-peak failure as its baseline.
