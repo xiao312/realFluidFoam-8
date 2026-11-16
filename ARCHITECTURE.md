@@ -1,5 +1,11 @@
 # Experimental solver boundaries
 
+Within `replication/validation/realfluid-g2-thermo`, the explicit Kong parameter
+estimator consumes an existing author-parameter manifest and the deposited
+Chemkin transport file. It adds only the missing CH3O2 LJ/SRK estimate to a
+separate input; `export.mjs` remains the dictionary owner. It does not change
+the Cantera mechanism, fit kinetics or establish a measured critical state.
+
 `replication/fgm/g2-manifold/` selects the actual TF streams and orchestrates
 the existing `direct-flamelet` physical transient and table exporter. Node owns
 phase receipts; pinned Cantera/Spitfire own chemistry/integration. It consumes

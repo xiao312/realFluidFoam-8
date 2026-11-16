@@ -1,5 +1,22 @@
 # Real-fluid thermodynamic input adapter
 
+`estimate-kong-parameters.mjs --base-manifest FILE --transport CHEMKIN_FILE`
+provides a read-only plan for the missing CH3O2 parameter block. Optional
+`--out NEW_DIR` writes a separate augmented parameter input and receipt, never
+the base manifest. All existing parameters are retained exactly. CH3O2 uses
+the author-deposited transport epsilon/sigma, the Smit LJ Tc/Vc approximation,
+and SRK Zc=1/3 to derive Pc. Acentric/association factors are explicitly zero
+in this spherical-LJ approximation; dipole comes from the transport file.
+Fuller diffusion volume is additive from the existing author C/H/O increments.
+This is an estimated radical input, not a measured critical state or proof of
+Sharma's implementation. It adds no kinetics and fits no paper data.
+Dependencies remain Node built-ins; no credentials/network. Verify source
+hashes, unchanged existing entries and Tc/Pc/Vc dimensional consistency, then
+use `export.mjs` with the actual Kong phase. Actual library properties and
+source/enthalpy coupling require separate allocated qualification. Background:
+[Smit1992](https://doi.org/10.1063/1.462271) and
+[SDToolbox Section9, critical-property estimates](https://shepherd.caltech.edu/EDL/publications/reprints/ShockDetonation.pdf).
+
 This module combines exact NASA7 data from the identified Cantera phase with
 critical and dense-fluid transport parameters from Nguyen's retained GRI30
 tutorial. It prepares a controlled input for the full realFluidFoam library;
