@@ -1,5 +1,20 @@
 # G2 RANS mixing diagnostic
 
+`configure-uniform-methane.mjs CASE [--apply]` prepares a separate source-paused
+single-fluid isolation control after setFields but before executing-EOS Ha
+initialization. Both passages/chamber contain CH4 at288K/5.61MPa; original
+inlet volume velocities are retained using the qualified pure-stream SRK
+density ratio. This is not G2 or a changed scientific acceptance criterion.
+It tests whether cold kEpsilon failure requires composition/temperature/density
+contrast. It updates all initial species/Z/C/T fields, the LOX-named inlet mass
+flow and explicit stream manifest together; the passage name denotes geometry,
+not oxygen in this diagnostic. No evolved field is used. Full provenance and
+changed hashes are retained. Node built-ins only, no network/secrets; mutation
+requires a fresh admitted project case. Verify syntax, pure composition and
+mass-flow consistency in a read-only fixture, then actual executing density,
+caloric/element/continuity and turbulence histories. A successful uniform-fluid
+case does not validate a mixing flame or its paper comparison.
+
 Optional `unusedDiffusionPolicy: suppress-unity-Le` selects a separately
 identified optimized split-FGM case with `skipUnusedDiffusion:true`. The default
 example remains on the full-property path. The optimized combination requires

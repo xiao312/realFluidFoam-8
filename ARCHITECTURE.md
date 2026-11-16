@@ -203,3 +203,8 @@ The optional algebraic-SGS diagnostic consumes a full-property RANS preparation
 and explicitly overrides only turbulence-model dictionaries and metadata before
 initialization. It depends on stock OF8 Smagorinsky/eddyDiffusivity, not a custom
 turbulence implementation. It has no scientific acceptance or scheduler authority.
+
+The uniform-methane isolation initializer consumes the same fresh RANS case,
+physical-table species header and qualified pure-stream density references.
+It explicitly replaces both stream states before executing-EOS Ha initialization;
+it owns no thermodynamic correction, chemistry rate or acceptance decision.
