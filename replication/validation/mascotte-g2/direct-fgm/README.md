@@ -1,5 +1,13 @@
 # Warm FGM coupling on the retained G2-related mesh
 
+`product-identity.mjs` verifies both full-build receipts with byte counts and
+derived receipts with explicit inherited-library paths. SHA256 verification is
+mandatory in both; the initializer also verifies the real inherited path and
+all existing ldd bindings. Missing size is supported only for an explicitly
+inherited library, and observed byte counts are retained in the new receipt.
+Verify with `node --test product-identity.test.mjs`; changed bytes, wrong sizes
+and unbound missing-size entries must fail. No physical acceptance changes.
+
 The explicit `--mesh-mode g2-tapered-injector-wedge-v1` consumes a measured asset
 from `../paper-injector-wedge`. Oxygen enters through the3.6mm upstream section,
 expands to5mm at x=0, and is separated from the5.6/10mm methane annulus by the

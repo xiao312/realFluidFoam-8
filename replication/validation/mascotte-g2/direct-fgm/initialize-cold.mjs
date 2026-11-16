@@ -4,6 +4,7 @@ import { spawnSync } from 'node:child_process';
 import { openSync, closeSync, writeSync } from 'node:fs';
 import { digest } from '../../fgm-of8/direct-verification/physical-input.mjs';
 import { dynamicLibraries } from './runtime-linkage.mjs';
+import { verifyProductBytes } from './product-identity.mjs';
 
 const options = {}, args = process.argv.slice(2);
 for (let i = 0; i < args.length; i++) {
@@ -46,8 +47,10 @@ if (runtime.compile_link_help_passed !== true || runtime.custom_library_count !=
 const libraries = new Map();
 for (const product of runtime.products.filter(p => /^lib\/lib[^/]+\.so$/.test(p.file))) {
   const file = join(options.runtime, product.file), raw = await readFile(file);
-  if (raw.length !== product.bytes || digest(raw) !== product.sha256) throw new Error(`Full-library product identity mismatch: ${product.file}`);
-  libraries.set(product.file.slice(4), { path: file, sha256: product.sha256 });
+  const identity = verifyProductBytes(product, raw);
+  if (identity.inherited && await realpath(file) !== await realpath(product.resolved))
+    throw Error(`Inherited library resolution changed: ${product.file}`);
+  libraries.set(product.file.slice(4), { path: file, ...identity });
 }
 if (libraries.size !== 15) throw new Error('Incomplete full-library product inventory');
 const binaries = {};
