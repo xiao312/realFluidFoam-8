@@ -81,6 +81,8 @@ if (controls.observations.axialLength_m !== (longMesh ? 0.4 : 0.2)) throw Error(
 const axisBoundaryType = reviewedMesh || injectorMesh || coarseMesh || paperExitMesh ? 'empty' : 'symmetry';
 if (coarseMesh) controls.observations.axialCoordinate = 'x from explicit coarse co-planar inlet at 0 m; separate diagnostic, not registered/paper injector geometry';
 if (paperExitMesh) controls.observations.axialCoordinate = 'x from co-planar paper-sized injection exit at 0 m; upstream taper/ducts and square chamber omitted';
+if(reviewedMesh && controls.observations.axialOrigin_m!==.01)throw Error('Reviewed mesh observations require explicit axialOrigin_m=.01; radialPositions_m are raw x');
+if(!reviewedMesh && controls.observations.axialOrigin_m!==0)throw Error('Other mesh modes retain their original raw observation origin0');
 if(reviewedMesh) controls.observations.axialCoordinate='raw legacy x; subtract .01m for paper injector-exit distance';
 if (injectorMesh) controls.observations.axialCoordinate = 'x from injector exit at0m; upstream tapered O2 and annular methane passages occupy negative x';
 const pressure = input.receipt.case.pressure_pa;

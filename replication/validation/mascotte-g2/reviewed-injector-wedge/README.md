@@ -7,3 +7,5 @@ Inputs: fixed measured recipe, retained reference boundary edges and their SHA25
 `node generate.mjs` prints the plan; `--out NEW_CASE` refuses existing output. Run blockMesh and checkMesh in an allocation, then `node audit.mjs --case CASE --out NEW_ASSET`. The audit checks actual reference boundary distances, inlet areas, volume, mesh-tool completion and source dictionary identity. Geometry serialization tolerance10nm covers measured legacy CAD jitter; it is not a solution acceptance tolerance. Cell distribution may change only through a new recipe identity.
 
 Verification: read-only generation and an allocated blockMesh/checkMesh/audit; all reference edges must match the generated boundary and vice versa. The old geometry is a negative comparison, not silently accepted.
+
+`verify-priming.mjs FRESH_CASE` checks all640 oxygen and800 methane duct cells against their pure-stream time-zero T/Z/C/O2/CH4, verifies the actual copied mesh and rejects evolved/decomposed cases. It changes no fields.

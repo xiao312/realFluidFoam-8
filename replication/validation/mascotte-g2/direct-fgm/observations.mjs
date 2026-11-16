@@ -11,7 +11,7 @@ function finite(value, name, min, max) {
   return value;
 }
 export function observationConfig(input, endTime) {
-  keys(input, ['profileInterval_s', 'fieldInterval_s', 'averageStart_s', 'radialPositions_m', 'imageGrid', 'includeVelocity', 'nearAxisRadius_m', 'axialLength_m'], 'observations');
+  keys(input, ['profileInterval_s', 'fieldInterval_s', 'averageStart_s', 'radialPositions_m', 'imageGrid', 'includeVelocity', 'nearAxisRadius_m', 'axialLength_m', 'axialOrigin_m'], 'observations');
   if (input.includeVelocity !== undefined && typeof input.includeVelocity !== 'boolean') throw new Error('includeVelocity must be boolean');
   const config = {
     profileInterval_s: input.profileInterval_s ?? endTime / 4,
@@ -23,6 +23,7 @@ export function observationConfig(input, endTime) {
     axialCoordinate: 'raw registered mesh x; injector-exit paper transform not qualified',
     nearAxisRadius_m: input.nearAxisRadius_m ?? 0.0001,
     axialLength_m: input.axialLength_m ?? 0.2,
+    axialOrigin_m: input.axialOrigin_m ?? 0,
     instantaneousFields: ['T', 'rho', 'Z', 'c', 'OH', 'CH4', 'O2', 'CO2', 'CO', 'Ha', 'fgmTdiag'],
     meanFields: ['T', 'rho', 'Z', 'c', 'OH'],
   };
@@ -30,6 +31,7 @@ export function observationConfig(input, endTime) {
     config.instantaneousFields.push('U');
     config.meanFields.push('U');
   }
+  finite(config.axialOrigin_m,'axialOrigin_m',0,.02);
   finite(config.nearAxisRadius_m,'nearAxisRadius_m',1e-8,0.01);
   if (![0.2,0.4].includes(config.axialLength_m)) throw Error('Sampling axial length must be0.2 or0.4m');
   for (const name of ['profileInterval_s', 'fieldInterval_s']) finite(config[name], name, Number.MIN_VALUE, endTime);
@@ -37,7 +39,7 @@ export function observationConfig(input, endTime) {
   if (Math.abs(fullWrites - Math.round(fullWrites)) > 1e-8) throw new Error('fieldInterval_s must divide endTime so the final fields are written');
   if (config.averageStart_s !== null) finite(config.averageStart_s, 'averageStart_s', 0, endTime * (1 - 1e-12));
   if (!Array.isArray(config.radialPositions_m) || !config.radialPositions_m.length || config.radialPositions_m.length > 20) throw new Error('Invalid radialPositions_m');
-  config.radialPositions_m.forEach(x => finite(x, 'radial position', 0.0001, 0.1999));
+  config.radialPositions_m.forEach(x => finite(x, 'radial position', config.axialOrigin_m+0.0001, 0.1999));
   if (config.imageGrid !== null) {
     keys(config.imageGrid, ['axialPoints', 'radialPoints'], 'imageGrid');
     for (const [key, min, max] of [['axialPoints', 2, 801], ['radialPoints', 2, 201]]) {
@@ -88,12 +90,12 @@ function sets(config, image = false) {
     const { axialPoints: nx, radialPoints: ny } = config.imageGrid;
     const points = [];
     for (let j = 0; j < ny; j++) for (let i = 0; i < nx; i++) {
-      points.push(`(${0.0001 + i * 0.1998 / (nx - 1)} ${0.0001 + j * 0.0247 / (ny - 1)} 0)`);
+      points.push(`(${config.axialOrigin_m+0.0001 + i * (config.axialLength_m-config.axialOrigin_m-0.0002) / (nx - 1)} ${0.0001 + j * 0.0247 / (ny - 1)} 0)`);
     }
     // OF8 points returns only located fluid points. Keep holes, never fill solids.
     return `midplane { type points; ordered no; axis xyz; points (${points.join('\n')}); }`;
   }
-  return `nearAxis { type lineUniform; axis x; start (0.0001 ${config.nearAxisRadius_m} 0); end (${config.axialLength_m-0.0001} ${config.nearAxisRadius_m} 0); nPoints 400; }\n` +
+  return `nearAxis { type lineUniform; axis x; start (${config.axialOrigin_m+0.0001} ${config.nearAxisRadius_m} 0); end (${config.axialLength_m-0.0001} ${config.nearAxisRadius_m} 0); nPoints 400; }\n` +
     config.radialPositions_m.map((x, i) => `radial${i} { type lineUniform; axis y; start (${x} 0.0001 0); end (${x} 0.0248 0); nPoints 200; }`).join('\n');
 }
 function sample(name, fields, config, mean = false, image = false) {

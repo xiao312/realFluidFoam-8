@@ -447,3 +447,5 @@ bounded independent time-zero smoke/full diagnostics. A refresh build is not
 physical qualification; retain caloric failures and boundary/continuity budgets.
 
 The explicit reviewed-legacy-injector-v1 mesh mode consumes the independently audited reviewed-injector-wedge asset. Its raw injector exit is x=.01m. Pure-stream duct composition is initialized at original time zero; the chamber and pocket retain the declared background. No legacy solution fields are imported.
+
+Reviewed-mesh observations require explicit `axialOrigin_m:0.01`. Radial station coordinates remain raw mesh x, with the10mm transform recorded for plotting. Near-axis/image sampling starts downstream of that origin and ends at the actual raw200mm outlet; no unavailable190–200mm paper segment is fabricated. Other mesh modes retain origin0.
