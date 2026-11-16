@@ -1,5 +1,11 @@
 # Experimental solver boundaries
 
+`mascotte-g2/rans-diagnostic` additionally configures an explicitly declared
+raw-C FGM case on the normal full-property transport path. It shares the
+existing kEpsilon/eddyDiffusivity runtime and direct-FGM initializer/checker;
+it does not extend the suppressed-Dimix constructor policy or implement PDF
+averaging. The original optimized steady-flamelet path remains separate.
+
 Within `replication/validation/realfluid-g2-thermo`, the explicit Kong parameter
 estimator consumes an existing author-parameter manifest and the deposited
 Chemkin transport file. It adds only the missing CH3O2 LJ/SRK estimate to a

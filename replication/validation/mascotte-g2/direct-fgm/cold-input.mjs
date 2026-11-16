@@ -73,7 +73,7 @@ export async function initializationInput(path, input) {
     interpretation: config.mode === 'localized-covered'
       ? 'Declared table Cmin background and covered hot state in an explicit raw-coordinate box at timezero; executing EOS initializes Ha and density. No runtime mass/temperature jump, evolved CFD or rounding Cmin to zero.'
       : config.mode === 'uniform-cmin'
-        ? 'Uniform actual table Cmin state, retaining any tiny positive C; source-disabled transport diagnostic, not a flame.'
+        ? 'Uniform actual table Cmin state, retaining any tiny positive C; source behavior follows the separate chemistry selection.'
         : 'Uniform table-covered partly reacted fill; startup coupling only, not physical flame morphology.' };
 }
 

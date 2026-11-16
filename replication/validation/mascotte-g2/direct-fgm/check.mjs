@@ -70,11 +70,15 @@ if (!steady && manifest.sourceIntegration) mechanicalChecks.executedSourceIntegr
 if (manifest.skipUnusedDiffusion !== undefined) mechanicalChecks.executedDiffusionPolicy =
   log.includes(`FGM_DIMIX_POLICY calculation=suppressed access=forbidden transport=${rans ? 'RAS-eddyDiffusivity' : 'Fourier'} energy=absoluteEnthalpy`) === manifest.skipUnusedDiffusion;
 if (rans) {
-  mechanicalChecks.declaredRansClosure = steady && manifest.ransDiagnostic.config.model === 'kEpsilon' &&
+  const declaredFgm = manifest.closure==='fgm' && manifest.skipUnusedDiffusion===false &&
+    manifest.ransDiagnostic.policyMode==='full-property-FGM-diagnostic' &&
+    manifest.fgmMeanSource?.sourceTreatment==='delta-at-mean-Z-C' &&
+    manifest.fgmMeanSource.presumedPDF===false && /Selecting combustion model fgmTable/.test(log);
+  mechanicalChecks.declaredRansClosure = (steady||declaredFgm) && manifest.ransDiagnostic.config.model === 'kEpsilon' &&
     manifest.ransDiagnostic.config.transport === 'eddyDiffusivity' && manifest.ransDiagnostic.config.Prt === 0.7 &&
     /Selecting RAS turbulence model kEpsilon/.test(log) &&
     /Selecting RAS thermophysical transport model eddyDiffusivity/.test(log) &&
-    /closure=RAS-kEpsilon-delta-PDF-diagnostic/.test(log);
+    (steady ? /closure=RAS-kEpsilon-delta-PDF-diagnostic/.test(log) : declaredFgm);
   mechanicalChecks.nonnegativeTurbulence = ['k', 'epsilon', 'nut', 'alphat'].every(name => fields[name]?.min >= 0);
 }
 if (steady) {

@@ -11,7 +11,7 @@ const keys=(v,allowed,label)=>{
   if(!v||typeof v!=='object'||Array.isArray(v)||Object.keys(v).some(k=>!allowed.includes(k)))
     throw Error(`Unknown or invalid ${label} fields`);
 };
-keys(config,['schema','model','transport','Prt','inlets','initial','provenance'],'configuration');
+keys(config,['schema','model','transport','Prt','inlets','initial','provenance','sourceTreatment'],'configuration');
 keys(config.inlets,['loxinlet','ch4inlet'],'inlets');
 keys(config.initial,['k_m2_s2','length_m'],'initial');
 if (config.schema!=='g2-rans-diagnostic/v1' || config.model!=='kEpsilon' ||
@@ -30,11 +30,15 @@ if(!names.includes('0') || names.some(n=>/^processor/.test(n)||
     (Number.isFinite(Number(n))&&Number(n)>0)) || names.includes('rans-diagnostic.json') ||
     names.includes('cold-initialization-start.json'))throw Error('New undecomposed, uninitialized time-zero case required');
 const manifestRaw=await readFile(`${root}/direct-g2-input.json`), m=JSON.parse(manifestRaw);
-if(m.startTime!==0 || m.closure!=='steady-flamelet' || m.energyForm!=='absoluteEnthalpy' ||
+const steady=m.closure==='steady-flamelet';
+const progress=m.closure==='fgm' && config.sourceTreatment==='delta-at-mean-Z-C'
+  && m.sourceIntegration==='strangFixedState' && m.chemistry==='table' && m.skipUnusedDiffusion===false;
+if(m.startTime!==0 || (!steady&&!progress) || m.energyForm!=='absoluteEnthalpy' ||
    m.thermodynamics?.mode!=='cold-real-fluid' || ![5610000,5600000].includes(m.pressure) ||
-   m.initialization?.config?.mode!=='uniform-steady' ||
+   (steady ? m.initialization?.config?.mode!=='uniform-steady'
+     : !['uniform-covered','uniform-cmin','localized-covered'].includes(m.initialization?.config?.mode)) ||
    m.streams?.loxinlet?.temperature!==(m.pressure===5610000?85:83) || m.streams?.ch4inlet?.temperature!==(m.pressure===5610000?288:300))
-  throw Error('Registered cold steady-table G2 case required');
+  throw Error('Registered cold steady case or explicitly declared full-property raw-C FGM case required');
 const original={}, changed={};
 async function read(name){const b=await readFile(`${root}/${name}`);original[name]=b;return b.toString();}
 const once=(text,pattern,replacement,label)=>{
@@ -49,7 +53,7 @@ changed['constant/thermophysicalTransport']=once(transport,/laminar\s*\{\s*model
   'RAS { model eddyDiffusivity; Prt 0.7; }','thermal transport selection');
 let control=await read('system/controlDict');
 if(/fgmRansUnityLeDiagnostic/.test(control))throw Error('RAS diagnostic already selected');
-control+='\nfgmRansUnityLeDiagnostic yes;\n';
+if(steady)control+='\nfgmRansUnityLeDiagnostic yes;\n';
 const densityFlags=[...control.matchAll(/\bconserveTabulatedDensity\s+(yes|no)\s*;/g)];
 if(!densityFlags.length)control+='conserveTabulatedDensity yes;\n';
 else if(densityFlags.length!==1||densityFlags[0][1]!=='yes')throw Error('Conservative tabulated density required');
@@ -96,13 +100,18 @@ if(['k','epsilon','nut','alphat'].some(n=>zeroNames.includes(n)))throw Error('Tu
 const report={schema:'g2-rans-diagnostic-preparation/v1',case:root,config,configSha256:hash(configRaw),
   originalManifestSha256:hash(manifestRaw),initialSeed:{k,epsilon,nut},
   inletFormula:'k=1.5*(I*|actual U|)^2; epsilon=Cmu^0.75*k^1.5/L; Cmu=0.09',
-  policy:'RAS kEpsilon; eddyDiffusivity; fixed-chi delta-PDF; Prt=Sct=0.7',
+  policy:steady?'RAS kEpsilon; eddyDiffusivity; fixed-chi delta-PDF; Prt=Sct=0.7'
+    :'RAS kEpsilon; eddyDiffusivity; raw-C FGM source at mean Z/C; Prt=Sct=0.7; no PDF',
+  policyMode:steady?'qualified-steady-suppression':'full-property-FGM-diagnostic',
+  skipUnusedDiffusion:m.skipUnusedDiffusion,
   files:Object.fromEntries(Object.entries(changed).map(([name,value])=>[name,{beforeSha256:original[name]?hash(original[name]):null,afterSha256:hash(value)}])),
   scientificAcceptance:false,thermoOrMeanFlowInputsChanged:false};
 m.ransDiagnostic=report;
-m.steadyFlamelet.pdf='delta at mean Z; no scalar-variance closure';
+if(steady)m.steadyFlamelet.pdf='delta at mean Z; no scalar-variance closure';
+else m.fgmMeanSource={sourceTreatment:config.sourceTreatment,transportedCoordinates:['Z','c'],presumedPDF:false};
 m.approximations=m.approximations.filter(s=>s!=='laminar resolved diagnostic').concat([
-  'RANS kEpsilon mean-mixing diagnostic with fixed-chi delta-PDF composition',
+  steady?'RANS kEpsilon mean-mixing diagnostic with fixed-chi delta-PDF composition'
+    :'RANS kEpsilon raw-C FGM diagnostic with source at mean Z/C; no PDF or scalar variances',
   'Prt=Sct=0.7 unity turbulent Lewis approximation; not Sharma LES Prt0.85',config.provenance]);
 if(action!=='--apply'){console.log(JSON.stringify({dryRun:true,...report},null,2));process.exit(0);}
 if(!process.env.SLURM_JOB_ID)throw Error('Mutation requires the admitted Slurm allocation');

@@ -348,9 +348,12 @@ identity and original line mappings. A changed or over-budget log fails openly.
 # Optional RANS diagnostic
 
 The separate [RANS configurator](../rans-diagnostic/README.md) can prepare a new
-cold steady-flamelet case with an explicitly declared kEpsilon/eddyDiffusivity
-closure. The result checker then requires the exact model-selection messages,
-the corresponding guarded diffusion policy, and finite nonnegative k, epsilon,
+cold steady-flamelet case or an explicit full-property transported-progress
+FGM case with a declared kEpsilon/eddyDiffusivity closure. The latter requires
+sourceTreatment=delta-at-mean-Z-C and skipUnusedDiffusion=false; it introduces
+no PDF or variance closure and does not extend the suppressed-Dimix guard.
+The result checker requires exact model-selection messages, the corresponding
+declared diffusion policy, and finite nonnegative k, epsilon,
 nut and alphat in addition to the unchanged thermodynamic and flow checks.
 Laminar cases keep their original checks. This extension does not qualify a
 turbulent paper comparison or change the table, initializer or scalar bounds.

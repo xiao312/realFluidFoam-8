@@ -1,20 +1,34 @@
 # G2 RANS mixing diagnostic
 
+`example-fgm.json` selects a separate transported-progress FGM diagnostic. It
+requires `sourceTreatment:delta-at-mean-Z-C`, a fresh original-zero raw-C case,
+and `skipUnusedDiffusion:false`. It uses the normal full-property path; the
+steady-flamelet-only suppressed-Dimix policy is not enabled or relaxed. The
+existing runtime already registers kEpsilon/eddyDiffusivity and transports C
+with the same alphaEff as Z and Ha. Source/composition are queried at mean Z/C;
+there is no presumed PDF or scalar-variance model. The unchanged source table,
+caloric/bounds/conservation checks and actual inlet velocities remain owned by
+their original modules. Verify configuration against a real candidate plan,
+then exact model selection, finite turbulence fields and fresh physical runs.
+This combination remains a diagnostic until separately qualified. Full-property
+overhead must be measured; do not infer transport correctness from compilation.
+The original steady configuration/optimization remains unchanged.
+
 The generator accepts the registered5.61MPa/85/288K and Schmitt5.6MPa/83/300K
 stream sets. Each requires its own actual physical table and thermo identity.
 The kEpsilon/delta-PDF approximation remains distinct from the reference LES.
 
 This module prepares an explicit k-epsilon / unity-Lewis eddy-diffusivity
-diagnostic on a new G2 case. It tests mean-flow mixing with the existing fixed-chi
-steady flamelet. It is not Sharma's LES, a presumed-PDF combustion model, a
+diagnostic on a new G2 case. It tests mean-flow mixing with either a fixed-chi
+steady flamelet or the explicitly selected transported-progress FGM table. It is not Sharma's LES, a presumed-PDF combustion model, a
 validated turbulence closure, or permission to publish an accepted paper match.
 
 `configure.mjs CASE CONFIG.json` is read-only. Add `--apply` inside an admitted
 allocation to modify a newly prepared, undecomposed, time-zero case. Inputs are
 the direct-G2 manifest, its original dictionaries/fields, and the explicit JSON
 configuration illustrated by `example.json`. The script requires cold real-fluid
-steady-table initialization at 5.61 MPa and preserves the physical table, geometry,
-85/288 K streams, mean velocity boundary conditions, scalar limits and timestep.
+initialization and preserves the selected physical table, geometry, registered
+stream conditions, mean velocity boundary conditions, scalar limits and timestep.
 It writes k, epsilon, nut and alphat; exact momentum/thermal selections; required
 solver/scheme entries; a declared closure flag; and hashes of every modification.
 Repeated configuration or an evolved/decomposed case is refused.
@@ -39,10 +53,10 @@ does not establish a developed mean or wall-resolved result.
 
 This first combination fixes Prt=0.7 and uses the same effective mass and heat
 diffusivity, alpha+rho*nut/0.7. It therefore differs from Sharma's Prt 0.85.
-The implemented eddyDiffusivity calls thermo.alphaEff and never Dimix, so the
-existing unused-Dimix optimization can be extended to this exact declared path.
-The policy continues to refuse all other RAS/LES/model combinations and all
-public/raw Dimix access while suppressed. Non-unity transport is deliberately
+The selected eddyDiffusivity flux uses thermo.alphaEff, not species Dimix.
+The existing suppression policy remains restricted to its qualified steady
+path. The FGM variant uses the normal full-property path and computes the
+otherwise unused Dimix; its overhead is retained and must be measured. Non-unity transport is deliberately
 excluded: its species enthalpy flux needs a separate absolute-Ha audit.
 
 Dependencies are Node, the direct-G2 generator/initializer, the existing full
@@ -51,6 +65,8 @@ the narrow steadyFlamelet/Dimix policy extension. Their constructor guards must
 be rebuilt and qualified; dictionary changes alone cannot enable this path.
 No new external library, model ABI, network access or secret is introduced.
 Downstream allocated execution owns compilation, MPI, run timing and evidence.
+The full-property FGM path requires no policy-header or runtime-library change;
+exact existing library products must still be verified.
 
 Minimal use:
 

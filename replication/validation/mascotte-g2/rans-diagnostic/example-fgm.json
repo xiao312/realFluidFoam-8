@@ -1,0 +1,13 @@
+{
+  "schema": "g2-rans-diagnostic/v1",
+  "model": "kEpsilon",
+  "transport": "eddyDiffusivity",
+  "Prt": 0.7,
+  "sourceTreatment": "delta-at-mean-Z-C",
+  "inlets": {
+    "loxinlet": {"intensity": 0.05, "length_m": 0.004},
+    "ch4inlet": {"intensity": 0.05, "length_m": 0.004}
+  },
+  "initial": {"k_m2_s2": 0.000001, "length_m": 0.004},
+  "provenance": "Intensity0.05/length0.004m adopted from Cutrone2010 Table5. kEpsilon, initial seed, unity turbulent Lewis and source at mean Z/C are explicit diagnostics, not Sharma LES/PDF. Full-property path; unused-Dimix optimization disabled."
+}
