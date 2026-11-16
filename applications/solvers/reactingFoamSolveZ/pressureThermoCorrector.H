@@ -14,8 +14,8 @@ for (label couplingPass=0;couplingPass<maxRhoHaPressureIterations;++couplingPass
         if (mutation!=0)
             FatalErrorInFunction << "Post-pressure inversion mutated internal sensible enthalpy"
                 << exit(FatalError);
-        if (coupledRhoHaState) retryPressure=applySrkRhoHaPredictor
-            (thermo,rho,fgmAbsoluteEnthalpy(),"afterPressure")>0;
+        if (coupledRhoHaState) retryPressure=(applySrkRhoHaPredictor
+            (thermo,rho,fgmAbsoluteEnthalpy(),"afterPressure")>0) || retryPressure;
         const tmp<volScalarField> refreshedDensity=thermo.rho();
         // The scalar equations require the continuity-consistent rho.
         // A property-cache refresh must not undo that selected policy.

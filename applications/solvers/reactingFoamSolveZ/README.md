@@ -1,5 +1,36 @@
 # Transported-Z reacting solver
 
+Optional `realFluidConservativePressureDamping yes` limits a pressure correction
+that would consume more than90% of the continuity-based reference cell density.
+It blends pressure and mass flux by the same global factor, then solves the
+original density equation. No density, temperature, species or energy is clipped.
+Only global Euler on a fixed mesh with empty fvOptions, compressible
+rho/Ha coupling, conservative transport density and pressure/thermo refresh is
+supported. Inputs are current/old density, previous/candidate flux and pressure;
+outputs are a damped nonlinear trial and its factor. A damped trial requires
+another pressure solve; it cannot complete the pressure/property iteration.
+The final undamped solve and all original closure/acceptance checks remain.
+Exhausting `maxRhoHaPressureIterations` still rejects and saves the state.
+
+This is an experimental admissibility step, not a proven pressure-equilibrium
+method or residual-based Armijo search. The reference Euler state must already
+be positive; nonfinite states and unsupported configurations fail explicitly.
+It follows the general principle of rejecting nonlinear steps outside a physical
+domain rather than weakening that domain (PETSc SNES documentation:
+https://petsc.org/main/manual/snes/). No PETSc dependency or code is introduced.
+Default-off execution allocates no reference fields and retains prior arithmetic.
+Example control: enable this option on the qualified densityHaDifferential case
+and allow20pressure/property iterations. Verify default-off actual-field parity,
+the shared factor's conservative/positive witness and rejection of invalid input,
+then repeat the exact originally failing G2case from timezero. A numerical
+witness or successful compilation is not injector/flame validation.
+
+Optional `writeInvalidSourceState yes` saves the current rejected p/T/rho/Ha,
+progress, Z, velocity/flux and species immediately before a source stage receives
+invalid density. It does not repair density or replace the source integrator's
+existing refusal. Such files are rejected nonlinear states, never accepted
+timesteps or restart inputs. Default-off behavior performs no additional scan.
+
 Scheduled ignition optionally accepts `fgmIgnitionAxialOrigin` in raw mesh metres
 (default0). Its region is `[origin, origin+fgmIgnitionAxialLength]`, retaining
 local Z, absolute Ha and the existing source-peak/upper-progress choice. The

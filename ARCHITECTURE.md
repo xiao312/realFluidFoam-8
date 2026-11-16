@@ -1,5 +1,12 @@
 # Experimental solver boundaries
 
+The reacting solver owns optional conservative pressure-step damping. Its pure
+`pressureDampingFactor.H` computes an admissible global-step bound from Euler
+reference/candidate densities; the pressure include applies the same factor to
+p/phi, and the pressure/property loop requires an undamped completion. It changes
+no thermodynamic/source-library interface or acceptance criterion. Qualification
+and physical failed-case replay are separate from enabling the option.
+
 The solver owns scheduled ignition in raw mesh coordinates. Case observations
 and ignition inputs must separately declare the reviewed injector exit offset;
 display transforms never move a compiled ignition region. The optional origin

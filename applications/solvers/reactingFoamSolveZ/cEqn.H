@@ -106,6 +106,22 @@
         // Recomputed from this transport solution; never advance the last outer's result.
         const auto fgmSecondSourceStart = fgmTiming.start();
         const scalarField transportedC(c.primitiveField());
+        if (runTime.controlDict().lookupOrDefault<Switch>("writeInvalidSourceState",false))
+        {
+            label invalidDensity=0;
+            forAll(rho,celli)
+                if (!std::isfinite(rho[celli]) || rho[celli]<=0) ++invalidDensity;
+            reduce(invalidDensity,sumOp<label>());
+            if (invalidDensity)
+            {
+                p.write();thermo.T().write();rho.write();fgmAbsoluteEnthalpy().write();
+                c.write();fgmSourceModel->Z().write();U.write();phi.write();
+                forAll(Y,i) Y[i].write();
+                Info<< "fgmSourceRejectedState t=" << runTime.value()
+                    << " badDensityCells=" << invalidDensity
+                    << " fieldsWritten=1 authorizedForRestart=0 densityRepaired=0" << endl;
+            }
+        }
         c.primitiveFieldRef() = fgmColdFlowActive ? transportedC : fgmSourceModel->advanceProgressSource
         (
             fgmSourceModel->Z().primitiveField(), rho.primitiveField(), transportedC,

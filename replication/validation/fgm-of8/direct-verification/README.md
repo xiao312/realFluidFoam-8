@@ -1,5 +1,15 @@
 # Direct finite-volume verification
 
+`pressure-damping-probe.C` exercises the solver's actual shared pressure-step
+factor without a CFD acceptance claim. Inputs are declared reference/candidate
+Euler densities, including a two-cell conservative transfer with unequal volumes.
+Outputs are exact factor/positive-density/mass checks and invalid-input refusals.
+It depends only on the solver's pure header and the C++standard library, not
+OpenFOAM runtime, network or credentials. Within an admitted allocation:
+`g++ -std=c++14 -I SOLVER_DIR pressure-damping-probe.C -o probe && ./probe`.
+Expected exit0/five checks. Follow it with actual default-off field parity and a
+fresh physical replay of the failing injector; this witness is not that replay.
+
 `compare-boundary-diagnostics.mjs --old CASE --new CASE --metadata PHASE [--out NEW_JSON]`
 compares all physical species and transported/internal diagnostic fields of
 two independently initialized closed homogeneous cases. It also requires the

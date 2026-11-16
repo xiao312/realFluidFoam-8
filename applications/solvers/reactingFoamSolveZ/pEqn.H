@@ -1,5 +1,31 @@
 rho = thermo.rho();
 
+const bool conservativePressureDamping=runTime.controlDict()
+    .lookupOrDefault<Switch>("realFluidConservativePressureDamping",false);
+autoPtr<surfaceScalarField> pressureReferencePhi;
+autoPtr<volScalarField> pressureReferenceP;
+if (conservativePressureDamping)
+{
+    const word densityDdt(mesh.ddtScheme("ddt("+rho.name()+')'));
+    if (LTS || mesh.moving() || densityDdt!="Euler" || lowMachPressureSplit
+        || !coupledRhoHaState || !conserveTransportDensity
+        || !runTime.controlDict().lookupOrDefault<Switch>("realFluidPressureThermoRefresh",false)
+        || static_cast<const fv::optionList&>(fvOptions).size()!=0)
+        FatalErrorInFunction << "Conservative pressure damping requires fixed-mesh global Euler,"
+            << " compressible rho/Ha coupling, conservative density, pressure refresh and empty fvOptions"
+            << exit(FatalError);
+    pressureReferencePhi.reset(new surfaceScalarField
+    (
+        IOobject("pressureDampingPhiReference",runTime.timeName(),mesh,
+            IOobject::NO_READ,IOobject::NO_WRITE,false),phi
+    ));
+    pressureReferenceP.reset(new volScalarField
+    (
+        IOobject("pressureDampingPReference",runTime.timeName(),mesh,
+            IOobject::NO_READ,IOobject::NO_WRITE,false),p
+    ));
+}
+
 // Isolate the author's real-gas time correction from changes to energy ordering.
 // Default remains the stock reactingFoam psi-product time operator.
 const bool useRealFluidDensityTimeCorrection = runTime.controlDict()
@@ -169,6 +195,38 @@ else
             phi = phiHbyA + pEqn.flux();
         }
     }
+}
+
+if (conservativePressureDamping)
+{
+    // Evaluate the same source-free fixed-mesh Euler continuity equation that
+    // rhoEqn solves below. Do not replace density by either prediction.
+    const tmp<volScalarField> referenceDiv=fvc::div(pressureReferencePhi());
+    const tmp<volScalarField> candidateDiv=fvc::div(phi);
+    const scalarField referenceDensity
+        (rho.oldTime().primitiveField()-runTime.deltaTValue()*referenceDiv().primitiveField());
+    const scalarField candidateDensity
+        (rho.oldTime().primitiveField()-runTime.deltaTValue()*candidateDiv().primitiveField());
+    scalar factor=1;
+    try { factor=pressureDensityDampingFactor(referenceDensity,candidateDensity); }
+    catch (const std::exception& error)
+    {
+        FatalErrorInFunction << error.what() << "; no density repair performed" << exit(FatalError);
+    }
+    reduce(factor,minOp<scalar>());
+    if (factor<1)
+    {
+        p=pressureReferenceP()+factor*(p-pressureReferenceP());
+        phi=pressureReferencePhi()+factor*(phi-pressureReferencePhi());
+        // A shortened nonlinear trial cannot finish the pressure/property loop.
+        retryPressure=true;
+    }
+    if (factor<1 || runTime.timeIndex()==1)
+        Info<< "pressureDensityDamping t=" << runTime.value()
+            << " factor=" << factor << " referenceMin=" << gMin(referenceDensity)
+            << " unlimitedMin=" << gMin(candidateDensity)
+            << " predictedLimitedMin=" << gMin(referenceDensity+factor*(candidateDensity-referenceDensity))
+            << " densityClipped=0 nextPressureSolveRequired=" << label(factor<1) << endl;
 }
 
 #include "rhoEqn.H"

@@ -62,6 +62,7 @@ Description
 #include "fgmContinuityStage.H"
 #include "zRoundoffDecision.H"
 #include "relaxationProbe.H"
+#include "pressureDampingFactor.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
