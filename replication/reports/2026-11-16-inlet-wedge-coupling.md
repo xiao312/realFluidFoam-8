@@ -181,3 +181,39 @@ improved the comparison. Histories show oscillating peak location/axis heating,
 particularly on the coarse grid. Keep the earlier65ms fine view as the best
 retained snapshot, display these later failures too, and do not cherry-pick a
 transient minimum as steady validation.
+
+## 17:30 — source departure and RANS failure isolation
+
+A pointwise, no-integration Cantera3.2.0 audit uses the exact author mechanism
+9942d75e and all23 captured species from B21. It preserves unnormalized mass
+fractions. Rates are ideal-gas concentration chemistry at specified T/p, as in
+the manifold producer, not a separate real-fluid kinetic model. The CO+CO2
+source is kg/m3/s. Stored-source absolute integral is5.76655e-5kg/s. Relative
+volume-integrated L1 differences are7.758% at stored table T/reference p,
+168.575% at actual T/reference p, and174.278% at actual T/actual p. Hot cells
+T>500K retain177.790% discrepancy. The largest integrated discrepancy is near
+x3.5mm/r1.719mm: actualT3386.70K versus tableT3451.83K, stored source21512
+versus pointwise actual-T/p405100kg/m3/s. Net reversible rates near equilibrium
+are sensitive; this is not an Arrhenius multiplier or a source calibration.
+Stored source may also be a captured-stage diagnostic, so its difference from
+final-state chemistry must not be assigned solely to interpolation. An
+independent stoichiometric net-rate-of-progress projection reproduces the worst
+pointwise difference. A changed input-audit hash is refused before writing.
+No CFD field or source is altered by this analysis.
+
+B23 at the common300us shows whole-volume T RMS difference5.04K for0.5/1us
+caps, but167.18K over the hot-cell union (0.0901% of total volume), with local
+maximum2116.90K atx1.5mm. The cold chamber must not conceal hot-front error.
+No temporal-convergence qualification follows. This points to joint timestep,
+near-field resolution and thermochemical-manifold work, rather than plotting
+polish or a fitted source factor.
+
+B24/128186968 failed174s before CFD because the operator wrapper placed RANS
+configuration after the initializer. B24b/128187542 corrected the ordering and
+ran physical steps, then failed201s at86.4206ns. Worst stored state is nearly
+pure methane inside its passage, p1000Pa/T60K andrho8.9041kg/m3; the caloric
+residual97306J/kg remains a failure. B25/128188830 is an independently admitted
+three-control delivery: annular laminar, center-kernel RANS and cold source-paused
+RANS, all originalzero, same qualified309 runtime and primed passages. Each
+runs in its own strict-Bash child and preserves actual exit separately; a
+successful delivery envelope will not imply physical success. No gates changed.

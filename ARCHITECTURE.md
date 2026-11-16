@@ -177,3 +177,7 @@ The solver's default-off `speciesTransportAudit.H` consumes the species
 predictor, closure bookkeeping and rho/phi residuals from `YEqn.H`. It reports
 clipping/closure defects and retains invalid predictor witnesses before source
 relaxation. It owns no numerical correction, acceptance gate or library ABI.
+
+The retained-field source audit optionally depends on local Cantera3.2 for
+pointwise pressure-based chemistry replay. It has no CFD execution or source
+correction authority; simulation and tabulation modules do not depend on it.

@@ -1,5 +1,23 @@
 # Retained G2 temperature fields
 
+`audit-chemical-source.py --cells THERMAL_AUDIT_CSV --thermal-audit AUDIT_JSON
+--species-collection RECEIPT
+--metadata PHASE_JSON --mechanism AUTHOR_YAML --out NEW_DIR [--apply]` compares
+stored volumetric CO+CO2 source with independently evaluated Cantera rates at
+the captured composition. Three evaluations separate stored-table temperature
+at reference pressure, actual temperature at reference pressure, and actual
+T/p. This is ideal-gas concentration chemistry consistent with the table's
+Cantera phase, not an independent real-fluid rate law or a CFD chemistry step.
+No integration, normalization, source correction or acceptance occurs. Raw
+case-sensitive species archive, member hashes, actual-cell audit and mechanism
+identity must match. Outputs bind code/Cantera binary/input hashes and retain
+per-cell rates; volume-integrated absolute differences avoid signed cancellation.
+Cantera3.2 and NumPy are local postprocessing dependencies; no HPC or network
+interface, credentials or remote writes. Default is read-only. Verify species
+order, unnormalized composition retention, source units and independently
+recomputed representative cell rates. Never interpret a small whole-domain
+error as hot-front agreement or a changed source as a calibrated repair.
+
 `audit-species.py --collection RECEIPT --metadata PHASE_JSON --wedge-degrees 5
 --out NEW_DIRECTORY [--apply]` measures actual species/element/raw-progress
 consistency. Its default is read-only. The receipt additionally binds the
