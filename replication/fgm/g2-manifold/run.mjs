@@ -7,7 +7,7 @@ import {spawnSync} from 'node:child_process';
 const options={},args=process.argv.slice(2);
 for(let i=0;i<args.length;i++) {
   if(args[i]==='--plan')options.plan=true;
-  else if(['--mechanism','--runtime','--python','--source-commit','--environment-sha256','--out'].includes(args[i])&&args[i+1])
+  else if(['--mechanism','--runtime','--python','--source-commit','--environment-sha256','--out','--integration-config'].includes(args[i])&&args[i+1])
     options[args[i].slice(2)]=args[++i];
   else throw Error(`Unknown/missing option ${args[i]}`);
 }
@@ -17,9 +17,10 @@ if(!/^[a-f0-9]{40}$/.test(options['source-commit'])||!/^[a-f0-9]{64}$/.test(opti
 const here=dirname(fileURLToPath(import.meta.url)),driver=resolve(here,'../direct-flamelet');
 const hash=path=>createHash('sha256').update(readFileSync(path)).digest('hex');
 const out=resolve(options.out),runtime=resolve(options.runtime),mechanism=resolve(options.mechanism);
+const integration=resolve(options['integration-config']??resolve(here,'quench.json'));
 const report={schema:'g2-diffusion-fgm-experiment/v1',source_commit:options['source-commit'],
   environment_sha256:options['environment-sha256'],mechanism_sha256:hash(mechanism),
-  config_sha256:hash(resolve(here,'case.json')),integration_sha256:hash(resolve(here,'quench.json')),
+  config_sha256:hash(resolve(here,'case.json')),integration_sha256:hash(integration),integration_config:integration,
   driver_sha256:hash(fileURLToPath(import.meta.url)),out,CFD_executed:false,scientific_acceptance:false,phases:[]};
 if(options.plan){console.log(JSON.stringify({plan:true,...report},null,2));process.exit(0);}
 if(!process.env.SLURM_JOB_ID)throw Error('Physical integration requires a FlamePilot Slurm allocation');
@@ -39,7 +40,7 @@ const common=['--config',resolve(here,'case.json'),'--mechanism',mechanism,
   '--mechanism-sha256',report.mechanism_sha256,'--source-commit',options['source-commit'],
   '--environment-sha256',options['environment-sha256']];
 phase('physical-trajectory',1000,[resolve(driver,'unsteady.py'),...common,
-  '--integration-config',resolve(here,'quench.json'),'--upstream-patch-receipt',resolve(runtime,'energy-patch.json'),
+  '--integration-config',integration,'--upstream-patch-receipt',resolve(runtime,'energy-patch.json'),
   '--upstream-cold-patch-receipt',resolve(runtime,'cold-patch.json'),'--out',resolve(out,'trajectory')]);
 const original=resolve(out,'trajectory/family-manifest.json');
 const manifest=JSON.parse(readFileSync(original));

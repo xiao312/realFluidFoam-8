@@ -6,6 +6,14 @@ new reaction kinetics, fit paper curves, submit jobs, initialize CFD or approve
 a manifold. The existing one-dimensional relaxedY(Z) closure is separate.
 
 `case.json` fixes the TF streams at5.61MPa,85K oxygen and288K methane.
+The mechanism path is explicit: the original GRI53 diagnostic and the
+author-deposited Zhukov–Kong23/51 mechanism cited by Sharma are separate runs.
+No species/rate parameters are fitted. `--integration-config FILE` selects a
+hashed numerical variant; omitted means the unchanged `quench.json` default.
+`quench-kong-refined.json` tightens temporal/nonlinear error controls and caps
+the timestep at2μs after job128170280 exported a physical trajectory but failed
+the unchanged2e-10 negative-species table limit (minimum−4.9323e-10). This is a
+fresh integration refinement, not permission to discard or repair that failure.
 `quench.json` defines a freshHP-equilibrium initial field and an actual unsteady
 unity-Le diffusion flamelet at chi_st=1e6/s. This high-chi trajectory samples
 extinction states; it is not the scalar dissipation imposed on the CFD flow.
