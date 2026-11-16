@@ -1,5 +1,10 @@
 # Experimental solver boundaries
 
+`mascotte-g2/initial-mass-projection` owns an optional original-zero fixed-density
+potential-flow initialization. It consumes the executing thermo factory and
+mesh, writes only U/phi, and audits unchanged thermodynamic inputs. It neither
+owns a CFD timestep nor qualifies the low-Mach approximation or EOS recovery.
+
 The psi-thermo Dimix policy has an explicitly bounded split-FGM RANS path.
 Only kEpsilon/unity-Lewis eddyDiffusivity Prt0.7 is eligible; its scalar fluxes
 use alphaEff. The RANS case module declares this optional optimization, while
