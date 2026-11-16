@@ -1,5 +1,10 @@
 # Experimental solver boundaries
 
+The solver owns scheduled ignition in raw mesh coordinates. Case observations
+and ignition inputs must separately declare the reviewed injector exit offset;
+display transforms never move a compiled ignition region. The optional origin
+preserves prior zero-origin cases and introduces no library dependency change.
+
 `mascotte-g2/initial-mass-projection` owns an optional original-zero fixed-density
 potential-flow initialization. It consumes the executing thermo factory and
 mesh, writes only U/phi, and audits unchanged thermodynamic inputs. It neither

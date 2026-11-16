@@ -18,11 +18,13 @@ if (fgmColdFlowActive)
         const scalarField savedHa(fgmAbsoluteEnthalpy().primitiveField());
         const scalar massBefore = fvc::domainIntegrate(rho).value();
         label selected = 0;
+        scalar selectedMinX = GREAT, selectedMaxX = -GREAT;
         scalar maxDeltaC = 0;
         forAll(ignitionC, celli)
         {
             const scalar z = fgmSourceModel->Z()[celli];
-            if (mesh.C()[celli].x() >= 0 && mesh.C()[celli].x() <= fgmIgnitionLength
+            if (mesh.C()[celli].x() >= fgmIgnitionOrigin
+                && mesh.C()[celli].x() <= fgmIgnitionOrigin+fgmIgnitionLength
                 && z >= fgmIgnitionZMin && z <= fgmIgnitionZMax)
             {
                 std::vector<double> coordinates, sources;
@@ -36,10 +38,14 @@ if (fgmColdFlowActive)
                     maxDeltaC=max(maxDeltaC,mag(value-ignitionC[celli]));
                     ignitionC[celli]=value;
                     ++selected;
+                    selectedMinX=min(selectedMinX,mesh.C()[celli].x());
+                    selectedMaxX=max(selectedMaxX,mesh.C()[celli].x());
                 }
             }
         }
         reduce(selected,sumOp<label>());
+        reduce(selectedMinX,minOp<scalar>());
+        reduce(selectedMaxX,maxOp<scalar>());
         reduce(maxDeltaC,maxOp<scalar>());
         if (!selected) FatalErrorInFunction << "Ignition selected no positive-source cells" << exit(FatalError);
         ignitionC.correctBoundaryConditions();
@@ -49,6 +55,7 @@ if (fgmColdFlowActive)
         thermo.correct();
         rho = thermo.rho();
         Info<< "fgmIgnition t=" << now << " cells=" << selected
+            << " rawSelectedMinX=" << selectedMinX << " rawSelectedMaxX=" << selectedMaxX
             << " mode=" << fgmIgnitionMode << " maxDeltaC=" << maxDeltaC
             << " maxDeltaHa=" << gMax(mag(fgmAbsoluteEnthalpy().primitiveField()-savedHa))
             << " massBefore=" << massBefore << " massAfter=" << fvc::domainIntegrate(rho).value()

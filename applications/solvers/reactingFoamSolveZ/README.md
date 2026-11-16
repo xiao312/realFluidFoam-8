@@ -1,5 +1,17 @@
 # Transported-Z reacting solver
 
+Scheduled ignition optionally accepts `fgmIgnitionAxialOrigin` in raw mesh metres
+(default0). Its region is `[origin, origin+fgmIgnitionAxialLength]`, retaining
+local Z, absolute Ha and the existing source-peak/upper-progress choice. The
+reviewed legacy injector exits at raw x=.01m; using the old default would ignite
+an upstream passage. Log selected cell count and actual min/max x. This is a
+same-process event following original-zero cold flow, never a saved-state restart.
+No new thermodynamic model, threshold, library ABI or dependency is introduced.
+Verify compiled default-origin parity and shifted-region selection in a physical
+zero-flow control, then fresh injector cold-flow/ignition with measured budgets.
+An ignition event changes composition/density numerically; retain its mass and
+Ha accounting. It is not a paper-defined ignition procedure or acceptance.
+
 Experimental `realFluidDeferCaloricTrialAudit yes` distinguishes an unfinished
 coupled iterate from an accepted timestep. It requires absolute Ha, the inner
 scalar/energy loop, pressure refresh and enforcing audit. Energy and
