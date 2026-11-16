@@ -1,5 +1,17 @@
 # Experimental solver boundaries
 
+The solver inner scalar/energy lifecycle supports the existing split FGM
+source only through its unchanged old-time transport anchor. Source first-half
+ownership remains outside PIMPLE; repeated corrections recompute the second
+half instead of advancing the previous iterate. The density/Ha pressure
+predictor and its acceptance criteria remain separately owned by the solver's
+existing SRK recovery helper. No thermo library ABI or default mode changes.
+
+The real-fluid thermo probe's captured-point interface can explicitly retain
+transported rho/Ha as well as p/T/h/Y. Its separate one-cell recovery query
+depends on the existing solver SRK recovery helper and never owns CFD state
+or restart authorization. Default thermodynamic-only extraction is unchanged.
+
 `mascotte-g2/rans-diagnostic` additionally configures an explicitly declared
 raw-C FGM case on the normal full-property transport path. It shares the
 existing kEpsilon/eddyDiffusivity runtime and direct-FGM initializer/checker;
@@ -31,7 +43,10 @@ NPZ tables and retained CSV profiles. It independently compares mapped-C lookup
 and inlet enthalpy; NumPy is its only external dependency. It never changes CFD,
 reference data, diagnostic fields or scientific acceptance.
 
-`replication/runs/20261115-g2-temperature-fields/` maps retained partitioned ASCII
+`replication/runs/20261115-g2-temperature-fields/` includes a receipt-driven
+single-case renderer with explicit ranks/time for tapered injector meshes. It
+shares the local-only plotting boundary and never advances a simulation.
+The module maps retained partitioned ASCII
 OpenFOAM temperatures onto actual axial/radial cell polygons. It reads hashed
 local collections and writes images/data receipts for Forge. It has no solver,
 scheduler or network dependency and cannot advance CFD.

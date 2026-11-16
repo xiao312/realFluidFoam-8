@@ -1,5 +1,19 @@
 # Retained G2 temperature fields
 
+`render-case.py --collection RECEIPT --out NEW_DIRECTORY` renders one retained
+case at its explicitly recorded time and rank count. Its default `--plan` mode
+checks receipt and input hashes without writing. The receipt uses
+`retained-cfd-cell-field/v1`, with `localRoot`, `case`, `sourceJob`, `ranks`,
+`timeDirectory`, `time_s`, `archiveSha256` and per-file `inputHashes`.
+It requires original-zero provenance, maps every global cell exactly once,
+and retains instantaneous/non-accepted labels. The output includes actual
+cell polygons/data, full-domain and injector-detail PNGs, and a hashed receipt.
+This general interface supports the tapered-injector mesh as well as the older
+exit-only meshes; it does not imply that their physical results are comparable.
+Use `--apply` to render; verify positive finite fields, polygon areas, exact
+cell mapping, source identities and image layout. Dependencies and storage
+boundaries are the same NumPy/Matplotlib/local-only ones documented below.
+
 Render completed OpenFOAM cell temperatures without advancing CFD. This module
 does not submit jobs, restart cases, interpolate fields, or declare validation.
 

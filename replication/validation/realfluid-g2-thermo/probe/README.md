@@ -1,5 +1,19 @@
 # Runtime real-fluid thermodynamic probe
 
+For captured CFD failures, `extract-failed-point.mjs --case CASE --time TIME
+--rank N --cell N --conserved yes [--out NEW_JSON]` additionally reads the
+actual retained `rho` and `Ha` fields with their hashes. It never substitutes
+an EOS density or reconstructs transported energy. Without this option the
+existing thermodynamic-only export is unchanged. `configure-point.mjs` writes
+`constant/rhoHaAudit` only for such an explicitly captured pair; run the existing
+probe with `-audit-rho-ha-state` to query joint density/absolute-enthalpy recovery.
+All writes require an allocation and a separate fresh one-cell query case.
+Neither the query nor its success authorizes a CFD restart or validates pressure
+coupling. Verify extraction against the actual failing rank/cell, unchanged
+species/dictionary hashes, independent initial guesses and the existing caloric,
+mechanical stability and selected-root checks. A fixed-pressure enthalpy target
+inside a root-switch gap must remain failed even if the joint query succeeds.
+
 `-audit-contact-averaging` is a zero-flow H2/O2 closure diagnostic. On a fresh
 one-cell case it reads `constant/contactAveragingAudit`: `pressure` (Pa),
 `temperature` (K), `compositionIntervals` and `volumeFractionIntervals`.

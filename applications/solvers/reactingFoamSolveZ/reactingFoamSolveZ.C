@@ -121,10 +121,15 @@ int main(int argc, char *argv[])
     // Factory aliases (e.g. none) need not equal the C++ runtime type.
     const word selectedCombustionModel = reaction->lookupOrDefault<word>("combustionModel", "");
     if (realFluidInnerThermoCorrectors && selectedCombustionModel!="none"
-        && selectedCombustionModel!="steadyFlamelet" && selectedCombustionModel!="relaxedTable")
-        FatalErrorInFunction << "Inner scalar/energy lifecycle supports configured none, steadyFlamelet or relaxedTable; got "
+        && selectedCombustionModel!="steadyFlamelet" && selectedCombustionModel!="relaxedTable"
+        && !(selectedCombustionModel=="fgmTable" && splitFgmSource))
+        FatalErrorInFunction << "Inner scalar/energy lifecycle requires none, steadyFlamelet, relaxedTable or strangFixedState fgmTable; got "
             << selectedCombustionModel << " (runtime type " << reaction->type() << "). "
-            << "Finite-rate/progress-source integration requires separate qualification" << exit(FatalError);
+            << "Other finite-rate/progress-source lifecycles are unsupported" << exit(FatalError);
+    if (realFluidInnerThermoCorrectors && splitFgmSource)
+        Info<< "fgmSourcePicard firstHalf=oncePerPhysicalStep transportAnchor=unchangedOldTime"
+            << " secondHalf=recomputedFromTransport priorIterateNotAdvanced=1"
+            << " physicalQualification=pending" << endl;
     Info<< "scalarEnergyCorrectors=" << (realFluidInnerThermoCorrectors ? "insidePressure" : "outerPimple") << endl;
 
     Info<< "\nStarting time loop\n" << endl;

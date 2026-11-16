@@ -4,7 +4,7 @@ import {createHash} from 'node:crypto';
 
 const options={}, args=process.argv.slice(2);
 for(let i=0;i<args.length;i+=2){
-  if(!['--case','--time','--rank','--cell','--out'].includes(args[i])||!args[i+1]||options[args[i]])throw Error('Use --case CASE --time EXACT_TIME --cell N [--rank N] [--out NEW_JSON]');
+  if(!['--case','--time','--rank','--cell','--out','--conserved'].includes(args[i])||!args[i+1]||options[args[i]])throw Error('Use --case CASE --time EXACT_TIME --cell N [--rank N] [--conserved yes] [--out NEW_JSON]');
   options[args[i]]=args[i+1];
 }
 const root=await realpath(options['--case']??''), time=options['--time'];
@@ -44,6 +44,12 @@ const massFractions={};for(const name of species)massFractions[name]=await scala
 const massSum=Object.values(massFractions).reduce((a,b)=>a+b,0);
 if(pressure_Pa<=0||temperature_K<=0||Math.abs(massSum-1)>1e-10||Object.values(massFractions).some(v=>v<0))throw Error('Invalid captured thermodynamic state; no normalization performed');
 const point={schema:'captured-failed-thermo-point/v1',sourceCase:root,snapshotTime:time,rank,cell,pressure_Pa,temperature_K,storedHs_J_kg,species,massFractions,massSum,speciesNormalized:false,CFD_steps:0,authorizedForCFDRestart:false,thermoDictionarySha256:sha(dictionary),fields};
+if(options['--conserved']!==undefined){
+  if(options['--conserved']!=='yes')throw Error('Use --conserved yes to explicitly read transported rho/Ha');
+  const density_kg_m3=await scalar('rho'),absoluteEnthalpy_J_kg=await scalar('Ha');
+  if(!(density_kg_m3>0))throw Error('Captured transported density must be positive');
+  point.conserved={density_kg_m3,absoluteEnthalpy_J_kg,source:'actual retained transported fields; no EOS reconstruction'};
+}
 if(options['--out']){
   if(!process.env.SLURM_JOB_ID)throw Error('Saving point export requires an allocation');
   const output=path.resolve(options['--out']);if(output===root||output.startsWith(root+path.sep))throw Error('Never write into the retained source case');

@@ -720,3 +720,20 @@ correctors so the momentum matrix is retained. It remains off by default.
 The density/Ha API has compiled point controls; the pressure predictor still
 requires original-zero flow and conservation/momentum qualification. Record
 all recovery counts, pressure changes and extra pressure iterations.
+
+The inner scalar/energy lifecycle additionally supports `fgmTable` only with
+`strangFixedState`. Its first half-source is frozen once per physical timestep
+before PIMPLE. Each inner correction re-solves Euler transport from unchanged
+old-time Z/C/rho plus that same first-half contribution, then recomputes the
+second half from the new transport solution. It does not advance the previous
+inner iteration's reacted C. The existing old-time equality checks remain
+enforcing. Other finite-rate source lifecycles remain excluded.
+
+This permits the existing density/Ha predictor to be tested with physical FGM
+without changing its caloric, mechanical-stability, selected-root or pressure
+iteration criteria. Qualification requires a fixed-source zero-flow control at
+different inner iteration counts, an unchanged default-off flow anchor, captured
+rho/Ha point recovery and original-zero inlet-flow diagnostics. Neither point
+recovery nor a converged source iteration establishes G2 agreement. Record
+`fgmSourceOldTime`, predictor changes and all extra pressure solves; retain any
+iteration exhaustion or unresolved caloric gap.

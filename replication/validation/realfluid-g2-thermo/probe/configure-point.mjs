@@ -28,8 +28,15 @@ const guesses=[temperature-5,temperature-.5,temperature,temperature+.5,temperatu
 const file=`${root}/constant/probeProperties`,before=await readFile(file,'utf8');
 const after=before.replace(/pressure [^;]+;/,`pressure ${pressure};`).replace(/temperatures \([^)]*\);/,`temperatures (${temperatures.join(' ')});`).replace(/increments \([^)]*\);/,'increments (0.001);')+`\nenthalpyTargets (${point.storedHs_J_kg});\ntargetGuesses (${guesses.join(' ')});\ntargetCorrectionPasses 12;\ntargetRelativeLimit 1e-8;\nwriteSrkCoefficients yes;\n`;
 changes.push({file,before,after});
+if(point.conserved){
+  const {density_kg_m3,absoluteEnthalpy_J_kg}=point.conserved;
+  if(!Number.isFinite(density_kg_m3)||density_kg_m3<=0||!Number.isFinite(absoluteEnthalpy_J_kg)||!point.fields?.rho?.sha256||!point.fields?.Ha?.sha256)
+    throw Error('Explicit finite captured rho/Ha and original field hashes required');
+  const audit=`FoamFile { version 2.0; format ascii; class dictionary; object rhoHaAudit; }\ndensity ${density_kg_m3};\nabsoluteEnthalpy ${absoluteEnthalpy_J_kg};\nreferencePressure ${pressure};\nguesses (${guesses.join(' ')});\n`;
+  changes.push({file:`${root}/constant/rhoHaAudit`,before:null,after:audit});
+}
 const sha=s=>createHash('sha256').update(s).digest('hex');
-const receipt={schema:'captured-enthalpy-point-queries/v1',pointSha256:sha(pointRaw),sourceCase:point.sourceCase,snapshotTime:point.snapshotTime,cell:point.cell,rank:point.rank,CFD_steps:0,pressure_Pa:pressure,capturedPressure_Pa:point.pressure_Pa,temperature_K:temperature,targetHs_J_kg:point.storedHs_J_kg,compositionNormalized:false,acceptanceChanged:false,changes:changes.map(c=>({file:c.file,beforeSha256:sha(c.before),afterSha256:sha(c.after)}))};
+const receipt={schema:'captured-enthalpy-point-queries/v1',pointSha256:sha(pointRaw),sourceCase:point.sourceCase,snapshotTime:point.snapshotTime,cell:point.cell,rank:point.rank,CFD_steps:0,pressure_Pa:pressure,capturedPressure_Pa:point.pressure_Pa,temperature_K:temperature,targetHs_J_kg:point.storedHs_J_kg,compositionNormalized:false,acceptanceChanged:false,changes:changes.map(c=>({file:c.file,beforeSha256:c.before===null?null:sha(c.before),afterSha256:sha(c.after)}))};
 if(!apply){console.log(JSON.stringify({readOnly:true,...receipt},null,2));process.exit(0);}
 if(!process.env.SLURM_JOB_ID)throw Error('Allocated point configuration required');
 for(const c of changes)await writeFile(c.file,c.after);
