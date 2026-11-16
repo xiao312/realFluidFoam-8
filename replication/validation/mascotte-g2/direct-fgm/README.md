@@ -455,6 +455,11 @@ The stationary inlet-ramp initializer also accepts the explicit audited reviewed
 `configure-low-mach.mjs CASE [--apply]` selects the existing compiled constant-p0 open-domain approximation for a separate original-zero split-FGM experiment after `configure-fgm` and `configure-coupled inner`, before initialization. It refuses differential pressure or rho/Ha predictors, clones the actual pressure solver groups for pMechanical, records original/new hashes, and leaves all caloric/species criteria unchanged. Thermal absolute Ha omits kinetic/dynamic-pressure work consistently with the compiled low-Mach model. EOS pressure is fixed at the declared case pressure; mechanical pressure remains separately solved/written. This is not a repair/qualification of the fully compressible baseline or a claim that earlier failed contact tests now pass. Node standard library only; no scheduler, secrets, kinetics, table or geometry ownership. Verification: read-only plan, fresh-case rejection controls, exact compatible runtime identity and actual original-zero physical output including Mach/pressure/EOS/mass/Ha diagnostics. Default behavior stays unchanged.
 # Local-Z ignition control
 
+Coupling receipts report the effective caloric-trial switch in the resulting
+control dictionary, including a value supplied before coupling configuration.
+The CLI option alone is not the execution authority. This reporting correction
+does not modify the dictionary or any solver acceptance criterion.
+
 `local-z-ignition-control.json` records the reviewed-mesh cold-to-reacting
 experiment: original-zero primed ducts and100us flow ramp, followed in the same
 process by source-peak ignition at raw x10–14mm and local Z0.08–0.30. It preserves

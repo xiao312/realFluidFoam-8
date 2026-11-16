@@ -39,7 +39,7 @@ const report={schema:'g2-split-fgm-pressure-iteration/v1',mode,startTime:0,CFD_s
   sourceLifecycle:'First half once per physical step; inner Euler re-solves from unchanged oldTime; second half recomputed from transport',
   densityHaPredictor:mode!=='inner',pressureTangent:mode==='densityHaDifferential'?'fixed-enthalpy SRK derivative':'existing psi product',
   maximumPressurePropertyIterations:mode==='inner'?1:6,
-  deferCaloricTrialAudit:options.deferCaloric,finalCaloricCriterionEnforced:true,
+  deferCaloricTrialAudit:/\brealFluidDeferCaloricTrialAudit\s+yes\s*;/.test(after),finalCaloricCriterionEnforced:true,
   pressureEnergyCorrectors:Number(nextSolution.match(/\bnCorrectors\s+(\d+)\s*;/)[1]),
   beforeSolutionSha256:sha(solution),afterSolutionSha256:sha(nextSolution),
   beforeControlSha256:sha(before),afterControlSha256:sha(after),originalManifestSha256:sha(manifestRaw),
