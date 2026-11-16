@@ -38,7 +38,7 @@ for (let attempt = 0; attempt < 30; attempt++) {
 }
 if (!(predictedDrift <= 0.001 && duration > 1e-14)) throw new Error('Could not find a bounded pressure-drift interval');
 const plan = { kind: 'physical-conversion', initial: state, pressure,
-  density: rho, absoluteEnthalpy: properties.enthalpy, endTime: duration,
+  density: rho, absoluteEnthalpy: properties.enthalpy, endTime: duration, deltaT: duration/20,
   deltaT: duration / 20, predictedPressureDrift: predictedDrift,
   pressureQualification: 'constant-volume evolution; fixed table chemistry pressure; actual drift <=0.2%',
   inputHashes: input.inputHashes, physicalAcceptance: false };

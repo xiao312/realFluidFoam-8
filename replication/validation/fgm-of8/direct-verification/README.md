@@ -70,6 +70,15 @@ from these declared thresholds.
 
 ## Matching species thermodynamics for subsequent physical tables
 
+The deposited Kong mechanism represents monatomic AR with identical NASA7
+coefficient blocks and ranges 300/5000/5000 K. `thermo-policy.mjs` and the
+exporter retain that valid single-interval representation rather than inventing
+a transition temperature. OF8 janaf permits Tcommon=Thigh. Equality is supported
+only for identical finite coefficient blocks; reversed intervals or unequal
+blocks on a zero-width upper interval are refused. Verify the actual deposited
+phase export and an unequal-block negative control. No coefficient, thermodynamic
+range, gas constant or scientific tolerance changes.
+
 `thermo-export.mjs INPUT.json [--out NEW_DIR]` converts a complete ordered
 Cantera NASA7 species export into an OF8 `janaf/perfectGas/sensibleEnthalpy`
 dictionary. Without `--out` it validates and prints the proposal only. The input

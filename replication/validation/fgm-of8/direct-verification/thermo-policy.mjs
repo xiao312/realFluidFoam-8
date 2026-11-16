@@ -1,5 +1,15 @@
 // Preserve NASA7 coefficients and transition temperatures. Only an explicit
 // diagnostic request may extend inversion limits beyond the published ranges.
+export function validNasaIntervals(thermo) {
+  const ranges=thermo?.temperatureRanges;
+  if(!Array.isArray(ranges)||ranges.length!==3||!ranges.every(Number.isFinite)||
+     !(0<ranges[0]&&ranges[0]<ranges[1]&&ranges[1]<=ranges[2]))return false;
+  if(ranges[1]<ranges[2])return true;
+  return Array.isArray(thermo.lowCoeffs)&&Array.isArray(thermo.highCoeffs)&&
+    thermo.lowCoeffs.length===7&&thermo.highCoeffs.length===7&&
+    thermo.lowCoeffs.every((value,i)=>Number.isFinite(value)&&value===thermo.highCoeffs[i]);
+}
+
 export function nasaInversionPolicy(metadata, option) {
   const requested = option === undefined ? null : String(option).split(',').map(Number);
   if (requested && (requested.length !== 2 || !requested.every(Number.isFinite) ||
@@ -8,8 +18,7 @@ export function nasaInversionPolicy(metadata, option) {
   }
   const species = metadata.species.map(s => {
     const original = s.thermo.temperatureRanges;
-    if (s.thermo.model !== 'NASA7' || original.length !== 3 ||
-        !original.every(Number.isFinite) || !(0 < original[0] && original[0] < original[1] && original[1] < original[2])) {
+    if (s.thermo.model !== 'NASA7' || !validNasaIntervals(s.thermo)) {
       throw new Error(`Invalid NASA7 ranges for ${s.name}`);
     }
     return { name: s.name, originalRange_K: [...original],

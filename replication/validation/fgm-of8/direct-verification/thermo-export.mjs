@@ -1,7 +1,7 @@
 import { readFile, mkdir, writeFile } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
 import { resolve } from 'node:path';
-import { nasaInversionPolicy } from './thermo-policy.mjs';
+import { nasaInversionPolicy, validNasaIntervals } from './thermo-policy.mjs';
 
 const [inputPath, ...args] = process.argv.slice(2), options = {};
 if (!inputPath) throw new Error('Usage: thermo-export.mjs INPUT.json [--out NEW_DIR] [--nasa-extrapolation MIN_K,MAX_K]');
@@ -26,8 +26,7 @@ const rows = data.species.map(species => {
   const weights = species.molecularWeight_kg_kmol;
   if (!thermo || thermo.model !== 'NASA7' || !(weights > 0)) throw new Error(`Unsupported thermo: ${species.name}`);
   const ranges = thermo.temperatureRanges;
-  if (!Array.isArray(ranges) || ranges.length !== 3 ||
-      !ranges.every(Number.isFinite) || !(ranges[0] > 0 && ranges[0] < ranges[1] && ranges[1] < ranges[2])) {
+  if (!validNasaIntervals(thermo)) {
     throw new Error(`Invalid NASA7 temperature ranges: ${species.name}`);
   }
   for (const key of ['lowCoeffs', 'highCoeffs']) {
