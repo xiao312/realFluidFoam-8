@@ -68,7 +68,7 @@ const failure=report.run_status?.state==='FAILED'
   ? ` Run failed at ${report.run_status.failure_time_s} s: ${report.run_status.reason}.` : '';
 const settled=report.temporal_screen?.provisionally_steady===true;
 const extinct=report.physical_outcome?.state==='extinguished';
-const phase=extinct?'Extinguished CFD':settled?'Time-settled at measurement planes':'Transient CFD';
+const phase=report.temporal_window?'Finite-window mean ending':extinct?'Extinguished CFD':settled?'Time-settled at measurement planes':'Transient CFD';
 const ignition=report.ignition_time_s===undefined?'':` Ignition at ${report.ignition_time_s} s; ${(1000*(report.sample_time_s-report.ignition_time_s)).toFixed(2)} ms since ignition.`;
 const limitation=settled?'Temporal profile screen passed; mesh and model differences remain. No independent review or scientific acceptance claimed.':'Transient, mesh and model differences remain; no steady-state, independent review or scientific acceptance claimed.';
 const displayWarnings=Array.isArray(report.display_warnings)?' '+report.display_warnings.join(' '):'';

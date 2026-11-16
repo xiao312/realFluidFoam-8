@@ -99,3 +99,19 @@ steady-flamelet model. The remaining twelve libraries can retain their exact
 qualified hashes. Rebuild the solver and property probe against this same
 header set to avoid mixed inline policy definitions; no new registration is
 required for the already available kEpsilon or eddyDiffusivity models.
+
+
+`node initialize-duct-turbulence.mjs FRESH_CASE [--apply]` is an explicit
+initial-condition experiment after analytic duct velocity initialization and
+before decomposition. It sets k=1.5(I|U|)^2, epsilon=Cmu^0.75 k^1.5/L,
+nut=Cmu k^2/epsilon and alphat=rho nut/Prt in the two upstream passages,
+using the configured inlet intensity/length and executing pure-stream densities.
+Chamber seeds and all boundary conditions remain unchanged. It addresses the
+mismatch between primed inlet velocity and a nearly stagnant uniform turbulence
+seed, not a combustion calibration or proof of the RANS failure cause. Default
+is read-only; --apply requires Slurm and fresh original-zero fields. Inputs
+are the bound RANS/velocity/EOS receipts and actual U/Z fields; output binds
+all four before/after field hashes and measured ranges. Node built-ins only;
+no network, credentials, CFD advance or scheduler interface. Verify readonly
+behavior and analytic k/epsilon/viscosity consistency, then compare independent
+cold and reacting original-zero physical controls. Failure remains failure.

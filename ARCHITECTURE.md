@@ -185,3 +185,7 @@ correction authority; simulation and tabulation modules do not depend on it.
 Maders finite-window statistics depend on the existing local sampled-profile
 reader and NumPy. Its optional receipt flows into paper plotting; the plotter
 does not depend on the averaging implementation or grant statistical acceptance.
+
+The optional RANS passage initializer consumes the inlet mesh/velocity and
+executing-EOS receipts, then initializes only turbulence fields. It has no
+reverse dependency into mesh generation, thermodynamics or solver source.
