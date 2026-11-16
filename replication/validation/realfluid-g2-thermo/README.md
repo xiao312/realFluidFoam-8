@@ -60,3 +60,5 @@ matching rebuilt full runtime. It selects the lowest homogeneous Gibbs root,
 not mixture VLE. No NASA/critical coefficient or transport model changes. Verify
 default output dictionary parity and declared policy before captured-state and
 fresh-CFD qualification; never apply it to evolved fields or claim flash results.
+
+`probe/plot-captured-gaps.py --results COLLECTED_QUERY_DIR [--out NEW_DIR]` plots actual executing-library Hs(T) samples at captured/nominal pressure and a microkelvin view of the selected-root jump. No output is the read-only plan. It requires two explicitly named captured point JSONs and CSV query outputs; file hashes are retained. It does not interpolate across the measured jump, normalize composition, fit a curve, change an evaluator or infer VLE equilibrium. Outputs PNG/SVG and an evidence JSON under a new directory. Optional plotting dependencies are Python/Matplotlib/NumPy; exporters and native queries retain their existing interfaces. Verification: plan then render the independently retained C03/C05 queries and visually inspect gap/target/units; a visualization is not a CFD pass.

@@ -212,3 +212,5 @@ it owns no thermodynamic correction, chemistry rate or acceptance decision.
 The reviewed-injector-wedge module preserves measured legacy inlet/casing/pocket geometry at a reduced resolution. It depends on the existing ASCII mesh parser and retained reference edge data. Direct-fgm consumes its executed mesh asset and pure-stream zero-time region definitions; solver physics and scientific criteria remain separately owned.
 
 The direct-FGM case module can select the existing solver-owned constant-background low-Mach pressure approximation for explicit fresh experiments. It duplicates mechanical-pressure solver configuration and records equation-model provenance; it does not implement thermodynamics, redefine acceptance or qualify the earlier failed contact tests.
+
+The realfluid-g2-thermo probe optionally renders captured Hs inversion curves with Python/Matplotlib/NumPy. It consumes retained point/CSV evidence only and owns no CFD, interpolation across phase jumps, phase-equilibrium model or acceptance criterion.
