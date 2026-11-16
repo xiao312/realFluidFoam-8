@@ -37,6 +37,11 @@ placeholder until the executing runtime initializer runs. It neither supplies a
 velocity precursor nor ignites the chamber. Its input states come from the exact
 table endpoints; no evolved field is read.
 
+`node verify-priming.mjs CASE` checks actual undecomposed time-zero Z/C/T and
+pure-stream species against cells classified from their mesh vertices. It
+requires320 oxygen-duct and400 methane-duct cells, independently of cell order,
+and fails if setFields was omitted. It does not advance or modify a field.
+
 Dependencies: Node standard library. Verification additionally uses the existing
 ASCII mesh parser and allocated OpenFOAM 8 utilities. The direct-fgm case
 generator consumes the qualified asset. No secrets or network

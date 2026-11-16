@@ -23,6 +23,31 @@ error; operational clamp reports coordinate corrections and source-stage mass
 changes. Enabling that combination changes no acceptance limit and does not
 approve a clipped result. It requires table chemistry and absoluteHa as before.
 
+`retarget-thermo.mjs --from THERMO --metadata NEW_PHASE [--out NEW_THERMO]`
+binds an unchanged real-fluid dictionary to a newly exported metadata receipt
+only when mechanism hash, species order, molecular weights and every NASA
+coefficient match exactly. It preserves the original manifest/dictionary hashes
+and records the metadata-only binding; no critical/transport/EOS coefficients
+are changed. The default is a read-only plan. This does not qualify the new
+source table, caloric coupling or physical flame.
+
+`initialize-inlets.mjs CASE [--apply]` consumes the executing initializer's
+`ha-initialization-boundaries.csv` and the case manifest. It replaces the ideal
+rhoInlet/velocity placeholders with actual EOS density while preserving measured
+mass flows/areas. Read-only by default; apply requires an undecomposed original
+timezero case in a Slurm allocation. It records before/after field hashes and
+actual inlet states. It does not modify internal velocity, chemistry or Ha.
+
+`configure-fgm.mjs CASE [--ignition-time SECONDS] [--apply]` selects measured
+budget/timing output, conservative density, three fixed-h inversion passes and
+the previously tested post-pressure property refresh for real-fluid cases.
+It gives Z/C explicit1e-12 transport tolerances without tightening flow/energy
+solves unnecessarily. Optional source-peak ignition uses the actual table at
+Z=0.1..0.3 within4mm of the exit, then resets the numerical timestep/flux. These
+are declared diagnostic choices, not unreported paper parameters. It never
+changes the table source, adds a relaxation clock or alters acceptance limits.
+The default is read-only and apply refuses evolved/decomposed cases.
+
 `configure-baseline.mjs NEW_CASE [--apply]` selects the parallel batch controls
 before initialization. It records conservative density, unchanged64epsilon-only Z
 projection, three inversion passes at fixed internal h, timing/budget output and
