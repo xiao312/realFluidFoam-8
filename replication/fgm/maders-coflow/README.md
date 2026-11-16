@@ -289,3 +289,11 @@ Example: `node prepare_case.mjs --table TABLE --protocol paper --axial-cells 100
 reject nonintegral counts,then run actual blockMesh/checkMesh through Slurm. Compare
 matched physical times with the coarse case before attributing profile differences
 to resolution. Every refined CFD starts at its original timezero.
+
+`timestep-co00625.json` declares a third original-zero temporal control after
+`maxCo=.25/.125`: `maxCo=.0625`, maximum timestep12.5microseconds, unchanged
+250ms horizon, mesh, table and50ms ignition. It is configuration for the existing
+case interface, not a new model. Plan with the declared values, verify its hash
+against the batch control and compare profiles at matched physical times with
+the earlier levels. Smaller timestep alone does not establish convergence or
+turn a transient snapshot into a steady paper result.

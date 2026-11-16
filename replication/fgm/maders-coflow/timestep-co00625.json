@@ -1,0 +1,18 @@
+{
+  "schema": "maders-startup-control/v1",
+  "CFDStartTime_s": 0,
+  "ignitionTime_s": 0.05,
+  "endTime_s": 0.25,
+  "ignitionMode": "upperProgress",
+  "axialCells": 400,
+  "maxCo": 0.0625,
+  "maxDeltaT_s": 1.25e-05,
+  "outerWallVelocity": "noSlip",
+  "baselineCaseSource": "f6e2ae80116b0ea46c58ecfc3660bc1bdf2bcb54",
+  "baselineSolverSource": "ea2a4046ab239ae4fdb1197cd65fd83ebc933785",
+  "physicalTableSha256": "35a6b46b5a56d2831a598acb7810119b6bc27ced27d90d217d2258514295c1cc",
+  "purpose": "Third physical timestep level after A07 maxCo0.25/maxdt50us and A08 maxCo0.125/maxdt25us. Independently original-zero case with unchanged mesh, table, physics, upperProgress ignition and250ms horizon. Compare matched times and sustained profile drift; no chemistry fitting, new acceptance limits or steady-state inference.",
+  "paperIgnitionProtocolClaimed": false,
+  "restarted": false,
+  "scientificAcceptance": false
+}
