@@ -1,5 +1,17 @@
 # Retained G2 temperature fields
 
+`plot-ignition-history.py --history JSON --out NEW_DIR [--apply]` plots actual
+global temperature/progress extrema from completed solver steps and the logged
+ignition event. Default is a read-only plan. Input `g2-completed-step-history/v1`
+binds the original-zero JobID/source/table and native log SHA, with finite,
+strictly increasing times. Outputs are PNG/SVG and a hashed receipt. These are
+independent global extrema, not a cell trajectory, integral heat release,
+paper comparison, steady mean or scientific acceptance. The collector excludes
+unfinished final iterations. No smoothing, source modification or acceptance
+threshold change is performed. Dependencies remain local NumPy/Matplotlib;
+no network, secrets or scheduler authority. Verify event location/count, peak
+and late values against retained raw log excerpts and inspect the image.
+
 `audit-chemical-source.py --cells THERMAL_AUDIT_CSV --thermal-audit AUDIT_JSON
 --species-collection RECEIPT
 --metadata PHASE_JSON --mechanism AUTHOR_YAML --out NEW_DIR [--apply]` compares
