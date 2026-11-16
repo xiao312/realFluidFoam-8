@@ -9,3 +9,5 @@ Inputs: fixed measured recipe, retained reference boundary edges and their SHA25
 Verification: read-only generation and an allocated blockMesh/checkMesh/audit; all reference edges must match the generated boundary and vice versa. The old geometry is a negative comparison, not silently accepted.
 
 `verify-priming.mjs FRESH_CASE` checks all640 oxygen and800 methane duct cells against their pure-stream time-zero T/Z/C/O2/CH4, verifies the actual copied mesh and rejects evolved/decomposed cases. It changes no fields.
+
+`initialize-duct-velocity.mjs FRESH_CASE [--apply]` is an optional analytic initial condition. It uses executing densities and actual mass-flow areas, sets plug velocity in the straight ducts and continuity/tangent-wall velocity through the measured taper. Chamber and pocket remain at rest. It changes only original-zero internal U, records added kinetic energy, and claims neither a developed boundary layer nor a discrete divergence projection. Compare against the separate stationary/ramped control.
