@@ -1,0 +1,17 @@
+{
+  "schema": "maders-startup-control/v1",
+  "CFDStartTime_s": 0,
+  "ignitionTime_s": 0.05,
+  "endTime_s": 0.6,
+  "axialCells": 400,
+  "maxCo": 1,
+  "maxDeltaT_s": 0.0002,
+  "outerWallVelocity": "noSlip",
+  "baselineCaseSource": "f6e2ae80116b0ea46c58ecfc3660bc1bdf2bcb54",
+  "baselineSolverSource": "ea2a4046ab239ae4fdb1197cd65fd83ebc933785",
+  "physicalTableSha256": "35a6b46b5a56d2831a598acb7810119b6bc27ced27d90d217d2258514295c1cc",
+  "purpose": "Separate startup-memory and settling diagnostic; no inlet or chemistry fitting",
+  "paperIgnitionProtocolClaimed": false,
+  "restarted": false,
+  "scientificAcceptance": false
+}

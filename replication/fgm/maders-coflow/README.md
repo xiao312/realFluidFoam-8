@@ -1,5 +1,16 @@
 # Maders 2017 reacting coflow preparation
 
+`startup-earlier-ignition.json` declares a separate original-zero coarse-grid
+startup experiment. It retains paper inlet profiles, composition, absolute Ha,
+physical table and source integration, but ignites at0.05s rather than0.9s and
+uses maxCo1 rather than0.5. It tests initialization memory and available post-
+ignition settling time; it is not a paper ignition protocol or a convergence
+certificate. Pass these declared values to the existing `prepare_case.mjs`;
+its dry-run plan must precede case creation. No scheduler, network or new
+dependencies. Verify emitted control/manifest values and actual ignition/time
+receipts; compare matched post-ignition ages and finite-window drift before
+interpreting paper agreement. No restart or continued evolved state is permitted.
+
 Prepare physical flamelets and explicit case inputs for Maders Figures 4–6.
 This module does not submit jobs, fit paper curves or establish CFD validation.
 
