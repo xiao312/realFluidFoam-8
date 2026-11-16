@@ -181,3 +181,18 @@ strictly increasing finite rows and an independently read first ignited step.
 Stage increments are kilograms per evaluation, not rates or a closed progress
 budget. A positive global increment does not establish every cell's source sign
 or prove the cause of extinction. No source scaling or science approval occurs.
+
+`plot-ignition-region.py` measures coordinate eligibility from a retained internal
+cell audit and the case's hash-bound `ignition-protocol.json`. It consumes
+`--collection`, `--audit`, `--cells` and a new `--out`; default is read-only and
+`--apply` writes a near-injector mixture-fraction map and evidence. It reuses
+`render-case.py` to map actual polygons, verifies every consumed field/partition
+hash and checks CSV cell identity against the original temperature field.
+Eligibility uses the executing origin, axial length and Z range, not a chosen
+display mask. Report cells, volume and mass before ignition; the solver's
+positive-source condition and sustained-flame viability remain separate checks.
+NumPy/Matplotlib are local analysis dependencies; there is no chemistry solve,
+CFD mutation, network, secret or scheduler operation. Example: `python
+plot-ignition-region.py --collection collection.json --audit audit.json --cells
+cells.csv --out ignition-region [--apply]`. Verify the protocol/hash chain and
+an independently counted mask; never describe cold eligible cells as a flame.
