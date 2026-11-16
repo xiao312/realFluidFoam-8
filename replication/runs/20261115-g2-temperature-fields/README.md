@@ -1,5 +1,22 @@
 # Retained G2 temperature fields
 
+`audit-cell-state.py --collection RECEIPT --wedge-degrees 5 --out NEW_DIRECTORY`
+compares executing CFD temperature with the table diagnostic at the same
+internal cells. The default is read-only; `--apply` writes JSON and per-cell CSV.
+It verifies every collected hash, partition ownership and the actual wedge
+angle, then integrates polygon first moments to obtain cell volumes. Inputs
+must also contain `fgmTdiag`, `fgmScSource`, `rho`, `Z`, `c`, `Ha` and `p`.
+Outputs include volume-weighted temperature differences, absolute-source
+weighted differences and source fractions in cold or thermally displaced
+cells. Absolute source weights prevent positive and negative chemistry from
+cancelling. This is a state-consistency diagnostic, not a source correction,
+boundary interpolation, equilibrium calculation or scientific acceptance.
+Boundary diagnostics are deliberately excluded because their current stored
+values can be stale. Verify that summed volume matches the executing energy
+state and that all cells are mapped once; compare the CSV sums independently.
+It reuses only the local renderer's mesh reader and NumPy; no new network,
+secret, scheduler or solver dependency is introduced.
+
 `render-case.py --collection RECEIPT --out NEW_DIRECTORY` renders one retained
 case at its explicitly recorded time and rank count. Its default `--plan` mode
 checks receipt and input hashes without writing. The receipt uses

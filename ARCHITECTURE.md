@@ -1,5 +1,10 @@
 # Experimental solver boundaries
 
+The retained-temperature-field module additionally owns internal-cell
+CFD/table thermal-state audits. It consumes immutable mesh/field receipts and
+the existing renderer, measures volume and absolute-source weighted departures,
+and never modifies the source table, CFD fields or acceptance limits.
+
 The direct-FGM case module owns explicit inner/density-Ha/differential-pressure
 experiment configuration and dictionary provenance. It selects existing solver
 helpers, never implements EOS recovery, grants scheduler resources or changes
