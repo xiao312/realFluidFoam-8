@@ -8,6 +8,8 @@ for (label couplingPass=0;couplingPass<maxRhoHaPressureIterations;++couplingPass
     {
         const scalarField heldEnthalpy(thermo.he().primitiveField());
         const auto refreshStart=fgmTiming.start();
+        if (absoluteEnthalpyFGM)
+            writeThermoInversionWitness(thermo,rho,fgmAbsoluteEnthalpy(),"beforePressureRefresh");
         thermo.correct();
         fgmTiming.stop(fgmWallTiming::thermoCorrection,refreshStart);
         const scalar mutation=gMax(mag(thermo.he().primitiveField()-heldEnthalpy));

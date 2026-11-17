@@ -124,11 +124,21 @@
         ("fgmThermoCorrectionPasses",1);
     if(correctionPasses<1 || correctionPasses>3)
         FatalErrorInFunction << "fgmThermoCorrectionPasses must be1..3" << exit(FatalError);
-    if(correctionPasses==1)thermo.correct();
+    if(correctionPasses==1)
+    {
+        if (absoluteEnthalpyFGM)
+            writeThermoInversionWitness(thermo,rho,fgmAbsoluteEnthalpy(),"beforeEnergy");
+        thermo.correct();
+    }
     else
     {
         const scalarField heldSensibleEnthalpy(thermo.he().primitiveField());
-        for(label pass=0;pass<correctionPasses;++pass)thermo.correct();
+        for(label pass=0;pass<correctionPasses;++pass)
+        {
+            if (absoluteEnthalpyFGM)
+                writeThermoInversionWitness(thermo,rho,fgmAbsoluteEnthalpy(),"beforeEnergy");
+            thermo.correct();
+        }
         const scalar hMutation=gMax(mag(thermo.he().primitiveField()-heldSensibleEnthalpy));
         if(hMutation!=0)
             FatalErrorInFunction << "Thermo inversion mutated internal sensible enthalpy" << exit(FatalError);

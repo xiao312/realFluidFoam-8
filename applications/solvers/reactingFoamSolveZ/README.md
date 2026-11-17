@@ -810,3 +810,31 @@ rho/Ha point recovery and original-zero inlet-flow diagnostics. Neither point
 recovery nor a converged source iteration establishes G2 agreement. Record
 `fgmSourceOldTime`, predictor changes and all extra pressure solves; retain any
 iteration exhaustion or unresolved caloric gap.
+
+
+## Pre-inversion witness
+
+Optional `writeThermoInversionWitness yes` records the exact inputs immediately
+before energy, pressure-refresh and accepted-predictor calls to thermo.correct().
+`thermoInversionWitnessStartTime` defaults to0 seconds and must be finite and
+nonnegative. Default-off performs no field scan or file write. The helper owns
+capture only; it changes no field, root policy, iteration, tolerance or acceptance.
+
+Each rank atomically replaces one CSV per call stage in its case-owned
+`thermo-inversion-witness/` directory. The metadata line identifies time, rank,
+stage and sequence; internal cells and boundary faces contain p/T/h/rho/Ha/allY.
+These are inputs of a nonlinear trial, never accepted-timestep or restart files.
+They are stored separately from numerical time directories. Native case-sensitive
+species names remain distinct CSV columns, avoiding Windows h/H aliasing.
+
+Dependencies are existing OpenFOAM fields and standard C++ file streams; no new
+library, network access or secret input. The diagnostic probe can explicitly
+capture its initialized one-cell state with `-audit-inversion-witness`.
+Example: enable the option and set start time0.00222 on a new original-zero G2
+case. Qualify actual compiled one-cell CSV contents, default-off behavior and
+unchanged parent libraries before the bounded full-case reproduction. A captured
+trial or successful build is not physical validation.
+
+The probe audit respects the configured enable/start controls, permitting an
+actual default-off check; enable the runtime option to capture the initialized
+state. It never forces a bypass of those controls.

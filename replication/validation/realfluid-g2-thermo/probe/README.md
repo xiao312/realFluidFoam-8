@@ -254,3 +254,12 @@ Successful scalar recovery is not qualification of a CFD coupling predictor.
 Target-only audits run before the property/inversion output streams are opened.
 A target-only audit, including a rejected missing-target request, must leave
 existing cold-properties.csv and cold-inversion.csv unchanged.
+
+The `-audit-inversion-witness` diagnostic reads an already initialized time-zero
+Ha field, obtains executing density and emits the shared solver witness without
+CFD integration. It depends on the solver's capture helper, not its evolution
+loop; qualify CSV units, row counts, complete species and exact field values.
+
+The probe audit respects the configured enable/start controls, permitting an
+actual default-off check; enable the runtime option to capture the initialized
+state. It never forces a bypass of those controls.

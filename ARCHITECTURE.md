@@ -247,3 +247,9 @@ duct priming consume that profile identity, without changing solver physics.
 The direct-FGM case module can select the existing solver-owned constant-background low-Mach pressure approximation for explicit fresh experiments. It duplicates mechanical-pressure solver configuration and records equation-model provenance; it does not implement thermodynamics, redefine acceptance or qualify the earlier failed contact tests.
 
 The realfluid-g2-thermo probe optionally renders captured Hs inversion curves with Python/Matplotlib/NumPy. It consumes retained point/CSV evidence only and owns no CFD, interpolation across phase jumps, phase-equilibrium model or acceptance criterion.
+
+The solver's optional pre-inversion witness serializes local nonlinear-trial
+fields atomically per rank/stage. It depends only on OpenFOAM field/IO facilities.
+The realfluid-g2-thermo probe consumes that capture helper for a zero-flow format
+qualification. Capture has no reverse dependency on probes, scheduler adapters,
+EOS root selection or acceptance, and its outputs are not restart inputs.

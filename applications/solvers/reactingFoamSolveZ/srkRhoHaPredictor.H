@@ -3,6 +3,7 @@
 #include "srkRhoHaRecovery.H"
 #include "fgmChemicalEnthalpy.H"
 #include "fgmBoundaryEnthalpy.H"
+#include "thermoInversionWitness.H"
 
 // Returns the globally accepted predictor count. No density, internal Ha or
 // history modification. Pressure must be solved again after a post-p predictor.
@@ -55,6 +56,7 @@ inline Foam::label applySrkRhoHaPredictor
         thermo.p().correctBoundaryConditions();thermo.T().correctBoundaryConditions();
         updateFgmFixedTemperatureEnthalpy(thermo,thermo.composition(),Ha);
         thermo.he()==Ha-fgmChemicalEnthalpy(rho.mesh(),thermo.composition());
+        writeThermoInversionWitness(thermo,rho,Ha,"beforePredictorRefresh");
         thermo.correct();
         const scalar densityMutation=gMax(mag(rho.primitiveField()-heldDensity));
         const scalar haMutation=gMax(mag(Ha.primitiveField()-heldHa));
