@@ -1,5 +1,14 @@
 # Runtime real-fluid thermodynamic probe
 
+`-audit-enthalpy-targets-only` runs the existing captured-target inversion
+checks without the separate property/increment sweep. It uses the exact
+executing library, target and six initial guesses from `configure-point.mjs`.
+It changes no target criterion. Use it to distinguish a repaired captured
+point from another unresolved state elsewhere in the wider sweep.
+Run it on a fresh one-cell query case through Slurm. Expected exit zero
+requires every original target check to pass; an unreachable root gap must
+remain rejected. Full CFD and phase-equilibrium qualification are separate.
+
 For captured CFD failures, `extract-failed-point.mjs --case CASE --time TIME
 --rank N --cell N --conserved yes [--out NEW_JSON]` additionally reads the
 actual retained `rho` and `Ha` fields with their hashes. It never substitutes

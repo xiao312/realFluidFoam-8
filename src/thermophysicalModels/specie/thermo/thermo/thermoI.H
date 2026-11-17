@@ -25,6 +25,7 @@ License
 
 #include "thermo.H"
 #include "IOmanip.H"
+#include <cmath>
 
 // * * * * * * * * * * * * * Private Member Functions  * * * * * * * * * * * //
 
@@ -58,128 +59,122 @@ inline Foam::scalar Foam::species::thermo<Thermo, Type>::T
             << abort(FatalError);
     }
 
-    scalar Test = T0;
-    scalar Tnew = T0;
-    // Resolve sub-millikelvin energy increments used by transient flames.
-    // The former relative tolerance (1e-4) stops at 0.03--0.28 K here.
-    scalar Ttol = max(T0, scalar(1))*1e-9;
-    int    iter = 0;
-
-    /*
-    // This is original code, Nam commented out
-    if (diagnostics)
+    const auto valueAt = [&](const scalar temperature)
     {
-        const unsigned int width = IOstream::defaultPrecision() + 8;
+        return (this->*F)(p, temperature);
+    };
+    const auto tolerance = [&](const scalar value)
+    {
+        return scalar(1e-8) + scalar(1e-10)*max
+        (
+            scalar(1), max(mag(f), mag(value))
+        );
+    };
+    scalar temperature = (this->*limit)(T0);
+    scalar value = valueAt(temperature);
+    scalar residual = value-f;
+    scalar bestTemperature = temperature;
+    scalar bestResidual = std::isfinite(residual) ? mag(residual) : GREAT;
+    const auto remember = [&](const scalar trial, const scalar error)
+    {
+        if (std::isfinite(error) && mag(error)<bestResidual)
+        {
+            bestTemperature=trial;
+            bestResidual=mag(error);
+        }
+    };
 
-        InfoInFunction
-            << "Energy -> temperature conversion failed to converge:" << endl;
-        Pout<< setw(width) << "iter"
-            << setw(width) << "Test"
-            << setw(width) << "e/h"
-            << setw(width) << "Cv/p"
-            << setw(width) << "Tnew"
-            << endl;
+    // Require an energy residual, not just a small temperature update.
+    for (int iteration=0; iteration<maxIter_; ++iteration)
+    {
+        if (std::isfinite(value) && mag(residual)<=tolerance(value))
+            return temperature;
+        const scalar derivative=(this->*dFdT)(p,temperature);
+        if (!std::isfinite(derivative) || derivative==0
+         || !std::isfinite(residual)) break;
+        const scalar step=-residual/derivative;
+        bool improved=false;
+        scalar fraction=1;
+        for (int search=0; search<8; ++search)
+        {
+            const scalar raw=temperature+fraction*step;
+            if (std::isfinite(raw) && raw>0)
+            {
+                const scalar trial=(this->*limit)(raw);
+                const scalar trialValue=valueAt(trial);
+                const scalar trialResidual=trialValue-f;
+                remember(trial,trialResidual);
+                if (std::isfinite(trialValue)
+                 && mag(trialResidual)<mag(residual))
+                {
+                    temperature=trial;
+                    value=trialValue;
+                    residual=trialResidual;
+                    improved=true;
+                    break;
+                }
+            }
+            fraction*=0.5;
+        }
+        if (!improved) break;
     }
 
-    do
+    // Bracket only after Newton stalls. Respect the model's temperature limits.
+    scalar lower=(this->*limit)(max(scalar(1),min(T0,temperature)*0.5));
+    scalar upper=(this->*limit)(max(scalar(4000),max(T0,temperature)*2));
+    scalar lowerValue=valueAt(lower), upperValue=valueAt(upper);
+    scalar lowerResidual=lowerValue-f, upperResidual=upperValue-f;
+    const auto oppositeSigns = [](const scalar left, const scalar right)
     {
-        Test = Tnew;
-        Tnew =
-            (this->*limit)
-            (Test - ((this->*F)(p, Test) - f)/(this->*dFdT)(p, Test));
-
-        if (diagnostics)
+        return (left<0 && right>0) || (left>0 && right<0);
+    };
+    for (int expansion=0; expansion<20; ++expansion)
+    {
+        remember(lower,lowerResidual);
+        remember(upper,upperResidual);
+        if (std::isfinite(lowerValue) && mag(lowerResidual)<=tolerance(lowerValue))
+            return lower;
+        if (std::isfinite(upperValue) && mag(upperResidual)<=tolerance(upperValue))
+            return upper;
+        if (std::isfinite(lowerResidual) && std::isfinite(upperResidual)
+         && oppositeSigns(lowerResidual,upperResidual)) break;
+        const scalar nextLower=(this->*limit)(max(scalar(1),lower*0.5));
+        const scalar nextUpper=(this->*limit)(upper*2);
+        if (nextLower==lower && nextUpper==upper) break;
+        lower=nextLower; upper=nextUpper;
+        lowerValue=valueAt(lower); upperValue=valueAt(upper);
+        lowerResidual=lowerValue-f; upperResidual=upperValue-f;
+    }
+    if (std::isfinite(lowerResidual) && std::isfinite(upperResidual)
+     && oppositeSigns(lowerResidual,upperResidual))
+    {
+        for (int iteration=0; iteration<maxIter_; ++iteration)
         {
-            const unsigned int width = IOstream::defaultPrecision() + 8;
-
-            Pout<< setw(width) << iter
-                << setw(width) << Test
-                << setw(width) << ((this->*F)(p, Test))
-                << setw(width) << ((this->*dFdT)(p, Test))
-                << setw(width) << Tnew
-                << endl;
-        }
-
-        if (iter++ > maxIter_)
-        {
-            if (!diagnostics)
+            const scalar middle=lower+(upper-lower)*0.5;
+            if (middle==lower || middle==upper) break;
+            const scalar middleValue=valueAt(middle);
+            const scalar middleResidual=middleValue-f;
+            remember(middle,middleResidual);
+            if (!std::isfinite(middleValue)) break;
+            if (mag(middleResidual)<=tolerance(middleValue)) return middle;
+            if (oppositeSigns(lowerResidual,middleResidual))
             {
-                T(f, p, T0, F, dFdT, limit, true);
-            }
-
-            FatalErrorInFunction
-                << "Maximum number of iterations exceeded: " << maxIter_
-                << abort(FatalError);
-        }
-
-    } while (mag(Tnew - Test) > Ttol);
-    */
-
-   // This is new code: combine Newton + bisection method, Nam
-    // Using Newton method
-    do
-    {
-        Test = Tnew;
-        Tnew =
-            (this->*limit)
-            (Test - ((this->*F)(p, Test) - f)/(this->*dFdT)(p, Test));
-        iter++;
-        //Info << "   ->Nam: iter = " << iter << endl; 
-        //Info << "      h* = " << f << endl; 
-        //Info << "      T_new = " << Tnew << endl; 
-        //Info << "      h_new = " << (this->*F)(p, Tnew) << endl; 
-        //Info << "      h'(Tnew) = "  << (this->*dFdT)(p, Tnew) << endl;
-        if (iter > maxIter_){break;}
-    } while (mag(Tnew - Test) > Ttol);
-
-    // Retain the converged Newton update. Returning Test discards small
-    // energy increments when the first update is below the tolerance.
-    if (mag(Tnew - Test) > Ttol)
-    {
-       // Nam, using Bisection method
-        // Info << "   Warning!!! Newton method failed, Max. # of iterations exceeded " << maxIter_ << endl;
-        // Info << "   Start using Bisection method" << endl;
-        // FatalErrorInFunction << abort(FatalError);
-
-        // The former 1e-3 K bracket width failed the existing 190 K
-        // round-trip check even after Newton convergence was tightened.
-        scalar biTol = 1e-6;
-        scalar x1 = 50; // lower bound
-        scalar x2 = 4000; //uper bound
-        int n = 0;
-        scalar x3 = 0;
-
-        do
-        {
-            x3 = 0.5*(x1+x2);
-
-            if (((this->*F)(p,x3) - f)*((this->*F)(p,x2) - f) < 0)
-            {
-                x1 = x3;
+                upper=middle; upperResidual=middleResidual;
             }
             else
             {
-                x2 = x3;
+                lower=middle; lowerResidual=middleResidual;
             }
-
-            n++;
-            //Info << "   ->Nam: n = " << n << endl;
-            if (n > maxIter_)
-            {
-                FatalErrorInFunction
-                    << "Maximum number of iterations exceeded: " << maxIter_ << abort(FatalError);
-            }
-
-        } while (mag(x2-x1) > biTol);
-        Tnew = 0.5*(x1+x2);
-        //Info << "      h* = " << f << endl;
-        //Info << "      T_new = " << Tnew << endl;
-        //Info << "      h_new = " << (this->*F)(p, Tnew) << endl;
-        //Info << "   End of using Bisection method" << endl;
+        }
     }
-    //
+    FatalErrorInFunction
+        << "Thermodynamic energy inversion did not converge: p=" << p
+        << " target=" << f << " T0=" << T0
+        << " bestT=" << bestTemperature << " bestAbsResidual=" << bestResidual
+        << ". No unconverged temperature accepted."
+        << exit(FatalError);
+    return bestTemperature; // Unreachable; the error exits or throws.
 
-    return Tnew;
 }
 
 

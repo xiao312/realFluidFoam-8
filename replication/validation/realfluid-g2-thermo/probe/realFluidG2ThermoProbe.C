@@ -27,6 +27,7 @@ int main(int argc, char *argv[])
     argList::addBoolOption("audit-pressure-jacobian", "Compare fixed-T and fixed-h SRK pressure slopes with actual library finite differences");
     argList::addBoolOption("audit-contact-averaging", "Compare isothermal composition and conservative-volume averages through the actual SRK library;no CFD steps");
     argList::addBoolOption("audit-manifold-enthalpy", "Query adiabatic reacting/passive manifold enthalpy feasibility through actual SRK;no CFD steps");
+    argList::addBoolOption("audit-enthalpy-targets-only", "Run captured enthalpy targets without the wider property sweep");
     argList::addBoolOption("audit-rho-ha-state", "Joint density/Ha recovery; zero CFD steps and no field mutation");
     #include "setRootCase.H"
     #include "createTime.H"
@@ -181,7 +182,12 @@ int main(int argc, char *argv[])
         << "p_Pa,T_K,rho_kg_m3,Cp_J_kg_K,Cv_J_kg_K,Hs_J_kg,Ha_J_kg,mu_Pa_s,kappa_W_m_K,dHs_dT_J_kg_K,alpha_kg_m_s,T_recovered_K\n";
     inversion << std::setprecision(16)
         << "p_Pa,T_start_K,delta_T_K,T_target_K,T_guess_K,T_recovered_K,error_K,Hs_target_J_kg,Hs_recovered_J_kg\n";
+    if (args.optionFound("audit-enthalpy-targets-only")
+     && !configuration.found("enthalpyTargets"))
+        FatalErrorInFunction << "Captured enthalpyTargets required for target-only audit"
+            << exit(FatalError);
     label failures = auditCapturedEnthalpyTargets(thermo, configuration, runTime);
+    if (args.optionFound("audit-enthalpy-targets-only")) return failures ? 3 : 0;
     for (const scalar temperature : temperatures)
     {
         thermo.p() = dimensionedScalar("p", dimPressure, pressure);

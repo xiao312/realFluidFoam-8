@@ -1,5 +1,13 @@
 # Experimental solver boundaries
 
+The specie energy-to-temperature inversion owns residual convergence of the
+executing thermodynamic function. It consumes the existing value, derivative
+and temperature-limit interfaces. Its users are the full custom thermo,
+transport, chemistry and solver stack; they must be rebuilt together.
+EOS root selection remains independent. The captured-point probe can isolate
+target inversion without invoking the wider property sweep. Neither module
+owns a phase-equilibrium model, CFD restart or scientific acceptance.
+
 The reacting solver owns optional conservative pressure-step damping. Its pure
 `pressureDampingFactor.H` computes an admissible global-step bound from Euler
 reference/candidate densities; the pressure include applies the same factor to
