@@ -105,3 +105,25 @@ The prepared fresh-zero G2 comparison preserves C19 geometry, table, stream
 assignment, ramp, ignition and final criteria. It explicitly changes the
 root policy and evaluated-residual inversion. Its first requested end time
 is 4 ms; this is a coupling milestone, not a developed literature mean.
+
+## Retained regression recovery and probe repair
+
+Job 128240112 regenerated the oxygen exports in a separate zero-flow case
+before starting its new CFD. Independent reading of the retained CSVs confirms
+68 oxygen, 24 methane and 58 captured-mixture cold/hot round trips. Maximum
+temperature errors are 1.649e-8, 6.065e-9 and 9.088e-8 K respectively,
+against the unchanged 1e-5 K criterion. None is synthetic validation.
+
+Probe-only source `f27482f75baa52014300565e9c161715600ceebc`
+was compiled in job 128240722 against the exact unchanged 15-library runtime.
+The envelope completed in 312 seconds; actual payload was approximately
+20 seconds after environment preparation/verification. Full property sweeps
+passed. Hash comparisons prove both positive target-only and missing-target
+negative calls leave their real property/inversion CSV exports unchanged.
+The parent solver and library products remained byte-identical.
+
+Fresh-zero G2 job 128240112 started physical integration at 02:39:43 UTC.
+At the 10:51 Shanghai checkpoint it had reached approximately 0.754 ms of
+cold startup, before its 2.2 ms ignition. No reacting CFD improvement or
+literature agreement is established at this checkpoint. Runtime identity
+remains 0c30b60; the probe/reporting repair does not relabel that simulation.
