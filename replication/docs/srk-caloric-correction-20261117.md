@@ -127,3 +127,36 @@ At the 10:51 Shanghai checkpoint it had reached approximately 0.754 ms of
 cold startup, before its 2.2 ms ignition. No reacting CFD improvement or
 literature agreement is established at this checkpoint. Runtime identity
 remains 0c30b60; the probe/reporting repair does not relabel that simulation.
+
+
+## Coupled CFD exposes the next failure
+
+R02/128240112 terminated FAILED, Slurm1:0, after2114 seconds. At2.220447154ms
+(20.447us after ignition), rank7 rejected a fixed-pressure Hs inversion:
+p=5048485.24463Pa, Hs=-251670.810392J/kg, initialT=162.501670225K,
+bestT=162.888581026K, minimum residual=4325.85906401J/kg. This is not
+roundoff or a completed4ms comparison. The component checks do not establish
+that homogeneous Gibbs selection solves the coupled CFD problem.
+
+The log places failure after the outer2 energy solve. The existing density/Ha
+predictor is called after fixed-p thermo.correct(), which cannot help if that
+call aborts. A valid joint state blocked by ordering, a genuinely inadmissible
+homogeneous state, and a missed continuous root remain distinct hypotheses.
+The original fatal path retained no exact mixture, so an ordering change is
+not yet justified as the established fix.
+
+Instrumentation-only source532a00cf78e88741d508cd9ee5286a9bc294fb7a adds a
+rank-local pre-inversion witness. Its compiled one-cell checks verify7rows,
+23species, executed pure-stream field values, no original-field mutation,
+default-off no output, and a rejecting invalid-start control that preserves
+the previous capture. All15parent libraries remain unchanged. Fresh-zero
+R04/128244235 started11:34:19Shanghai on the same reviewed geometry, inputs
+and criteria; witness capture begins2.2ms. It is an exact-state reproduction,
+not a numerical correction or a restart from R02.
+
+Four actual R02 startup comparisons were appended to localForge. The last
+sample is2.220075902ms: a near-inlet hot kernel remains far from the paper's
+developed axial/radial temperature profiles. Paper lines and raw markers are
+retained; existing primary best results and75targets/12papers/captions remain.
+No new reacting2Dfield was retained, and none was inferred from the profiles.
+Scientific/human acceptance and public publication remain unassigned.
