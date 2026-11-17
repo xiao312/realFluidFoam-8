@@ -250,3 +250,7 @@ flash. The existing probe modes, solver and library ABI are unchanged.
 Compile the probe against the pinned parent headers/products, run help and
 actual captured-state controls through Slurm, and retain `rho-ha-state.csv`.
 Successful scalar recovery is not qualification of a CFD coupling predictor.
+
+Target-only audits run before the property/inversion output streams are opened.
+A target-only audit, including a rejected missing-target request, must leave
+existing cold-properties.csv and cold-inversion.csv unchanged.

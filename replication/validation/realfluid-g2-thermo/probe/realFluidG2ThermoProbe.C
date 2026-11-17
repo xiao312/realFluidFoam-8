@@ -176,18 +176,19 @@ int main(int argc, char *argv[])
         if (!coefficients) FatalErrorInFunction << "Failed to save executing SRK coefficients" << exit(FatalError);
     }
 
-    std::ofstream properties((runTime.path()/"cold-properties.csv").c_str());
-    std::ofstream inversion((runTime.path()/"cold-inversion.csv").c_str());
-    properties << std::setprecision(16)
-        << "p_Pa,T_K,rho_kg_m3,Cp_J_kg_K,Cv_J_kg_K,Hs_J_kg,Ha_J_kg,mu_Pa_s,kappa_W_m_K,dHs_dT_J_kg_K,alpha_kg_m_s,T_recovered_K\n";
-    inversion << std::setprecision(16)
-        << "p_Pa,T_start_K,delta_T_K,T_target_K,T_guess_K,T_recovered_K,error_K,Hs_target_J_kg,Hs_recovered_J_kg\n";
     if (args.optionFound("audit-enthalpy-targets-only")
      && !configuration.found("enthalpyTargets"))
         FatalErrorInFunction << "Captured enthalpyTargets required for target-only audit"
             << exit(FatalError);
     label failures = auditCapturedEnthalpyTargets(thermo, configuration, runTime);
     if (args.optionFound("audit-enthalpy-targets-only")) return failures ? 3 : 0;
+
+    std::ofstream properties((runTime.path()/"cold-properties.csv").c_str());
+    std::ofstream inversion((runTime.path()/"cold-inversion.csv").c_str());
+    properties << std::setprecision(16)
+        << "p_Pa,T_K,rho_kg_m3,Cp_J_kg_K,Cv_J_kg_K,Hs_J_kg,Ha_J_kg,mu_Pa_s,kappa_W_m_K,dHs_dT_J_kg_K,alpha_kg_m_s,T_recovered_K\n";
+    inversion << std::setprecision(16)
+        << "p_Pa,T_start_K,delta_T_K,T_target_K,T_guess_K,T_recovered_K,error_K,Hs_target_J_kg,Hs_recovered_J_kg\n";
     for (const scalar temperature : temperatures)
     {
         thermo.p() = dimensionedScalar("p", dimPressure, pressure);
